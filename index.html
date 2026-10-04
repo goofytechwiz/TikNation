@@ -5,861 +5,845 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>TikNation — Your Voice. Your World.</title>
+<meta name="description" content="TikNation — Your voice. Your world.">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-html {
-    scroll-behavior: smooth;
+html{
+    scroll-behavior:smooth;
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #05050b;
-    color: #fff;
-    min-height: 100vh;
-    overflow-x: hidden;
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#05050b;
+    color:#fff;
+    min-height:100vh;
+    overflow-x:hidden;
 }
 
-button,
-input {
-    font: inherit;
+button,input,textarea,select{
+    font:inherit;
 }
 
-button {
-    cursor: pointer;
+button{
+    cursor:pointer;
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
     background:
-        radial-gradient(circle at 10% 10%, rgba(116,70,255,.18), transparent 28%),
-        radial-gradient(circle at 90% 20%, rgba(0,210,255,.12), transparent 28%),
-        radial-gradient(circle at 50% 90%, rgba(190,0,255,.12), transparent 35%);
-    pointer-events: none;
-    z-index: -2;
+        radial-gradient(circle at 10% 10%,rgba(116,70,255,.18),transparent 28%),
+        radial-gradient(circle at 90% 20%,rgba(0,210,255,.12),transparent 28%),
+        radial-gradient(circle at 50% 90%,rgba(190,0,255,.12),transparent 35%);
+    pointer-events:none;
+    z-index:-2;
 }
 
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image:
-        radial-gradient(circle, rgba(255,255,255,.7) 1px, transparent 1px);
-    background-size: 100px 100px;
-    opacity: .08;
-    pointer-events: none;
-    z-index: -1;
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:radial-gradient(circle,rgba(255,255,255,.7) 1px,transparent 1px);
+    background-size:100px 100px;
+    opacity:.08;
+    pointer-events:none;
+    z-index:-1;
 }
 
 /* HEADER */
 
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 28px;
-    background: rgba(5,5,11,.82);
-    backdrop-filter: blur(18px);
-    border-bottom: 1px solid rgba(255,255,255,.08);
-    z-index: 1000;
+.header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    background:rgba(5,5,11,.88);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    z-index:1000;
 }
 
-.logo {
-    font-size: 21px;
-    font-weight: 900;
-    letter-spacing: 3px;
-    white-space: nowrap;
+.logo{
+    font-size:21px;
+    font-weight:900;
+    letter-spacing:3px;
+    white-space:nowrap;
 }
 
-.logo span {
-    color: #8d63ff;
+.logo span{
+    color:#8d63ff;
 }
 
-.search {
-    width: min(360px, 35vw);
+.search{
+    width:min(360px,35vw);
 }
 
-.search input {
-    width: 100%;
-    padding: 11px 18px;
-    border-radius: 30px;
-    border: 1px solid rgba(255,255,255,.12);
-    outline: none;
-    color: white;
-    background: rgba(255,255,255,.06);
+.search input{
+    width:100%;
+    padding:11px 18px;
+    border-radius:30px;
+    border:1px solid rgba(255,255,255,.12);
+    outline:none;
+    color:white;
+    background:rgba(255,255,255,.06);
 }
 
-.search input:focus {
-    border-color: #8d63ff;
-    box-shadow: 0 0 20px rgba(141,99,255,.18);
+.search input:focus{
+    border-color:#8d63ff;
+    box-shadow:0 0 20px rgba(141,99,255,.18);
 }
 
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-.icon-button {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.1);
-    background: rgba(255,255,255,.05);
-    color: white;
-    font-size: 18px;
-    transition: .25s;
+.icon-button{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.05);
+    color:white;
+    font-size:18px;
 }
 
-.icon-button:hover {
-    border-color: #8d63ff;
-    transform: translateY(-2px);
+.auth-button{
+    padding:10px 18px;
+    border-radius:25px;
+    border:1px solid rgba(141,99,255,.45);
+    background:rgba(141,99,255,.12);
+    color:white;
+    font-weight:bold;
 }
 
-.profile-mini {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg,#8d63ff,#00c8ff);
-    font-weight: 900;
-    cursor: pointer;
-}
-
-/* AUTH BUTTON */
-
-.auth-button {
-    padding: 10px 18px;
-    border-radius: 24px;
-    border: 1px solid rgba(141,99,255,.45);
-    background: linear-gradient(90deg,#7b4dff,#9d58ff);
-    color: white;
-    font-weight: bold;
+.profile-mini{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#8d63ff,#00c8ff);
+    font-weight:900;
 }
 
 /* APP */
 
-.app {
-    display: flex;
-    padding-top: 72px;
+.app{
+    display:flex;
+    padding-top:72px;
 }
 
-/* SIDEBAR */
-
-.sidebar {
-    position: fixed;
-    top: 72px;
-    left: 0;
-    bottom: 0;
-    width: 230px;
-    padding: 25px 16px;
-    border-right: 1px solid rgba(255,255,255,.07);
-    background: rgba(5,5,11,.72);
-    backdrop-filter: blur(15px);
-    z-index: 900;
+.sidebar{
+    position:fixed;
+    top:72px;
+    left:0;
+    bottom:0;
+    width:230px;
+    padding:25px 16px;
+    border-right:1px solid rgba(255,255,255,.07);
+    background:rgba(5,5,11,.72);
+    backdrop-filter:blur(15px);
+    z-index:900;
 }
 
-.nav-button {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    margin-bottom: 7px;
-    border: 1px solid transparent;
-    border-radius: 14px;
-    color: #aaaabd;
-    background: transparent;
-    text-align: left;
-    transition: .25s;
+.nav-button{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 16px;
+    margin-bottom:7px;
+    border:1px solid transparent;
+    border-radius:14px;
+    color:#aaaabd;
+    background:transparent;
+    text-align:left;
 }
 
 .nav-button:hover,
-.nav-button.active {
-    color: white;
-    background: rgba(141,99,255,.12);
-    border-color: rgba(141,99,255,.25);
+.nav-button.active{
+    color:white;
+    background:rgba(141,99,255,.12);
+    border-color:rgba(141,99,255,.25);
 }
 
-.nav-icon {
-    width: 25px;
-    text-align: center;
-    font-size: 19px;
+.nav-icon{
+    width:25px;
+    text-align:center;
+    font-size:19px;
 }
 
-/* MAIN */
-
-.main {
-    width: calc(100% - 230px);
-    margin-left: 230px;
-    padding: 35px;
-    min-height: calc(100vh - 72px);
+.main{
+    width:calc(100% - 230px);
+    margin-left:230px;
+    padding:35px;
+    min-height:calc(100vh - 72px);
 }
 
-.page {
-    display: none;
-    animation: pageIn .3s ease;
+.page{
+    display:none;
+    animation:pageIn .3s ease;
 }
 
-.page.active {
-    display: block;
+.page.active{
+    display:block;
 }
 
-@keyframes pageIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
+@keyframes pageIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
     }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    to{
+        opacity:1;
+        transform:translateY(0);
     }
 }
 
 /* HERO */
 
-.hero-card {
-    position: relative;
-    min-height: 300px;
-    padding: 55px;
-    border-radius: 30px;
-    overflow: hidden;
+.hero-card{
+    position:relative;
+    min-height:300px;
+    padding:55px;
+    border-radius:30px;
+    overflow:hidden;
     background:
-        linear-gradient(135deg,
-        rgba(100,50,220,.3),
-        rgba(0,150,220,.12),
-        rgba(20,20,35,.95));
-    border: 1px solid rgba(141,99,255,.25);
-    box-shadow: 0 25px 80px rgba(0,0,0,.35);
+        linear-gradient(
+            135deg,
+            rgba(100,50,220,.3),
+            rgba(0,150,220,.12),
+            rgba(20,20,35,.95)
+        );
+    border:1px solid rgba(141,99,255,.25);
+    box-shadow:0 25px 80px rgba(0,0,0,.35);
 }
 
-.hero-card::before {
-    content: "";
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    right: -120px;
-    top: -170px;
-    border-radius: 50%;
-    background: rgba(0,200,255,.15);
-    filter: blur(80px);
+.hero-card::before{
+    content:"";
+    position:absolute;
+    width:400px;
+    height:400px;
+    right:-120px;
+    top:-170px;
+    border-radius:50%;
+    background:rgba(0,200,255,.15);
+    filter:blur(80px);
 }
 
-.eyebrow {
-    color: #9c7cff;
-    font-size: 12px;
-    letter-spacing: 4px;
-    font-weight: bold;
-    margin-bottom: 16px;
+.eyebrow{
+    color:#9c7cff;
+    font-size:12px;
+    letter-spacing:4px;
+    font-weight:bold;
+    margin-bottom:16px;
 }
 
-.hero-card h1 {
-    position: relative;
-    font-size: clamp(42px,6vw,78px);
-    line-height: .95;
-    margin-bottom: 18px;
+.hero-card h1{
+    position:relative;
+    font-size:clamp(42px,6vw,78px);
+    line-height:.95;
+    margin-bottom:18px;
 }
 
-.gradient-text {
-    background: linear-gradient(90deg,#9c7cff,#00d5ff,#c05cff);
-    -webkit-background-clip: text;
-    color: transparent;
+.gradient-text{
+    background:linear-gradient(90deg,#9c7cff,#00d5ff,#c05cff);
+    -webkit-background-clip:text;
+    color:transparent;
 }
 
-.hero-card p {
-    position: relative;
-    max-width: 650px;
-    color: #aaaabd;
-    line-height: 1.7;
-    font-size: 17px;
+.hero-card p{
+    position:relative;
+    max-width:650px;
+    color:#aaaabd;
+    line-height:1.7;
+    font-size:17px;
 }
 
-.primary-button {
-    position: relative;
-    display: inline-block;
-    margin-top: 25px;
-    padding: 13px 24px;
-    border: 0;
-    border-radius: 30px;
-    color: white;
-    background: linear-gradient(90deg,#7b4dff,#9d58ff);
-    box-shadow: 0 10px 30px rgba(123,77,255,.25);
-    font-weight: bold;
-}
-
-/* SECTION HEADER */
-
-.section-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 35px 0 18px;
-}
-
-.section-head h2 {
-    font-size: 25px;
-}
-
-.muted {
-    color: #858599;
+.primary-button{
+    position:relative;
+    display:inline-block;
+    margin-top:25px;
+    padding:13px 24px;
+    border:0;
+    border-radius:30px;
+    color:white;
+    background:linear-gradient(90deg,#7b4dff,#9d58ff);
+    box-shadow:0 10px 30px rgba(123,77,255,.25);
+    font-weight:bold;
 }
 
 /* CARDS */
 
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
-    gap: 18px;
+.section-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:35px 0 18px;
 }
 
-.card {
-    padding: 25px;
-    border-radius: 22px;
-    border: 1px solid rgba(255,255,255,.08);
-    background: rgba(15,15,27,.85);
-    transition: .25s;
-    cursor: pointer;
+.section-head h2{
+    font-size:25px;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(141,99,255,.35);
-    box-shadow: 0 15px 40px rgba(0,0,0,.25);
+.muted{
+    color:#858599;
 }
 
-.card-icon {
-    font-size: 38px;
-    margin-bottom: 18px;
+.card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:18px;
 }
 
-.card h3 {
-    margin-bottom: 8px;
+.card{
+    padding:25px;
+    border-radius:22px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(15,15,27,.85);
+    transition:.25s;
 }
 
-.card p {
-    color: #88889b;
-    line-height: 1.6;
-    font-size: 14px;
+.card:hover{
+    transform:translateY(-5px);
+    border-color:rgba(141,99,255,.35);
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
 }
 
-/* VIDEO FEED */
-
-.video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
-    gap: 20px;
+.card-icon{
+    font-size:38px;
+    margin-bottom:18px;
 }
 
-.video-card {
-    overflow: hidden;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,.08);
-    background: #0c0c16;
+.card h3{
+    margin-bottom:8px;
 }
 
-.video-preview {
-    aspect-ratio: 16 / 9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.card p{
+    color:#88889b;
+    line-height:1.6;
+    font-size:14px;
+}
+
+/* VIDEO */
+
+.video-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+}
+
+.video-card{
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.08);
+    background:#0c0c16;
+}
+
+.video-preview{
+    aspect-ratio:16/9;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     background:
         radial-gradient(circle at 30% 30%,rgba(120,70,255,.35),transparent 35%),
         linear-gradient(135deg,#10101e,#070711);
-    font-size: 45px;
+    font-size:45px;
 }
 
-.video-info {
-    padding: 17px;
+.video-info{
+    padding:17px;
 }
 
-.video-info h3 {
-    margin-bottom: 8px;
-    font-size: 17px;
+.video-info h3{
+    margin-bottom:8px;
+    font-size:17px;
 }
 
-.video-info p {
-    color: #858599;
-    font-size: 13px;
+.video-info p{
+    color:#858599;
+    font-size:13px;
 }
 
-.video-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 14px;
+.video-actions{
+    display:flex;
+    gap:8px;
+    margin-top:14px;
 }
 
-.small-button {
-    padding: 8px 12px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,.1);
-    color: #ddd;
-    background: rgba(255,255,255,.04);
+.small-button{
+    padding:8px 12px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.1);
+    color:#ddd;
+    background:rgba(255,255,255,.04);
 }
 
-/* CREATOR */
+/* CREATOR STUDIO */
 
-.creator-panel {
-    padding: 30px;
-    border-radius: 25px;
-    border: 1px solid rgba(141,99,255,.25);
-    background:
-        linear-gradient(145deg,
-        rgba(25,20,48,.95),
-        rgba(9,9,18,.95));
+.creator-panel{
+    padding:30px;
+    border-radius:25px;
+    border:1px solid rgba(141,99,255,.25);
+    background:linear-gradient(145deg,rgba(25,20,48,.95),rgba(9,9,18,.95));
 }
 
-.creator-panel h1 {
-    font-size: 38px;
-    margin-bottom: 10px;
+.creator-panel h1{
+    font-size:38px;
+    margin-bottom:10px;
 }
 
-.creator-panel > p {
-    color: #9999aa;
-    line-height: 1.7;
+.creator-panel > p{
+    color:#9999aa;
+    line-height:1.7;
 }
 
-.creator-tools {
-    margin-top: 28px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-    gap: 15px;
+.creator-tools{
+    margin-top:28px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
 }
 
-.tool {
-    padding: 22px;
-    border-radius: 18px;
-    background: rgba(255,255,255,.035);
-    border: 1px solid rgba(255,255,255,.08);
+.tool{
+    padding:22px;
+    border-radius:18px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.08);
 }
 
-.tool-icon {
-    font-size: 30px;
-    margin-bottom: 12px;
+.tool-icon{
+    font-size:30px;
+    margin-bottom:12px;
 }
 
-.tool h3 {
-    margin-bottom: 7px;
+.tool h3{
+    margin-bottom:7px;
 }
 
-.tool p {
-    color: #858599;
-    font-size: 13px;
-    line-height: 1.5;
+.tool p{
+    color:#858599;
+    font-size:13px;
+    line-height:1.5;
+}
+
+/* CREATE PANEL */
+
+.create-panel{
+    margin-top:25px;
+    padding:25px;
+    border-radius:22px;
+    background:rgba(8,8,17,.9);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    color:#aaaabd;
+    font-size:13px;
+}
+
+.form-control{
+    width:100%;
+    padding:13px 15px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.04);
+    color:white;
+    outline:none;
+}
+
+textarea.form-control{
+    min-height:120px;
+    resize:vertical;
+}
+
+.form-control:focus{
+    border-color:#8d63ff;
+}
+
+.file-box{
+    padding:25px;
+    border:1px dashed rgba(141,99,255,.4);
+    border-radius:18px;
+    text-align:center;
+    background:rgba(141,99,255,.04);
+}
+
+.file-box input{
+    width:100%;
+    margin-top:12px;
+}
+
+.progress{
+    display:none;
+    margin-top:15px;
+}
+
+.progress-bar{
+    width:0%;
+    height:8px;
+    border-radius:10px;
+    background:linear-gradient(90deg,#7b4dff,#00c8ff);
 }
 
 /* PROFILE */
 
-.profile-header {
-    padding: 35px;
-    border-radius: 25px;
-    background: linear-gradient(135deg,rgba(90,50,200,.25),rgba(0,160,220,.1));
-    border: 1px solid rgba(255,255,255,.08);
+.profile-header{
+    padding:35px;
+    border-radius:25px;
+    background:linear-gradient(135deg,rgba(90,50,200,.25),rgba(0,160,220,.1));
+    border:1px solid rgba(255,255,255,.08);
 }
 
-.profile-avatar {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    font-weight: bold;
-    background: linear-gradient(135deg,#8d63ff,#00c8ff);
-    margin-bottom: 18px;
+.profile-avatar{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    font-weight:bold;
+    background:linear-gradient(135deg,#8d63ff,#00c8ff);
+    margin-bottom:18px;
 }
 
-.profile-header h1 {
-    margin-bottom: 7px;
+.profile-header h1{
+    margin-bottom:7px;
 }
 
-.profile-header p {
-    color: #9696aa;
-    max-width: 600px;
+.profile-header p{
+    color:#9696aa;
+    max-width:600px;
 }
 
-.stats {
-    display: flex;
-    gap: 30px;
-    margin-top: 22px;
+.stats{
+    display:flex;
+    gap:30px;
+    margin-top:22px;
 }
 
-.stat strong {
-    display: block;
-    font-size: 20px;
+.stat strong{
+    display:block;
+    font-size:20px;
 }
 
-.stat span {
-    color: #858599;
-    font-size: 12px;
+.stat span{
+    color:#858599;
+    font-size:12px;
 }
 
-/* MESSAGES */
-
-.message-box {
-    padding: 25px;
-    border-radius: 22px;
-    background: rgba(15,15,27,.85);
-    border: 1px solid rgba(255,255,255,.08);
+.message-box{
+    padding:25px;
+    border-radius:22px;
+    background:rgba(15,15,27,.85);
+    border:1px solid rgba(255,255,255,.08);
 }
 
-.message {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 17px 0;
-    border-bottom: 1px solid rgba(255,255,255,.06);
+.message{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:17px 0;
+    border-bottom:1px solid rgba(255,255,255,.06);
 }
 
-.message:last-child {
-    border-bottom: 0;
+.message:last-child{
+    border-bottom:0;
 }
 
-.message-avatar {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg,#663cff,#00b9ff);
+.message-avatar{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#663cff,#00b9ff);
 }
 
-.message-content strong {
-    display: block;
-    margin-bottom: 4px;
+.message-content strong{
+    display:block;
+    margin-bottom:4px;
 }
 
-.message-content span {
-    color: #858599;
-    font-size: 13px;
+.message-content span{
+    color:#858599;
+    font-size:13px;
 }
 
 /* NOTIFICATIONS */
 
-.notification {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    padding: 20px;
-    margin-bottom: 10px;
-    border-radius: 18px;
-    background: rgba(15,15,27,.85);
-    border: 1px solid rgba(255,255,255,.07);
+.notification{
+    display:flex;
+    gap:15px;
+    align-items:center;
+    padding:20px;
+    margin-bottom:10px;
+    border-radius:18px;
+    background:rgba(15,15,27,.85);
+    border:1px solid rgba(255,255,255,.07);
 }
 
-.notification-icon {
-    font-size: 24px;
+.notification-icon{
+    font-size:24px;
 }
 
 /* SEARCH */
 
-.search-results {
-    margin-top: 25px;
+.search-results{
+    margin-top:25px;
 }
 
-.search-empty {
-    padding: 60px 20px;
-    text-align: center;
-    border-radius: 22px;
-    border: 1px dashed rgba(255,255,255,.12);
-    color: #77778a;
+.search-empty{
+    padding:60px 20px;
+    text-align:center;
+    border-radius:22px;
+    border:1px dashed rgba(255,255,255,.12);
+    color:#77778a;
 }
 
-/* AUTH */
+/* AUTH MODAL */
 
-.auth-overlay {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(0,0,0,.78);
-    backdrop-filter: blur(14px);
-    z-index: 3000;
+.modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.78);
+    backdrop-filter:blur(12px);
+    z-index:3000;
 }
 
-.auth-overlay.active {
-    display: flex;
+.modal.active{
+    display:flex;
 }
 
-.auth-modal {
-    width: min(440px,100%);
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 30px;
-    border-radius: 25px;
-    border: 1px solid rgba(141,99,255,.3);
-    background:
-        linear-gradient(145deg,
-        rgba(25,20,48,.98),
-        rgba(8,8,16,.99));
-    box-shadow: 0 30px 100px rgba(0,0,0,.65);
+.modal-card{
+    width:min(460px,100%);
+    padding:30px;
+    border-radius:25px;
+    border:1px solid rgba(141,99,255,.3);
+    background:linear-gradient(145deg,#171329,#090912);
+    box-shadow:0 30px 100px rgba(0,0,0,.55);
 }
 
-.auth-close {
-    float: right;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.1);
-    background: rgba(255,255,255,.05);
-    color: white;
+.modal-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
 }
 
-.auth-modal h2 {
-    font-size: 30px;
-    margin-bottom: 8px;
+.modal-top h2{
+    font-size:28px;
 }
 
-.auth-subtitle {
-    color: #9090a3;
-    line-height: 1.5;
-    margin-bottom: 24px;
+.close-button{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.05);
+    color:white;
 }
 
-.auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+.auth-tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:22px;
 }
 
-.auth-form label {
-    color: #aaaabd;
-    font-size: 13px;
+.auth-tab{
+    flex:1;
+    padding:11px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.04);
+    color:#aaaabd;
 }
 
-.auth-form input {
-    width: 100%;
-    padding: 13px 15px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,.12);
-    outline: none;
-    color: white;
-    background: rgba(255,255,255,.05);
+.auth-tab.active{
+    background:rgba(141,99,255,.18);
+    border-color:rgba(141,99,255,.4);
+    color:white;
 }
 
-.auth-form input:focus {
-    border-color: #8d63ff;
-    box-shadow: 0 0 20px rgba(141,99,255,.15);
+.auth-message{
+    min-height:20px;
+    margin-bottom:14px;
+    color:#aaaabd;
+    font-size:13px;
+    line-height:1.5;
 }
 
-.auth-submit {
-    width: 100%;
-    padding: 14px;
-    margin-top: 8px;
-    border: 0;
-    border-radius: 14px;
-    color: white;
-    background: linear-gradient(90deg,#7b4dff,#00aeea);
-    font-weight: bold;
+.auth-message.success{
+    color:#64e6a7;
 }
 
-.auth-switch {
-    margin-top: 18px;
-    text-align: center;
-    color: #858599;
-    font-size: 14px;
+.auth-message.error{
+    color:#ff7f96;
 }
 
-.auth-switch button {
-    border: 0;
-    background: transparent;
-    color: #a47cff;
-    font-weight: bold;
+.auth-submit{
+    width:100%;
+    margin-top:5px;
 }
 
-.auth-message {
-    display: none;
-    padding: 12px;
-    margin-bottom: 15px;
-    border-radius: 12px;
-    background: rgba(255,255,255,.05);
-    color: #bbb;
-    line-height: 1.5;
-    font-size: 13px;
+/* MOBILE */
+
+.mobile-nav{
+    display:none;
 }
 
-.auth-message.show {
-    display: block;
-}
+@media(max-width:850px){
 
-.auth-message.error {
-    color: #ff9d9d;
-    border: 1px solid rgba(255,70,70,.2);
-}
-
-.auth-message.success {
-    color: #9dffcc;
-    border: 1px solid rgba(70,255,160,.2);
-}
-
-/* ACCOUNT */
-
-.account-actions {
-    margin-top: 25px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.secondary-button {
-    padding: 11px 18px;
-    border-radius: 22px;
-    border: 1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.05);
-    color: white;
-}
-
-/* MOBILE NAV */
-
-.mobile-nav {
-    display: none;
-}
-
-/* RESPONSIVE */
-
-@media (max-width: 850px) {
-
-    .header {
-        padding: 0 15px;
+    .header{
+        padding:0 15px;
     }
 
-    .search {
-        width: 30vw;
+    .search{
+        width:30vw;
     }
 
-    .sidebar {
-        width: 190px;
+    .sidebar{
+        width:190px;
     }
 
-    .main {
-        width: calc(100% - 190px);
-        margin-left: 190px;
-        padding: 22px;
+    .main{
+        width:calc(100% - 190px);
+        margin-left:190px;
+        padding:22px;
     }
 
-    .hero-card {
-        padding: 35px;
+    .hero-card{
+        padding:35px;
     }
 }
 
-@media (max-width: 650px) {
+@media(max-width:650px){
 
-    .header {
-        height: 64px;
+    .header{
+        height:64px;
     }
 
-    .logo {
-        font-size: 17px;
-        letter-spacing: 2px;
+    .logo{
+        font-size:17px;
+        letter-spacing:2px;
     }
 
-    .search {
-        width: 34vw;
+    .search{
+        width:32vw;
     }
 
-    .header-actions .icon-button {
-        display: none;
+    .header-actions .icon-button{
+        display:none;
     }
 
-    .profile-mini {
-        width: 36px;
-        height: 36px;
+    .auth-button{
+        padding:8px 12px;
+        font-size:12px;
     }
 
-    .auth-button {
-        padding: 8px 12px;
-        font-size: 12px;
+    .profile-mini{
+        width:36px;
+        height:36px;
     }
 
-    .app {
-        padding-top: 64px;
-        padding-bottom: 72px;
+    .app{
+        padding-top:64px;
+        padding-bottom:72px;
     }
 
-    .sidebar {
-        display: none;
+    .sidebar{
+        display:none;
     }
 
-    .main {
-        width: 100%;
-        margin-left: 0;
-        padding: 16px;
+    .main{
+        width:100%;
+        margin-left:0;
+        padding:16px;
     }
 
-    .hero-card {
-        padding: 28px 22px;
-        min-height: 330px;
+    .hero-card{
+        padding:28px 22px;
+        min-height:330px;
     }
 
-    .hero-card h1 {
-        font-size: 45px;
+    .hero-card h1{
+        font-size:45px;
     }
 
-    .section-head {
-        margin-top: 28px;
+    .section-head{
+        margin-top:28px;
     }
 
     .card-grid,
-    .video-grid {
-        grid-template-columns: 1fr;
+    .video-grid{
+        grid-template-columns:1fr;
     }
 
-    .mobile-nav {
-        position: fixed;
-        display: flex;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 68px;
-        background: rgba(5,5,11,.94);
-        backdrop-filter: blur(18px);
-        border-top: 1px solid rgba(255,255,255,.1);
-        z-index: 1000;
-        justify-content: space-around;
-        align-items: center;
+    .mobile-nav{
+        position:fixed;
+        display:flex;
+        bottom:0;
+        left:0;
+        width:100%;
+        height:68px;
+        background:rgba(5,5,11,.94);
+        backdrop-filter:blur(18px);
+        border-top:1px solid rgba(255,255,255,.1);
+        z-index:1000;
+        justify-content:space-around;
+        align-items:center;
     }
 
-    .mobile-nav button {
-        border: 0;
-        background: transparent;
-        color: #858599;
-        font-size: 11px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
+    .mobile-nav button{
+        border:0;
+        background:transparent;
+        color:#858599;
+        font-size:11px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:4px;
     }
 
-    .mobile-nav button.active {
-        color: #a47cff;
+    .mobile-nav button.active{
+        color:#a47cff;
     }
 
-    .mobile-nav span {
-        font-size: 21px;
+    .mobile-nav span{
+        font-size:21px;
     }
 
-    .stats {
-        gap: 18px;
+    .stats{
+        gap:18px;
     }
 }
 </style>
@@ -884,27 +868,38 @@ body::after {
 
     <div class="header-actions">
 
-        <button class="icon-button"
-            onclick="showPage('notifications')">
+        <button
+            class="icon-button"
+            onclick="showPage('notifications')"
+            title="Notifications"
+        >
             🔔
         </button>
 
-        <button class="icon-button"
-            onclick="showPage('messages')">
+        <button
+            class="icon-button"
+            onclick="showPage('messages')"
+            title="Messages"
+        >
             💬
         </button>
 
-        <button id="authButton"
+        <button
+            id="authButton"
             class="auth-button"
-            onclick="openAuth()">
+            onclick="handleAuthButton()"
+        >
             SIGN IN
         </button>
 
-        <div id="profileMini"
+        <button
+            id="profileMini"
             class="profile-mini"
-            onclick="openProfileOrAuth()">
+            onclick="openProfileOrAuth()"
+            title="Profile"
+        >
             T
-        </div>
+        </button>
 
     </div>
 
@@ -914,44 +909,37 @@ body::after {
 
 <aside class="sidebar">
 
-    <button class="nav-button active"
-        onclick="showPage('home', this)">
+    <button class="nav-button active" onclick="showPage('home',this)">
         <span class="nav-icon">🏠</span>
         Home
     </button>
 
-    <button class="nav-button"
-        onclick="showPage('watch', this)">
+    <button class="nav-button" onclick="showPage('watch',this)">
         <span class="nav-icon">▶️</span>
         Watch
     </button>
 
-    <button class="nav-button"
-        onclick="showPage('discover', this)">
+    <button class="nav-button" onclick="showPage('discover',this)">
         <span class="nav-icon">🌎</span>
         Discover
     </button>
 
-    <button class="nav-button"
-        onclick="showPage('create', this)">
+    <button class="nav-button" onclick="requireAuth('create')">
         <span class="nav-icon">➕</span>
         Create
     </button>
 
-    <button class="nav-button"
-        onclick="showPage('messages', this)">
+    <button class="nav-button" onclick="showPage('messages',this)">
         <span class="nav-icon">💬</span>
         Messages
     </button>
 
-    <button class="nav-button"
-        onclick="showPage('notifications', this)">
+    <button class="nav-button" onclick="showPage('notifications',this)">
         <span class="nav-icon">🔔</span>
         Notifications
     </button>
 
-    <button class="nav-button"
-        onclick="showPage('profile', this)">
+    <button class="nav-button" onclick="openProfileOrAuth()">
         <span class="nav-icon">👤</span>
         Profile
     </button>
@@ -972,19 +960,18 @@ body::after {
 
         <h1>
             Your Voice.<br>
-            <span class="gradient-text">
-                Your World.
-            </span>
+            <span class="gradient-text">Your World.</span>
         </h1>
 
         <p>
-            TikNation is being built as a new digital world
-            for creators, communities, entertainment,
-            discovery, and connection.
+            TikNation is being built as a new digital world for creators,
+            communities, entertainment, discovery, and connection.
         </p>
 
-        <button class="primary-button"
-            onclick="startCreating()">
+        <button
+            class="primary-button"
+            onclick="requireAuth('create')"
+        >
             START CREATING
         </button>
 
@@ -997,60 +984,36 @@ body::after {
 
     <div class="card-grid">
 
-        <div class="card"
-            onclick="showPage('watch')">
-
+        <div class="card" onclick="showPage('watch')">
             <div class="card-icon">▶️</div>
-
             <h3>Watch</h3>
-
             <p>
-                Discover videos, creators,
-                entertainment and stories.
+                Discover videos, creators, entertainment and stories.
             </p>
-
         </div>
 
-        <div class="card"
-            onclick="showPage('discover')">
-
+        <div class="card" onclick="showPage('discover')">
             <div class="card-icon">🌎</div>
-
             <h3>Discover</h3>
-
             <p>
-                Find creators, communities,
-                interests and new experiences.
+                Find creators, communities, interests and new experiences.
             </p>
-
         </div>
 
-        <div class="card"
-            onclick="startCreating()">
-
+        <div class="card" onclick="requireAuth('create')">
             <div class="card-icon">🎬</div>
-
             <h3>Create</h3>
-
             <p>
-                Enter Creator Studio and
-                start building your world.
+                Enter Creator Studio and start building your world.
             </p>
-
         </div>
 
-        <div class="card"
-            onclick="openProfileOrAuth()">
-
+        <div class="card" onclick="openProfileOrAuth()">
             <div class="card-icon">👤</div>
-
             <h3>Your Profile</h3>
-
             <p>
-                Build your identity and
-                creator presence on TikNation.
+                Build your identity and creator presence on TikNation.
             </p>
-
         </div>
 
     </div>
@@ -1062,58 +1025,36 @@ body::after {
 <section id="watch" class="page">
 
     <div class="section-head">
-        <h2>TikNation Watch</h2>
-        <span class="muted">Your next discovery</span>
+        <h2>Watch</h2>
+        <span class="muted">TikNation videos</span>
     </div>
 
-    <div class="video-grid">
+    <div id="watchGrid" class="video-grid">
 
         <div class="video-card">
-            <div class="video-preview">▶️</div>
+            <div class="video-preview">🎬</div>
 
             <div class="video-info">
-                <h3>The Beginning</h3>
+                <h3>TikNation Begins</h3>
 
                 <p>
-                    Welcome to the future of TikNation.
+                    The beginning of a new creator world.
                 </p>
 
                 <div class="video-actions">
-
-                    <button class="small-button"
-                        onclick="likeVideo(this)">
+                    <button
+                        class="small-button"
+                        onclick="likeVideo(this)"
+                    >
                         ❤️ Like
                     </button>
 
-                    <button class="small-button">
+                    <button
+                        class="small-button"
+                        onclick="showPage('messages')"
+                    >
                         💬 Comment
                     </button>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="video-card">
-            <div class="video-preview">✨</div>
-
-            <div class="video-info">
-                <h3>Create Your World</h3>
-
-                <p>
-                    Imagine something impossible.
-                </p>
-
-                <div class="video-actions">
-
-                    <button class="small-button"
-                        onclick="likeVideo(this)">
-                        ❤️ Like
-                    </button>
-
-                    <button class="small-button">
-                        💬 Comment
-                    </button>
-
                 </div>
             </div>
         </div>
@@ -1122,23 +1063,54 @@ body::after {
             <div class="video-preview">🌎</div>
 
             <div class="video-info">
-                <h3>Discover</h3>
+                <h3>Your World</h3>
 
                 <p>
-                    Something new is waiting.
+                    Build something that belongs to you.
                 </p>
 
                 <div class="video-actions">
-
-                    <button class="small-button"
-                        onclick="likeVideo(this)">
+                    <button
+                        class="small-button"
+                        onclick="likeVideo(this)"
+                    >
                         ❤️ Like
                     </button>
 
-                    <button class="small-button">
+                    <button
+                        class="small-button"
+                        onclick="showPage('messages')"
+                    >
                         💬 Comment
                     </button>
+                </div>
+            </div>
+        </div>
 
+        <div class="video-card">
+            <div class="video-preview">✨</div>
+
+            <div class="video-info">
+                <h3>The Future Is Yours</h3>
+
+                <p>
+                    Imagine it. Create it. Share it.
+                </p>
+
+                <div class="video-actions">
+                    <button
+                        class="small-button"
+                        onclick="likeVideo(this)"
+                    >
+                        ❤️ Like
+                    </button>
+
+                    <button
+                        class="small-button"
+                        onclick="showPage('messages')"
+                    >
+                        💬 Comment
+                    </button>
                 </div>
             </div>
         </div>
@@ -1153,7 +1125,7 @@ body::after {
 
     <div class="section-head">
         <h2>Discover</h2>
-        <span class="muted">Explore the world</span>
+        <span class="muted">Find your world</span>
     </div>
 
     <div class="card-grid">
@@ -1162,7 +1134,7 @@ body::after {
             <div class="card-icon">🎮</div>
             <h3>Gaming</h3>
             <p>
-                Games, players and gaming communities.
+                Games, gameplay, creators and communities.
             </p>
         </div>
 
@@ -1170,7 +1142,7 @@ body::after {
             <div class="card-icon">🎵</div>
             <h3>Music</h3>
             <p>
-                Discover artists, sounds and creators.
+                Discover artists, songs and musical worlds.
             </p>
         </div>
 
@@ -1178,7 +1150,7 @@ body::after {
             <div class="card-icon">🎨</div>
             <h3>Creative</h3>
             <p>
-                Art, imagination, design and ideas.
+                Art, filmmaking, imagination and creation.
             </p>
         </div>
 
@@ -1186,7 +1158,7 @@ body::after {
             <div class="card-icon">🎬</div>
             <h3>Entertainment</h3>
             <p>
-                Stories, shows, videos and experiences.
+                Stories, shows, movies and experiences.
             </p>
         </div>
 
@@ -1194,7 +1166,7 @@ body::after {
             <div class="card-icon">🚀</div>
             <h3>Future</h3>
             <p>
-                Technology and ideas shaping tomorrow.
+                Technology, ideas and what's coming next.
             </p>
         </div>
 
@@ -1217,81 +1189,142 @@ body::after {
     <div class="creator-panel">
 
         <div class="eyebrow">
-            TIKNATION CREATOR STUDIO
+            CREATOR STUDIO
         </div>
 
-        <h1>
-            Create Your World.
-        </h1>
+        <h1>Create Your World.</h1>
 
         <p>
-            Your ideas deserve a place to become real.
-            This is the beginning of your TikNation
-            creator workspace.
+            This is your creative workspace on TikNation.
+            Create content, upload media and build your presence.
         </p>
 
         <div class="creator-tools">
 
             <div class="tool">
-
                 <div class="tool-icon">🎬</div>
-
-                <h3>Create Video</h3>
-
+                <h3>Create Post</h3>
                 <p>
-                    Build and prepare your future videos.
+                    Create your first TikNation post.
                 </p>
-
-                <button class="primary-button"
-                    onclick="requireLogin('video')">
-                    CREATE
-                </button>
-
             </div>
 
             <div class="tool">
-
                 <div class="tool-icon">📤</div>
-
-                <h3>Publish</h3>
-
+                <h3>Upload Media</h3>
                 <p>
-                    Prepare content for publishing
-                    to TikNation.
+                    Upload images and videos to your creator library.
                 </p>
-
-                <button class="primary-button"
-                    onclick="requireLogin('publish')">
-                    PUBLISH
-                </button>
-
             </div>
 
             <div class="tool">
-
                 <div class="tool-icon">📊</div>
-
                 <h3>Analytics</h3>
-
                 <p>
-                    Your creator statistics
-                    will appear here.
+                    Creator analytics will connect to your content.
                 </p>
-
             </div>
 
             <div class="tool">
-
-                <div class="tool-icon">✨</div>
-
+                <div class="tool-icon">🌎</div>
                 <h3>Your World</h3>
-
                 <p>
-                    Build a unique identity around
-                    your creativity.
+                    Build your identity and creative presence.
                 </p>
+            </div>
+
+        </div>
+
+        <div class="create-panel">
+
+            <h2>Create a TikNation Post</h2>
+
+            <p
+                class="muted"
+                style="margin:8px 0 25px;"
+            >
+                Your first real creator workspace.
+            </p>
+
+            <div class="form-group">
+
+                <label for="postTitle">
+                    Title
+                </label>
+
+                <input
+                    id="postTitle"
+                    class="form-control"
+                    type="text"
+                    placeholder="Give your creation a title"
+                >
 
             </div>
+
+            <div class="form-group">
+
+                <label for="postDescription">
+                    Description
+                </label>
+
+                <textarea
+                    id="postDescription"
+                    class="form-control"
+                    placeholder="Tell the TikNation world about your creation..."
+                ></textarea>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>
+                    Media
+                </label>
+
+                <div class="file-box">
+
+                    <strong>
+                        📁 Choose an image or video
+                    </strong>
+
+                    <p
+                        class="muted"
+                        style="margin-top:8px;"
+                    >
+                        Your media will be uploaded to TikNation storage.
+                    </p>
+
+                    <input
+                        id="mediaFile"
+                        type="file"
+                        accept="image/*,video/*"
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="progress" id="uploadProgress">
+
+                <div
+                    class="progress-bar"
+                    id="progressBar"
+                ></div>
+
+            </div>
+
+            <button
+                class="primary-button"
+                onclick="publishCreation()"
+            >
+                🚀 PUBLISH CREATION
+            </button>
+
+            <div
+                id="creatorMessage"
+                class="auth-message"
+                style="margin-top:18px;"
+            ></div>
 
         </div>
 
@@ -1311,39 +1344,25 @@ body::after {
     <div class="message-box">
 
         <div class="message">
-
-            <div class="message-avatar">
-                K
-            </div>
+            <div class="message-avatar">T</div>
 
             <div class="message-content">
-
                 <strong>TikNation</strong>
-
                 <span>
-                    Welcome to your new world.
+                    Your messaging system is ready for the next phase.
                 </span>
-
             </div>
-
         </div>
 
         <div class="message">
-
-            <div class="message-avatar">
-                ✨
-            </div>
+            <div class="message-avatar">🌎</div>
 
             <div class="message-content">
-
-                <strong>Creator Community</strong>
-
+                <strong>Your World</strong>
                 <span>
-                    Your future conversations will appear here.
+                    Creator messaging will connect here.
                 </span>
-
             </div>
-
         </div>
 
     </div>
@@ -1361,40 +1380,14 @@ body::after {
 
     <div class="notification">
 
-        <div class="notification-icon">
-            ✨
-        </div>
+        <div class="notification-icon">✨</div>
 
         <div>
-
-            <strong>
-                Welcome to TikNation.
-            </strong>
+            <strong>Welcome to TikNation.</strong>
 
             <p class="muted">
-                Your creator journey begins here.
+                Your creator journey has begun.
             </p>
-
-        </div>
-
-    </div>
-
-    <div class="notification">
-
-        <div class="notification-icon">
-            🚀
-        </div>
-
-        <div>
-
-            <strong>
-                TikNation is growing.
-            </strong>
-
-            <p class="muted">
-                New platform features are being built.
-            </p>
-
         </div>
 
     </div>
@@ -1405,60 +1398,29 @@ body::after {
 
 <section id="profile" class="page">
 
-    <div class="profile-header">
+    <div id="profileContent">
 
-        <div id="profileAvatar"
-            class="profile-avatar">
-            T
-        </div>
+        <div class="profile-header">
 
-        <h1 id="profileName">
-            TikNation Creator
-        </h1>
-
-        <p id="profileBio">
-            Your future TikNation profile.
-            Your identity. Your creativity.
-            Your world.
-        </p>
-
-        <div class="stats">
-
-            <div class="stat">
-                <strong>0</strong>
-                <span>Followers</span>
+            <div class="profile-avatar">
+                T
             </div>
 
-            <div class="stat">
-                <strong>0</strong>
-                <span>Following</span>
-            </div>
+            <h1>TikNation Creator</h1>
 
-            <div class="stat">
-                <strong>0</strong>
-                <span>Creations</span>
-            </div>
+            <p>
+                Sign in to access your creator profile.
+            </p>
 
-        </div>
-
-        <div id="accountActions"
-            class="account-actions">
-
-            <button class="secondary-button"
-                onclick="openAuth()">
+            <button
+                class="primary-button"
+                onclick="openAuthModal('signin')"
+            >
                 SIGN IN
             </button>
 
         </div>
 
-    </div>
-
-    <div class="section-head">
-        <h2>Your Creations</h2>
-    </div>
-
-    <div class="search-empty">
-        Your future creations will appear here.
     </div>
 
 </section>
@@ -1468,17 +1430,14 @@ body::after {
 <section id="searchPage" class="page">
 
     <div class="section-head">
-        <h2>Search TikNation</h2>
+        <h2>Search</h2>
+        <span class="muted">TikNation discovery</span>
     </div>
 
-    <div id="searchResults"
-        class="search-results">
-
-        <div class="search-empty">
-            Enter something in the search bar above.
-        </div>
-
-    </div>
+    <div
+        id="searchResults"
+        class="search-results"
+    ></div>
 
 </section>
 
@@ -1490,23 +1449,25 @@ body::after {
 
 <nav class="mobile-nav">
 
-    <button class="active"
-        onclick="showPage('home', this)">
+    <button
+        class="active"
+        onclick="showPage('home',this)"
+    >
         <span>🏠</span>
         Home
     </button>
 
-    <button onclick="showPage('watch', this)">
+    <button onclick="showPage('watch',this)">
         <span>▶️</span>
         Watch
     </button>
 
-    <button onclick="showPage('create', this)">
+    <button onclick="requireAuth('create')">
         <span>➕</span>
         Create
     </button>
 
-    <button onclick="showPage('discover', this)">
+    <button onclick="showPage('discover',this)">
         <span>🌎</span>
         Discover
     </button>
@@ -1520,40 +1481,56 @@ body::after {
 
 <!-- AUTH MODAL -->
 
-<div id="authOverlay"
-    class="auth-overlay"
-    onclick="closeAuthIfBackground(event)">
+<div
+    id="authModal"
+    class="modal"
+>
 
-    <div class="auth-modal">
+    <div class="modal-card">
 
-        <button class="auth-close"
-            onclick="closeAuth()">
-            ×
-        </button>
+        <div class="modal-top">
 
-        <div class="eyebrow">
-            TIKNATION ACCOUNT
+            <h2 id="authTitle">
+                Sign In
+            </h2>
+
+            <button
+                class="close-button"
+                onclick="closeAuthModal()"
+            >
+                ✕
+            </button>
+
         </div>
 
-        <h2 id="authTitle">
-            Sign In
-        </h2>
+        <div class="auth-tabs">
 
-        <p id="authSubtitle"
-            class="auth-subtitle">
-            Enter your account and return to your world.
-        </p>
+            <button
+                id="signinTab"
+                class="auth-tab active"
+                onclick="switchAuthMode('signin')"
+            >
+                SIGN IN
+            </button>
 
-        <div id="authMessage"
-            class="auth-message">
+            <button
+                id="signupTab"
+                class="auth-tab"
+                onclick="switchAuthMode('signup')"
+            >
+                CREATE ACCOUNT
+            </button>
+
         </div>
 
-        <form id="authForm"
-            class="auth-form"
-            onsubmit="handleAuthSubmit(event)">
+        <div
+            id="authMessage"
+            class="auth-message"
+        ></div>
 
-            <div id="usernameGroup"
-                style="display:none;">
+        <div id="signupFields">
+
+            <div class="form-group">
 
                 <label for="authUsername">
                     Username
@@ -1561,66 +1538,52 @@ body::after {
 
                 <input
                     id="authUsername"
+                    class="form-control"
                     type="text"
-                    maxlength="30"
                     placeholder="Choose a username"
                 >
 
             </div>
 
-            <div>
+        </div>
 
-                <label for="authEmail">
-                    Email
-                </label>
+        <div class="form-group">
 
-                <input
-                    id="authEmail"
-                    type="email"
-                    autocomplete="email"
-                    required
-                    placeholder="you@example.com"
-                >
+            <label for="authEmail">
+                Email
+            </label>
 
-            </div>
-
-            <div>
-
-                <label for="authPassword">
-                    Password
-                </label>
-
-                <input
-                    id="authPassword"
-                    type="password"
-                    autocomplete="current-password"
-                    required
-                    minlength="6"
-                    placeholder="Your password"
-                >
-
-            </div>
-
-            <button id="authSubmit"
-                class="auth-submit"
-                type="submit">
-                SIGN IN
-            </button>
-
-        </form>
-
-        <div class="auth-switch">
-
-            <span id="authSwitchText">
-                Don't have an account?
-            </span>
-
-            <button id="authSwitchButton"
-                onclick="toggleAuthMode()">
-                CREATE ACCOUNT
-            </button>
+            <input
+                id="authEmail"
+                class="form-control"
+                type="email"
+                placeholder="you@example.com"
+            >
 
         </div>
+
+        <div class="form-group">
+
+            <label for="authPassword">
+                Password
+            </label>
+
+            <input
+                id="authPassword"
+                class="form-control"
+                type="password"
+                placeholder="Your password"
+            >
+
+        </div>
+
+        <button
+            id="authSubmit"
+            class="primary-button auth-submit"
+            onclick="submitAuth()"
+        >
+            SIGN IN
+        </button>
 
     </div>
 
@@ -1628,9 +1591,9 @@ body::after {
 
 <script>
 
-/* =========================================================
-   TIKNATION SUPABASE CONFIGURATION
-   ========================================================= */
+/* =========================
+   SUPABASE
+========================= */
 
 const SUPABASE_URL =
     "https://mekzfezaefcimxncklfj.supabase.co";
@@ -1644,241 +1607,166 @@ const supabaseClient =
         SUPABASE_PUBLISHABLE_KEY
     );
 
-/* =========================================================
-   APP STATE
-   ========================================================= */
-
 let currentUser = null;
 let currentProfile = null;
 let authMode = "signin";
 
-/* =========================================================
+/* =========================
    PAGE NAVIGATION
-   ========================================================= */
+========================= */
 
-function showPage(pageId, button) {
+function showPage(pageId, button){
 
-    const pages =
-        document.querySelectorAll(".page");
-
-    pages.forEach(function(page) {
-        page.classList.remove("active");
-    });
+    document.querySelectorAll(".page")
+        .forEach(function(page){
+            page.classList.remove("active");
+        });
 
     const target =
         document.getElementById(pageId);
 
-    if (target) {
+    if(target){
         target.classList.add("active");
     }
 
-    const navButtons =
-        document.querySelectorAll(
-            ".nav-button, .mobile-nav button"
-        );
-
-    navButtons.forEach(function(btn) {
+    document.querySelectorAll(
+        ".nav-button,.mobile-nav button"
+    ).forEach(function(btn){
         btn.classList.remove("active");
     });
 
-    if (button) {
+    if(button){
         button.classList.add("active");
     }
 
     window.scrollTo({
-        top: 0,
-        behavior: "smooth"
+        top:0,
+        behavior:"smooth"
     });
+
+    if(pageId === "profile"){
+        loadProfilePage();
+    }
 }
 
-/* =========================================================
+/* =========================
    AUTH MODAL
-   ========================================================= */
+========================= */
 
-function openAuth(mode) {
+function openAuthModal(mode){
 
-    if (currentUser) {
-        showPage("profile");
+    authMode = mode || "signin";
 
-        closeAuth();
-
-        return;
-    }
-
-    if (mode === "signup") {
-        authMode = "signup";
-    } else {
-        authMode = "signin";
-    }
-
-    updateAuthModal();
+    switchAuthMode(authMode);
 
     document
-        .getElementById("authOverlay")
+        .getElementById("authModal")
         .classList.add("active");
 
-    setTimeout(function() {
+    setTimeout(function(){
 
         const email =
             document.getElementById("authEmail");
 
-        if (email) {
+        if(email){
             email.focus();
         }
 
-    }, 100);
+    },100);
 }
 
-function closeAuth() {
+function closeAuthModal(){
 
     document
-        .getElementById("authOverlay")
+        .getElementById("authModal")
         .classList.remove("active");
 
-    clearAuthMessage();
+    document.getElementById(
+        "authMessage"
+    ).textContent = "";
 }
 
-function closeAuthIfBackground(event) {
+function switchAuthMode(mode){
 
-    if (event.target.id === "authOverlay") {
-        closeAuth();
-    }
-}
-
-function toggleAuthMode() {
-
-    if (authMode === "signin") {
-        authMode = "signup";
-    } else {
-        authMode = "signin";
-    }
-
-    updateAuthModal();
-    clearAuthMessage();
-}
-
-function updateAuthModal() {
+    authMode = mode;
 
     const title =
         document.getElementById("authTitle");
 
-    const subtitle =
-        document.getElementById("authSubtitle");
-
     const submit =
         document.getElementById("authSubmit");
 
-    const switchText =
-        document.getElementById("authSwitchText");
+    const signinTab =
+        document.getElementById("signinTab");
 
-    const switchButton =
-        document.getElementById("authSwitchButton");
+    const signupTab =
+        document.getElementById("signupTab");
 
-    const usernameGroup =
-        document.getElementById("usernameGroup");
+    const signupFields =
+        document.getElementById("signupFields");
 
-    const username =
-        document.getElementById("authUsername");
+    const message =
+        document.getElementById("authMessage");
 
-    if (authMode === "signup") {
+    message.textContent = "";
+    message.className = "auth-message";
+
+    if(mode === "signup"){
 
         title.textContent =
             "Create Your Account";
 
-        subtitle.textContent =
-            "Create your TikNation identity and enter your world.";
-
         submit.textContent =
             "CREATE ACCOUNT";
 
-        switchText.textContent =
-            "Already have an account?";
+        signinTab.classList.remove("active");
+        signupTab.classList.add("active");
 
-        switchButton.textContent =
-            "SIGN IN";
-
-        usernameGroup.style.display =
+        signupFields.style.display =
             "block";
 
-        username.required = true;
-
-    } else {
+    }else{
 
         title.textContent =
             "Sign In";
 
-        subtitle.textContent =
-            "Enter your account and return to your world.";
-
         submit.textContent =
             "SIGN IN";
 
-        switchText.textContent =
-            "Don't have an account?";
+        signinTab.classList.add("active");
+        signupTab.classList.remove("active");
 
-        switchButton.textContent =
-            "CREATE ACCOUNT";
-
-        usernameGroup.style.display =
+        signupFields.style.display =
             "none";
-
-        username.required = false;
-
     }
 }
 
-/* =========================================================
-   AUTH MESSAGES
-   ========================================================= */
+async function submitAuth(){
 
-function showAuthMessage(message, type) {
-
-    const box =
+    const message =
         document.getElementById("authMessage");
-
-    box.textContent = message;
-
-    box.className =
-        "auth-message show " +
-        (type || "");
-
-}
-
-function clearAuthMessage() {
-
-    const box =
-        document.getElementById("authMessage");
-
-    box.textContent = "";
-
-    box.className =
-        "auth-message";
-
-}
-
-/* =========================================================
-   SIGN UP / SIGN IN
-   ========================================================= */
-
-async function handleAuthSubmit(event) {
-
-    event.preventDefault();
-
-    clearAuthMessage();
 
     const email =
         document.getElementById("authEmail")
-        .value
-        .trim();
+            .value.trim();
 
     const password =
         document.getElementById("authPassword")
-        .value;
+            .value;
 
-    const username =
-        document.getElementById("authUsername")
-        .value
-        .trim();
+    message.className =
+        "auth-message";
+
+    if(!email || !password){
+
+        message.className =
+            "auth-message error";
+
+        message.textContent =
+            "Please enter your email and password.";
+
+        return;
+    }
 
     const submit =
         document.getElementById("authSubmit");
@@ -1890,11 +1778,16 @@ async function handleAuthSubmit(event) {
             ? "CREATING..."
             : "SIGNING IN...";
 
-    try {
+    try{
 
-        if (authMode === "signup") {
+        if(authMode === "signup"){
 
-            if (!username) {
+            const username =
+                document.getElementById("authUsername")
+                    .value.trim();
+
+            if(!username){
+
                 throw new Error(
                     "Please choose a username."
                 );
@@ -1906,98 +1799,77 @@ async function handleAuthSubmit(event) {
             } =
                 await supabaseClient.auth.signUp({
 
-                    email: email,
+                    email:email,
 
-                    password: password,
+                    password:password,
 
-                    options: {
-                        data: {
-                            username: username,
-                            display_name: username
+                    options:{
+                        data:{
+                            username:username,
+                            display_name:username
                         }
                     }
 
                 });
 
-            if (error) {
+            if(error){
                 throw error;
             }
 
-            if (data.user && data.session) {
+            if(data.session){
 
-                currentUser =
-                    data.user;
+                message.className =
+                    "auth-message success";
 
-                await ensureProfile(
-                    data.user,
-                    username
-                );
+                message.textContent =
+                    "Account created. Welcome to TikNation!";
 
-                closeAuth();
+                closeAuthModal();
 
-                updateAuthUI();
+            }else{
 
-                showPage("profile");
+                message.className =
+                    "auth-message success";
 
-            } else {
-
-                showAuthMessage(
-                    "Account created. Check your email and confirm your account before signing in.",
-                    "success"
-                );
-
-                document
-                    .getElementById("authForm")
-                    .reset();
-
+                message.textContent =
+                    "Account created! Check your email to confirm your account, then sign in.";
             }
 
-        } else {
+        }else{
 
             const {
                 data,
                 error
             } =
-                await supabaseClient.auth.signInWithPassword({
+                await supabaseClient.auth
+                    .signInWithPassword({
 
-                    email: email,
+                        email:email,
+                        password:password
 
-                    password: password
+                    });
 
-                });
-
-            if (error) {
+            if(error){
                 throw error;
             }
 
-            currentUser =
-                data.user;
+            closeAuthModal();
 
-            await ensureProfile(
-                data.user
-            );
-
-            closeAuth();
-
-            updateAuthUI();
-
-            showPage("profile");
-
+            if(data.session){
+                showPage("home");
+            }
         }
 
-    } catch (error) {
+    }catch(error){
 
-        console.error(
-            "TikNation authentication error:",
-            error
-        );
+        message.className =
+            "auth-message error";
 
-        showAuthMessage(
-            getFriendlyAuthError(error),
-            "error"
-        );
+        message.textContent =
+            error.message ||
+            "Something went wrong.";
 
-    } finally {
+    }finally{
 
         submit.disabled = false;
 
@@ -2005,153 +1877,98 @@ async function handleAuthSubmit(event) {
             authMode === "signup"
                 ? "CREATE ACCOUNT"
                 : "SIGN IN";
+    }
+}
+
+/* =========================
+   AUTH UI
+========================= */
+
+function handleAuthButton(){
+
+    if(currentUser){
+
+        signOutUser();
+
+    }else{
+
+        openAuthModal("signin");
 
     }
 }
 
-/* =========================================================
-   FRIENDLY AUTH ERRORS
-   ========================================================= */
+function openProfileOrAuth(){
 
-function getFriendlyAuthError(error) {
+    if(currentUser){
 
-    const message =
-        error && error.message
-            ? error.message
-            : "Something went wrong.";
+        showPage("profile");
 
-    if (
-        message.toLowerCase()
-            .includes("invalid login credentials")
-    ) {
-        return "The email or password is incorrect.";
+    }else{
+
+        openAuthModal("signin");
+
     }
-
-    if (
-        message.toLowerCase()
-            .includes("user already registered")
-    ) {
-        return "An account with this email already exists. Try signing in.";
-    }
-
-    if (
-        message.toLowerCase()
-            .includes("password should be at least")
-    ) {
-        return "Your password needs to be at least 6 characters.";
-    }
-
-    if (
-        message.toLowerCase()
-            .includes("email not confirmed")
-    ) {
-        return "Please confirm your email address before signing in.";
-    }
-
-    return message;
 }
 
-/* =========================================================
+function requireAuth(pageId){
+
+    if(!currentUser){
+
+        openAuthModal("signin");
+        return;
+    }
+
+    showPage(pageId);
+}
+
+function updateAuthUI(){
+
+    const authButton =
+        document.getElementById("authButton");
+
+    const profileMini =
+        document.getElementById("profileMini");
+
+    if(currentUser){
+
+        authButton.textContent =
+            "SIGN OUT";
+
+        profileMini.textContent =
+            getInitial(
+                currentProfile?.display_name ||
+                currentProfile?.username ||
+                currentUser.email
+            );
+
+    }else{
+
+        authButton.textContent =
+            "SIGN IN";
+
+        profileMini.textContent =
+            "T";
+    }
+}
+
+function getInitial(value){
+
+    if(!value){
+        return "T";
+    }
+
+    return value
+        .charAt(0)
+        .toUpperCase();
+}
+
+/* =========================
    PROFILE
-   ========================================================= */
+========================= */
 
-async function ensureProfile(user, signupUsername) {
+async function ensureProfile(user){
 
-    if (!user) {
-        return null;
-    }
-
-    const {
-        data: existingProfile,
-        error: readError
-    } =
-        await supabaseClient
-            .from("profiles")
-            .select("*")
-            .eq("id", user.id)
-            .maybeSingle();
-
-    if (readError) {
-        console.error(
-            "Profile lookup error:",
-            readError
-        );
-
-        return null;
-    }
-
-    if (existingProfile) {
-
-        currentProfile =
-            existingProfile;
-
-        renderProfile(
-            existingProfile
-        );
-
-        return existingProfile;
-    }
-
-    const metadata =
-        user.user_metadata || {};
-
-    const username =
-        signupUsername ||
-        metadata.username ||
-        "creator";
-
-    const displayName =
-        metadata.display_name ||
-        username;
-
-    const {
-        data: newProfile,
-        error: insertError
-    } =
-        await supabaseClient
-            .from("profiles")
-            .insert({
-
-                id: user.id,
-
-                username: username,
-
-                display_name: displayName,
-
-                bio:
-                    "Creating my world on TikNation."
-
-            })
-            .select()
-            .single();
-
-    if (insertError) {
-
-        console.error(
-            "Profile creation error:",
-            insertError
-        );
-
-        return null;
-    }
-
-    currentProfile =
-        newProfile;
-
-    renderProfile(
-        newProfile
-    );
-
-    return newProfile;
-}
-
-/* =========================================================
-   LOAD PROFILE
-   ========================================================= */
-
-async function loadProfile() {
-
-    if (!currentUser) {
+    if(!user){
         return;
     }
 
@@ -2161,152 +1978,244 @@ async function loadProfile() {
     } =
         await supabaseClient
             .from("profiles")
-            .select("*")
-            .eq("id", currentUser.id)
+            .select(
+                "id,username,display_name,bio,avatar_url"
+            )
+            .eq("id",user.id)
             .maybeSingle();
 
-    if (error) {
+    if(error){
+        console.error(
+            "Profile lookup error:",
+            error
+        );
+        return;
+    }
+
+    if(data){
+
+        currentProfile = data;
+
+        updateAuthUI();
+
+        return;
+    }
+
+    const username =
+        user.user_metadata?.username ||
+        "TikNationCreator";
+
+    const displayName =
+        user.user_metadata?.display_name ||
+        username;
+
+    const {
+        data:created,
+        error:createError
+    } =
+        await supabaseClient
+            .from("profiles")
+            .insert({
+
+                id:user.id,
+
+                username:username,
+
+                display_name:displayName,
+
+                bio:"Creating my world on TikNation."
+
+            })
+            .select()
+            .single();
+
+    if(createError){
 
         console.error(
-            "Profile load error:",
-            error
+            "Profile creation error:",
+            createError
         );
 
         return;
     }
 
-    if (data) {
+    currentProfile = created;
 
-        currentProfile =
-            data;
-
-        renderProfile(data);
-
-    }
+    updateAuthUI();
 }
 
-/* =========================================================
-   RENDER PROFILE
-   ========================================================= */
-
-function renderProfile(profile) {
-
-    if (!profile) {
-        return;
-    }
-
-    const name =
-        profile.display_name ||
-        profile.username ||
-        "TikNation Creator";
-
-    const username =
-        profile.username ||
-        "creator";
-
-    const avatar =
-        name
-            .charAt(0)
-            .toUpperCase();
-
-    const profileName =
-        document.getElementById("profileName");
-
-    const profileBio =
-        document.getElementById("profileBio");
-
-    const profileAvatar =
-        document.getElementById("profileAvatar");
-
-    const profileMini =
-        document.getElementById("profileMini");
-
-    if (profileName) {
-        profileName.textContent =
-            name;
-    }
-
-    if (profileBio) {
-        profileBio.textContent =
-            profile.bio ||
-            "Your TikNation world.";
-    }
-
-    if (profileAvatar) {
-        profileAvatar.textContent =
-            avatar;
-    }
-
-    if (profileMini) {
-        profileMini.textContent =
-            avatar;
-
-        profileMini.title =
-            "@" + username;
-    }
-
-    renderAccountActions(
-        name,
-        username
-    );
-}
-
-/* =========================================================
-   ACCOUNT ACTIONS
-   ========================================================= */
-
-function renderAccountActions(
-    name,
-    username
-) {
+async function loadProfilePage(){
 
     const container =
         document.getElementById(
-            "accountActions"
+            "profileContent"
         );
 
-    if (!container) {
-        return;
-    }
-
-    if (!currentUser) {
+    if(!currentUser){
 
         container.innerHTML = `
-            <button
-                class="secondary-button"
-                onclick="openAuth()">
-                SIGN IN
-            </button>
+
+            <div class="profile-header">
+
+                <div class="profile-avatar">
+                    T
+                </div>
+
+                <h1>TikNation Creator</h1>
+
+                <p>
+                    Sign in to access your creator profile.
+                </p>
+
+                <button
+                    class="primary-button"
+                    onclick="openAuthModal('signin')"
+                >
+                    SIGN IN
+                </button>
+
+            </div>
+
         `;
 
         return;
     }
 
+    if(!currentProfile){
+
+        await ensureProfile(currentUser);
+    }
+
+    const profile =
+        currentProfile || {};
+
+    const username =
+        profile.username ||
+        currentUser.user_metadata?.username ||
+        "TikNationCreator";
+
+    const displayName =
+        profile.display_name ||
+        username;
+
+    const email =
+        currentUser.email || "";
+
     container.innerHTML = `
-        <button
-            class="secondary-button"
-            onclick="logout()">
-            LOG OUT
-        </button>
+
+        <div class="profile-header">
+
+            <div class="profile-avatar">
+                ${escapeHtml(
+                    getInitial(displayName)
+                )}
+            </div>
+
+            <h1>
+                ${escapeHtml(displayName)}
+            </h1>
+
+            <p>
+                @${escapeHtml(username)}
+            </p>
+
+            <p style="margin-top:12px;">
+                ${
+                    escapeHtml(
+                        profile.bio ||
+                        "Creating my world on TikNation."
+                    )
+                }
+            </p>
+
+            <div class="stats">
+
+                <div class="stat">
+                    <strong>0</strong>
+                    <span>Followers</span>
+                </div>
+
+                <div class="stat">
+                    <strong>0</strong>
+                    <span>Following</span>
+                </div>
+
+                <div class="stat">
+                    <strong>0</strong>
+                    <span>Creations</span>
+                </div>
+
+            </div>
+
+            <p style="margin-top:22px;">
+                You're signed in.<br>
+                ${escapeHtml(email)}
+            </p>
+
+            <button
+                class="primary-button"
+                onclick="signOutUser()"
+            >
+                SIGN OUT
+            </button>
+
+        </div>
+
+        <div class="section-head">
+            <h2>Your Creations</h2>
+            <span class="muted">
+                Creator Studio
+            </span>
+        </div>
+
+        <div
+            id="profileCreations"
+            class="card-grid"
+        >
+
+            <div class="card">
+
+                <div class="card-icon">
+                    🎬
+                </div>
+
+                <h3>
+                    No creations yet
+                </h3>
+
+                <p>
+                    Your published creations will appear here.
+                </p>
+
+                <button
+                    class="primary-button"
+                    onclick="showPage('create')"
+                >
+                    CREATE
+                </button>
+
+            </div>
+
+        </div>
     `;
 }
 
-/* =========================================================
-   LOGOUT
-   ========================================================= */
+/* =========================
+   SIGN OUT
+========================= */
 
-async function logout() {
+async function signOutUser(){
 
     const {
         error
     } =
         await supabaseClient.auth.signOut();
 
-    if (error) {
+    if(error){
 
-        console.error(
-            "Logout error:",
-            error
+        alert(
+            error.message ||
+            "Unable to sign out."
         );
 
         return;
@@ -2317,154 +2226,242 @@ async function logout() {
 
     updateAuthUI();
 
-    resetProfileUI();
-
     showPage("home");
-
 }
 
-/* =========================================================
-   AUTH UI
-   ========================================================= */
+/* =========================
+   AUTH STATE
+========================= */
 
-function updateAuthUI() {
+supabaseClient.auth.onAuthStateChange(
+    function(event,session){
 
-    const authButton =
-        document.getElementById(
-            "authButton"
-        );
+        currentUser =
+            session?.user || null;
 
-    const profileMini =
-        document.getElementById(
-            "profileMini"
-        );
+        updateAuthUI();
 
-    if (currentUser) {
+        if(currentUser){
 
-        authButton.textContent =
-            "ACCOUNT";
+            setTimeout(function(){
 
-        profileMini.style.display =
-            "flex";
+                ensureProfile(
+                    currentUser
+                );
 
-        renderAccountActions(
-            currentProfile
-                ? currentProfile.display_name
-                : "Creator",
-            currentProfile
-                ? currentProfile.username
-                : "creator"
-        );
+            },0);
 
-    } else {
+        }else{
 
-        authButton.textContent =
-            "SIGN IN";
-
-        profileMini.textContent =
-            "T";
-
-        profileMini.style.display =
-            "flex";
-
-        renderAccountActions();
+            currentProfile = null;
+        }
 
     }
-}
+);
 
-/* =========================================================
-   RESET PROFILE
-   ========================================================= */
+async function loadSession(){
 
-function resetProfileUI() {
+    const {
+        data
+    } =
+        await supabaseClient.auth
+            .getSession();
 
-    document.getElementById(
-        "profileName"
-    ).textContent =
-        "TikNation Creator";
+    currentUser =
+        data.session?.user || null;
 
-    document.getElementById(
-        "profileBio"
-    ).textContent =
-        "Your future TikNation profile. Your identity. Your creativity. Your world.";
+    if(currentUser){
 
-    document.getElementById(
-        "profileAvatar"
-    ).textContent =
-        "T";
-
-}
-
-/* =========================================================
-   PROFILE / AUTH ROUTING
-   ========================================================= */
-
-function openProfileOrAuth() {
-
-    if (currentUser) {
-
-        showPage("profile");
-
-    } else {
-
-        openAuth();
-
+        await ensureProfile(
+            currentUser
+        );
     }
+
+    updateAuthUI();
 }
 
-function startCreating() {
+/* =========================
+   CREATOR MEDIA
+========================= */
 
-    if (currentUser) {
+async function publishCreation(){
 
-        showPage("create");
+    if(!currentUser){
 
-    } else {
-
-        openAuth("signup");
-
-    }
-}
-
-function requireLogin(action) {
-
-    if (!currentUser) {
-
-        openAuth();
+        openAuthModal("signin");
 
         return;
-
     }
 
-    if (action === "video") {
+    const title =
+        document.getElementById(
+            "postTitle"
+        ).value.trim();
 
-        showAuthMessage(
-            "You're signed in. The video creation system is the next backend feature.",
-            "success"
+    const description =
+        document.getElementById(
+            "postDescription"
+        ).value.trim();
+
+    const fileInput =
+        document.getElementById(
+            "mediaFile"
         );
 
-        openAuth();
+    const file =
+        fileInput.files[0];
 
+    const message =
+        document.getElementById(
+            "creatorMessage"
+        );
+
+    if(!title){
+
+        message.className =
+            "auth-message error";
+
+        message.textContent =
+            "Give your creation a title.";
+
+        return;
     }
 
-    if (action === "publish") {
+    if(!file){
 
-        showAuthMessage(
-            "You're signed in. Publishing will be connected when the TikNation video storage system is added.",
-            "success"
+        message.className =
+            "auth-message error";
+
+        message.textContent =
+            "Choose an image or video first.";
+
+        return;
+    }
+
+    const progress =
+        document.getElementById(
+            "uploadProgress"
         );
 
-        openAuth();
+    const progressBar =
+        document.getElementById(
+            "progressBar"
+        );
 
+    progress.style.display =
+        "block";
+
+    progressBar.style.width =
+        "10%";
+
+    message.className =
+        "auth-message";
+
+    message.textContent =
+        "Uploading your creation...";
+
+    try{
+
+        const safeName =
+            file.name
+                .replace(
+                    /[^a-zA-Z0-9._-]/g,
+                    "_"
+                );
+
+        const path =
+            currentUser.id +
+            "/" +
+            Date.now() +
+            "-" +
+            safeName;
+
+        const {
+            error
+        } =
+            await supabaseClient.storage
+                .from("creator-media")
+                .upload(
+                    path,
+                    file,
+                    {
+                        cacheControl:"3600",
+                        upsert:false
+                    }
+                );
+
+        if(error){
+            throw error;
+        }
+
+        progressBar.style.width =
+            "75%";
+
+        const {
+            data
+        } =
+            supabaseClient.storage
+                .from("creator-media")
+                .getPublicUrl(path);
+
+        progressBar.style.width =
+            "100%";
+
+        message.className =
+            "auth-message success";
+
+        message.textContent =
+            "Media uploaded successfully!";
+
+        console.log(
+            "Uploaded media URL:",
+            data.publicUrl
+        );
+
+        document.getElementById(
+            "postTitle"
+        ).value = "";
+
+        document.getElementById(
+            "postDescription"
+        ).value = "";
+
+        fileInput.value = "";
+
+        setTimeout(function(){
+
+            progress.style.display =
+                "none";
+
+            progressBar.style.width =
+                "0%";
+
+        },1200);
+
+    }catch(error){
+
+        progress.style.display =
+            "none";
+
+        progressBar.style.width =
+            "0%";
+
+        message.className =
+            "auth-message error";
+
+        message.textContent =
+            error.message ||
+            "Upload failed.";
     }
 }
 
-/* =========================================================
+/* =========================
    SEARCH
-   ========================================================= */
+========================= */
 
-function handleSearch(event) {
+function handleSearch(event){
 
-    if (event.key !== "Enter") {
+    if(event.key !== "Enter"){
         return;
     }
 
@@ -2476,7 +2473,7 @@ function handleSearch(event) {
     const query =
         input.value.trim();
 
-    if (!query) {
+    if(!query){
         return;
     }
 
@@ -2488,6 +2485,7 @@ function handleSearch(event) {
         );
 
     results.innerHTML = `
+
         <div class="card-grid">
 
             <div class="card">
@@ -2544,14 +2542,15 @@ function handleSearch(event) {
             </div>
 
         </div>
+
     `;
 }
 
-/* =========================================================
+/* =========================
    SECURITY
-   ========================================================= */
+========================= */
 
-function escapeHtml(text) {
+function escapeHtml(text){
 
     const div =
         document.createElement("div");
@@ -2562,13 +2561,16 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-/* =========================================================
+/* =========================
    LIKE
-   ========================================================= */
+========================= */
 
-function likeVideo(button) {
+function likeVideo(button){
 
-    if (button.dataset.liked === "true") {
+    if(
+        button.dataset.liked ===
+        "true"
+    ){
 
         button.dataset.liked =
             "false";
@@ -2576,79 +2578,21 @@ function likeVideo(button) {
         button.innerHTML =
             "❤️ Like";
 
-    } else {
+    }else{
 
         button.dataset.liked =
             "true";
 
         button.innerHTML =
             "❤️ Liked";
-
     }
 }
 
-/* =========================================================
-   INITIALIZE TIKNATION
-   ========================================================= */
+/* =========================
+   STARTUP
+========================= */
 
-async function initializeTikNation() {
-
-    const {
-        data
-    } =
-        await supabaseClient.auth.getSession();
-
-    currentUser =
-        data.session
-            ? data.session.user
-            : null;
-
-    updateAuthUI();
-
-    if (currentUser) {
-
-        await ensureProfile(
-            currentUser
-        );
-
-        await loadProfile();
-
-    }
-
-    supabaseClient.auth.onAuthStateChange(
-        async function(event, session) {
-
-            currentUser =
-                session
-                    ? session.user
-                    : null;
-
-            updateAuthUI();
-
-            if (currentUser) {
-
-                await ensureProfile(
-                    currentUser
-                );
-
-                await loadProfile();
-
-            } else {
-
-                currentProfile = null;
-
-                resetProfileUI();
-
-            }
-
-        }
-    );
-
-}
-
-/* START */
-
-initializeTikNation();
+loadSession();
 
 </script>
 
