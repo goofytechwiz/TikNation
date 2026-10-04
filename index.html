@@ -1,8 +1,12 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>TikNation — Your Voice. Your World.</title><style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>TikNation — Your Voice. Your World.</title>
+
+<style>
 * {
     box-sizing: border-box;
     margin: 0;
@@ -19,8 +23,6 @@ body {
     color: white;
     overflow-x: hidden;
 }
-
-/* BACKGROUND */
 
 body::before {
     content: "";
@@ -52,8 +54,6 @@ body::after {
     to { transform: translateY(-90px); }
 }
 
-/* HEADER */
-
 header {
     position: fixed;
     top: 0;
@@ -84,14 +84,7 @@ nav a {
     text-decoration: none;
     margin-left: 18px;
     font-size: 13px;
-    transition: .3s;
 }
-
-nav a:hover {
-    color: #9c7cff;
-}
-
-/* HERO */
 
 .hero {
     min-height: 100vh;
@@ -160,8 +153,6 @@ nav a:hover {
     font-size: 16px;
 }
 
-/* BUTTON */
-
 .button {
     display: inline-block;
     margin-top: 32px;
@@ -183,8 +174,6 @@ nav a:hover {
     box-shadow: 0 0 40px rgba(139,92,255,.6);
 }
 
-/* SECTIONS */
-
 section {
     padding: 100px 7%;
     text-align: center;
@@ -204,8 +193,6 @@ section > p {
     font-size: 18px;
 }
 
-/* WORLD */
-
 .world {
     min-height: 80vh;
     background:
@@ -221,8 +208,6 @@ section > p {
     font-weight: bold;
     margin-bottom: 18px;
 }
-
-/* PLATFORM */
 
 .platform {
     max-width: 1100px;
@@ -272,8 +257,6 @@ section > p {
     font-size: 14px;
 }
 
-/* ABOUT */
-
 .about {
     min-height: 60vh;
     display: flex;
@@ -282,7 +265,26 @@ section > p {
     align-items: center;
 }
 
-/* CREATE */
+.watch {
+    background:
+        radial-gradient(circle at center,
+        rgba(0,150,255,.08),
+        transparent 65%);
+}
+
+.discover {
+    background:
+        radial-gradient(circle at center,
+        rgba(170,0,255,.08),
+        transparent 65%);
+}
+
+.connect {
+    background:
+        radial-gradient(circle at center,
+        rgba(0,220,255,.07),
+        transparent 65%);
+}
 
 .create {
     min-height: 80vh;
@@ -290,7 +292,6 @@ section > p {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     background:
         radial-gradient(circle at center,
         rgba(120,40,255,.18),
@@ -302,16 +303,13 @@ section > p {
     margin-top: 45px;
     padding: 35px;
     border-radius: 28px;
-
     background:
         linear-gradient(
             145deg,
             rgba(18,18,35,.95),
             rgba(6,6,14,.95)
         );
-
     border: 1px solid rgba(139,92,255,.3);
-
     box-shadow:
         0 20px 70px rgba(0,0,0,.4),
         0 0 40px rgba(110,70,255,.08);
@@ -351,35 +349,6 @@ section > p {
     font-size: 13px;
 }
 
-/* WATCH */
-
-.watch {
-    background:
-        radial-gradient(circle at center,
-        rgba(0,150,255,.08),
-        transparent 65%);
-}
-
-/* DISCOVER */
-
-.discover {
-    background:
-        radial-gradient(circle at center,
-        rgba(170,0,255,.08),
-        transparent 65%);
-}
-
-/* CONNECT */
-
-.connect {
-    background:
-        radial-gradient(circle at center,
-        rgba(0,220,255,.07),
-        transparent 65%);
-}
-
-/* FOOTER */
-
 footer {
     padding: 35px 20px;
     text-align: center;
@@ -388,10 +357,7 @@ footer {
     font-size: 13px;
 }
 
-/* MOBILE */
-
 @media (max-width:650px) {
-
     header {
         padding: 16px 5%;
     }
@@ -413,234 +379,253 @@ footer {
         padding: 25px 18px;
     }
 }
+</style>
+</head>
 
-</style></head><body><header><div class="logo">
-    TIK<span>NATION</span>
-</div>
+<body>
 
-<nav>
-    <a href="#world">World</a>
-    <a href="#about">About</a>
-    <a href="#create">Create</a>
-</nav>
-
-</header><main><!-- HERO --><section class="hero"><div class="hero-glow"></div>
-
-<h1>
-    Tik<span>Nation</span>
-</h1>
-
-<p class="tagline">
-    Your voice. Your world.
-</p>
-
-<p class="intro">
-    A new digital world built for creativity,
-    expression, discovery, and connection.
-</p>
-
-<a href="#world" class="button">
-    ENTER TIKNATION
-</a>
-
-</section><!-- WORLD --><section id="world" class="world"><div class="world-label">
-    WELCOME TO TIKNATION
-</div>
-
-<h2>
-    The World Is Yours.
-</h2>
-
-<p>
-    Create your identity.
-    Discover new voices.
-    Find your people.
-    Build your world.
-</p>
-
-<div class="platform">
-
-    <a href="#create" class="platform-card">
-
-        <div class="platform-icon">🎬</div>
-
-        <h3>Create</h3>
-
-        <p>
-            Make videos, share ideas,
-            and bring your imagination
-            to life.
-        </p>
-
-    </a>
-
-    <a href="#watch" class="platform-card">
-
-        <div class="platform-icon">▶️</div>
-
-        <h3>Watch</h3>
-
-        <p>
-            Discover videos,
-            creators, stories,
-            and entertainment.
-        </p>
-
-    </a>
-
-    <a href="#discover" class="platform-card">
-
-        <div class="platform-icon">🌎</div>
-
-        <h3>Discover</h3>
-
-        <p>
-            Explore communities,
-            interests, and
-            new worlds.
-        </p>
-
-    </a>
-
-    <a href="#connect" class="platform-card">
-
-        <div class="platform-icon">💬</div>
-
-        <h3>Connect</h3>
-
-        <p>
-            Meet people,
-            follow creators,
-            and build connections.
-        </p>
-
-    </a>
-
-</div>
-
-</section><!-- ABOUT --><section id="about" class="about"><h2>
-    Your Voice. Your World.
-</h2>
-
-<p>
-    TikNation is more than a place to post.
-    It's a world where creators, ideas,
-    communities, and imagination come together.
-</p>
-
-</section><!-- WATCH --><section id="watch" class="watch"><div class="world-label">
-    TIKNATION WATCH
-</div>
-
-<h2>
-    Your Next Discovery.
-</h2>
-
-<p>
-    Videos, stories, entertainment,
-    and creators from across
-    the TikNation world.
-</p>
-
-<a href="#world" class="button">
-    BACK TO WORLD
-</a>
-
-</section><!-- DISCOVER --><section id="discover" class="discover"><div class="world-label">
-    DISCOVER
-</div>
-
-<h2>
-    Find Something New.
-</h2>
-
-<p>
-    Discover creators,
-    communities, interests,
-    and experiences.
-</p>
-
-<a href="#world" class="button">
-    EXPLORE
-</a>
-
-</section><!-- CONNECT --><section id="connect" class="connect"><div class="world-label">
-    CONNECT
-</div>
-
-<h2>
-    Find Your People.
-</h2>
-
-<p>
-    TikNation is built around people
-    connecting, sharing, and creating together.
-</p>
-
-<a href="#world" class="button">
-    CONNECT
-</a>
-
-</section><!-- CREATE --><section id="create" class="create"><div class="world-label">
-    TIKNATION CREATOR STUDIO
-</div>
-
-<h2>
-    Create Your World.
-</h2>
-
-<p>
-    Your ideas deserve a place to become real.
-    TikNation will give creators the tools
-    to make, publish, and share.
-</p>
-
-<div class="creator-box">
-
-    <h3>
-        Creator Studio
-    </h3>
-
-    <p>
-        This is where the future creator
-        experience begins.
-    </p>
-
-    <div class="creator-actions">
-
-        <div class="creator-action">
-            <strong>🎬 Create</strong>
-            <span>
-                Start creating videos and content.
-            </span>
-        </div>
-
-        <div class="creator-action">
-            <strong>📤 Publish</strong>
-            <span>
-                Share your creations with TikNation.
-            </span>
-        </div>
-
-        <div class="creator-action">
-            <strong>📊 Your Studio</strong>
-            <span>
-                Manage your future content and creator identity.
-            </span>
-        </div>
-
-        <div class="creator-action">
-            <strong>✨ Your World</strong>
-            <span>
-                Build a unique space around your creativity.
-            </span>
-        </div>
-
+<header>
+    <div class="logo">
+        TIK<span>NATION</span>
     </div>
 
-</div>
+    <nav>
+        <a href="#world">World</a>
+        <a href="#about">About</a>
+        <a href="#create">Create</a>
+    </nav>
+</header>
 
-</section></main><footer>
+<main>
+
+<section class="hero">
+    <div class="hero-glow"></div>
+
+    <h1>
+        Tik<span>Nation</span>
+    </h1>
+
+    <p class="tagline">
+        Your voice. Your world.
+    </p>
+
+    <p class="intro">
+        A new digital world built for creativity,
+        expression, discovery, and connection.
+    </p>
+
+    <a href="#world" class="button">
+        ENTER TIKNATION
+    </a>
+</section>
+
+<section id="world" class="world">
+
+    <div class="world-label">
+        WELCOME TO TIKNATION
+    </div>
+
+    <h2>
+        The World Is Yours.
+    </h2>
+
+    <p>
+        Create your identity.
+        Discover new voices.
+        Find your people.
+        Build your world.
+    </p>
+
+    <div class="platform">
+
+        <a href="#create" class="platform-card">
+            <div class="platform-icon">🎬</div>
+            <h3>Create</h3>
+            <p>
+                Make videos, share ideas,
+                and bring your imagination
+                to life.
+            </p>
+        </a>
+
+        <a href="#watch" class="platform-card">
+            <div class="platform-icon">▶️</div>
+            <h3>Watch</h3>
+            <p>
+                Discover videos,
+                creators, stories,
+                and entertainment.
+            </p>
+        </a>
+
+        <a href="#discover" class="platform-card">
+            <div class="platform-icon">🌎</div>
+            <h3>Discover</h3>
+            <p>
+                Explore communities,
+                interests, and new worlds.
+            </p>
+        </a>
+
+        <a href="#connect" class="platform-card">
+            <div class="platform-icon">💬</div>
+            <h3>Connect</h3>
+            <p>
+                Meet people,
+                follow creators,
+                and build connections.
+            </p>
+        </a>
+
+    </div>
+</section>
+
+<section id="about" class="about">
+
+    <h2>
+        Your Voice. Your World.
+    </h2>
+
+    <p>
+        TikNation is more than a place to post.
+        It's a world where creators, ideas,
+        communities, and imagination come together.
+    </p>
+
+</section>
+
+<section id="watch" class="watch">
+
+    <div class="world-label">
+        TIKNATION WATCH
+    </div>
+
+    <h2>
+        Your Next Discovery.
+    </h2>
+
+    <p>
+        Videos, stories, entertainment,
+        and creators from across
+        the TikNation world.
+    </p>
+
+    <a href="#world" class="button">
+        BACK TO WORLD
+    </a>
+
+</section>
+
+<section id="discover" class="discover">
+
+    <div class="world-label">
+        DISCOVER
+    </div>
+
+    <h2>
+        Find Something New.
+    </h2>
+
+    <p>
+        Discover creators,
+        communities, interests,
+        and experiences.
+    </p>
+
+    <a href="#world" class="button">
+        EXPLORE
+    </a>
+
+</section>
+
+<section id="connect" class="connect">
+
+    <div class="world-label">
+        CONNECT
+    </div>
+
+    <h2>
+        Find Your People.
+    </h2>
+
+    <p>
+        TikNation is built around people
+        connecting, sharing, and creating together.
+    </p>
+
+    <a href="#world" class="button">
+        CONNECT
+    </a>
+
+</section>
+
+<section id="create" class="create">
+
+    <div class="world-label">
+        TIKNATION CREATOR STUDIO
+    </div>
+
+    <h2>
+        Create Your World.
+    </h2>
+
+    <p>
+        Your ideas deserve a place to become real.
+        TikNation will give creators the tools
+        to make, publish, and share.
+    </p>
+
+    <div class="creator-box">
+
+        <h3>
+            Creator Studio
+        </h3>
+
+        <p>
+            This is where the future creator
+            experience begins.
+        </p>
+
+        <div class="creator-actions">
+
+            <div class="creator-action">
+                <strong>🎬 Create</strong>
+                <span>
+                    Start creating videos and content.
+                </span>
+            </div>
+
+            <div class="creator-action">
+                <strong>📤 Publish</strong>
+                <span>
+                    Share your creations with TikNation.
+                </span>
+            </div>
+
+            <div class="creator-action">
+                <strong>📊 Your Studio</strong>
+                <span>
+                    Manage your future content and creator identity.
+                </span>
+            </div>
+
+            <div class="creator-action">
+                <strong>✨ Your World</strong>
+                <span>
+                    Build a unique space around your creativity.
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+</main>
+
+<footer>
     © 2026 TikNation — Your Voice. Your World.
-</footer></body>
+</footer>
+
+</body>
 </html>
