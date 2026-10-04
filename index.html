@@ -7,6 +7,7 @@
     <title>TikNation — Your Voice. Your World.</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -24,32 +25,62 @@
             overflow-x: hidden;
         }
 
+        /* BACKGROUND */
+
         body::before {
             content: "";
             position: fixed;
             inset: 0;
+
             background:
-                radial-gradient(circle at 20% 20%, rgba(90, 40, 255, 0.18), transparent 30%),
-                radial-gradient(circle at 80% 30%, rgba(0, 180, 255, 0.14), transparent 30%),
-                radial-gradient(circle at 50% 80%, rgba(170, 0, 255, 0.12), transparent 35%);
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(100, 40, 255, 0.18),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 85% 30%,
+                    rgba(0, 190, 255, 0.14),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 50% 80%,
+                    rgba(180, 0, 255, 0.12),
+                    transparent 35%
+                );
+
             pointer-events: none;
             z-index: -2;
         }
 
         body::after {
             content: "";
+
             position: fixed;
             inset: 0;
+
             background-image:
-                radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px);
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.8) 1px,
+                    transparent 1px
+                );
+
             background-size: 90px 90px;
+
             opacity: 0.12;
+
             animation: stars 25s linear infinite;
+
             pointer-events: none;
+
             z-index: -1;
         }
 
         @keyframes stars {
+
             from {
                 transform: translateY(0);
             }
@@ -57,459 +88,854 @@
             to {
                 transform: translateY(-90px);
             }
+
         }
 
+        /* HEADER */
+
         header {
+
             position: fixed;
+
             top: 0;
             left: 0;
+
             width: 100%;
-            padding: 20px 7%;
+
+            padding: 18px 6%;
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
-            background: rgba(3, 3, 8, 0.72);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            z-index: 100;
+
+            background:
+                rgba(3,3,8,0.78);
+
+            backdrop-filter: blur(15px);
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.08);
+
+            z-index: 1000;
         }
 
         .logo {
-            font-size: 24px;
+
+            font-size: 23px;
+
             font-weight: 900;
+
             letter-spacing: 3px;
         }
 
         .logo span {
+
             color: #8b5cff;
+
         }
 
         nav a {
+
             color: #ddd;
+
             text-decoration: none;
-            margin-left: 22px;
-            font-size: 14px;
+
+            margin-left: 18px;
+
+            font-size: 13px;
+
             transition: 0.3s;
+
         }
 
         nav a:hover {
+
             color: #9c7cff;
+
         }
+
+        /* HERO */
 
         .hero {
+
             min-height: 100vh;
+
             display: flex;
+
             flex-direction: column;
+
             justify-content: center;
+
             align-items: center;
+
             text-align: center;
-            padding: 120px 20px 70px;
+
+            padding: 130px 20px 80px;
+
             position: relative;
+
         }
 
-        .hero::before {
-            content: "";
+        .hero-glow {
+
             position: absolute;
-            width: 280px;
-            height: 280px;
+
+            width: 300px;
+
+            height: 300px;
+
             border-radius: 50%;
+
             background: #713cff;
-            filter: blur(120px);
-            opacity: 0.25;
+
+            filter: blur(130px);
+
+            opacity: 0.22;
+
             animation: pulse 5s ease-in-out infinite;
+
         }
 
         @keyframes pulse {
-            0%, 100% {
+
+            0%,100% {
+
                 transform: scale(0.9);
+
                 opacity: 0.18;
+
             }
 
             50% {
-                transform: scale(1.25);
+
+                transform: scale(1.3);
+
                 opacity: 0.35;
+
             }
+
         }
 
         .hero h1 {
+
             position: relative;
-            font-size: clamp(60px, 15vw, 130px);
+
+            font-size:
+                clamp(60px, 15vw, 135px);
+
             line-height: 0.9;
-            letter-spacing: 6px;
+
+            letter-spacing: 5px;
+
             font-weight: 900;
+
             text-transform: uppercase;
+
             text-shadow:
-                0 0 15px rgba(139,92,255,0.7),
-                0 0 50px rgba(80,40,255,0.4);
+                0 0 20px rgba(139,92,255,0.7),
+                0 0 60px rgba(80,40,255,0.4);
         }
 
         .hero h1 span {
-            background: linear-gradient(90deg, #8b5cff, #00c8ff, #a855f7);
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #8b5cff,
+                    #00c8ff,
+                    #a855f7
+                );
+
             -webkit-background-clip: text;
+
             color: transparent;
         }
 
-        .hero p {
-            position: relative;
-            margin-top: 30px;
-            font-size: clamp(20px, 4vw, 30px);
-            color: #d8d8e8;
+        .tagline {
+
+            margin-top: 28px;
+
+            font-size:
+                clamp(20px, 4vw, 30px);
+
+            color: #ddd;
+
             letter-spacing: 2px;
         }
 
-        .hero .intro {
+        .intro {
+
             max-width: 650px;
+
             margin-top: 20px;
-            font-size: 16px;
-            line-height: 1.7;
+
             color: #9292a8;
-            letter-spacing: 0;
+
+            line-height: 1.7;
+
+            font-size: 16px;
         }
 
+        /* BUTTON */
+
         .button {
-            position: relative;
+
             display: inline-block;
-            margin-top: 35px;
-            padding: 16px 35px;
-            border: 1px solid #8b5cff;
+
+            margin-top: 32px;
+
+            padding: 16px 34px;
+
+            border:
+                1px solid #8b5cff;
+
             border-radius: 50px;
+
             color: white;
+
             text-decoration: none;
+
             font-weight: bold;
+
             letter-spacing: 1px;
-            background: rgba(139,92,255,0.08);
-            box-shadow: 0 0 25px rgba(139,92,255,0.2);
+
+            background:
+                rgba(139,92,255,0.08);
+
+            box-shadow:
+                0 0 25px rgba(139,92,255,0.2);
+
             transition: 0.3s;
         }
 
         .button:hover {
-            transform: translateY(-4px) scale(1.04);
-            background: #8b5cff;
-            box-shadow: 0 0 40px rgba(139,92,255,0.6);
+
+            transform:
+                translateY(-4px)
+                scale(1.04);
+
+            background:
+                #8b5cff;
+
+            box-shadow:
+                0 0 40px
+                rgba(139,92,255,0.6);
         }
 
+        /* SECTIONS */
+
         section {
-            padding: 110px 8%;
+
+            padding:
+                100px 7%;
+
             text-align: center;
         }
 
         section h2 {
-            font-size: clamp(35px, 7vw, 60px);
-            margin-bottom: 22px;
+
+            font-size:
+                clamp(36px,7vw,60px);
+
+            margin-bottom: 20px;
+
             letter-spacing: 2px;
         }
 
         section > p {
+
             max-width: 750px;
+
             margin: auto;
+
             color: #9999ae;
+
             line-height: 1.8;
+
             font-size: 18px;
         }
 
-        .entry {
-            min-height: 75vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        /* WORLD */
+
+        .world {
+
+            min-height: 80vh;
+
             background:
-                radial-gradient(circle at center,
-                rgba(100,50,255,0.18),
-                transparent 60%);
+                radial-gradient(
+                    circle at center,
+                    rgba(90,40,220,0.16),
+                    transparent 65%
+                );
         }
 
-        .entry-label {
-            font-size: 13px;
-            letter-spacing: 4px;
+        .world-label {
+
             color: #8b5cff;
+
+            font-size: 13px;
+
+            letter-spacing: 4px;
+
             font-weight: bold;
-            margin-bottom: 20px;
+
+            margin-bottom: 18px;
         }
 
-        .entry h2 {
-            text-shadow: 0 0 25px rgba(139,92,255,0.25);
-        }
+        /* PLATFORM GRID */
 
-        .entry p {
-            max-width: 650px;
-        }
+        .platform {
 
-        .features {
             max-width: 1100px;
-            margin: 55px auto 0;
+
+            margin:
+                55px auto 0;
+
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 22px;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(220px,1fr)
+                );
+
+            gap: 20px;
         }
 
-        .card {
-            padding: 38px 28px;
-            min-height: 220px;
+        .platform-card {
+
+            min-height: 210px;
+
+            padding: 35px 25px;
+
             border-radius: 22px;
+
             background:
                 linear-gradient(
                     145deg,
-                    rgba(20,20,35,0.9),
-                    rgba(8,8,15,0.9)
+                    rgba(20,20,35,0.92),
+                    rgba(7,7,14,0.92)
                 );
-            border: 1px solid rgba(139,92,255,0.22);
-            box-shadow: inset 0 0 30px rgba(139,92,255,0.03);
+
+            border:
+                1px solid
+                rgba(139,92,255,0.22);
+
             transition: 0.35s;
-        }
 
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(139,92,255,0.7);
-            box-shadow: 0 15px 45px rgba(70,40,180,0.2);
-        }
+            text-decoration: none;
 
-        .card .icon {
-            font-size: 42px;
-            margin-bottom: 22px;
-        }
+            color: white;
 
-        .card h3 {
-            margin-bottom: 14px;
-            font-size: 23px;
-        }
-
-        .card p {
-            color: #9999aa;
-            line-height: 1.6;
-            font-size: 15px;
-        }
-
-        .beginning {
-            min-height: 65vh;
             display: flex;
+
             flex-direction: column;
+
             justify-content: center;
+
             align-items: center;
         }
 
+        .platform-card:hover {
+
+            transform:
+                translateY(-8px);
+
+            border-color:
+                rgba(139,92,255,0.75);
+
+            box-shadow:
+                0 15px 45px
+                rgba(70,40,180,0.25);
+        }
+
+        .platform-icon {
+
+            font-size: 46px;
+
+            margin-bottom: 18px;
+        }
+
+        .platform-card h3 {
+
+            font-size: 23px;
+
+            margin-bottom: 10px;
+        }
+
+        .platform-card p {
+
+            color: #9999aa;
+
+            line-height: 1.6;
+
+            font-size: 14px;
+        }
+
+        /* ABOUT */
+
+        .about {
+
+            min-height: 60vh;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+        }
+
+        /* CREATE */
+
+        .create {
+
+            min-height: 70vh;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(120,40,255,0.15),
+                    transparent 65%
+                );
+        }
+
         .coming {
+
             color: #8b5cff;
+
             font-size: 13px;
+
             letter-spacing: 4px;
-            margin-bottom: 20px;
+
+            margin-bottom: 18px;
+
             font-weight: bold;
         }
 
+        /* FOOTER */
+
         footer {
+
             padding: 35px 20px;
+
             text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.08);
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.08);
+
             color: #666679;
+
             font-size: 13px;
         }
 
-        @media (max-width: 650px) {
+        /* MOBILE */
+
+        @media (max-width:650px) {
 
             header {
-                padding: 17px 5%;
+
+                padding:
+                    16px 5%;
             }
 
             .logo {
+
                 font-size: 18px;
+
             }
 
             nav a {
-                margin-left: 10px;
-                font-size: 12px;
+
+                margin-left: 9px;
+
+                font-size: 11px;
+
             }
 
             .hero h1 {
+
                 letter-spacing: 2px;
+
             }
+
         }
+
     </style>
+
 </head>
 
 <body>
 
+
+<!-- HEADER -->
+
 <header>
 
     <div class="logo">
+
         TIK<span>NATION</span>
+
     </div>
 
     <nav>
-        <a href="#about">About</a>
-        <a href="#world">World</a>
-        <a href="#create">Create</a>
+
+        <a href="#world">
+            World
+        </a>
+
+        <a href="#about">
+            About
+        </a>
+
+        <a href="#create">
+            Create
+        </a>
+
     </nav>
 
 </header>
 
+
 <main>
 
-    <!-- HERO -->
 
-    <section class="hero">
+<!-- HERO -->
 
-        <h1>
-            Tik<span>Nation</span>
-        </h1>
+<section class="hero">
 
-        <p>
-            Your voice. Your world.
-        </p>
+    <div class="hero-glow"></div>
 
-        <p class="intro">
-            A new digital world built for creativity,
-            expression, discovery, and connection.
-        </p>
+    <h1>
+        Tik<span>Nation</span>
+    </h1>
 
-        <a href="#tikworld" class="button">
-            ENTER TIKNATION
-        </a>
+    <p class="tagline">
+        Your voice. Your world.
+    </p>
 
-    </section>
+    <p class="intro">
 
+        A new digital world built for
+        creativity, expression,
+        discovery, and connection.
 
-    <!-- TIKNATION ENTRY -->
+    </p>
 
-    <section id="tikworld" class="entry">
+    <a
+        href="#world"
+        class="button"
+    >
+        ENTER TIKNATION
+    </a>
 
-        <div class="entry-label">
-            WELCOME TO TIKNATION
-        </div>
-
-        <h2>
-            The World Is Yours.
-        </h2>
-
-        <p>
-            Create your identity.
-            Discover new voices.
-            Find your people.
-            Build your world.
-        </p>
-
-        <a href="#world" class="button">
-            EXPLORE THE WORLD
-        </a>
-
-    </section>
+</section>
 
 
-    <!-- ABOUT -->
+<!-- WORLD -->
 
-    <section id="about">
+<section
+    id="world"
+    class="world"
+>
 
-        <h2>
-            Your Voice. Your World.
-        </h2>
+    <div class="world-label">
+        WELCOME TO TIKNATION
+    </div>
 
-        <p>
-            TikNation is more than a place to post.
-            It's a world where creators, ideas,
-            communities, and imagination can come together.
-        </p>
+    <h2>
+        The World Is Yours.
+    </h2>
 
-    </section>
+    <p>
+
+        Create your identity.
+        Discover new voices.
+        Find your people.
+        Build your world.
+
+    </p>
 
 
-    <!-- WORLD -->
+    <div class="platform">
 
-    <section id="world">
 
-        <h2>
-            Explore
-        </h2>
+        <!-- CREATE -->
 
-        <div class="features">
+        <a
+            href="#create"
+            class="platform-card"
+        >
 
-            <div class="card">
-
-                <div class="icon">
-                    🎬
-                </div>
-
-                <h3>
-                    Create
-                </h3>
-
-                <p>
-                    Share your videos, ideas, stories,
-                    creativity, and imagination.
-                </p>
-
+            <div class="platform-icon">
+                🎬
             </div>
 
+            <h3>
+                Create
+            </h3>
 
-            <div class="card">
+            <p>
+                Make videos,
+                share ideas,
+                and bring your
+                imagination to life.
+            </p>
 
-                <div class="icon">
-                    🌎
-                </div>
-
-                <h3>
-                    Discover
-                </h3>
-
-                <p>
-                    Explore creators, communities,
-                    interests, and new worlds.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="icon">
-                    ⚡
-                </div>
-
-                <h3>
-                    Connect
-                </h3>
-
-                <p>
-                    Find people who share your passions
-                    and become part of something bigger.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- CREATE -->
-
-    <section id="create" class="beginning">
-
-        <div class="coming">
-            THE BEGINNING
-        </div>
-
-        <h2>
-            Something Bigger Is Coming.
-        </h2>
-
-        <p>
-            TikNation is only beginning.
-            The world will grow with the people who create it.
-        </p>
-
-        <a href="#" class="button">
-            COMING SOON
         </a>
 
-    </section>
+
+        <!-- WATCH -->
+
+        <a
+            href="#watch"
+            class="platform-card"
+        >
+
+            <div class="platform-icon">
+                ▶️
+            </div>
+
+            <h3>
+                Watch
+            </h3>
+
+            <p>
+                Discover videos,
+                creators, stories,
+                and entertainment.
+            </p>
+
+        </a>
+
+
+        <!-- DISCOVER -->
+
+        <a
+            href="#discover"
+            class="platform-card"
+        >
+
+            <div class="platform-icon">
+                🌎
+            </div>
+
+            <h3>
+                Discover
+            </h3>
+
+            <p>
+                Explore communities,
+                interests, and
+                new worlds.
+            </p>
+
+        </a>
+
+
+        <!-- CONNECT -->
+
+        <a
+            href="#connect"
+            class="platform-card"
+        >
+
+            <div class="platform-icon">
+                💬
+            </div>
+
+            <h3>
+                Connect
+            </h3>
+
+            <p>
+                Meet people,
+                follow creators,
+                and build connections.
+            </p>
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section
+    id="about"
+    class="about"
+>
+
+    <h2>
+        Your Voice. Your World.
+    </h2>
+
+    <p>
+
+        TikNation is more than
+        a place to post.
+
+        It's a world where
+        creators, ideas,
+        communities, and
+        imagination come together.
+
+    </p>
+
+</section>
+
+
+<!-- WATCH -->
+
+<section id="watch">
+
+    <div class="world-label">
+        TIKNATION WATCH
+    </div>
+
+    <h2>
+        Your Next Discovery.
+    </h2>
+
+    <p>
+
+        Videos, stories, entertainment,
+        and creators from across
+        the TikNation world.
+
+    </p>
+
+    <a
+        href="#world"
+        class="button"
+    >
+        BACK TO WORLD
+    </a>
+
+</section>
+
+
+<!-- DISCOVER -->
+
+<section id="discover">
+
+    <div class="world-label">
+        DISCOVER
+    </div>
+
+    <h2>
+        Find Something New.
+    </h2>
+
+    <p>
+
+        Discover creators,
+        communities, interests,
+        and experiences.
+
+    </p>
+
+    <a
+        href="#world"
+        class="button"
+    >
+        EXPLORE
+    </a>
+
+</section>
+
+
+<!-- CONNECT -->
+
+<section id="connect">
+
+    <div class="world-label">
+        CONNECT
+    </div>
+
+    <h2>
+        Find Your People.
+    </h2>
+
+    <p>
+
+        TikNation is built around
+        people connecting,
+        sharing, and creating
+        together.
+
+    </p>
+
+    <a
+        href="#world"
+        class="button"
+    >
+        CONNECT
+    </a>
+
+</section>
+
+
+<!-- CREATE -->
+
+<section
+    id="create"
+    class="create"
+>
+
+    <div class="coming">
+        THE BEGINNING
+    </div>
+
+    <h2>
+        Create Your World.
+    </h2>
+
+    <p>
+
+        TikNation is only beginning.
+
+        The future of the platform
+        will be shaped by the people
+        who create it.
+
+    </p>
+
+    <a
+        href="#world"
+        class="button"
+    >
+        RETURN TO TIKNATION
+    </a>
+
+</section>
+
 
 </main>
 
 
 <footer>
 
-    © 2026 TikNation — Your Voice. Your World.
+    © 2026 TikNation —
+    Your Voice. Your World.
 
 </footer>
+
 
 </body>
 </html>
