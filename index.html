@@ -6,6 +6,9 @@
 
 <title>TikNation — Your Voice. Your World.</title>
 
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 * {
     box-sizing: border-box;
@@ -138,6 +141,22 @@ body::after {
     justify-content: center;
     background: linear-gradient(135deg,#8d63ff,#00c8ff);
     font-weight: 900;
+    cursor: pointer;
+}
+
+/* AUTH BUTTON */
+
+.auth-button {
+    padding: 10px 17px;
+    border-radius: 22px;
+    border: 1px solid rgba(141,99,255,.4);
+    background: rgba(141,99,255,.14);
+    color: white;
+    font-weight: bold;
+}
+
+.auth-button:hover {
+    background: rgba(141,99,255,.25);
 }
 
 /* APP */
@@ -481,6 +500,11 @@ body::after {
     max-width: 600px;
 }
 
+.profile-username {
+    color: #9c7cff;
+    margin-top: 5px;
+}
+
 .stats {
     display: flex;
     gap: 30px;
@@ -569,6 +593,153 @@ body::after {
     color: #77778a;
 }
 
+/* AUTH MODAL */
+
+.auth-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0,0,0,.78);
+    backdrop-filter: blur(15px);
+    z-index: 5000;
+}
+
+.auth-overlay.active {
+    display: flex;
+}
+
+.auth-box {
+    width: min(430px,100%);
+    padding: 30px;
+    border-radius: 25px;
+    border: 1px solid rgba(141,99,255,.35);
+    background:
+        linear-gradient(145deg,
+        rgba(25,20,48,.98),
+        rgba(7,7,15,.98));
+    box-shadow: 0 30px 100px rgba(0,0,0,.55);
+}
+
+.auth-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.auth-top h2 {
+    font-size: 26px;
+}
+
+.close-auth {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.1);
+    background: rgba(255,255,255,.05);
+    color: white;
+    font-size: 18px;
+}
+
+.auth-box p {
+    color: #9696aa;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.auth-form {
+    margin-top: 22px;
+}
+
+.auth-form label {
+    display: block;
+    margin: 14px 0 7px;
+    color: #bbb;
+    font-size: 13px;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 13px 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.1);
+    background: rgba(255,255,255,.05);
+    color: white;
+    outline: none;
+}
+
+.auth-form input:focus {
+    border-color: #8d63ff;
+    box-shadow: 0 0 18px rgba(141,99,255,.15);
+}
+
+.auth-submit {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.auth-switch {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.auth-switch button {
+    border: 0;
+    background: transparent;
+    color: #a77cff;
+    font-weight: bold;
+}
+
+.auth-message {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.auth-message.show {
+    display: block;
+}
+
+.auth-message.success {
+    color: #9effd1;
+    background: rgba(0,255,170,.08);
+    border: 1px solid rgba(0,255,170,.18);
+}
+
+.auth-message.error {
+    color: #ffb0b0;
+    background: rgba(255,50,50,.08);
+    border: 1px solid rgba(255,50,50,.18);
+}
+
+.account-panel {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.account-panel strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.logout-button {
+    margin-top: 15px;
+    padding: 10px 18px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,80,80,.25);
+    background: rgba(255,80,80,.08);
+    color: #ffb0b0;
+}
+
 /* MOBILE NAV */
 
 .mobile-nav {
@@ -624,6 +795,11 @@ body::after {
     .profile-mini {
         width: 36px;
         height: 36px;
+    }
+
+    .auth-button {
+        padding: 8px 12px;
+        font-size: 12px;
     }
 
     .app {
@@ -729,8 +905,17 @@ body::after {
             💬
         </button>
 
-        <div class="profile-mini"
-            onclick="showPage('profile')">
+        <button
+            id="authButton"
+            class="auth-button"
+            onclick="openAuth()">
+            SIGN IN
+        </button>
+
+        <div
+            id="profileMini"
+            class="profile-mini"
+            onclick="showProfileOrAuth()">
             T
         </div>
 
@@ -779,7 +964,7 @@ body::after {
     </button>
 
     <button class="nav-button"
-        onclick="showPage('profile', this)">
+        onclick="showProfileOrAuth(this)">
         <span class="nav-icon">👤</span>
         Profile
     </button>
@@ -812,7 +997,7 @@ body::after {
         </p>
 
         <button class="primary-button"
-            onclick="showPage('create')">
+            onclick="startCreating()">
             START CREATING
         </button>
 
@@ -854,7 +1039,7 @@ body::after {
         </div>
 
         <div class="card"
-            onclick="showPage('create')">
+            onclick="startCreating()">
 
             <div class="card-icon">🎬</div>
 
@@ -868,7 +1053,7 @@ body::after {
         </div>
 
         <div class="card"
-            onclick="showPage('profile')">
+            onclick="showProfileOrAuth()">
 
             <div class="card-icon">👤</div>
 
@@ -909,14 +1094,17 @@ body::after {
                 </p>
 
                 <div class="video-actions">
+
                     <button class="small-button"
                         onclick="likeVideo(this)">
                         ❤️ Like
                     </button>
 
-                    <button class="small-button">
+                    <button class="small-button"
+                        onclick="requireLogin('comment')">
                         💬 Comment
                     </button>
+
                 </div>
 
             </div>
@@ -935,14 +1123,17 @@ body::after {
                 </p>
 
                 <div class="video-actions">
+
                     <button class="small-button"
                         onclick="likeVideo(this)">
                         ❤️ Like
                     </button>
 
-                    <button class="small-button">
+                    <button class="small-button"
+                        onclick="requireLogin('comment')">
                         💬 Comment
                     </button>
+
                 </div>
 
             </div>
@@ -961,14 +1152,17 @@ body::after {
                 </p>
 
                 <div class="video-actions">
+
                     <button class="small-button"
                         onclick="likeVideo(this)">
                         ❤️ Like
                     </button>
 
-                    <button class="small-button">
+                    <button class="small-button"
+                        onclick="requireLogin('comment')">
                         💬 Comment
                     </button>
+
                 </div>
 
             </div>
@@ -1064,44 +1258,64 @@ body::after {
         <div class="creator-tools">
 
             <div class="tool">
+
                 <div class="tool-icon">🎬</div>
+
                 <h3>Create Video</h3>
+
                 <p>
                     Build and prepare your future videos.
                 </p>
-                <button class="primary-button">
+
+                <button class="primary-button"
+                    onclick="requireLogin('create')">
                     CREATE
                 </button>
+
             </div>
 
             <div class="tool">
+
                 <div class="tool-icon">📤</div>
+
                 <h3>Publish</h3>
+
                 <p>
                     Prepare content for publishing
                     to TikNation.
                 </p>
-                <button class="primary-button">
+
+                <button class="primary-button"
+                    onclick="requireLogin('publish')">
                     PUBLISH
                 </button>
+
             </div>
 
             <div class="tool">
+
                 <div class="tool-icon">📊</div>
+
                 <h3>Analytics</h3>
+
                 <p>
                     Your future creator statistics
                     and performance.
                 </p>
+
             </div>
 
             <div class="tool">
+
                 <div class="tool-icon">✨</div>
+
                 <h3>Your World</h3>
+
                 <p>
                     Build a unique identity around
                     your creativity.
                 </p>
+
             </div>
 
         </div>
@@ -1122,25 +1336,39 @@ body::after {
     <div class="message-box">
 
         <div class="message">
-            <div class="message-avatar">K</div>
+
+            <div class="message-avatar">
+                K
+            </div>
 
             <div class="message-content">
+
                 <strong>TikNation</strong>
+
                 <span>
                     Welcome to your new world.
                 </span>
+
             </div>
+
         </div>
 
         <div class="message">
-            <div class="message-avatar">✨</div>
+
+            <div class="message-avatar">
+                ✨
+            </div>
 
             <div class="message-content">
+
                 <strong>Creator Community</strong>
+
                 <span>
                     Your future conversations will appear here.
                 </span>
+
             </div>
+
         </div>
 
     </div>
@@ -1152,32 +1380,51 @@ body::after {
 <section id="notifications" class="page">
 
     <div class="section-head">
+
         <h2>Notifications</h2>
-        <span class="muted">Stay connected</span>
+
+        <span class="muted">
+            Stay connected
+        </span>
+
     </div>
 
     <div class="notification">
 
-        <div class="notification-icon">✨</div>
+        <div class="notification-icon">
+            ✨
+        </div>
 
         <div>
-            <strong>Welcome to TikNation.</strong>
+
+            <strong>
+                Welcome to TikNation.
+            </strong>
+
             <p class="muted">
                 Your creator journey begins here.
             </p>
+
         </div>
 
     </div>
 
     <div class="notification">
 
-        <div class="notification-icon">🚀</div>
+        <div class="notification-icon">
+            🚀
+        </div>
 
         <div>
-            <strong>TikNation is growing.</strong>
+
+            <strong>
+                TikNation is growing.
+            </strong>
+
             <p class="muted">
                 New platform features are being built.
             </p>
+
         </div>
 
     </div>
@@ -1190,15 +1437,23 @@ body::after {
 
     <div class="profile-header">
 
-        <div class="profile-avatar">
+        <div
+            id="profileAvatar"
+            class="profile-avatar">
             T
         </div>
 
-        <h1>
+        <h1 id="profileName">
             TikNation Creator
         </h1>
 
-        <p>
+        <div
+            id="profileUsername"
+            class="profile-username">
+            Not signed in
+        </div>
+
+        <p id="profileBio">
             Your future TikNation profile.
             Your identity. Your creativity.
             Your world.
@@ -1223,10 +1478,36 @@ body::after {
 
         </div>
 
+        <div
+            id="accountPanel"
+            class="account-panel">
+
+            <strong>
+                You're not signed in.
+            </strong>
+
+            <span class="muted">
+                Sign in to access your TikNation account.
+            </span>
+
+            <br>
+
+            <button
+                class="primary-button"
+                onclick="openAuth()">
+                SIGN IN
+            </button>
+
+        </div>
+
     </div>
 
     <div class="section-head">
-        <h2>Your Creations</h2>
+
+        <h2>
+            Your Creations
+        </h2>
+
     </div>
 
     <div class="search-empty">
@@ -1240,10 +1521,16 @@ body::after {
 <section id="searchPage" class="page">
 
     <div class="section-head">
-        <h2>Search TikNation</h2>
+
+        <h2>
+            Search TikNation
+        </h2>
+
     </div>
 
-    <div id="searchResults" class="search-results">
+    <div
+        id="searchResults"
+        class="search-results">
 
         <div class="search-empty">
             Enter something in the search bar above.
@@ -1272,7 +1559,7 @@ body::after {
         Watch
     </button>
 
-    <button onclick="showPage('create', this)">
+    <button onclick="startCreating()">
         <span>➕</span>
         Create
     </button>
@@ -1282,33 +1569,165 @@ body::after {
         Discover
     </button>
 
-    <button onclick="showPage('profile', this)">
+    <button onclick="showProfileOrAuth(this)">
         <span>👤</span>
         Profile
     </button>
 
 </nav>
 
+<!-- AUTH MODAL -->
+
+<div
+    id="authOverlay"
+    class="auth-overlay">
+
+    <div class="auth-box">
+
+        <div class="auth-top">
+
+            <h2 id="authTitle">
+                Sign In
+            </h2>
+
+            <button
+                class="close-auth"
+                onclick="closeAuth()">
+                ✕
+            </button>
+
+        </div>
+
+        <p id="authDescription">
+            Enter your TikNation account.
+        </p>
+
+        <form
+            id="authForm"
+            class="auth-form"
+            onsubmit="handleAuth(event)">
+
+            <div id="usernameField">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    id="username"
+                    type="text"
+                    placeholder="Choose a username"
+                    autocomplete="username">
+
+            </div>
+
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required>
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                id="password"
+                type="password"
+                placeholder="Your password"
+                autocomplete="current-password"
+                required>
+
+            <button
+                id="authSubmit"
+                class="primary-button auth-submit"
+                type="submit">
+                SIGN IN
+            </button>
+
+        </form>
+
+        <div
+            id="authMessage"
+            class="auth-message">
+        </div>
+
+        <div class="auth-switch">
+
+            <span
+                id="authSwitchText"
+                class="muted">
+                Don't have an account?
+            </span>
+
+            <button
+                id="authSwitchButton"
+                onclick="toggleAuthMode()">
+                Create one
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
 <script>
 
-/* PAGE NAVIGATION */
+/* =========================================================
+   SUPABASE CONFIGURATION
+   ========================================================= */
+
+const SUPABASE_URL =
+    "https://mekzfezaefcimxncklfj.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+/* =========================================================
+   AUTH STATE
+   ========================================================= */
+
+let currentUser = null;
+let authMode = "signin";
+
+
+/* =========================================================
+   PAGE NAVIGATION
+   ========================================================= */
 
 function showPage(pageId, button) {
 
-    const pages = document.querySelectorAll(".page");
+    const pages =
+        document.querySelectorAll(".page");
 
     pages.forEach(function(page) {
         page.classList.remove("active");
     });
 
-    const target = document.getElementById(pageId);
+    const target =
+        document.getElementById(pageId);
 
     if (target) {
         target.classList.add("active");
     }
 
     const navButtons =
-        document.querySelectorAll(".nav-button, .mobile-nav button");
+        document.querySelectorAll(
+            ".nav-button, .mobile-nav button"
+        );
 
     navButtons.forEach(function(btn) {
         btn.classList.remove("active");
@@ -1324,7 +1743,823 @@ function showPage(pageId, button) {
     });
 }
 
-/* SEARCH */
+
+/* =========================================================
+   AUTH MODAL
+   ========================================================= */
+
+function openAuth(mode = "signin") {
+
+    if (currentUser) {
+        showPage("profile");
+        return;
+    }
+
+    authMode = mode;
+
+    updateAuthModal();
+
+    document
+        .getElementById("authOverlay")
+        .classList.add("active");
+
+    setTimeout(function() {
+
+        const email =
+            document.getElementById("email");
+
+        if (email) {
+            email.focus();
+        }
+
+    }, 100);
+}
+
+
+function closeAuth() {
+
+    document
+        .getElementById("authOverlay")
+        .classList.remove("active");
+
+    clearAuthMessage();
+}
+
+
+function toggleAuthMode() {
+
+    if (authMode === "signin") {
+        authMode = "signup";
+    } else {
+        authMode = "signin";
+    }
+
+    updateAuthModal();
+
+    clearAuthMessage();
+}
+
+
+function updateAuthModal() {
+
+    const title =
+        document.getElementById("authTitle");
+
+    const description =
+        document.getElementById("authDescription");
+
+    const submit =
+        document.getElementById("authSubmit");
+
+    const usernameField =
+        document.getElementById("usernameField");
+
+    const switchText =
+        document.getElementById("authSwitchText");
+
+    const switchButton =
+        document.getElementById("authSwitchButton");
+
+    const password =
+        document.getElementById("password");
+
+    if (authMode === "signup") {
+
+        title.textContent =
+            "Create Your Account";
+
+        description.textContent =
+            "Join TikNation and create your world.";
+
+        submit.textContent =
+            "CREATE ACCOUNT";
+
+        usernameField.style.display =
+            "block";
+
+        switchText.textContent =
+            "Already have an account?";
+
+        switchButton.textContent =
+            "Sign in";
+
+        password.autocomplete =
+            "new-password";
+
+    } else {
+
+        title.textContent =
+            "Sign In";
+
+        description.textContent =
+            "Enter your TikNation account.";
+
+        submit.textContent =
+            "SIGN IN";
+
+        usernameField.style.display =
+            "none";
+
+        switchText.textContent =
+            "Don't have an account?";
+
+        switchButton.textContent =
+            "Create one";
+
+        password.autocomplete =
+            "current-password";
+    }
+}
+
+
+/* =========================================================
+   AUTH MESSAGE
+   ========================================================= */
+
+function showAuthMessage(message, type) {
+
+    const box =
+        document.getElementById("authMessage");
+
+    box.textContent = message;
+
+    box.className =
+        "auth-message show " + type;
+}
+
+
+function clearAuthMessage() {
+
+    const box =
+        document.getElementById("authMessage");
+
+    box.textContent = "";
+
+    box.className =
+        "auth-message";
+}
+
+
+/* =========================================================
+   SIGN UP / SIGN IN
+   ========================================================= */
+
+async function handleAuth(event) {
+
+    event.preventDefault();
+
+    clearAuthMessage();
+
+    const email =
+        document
+            .getElementById("email")
+            .value
+            .trim();
+
+    const password =
+        document
+            .getElementById("password")
+            .value;
+
+    const usernameInput =
+        document
+            .getElementById("username");
+
+    const username =
+        usernameInput
+            ? usernameInput.value.trim()
+            : "";
+
+    const submit =
+        document.getElementById("authSubmit");
+
+    submit.disabled = true;
+
+    submit.style.opacity = ".6";
+
+    try {
+
+        if (authMode === "signup") {
+
+            if (!username) {
+
+                showAuthMessage(
+                    "Please choose a username.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (username.length < 3) {
+
+                showAuthMessage(
+                    "Username must be at least 3 characters.",
+                    "error"
+                );
+
+                return;
+            }
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.auth.signUp({
+
+                    email: email,
+
+                    password: password,
+
+                    options: {
+
+                        data: {
+                            username: username
+                        },
+
+                        emailRedirectTo:
+                            "https://goofytechwiz.github.io/TikNation/"
+                    }
+
+                });
+
+            if (error) {
+                throw error;
+            }
+
+            if (data.user && data.session) {
+
+                await ensureProfile(
+                    data.user,
+                    username
+                );
+
+                showAuthMessage(
+                    "Account created. Welcome to TikNation!",
+                    "success"
+                );
+
+                setTimeout(function() {
+
+                    closeAuth();
+
+                    showPage("profile");
+
+                }, 900);
+
+            } else {
+
+                showAuthMessage(
+                    "Account created! Check your email to confirm your TikNation account, then sign in.",
+                    "success"
+                );
+            }
+
+        } else {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.auth.signInWithPassword({
+
+                    email: email,
+
+                    password: password
+
+                });
+
+            if (error) {
+                throw error;
+            }
+
+            if (data.user) {
+
+                currentUser =
+                    data.user;
+
+                await ensureProfile(
+                    data.user
+                );
+
+                showAuthMessage(
+                    "Welcome back to TikNation!",
+                    "success"
+                );
+
+                setTimeout(function() {
+
+                    closeAuth();
+
+                    updateAccountUI();
+
+                    showPage("profile");
+
+                }, 700);
+            }
+        }
+
+    } catch (error) {
+
+        console.error(
+            "TikNation authentication error:",
+            error
+        );
+
+        showAuthMessage(
+            friendlyAuthError(error),
+            "error"
+        );
+
+    } finally {
+
+        submit.disabled = false;
+
+        submit.style.opacity = "1";
+    }
+}
+
+
+/* =========================================================
+   PROFILE CREATION
+   ========================================================= */
+
+async function ensureProfile(user, signupUsername = null) {
+
+    if (!user) {
+        return;
+    }
+
+    const {
+        data: existingProfile,
+        error: selectError
+    } =
+        await supabaseClient
+            .from("profiles")
+            .select("*")
+            .eq("id", user.id)
+            .maybeSingle();
+
+    if (selectError) {
+
+        console.error(
+            "Profile lookup error:",
+            selectError
+        );
+
+        return;
+    }
+
+    if (existingProfile) {
+
+        updateProfileUI(
+            existingProfile
+        );
+
+        return;
+    }
+
+    const metadata =
+        user.user_metadata || {};
+
+    const username =
+        signupUsername ||
+        metadata.username ||
+        "creator";
+
+    const displayName =
+        metadata.display_name ||
+        username;
+
+    const {
+        data: newProfile,
+        error: insertError
+    } =
+        await supabaseClient
+            .from("profiles")
+            .insert({
+
+                id: user.id,
+
+                username: username,
+
+                display_name: displayName,
+
+                bio: "Creating my world on TikNation."
+
+            })
+            .select()
+            .single();
+
+    if (insertError) {
+
+        console.error(
+            "Profile creation error:",
+            insertError
+        );
+
+        return;
+    }
+
+    updateProfileUI(
+        newProfile
+    );
+}
+
+
+/* =========================================================
+   LOAD PROFILE
+   ========================================================= */
+
+async function loadCurrentProfile() {
+
+    if (!currentUser) {
+        return;
+    }
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("profiles")
+            .select("*")
+            .eq("id", currentUser.id)
+            .maybeSingle();
+
+    if (error) {
+
+        console.error(
+            "Profile loading error:",
+            error
+        );
+
+        return;
+    }
+
+    if (data) {
+
+        updateProfileUI(
+            data
+        );
+
+    } else {
+
+        await ensureProfile(
+            currentUser
+        );
+    }
+}
+
+
+/* =========================================================
+   UPDATE PROFILE UI
+   ========================================================= */
+
+function updateProfileUI(profile) {
+
+    if (!profile) {
+        return;
+    }
+
+    const displayName =
+        profile.display_name ||
+        profile.username ||
+        "TikNation Creator";
+
+    const username =
+        profile.username ||
+        "creator";
+
+    const avatarLetter =
+        displayName
+            .charAt(0)
+            .toUpperCase();
+
+    document
+        .getElementById("profileName")
+        .textContent =
+        displayName;
+
+    document
+        .getElementById("profileUsername")
+        .textContent =
+        "@" + username;
+
+    document
+        .getElementById("profileBio")
+        .textContent =
+        profile.bio ||
+        "Your TikNation world.";
+
+    document
+        .getElementById("profileAvatar")
+        .textContent =
+        avatarLetter;
+
+    document
+        .getElementById("profileMini")
+        .textContent =
+        avatarLetter;
+
+    const accountPanel =
+        document.getElementById(
+            "accountPanel"
+        );
+
+    accountPanel.innerHTML = `
+        <strong>
+            You're signed in.
+        </strong>
+
+        <span class="muted">
+            ${escapeHtml(currentUser?.email || "")}
+        </span>
+
+        <br>
+
+        <button
+            class="logout-button"
+            onclick="logout()">
+            SIGN OUT
+        </button>
+    `;
+}
+
+
+/* =========================================================
+   AUTH UI
+   ========================================================= */
+
+function updateAccountUI() {
+
+    const authButton =
+        document.getElementById("authButton");
+
+    const profileMini =
+        document.getElementById("profileMini");
+
+    if (currentUser) {
+
+        authButton.textContent =
+            "ACCOUNT";
+
+        profileMini.title =
+            currentUser.email || "Account";
+
+        loadCurrentProfile();
+
+    } else {
+
+        authButton.textContent =
+            "SIGN IN";
+
+        profileMini.textContent =
+            "T";
+
+        profileMini.title =
+            "Sign in";
+
+        document
+            .getElementById("profileName")
+            .textContent =
+            "TikNation Creator";
+
+        document
+            .getElementById("profileUsername")
+            .textContent =
+            "Not signed in";
+
+        document
+            .getElementById("profileBio")
+            .textContent =
+            "Your future TikNation profile. Your identity. Your creativity. Your world.";
+
+        document
+            .getElementById("profileAvatar")
+            .textContent =
+            "T";
+
+        document
+            .getElementById("accountPanel")
+            .innerHTML = `
+                <strong>
+                    You're not signed in.
+                </strong>
+
+                <span class="muted">
+                    Sign in to access your TikNation account.
+                </span>
+
+                <br>
+
+                <button
+                    class="primary-button"
+                    onclick="openAuth()">
+                    SIGN IN
+                </button>
+            `;
+    }
+}
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+async function logout() {
+
+    try {
+
+        const {
+            error
+        } =
+            await supabaseClient.auth.signOut();
+
+        if (error) {
+            throw error;
+        }
+
+        currentUser = null;
+
+        updateAccountUI();
+
+        showPage("home");
+
+        showAuthMessage(
+            "You have been signed out.",
+            "success"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Logout error:",
+            error
+        );
+
+        alert(
+            "Unable to sign out right now."
+        );
+    }
+}
+
+
+/* =========================================================
+   AUTH STATE CHECK
+   ========================================================= */
+
+async function initializeAuth() {
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth.getSession();
+
+        if (error) {
+            throw error;
+        }
+
+        if (data.session) {
+
+            currentUser =
+                data.session.user;
+
+            await ensureProfile(
+                currentUser
+            );
+
+        } else {
+
+            currentUser = null;
+        }
+
+        updateAccountUI();
+
+    } catch (error) {
+
+        console.error(
+            "Session initialization error:",
+            error
+        );
+    }
+
+    supabaseClient.auth.onAuthStateChange(
+        async function(event, session) {
+
+            if (session) {
+
+                currentUser =
+                    session.user;
+
+                updateAccountUI();
+
+                if (
+                    event === "SIGNED_IN" ||
+                    event === "INITIAL_SESSION"
+                ) {
+
+                    await ensureProfile(
+                        currentUser
+                    );
+                }
+
+            } else {
+
+                currentUser = null;
+
+                updateAccountUI();
+            }
+        }
+    );
+}
+
+
+/* =========================================================
+   START CREATING
+   ========================================================= */
+
+function startCreating() {
+
+    if (!currentUser) {
+
+        openAuth("signup");
+
+        return;
+    }
+
+    showPage("create");
+}
+
+
+/* =========================================================
+   LOGIN REQUIREMENT
+   ========================================================= */
+
+function requireLogin(action) {
+
+    if (!currentUser) {
+
+        openAuth("signin");
+
+        return;
+    }
+
+    if (action === "create") {
+
+        alert(
+            "Creator Studio is ready for the next development phase."
+        );
+
+        return;
+    }
+
+    if (action === "publish") {
+
+        alert(
+            "Publishing will be connected to TikNation storage next."
+        );
+
+        return;
+    }
+
+    if (action === "comment") {
+
+        alert(
+            "Comments will be connected to the TikNation database next."
+        );
+
+        return;
+    }
+}
+
+
+/* =========================================================
+   PROFILE / AUTH
+   ========================================================= */
+
+function showProfileOrAuth(button) {
+
+    if (currentUser) {
+
+        showPage(
+            "profile",
+            button
+        );
+
+    } else {
+
+        openAuth("signin");
+    }
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
 
 function handleSearch(event) {
 
@@ -1333,7 +2568,9 @@ function handleSearch(event) {
     }
 
     const input =
-        document.getElementById("searchInput");
+        document.getElementById(
+            "searchInput"
+        );
 
     const query =
         input.value.trim();
@@ -1345,75 +2582,187 @@ function handleSearch(event) {
     showPage("searchPage");
 
     const results =
-        document.getElementById("searchResults");
+        document.getElementById(
+            "searchResults"
+        );
 
     results.innerHTML = `
         <div class="card-grid">
 
             <div class="card">
-                <div class="card-icon">🔎</div>
 
-                <h3>Search Results</h3>
+                <div class="card-icon">
+                    🔎
+                </div>
+
+                <h3>
+                    Search Results
+                </h3>
 
                 <p>
                     Searching TikNation for:
-                    <strong>${escapeHtml(query)}</strong>
+                    <strong>
+                        ${escapeHtml(query)}
+                    </strong>
                 </p>
+
             </div>
 
             <div class="card">
-                <div class="card-icon">👤</div>
 
-                <h3>Creators</h3>
+                <div class="card-icon">
+                    👤
+                </div>
+
+                <h3>
+                    Creators
+                </h3>
 
                 <p>
                     Creator search will connect
                     to the real TikNation database.
                 </p>
+
             </div>
 
             <div class="card">
-                <div class="card-icon">🎬</div>
 
-                <h3>Videos</h3>
+                <div class="card-icon">
+                    🎬
+                </div>
+
+                <h3>
+                    Videos
+                </h3>
 
                 <p>
                     Video search will connect
                     to the real TikNation library.
                 </p>
+
             </div>
 
         </div>
     `;
 }
 
-/* SECURITY */
+
+/* =========================================================
+   SECURITY
+   ========================================================= */
 
 function escapeHtml(text) {
 
-    const div = document.createElement("div");
+    const div =
+        document.createElement("div");
 
     div.textContent = text;
 
     return div.innerHTML;
 }
 
-/* LIKE */
+
+/* =========================================================
+   FRIENDLY AUTH ERRORS
+   ========================================================= */
+
+function friendlyAuthError(error) {
+
+    const message =
+        error?.message || "";
+
+    if (
+        message
+            .toLowerCase()
+            .includes("invalid login credentials")
+    ) {
+
+        return "Incorrect email or password.";
+    }
+
+    if (
+        message
+            .toLowerCase()
+            .includes("user already registered")
+    ) {
+
+        return "An account with that email already exists.";
+    }
+
+    if (
+        message
+            .toLowerCase()
+            .includes("password")
+    ) {
+
+        return message;
+    }
+
+    if (
+        message
+            .toLowerCase()
+            .includes("email")
+    ) {
+
+        return message;
+    }
+
+    return message ||
+        "Something went wrong. Please try again.";
+}
+
+
+/* =========================================================
+   LIKE
+   ========================================================= */
 
 function likeVideo(button) {
 
     if (button.dataset.liked === "true") {
 
         button.dataset.liked = "false";
-        button.innerHTML = "❤️ Like";
+
+        button.innerHTML =
+            "❤️ Like";
 
     } else {
 
         button.dataset.liked = "true";
-        button.innerHTML = "❤️ Liked";
 
+        button.innerHTML =
+            "❤️ Liked";
     }
 }
+
+
+/* =========================================================
+   CLOSE AUTH WHEN CLICKING OUTSIDE
+   ========================================================= */
+
+document
+    .getElementById("authOverlay")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                document.getElementById(
+                    "authOverlay"
+                )
+            ) {
+
+                closeAuth();
+            }
+        }
+    );
+
+
+/* =========================================================
+   INITIALIZE TIKNATION
+   ========================================================= */
+
+initializeAuth();
 
 </script>
 
