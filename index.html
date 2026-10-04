@@ -19,9 +19,19 @@ html {
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: #030308;
-    color: white;
+    background: #05050b;
+    color: #fff;
+    min-height: 100vh;
     overflow-x: hidden;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
 }
 
 body::before {
@@ -29,9 +39,9 @@ body::before {
     position: fixed;
     inset: 0;
     background:
-        radial-gradient(circle at 15% 20%, rgba(100,40,255,.18), transparent 30%),
-        radial-gradient(circle at 85% 30%, rgba(0,190,255,.14), transparent 30%),
-        radial-gradient(circle at 50% 80%, rgba(180,0,255,.12), transparent 35%);
+        radial-gradient(circle at 10% 10%, rgba(116,70,255,.18), transparent 28%),
+        radial-gradient(circle at 90% 20%, rgba(0,210,255,.12), transparent 28%),
+        radial-gradient(circle at 50% 90%, rgba(190,0,255,.12), transparent 35%);
     pointer-events: none;
     z-index: -2;
 }
@@ -41,342 +51,650 @@ body::after {
     position: fixed;
     inset: 0;
     background-image:
-        radial-gradient(circle, rgba(255,255,255,.8) 1px, transparent 1px);
-    background-size: 90px 90px;
-    opacity: .12;
-    animation: stars 25s linear infinite;
+        radial-gradient(circle, rgba(255,255,255,.7) 1px, transparent 1px);
+    background-size: 100px 100px;
+    opacity: .08;
     pointer-events: none;
     z-index: -1;
 }
 
-@keyframes stars {
-    from { transform: translateY(0); }
-    to { transform: translateY(-90px); }
-}
+/* HEADER */
 
-header {
+.header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    padding: 18px 6%;
+    height: 72px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background: rgba(3,3,8,.82);
-    backdrop-filter: blur(15px);
+    justify-content: space-between;
+    padding: 0 28px;
+    background: rgba(5,5,11,.82);
+    backdrop-filter: blur(18px);
     border-bottom: 1px solid rgba(255,255,255,.08);
     z-index: 1000;
 }
 
 .logo {
-    font-size: 23px;
+    font-size: 21px;
     font-weight: 900;
     letter-spacing: 3px;
+    white-space: nowrap;
 }
 
 .logo span {
-    color: #8b5cff;
+    color: #8d63ff;
 }
 
-nav a {
-    color: #ddd;
-    text-decoration: none;
-    margin-left: 18px;
-    font-size: 13px;
+.search {
+    width: min(360px, 35vw);
+    position: relative;
 }
 
-.hero {
-    min-height: 100vh;
+.search input {
+    width: 100%;
+    padding: 11px 18px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,.12);
+    outline: none;
+    color: white;
+    background: rgba(255,255,255,.06);
+}
+
+.search input:focus {
+    border-color: #8d63ff;
+    box-shadow: 0 0 20px rgba(141,99,255,.18);
+}
+
+.header-actions {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    text-align: center;
-    padding: 130px 20px 80px;
-    position: relative;
+    gap: 10px;
 }
 
-.hero-glow {
-    position: absolute;
-    width: 300px;
-    height: 300px;
+.icon-button {
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
-    background: #713cff;
-    filter: blur(130px);
-    opacity: .22;
-    animation: pulse 5s ease-in-out infinite;
+    border: 1px solid rgba(255,255,255,.1);
+    background: rgba(255,255,255,.05);
+    color: white;
+    font-size: 18px;
+    transition: .25s;
 }
 
-@keyframes pulse {
-    0%,100% {
-        transform: scale(.9);
-        opacity: .18;
-    }
-
-    50% {
-        transform: scale(1.3);
-        opacity: .35;
-    }
+.icon-button:hover {
+    border-color: #8d63ff;
+    transform: translateY(-2px);
 }
 
-.hero h1 {
-    position: relative;
-    font-size: clamp(60px,15vw,135px);
-    line-height: .9;
-    letter-spacing: 5px;
+.profile-mini {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg,#8d63ff,#00c8ff);
     font-weight: 900;
-    text-transform: uppercase;
-    text-shadow:
-        0 0 20px rgba(139,92,255,.7),
-        0 0 60px rgba(80,40,255,.4);
 }
 
-.hero h1 span {
-    background: linear-gradient(90deg,#8b5cff,#00c8ff,#a855f7);
+/* APP */
+
+.app {
+    display: flex;
+    padding-top: 72px;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    position: fixed;
+    top: 72px;
+    left: 0;
+    bottom: 0;
+    width: 230px;
+    padding: 25px 16px;
+    border-right: 1px solid rgba(255,255,255,.07);
+    background: rgba(5,5,11,.72);
+    backdrop-filter: blur(15px);
+    z-index: 900;
+}
+
+.nav-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    margin-bottom: 7px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    color: #aaaabd;
+    background: transparent;
+    text-align: left;
+    transition: .25s;
+}
+
+.nav-button:hover,
+.nav-button.active {
+    color: white;
+    background: rgba(141,99,255,.12);
+    border-color: rgba(141,99,255,.25);
+}
+
+.nav-icon {
+    width: 25px;
+    text-align: center;
+    font-size: 19px;
+}
+
+/* MAIN */
+
+.main {
+    width: calc(100% - 230px);
+    margin-left: 230px;
+    padding: 35px;
+    min-height: calc(100vh - 72px);
+}
+
+.page {
+    display: none;
+    animation: pageIn .3s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes pageIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* HERO */
+
+.hero-card {
+    position: relative;
+    min-height: 300px;
+    padding: 55px;
+    border-radius: 30px;
+    overflow: hidden;
+    background:
+        linear-gradient(135deg,
+        rgba(100,50,220,.3),
+        rgba(0,150,220,.12),
+        rgba(20,20,35,.95));
+    border: 1px solid rgba(141,99,255,.25);
+    box-shadow: 0 25px 80px rgba(0,0,0,.35);
+}
+
+.hero-card::before {
+    content: "";
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    right: -120px;
+    top: -170px;
+    border-radius: 50%;
+    background: rgba(0,200,255,.15);
+    filter: blur(80px);
+}
+
+.eyebrow {
+    color: #9c7cff;
+    font-size: 12px;
+    letter-spacing: 4px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.hero-card h1 {
+    position: relative;
+    font-size: clamp(42px,6vw,78px);
+    line-height: .95;
+    margin-bottom: 18px;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg,#9c7cff,#00d5ff,#c05cff);
     -webkit-background-clip: text;
     color: transparent;
 }
 
-.tagline {
-    margin-top: 28px;
-    font-size: clamp(20px,4vw,30px);
-    color: #ddd;
-    letter-spacing: 2px;
-}
-
-.intro {
+.hero-card p {
+    position: relative;
     max-width: 650px;
-    margin-top: 20px;
-    color: #9292a8;
+    color: #aaaabd;
     line-height: 1.7;
-    font-size: 16px;
+    font-size: 17px;
 }
 
-.button {
+.primary-button {
+    position: relative;
     display: inline-block;
-    margin-top: 32px;
-    padding: 16px 34px;
-    border: 1px solid #8b5cff;
-    border-radius: 50px;
+    margin-top: 25px;
+    padding: 13px 24px;
+    border: 0;
+    border-radius: 30px;
     color: white;
-    text-decoration: none;
+    background: linear-gradient(90deg,#7b4dff,#9d58ff);
+    box-shadow: 0 10px 30px rgba(123,77,255,.25);
     font-weight: bold;
-    letter-spacing: 1px;
-    background: rgba(139,92,255,.08);
-    box-shadow: 0 0 25px rgba(139,92,255,.2);
-    transition: .3s;
 }
 
-.button:hover {
-    transform: translateY(-4px) scale(1.04);
-    background: #8b5cff;
-    box-shadow: 0 0 40px rgba(139,92,255,.6);
-}
+/* SECTION HEADER */
 
-section {
-    padding: 100px 7%;
-    text-align: center;
-}
-
-section h2 {
-    font-size: clamp(36px,7vw,60px);
-    margin-bottom: 20px;
-    letter-spacing: 2px;
-}
-
-section > p {
-    max-width: 750px;
-    margin: auto;
-    color: #9999ae;
-    line-height: 1.8;
-    font-size: 18px;
-}
-
-.world {
-    min-height: 80vh;
-    background:
-        radial-gradient(circle at center,
-        rgba(90,40,220,.16),
-        transparent 65%);
-}
-
-.world-label {
-    color: #8b5cff;
-    font-size: 13px;
-    letter-spacing: 4px;
-    font-weight: bold;
-    margin-bottom: 18px;
-}
-
-.platform {
-    max-width: 1100px;
-    margin: 55px auto 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
-    gap: 20px;
-}
-
-.platform-card {
-    min-height: 210px;
-    padding: 35px 25px;
-    border-radius: 22px;
-    background:
-        linear-gradient(145deg,
-        rgba(20,20,35,.92),
-        rgba(7,7,14,.92));
-    border: 1px solid rgba(139,92,255,.22);
-    transition: .35s;
-    text-decoration: none;
-    color: white;
+.section-head {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: space-between;
+    margin: 35px 0 18px;
 }
 
-.platform-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(139,92,255,.75);
-    box-shadow: 0 15px 45px rgba(70,40,180,.25);
+.section-head h2 {
+    font-size: 25px;
 }
 
-.platform-icon {
-    font-size: 46px;
+.muted {
+    color: #858599;
+}
+
+/* CARDS */
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
+    gap: 18px;
+}
+
+.card {
+    padding: 25px;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(15,15,27,.85);
+    transition: .25s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(141,99,255,.35);
+    box-shadow: 0 15px 40px rgba(0,0,0,.25);
+}
+
+.card-icon {
+    font-size: 38px;
     margin-bottom: 18px;
 }
 
-.platform-card h3 {
-    font-size: 23px;
-    margin-bottom: 10px;
+.card h3 {
+    margin-bottom: 8px;
 }
 
-.platform-card p {
-    color: #9999aa;
+.card p {
+    color: #88889b;
     line-height: 1.6;
     font-size: 14px;
 }
 
-.about {
-    min-height: 60vh;
+/* VIDEO FEED */
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 20px;
+}
+
+.video-card {
+    overflow: hidden;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: #0c0c16;
+}
+
+.video-preview {
+    aspect-ratio: 16 / 9;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-}
-
-.watch {
+    justify-content: center;
     background:
-        radial-gradient(circle at center,
-        rgba(0,150,255,.08),
-        transparent 65%);
+        radial-gradient(circle at 30% 30%,rgba(120,70,255,.35),transparent 35%),
+        linear-gradient(135deg,#10101e,#070711);
+    font-size: 45px;
 }
 
-.discover {
-    background:
-        radial-gradient(circle at center,
-        rgba(170,0,255,.08),
-        transparent 65%);
+.video-info {
+    padding: 17px;
 }
 
-.connect {
-    background:
-        radial-gradient(circle at center,
-        rgba(0,220,255,.07),
-        transparent 65%);
+.video-info h3 {
+    margin-bottom: 8px;
+    font-size: 17px;
 }
 
-.create {
-    min-height: 80vh;
+.video-info p {
+    color: #858599;
+    font-size: 13px;
+}
+
+.video-actions {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.small-button {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.1);
+    color: #ddd;
+    background: rgba(255,255,255,.04);
+}
+
+/* CREATOR */
+
+.creator-panel {
+    padding: 30px;
+    border-radius: 25px;
+    border: 1px solid rgba(141,99,255,.25);
     background:
-        radial-gradient(circle at center,
-        rgba(120,40,255,.18),
-        transparent 65%);
+        linear-gradient(145deg,
+        rgba(25,20,48,.95),
+        rgba(9,9,18,.95));
 }
 
-.creator-box {
-    width: min(900px,100%);
-    margin-top: 45px;
-    padding: 35px;
-    border-radius: 28px;
-    background:
-        linear-gradient(
-            145deg,
-            rgba(18,18,35,.95),
-            rgba(6,6,14,.95)
-        );
-    border: 1px solid rgba(139,92,255,.3);
-    box-shadow:
-        0 20px 70px rgba(0,0,0,.4),
-        0 0 40px rgba(110,70,255,.08);
+.creator-panel h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
 }
 
-.creator-box h3 {
-    font-size: 28px;
-    margin-bottom: 12px;
-}
-
-.creator-box p {
-    color: #9999ae;
+.creator-panel > p {
+    color: #9999aa;
     line-height: 1.7;
 }
 
-.creator-actions {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
-    gap: 15px;
+.creator-tools {
     margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 15px;
 }
 
-.creator-action {
-    padding: 20px;
+.tool {
+    padding: 22px;
     border-radius: 18px;
-    border: 1px solid rgba(139,92,255,.2);
-    background: rgba(255,255,255,.025);
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.08);
 }
 
-.creator-action strong {
+.tool-icon {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.tool h3 {
+    margin-bottom: 7px;
+}
+
+.tool p {
+    color: #858599;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* PROFILE */
+
+.profile-header {
+    padding: 35px;
+    border-radius: 25px;
+    background: linear-gradient(135deg,rgba(90,50,200,.25),rgba(0,160,220,.1));
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.profile-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    background: linear-gradient(135deg,#8d63ff,#00c8ff);
+    margin-bottom: 18px;
+}
+
+.profile-header h1 {
+    margin-bottom: 7px;
+}
+
+.profile-header p {
+    color: #9696aa;
+    max-width: 600px;
+}
+
+.stats {
+    display: flex;
+    gap: 30px;
+    margin-top: 22px;
+}
+
+.stat strong {
     display: block;
-    margin-bottom: 8px;
+    font-size: 20px;
 }
 
-.creator-action span {
-    color: #88889b;
+.stat span {
+    color: #858599;
+    font-size: 12px;
+}
+
+/* MESSAGES */
+
+.message-box {
+    padding: 25px;
+    border-radius: 22px;
+    background: rgba(15,15,27,.85);
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 17px 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.message:last-child {
+    border-bottom: 0;
+}
+
+.message-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg,#663cff,#00b9ff);
+}
+
+.message-content strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.message-content span {
+    color: #858599;
     font-size: 13px;
 }
 
-footer {
-    padding: 35px 20px;
+/* NOTIFICATIONS */
+
+.notification {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 18px;
+    background: rgba(15,15,27,.85);
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.notification-icon {
+    font-size: 24px;
+}
+
+/* SEARCH */
+
+.search-results {
+    margin-top: 25px;
+}
+
+.search-empty {
+    padding: 60px 20px;
     text-align: center;
-    border-top: 1px solid rgba(255,255,255,.08);
-    color: #666679;
-    font-size: 13px;
+    border-radius: 22px;
+    border: 1px dashed rgba(255,255,255,.12);
+    color: #77778a;
 }
 
-@media (max-width:650px) {
-    header {
-        padding: 16px 5%;
+/* MOBILE NAV */
+
+.mobile-nav {
+    display: none;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 850px) {
+
+    .header {
+        padding: 0 15px;
+    }
+
+    .search {
+        width: 30vw;
+    }
+
+    .sidebar {
+        width: 190px;
+    }
+
+    .main {
+        width: calc(100% - 190px);
+        margin-left: 190px;
+        padding: 22px;
+    }
+
+    .hero-card {
+        padding: 35px;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .header {
+        height: 64px;
     }
 
     .logo {
-        font-size: 18px;
-    }
-
-    nav a {
-        margin-left: 9px;
-        font-size: 11px;
-    }
-
-    .hero h1 {
+        font-size: 17px;
         letter-spacing: 2px;
     }
 
-    .creator-box {
-        padding: 25px 18px;
+    .search {
+        width: 34vw;
+    }
+
+    .header-actions .icon-button {
+        display: none;
+    }
+
+    .profile-mini {
+        width: 36px;
+        height: 36px;
+    }
+
+    .app {
+        padding-top: 64px;
+        padding-bottom: 72px;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        width: 100%;
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .hero-card {
+        padding: 28px 22px;
+        min-height: 330px;
+    }
+
+    .hero-card h1 {
+        font-size: 45px;
+    }
+
+    .section-head {
+        margin-top: 28px;
+    }
+
+    .card-grid,
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mobile-nav {
+        position: fixed;
+        display: flex;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 68px;
+        background: rgba(5,5,11,.94);
+        backdrop-filter: blur(18px);
+        border-top: 1px solid rgba(255,255,255,.1);
+        z-index: 1000;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .mobile-nav button {
+        border: 0;
+        background: transparent;
+        color: #858599;
+        font-size: 11px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .mobile-nav button.active {
+        color: #a47cff;
+    }
+
+    .mobile-nav span {
+        font-size: 21px;
+    }
+
+    .stats {
+        gap: 18px;
     }
 }
 </style>
@@ -384,248 +702,720 @@ footer {
 
 <body>
 
-<header>
+<header class="header">
+
     <div class="logo">
         TIK<span>NATION</span>
     </div>
 
-    <nav>
-        <a href="#world">World</a>
-        <a href="#about">About</a>
-        <a href="#create">Create</a>
-    </nav>
+    <div class="search">
+        <input
+            id="searchInput"
+            type="search"
+            placeholder="Search TikNation..."
+            onkeydown="handleSearch(event)"
+        >
+    </div>
+
+    <div class="header-actions">
+
+        <button class="icon-button"
+            onclick="showPage('notifications')">
+            🔔
+        </button>
+
+        <button class="icon-button"
+            onclick="showPage('messages')">
+            💬
+        </button>
+
+        <div class="profile-mini"
+            onclick="showPage('profile')">
+            T
+        </div>
+
+    </div>
+
 </header>
 
-<main>
+<div class="app">
 
-<section class="hero">
-    <div class="hero-glow"></div>
+<aside class="sidebar">
 
-    <h1>
-        Tik<span>Nation</span>
-    </h1>
+    <button class="nav-button active"
+        onclick="showPage('home', this)">
+        <span class="nav-icon">🏠</span>
+        Home
+    </button>
 
-    <p class="tagline">
-        Your voice. Your world.
-    </p>
+    <button class="nav-button"
+        onclick="showPage('watch', this)">
+        <span class="nav-icon">▶️</span>
+        Watch
+    </button>
 
-    <p class="intro">
-        A new digital world built for creativity,
-        expression, discovery, and connection.
-    </p>
+    <button class="nav-button"
+        onclick="showPage('discover', this)">
+        <span class="nav-icon">🌎</span>
+        Discover
+    </button>
 
-    <a href="#world" class="button">
-        ENTER TIKNATION
-    </a>
-</section>
+    <button class="nav-button"
+        onclick="showPage('create', this)">
+        <span class="nav-icon">➕</span>
+        Create
+    </button>
 
-<section id="world" class="world">
+    <button class="nav-button"
+        onclick="showPage('messages', this)">
+        <span class="nav-icon">💬</span>
+        Messages
+    </button>
 
-    <div class="world-label">
-        WELCOME TO TIKNATION
-    </div>
+    <button class="nav-button"
+        onclick="showPage('notifications', this)">
+        <span class="nav-icon">🔔</span>
+        Notifications
+    </button>
 
-    <h2>
-        The World Is Yours.
-    </h2>
+    <button class="nav-button"
+        onclick="showPage('profile', this)">
+        <span class="nav-icon">👤</span>
+        Profile
+    </button>
 
-    <p>
-        Create your identity.
-        Discover new voices.
-        Find your people.
-        Build your world.
-    </p>
+</aside>
 
-    <div class="platform">
+<main class="main">
 
-        <a href="#create" class="platform-card">
-            <div class="platform-icon">🎬</div>
-            <h3>Create</h3>
-            <p>
-                Make videos, share ideas,
-                and bring your imagination
-                to life.
-            </p>
-        </a>
+<!-- HOME -->
 
-        <a href="#watch" class="platform-card">
-            <div class="platform-icon">▶️</div>
-            <h3>Watch</h3>
-            <p>
-                Discover videos,
-                creators, stories,
-                and entertainment.
-            </p>
-        </a>
+<section id="home" class="page active">
 
-        <a href="#discover" class="platform-card">
-            <div class="platform-icon">🌎</div>
-            <h3>Discover</h3>
-            <p>
-                Explore communities,
-                interests, and new worlds.
-            </p>
-        </a>
+    <div class="hero-card">
 
-        <a href="#connect" class="platform-card">
-            <div class="platform-icon">💬</div>
-            <h3>Connect</h3>
-            <p>
-                Meet people,
-                follow creators,
-                and build connections.
-            </p>
-        </a>
+        <div class="eyebrow">
+            WELCOME TO TIKNATION
+        </div>
 
-    </div>
-</section>
-
-<section id="about" class="about">
-
-    <h2>
-        Your Voice. Your World.
-    </h2>
-
-    <p>
-        TikNation is more than a place to post.
-        It's a world where creators, ideas,
-        communities, and imagination come together.
-    </p>
-
-</section>
-
-<section id="watch" class="watch">
-
-    <div class="world-label">
-        TIKNATION WATCH
-    </div>
-
-    <h2>
-        Your Next Discovery.
-    </h2>
-
-    <p>
-        Videos, stories, entertainment,
-        and creators from across
-        the TikNation world.
-    </p>
-
-    <a href="#world" class="button">
-        BACK TO WORLD
-    </a>
-
-</section>
-
-<section id="discover" class="discover">
-
-    <div class="world-label">
-        DISCOVER
-    </div>
-
-    <h2>
-        Find Something New.
-    </h2>
-
-    <p>
-        Discover creators,
-        communities, interests,
-        and experiences.
-    </p>
-
-    <a href="#world" class="button">
-        EXPLORE
-    </a>
-
-</section>
-
-<section id="connect" class="connect">
-
-    <div class="world-label">
-        CONNECT
-    </div>
-
-    <h2>
-        Find Your People.
-    </h2>
-
-    <p>
-        TikNation is built around people
-        connecting, sharing, and creating together.
-    </p>
-
-    <a href="#world" class="button">
-        CONNECT
-    </a>
-
-</section>
-
-<section id="create" class="create">
-
-    <div class="world-label">
-        TIKNATION CREATOR STUDIO
-    </div>
-
-    <h2>
-        Create Your World.
-    </h2>
-
-    <p>
-        Your ideas deserve a place to become real.
-        TikNation will give creators the tools
-        to make, publish, and share.
-    </p>
-
-    <div class="creator-box">
-
-        <h3>
-            Creator Studio
-        </h3>
+        <h1>
+            Your Voice.<br>
+            <span class="gradient-text">
+                Your World.
+            </span>
+        </h1>
 
         <p>
-            This is where the future creator
-            experience begins.
+            TikNation is being built as a new digital world
+            for creators, communities, entertainment,
+            discovery, and connection.
         </p>
 
-        <div class="creator-actions">
+        <button class="primary-button"
+            onclick="showPage('create')">
+            START CREATING
+        </button>
 
-            <div class="creator-action">
-                <strong>🎬 Create</strong>
-                <span>
-                    Start creating videos and content.
-                </span>
+    </div>
+
+    <div class="section-head">
+        <h2>Explore TikNation</h2>
+        <span class="muted">What's happening</span>
+    </div>
+
+    <div class="card-grid">
+
+        <div class="card"
+            onclick="showPage('watch')">
+
+            <div class="card-icon">▶️</div>
+
+            <h3>Watch</h3>
+
+            <p>
+                Discover videos, creators,
+                entertainment and stories.
+            </p>
+
+        </div>
+
+        <div class="card"
+            onclick="showPage('discover')">
+
+            <div class="card-icon">🌎</div>
+
+            <h3>Discover</h3>
+
+            <p>
+                Find creators, communities,
+                interests and new experiences.
+            </p>
+
+        </div>
+
+        <div class="card"
+            onclick="showPage('create')">
+
+            <div class="card-icon">🎬</div>
+
+            <h3>Create</h3>
+
+            <p>
+                Enter Creator Studio and
+                start building your world.
+            </p>
+
+        </div>
+
+        <div class="card"
+            onclick="showPage('profile')">
+
+            <div class="card-icon">👤</div>
+
+            <h3>Your Profile</h3>
+
+            <p>
+                Build your identity and
+                creator presence on TikNation.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- WATCH -->
+
+<section id="watch" class="page">
+
+    <div class="section-head">
+        <h2>TikNation Watch</h2>
+        <span class="muted">Your next discovery</span>
+    </div>
+
+    <div class="video-grid">
+
+        <div class="video-card">
+
+            <div class="video-preview">▶️</div>
+
+            <div class="video-info">
+
+                <h3>The Beginning</h3>
+
+                <p>
+                    Welcome to the future of TikNation.
+                </p>
+
+                <div class="video-actions">
+                    <button class="small-button"
+                        onclick="likeVideo(this)">
+                        ❤️ Like
+                    </button>
+
+                    <button class="small-button">
+                        💬 Comment
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="video-card">
+
+            <div class="video-preview">✨</div>
+
+            <div class="video-info">
+
+                <h3>Create Your World</h3>
+
+                <p>
+                    Imagine something impossible.
+                </p>
+
+                <div class="video-actions">
+                    <button class="small-button"
+                        onclick="likeVideo(this)">
+                        ❤️ Like
+                    </button>
+
+                    <button class="small-button">
+                        💬 Comment
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="video-card">
+
+            <div class="video-preview">🌎</div>
+
+            <div class="video-info">
+
+                <h3>Discover</h3>
+
+                <p>
+                    Something new is waiting.
+                </p>
+
+                <div class="video-actions">
+                    <button class="small-button"
+                        onclick="likeVideo(this)">
+                        ❤️ Like
+                    </button>
+
+                    <button class="small-button">
+                        💬 Comment
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- DISCOVER -->
+
+<section id="discover" class="page">
+
+    <div class="section-head">
+        <h2>Discover</h2>
+        <span class="muted">Explore the world</span>
+    </div>
+
+    <div class="card-grid">
+
+        <div class="card">
+            <div class="card-icon">🎮</div>
+            <h3>Gaming</h3>
+            <p>
+                Games, players and gaming communities.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🎵</div>
+            <h3>Music</h3>
+            <p>
+                Discover artists, sounds and creators.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🎨</div>
+            <h3>Creative</h3>
+            <p>
+                Art, imagination, design and ideas.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🎬</div>
+            <h3>Entertainment</h3>
+            <p>
+                Stories, shows, videos and experiences.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🚀</div>
+            <h3>Future</h3>
+            <p>
+                Technology and ideas shaping tomorrow.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">👥</div>
+            <h3>Communities</h3>
+            <p>
+                Find people who share your interests.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CREATE -->
+
+<section id="create" class="page">
+
+    <div class="creator-panel">
+
+        <div class="eyebrow">
+            TIKNATION CREATOR STUDIO
+        </div>
+
+        <h1>
+            Create Your World.
+        </h1>
+
+        <p>
+            Your ideas deserve a place to become real.
+            This is the beginning of your TikNation
+            creator workspace.
+        </p>
+
+        <div class="creator-tools">
+
+            <div class="tool">
+                <div class="tool-icon">🎬</div>
+                <h3>Create Video</h3>
+                <p>
+                    Build and prepare your future videos.
+                </p>
+                <button class="primary-button">
+                    CREATE
+                </button>
             </div>
 
-            <div class="creator-action">
-                <strong>📤 Publish</strong>
-                <span>
-                    Share your creations with TikNation.
-                </span>
+            <div class="tool">
+                <div class="tool-icon">📤</div>
+                <h3>Publish</h3>
+                <p>
+                    Prepare content for publishing
+                    to TikNation.
+                </p>
+                <button class="primary-button">
+                    PUBLISH
+                </button>
             </div>
 
-            <div class="creator-action">
-                <strong>📊 Your Studio</strong>
-                <span>
-                    Manage your future content and creator identity.
-                </span>
+            <div class="tool">
+                <div class="tool-icon">📊</div>
+                <h3>Analytics</h3>
+                <p>
+                    Your future creator statistics
+                    and performance.
+                </p>
             </div>
 
-            <div class="creator-action">
-                <strong>✨ Your World</strong>
-                <span>
-                    Build a unique space around your creativity.
-                </span>
+            <div class="tool">
+                <div class="tool-icon">✨</div>
+                <h3>Your World</h3>
+                <p>
+                    Build a unique identity around
+                    your creativity.
+                </p>
             </div>
 
         </div>
+
+    </div>
+
+</section>
+
+<!-- MESSAGES -->
+
+<section id="messages" class="page">
+
+    <div class="section-head">
+        <h2>Messages</h2>
+        <span class="muted">Your conversations</span>
+    </div>
+
+    <div class="message-box">
+
+        <div class="message">
+            <div class="message-avatar">K</div>
+
+            <div class="message-content">
+                <strong>TikNation</strong>
+                <span>
+                    Welcome to your new world.
+                </span>
+            </div>
+        </div>
+
+        <div class="message">
+            <div class="message-avatar">✨</div>
+
+            <div class="message-content">
+                <strong>Creator Community</strong>
+                <span>
+                    Your future conversations will appear here.
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- NOTIFICATIONS -->
+
+<section id="notifications" class="page">
+
+    <div class="section-head">
+        <h2>Notifications</h2>
+        <span class="muted">Stay connected</span>
+    </div>
+
+    <div class="notification">
+
+        <div class="notification-icon">✨</div>
+
+        <div>
+            <strong>Welcome to TikNation.</strong>
+            <p class="muted">
+                Your creator journey begins here.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="notification">
+
+        <div class="notification-icon">🚀</div>
+
+        <div>
+            <strong>TikNation is growing.</strong>
+            <p class="muted">
+                New platform features are being built.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- PROFILE -->
+
+<section id="profile" class="page">
+
+    <div class="profile-header">
+
+        <div class="profile-avatar">
+            T
+        </div>
+
+        <h1>
+            TikNation Creator
+        </h1>
+
+        <p>
+            Your future TikNation profile.
+            Your identity. Your creativity.
+            Your world.
+        </p>
+
+        <div class="stats">
+
+            <div class="stat">
+                <strong>0</strong>
+                <span>Followers</span>
+            </div>
+
+            <div class="stat">
+                <strong>0</strong>
+                <span>Following</span>
+            </div>
+
+            <div class="stat">
+                <strong>0</strong>
+                <span>Creations</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="section-head">
+        <h2>Your Creations</h2>
+    </div>
+
+    <div class="search-empty">
+        Your future creations will appear here.
+    </div>
+
+</section>
+
+<!-- SEARCH -->
+
+<section id="searchPage" class="page">
+
+    <div class="section-head">
+        <h2>Search TikNation</h2>
+    </div>
+
+    <div id="searchResults" class="search-results">
+
+        <div class="search-empty">
+            Enter something in the search bar above.
+        </div>
+
     </div>
 
 </section>
 
 </main>
 
-<footer>
-    © 2026 TikNation — Your Voice. Your World.
-</footer>
+</div>
+
+<!-- MOBILE NAV -->
+
+<nav class="mobile-nav">
+
+    <button class="active"
+        onclick="showPage('home', this)">
+        <span>🏠</span>
+        Home
+    </button>
+
+    <button onclick="showPage('watch', this)">
+        <span>▶️</span>
+        Watch
+    </button>
+
+    <button onclick="showPage('create', this)">
+        <span>➕</span>
+        Create
+    </button>
+
+    <button onclick="showPage('discover', this)">
+        <span>🌎</span>
+        Discover
+    </button>
+
+    <button onclick="showPage('profile', this)">
+        <span>👤</span>
+        Profile
+    </button>
+
+</nav>
+
+<script>
+
+/* PAGE NAVIGATION */
+
+function showPage(pageId, button) {
+
+    const pages = document.querySelectorAll(".page");
+
+    pages.forEach(function(page) {
+        page.classList.remove("active");
+    });
+
+    const target = document.getElementById(pageId);
+
+    if (target) {
+        target.classList.add("active");
+    }
+
+    const navButtons =
+        document.querySelectorAll(".nav-button, .mobile-nav button");
+
+    navButtons.forEach(function(btn) {
+        btn.classList.remove("active");
+    });
+
+    if (button) {
+        button.classList.add("active");
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+/* SEARCH */
+
+function handleSearch(event) {
+
+    if (event.key !== "Enter") {
+        return;
+    }
+
+    const input =
+        document.getElementById("searchInput");
+
+    const query =
+        input.value.trim();
+
+    if (!query) {
+        return;
+    }
+
+    showPage("searchPage");
+
+    const results =
+        document.getElementById("searchResults");
+
+    results.innerHTML = `
+        <div class="card-grid">
+
+            <div class="card">
+                <div class="card-icon">🔎</div>
+
+                <h3>Search Results</h3>
+
+                <p>
+                    Searching TikNation for:
+                    <strong>${escapeHtml(query)}</strong>
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">👤</div>
+
+                <h3>Creators</h3>
+
+                <p>
+                    Creator search will connect
+                    to the real TikNation database.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🎬</div>
+
+                <h3>Videos</h3>
+
+                <p>
+                    Video search will connect
+                    to the real TikNation library.
+                </p>
+            </div>
+
+        </div>
+    `;
+}
+
+/* SECURITY */
+
+function escapeHtml(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+}
+
+/* LIKE */
+
+function likeVideo(button) {
+
+    if (button.dataset.liked === "true") {
+
+        button.dataset.liked = "false";
+        button.innerHTML = "❤️ Like";
+
+    } else {
+
+        button.dataset.liked = "true";
+        button.innerHTML = "❤️ Liked";
+
+    }
+}
+
+</script>
 
 </body>
 </html>
