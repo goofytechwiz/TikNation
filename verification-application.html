@@ -627,11 +627,32 @@ function submitApplication(event) {
 
   result.className = "success";
 
-  result.textContent =
-    "Your verification request has been prepared successfully. " +
-    "The application system is currently in Beta and is not yet connected " +
-    "to TikNation's review database. No application has been permanently submitted yet.";
+  const response = await fetch(
+    "https://mekzfezaefcimxncklfj.supabase.co/functions/v1/tiknation-backend",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: username,
+            category: category,
+            presence: presence,
+            reason: reason,
+            supporting_links: supportingLinks
+        })
+    }
+);
 
+const data = await response.json();
+
+if (!response.ok || !data.success) {
+    throw new Error(data.error || "Unable to submit verification request.");
+}
+
+result.textContent =
+    "Your verification request has been submitted successfully. " +
+    "TikNation will review your application.";
 }
 
 </script>
