@@ -1,0 +1,360 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikNation — Verification Command Center</title><style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background:
+        radial-gradient(circle at top, #17234a 0%, #080b18 45%, #03040a 100%);
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+.container {
+    width: min(1100px, 92%);
+    margin: auto;
+    padding: 35px 0 60px;
+}
+
+.top {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 8px 14px;
+    border: 1px solid rgba(120,180,255,.4);
+    border-radius: 999px;
+    color: #9ed8ff;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(32px, 7vw, 58px);
+}
+
+.subtitle {
+    color: #aeb9d6;
+    max-width: 650px;
+    margin: 14px auto 0;
+    line-height: 1.6;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.stat {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 30px;
+    margin-bottom: 6px;
+}
+
+.stat span {
+    color: #aeb9d6;
+    font-size: 13px;
+}
+
+.panel {
+    background: rgba(8,12,30,.85);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.panel h2 {
+    margin-top: 0;
+}
+
+.application {
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 15px;
+    background: rgba(255,255,255,.025);
+}
+
+.application-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+}
+
+.username {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.status {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    background: rgba(255,190,70,.12);
+    color: #ffd27a;
+    border: 1px solid rgba(255,190,70,.3);
+}
+
+.info {
+    color: #b7c0d9;
+    line-height: 1.6;
+    margin: 14px 0;
+}
+
+.info strong {
+    color: #ffffff;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+button {
+    border: 0;
+    border-radius: 10px;
+    padding: 11px 17px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.approve {
+    background: #28d17c;
+    color: #04140b;
+}
+
+.deny {
+    background: #ef5b67;
+    color: white;
+}
+
+.details {
+    background: #263250;
+    color: white;
+}
+
+.message {
+    display: none;
+    margin-top: 20px;
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(70,180,255,.1);
+    border: 1px solid rgba(70,180,255,.25);
+    color: #bfe6ff;
+}
+
+.back {
+    display: inline-block;
+    margin-top: 25px;
+    color: #9ed8ff;
+    text-decoration: none;
+}
+
+@media (max-width: 700px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .application-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+</style></head><body><div class="container"><div class="top">
+    <div class="badge">TIKNATION • COMMAND CENTER</div>
+
+    <h1>Verification Center</h1>
+
+    <p class="subtitle">
+        Review creator verification requests, recognize outstanding
+        creators, and protect the authenticity of the TikNation community.
+    </p>
+</div>
+
+<div class="stats">
+
+    <div class="stat">
+        <strong id="pendingCount">1</strong>
+        <span>Pending</span>
+    </div>
+
+    <div class="stat">
+        <strong id="verifiedCount">0</strong>
+        <span>Verified Creators</span>
+    </div>
+
+    <div class="stat">
+        <strong id="recognitionCount">0</strong>
+        <span>Creator Recognition</span>
+    </div>
+
+    <div class="stat">
+        <strong id="deniedCount">0</strong>
+        <span>Denied</span>
+    </div>
+
+</div>
+
+<div class="panel">
+
+    <h2>Pending Applications</h2>
+
+    <div class="application" id="application1">
+
+        <div class="application-header">
+
+            <div class="username">
+                TikNationStudio
+            </div>
+
+            <div class="status" id="status1">
+                PENDING REVIEW
+            </div>
+
+        </div>
+
+        <div class="info">
+
+            <p>
+                <strong>Category:</strong>
+                Creative
+            </p>
+
+            <p>
+                <strong>Presence:</strong>
+                Founder and creator of TikNation, developing the platform
+                around creator freedom, imagination, and community.
+            </p>
+
+            <p>
+                <strong>Reason:</strong>
+                Official founder presence behind the TikNation platform,
+                responsible for developing its features, creator systems,
+                identity, and vision.
+            </p>
+
+            <p>
+                <strong>Supporting Link:</strong>
+                goofytechwiz.github.io/TikNation/
+            </p>
+
+        </div>
+
+        <div class="actions">
+
+            <button
+                class="approve"
+                onclick="approveApplication()">
+                ✓ Approve
+            </button>
+
+            <button
+                class="deny"
+                onclick="denyApplication()">
+                ✕ Deny
+            </button>
+
+            <button
+                class="details"
+                onclick="showDetails()">
+                View Details
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="message" id="message"></div>
+
+</div>
+
+<a class="back" href="index.html">
+    ← Return to TikNation
+</a>
+
+</div><script>
+
+function approveApplication() {
+
+    document.getElementById("status1").textContent =
+        "APPROVED";
+
+    document.getElementById("status1").style.color =
+        "#7ff0ad";
+
+    document.getElementById("status1").style.background =
+        "rgba(40,209,124,.12)";
+
+    document.getElementById("status1").style.borderColor =
+        "rgba(40,209,124,.3)";
+
+    document.getElementById("pendingCount").textContent = "0";
+
+    document.getElementById("verifiedCount").textContent = "1";
+
+    document.getElementById("message").style.display = "block";
+
+    document.getElementById("message").textContent =
+        "Application approved. TikNationStudio would now receive its verification recognition.";
+
+}
+
+function denyApplication() {
+
+    document.getElementById("status1").textContent =
+        "DENIED";
+
+    document.getElementById("status1").style.color =
+        "#ff9ca5";
+
+    document.getElementById("status1").style.background =
+        "rgba(239,91,103,.12)";
+
+    document.getElementById("status1").style.borderColor =
+        "rgba(239,91,103,.3)";
+
+    document.getElementById("pendingCount").textContent = "0";
+
+    document.getElementById("deniedCount").textContent = "1";
+
+    document.getElementById("message").style.display = "block";
+
+    document.getElementById("message").textContent =
+        "Application denied. The creator would remain unverified.";
+
+}
+
+function showDetails() {
+
+    document.getElementById("message").style.display = "block";
+
+    document.getElementById("message").textContent =
+        "Verification review includes authenticity, presence, consistency, reputation, and significance. Verification is earned and cannot be purchased.";
+
+}
+
+</script></body>
+</html>
