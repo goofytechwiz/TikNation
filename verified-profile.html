@@ -135,6 +135,91 @@ const supabaseClient =
 
 async function loadVerifiedProfile(){
 
+    const container =
+        document.getElementById("profile");
+
+    const { data, error } =
+        await supabaseClient
+            .from("verification_applications")
+            .select("username,category,presence,reason,status")
+            .eq("username","TikNationStudio")
+            .eq("status","verified")
+            .limit(1);
+
+    console.log("Verification result:", data);
+    console.log("Verification error:", error);
+
+    if(error){
+
+        container.innerHTML = `
+            <h1>Profile Error</h1>
+            <p class="error">
+                ${error.message}
+            </p>
+        `;
+
+        return;
+    }
+
+    if(!data || data.length === 0){
+
+        container.innerHTML = `
+            <h1>Profile Not Verified</h1>
+            <p class="bio">
+                No verified TikNationStudio record was found.
+            </p>
+        `;
+
+        return;
+    }
+
+    const profile = data[0];
+
+    container.innerHTML = `
+
+        <div class="avatar">
+            T
+        </div>
+
+        <h1>
+            TikNationStudio
+        </h1>
+
+        <div class="verification-badge founder">
+            🟡 FOUNDER MARK
+        </div>
+
+        <div class="username">
+            @TikNationStudio
+        </div>
+
+        <p class="bio">
+            ${profile.presence || "Founder and creator of TikNation."}
+        </p>
+
+        <div class="status">
+
+            <strong>
+                Verification Status
+            </strong>
+
+            <p class="bio">
+                ✓ Verified by TikNation
+            </p>
+
+            <p class="bio">
+                Category: ${profile.category || "Creator"}
+            </p>
+
+        </div>
+
+        <a class="back" href="index.html">
+            ← Back to TikNation
+        </a>
+
+    `;
+}
+
     const params =
         new URLSearchParams(window.location.search);
 
