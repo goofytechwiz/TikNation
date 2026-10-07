@@ -2694,10 +2694,10 @@ async function addTikNationVerificationBadge(){
                 : "verified"
             );
 
-        badge.textContent =
-            username === "TikNationStudio"
-            ? "🟡 FOUNDER MARK"
-            : "🔵 VERIFIED CREATOR";
+        badge.innerHTML =
+    username === "TikNationStudio"
+    ? "👑 <span>✓</span> FOUNDER MARK"
+    : "<span>✓</span> VERIFIED CREATOR";
 
         const heading =
             profileContent.querySelector(
