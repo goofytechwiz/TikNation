@@ -2625,6 +2625,123 @@ function likeVideo(button){
 loadSession();
 
 </script>
+<script>
+async function addTikNationVerificationBadge(){
 
+    const profileContent =
+        document.getElementById("profileContent");
+
+    if(!profileContent || !window.supabase){
+        return;
+    }
+
+    const usernameElement =
+        profileContent.querySelector(
+            ".profile-header p"
+        );
+
+    if(!usernameElement){
+        return;
+    }
+
+    const username =
+        usernameElement.textContent
+            .trim()
+            .replace(/^@/,"");
+
+    if(!username){
+        return;
+    }
+
+    if(
+        profileContent.querySelector(
+            ".verification-badge"
+        )
+    ){
+        return;
+    }
+
+    try{
+
+        const response = await fetch(
+            "https://mekzfezaefcimxncklfj.supabase.co/rest/v1/verification_applications?username=eq."
+            + encodeURIComponent(username)
+            + "&status=eq.verified&select=category,status&order=created_at.desc&limit=1",
+            {
+                headers:{
+                    "apikey":
+                        "sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ",
+                    "Authorization":
+                        "Bearer sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ"
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if(!response.ok || !data.length){
+            return;
+        }
+
+        const badge =
+            document.createElement("div");
+
+        badge.className =
+            "verification-badge "
+            + (
+                username === "TikNationStudio"
+                ? "founder"
+                : "verified"
+            );
+
+        badge.textContent =
+            username === "TikNationStudio"
+            ? "🟡 FOUNDER MARK"
+            : "🔵 VERIFIED CREATOR";
+
+        const heading =
+            profileContent.querySelector(
+                ".profile-header h1"
+            );
+
+        if(heading){
+            heading.insertAdjacentElement(
+                "afterend",
+                badge
+            );
+        }
+
+    }catch(error){
+
+        console.error(
+            "Verification badge error:",
+            error
+        );
+    }
+}
+
+
+const verificationObserver =
+    new MutationObserver(() => {
+        addTikNationVerificationBadge();
+    });
+
+
+const profileContent =
+    document.getElementById("profileContent");
+
+if(profileContent){
+
+    verificationObserver.observe(
+        profileContent,
+        {
+            childList:true,
+            subtree:true
+        }
+    );
+
+    addTikNationVerificationBadge();
+}
+</script>
 </body>
 </html>
