@@ -383,10 +383,6 @@ body::after{
     background:#000;
 }
 
-.video-preview video{
-    aspect-ratio:16/9;
-}
-
 .video-info{
     padding:17px;
 }
@@ -516,6 +512,8 @@ textarea.form-control{
     border-color:#8d63ff;
 }
 
+/* FIXED MOBILE-FRIENDLY FILE PICKER */
+
 .file-box{
     padding:25px;
     border:1px dashed rgba(141,99,255,.4);
@@ -524,9 +522,55 @@ textarea.form-control{
     background:rgba(141,99,255,.04);
 }
 
-.file-box input{
+.file-picker-button{
+    display:flex;
+    align-items:center;
+    justify-content:center;
     width:100%;
+    min-height:58px;
+    padding:14px 18px;
+    border-radius:14px;
+    border:1px solid rgba(141,99,255,.45);
+    background:linear-gradient(
+        135deg,
+        rgba(123,77,255,.18),
+        rgba(0,200,255,.08)
+    );
+    color:white;
+    font-weight:800;
+    cursor:pointer;
+    user-select:none;
+    -webkit-user-select:none;
+    touch-action:manipulation;
+    transition:.2s ease;
+}
+
+.file-picker-button:hover{
+    background:linear-gradient(
+        135deg,
+        rgba(123,77,255,.28),
+        rgba(0,200,255,.14)
+    );
+    border-color:rgba(141,99,255,.7);
+}
+
+.file-picker-button:active{
+    transform:scale(.98);
+}
+
+.file-name{
     margin-top:12px;
+    color:#aaaabd;
+    font-size:13px;
+    word-break:break-word;
+}
+
+#mediaFile{
+    position:absolute;
+    width:1px;
+    height:1px;
+    opacity:0;
+    pointer-events:none;
 }
 
 .progress{
@@ -547,7 +591,11 @@ textarea.form-control{
 .profile-header{
     padding:35px;
     border-radius:25px;
-    background:linear-gradient(135deg,rgba(90,50,200,.25),rgba(0,160,220,.1));
+    background:linear-gradient(
+        135deg,
+        rgba(90,50,200,.25),
+        rgba(0,160,220,.1)
+    );
     border:1px solid rgba(255,255,255,.08);
 }
 
@@ -993,6 +1041,7 @@ textarea.form-control{
     <div class="header-actions">
 
         <button
+            type="button"
             class="icon-button"
             onclick="showPage('notifications')"
             title="Notifications"
@@ -1001,6 +1050,7 @@ textarea.form-control{
         </button>
 
         <button
+            type="button"
             class="icon-button"
             onclick="showPage('messages')"
             title="Messages"
@@ -1009,6 +1059,7 @@ textarea.form-control{
         </button>
 
         <button
+            type="button"
             id="authButton"
             class="auth-button"
             onclick="handleAuthButton()"
@@ -1017,6 +1068,7 @@ textarea.form-control{
         </button>
 
         <button
+            type="button"
             id="profileMini"
             class="profile-mini"
             onclick="openProfileOrAuth()"
@@ -1033,37 +1085,37 @@ textarea.form-control{
 
 <aside class="sidebar">
 
-    <button class="nav-button active" onclick="showPage('home',this)">
+    <button type="button" class="nav-button active" onclick="showPage('home',this)">
         <span class="nav-icon">🏠</span>
         Home
     </button>
 
-    <button class="nav-button" onclick="showPage('watch',this)">
+    <button type="button" class="nav-button" onclick="showPage('watch',this)">
         <span class="nav-icon">▶️</span>
         Watch
     </button>
 
-    <button class="nav-button" onclick="showPage('discover',this)">
+    <button type="button" class="nav-button" onclick="showPage('discover',this)">
         <span class="nav-icon">🌎</span>
         Discover
     </button>
 
-    <button class="nav-button" onclick="requireAuth('create')">
+    <button type="button" class="nav-button" onclick="requireAuth('create')">
         <span class="nav-icon">➕</span>
         Create
     </button>
 
-    <button class="nav-button" onclick="showPage('messages',this)">
+    <button type="button" class="nav-button" onclick="showPage('messages',this)">
         <span class="nav-icon">💬</span>
         Messages
     </button>
 
-    <button class="nav-button" onclick="showPage('notifications',this)">
+    <button type="button" class="nav-button" onclick="showPage('notifications',this)">
         <span class="nav-icon">🔔</span>
         Notifications
     </button>
 
-    <button class="nav-button" onclick="openProfileOrAuth()">
+    <button type="button" class="nav-button" onclick="openProfileOrAuth()">
         <span class="nav-icon">👤</span>
         Profile
     </button>
@@ -1071,8 +1123,6 @@ textarea.form-control{
 </aside>
 
 <main class="main">
-
-<!-- HOME -->
 
 <section id="home" class="page active">
 
@@ -1093,6 +1143,7 @@ textarea.form-control{
         </p>
 
         <button
+            type="button"
             class="primary-button"
             onclick="requireAuth('create')"
         >
@@ -1144,8 +1195,6 @@ textarea.form-control{
 
 </section>
 
-<!-- WATCH -->
-
 <section id="watch" class="page">
 
     <div class="section-head">
@@ -1153,121 +1202,9 @@ textarea.form-control{
         <span class="muted">TikNation videos</span>
     </div>
 
-    <div id="watchGrid" class="video-grid">
-
-        <div class="video-card">
-
-            <div class="video-preview">
-                🎬
-            </div>
-
-            <div class="video-info">
-
-                <h3>TikNation Begins</h3>
-
-                <p>
-                    The beginning of a new creator world.
-                </p>
-
-                <div class="video-actions">
-
-                    <button
-                        class="small-button"
-                        onclick="likeVideo(this)"
-                    >
-                        ❤️ Like
-                    </button>
-
-                    <button
-                        class="small-button"
-                        onclick="showPage('messages')"
-                    >
-                        💬 Comment
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="video-card">
-
-            <div class="video-preview">
-                🌎
-            </div>
-
-            <div class="video-info">
-
-                <h3>Your World</h3>
-
-                <p>
-                    Build something that belongs to you.
-                </p>
-
-                <div class="video-actions">
-
-                    <button
-                        class="small-button"
-                        onclick="likeVideo(this)"
-                    >
-                        ❤️ Like
-                    </button>
-
-                    <button
-                        class="small-button"
-                        onclick="showPage('messages')"
-                    >
-                        💬 Comment
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="video-card">
-
-            <div class="video-preview">
-                ✨
-            </div>
-
-            <div class="video-info">
-
-                <h3>The Future Is Yours</h3>
-
-                <p>
-                    Imagine it. Create it. Share it.
-                </p>
-
-                <div class="video-actions">
-
-                    <button
-                        class="small-button"
-                        onclick="likeVideo(this)"
-                    >
-                        ❤️ Like
-                    </button>
-
-                    <button
-                        class="small-button"
-                        onclick="showPage('messages')"
-                    >
-                        💬 Comment
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+    <div id="watchGrid" class="video-grid"></div>
 
 </section>
-
-<!-- DISCOVER -->
 
 <section id="discover" class="page">
 
@@ -1281,56 +1218,42 @@ textarea.form-control{
         <div class="card">
             <div class="card-icon">🎮</div>
             <h3>Gaming</h3>
-            <p>
-                Games, gameplay, creators and communities.
-            </p>
+            <p>Games, gameplay, creators and communities.</p>
         </div>
 
         <div class="card">
             <div class="card-icon">🎵</div>
             <h3>Music</h3>
-            <p>
-                Discover artists, songs and musical worlds.
-            </p>
+            <p>Discover artists, songs and musical worlds.</p>
         </div>
 
         <div class="card">
             <div class="card-icon">🎨</div>
             <h3>Creative</h3>
-            <p>
-                Art, filmmaking, imagination and creation.
-            </p>
+            <p>Art, filmmaking, imagination and creation.</p>
         </div>
 
         <div class="card">
             <div class="card-icon">🎬</div>
             <h3>Entertainment</h3>
-            <p>
-                Stories, shows, movies and experiences.
-            </p>
+            <p>Stories, shows, movies and experiences.</p>
         </div>
 
         <div class="card">
             <div class="card-icon">🚀</div>
             <h3>Future</h3>
-            <p>
-                Technology, ideas and what's coming next.
-            </p>
+            <p>Technology, ideas and what's coming next.</p>
         </div>
 
         <div class="card">
             <div class="card-icon">👥</div>
             <h3>Communities</h3>
-            <p>
-                Find people who share your interests.
-            </p>
+            <p>Find people who share your interests.</p>
         </div>
 
     </div>
 
 </section>
-
-<!-- CREATE -->
 
 <section id="create" class="page">
 
@@ -1352,33 +1275,25 @@ textarea.form-control{
             <div class="tool">
                 <div class="tool-icon">🎬</div>
                 <h3>Create Post</h3>
-                <p>
-                    Create your first TikNation post.
-                </p>
+                <p>Create your first TikNation post.</p>
             </div>
 
             <div class="tool">
                 <div class="tool-icon">📤</div>
                 <h3>Upload Media</h3>
-                <p>
-                    Upload images and videos to your creator library.
-                </p>
+                <p>Upload images and videos to your creator library.</p>
             </div>
 
             <div class="tool">
                 <div class="tool-icon">📊</div>
                 <h3>Analytics</h3>
-                <p>
-                    Creator analytics will connect to your content.
-                </p>
+                <p>Creator analytics will connect to your content.</p>
             </div>
 
             <div class="tool">
                 <div class="tool-icon">🌎</div>
                 <h3>Your World</h3>
-                <p>
-                    Build your identity and creative presence.
-                </p>
+                <p>Build your identity and creative presence.</p>
             </div>
 
         </div>
@@ -1431,9 +1346,26 @@ textarea.form-control{
 
                 <div class="file-box">
 
-                    <strong>
-                        📁 Choose an image or video
-                    </strong>
+                    <label
+                        for="mediaFile"
+                        class="file-picker-button"
+                    >
+                        📁 CHOOSE AN IMAGE OR VIDEO
+                    </label>
+
+                    <input
+                        id="mediaFile"
+                        type="file"
+                        accept="image/*,video/*"
+                        onchange="handleMediaSelection(this)"
+                    >
+
+                    <div
+                        id="fileName"
+                        class="file-name"
+                    >
+                        No file chosen
+                    </div>
 
                     <p
                         class="muted"
@@ -1441,12 +1373,6 @@ textarea.form-control{
                     >
                         Your media will be uploaded to TikNation storage.
                     </p>
-
-                    <input
-                        id="mediaFile"
-                        type="file"
-                        accept="image/*,video/*"
-                    >
 
                 </div>
 
@@ -1462,6 +1388,7 @@ textarea.form-control{
             </div>
 
             <button
+                type="button"
                 id="publishButton"
                 class="primary-button"
                 onclick="publishCreation()"
@@ -1480,8 +1407,6 @@ textarea.form-control{
     </div>
 
 </section>
-
-<!-- MESSAGES -->
 
 <section id="messages" class="page">
 
@@ -1518,8 +1443,6 @@ textarea.form-control{
 
 </section>
 
-<!-- NOTIFICATIONS -->
-
 <section id="notifications" class="page">
 
     <div class="section-head">
@@ -1543,8 +1466,6 @@ textarea.form-control{
 
 </section>
 
-<!-- PROFILE -->
-
 <section id="profile" class="page">
 
     <div id="profileContent">
@@ -1562,6 +1483,7 @@ textarea.form-control{
             </p>
 
             <button
+                type="button"
                 class="primary-button"
                 onclick="openAuthModal('signin')"
             >
@@ -1573,8 +1495,6 @@ textarea.form-control{
     </div>
 
 </section>
-
-<!-- SEARCH -->
 
 <section id="searchPage" class="page">
 
@@ -1591,14 +1511,12 @@ textarea.form-control{
 </section>
 
 </main>
-
 </div>
-
-<!-- MOBILE NAV -->
 
 <nav class="mobile-nav">
 
     <button
+        type="button"
         class="active"
         onclick="showPage('home',this)"
     >
@@ -1606,29 +1524,39 @@ textarea.form-control{
         Home
     </button>
 
-    <button onclick="showPage('watch',this)">
+    <button
+        type="button"
+        onclick="showPage('watch',this)"
+    >
         <span>▶️</span>
         Watch
     </button>
 
-    <button onclick="requireAuth('create')">
+    <button
+        type="button"
+        onclick="requireAuth('create')"
+    >
         <span>➕</span>
         Create
     </button>
 
-    <button onclick="showPage('discover',this)">
+    <button
+        type="button"
+        onclick="showPage('discover',this)"
+    >
         <span>🌎</span>
         Discover
     </button>
 
-    <button onclick="openProfileOrAuth()">
+    <button
+        type="button"
+        onclick="openProfileOrAuth()"
+    >
         <span>👤</span>
         Profile
     </button>
 
 </nav>
-
-<!-- AUTH MODAL -->
 
 <div
     id="authModal"
@@ -1644,6 +1572,7 @@ textarea.form-control{
             </h2>
 
             <button
+                type="button"
                 class="close-button"
                 onclick="closeAuthModal()"
             >
@@ -1655,6 +1584,7 @@ textarea.form-control{
         <div class="auth-tabs">
 
             <button
+                type="button"
                 id="signinTab"
                 class="auth-tab active"
                 onclick="switchAuthMode('signin')"
@@ -1663,6 +1593,7 @@ textarea.form-control{
             </button>
 
             <button
+                type="button"
                 id="signupTab"
                 class="auth-tab"
                 onclick="switchAuthMode('signup')"
@@ -1727,6 +1658,7 @@ textarea.form-control{
         </div>
 
         <button
+            type="button"
             id="authSubmit"
             class="primary-button auth-submit"
             onclick="submitAuth()"
@@ -1764,7 +1696,7 @@ let authMode = "signin";
    PAGE NAVIGATION
 ========================= */
 
-function showPage(pageId, button){
+function showPage(pageId,button){
 
     document.querySelectorAll(".page")
         .forEach(function(page){
@@ -2040,33 +1972,24 @@ async function submitAuth(){
 function handleAuthButton(){
 
     if(currentUser){
-
         signOutUser();
-
     }else{
-
         openAuthModal("signin");
-
     }
 }
 
 function openProfileOrAuth(){
 
     if(currentUser){
-
         showPage("profile");
-
     }else{
-
         openAuthModal("signin");
-
     }
 }
 
 function requireAuth(pageId){
 
     if(!currentUser){
-
         openAuthModal("signin");
         return;
     }
@@ -2138,19 +2061,19 @@ async function ensureProfile(user){
             .maybeSingle();
 
     if(error){
+
         console.error(
             "Profile lookup error:",
             error
         );
+
         return;
     }
 
     if(data){
 
         currentProfile = data;
-
         updateAuthUI();
-
         return;
     }
 
@@ -2171,11 +2094,8 @@ async function ensureProfile(user){
             .insert({
 
                 id:user.id,
-
                 username:username,
-
                 display_name:displayName,
-
                 bio:"Creating my world on TikNation."
 
             })
@@ -2193,7 +2113,6 @@ async function ensureProfile(user){
     }
 
     currentProfile = created;
-
     updateAuthUI();
 }
 
@@ -2221,6 +2140,7 @@ async function loadProfilePage(){
                 </p>
 
                 <button
+                    type="button"
                     class="primary-button"
                     onclick="openAuthModal('signin')"
                 >
@@ -2235,7 +2155,6 @@ async function loadProfilePage(){
     }
 
     if(!currentProfile){
-
         await ensureProfile(currentUser);
     }
 
@@ -2273,12 +2192,10 @@ async function loadProfilePage(){
             </p>
 
             <p style="margin-top:12px;">
-                ${
-                    escapeHtml(
-                        profile.bio ||
-                        "Creating my world on TikNation."
-                    )
-                }
+                ${escapeHtml(
+                    profile.bio ||
+                    "Creating my world on TikNation."
+                )}
             </p>
 
             <div class="stats">
@@ -2306,6 +2223,7 @@ async function loadProfilePage(){
             </p>
 
             <button
+                type="button"
                 class="primary-button"
                 onclick="signOutUser()"
             >
@@ -2444,6 +2362,7 @@ async function loadProfileCreations(){
                 </p>
 
                 <button
+                    type="button"
                     class="primary-button"
                     onclick="showPage('create')"
                 >
@@ -2459,9 +2378,7 @@ async function loadProfileCreations(){
 
     container.innerHTML =
         data.map(function(post){
-
             return renderProfileCreation(post);
-
         }).join("");
 }
 
@@ -2483,7 +2400,8 @@ function renderProfileCreation(post){
 
                 <h3>
                     ${escapeHtml(
-                        post.title || "Untitled Creation"
+                        post.title ||
+                        "Untitled Creation"
                     )}
                 </h3>
 
@@ -2598,6 +2516,7 @@ async function loadWatchFeed(){
                 </p>
 
                 <button
+                    type="button"
                     class="primary-button"
                     onclick="requireAuth('create')"
                 >
@@ -2613,9 +2532,7 @@ async function loadWatchFeed(){
 
     grid.innerHTML =
         data.map(function(post){
-
             return renderWatchPost(post);
-
         }).join("");
 }
 
@@ -2662,6 +2579,7 @@ function renderWatchPost(post){
                 <div class="video-actions">
 
                     <button
+                        type="button"
                         class="small-button"
                         onclick="likeVideo(this)"
                     >
@@ -2669,6 +2587,7 @@ function renderWatchPost(post){
                     </button>
 
                     <button
+                        type="button"
                         class="small-button"
                         onclick="showPage('messages')"
                     >
@@ -2696,9 +2615,7 @@ function renderMediaElement(post,className){
             post.media_url || ""
         );
 
-    if(
-        mediaType.startsWith("video/")
-    ){
+    if(mediaType.startsWith("video/")){
 
         return `
 
@@ -2721,9 +2638,7 @@ function renderMediaElement(post,className){
         `;
     }
 
-    if(
-        mediaType.startsWith("image/")
-    ){
+    if(mediaType.startsWith("image/")){
 
         return `
 
@@ -2750,6 +2665,40 @@ function renderMediaElement(post,className){
         </div>
 
     `;
+}
+
+/* =========================
+   FILE PICKER
+========================= */
+
+function handleMediaSelection(input){
+
+    const fileName =
+        document.getElementById("fileName");
+
+    if(!fileName){
+        return;
+    }
+
+    if(input.files && input.files.length > 0){
+
+        const file =
+            input.files[0];
+
+        fileName.textContent =
+            "Selected: " + file.name;
+
+        fileName.style.color =
+            "#64e6a7";
+
+    }else{
+
+        fileName.textContent =
+            "No file chosen";
+
+        fileName.style.color =
+            "";
+    }
 }
 
 /* =========================
@@ -2863,7 +2812,10 @@ async function publishCreation(){
         );
 
     const file =
-        fileInput.files[0];
+        fileInput.files &&
+        fileInput.files.length > 0
+            ? fileInput.files[0]
+            : null;
 
     const message =
         document.getElementById(
@@ -2947,11 +2899,10 @@ async function publishCreation(){
             "TikNationCreator";
 
         const safeName =
-            file.name
-                .replace(
-                    /[^a-zA-Z0-9._-]/g,
-                    "_"
-                );
+            file.name.replace(
+                /[^a-zA-Z0-9._-]/g,
+                "_"
+            );
 
         const path =
             currentUser.id +
@@ -3089,6 +3040,20 @@ async function publishCreation(){
         ).value = "";
 
         fileInput.value = "";
+
+        const fileName =
+            document.getElementById(
+                "fileName"
+            );
+
+        if(fileName){
+
+            fileName.textContent =
+                "No file chosen";
+
+            fileName.style.color =
+                "";
+        }
 
         await loadWatchFeed();
 
@@ -3357,8 +3322,8 @@ async function addTikNationVerificationBadge(){
             );
 
         badge.className =
-            "verification-badge "
-            + (
+            "verification-badge " +
+            (
                 username === "TikNationStudio"
                     ? "founder"
                     : "verified"
