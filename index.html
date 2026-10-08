@@ -3912,9 +3912,9 @@ async function publishCreation(){
         const {
             data:publicData
         } =
-            supabaseClient.storage
-                .from("creator-media")
-                .getPublicUrl(path);
+        supabaseClient.storage
+            .from("creator-media")
+            .getPublicUrl(path);
 
         const publicUrl =
             publicData?.publicUrl;
@@ -4205,32 +4205,25 @@ loadSession();
 async function addTikNationVerificationBadge(){
 
     const profileContent =
-        document.getElementById(
-            "profileContent"
-        );
+        document.getElementById("profileContent");
 
     if(
         !profileContent ||
-        !window.supabase
+        !currentUser
     ){
         return;
     }
 
-    const usernameElement =
-        profileContent.querySelector(
-            ".profile-header p"
-        );
+    const profileHeader =
+        profileContent.querySelector(".profile-header");
 
-    if(!usernameElement){
-        return;
-    }
+    const heading =
+        profileContent.querySelector(".profile-header h1");
 
-    const username =
-        usernameElement.textContent
-            .trim()
-            .replace(/^@/,"");
-
-    if(!username){
+    if(
+        !profileHeader ||
+        !heading
+    ){
         return;
     }
 
@@ -4246,16 +4239,22 @@ async function addTikNationVerificationBadge(){
 
         const response =
             await fetch(
-                "https://mekzfezaefcimxncklfj.supabase.co/rest/v1/verification_applications?username=eq."
-                + encodeURIComponent(username)
-                + "&status=eq.verified&select=category,status&order=created_at.desc&limit=1",
+                SUPABASE_URL +
+                "/rest/v1/verification_applications" +
+                "?user_id=eq." +
+                encodeURIComponent(currentUser.id) +
+                "&status=eq.verified" +
+                "&select=category,status" +
+                "&order=created_at.desc" +
+                "&limit=1",
                 {
                     headers:{
                         "apikey":
-                            "sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ",
+                            SUPABASE_PUBLISHABLE_KEY,
 
                         "Authorization":
-                            "Bearer sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ"
+                            "Bearer " +
+                            SUPABASE_PUBLISHABLE_KEY
                     }
                 }
             );
@@ -4265,42 +4264,36 @@ async function addTikNationVerificationBadge(){
 
         if(
             !response.ok ||
-            !data.length
+            !Array.isArray(data) ||
+            data.length === 0
         ){
             return;
         }
 
         const badge =
-            document.createElement(
-                "div"
-            );
+            document.createElement("div");
+
+        const isFounder =
+            currentProfile?.username ===
+            "TikNationStudio";
 
         badge.className =
             "verification-badge " +
             (
-                username === "TikNationStudio"
+                isFounder
                     ? "founder"
                     : "verified"
             );
 
         badge.innerHTML =
-            username === "TikNationStudio"
+            isFounder
                 ? "👑 <span class=\"verification-check\">✓</span> FOUNDER MARK"
                 : "<span class=\"verification-check\">✓</span> VERIFIED CREATOR";
 
-        const heading =
-            profileContent.querySelector(
-                ".profile-header h1"
-            );
-
-        if(heading){
-
-            heading.insertAdjacentElement(
-                "afterend",
-                badge
-            );
-
-        }
+        heading.insertAdjacentElement(
+            "afterend",
+            badge
+        );
 
     }catch(error){
 
@@ -4308,6 +4301,7 @@ async function addTikNationVerificationBadge(){
             "Verification badge error:",
             error
         );
+
     }
 }
 
@@ -4318,15 +4312,15 @@ const verificationObserver =
 
     });
 
-const profileContent =
+const verificationProfileContent =
     document.getElementById(
         "profileContent"
     );
 
-if(profileContent){
+if(verificationProfileContent){
 
     verificationObserver.observe(
-        profileContent,
+        verificationProfileContent,
         {
             childList:true,
             subtree:true
