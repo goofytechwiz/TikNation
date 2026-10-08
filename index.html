@@ -424,6 +424,120 @@ body::after{
     background:rgba(141,99,255,.08);
 }
 
+.small-button.liked{
+    color:#ff6b91;
+    border-color:rgba(255,80,130,.35);
+    background:rgba(255,80,130,.08);
+}
+
+.small-button.following{
+    color:#64e6a7;
+    border-color:rgba(100,230,167,.35);
+    background:rgba(100,230,167,.08);
+}
+
+.action-count{
+    opacity:.75;
+    margin-left:3px;
+}
+
+.comments-panel{
+    display:none;
+    margin-top:15px;
+    padding-top:15px;
+    border-top:1px solid rgba(255,255,255,.07);
+}
+
+.comments-panel.active{
+    display:block;
+}
+
+.comment-list{
+    max-height:260px;
+    overflow-y:auto;
+}
+
+.comment{
+    padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.comment:last-child{
+    border-bottom:0;
+}
+
+.comment-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.comment-user{
+    color:#9c7cff;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.comment-text{
+    margin-top:4px;
+    color:#ddd;
+    font-size:13px;
+    line-height:1.5;
+}
+
+.comment-delete{
+    border:0;
+    background:none;
+    color:#77778a;
+    font-size:11px;
+}
+
+.comment-delete:hover{
+    color:#ff7f96;
+}
+
+.comment-form{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+}
+
+.comment-input{
+    flex:1;
+    min-width:0;
+    padding:9px 12px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.04);
+    color:white;
+    outline:none;
+}
+
+.comment-input:focus{
+    border-color:#8d63ff;
+}
+
+.comment-submit{
+    padding:9px 14px;
+    border-radius:18px;
+    border:0;
+    color:white;
+    background:#7b4dff;
+}
+
+.follow-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:10px;
+}
+
+.follow-count{
+    color:#77778a;
+    font-size:12px;
+}
+
 /* CREATOR STUDIO */
 
 .creator-panel{
@@ -512,7 +626,7 @@ textarea.form-control{
     border-color:#8d63ff;
 }
 
-/* FIXED MOBILE-FRIENDLY FILE PICKER */
+/* FILE PICKER */
 
 .file-box{
     padding:25px;
@@ -727,6 +841,8 @@ textarea.form-control{
     font-size:13px;
     line-height:1.5;
 }
+
+/* MESSAGES */
 
 .message-box{
     padding:25px;
@@ -1017,6 +1133,14 @@ textarea.form-control{
     .stats{
         gap:18px;
     }
+
+    .comment-form{
+        flex-direction:column;
+    }
+
+    .comment-submit{
+        width:100%;
+    }
 }
 </style>
 </head>
@@ -1302,10 +1426,7 @@ textarea.form-control{
 
             <h2>Create a TikNation Post</h2>
 
-            <p
-                class="muted"
-                style="margin:8px 0 25px;"
-            >
+            <p class="muted" style="margin:8px 0 25px;">
                 Your first real creator workspace.
             </p>
 
@@ -1367,10 +1488,7 @@ textarea.form-control{
                         No file chosen
                     </div>
 
-                    <p
-                        class="muted"
-                        style="margin-top:8px;"
-                    >
+                    <p class="muted" style="margin-top:8px;">
                         Your media will be uploaded to TikNation storage.
                     </p>
 
@@ -1515,53 +1633,34 @@ textarea.form-control{
 
 <nav class="mobile-nav">
 
-    <button
-        type="button"
-        class="active"
-        onclick="showPage('home',this)"
-    >
+    <button type="button" class="active" onclick="showPage('home',this)">
         <span>🏠</span>
         Home
     </button>
 
-    <button
-        type="button"
-        onclick="showPage('watch',this)"
-    >
+    <button type="button" onclick="showPage('watch',this)">
         <span>▶️</span>
         Watch
     </button>
 
-    <button
-        type="button"
-        onclick="requireAuth('create')"
-    >
+    <button type="button" onclick="requireAuth('create')">
         <span>➕</span>
         Create
     </button>
 
-    <button
-        type="button"
-        onclick="showPage('discover',this)"
-    >
+    <button type="button" onclick="showPage('discover',this)">
         <span>🌎</span>
         Discover
     </button>
 
-    <button
-        type="button"
-        onclick="openProfileOrAuth()"
-    >
+    <button type="button" onclick="openProfileOrAuth()">
         <span>👤</span>
         Profile
     </button>
 
 </nav>
 
-<div
-    id="authModal"
-    class="modal"
->
+<div id="authModal" class="modal">
 
     <div class="modal-card">
 
@@ -2206,7 +2305,7 @@ async function loadProfilePage(){
                 </div>
 
                 <div class="stat">
-                    <strong>0</strong>
+                    <strong id="profileFollowingCount">0</strong>
                     <span>Following</span>
                 </div>
 
@@ -2263,7 +2362,59 @@ async function loadProfilePage(){
         </div>
     `;
 
+    await loadProfileStats();
     await loadProfileCreations();
+}
+
+async function loadProfileStats(){
+
+    if(!currentUser){
+        return;
+    }
+
+    const {
+        count:followerCount,
+        error:followerError
+    } =
+        await supabaseClient
+            .from("follows")
+            .select("id",{count:"exact",head:true})
+            .eq("following_id",currentUser.id);
+
+    if(!followerError){
+
+        const element =
+            document.getElementById(
+                "profileFollowerCount"
+            );
+
+        if(element){
+            element.textContent =
+                followerCount || 0;
+        }
+    }
+
+    const {
+        count:followingCount,
+        error:followingError
+    } =
+        await supabaseClient
+            .from("follows")
+            .select("id",{count:"exact",head:true})
+            .eq("follower_id",currentUser.id);
+
+    if(!followingError){
+
+        const element =
+            document.getElementById(
+                "profileFollowingCount"
+            );
+
+        if(element){
+            element.textContent =
+                followingCount || 0;
+        }
+    }
 }
 
 /* =========================
@@ -2534,6 +2685,8 @@ async function loadWatchFeed(){
         data.map(function(post){
             return renderWatchPost(post);
         }).join("");
+
+    await hydrateWatchInteractions(data);
 }
 
 function renderWatchPost(post){
@@ -2544,11 +2697,16 @@ function renderWatchPost(post){
             "video-preview"
         );
 
+    const isOwnPost =
+        currentUser &&
+        post.user_id === currentUser.id;
+
     return `
 
         <article
             class="video-card"
             data-post-id="${escapeHtml(post.id)}"
+            data-creator-id="${escapeHtml(post.user_id)}"
         >
 
             ${media}
@@ -2576,23 +2734,115 @@ function renderWatchPost(post){
                     )}
                 </p>
 
+                ${
+                    !isOwnPost
+                    ? `
+                        <div class="follow-row">
+
+                            <span
+                                class="follow-count"
+                                id="follow-count-${escapeHtml(post.id)}"
+                            >
+                                Followers
+                            </span>
+
+                            <button
+                                type="button"
+                                class="small-button"
+                                id="follow-button-${escapeHtml(post.id)}"
+                                onclick="toggleFollow('${escapeJs(post.user_id)}','${escapeJs(post.id)}')"
+                            >
+                                + Follow
+                            </button>
+
+                        </div>
+                    `
+                    : ""
+                }
+
                 <div class="video-actions">
 
                     <button
                         type="button"
                         class="small-button"
-                        onclick="likeVideo(this)"
+                        id="like-button-${escapeHtml(post.id)}"
+                        onclick="toggleLike('${escapeJs(post.id)}')"
                     >
                         ❤️ Like
+                        <span
+                            class="action-count"
+                            id="like-count-${escapeHtml(post.id)}"
+                        >
+                            0
+                        </span>
                     </button>
 
                     <button
                         type="button"
                         class="small-button"
-                        onclick="showPage('messages')"
+                        id="comment-button-${escapeHtml(post.id)}"
+                        onclick="toggleComments('${escapeJs(post.id)}')"
                     >
                         💬 Comment
+                        <span
+                            class="action-count"
+                            id="comment-count-${escapeHtml(post.id)}"
+                        >
+                            0
+                        </span>
                     </button>
+
+                </div>
+
+                <div
+                    id="comments-panel-${escapeHtml(post.id)}"
+                    class="comments-panel"
+                >
+
+                    <div
+                        id="comment-list-${escapeHtml(post.id)}"
+                        class="comment-list"
+                    >
+                        <p class="muted">
+                            Loading comments...
+                        </p>
+                    </div>
+
+                    ${
+                        currentUser
+                        ? `
+                            <div class="comment-form">
+
+                                <input
+                                    id="comment-input-${escapeHtml(post.id)}"
+                                    class="comment-input"
+                                    type="text"
+                                    maxlength="500"
+                                    placeholder="Add a comment..."
+                                    onkeydown="handleCommentKey(event,'${escapeJs(post.id)}')"
+                                >
+
+                                <button
+                                    type="button"
+                                    class="comment-submit"
+                                    onclick="submitComment('${escapeJs(post.id)}')"
+                                >
+                                    SEND
+                                </button>
+
+                            </div>
+                        `
+                        : `
+                            <button
+                                type="button"
+                                class="small-button"
+                                style="margin-top:12px;"
+                                onclick="openAuthModal('signin')"
+                            >
+                                SIGN IN TO COMMENT
+                            </button>
+                        `
+                    }
 
                 </div>
 
@@ -2602,6 +2852,727 @@ function renderWatchPost(post){
 
     `;
 }
+
+async function hydrateWatchInteractions(posts){
+
+    for(const post of posts){
+
+        await loadLikeState(post.id);
+        await loadCommentCount(post.id);
+
+        if(
+            currentUser &&
+            post.user_id !== currentUser.id
+        ){
+            await loadFollowState(
+                post.user_id,
+                post.id
+            );
+        }
+    }
+}
+
+/* =========================
+   LIKES
+========================= */
+
+async function loadLikeState(postId){
+
+    const {
+        count,
+        error
+    } =
+        await supabaseClient
+            .from("post_likes")
+            .select("id",{count:"exact",head:true})
+            .eq("post_id",postId);
+
+    if(error){
+
+        console.error(
+            "Like count error:",
+            error
+        );
+
+        return;
+    }
+
+    const countElement =
+        document.getElementById(
+            "like-count-" + postId
+        );
+
+    if(countElement){
+        countElement.textContent =
+            count || 0;
+    }
+
+    if(!currentUser){
+        return;
+    }
+
+    const {
+        data,
+        error:userLikeError
+    } =
+        await supabaseClient
+            .from("post_likes")
+            .select("id")
+            .eq("post_id",postId)
+            .eq("user_id",currentUser.id)
+            .limit(1);
+
+    if(userLikeError){
+
+        console.error(
+            "User like lookup error:",
+            userLikeError
+        );
+
+        return;
+    }
+
+    const button =
+        document.getElementById(
+            "like-button-" + postId
+        );
+
+    if(!button){
+        return;
+    }
+
+    if(data && data.length > 0){
+
+        button.classList.add("liked");
+
+        button.innerHTML =
+            "❤️ Liked <span class=\"action-count\" id=\"like-count-" +
+            escapeHtml(postId) +
+            "\">" +
+            (count || 0) +
+            "</span>";
+
+    }else{
+
+        button.classList.remove("liked");
+    }
+}
+
+async function toggleLike(postId){
+
+    if(!currentUser){
+
+        openAuthModal("signin");
+        return;
+    }
+
+    const button =
+        document.getElementById(
+            "like-button-" + postId
+        );
+
+    if(button){
+        button.disabled = true;
+    }
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("post_likes")
+                .select("id")
+                .eq("post_id",postId)
+                .eq("user_id",currentUser.id)
+                .limit(1);
+
+        if(error){
+            throw error;
+        }
+
+        if(data && data.length > 0){
+
+            const {
+                error:deleteError
+            } =
+                await supabaseClient
+                    .from("post_likes")
+                    .delete()
+                    .eq("id",data[0].id)
+                    .eq("user_id",currentUser.id);
+
+            if(deleteError){
+                throw deleteError;
+            }
+
+        }else{
+
+            const {
+                error:insertError
+            } =
+                await supabaseClient
+                    .from("post_likes")
+                    .insert({
+
+                        post_id:postId,
+                        user_id:currentUser.id
+
+                    });
+
+            if(insertError){
+                throw insertError;
+            }
+        }
+
+        await loadLikeState(postId);
+
+    }catch(error){
+
+        console.error(
+            "Like error:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Unable to update your like."
+        );
+
+    }finally{
+
+        if(button){
+            button.disabled = false;
+        }
+    }
+}
+
+/* =========================
+   COMMENTS
+========================= */
+
+async function loadCommentCount(postId){
+
+    const {
+        count,
+        error
+    } =
+        await supabaseClient
+            .from("post_comments")
+            .select("id",{count:"exact",head:true})
+            .eq("post_id",postId);
+
+    if(error){
+
+        console.error(
+            "Comment count error:",
+            error
+        );
+
+        return;
+    }
+
+    const element =
+        document.getElementById(
+            "comment-count-" + postId
+        );
+
+    if(element){
+        element.textContent =
+            count || 0;
+    }
+}
+
+async function toggleComments(postId){
+
+    const panel =
+        document.getElementById(
+            "comments-panel-" + postId
+        );
+
+    if(!panel){
+        return;
+    }
+
+    const opening =
+        !panel.classList.contains("active");
+
+    panel.classList.toggle(
+        "active",
+        opening
+    );
+
+    if(opening){
+
+        await loadComments(postId);
+
+        const input =
+            document.getElementById(
+                "comment-input-" + postId
+            );
+
+        if(input){
+            input.focus();
+        }
+    }
+}
+
+async function loadComments(postId){
+
+    const list =
+        document.getElementById(
+            "comment-list-" + postId
+        );
+
+    if(!list){
+        return;
+    }
+
+    list.innerHTML = `
+
+        <p class="muted">
+            Loading comments...
+        </p>
+
+    `;
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("post_comments")
+            .select(
+                "id,created_at,post_id,user_id,username,comment"
+            )
+            .eq("post_id",postId)
+            .order("created_at",{ascending:true});
+
+    if(error){
+
+        console.error(
+            "Comments load error:",
+            error
+        );
+
+        list.innerHTML = `
+
+            <p class="auth-message error">
+                ${escapeHtml(error.message)}
+            </p>
+
+        `;
+
+        return;
+    }
+
+    if(!data || data.length === 0){
+
+        list.innerHTML = `
+
+            <p class="muted">
+                No comments yet. Be the first.
+            </p>
+
+        `;
+
+        return;
+    }
+
+    list.innerHTML =
+        data.map(function(comment){
+
+            const ownComment =
+                currentUser &&
+                comment.user_id === currentUser.id;
+
+            return `
+
+                <div class="comment">
+
+                    <div class="comment-top">
+
+                        <span class="comment-user">
+                            @${escapeHtml(
+                                comment.username ||
+                                "TikNationCreator"
+                            )}
+                        </span>
+
+                        ${
+                            ownComment
+                            ? `
+                                <button
+                                    type="button"
+                                    class="comment-delete"
+                                    onclick="deleteComment('${escapeJs(comment.id)}','${escapeJs(postId)}')"
+                                >
+                                    Delete
+                                </button>
+                            `
+                            : ""
+                        }
+
+                    </div>
+
+                    <div class="comment-text">
+                        ${escapeHtml(comment.comment)}
+                    </div>
+
+                </div>
+
+            `;
+        }).join("");
+}
+
+function handleCommentKey(event,postId){
+
+    if(
+        event.key === "Enter" &&
+        !event.shiftKey
+    ){
+
+        event.preventDefault();
+
+        submitComment(postId);
+    }
+}
+
+async function submitComment(postId){
+
+    if(!currentUser){
+
+        openAuthModal("signin");
+        return;
+    }
+
+    const input =
+        document.getElementById(
+            "comment-input-" + postId
+        );
+
+    if(!input){
+        return;
+    }
+
+    const comment =
+        input.value.trim();
+
+    if(!comment){
+        return;
+    }
+
+    const username =
+        currentProfile?.username ||
+        currentUser.user_metadata?.username ||
+        "TikNationCreator";
+
+    const button =
+        input.parentElement
+            ?.querySelector(".comment-submit");
+
+    if(button){
+        button.disabled = true;
+    }
+
+    try{
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("post_comments")
+                .insert({
+
+                    post_id:postId,
+                    user_id:currentUser.id,
+                    username:username,
+                    comment:comment
+
+                });
+
+        if(error){
+            throw error;
+        }
+
+        input.value = "";
+
+        await loadComments(postId);
+        await loadCommentCount(postId);
+
+    }catch(error){
+
+        console.error(
+            "Comment submit error:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Unable to post your comment."
+        );
+
+    }finally{
+
+        if(button){
+            button.disabled = false;
+        }
+    }
+}
+
+async function deleteComment(commentId,postId){
+
+    if(!currentUser){
+        return;
+    }
+
+    try{
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("post_comments")
+                .delete()
+                .eq("id",commentId)
+                .eq("user_id",currentUser.id);
+
+        if(error){
+            throw error;
+        }
+
+        await loadComments(postId);
+        await loadCommentCount(postId);
+
+    }catch(error){
+
+        console.error(
+            "Comment delete error:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Unable to delete your comment."
+        );
+    }
+}
+
+/* =========================
+   FOLLOWS
+========================= */
+
+async function loadFollowState(creatorId,postId){
+
+    if(!currentUser || creatorId === currentUser.id){
+        return;
+    }
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("follows")
+            .select("id")
+            .eq("follower_id",currentUser.id)
+            .eq("following_id",creatorId)
+            .limit(1);
+
+    if(error){
+
+        console.error(
+            "Follow lookup error:",
+            error
+        );
+
+        return;
+    }
+
+    const button =
+        document.getElementById(
+            "follow-button-" + postId
+        );
+
+    if(data && data.length > 0){
+
+        if(button){
+
+            button.textContent =
+                "✓ Following";
+
+            button.classList.add(
+                "following"
+            );
+        }
+
+    }else{
+
+        if(button){
+
+            button.textContent =
+                "+ Follow";
+
+            button.classList.remove(
+                "following"
+            );
+        }
+    }
+
+    await loadCreatorFollowerCount(
+        creatorId,
+        postId
+    );
+}
+
+async function loadCreatorFollowerCount(
+    creatorId,
+    postId
+){
+
+    const {
+        count,
+        error
+    } =
+        await supabaseClient
+            .from("follows")
+            .select("id",{count:"exact",head:true})
+            .eq("following_id",creatorId);
+
+    if(error){
+        return;
+    }
+
+    const element =
+        document.getElementById(
+            "follow-count-" + postId
+        );
+
+    if(element){
+
+        element.textContent =
+            (count || 0) +
+            (
+                count === 1
+                    ? " follower"
+                    : " followers"
+            );
+    }
+}
+
+async function toggleFollow(
+    creatorId,
+    postId
+){
+
+    if(!currentUser){
+
+        openAuthModal("signin");
+        return;
+    }
+
+    if(
+        creatorId ===
+        currentUser.id
+    ){
+        return;
+    }
+
+    const button =
+        document.getElementById(
+            "follow-button-" + postId
+        );
+
+    if(button){
+        button.disabled = true;
+    }
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("follows")
+                .select("id")
+                .eq("follower_id",currentUser.id)
+                .eq("following_id",creatorId)
+                .limit(1);
+
+        if(error){
+            throw error;
+        }
+
+        if(data && data.length > 0){
+
+            const {
+                error:deleteError
+            } =
+                await supabaseClient
+                    .from("follows")
+                    .delete()
+                    .eq("id",data[0].id)
+                    .eq(
+                        "follower_id",
+                        currentUser.id
+                    );
+
+            if(deleteError){
+                throw deleteError;
+            }
+
+        }else{
+
+            const {
+                error:insertError
+            } =
+                await supabaseClient
+                    .from("follows")
+                    .insert({
+
+                        follower_id:
+                            currentUser.id,
+
+                        following_id:
+                            creatorId
+
+                    });
+
+            if(insertError){
+                throw insertError;
+            }
+        }
+
+        await loadFollowState(
+            creatorId,
+            postId
+        );
+
+    }catch(error){
+
+        console.error(
+            "Follow error:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Unable to update your follow."
+        );
+
+    }finally{
+
+        if(button){
+            button.disabled = false;
+        }
+    }
+}
+
+/* =========================
+   MEDIA
+========================= */
 
 function renderMediaElement(post,className){
 
@@ -3207,31 +4178,14 @@ function escapeHtml(text){
     return div.innerHTML;
 }
 
-/* =========================
-   LIKE
-========================= */
+function escapeJs(text){
 
-function likeVideo(button){
-
-    if(
-        button.dataset.liked ===
-        "true"
-    ){
-
-        button.dataset.liked =
-            "false";
-
-        button.innerHTML =
-            "❤️ Like";
-
-    }else{
-
-        button.dataset.liked =
-            "true";
-
-        button.innerHTML =
-            "❤️ Liked";
-    }
+    return String(text == null ? "" : text)
+        .replace(/\\/g,"\\\\")
+        .replace(/'/g,"\\'")
+        .replace(/"/g,"&quot;")
+        .replace(/\n/g,"\\n")
+        .replace(/\r/g,"\\r");
 }
 
 /* =========================
