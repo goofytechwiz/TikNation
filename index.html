@@ -2361,7 +2361,23 @@ async function loadProfilePage(){
 
         <div id="verificationAdminPanel" class="card" style="display:none;margin-bottom:28px;">
             <h2>👑 TikNation Command Center</h2>
-            <p class="muted">Verification application review</p>
+            <p class="muted">Build the platform. Shape the experience.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin:16px 0;">
+                <div class="card" style="padding:14px;"><p class="muted">Total applications</p><h3 id="adminVerificationTotal">—</h3></div>
+                <div class="card" style="padding:14px;"><p class="muted">Pending review</p><h3 id="adminVerificationPending">—</h3></div>
+                <div class="card" style="padding:14px;"><p class="muted">Verified</p><h3 id="adminVerificationVerified">—</h3></div>
+                <div class="card" style="padding:14px;"><p class="muted">Rejected</p><h3 id="adminVerificationRejected">—</h3></div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0;">
+                <label for="verificationAdminFilter" class="muted">Show:</label>
+                <select id="verificationAdminFilter" onchange="filterVerificationAdminApplications()" style="padding:10px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);">
+                    <option value="all">All applications</option>
+                    <option value="pending">Pending review</option>
+                    <option value="verified">Verified</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+                <button type="button" class="small-button" onclick="loadVerificationAdminApplications()">↻ Refresh</button>
+            </div>
             <div id="verificationAdminList">Loading applications...</div>
         </div>
 
@@ -4310,6 +4326,8 @@ async function submitVerificationApplication(event){
     }
 }
 
+let verificationAdminApplicationsCache = [];
+
 async function loadVerificationAdminApplications(){
     const list = document.getElementById("verificationAdminList");
     if(!list || (currentUser?.email || "").toLowerCase() !== TIKNATION_ADMIN_EMAIL.toLowerCase()) return;
@@ -4326,12 +4344,40 @@ async function loadVerificationAdminApplications(){
         return;
     }
 
-    if(!data || data.length === 0){
-        list.textContent = "No verification applications yet.";
+    verificationAdminApplicationsCache = data || [];
+    const counts = {
+        total: verificationAdminApplicationsCache.length,
+        pending: verificationAdminApplicationsCache.filter(app => app.status === "pending").length,
+        verified: verificationAdminApplicationsCache.filter(app => app.status === "verified").length,
+        rejected: verificationAdminApplicationsCache.filter(app => app.status === "rejected").length
+    };
+    const totalEl = document.getElementById("adminVerificationTotal");
+    const pendingEl = document.getElementById("adminVerificationPending");
+    const verifiedEl = document.getElementById("adminVerificationVerified");
+    const rejectedEl = document.getElementById("adminVerificationRejected");
+    if(totalEl) totalEl.textContent = counts.total;
+    if(pendingEl) pendingEl.textContent = counts.pending;
+    if(verifiedEl) verifiedEl.textContent = counts.verified;
+    if(rejectedEl) rejectedEl.textContent = counts.rejected;
+
+    filterVerificationAdminApplications();
+}
+
+function filterVerificationAdminApplications(){
+    const list = document.getElementById("verificationAdminList");
+    const filter = document.getElementById("verificationAdminFilter");
+    if(!list) return;
+    const selected = filter ? filter.value : "all";
+    const applications = selected === "all"
+        ? verificationAdminApplicationsCache
+        : verificationAdminApplicationsCache.filter(app => app.status === selected);
+
+    if(applications.length === 0){
+        list.textContent = selected === "all" ? "No verification applications yet." : "No " + selected + " applications found.";
         return;
     }
 
-    list.innerHTML = data.map(function(app){
+    list.innerHTML = applications.map(function(app){
         const details = [
             "<strong>@" + escapeHtml(app.username || "creator") + "</strong>",
             "<p>Category: " + escapeHtml(app.category || "—") + " · Status: <strong>" + escapeHtml(app.status || "pending") + "</strong></p>",
