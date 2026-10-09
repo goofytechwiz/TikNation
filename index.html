@@ -2379,6 +2379,18 @@ async function loadProfilePage(){
                 <button type="button" class="small-button" onclick="loadVerificationAdminApplications()">↻ Refresh</button>
             </div>
             <div id="verificationAdminList">Loading applications...</div>
+            <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:24px;padding-top:20px;">
+                <h3>🛡️ Safety &amp; Moderation</h3><p class="muted">Review reports submitted by the TikNation community.</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin:16px 0;">
+                    <div class="card" style="padding:14px;"><p class="muted">Total reports</p><h3 id="adminReportTotal">—</h3></div>
+                    <div class="card" style="padding:14px;"><p class="muted">Pending</p><h3 id="adminReportPending">—</h3></div>
+                    <div class="card" style="padding:14px;"><p class="muted">Action taken</p><h3 id="adminReportActionTaken">—</h3></div>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0;"><label for="contentReportAdminFilter" class="muted">Show:</label>
+                    <select id="contentReportAdminFilter" onchange="filterContentReports()" style="padding:10px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);"><option value="all">All reports</option><option value="pending">Pending</option><option value="reviewed">Reviewed</option><option value="dismissed">Dismissed</option><option value="action_taken">Action taken</option></select>
+                    <button type="button" class="small-button" onclick="loadContentReports()">↻ Refresh reports</button>
+                </div><div id="contentReportsAdminList">Reports will appear here.</div>
+            </div>
         </div>
 
         <div class="section-head">
@@ -2842,7 +2854,7 @@ function renderWatchPost(post){
                             0
                         </span>
                     </button>
-
+                    ${!isOwnPost ? `<button type="button" class="small-button" onclick="reportContent('post','${escapeJs(post.id)}','${escapeJs(post.user_id)}')">🚩 Report</button>` : ""}
                 </div>
 
                 <div
@@ -4361,6 +4373,50 @@ async function loadVerificationAdminApplications(){
     if(rejectedEl) rejectedEl.textContent = counts.rejected;
 
     filterVerificationAdminApplications();
+    await loadContentReports();
+}
+
+let contentReportsCache = [];
+async function reportContent(targetType,targetId,targetUserId){
+ if(!currentUser){openAuthModal('signin');return;}
+ const reason=prompt("Why are you reporting this post? (Harassment, spam, impersonation, harmful content, etc.)");
+ if(!reason||!reason.trim())return;
+ const details=prompt("Optional: add details for the TikNation safety team.")||"";
+ const {error}=await supabaseClient.from("content_reports").insert({reporter_id:currentUser.id,target_type:targetType,target_id:String(targetId),target_user_id:targetUserId||null,reason:reason.trim().slice(0,200),details:details.trim().slice(0,2000),status:"pending"});
+ if(error){alert("Your report could not be submitted: "+error.message);return;}
+ alert("Thank you. Your report has been sent to TikNation Safety for review.");
+}
+async function loadContentReports(){
+ const list=document.getElementById("contentReportsAdminList");
+ if(!list||(currentUser?.email||"").toLowerCase()!==TIKNATION_ADMIN_EMAIL.toLowerCase())return;
+ list.textContent="Loading reports...";
+ const {data,error}=await supabaseClient.from("content_reports").select("id,created_at,reporter_id,target_type,target_id,target_user_id,reason,details,status").order("created_at",{ascending:false}).limit(200);
+ if(error){list.textContent="Could not load reports: "+error.message;return;}
+ contentReportsCache=data||[];
+ const total=document.getElementById("adminReportTotal"), pending=document.getElementById("adminReportPending"), taken=document.getElementById("adminReportActionTaken");
+ if(total)total.textContent=contentReportsCache.length;
+ if(pending)pending.textContent=contentReportsCache.filter(x=>x.status==="pending").length;
+ if(taken)taken.textContent=contentReportsCache.filter(x=>x.status==="action_taken").length;
+ filterContentReports();
+}
+function filterContentReports(){
+ const list=document.getElementById("contentReportsAdminList"), filter=document.getElementById("contentReportAdminFilter");
+ if(!list)return;
+ const status=filter?filter.value:"all", reports=status==="all"?contentReportsCache:contentReportsCache.filter(x=>x.status===status);
+ if(!reports.length){list.textContent=status==="all"?"No reports yet. Community reports will appear here.":"No "+status.replace("_"," ")+" reports.";return;}
+ list.innerHTML=reports.map(r=>{
+  const actions=r.status==="pending"
+   ? '<button type="button" class="small-button" onclick="updateContentReport(\''+escapeJs(r.id)+'\',\'reviewed\')">Mark reviewed</button> <button type="button" class="small-button" onclick="updateContentReport(\''+escapeJs(r.id)+'\',\'dismissed\')">Dismiss</button> <button type="button" class="primary-button" onclick="updateContentReport(\''+escapeJs(r.id)+'\',\'action_taken\')">Action taken</button>'
+   : '<button type="button" class="small-button" onclick="updateContentReport(\''+escapeJs(r.id)+'\',\'pending\')">Reopen</button>';
+  return '<div class="card" style="margin:12px 0;padding:16px;"><p><strong>'+escapeHtml(String(r.target_type||"content").toUpperCase())+'</strong> · Status: <strong>'+escapeHtml(r.status)+'</strong></p><p>Content ID: '+escapeHtml(r.target_id)+'</p><p>Reason: '+escapeHtml(r.reason)+'</p>'+(r.details?'<p>Details: '+escapeHtml(r.details)+'</p>':'')+'<p class="muted">Submitted: '+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString():"Unknown")+'</p>'+actions+'</div>';
+ }).join("");
+}
+async function updateContentReport(id,status){
+ if((currentUser?.email||"").toLowerCase()!==TIKNATION_ADMIN_EMAIL.toLowerCase()){alert("Administrator access required.");return;}
+ if(!["pending","reviewed","dismissed","action_taken"].includes(status))return;
+ const {error}=await supabaseClient.from("content_reports").update({status,reviewed_by:currentUser.id,reviewed_at:new Date().toISOString()}).eq("id",id);
+ if(error){alert("Could not update report: "+error.message);return;}
+ await loadContentReports();
 }
 
 function filterVerificationAdminApplications(){
