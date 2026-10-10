@@ -748,6 +748,53 @@ textarea.form-control{
     transition:width .25s ease;
 }
 
+/* CLEAN PROFILE LAYOUT */
+.profile-header{
+    padding:clamp(18px,3vw,34px);
+    border-radius:24px;
+    background:linear-gradient(135deg,rgba(90,50,200,.20),rgba(0,160,220,.08) 55%,rgba(15,15,27,.92));
+}
+.profile-header .creator-banner{margin-bottom:22px;}
+.profile-header .profile-avatar{margin-bottom:12px;}
+.profile-header h1{font-size:clamp(27px,4vw,38px);margin-bottom:5px;}
+.profile-header .profile-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;}
+.profile-header .profile-actions .primary-button,
+.profile-header .profile-actions .secondary-button{margin:0;}
+.profile-account-email{margin-top:12px;font-size:13px;overflow-wrap:anywhere;}
+.profile-disclosure{
+    margin:18px 0;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:18px;
+    background:rgba(13,13,24,.78);
+    overflow:hidden;
+}
+.profile-disclosure > summary{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:17px 19px;
+    cursor:pointer;
+    list-style:none;
+    font-weight:800;
+}
+.profile-disclosure > summary::-webkit-details-marker{display:none;}
+.profile-disclosure > summary::after{content:"＋";color:#a98cff;font-size:20px;}
+.profile-disclosure[open] > summary::after{content:"−";}
+.profile-disclosure[open] > summary{border-bottom:1px solid rgba(255,255,255,.09);}
+.profile-disclosure > .disclosure-content{padding:18px;}
+.profile-disclosure .section-head{margin-top:8px;}
+#verificationAdminPanel{border:0;background:transparent;padding:0;margin:0 !important;}
+.profile-section-title{margin:28px 0 14px;font-size:22px;}
+@media(max-width:600px){
+    .profile-header{padding:15px;border-radius:18px;}
+    .profile-header .creator-banner{height:125px;margin-bottom:18px;}
+    .profile-header .stats{gap:20px;}
+    .profile-header .profile-actions button{flex:1 1 130px;}
+    .profile-disclosure > summary{padding:15px;}
+    .profile-disclosure > .disclosure-content{padding:12px;}
+}
+
 /* PROFILE */
 
 .profile-header{
@@ -2690,29 +2737,29 @@ async function loadProfilePage(){
 
             </div>
 
-            <p style="margin-top:22px;">
-                You're signed in.<br>
-                ${escapeHtml(email)}
+            <p class="profile-account-email">
+                ✓ Signed in · ${escapeHtml(email)}
             </p>
 
-            <button
-                type="button"
-                class="primary-button"
-                id="toggleCreatorProfileEditorButton"
-                aria-expanded="${creatorProfileEditorOpen ? "true" : "false"}"
-                onclick="toggleCreatorProfileEditor()"
-            >
-                ${creatorProfileEditorOpen ? "CLOSE EDITOR" : "EDIT PROFILE"}
-            </button>
+            <div class="profile-actions">
+                <button
+                    type="button"
+                    class="primary-button"
+                    id="toggleCreatorProfileEditorButton"
+                    aria-expanded="${creatorProfileEditorOpen ? "true" : "false"}"
+                    onclick="toggleCreatorProfileEditor()"
+                >
+                    ${creatorProfileEditorOpen ? "CLOSE EDITOR" : "EDIT PROFILE"}
+                </button>
 
-            <button
-                type="button"
-                class="secondary-button"
-                onclick="signOutUser()"
-                style="margin-top:10px;"
-            >
-                SIGN OUT
-            </button>
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="signOutUser()"
+                >
+                    SIGN OUT
+                </button>
+            </div>
 
         </div>
 
@@ -2753,12 +2800,12 @@ async function loadProfilePage(){
         </div>
         </div>
 
-        <div class="section-head">
-            <h2>Creator Verification</h2>
-            <span class="muted">Apply for your verification mark</span>
-        </div>
+        <details class="profile-disclosure">
+            <summary>🛡️ Creator Verification <span class="muted" style="font-size:12px;font-weight:500;">Apply or check status</span></summary>
+            <div class="disclosure-content">
+        <p class="muted" style="margin:0 0 18px;">Apply for a creator verification mark and check your latest application status.</p>
 
-        <div class="card" style="margin-bottom:28px;">
+        <div class="card" style="margin-bottom:12px;">
             <p class="muted">Tell us about your creator presence. Applications begin as pending and are reviewed by TikNation.</p>
             <form id="verificationForm" onsubmit="submitVerificationApplication(event)">
                 <label for="verificationCategory">Verification category</label>
@@ -2781,7 +2828,13 @@ async function loadProfilePage(){
             <div id="myVerificationStatus" class="muted" style="margin-top:12px;"></div>
         </div>
 
-        <div id="verificationAdminPanel" class="card" style="display:none;margin-bottom:28px;">
+        </div>
+        </details>
+
+        <details id="commandCenterDisclosure" class="profile-disclosure" style="display:none;">
+            <summary>👑 TikNation Command Center <span class="muted" style="font-size:12px;font-weight:500;">Admin tools</span></summary>
+            <div class="disclosure-content">
+        <div id="verificationAdminPanel" class="card" style="display:none;margin-bottom:0;">
             <h2>👑 TikNation Command Center</h2>
             <p class="muted">Build the platform. Shape the experience.</p>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin:16px 0;">
@@ -2815,6 +2868,8 @@ async function loadProfilePage(){
                 </div><div id="contentReportsAdminList">Reports will appear here.</div>
             </div>
         </div>
+            </div>
+        </details>
 
         <div class="section-head">
             <h2>Your Creations</h2>
@@ -5189,7 +5244,9 @@ async function loadVerificationArea(){
     if(!currentUser) return;
 
     const adminPanel = document.getElementById("verificationAdminPanel");
+    const adminDisclosure = document.getElementById("commandCenterDisclosure");
     if((currentUser.email || "").toLowerCase() === TIKNATION_ADMIN_EMAIL.toLowerCase()){
+        if(adminDisclosure) adminDisclosure.style.display = "block";
         if(adminPanel) adminPanel.style.display = "block";
         await loadVerificationAdminApplications();
     }
