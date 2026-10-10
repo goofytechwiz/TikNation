@@ -4137,6 +4137,12 @@ async function toggleFollow(
             if(insertError){
                 throw insertError;
             }
+
+            await createTikNationNotification(
+                creatorId,
+                "follow",
+                (currentProfile && currentProfile.username ? "@" + currentProfile.username : "A TikNation creator") + " started following you."
+            );
         }
 
         await loadFollowState(
@@ -5132,11 +5138,34 @@ function escapeNotificationText(value){
     });
 }
 
-function renderTikNationNotifications(){
+async function renderTikNationNotifications(){
     const list = document.getElementById("notificationList");
     const count = document.getElementById("notificationCount");
     if(!list || !count) return;
-    const items = getTikNationNotifications();
+
+    let items = getTikNationNotifications().map(item => ({...item,remote:false}));
+    if(currentUser){
+        const {data,error} = await supabaseClient
+            .from("notifications")
+            .select("id,type,message,created_at,read_at")
+            .eq("recipient_id",currentUser.id)
+            .order("created_at",{ascending:false})
+            .limit(50);
+        if(!error && Array.isArray(data)){
+            items = data.map(item => ({
+                id:item.id,
+                icon:item.type === "follow" ? "👤" : "🔔",
+                title:item.type === "follow" ? "New follower" : "TikNation update",
+                message:item.message,
+                createdAt:item.created_at,
+                read:Boolean(item.read_at),
+                remote:true
+            }));
+        }else{
+            console.error("Could not load account notifications:",error);
+        }
+    }
+
     const unread = items.filter(item => !item.read).length;
     count.textContent = unread ? unread + " unread update" + (unread === 1 ? "" : "s") : "You're all caught up";
     if(!items.length){
@@ -5150,16 +5179,39 @@ function renderTikNationNotifications(){
             '<p class="muted">' + escapeNotificationText(item.message || "") + '</p>' +
             '<div class="notification-meta">' + (item.read ? "Read" : "Unread") + '</div>' +
             '<div class="notification-item-actions">' +
-            (!item.read ? '<button type="button" onclick="markTikNationNotificationRead(\'' + escapeNotificationText(item.id) + '\')">MARK READ</button>' : '') +
-            '<button type="button" onclick="removeTikNationNotification(\'' + escapeNotificationText(item.id) + '\')">DISMISS</button>' +
+            (!item.read ? '<button type="button" onclick="markTikNationNotificationRead(\'' + escapeNotificationText(item.id) + '\',' + Boolean(item.remote) + ')">MARK READ</button>' : '') +
+            (!item.remote ? '<button type="button" onclick="removeTikNationNotification(\'' + escapeNotificationText(item.id) + '\')">DISMISS</button>' : '') +
             '</div></div></article>';
     }).join("");
 }
 
-function markTikNationNotificationRead(id){
-    const items = getTikNationNotifications().map(item => item.id === id ? {...item,read:true} : item);
-    saveTikNationNotifications(items);
+async function markTikNationNotificationRead(id,remote){
+    if(remote && currentUser){
+        const {error} = await supabaseClient
+            .from("notifications")
+            .update({read_at:new Date().toISOString()})
+            .eq("id",id)
+            .eq("recipient_id",currentUser.id);
+        if(error){
+            alert("Couldn't mark this notification as read. Please try again.");
+            return;
+        }
+    }else{
+        const items = getTikNationNotifications().map(item => item.id === id ? {...item,read:true} : item);
+        saveTikNationNotifications(items);
+    }
     renderTikNationNotifications();
+}
+
+async function createTikNationNotification(recipientId,type,message){
+    if(!currentUser || !recipientId || recipientId === currentUser.id) return;
+    const {error} = await supabaseClient.from("notifications").insert({
+        recipient_id:recipientId,
+        actor_id:currentUser.id,
+        type:type,
+        message:message
+    });
+    if(error) console.error("Notification creation failed:",error);
 }
 
 function markAllNotificationsRead(){
