@@ -6,6 +6,14 @@
 
 <title>TikNation — Your Voice. Your World.</title>
 <meta name="description" content="TikNation — Your voice. Your world.">
+<meta name="theme-color" content="#080813">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TikNation">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icons/tiknation.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icons/tiknation.svg">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -6110,6 +6118,17 @@ if(verificationProfileContent){
     addTikNationVerificationBadge();
 }
 
+</script>
+
+
+<script>
+// Register TikNation's service worker so the installable app shell can be cached.
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("./service-worker.js", { scope: "./" })
+      .catch(function (error) { console.warn("TikNation offline setup:", error); });
+  });
+}
 </script>
 
 </body>
