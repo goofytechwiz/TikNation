@@ -1762,6 +1762,15 @@ textarea.form-control{
         Manage your account and find your privacy, safety, and creator tools in one place.
     </p>
 
+    <div id="accountOverview" class="card" style="margin-bottom:22px;">
+        <h3>👑 Account Overview</h3>
+        <p class="muted">A quick look at the TikNation account currently open on this device.</p>
+        <div class="preference-row"><strong>Sign-in status</strong><span id="accountOverviewStatus" class="muted">Checking…</span></div>
+        <div class="preference-row"><strong>Email</strong><span id="accountOverviewEmail" class="muted" style="overflow-wrap:anywhere;">—</span></div>
+        <div class="preference-row"><strong>Creator username</strong><span id="accountOverviewUsername" class="muted">—</span></div>
+        <button type="button" class="secondary-button" style="margin-top:14px;" onclick="refreshAccountOverview()">↻ REFRESH ACCOUNT STATUS</button>
+    </div>
+
     <div class="card-grid">
 
         <div class="card">
@@ -4606,19 +4615,23 @@ async function changeAccountPassword(event){
     }
 }
 
+function refreshAccountOverview(){
+    const status = document.getElementById("accountOverviewStatus");
+    const email = document.getElementById("accountOverviewEmail");
+    const username = document.getElementById("accountOverviewUsername");
+    if(status) status.textContent = currentUser ? "Signed in" : "Signed out";
+    if(email) email.textContent = currentUser?.email || "Not signed in";
+    if(username) username.textContent = currentProfile?.username ? "@" + currentProfile.username : (currentUser ? "Profile loading or username not set" : "—");
+}
+
 function refreshSecuritySettings(){
-
     const status = document.getElementById("securitySignedInAs");
-
-    if(!status){
-        return;
+    if(status){
+        status.textContent = currentUser
+            ? "Signed in as " + (currentUser.email || "your TikNation account") + "."
+            : "You are not signed in. Sign in to change your password.";
     }
-
-    if(currentUser){
-        status.textContent = "Signed in as " + (currentUser.email || "your TikNation account") + ".";
-    }else{
-        status.textContent = "You are not signed in. Sign in to change your password.";
-    }
+    refreshAccountOverview();
 }
 
 /* =========================
