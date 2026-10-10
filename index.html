@@ -1287,6 +1287,21 @@ textarea.form-control{
         display:none;
     }
 
+    .header-actions .settings-shortcut{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        flex:0 0 34px;
+        width:34px;
+        height:34px;
+        font-size:17px;
+        margin-left:2px;
+    }
+
+    .header-actions{
+        gap:5px;
+    }
+
     .auth-button{
         padding:8px 12px;
         font-size:12px;
@@ -1422,7 +1437,7 @@ textarea.form-control{
 
         <button
             type="button"
-            class="icon-button"
+            class="icon-button settings-shortcut"
             onclick="showPage('settings')"
             title="Settings"
             aria-label="Settings"
@@ -2080,11 +2095,6 @@ textarea.form-control{
     <button type="button" onclick="showPage('notifications',this)">
         <span>🔔</span>
         Alerts
-    </button>
-
-    <button type="button" onclick="showPage('settings',this)">
-        <span>⚙️</span>
-        Settings
     </button>
 
     <button type="button" onclick="openProfileOrAuth()">
