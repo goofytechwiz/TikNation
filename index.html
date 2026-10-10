@@ -2757,12 +2757,13 @@ async function loadProfilePage(){
             <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:24px;padding-top:20px;">
                 <h3>🛡️ Safety &amp; Moderation</h3><p class="muted">Review reports submitted by the TikNation community.</p>
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin:16px 0;">
-                    <div class="card" style="padding:14px;"><p class="muted">Total reports</p><h3 id="adminReportTotal">—</h3></div>
+                    <div class="card" style="padding:14px;"><p class="muted">Community reports</p><h3 id="adminReportTotal">—</h3></div>
                     <div class="card" style="padding:14px;"><p class="muted">Pending</p><h3 id="adminReportPending">—</h3></div>
                     <div class="card" style="padding:14px;"><p class="muted">Action taken</p><h3 id="adminReportActionTaken">—</h3></div>
+                    <div class="card" style="padding:14px;"><p class="muted">Test records</p><h3 id="adminReportTestTotal">—</h3></div>
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0;"><label for="contentReportAdminFilter" class="muted">Show:</label>
-                    <select id="contentReportAdminFilter" onchange="filterContentReports()" style="padding:10px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);"><option value="all">All reports</option><option value="pending">Pending</option><option value="reviewed">Reviewed</option><option value="dismissed">Dismissed</option><option value="action_taken">Action taken</option></select>
+                    <select id="contentReportAdminFilter" onchange="filterContentReports()" style="padding:10px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);"><option value="all">All records</option><option value="pending">Pending</option><option value="reviewed">Reviewed</option><option value="dismissed">Dismissed</option><option value="action_taken">Action taken</option><option value="test">Test records only</option></select>
                     <button type="button" class="small-button" onclick="loadContentReports()">↻ Refresh reports</button>
                 </div><div id="contentReportsAdminList">Reports will appear here.</div>
             </div>
@@ -5315,6 +5316,12 @@ async function submitContentReport(event){
   if(submit){submit.disabled=false;submit.textContent="TRY AGAIN";}
  }
 }
+function isTikNationTestReport(report){
+ const targetId=String(report?.target_id||"").toUpperCase();
+ const reason=String(report?.reason||"").toUpperCase();
+ const details=String(report?.details||"").toUpperCase();
+ return targetId.startsWith("ADMIN-TEST-") || reason.includes("TEST ONLY") || details.includes("TEST ONLY");
+}
 async function loadContentReports(){
  const list=document.getElementById("contentReportsAdminList");
  if(!list||(currentUser?.email||"").toLowerCase()!==TIKNATION_ADMIN_EMAIL.toLowerCase())return;
@@ -5322,22 +5329,34 @@ async function loadContentReports(){
  const {data,error}=await supabaseClient.from("content_reports").select("id,created_at,reporter_id,target_type,target_id,target_user_id,reason,details,status").order("created_at",{ascending:false}).limit(200);
  if(error){list.textContent="Could not load reports: "+error.message;return;}
  contentReportsCache=data||[];
- const total=document.getElementById("adminReportTotal"), pending=document.getElementById("adminReportPending"), taken=document.getElementById("adminReportActionTaken");
- if(total)total.textContent=contentReportsCache.length;
- if(pending)pending.textContent=contentReportsCache.filter(x=>x.status==="pending").length;
- if(taken)taken.textContent=contentReportsCache.filter(x=>x.status==="action_taken").length;
+ const communityReports=contentReportsCache.filter(x=>!isTikNationTestReport(x));
+ const testReports=contentReportsCache.filter(isTikNationTestReport);
+ const total=document.getElementById("adminReportTotal"), pending=document.getElementById("adminReportPending"), taken=document.getElementById("adminReportActionTaken"), tests=document.getElementById("adminReportTestTotal");
+ if(total)total.textContent=communityReports.length;
+ if(pending)pending.textContent=communityReports.filter(x=>x.status==="pending").length;
+ if(taken)taken.textContent=communityReports.filter(x=>x.status==="action_taken").length;
+ if(tests)tests.textContent=testReports.length;
  filterContentReports();
 }
 function filterContentReports(){
  const list=document.getElementById("contentReportsAdminList"), filter=document.getElementById("contentReportAdminFilter");
  if(!list)return;
- const status=filter?filter.value:"all", reports=status==="all"?contentReportsCache:contentReportsCache.filter(x=>x.status===status);
- if(!reports.length){list.textContent=status==="all"?"No reports yet. Community reports will appear here.":"No "+status.replace("_"," ")+" reports.";return;}
+ const status=filter?filter.value:"all";
+ const reports=status==="test"
+  ? contentReportsCache.filter(isTikNationTestReport)
+  : status==="all"
+   ? contentReportsCache
+   : contentReportsCache.filter(x=>x.status===status && !isTikNationTestReport(x));
+ if(!reports.length){
+  list.textContent=status==="test"?"No test records found.":status==="all"?"No reports or test records yet. Community reports will appear here.":"No community reports with status "+status.replace("_"," ")+".";
+  return;
+ }
  list.innerHTML=reports.map(r=>{
-  const actions=r.status==="pending"
-   ? '<button type="button" class="small-button" onclick="updateContentReport(\''+escapeJs(r.id)+'\',\'reviewed\')">Mark reviewed</button> <button type="button" class="small-button" onclick="updateContentReport(\''+escapeJs(r.id)+'\',\'dismissed\')">Dismiss</button> <button type="button" class="primary-button" onclick="updateContentReport(\''+escapeJs(r.id)+'\',\'action_taken\')">Action taken</button>'
-   : '<button type="button" class="small-button" onclick="updateContentReport(\''+escapeJs(r.id)+'\',\'pending\')">Reopen</button>';
-  return '<div class="card" style="margin:12px 0;padding:16px;"><p><strong>'+escapeHtml(String(r.target_type||"content").toUpperCase())+'</strong> · Status: <strong>'+escapeHtml(r.status)+'</strong></p><p>Content ID: '+escapeHtml(r.target_id)+'</p><p>Reason: '+escapeHtml(r.reason)+'</p>'+(r.details?'<p>Details: '+escapeHtml(r.details)+'</p>':'')+'<p class="muted">Submitted: '+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString():"Unknown")+'</p>'+actions+'</div>';
+  const isTest=isTikNationTestReport(r);
+  const actions=!isTest && r.status==="pending"
+   ? '<button type="button" class="small-button" onclick="updateContentReport(\\''+escapeJs(r.id)+'\\',\\'reviewed\\')">Mark reviewed</button> <button type="button" class="small-button" onclick="updateContentReport(\\''+escapeJs(r.id)+'\\',\\'dismissed\\')">Dismiss</button> <button type="button" class="primary-button" onclick="updateContentReport(\\''+escapeJs(r.id)+'\\',\\'action_taken\\')">Action taken</button>'
+   : !isTest ? '<button type="button" class="small-button" onclick="updateContentReport(\\''+escapeJs(r.id)+'\\',\\'pending\\')">Reopen</button>' : '<p class="muted">Test record — moderation actions are disabled for this record.</p>';
+  return '<div class="card" style="margin:12px 0;padding:16px;">'+(isTest?'<p><strong>🧪 TEST RECORD — NOT A COMMUNITY REPORT</strong></p>':'')+'<p><strong>'+escapeHtml(String(r.target_type||"content").toUpperCase())+'</strong> · Status: <strong>'+escapeHtml(r.status)+'</strong></p><p>Content ID: '+escapeHtml(r.target_id)+'</p><p>Reason: '+escapeHtml(r.reason)+'</p>'+(r.details?'<p>Details: '+escapeHtml(r.details)+'</p>':'')+'<p class="muted">Submitted: '+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString():"Unknown")+'</p>'+actions+'</div>';
  }).join("");
 }
 async function updateContentReport(id,status){
