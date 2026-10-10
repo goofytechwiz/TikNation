@@ -1823,9 +1823,9 @@ textarea.form-control{
 
         <div class="card">
             <div class="card-icon">👤</div>
-            <h3>Account & Profile</h3>
-            <p>View your creator profile and access verification.</p>
-            <button type="button" class="primary-button" onclick="openProfileOrAuth()">OPEN PROFILE</button>
+            <h3>✨ Creator Tools</h3>
+            <p>Manage creator verification here. Authorized administrators can open the Command Center.</p>
+            <button type="button" class="primary-button" onclick="document.getElementById('creatorToolsSettings').scrollIntoView({behavior:'smooth',block:'start'})">OPEN CREATOR TOOLS</button>
         </div>
 
         <div class="card">
@@ -1856,6 +1856,81 @@ textarea.form-control{
             <button type="button" class="primary-button" onclick="document.getElementById('preferenceSettings').scrollIntoView({behavior:'smooth',block:'start'})">OPEN PREFERENCES</button>
         </div>
 
+    </div>
+
+    <div id="creatorToolsSettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
+        <h3>✨ Creator Tools</h3>
+        <p class="muted" style="margin-bottom:18px;">Apply for creator verification and access platform administration tools when authorized.</p>
+        <details class="profile-disclosure">
+            <summary>🛡️ Creator Verification <span class="muted" style="font-size:12px;font-weight:500;">Apply or check status</span></summary>
+            <div class="disclosure-content">
+        <p class="muted" style="margin:0 0 18px;">Apply for a creator verification mark and check your latest application status.</p>
+
+        <div class="card" style="margin-bottom:12px;">
+            <p class="muted">Tell us about your creator presence. Applications begin as pending and are reviewed by TikNation.</p>
+            <form id="verificationForm" onsubmit="submitVerificationApplication(event)">
+                <label for="verificationCategory">Verification category</label>
+                <select id="verificationCategory" required style="width:100%;margin:8px 0 16px;padding:12px;border-radius:10px;">
+                    <option value="">Choose a category</option>
+                    <option value="creator">Creator</option>
+                    <option value="artist">Artist / Musician</option>
+                    <option value="brand">Brand / Organization</option>
+                    <option value="public_figure">Public Figure</option>
+                </select>
+                <label for="verificationPresence">Your public presence</label>
+                <input id="verificationPresence" type="text" maxlength="500" required placeholder="Website or public profile links" style="width:100%;margin:8px 0 16px;padding:12px;border-radius:10px;">
+                <label for="verificationReason">Why should your account be verified?</label>
+                <textarea id="verificationReason" maxlength="2000" required rows="4" placeholder="Tell us what makes your account authentic..." style="width:100%;margin:8px 0 16px;padding:12px;border-radius:10px;"></textarea>
+                <label for="verificationLinks">Supporting links (optional)</label>
+                <textarea id="verificationLinks" maxlength="2000" rows="2" placeholder="Add links, separated by commas" style="width:100%;margin:8px 0 16px;padding:12px;border-radius:10px;"></textarea>
+                <button class="primary-button" type="submit" id="verificationSubmit">SUBMIT APPLICATION</button>
+                <p id="verificationMessage" class="auth-message" aria-live="polite"></p>
+            </form>
+            <div id="myVerificationStatus" class="muted" style="margin-top:12px;"></div>
+        </div>
+
+        </div>
+        </details>
+
+        <details id="commandCenterDisclosure" class="profile-disclosure" style="display:none;">
+            <summary>👑 TikNation Command Center <span class="muted" style="font-size:12px;font-weight:500;">Admin tools</span></summary>
+            <div class="disclosure-content">
+        <div id="verificationAdminPanel" class="card" style="display:none;margin-bottom:0;">
+            <h2>👑 TikNation Command Center</h2>
+            <p class="muted">Build the platform. Shape the experience.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin:16px 0;">
+                <div class="card" style="padding:14px;"><p class="muted">Total applications</p><h3 id="adminVerificationTotal">—</h3></div>
+                <div class="card" style="padding:14px;"><p class="muted">Pending review</p><h3 id="adminVerificationPending">—</h3></div>
+                <div class="card" style="padding:14px;"><p class="muted">Verified</p><h3 id="adminVerificationVerified">—</h3></div>
+                <div class="card" style="padding:14px;"><p class="muted">Rejected</p><h3 id="adminVerificationRejected">—</h3></div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0;">
+                <label for="verificationAdminFilter" class="muted">Show:</label>
+                <select id="verificationAdminFilter" onchange="filterVerificationAdminApplications()" style="padding:10px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);">
+                    <option value="all">All applications</option>
+                    <option value="pending">Pending review</option>
+                    <option value="verified">Verified</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+                <button type="button" class="small-button" onclick="loadVerificationAdminApplications()">↻ Refresh</button>
+            </div>
+            <div id="verificationAdminList">Loading applications...</div>
+            <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:24px;padding-top:20px;">
+                <h3>🛡️ Safety &amp; Moderation</h3><p class="muted">Review reports submitted by the TikNation community.</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin:16px 0;">
+                    <div class="card" style="padding:14px;"><p class="muted">Community reports</p><h3 id="adminReportTotal">—</h3></div>
+                    <div class="card" style="padding:14px;"><p class="muted">Pending</p><h3 id="adminReportPending">—</h3></div>
+                    <div class="card" style="padding:14px;"><p class="muted">Action taken</p><h3 id="adminReportActionTaken">—</h3></div>
+                    <div class="card" style="padding:14px;"><p class="muted">Test records</p><h3 id="adminReportTestTotal">—</h3></div>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0;"><label for="contentReportAdminFilter" class="muted">Show:</label>
+                    <select id="contentReportAdminFilter" onchange="filterContentReports()" style="padding:10px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);"><option value="all">All records</option><option value="pending">Pending</option><option value="reviewed">Reviewed</option><option value="dismissed">Dismissed</option><option value="action_taken">Action taken</option><option value="test">Test records only</option></select>
+                    <button type="button" class="small-button" onclick="loadContentReports()">↻ Refresh reports</button>
+                </div><div id="contentReportsAdminList">Reports will appear here.</div>
+            </div>
+        </div>
+            </div>
+        </details>
     </div>
 
     <div id="preferenceSettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
@@ -2156,6 +2231,8 @@ function showPage(pageId,button){
 
     if(pageId === "settings"){
         refreshSecuritySettings();
+        refreshAccountOverview();
+        loadVerificationArea();
     }
 
     if(pageId === "notifications"){
@@ -2800,76 +2877,7 @@ async function loadProfilePage(){
         </div>
         </div>
 
-        <details class="profile-disclosure">
-            <summary>🛡️ Creator Verification <span class="muted" style="font-size:12px;font-weight:500;">Apply or check status</span></summary>
-            <div class="disclosure-content">
-        <p class="muted" style="margin:0 0 18px;">Apply for a creator verification mark and check your latest application status.</p>
 
-        <div class="card" style="margin-bottom:12px;">
-            <p class="muted">Tell us about your creator presence. Applications begin as pending and are reviewed by TikNation.</p>
-            <form id="verificationForm" onsubmit="submitVerificationApplication(event)">
-                <label for="verificationCategory">Verification category</label>
-                <select id="verificationCategory" required style="width:100%;margin:8px 0 16px;padding:12px;border-radius:10px;">
-                    <option value="">Choose a category</option>
-                    <option value="creator">Creator</option>
-                    <option value="artist">Artist / Musician</option>
-                    <option value="brand">Brand / Organization</option>
-                    <option value="public_figure">Public Figure</option>
-                </select>
-                <label for="verificationPresence">Your public presence</label>
-                <input id="verificationPresence" type="text" maxlength="500" required placeholder="Website or public profile links" style="width:100%;margin:8px 0 16px;padding:12px;border-radius:10px;">
-                <label for="verificationReason">Why should your account be verified?</label>
-                <textarea id="verificationReason" maxlength="2000" required rows="4" placeholder="Tell us what makes your account authentic..." style="width:100%;margin:8px 0 16px;padding:12px;border-radius:10px;"></textarea>
-                <label for="verificationLinks">Supporting links (optional)</label>
-                <textarea id="verificationLinks" maxlength="2000" rows="2" placeholder="Add links, separated by commas" style="width:100%;margin:8px 0 16px;padding:12px;border-radius:10px;"></textarea>
-                <button class="primary-button" type="submit" id="verificationSubmit">SUBMIT APPLICATION</button>
-                <p id="verificationMessage" class="auth-message" aria-live="polite"></p>
-            </form>
-            <div id="myVerificationStatus" class="muted" style="margin-top:12px;"></div>
-        </div>
-
-        </div>
-        </details>
-
-        <details id="commandCenterDisclosure" class="profile-disclosure" style="display:none;">
-            <summary>👑 TikNation Command Center <span class="muted" style="font-size:12px;font-weight:500;">Admin tools</span></summary>
-            <div class="disclosure-content">
-        <div id="verificationAdminPanel" class="card" style="display:none;margin-bottom:0;">
-            <h2>👑 TikNation Command Center</h2>
-            <p class="muted">Build the platform. Shape the experience.</p>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin:16px 0;">
-                <div class="card" style="padding:14px;"><p class="muted">Total applications</p><h3 id="adminVerificationTotal">—</h3></div>
-                <div class="card" style="padding:14px;"><p class="muted">Pending review</p><h3 id="adminVerificationPending">—</h3></div>
-                <div class="card" style="padding:14px;"><p class="muted">Verified</p><h3 id="adminVerificationVerified">—</h3></div>
-                <div class="card" style="padding:14px;"><p class="muted">Rejected</p><h3 id="adminVerificationRejected">—</h3></div>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0;">
-                <label for="verificationAdminFilter" class="muted">Show:</label>
-                <select id="verificationAdminFilter" onchange="filterVerificationAdminApplications()" style="padding:10px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);">
-                    <option value="all">All applications</option>
-                    <option value="pending">Pending review</option>
-                    <option value="verified">Verified</option>
-                    <option value="rejected">Rejected</option>
-                </select>
-                <button type="button" class="small-button" onclick="loadVerificationAdminApplications()">↻ Refresh</button>
-            </div>
-            <div id="verificationAdminList">Loading applications...</div>
-            <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:24px;padding-top:20px;">
-                <h3>🛡️ Safety &amp; Moderation</h3><p class="muted">Review reports submitted by the TikNation community.</p>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:10px;margin:16px 0;">
-                    <div class="card" style="padding:14px;"><p class="muted">Community reports</p><h3 id="adminReportTotal">—</h3></div>
-                    <div class="card" style="padding:14px;"><p class="muted">Pending</p><h3 id="adminReportPending">—</h3></div>
-                    <div class="card" style="padding:14px;"><p class="muted">Action taken</p><h3 id="adminReportActionTaken">—</h3></div>
-                    <div class="card" style="padding:14px;"><p class="muted">Test records</p><h3 id="adminReportTestTotal">—</h3></div>
-                </div>
-                <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0;"><label for="contentReportAdminFilter" class="muted">Show:</label>
-                    <select id="contentReportAdminFilter" onchange="filterContentReports()" style="padding:10px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);"><option value="all">All records</option><option value="pending">Pending</option><option value="reviewed">Reviewed</option><option value="dismissed">Dismissed</option><option value="action_taken">Action taken</option><option value="test">Test records only</option></select>
-                    <button type="button" class="small-button" onclick="loadContentReports()">↻ Refresh reports</button>
-                </div><div id="contentReportsAdminList">Reports will appear here.</div>
-            </div>
-        </div>
-            </div>
-        </details>
 
         <div class="section-head">
             <h2>Your Creations</h2>
@@ -2904,7 +2912,6 @@ async function loadProfilePage(){
 
     await loadProfileStats();
     await loadProfileCreations();
-    await loadVerificationArea();
 }
 
 async function uploadCreatorBanner(){
