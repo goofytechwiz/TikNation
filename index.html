@@ -3398,7 +3398,7 @@ async function loadPublicCreatorProfile(userId){
             </div>
             ${currentUser ? `
                 <button type="button" class="primary-button" id="publicCreatorFollowButton" onclick="togglePublicCreatorFollow()">${isFollowing ? '✓ FOLLOWING' : '+ FOLLOW'}</button>
-                ${userId !== currentUser.id ? '<button type="button" class="small-button" style="margin-left:8px;" onclick="reportContent(\\\'profile\\\',\\\'' + escapeJs(userId) + '\\\',\\\'' + escapeJs(userId) + '\\\')">🚩 Report profile</button>' : ''}
+                ${userId !== currentUser.id ? `<button type="button" class="small-button" style="margin-left:8px;" onclick="reportContent('profile','${escapeJs(userId)}','${escapeJs(userId)}')">🚩 Report profile</button>` : ''}
             ` : `
                 <button type="button" class="primary-button" onclick="openAuthModal('signin')">SIGN IN TO FOLLOW</button>
             `}
