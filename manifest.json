@@ -1,0 +1,30 @@
+{
+  "id": "./",
+  "name": "TikNation — Your Voice. Your World.",
+  "short_name": "TikNation",
+  "description": "Your voice. Your world.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#080813",
+  "theme_color": "#080813",
+  "icons": [
+    {
+      "src": "./icons/tiknation.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/tiknation.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": [
+    "social",
+    "entertainment"
+  ]
+}
