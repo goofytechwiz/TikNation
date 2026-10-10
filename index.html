@@ -1272,44 +1272,48 @@ textarea.form-control{
 
     .header{
         height:64px;
+        padding:0 10px;
+        gap:6px;
     }
 
     .logo{
-        font-size:17px;
-        letter-spacing:2px;
+        font-size:15px;
+        letter-spacing:1px;
+        flex-shrink:0;
     }
 
     .search{
-        width:32vw;
-    }
-
-    .header-actions .icon-button{
         display:none;
     }
 
-    .header-actions .settings-shortcut{
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        flex:0 0 34px;
-        width:34px;
-        height:34px;
-        font-size:17px;
-        margin-left:2px;
+    .header-actions{
+        gap:4px;
+        flex-shrink:0;
     }
 
-    .header-actions{
-        gap:5px;
+    .header-actions .icon-button,
+    .header-actions .settings-shortcut{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        flex:0 0 30px;
+        width:30px;
+        height:30px;
+        padding:0;
+        margin:0;
+        font-size:15px;
     }
 
     .auth-button{
-        padding:8px 12px;
-        font-size:12px;
+        padding:6px 8px;
+        font-size:10px;
+        flex-shrink:0;
     }
 
     .profile-mini{
-        width:36px;
-        height:36px;
+        width:30px;
+        height:30px;
+        flex-shrink:0;
     }
 
     .app{
@@ -2085,16 +2089,6 @@ textarea.form-control{
     <button type="button" onclick="showPage('discover',this)">
         <span>🌎</span>
         Discover
-    </button>
-
-    <button type="button" onclick="showPage('messages',this)">
-        <span>💬</span>
-        Messages
-    </button>
-
-    <button type="button" onclick="showPage('notifications',this)">
-        <span>🔔</span>
-        Alerts
     </button>
 
     <button type="button" onclick="openProfileOrAuth()">
