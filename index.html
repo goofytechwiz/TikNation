@@ -59,6 +59,50 @@ body::after{
     z-index:-1;
 }
 
+/* TIKNATION PREFERENCES */
+body.tn-reduce-motion *,
+body.tn-reduce-motion *::before,
+body.tn-reduce-motion *::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    scroll-behavior:auto !important;
+    transition-duration:0.01ms !important;
+}
+body.tn-compact-feed .video-card{
+    margin-bottom:12px;
+    padding:12px;
+}
+body.tn-compact-feed .video-info p{
+    margin-top:5px;
+}
+.preference-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding:16px 0;
+    border-bottom:1px solid var(--border-color,rgba(255,255,255,.12));
+}
+.preference-row:last-of-type{margin-bottom:14px;}
+.preference-row .muted{margin-top:5px;font-size:.92rem;}
+.preference-toggle{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-shrink:0;
+    cursor:pointer;
+    color:#70e8ff;
+    font-weight:700;
+}
+.preference-toggle input{
+    width:20px;
+    height:20px;
+    accent-color:#70e8ff;
+}
+@media(max-width:600px){
+    .preference-row{align-items:flex-start;}
+}
+
 /* HEADER */
 
 .header{
@@ -1673,10 +1717,29 @@ textarea.form-control{
         <div class="card">
             <div class="card-icon">🎛️</div>
             <h3>Preferences</h3>
-            <p>Personalized feed, appearance, and playback preferences will be added here as they become available.</p>
-            <span class="muted">PLANNED</span>
+            <p>Customize motion effects, feed layout, and video playback for this browser.</p>
+            <button type="button" class="primary-button" onclick="document.getElementById('preferenceSettings').scrollIntoView({behavior:'smooth',block:'start'})">OPEN PREFERENCES</button>
         </div>
 
+    </div>
+
+    <div id="preferenceSettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
+        <h3>🎛️ Your TikNation Preferences</h3>
+        <p class="muted" style="margin-bottom:18px;">These choices are saved in this browser and apply to this device only.</p>
+        <div class="preference-row">
+            <div><strong>Reduce motion</strong><p class="muted">Reduce animated movement and transitions.</p></div>
+            <label class="preference-toggle"><input id="prefReduceMotion" type="checkbox" onchange="saveTikNationPreferences()"> <span>ON</span></label>
+        </div>
+        <div class="preference-row">
+            <div><strong>Compact feed</strong><p class="muted">Use a tighter layout for Watch posts.</p></div>
+            <label class="preference-toggle"><input id="prefCompactFeed" type="checkbox" onchange="saveTikNationPreferences()"> <span>ON</span></label>
+        </div>
+        <div class="preference-row">
+            <div><strong>Autoplay videos</strong><p class="muted">Videos may start muted automatically when supported by your browser.</p></div>
+            <label class="preference-toggle"><input id="prefAutoplayVideos" type="checkbox" onchange="saveTikNationPreferences()"> <span>ON</span></label>
+        </div>
+        <p id="preferencesMessage" class="auth-message" aria-live="polite">Preferences are ready.</p>
+        <button type="button" class="primary-button" onclick="resetTikNationPreferences()">RESET PREFERENCES</button>
     </div>
 
     <div id="securitySettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
@@ -3742,6 +3805,11 @@ function renderMediaElement(post,className){
 
     if(mediaType.startsWith("video/")){
 
+        const autoplayAttributes =
+            getTikNationPreference("autoplayVideos")
+                ? "autoplay muted loop"
+                : "";
+
         return `
 
             <div class="${className}">
@@ -3750,6 +3818,7 @@ function renderMediaElement(post,className){
                     controls
                     playsinline
                     preload="metadata"
+                    ${autoplayAttributes}
                 >
                     <source
                         src="${url}"
@@ -4651,6 +4720,66 @@ loadSession();
 </script>
 
 <script>
+
+/* =========================
+   TIKNATION PREFERENCES
+========================= */
+function getTikNationPreferences(){
+    const defaults = { reduceMotion:false, compactFeed:false, autoplayVideos:false };
+    try{
+        const saved = JSON.parse(localStorage.getItem("tiknationPreferences") || "{}");
+        return { ...defaults, ...saved };
+    }catch(error){
+        return defaults;
+    }
+}
+
+function getTikNationPreference(name){
+    return Boolean(getTikNationPreferences()[name]);
+}
+
+function applyTikNationPreferences(){
+    const preferences = getTikNationPreferences();
+    document.body.classList.toggle("tn-reduce-motion", preferences.reduceMotion);
+    document.body.classList.toggle("tn-compact-feed", preferences.compactFeed);
+    const mapping = {
+        prefReduceMotion:"reduceMotion",
+        prefCompactFeed:"compactFeed",
+        prefAutoplayVideos:"autoplayVideos"
+    };
+    Object.keys(mapping).forEach(function(id){
+        const input = document.getElementById(id);
+        if(input) input.checked = Boolean(preferences[mapping[id]]);
+    });
+}
+
+function saveTikNationPreferences(){
+    const preferences = {
+        reduceMotion:document.getElementById("prefReduceMotion")?.checked || false,
+        compactFeed:document.getElementById("prefCompactFeed")?.checked || false,
+        autoplayVideos:document.getElementById("prefAutoplayVideos")?.checked || false
+    };
+    try{
+        localStorage.setItem("tiknationPreferences", JSON.stringify(preferences));
+        applyTikNationPreferences();
+        const message = document.getElementById("preferencesMessage");
+        if(message) message.textContent = "Preferences saved on this browser.";
+    }catch(error){
+        const message = document.getElementById("preferencesMessage");
+        if(message) message.textContent = "Your browser could not save these preferences.";
+    }
+}
+
+function resetTikNationPreferences(){
+    try{
+        localStorage.removeItem("tiknationPreferences");
+    }catch(error){}
+    applyTikNationPreferences();
+    const message = document.getElementById("preferencesMessage");
+    if(message) message.textContent = "Preferences reset to defaults.";
+}
+
+applyTikNationPreferences();
 
 /* =========================
    VERIFICATION BADGE
