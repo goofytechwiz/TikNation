@@ -5466,7 +5466,7 @@ async function renderTikNationNotifications(){
     const unread = items.filter(item => !item.read).length;
     count.textContent = unread ? unread + " unread update" + (unread === 1 ? "" : "s") : "You're all caught up";
     if(!items.length){
-        list.innerHTML = '<div class="notification-empty"><div style="font-size:30px;margin-bottom:10px;">🔕</div><strong>No notifications</strong><p style="margin-top:6px;">You’re all caught up. New updates will appear here when available.</p></div>';
+        list.innerHTML = '<div class="notification-empty"><div style="font-size:34px;margin-bottom:12px;">🔔</div><strong>You’re all caught up!</strong><p style="margin:8px auto 0;max-width:440px;">When someone follows you or interacts with your creations, your updates will appear here. Check back as the TikNation community grows.</p><button type="button" class="primary-button" style="margin-top:16px;" onclick="showPage(\'discover\')">EXPLORE CREATORS</button></div>';
         return;
     }
     list.innerHTML = items.map(function(item){
