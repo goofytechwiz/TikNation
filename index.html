@@ -1176,6 +1176,16 @@ textarea.form-control{
         <button
             type="button"
             class="icon-button"
+            onclick="showPage('settings')"
+            title="Settings"
+            aria-label="Settings"
+        >
+            ⚙️
+        </button>
+
+        <button
+            type="button"
+            class="icon-button"
             onclick="showPage('messages')"
             title="Messages"
         >
@@ -1242,6 +1252,11 @@ textarea.form-control{
     <button type="button" class="nav-button" onclick="openProfileOrAuth()">
         <span class="nav-icon">👤</span>
         Profile
+    </button>
+
+    <button type="button" class="nav-button" onclick="showPage('settings',this)">
+        <span class="nav-icon">⚙️</span>
+        Settings
     </button>
 
 </aside>
@@ -1610,6 +1625,64 @@ textarea.form-control{
 
         </div>
 
+    </div>
+
+</section>
+
+<section id="settings" class="page">
+
+    <div class="section-head">
+        <h2>⚙️ Settings</h2>
+        <span class="muted">Your TikNation, your way</span>
+    </div>
+
+    <p class="muted" style="margin-bottom:22px;">
+        Manage your account and find your privacy, safety, and creator tools in one place.
+    </p>
+
+    <div class="card-grid">
+
+        <div class="card">
+            <div class="card-icon">👤</div>
+            <h3>Account & Profile</h3>
+            <p>View your creator profile and access verification.</p>
+            <button type="button" class="primary-button" onclick="openProfileOrAuth()">OPEN PROFILE</button>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🛡️</div>
+            <h3>Safety & Reporting</h3>
+            <p>Report content from the Watch feed. Reports are reviewed through TikNation's moderation tools.</p>
+            <button type="button" class="primary-button" onclick="showPage('watch')">GO TO WATCH</button>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🔔</div>
+            <h3>Notifications</h3>
+            <p>Visit your notification area. More notification controls are planned.</p>
+            <button type="button" class="primary-button" onclick="showPage('notifications')">VIEW NOTIFICATIONS</button>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🔒</div>
+            <h3>Privacy & Security</h3>
+            <p>Account privacy and security controls are planned for a future update. They are not available here yet.</p>
+            <span class="muted">IN DEVELOPMENT</span>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🎛️</div>
+            <h3>Preferences</h3>
+            <p>Personalized feed, appearance, and playback preferences will be added here as they become available.</p>
+            <span class="muted">PLANNED</span>
+        </div>
+
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+        <h3>Need to switch accounts?</h3>
+        <p class="muted">You can sign out securely from your profile.</p>
+        <button type="button" class="primary-button" onclick="openProfileOrAuth()">ACCOUNT OPTIONS</button>
     </div>
 
 </section>
