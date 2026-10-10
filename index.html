@@ -1501,10 +1501,11 @@ textarea.form-control{
         <h2>🔎 Discover Creators</h2>
         <span class="muted">Find your people</span>
     </div>
-    <p class="muted" style="margin-bottom:18px;">Search TikNation creators by username or display name, then open their profile and follow their journey.</p>
+    <p class="muted" style="margin-bottom:18px;">Search creators by username, display name, or bio to find people who share your interests.</p>
     <form onsubmit="searchTikNationCreators(event)" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;">
-        <input id="creatorSearchInput" type="search" maxlength="40" placeholder="Search creators..." aria-label="Search creators" style="flex:1;min-width:180px;padding:13px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);">
+        <input id="creatorSearchInput" type="search" maxlength="40" placeholder="Username, name, or interest..." aria-label="Search creators by username, display name, or bio" style="flex:1;min-width:180px;padding:13px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);">
         <button class="primary-button" type="submit">SEARCH</button>
+        <button class="secondary-button" type="button" onclick="clearCreatorSearch()">CLEAR</button>
     </form>
     <div id="creatorSearchMessage" class="muted" aria-live="polite" style="margin-bottom:14px;">Loading creators...</div>
     <div id="creatorSearchResults" class="card-grid"></div>
@@ -3353,10 +3354,10 @@ async function searchTikNationCreators(event){
     if(term){
         const safeTerm = term.replace(/[,%()]/g,"").trim();
         if(!safeTerm){
-            message.textContent = "Enter a username or display name to search.";
+            message.textContent = "Enter a username, display name, or interest to search.";
             return;
         }
-        request = request.or("username.ilike.%"+safeTerm+"%,display_name.ilike.%"+safeTerm+"%");
+        request = request.or("username.ilike.%"+safeTerm+"%,display_name.ilike.%"+safeTerm+"%,bio.ilike.%"+safeTerm+"%");
     }
 
     const {data,error} = await request;
@@ -3367,16 +3368,24 @@ async function searchTikNationCreators(event){
     }
 
     if(!data || data.length === 0){
-        message.textContent = term ? "No creators matched that search yet." : "No creator profiles to show yet. Check back soon!";
+        message.textContent = term ? "No creators matched that search yet. Try another name or interest." : "No creator profiles to show yet. Check back soon!";
         return;
     }
 
-    message.textContent = data.length + (data.length === 1 ? " creator found" : " creators found");
+    message.textContent = data.length + (data.length === 1 ? " creator found" : " creators found") + (data.length === 24 ? " · Showing the first 24 results" : "");
     results.innerHTML = data.map(function(profile){
         const name = profile.display_name || profile.username || "TikNation Creator";
         const username = profile.username || "TikNationCreator";
         return '<article class="card"><div class="card-icon">👤</div><h3>'+escapeHtml(name)+'</h3><p class="muted">@'+escapeHtml(username)+'</p><p>'+escapeHtml(profile.bio || "Creating my world on TikNation.")+'</p><button type="button" class="primary-button" onclick="openPublicCreatorProfile(\''+escapeJs(profile.id)+'\')">VIEW PROFILE</button></article>';
     }).join("");
+}
+
+function clearCreatorSearch(){
+    const input = document.getElementById("creatorSearchInput");
+    if(input){
+        input.value = "";
+    }
+    searchTikNationCreators();
 }
 
 let viewingCreatorId = null;
