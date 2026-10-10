@@ -5014,41 +5014,39 @@ applyTikNationPreferences();
    VERIFICATION BADGE
 ========================= */
 
+let verificationBadgeLoading = false;
+
 async function addTikNationVerificationBadge(){
 
     const profileContent =
         document.getElementById("profileContent");
 
-    if(
-        !profileContent ||
-        !currentUser
-    ){
+    if(!profileContent || !currentUser || verificationBadgeLoading){
         return;
     }
 
     const profileHeader =
         profileContent.querySelector(".profile-header");
-
     const heading =
         profileContent.querySelector(".profile-header h1");
 
-    if(
-        !profileHeader ||
-        !heading
-    ){
+    if(!profileHeader || !heading){
         return;
     }
 
-    if(
-        profileContent.querySelector(
-            ".verification-badge"
-        )
-    ){
+    const existingBadges =
+        profileContent.querySelectorAll(".verification-badge");
+
+    if(existingBadges.length > 0){
+        existingBadges.forEach(function(badge,index){
+            if(index > 0) badge.remove();
+        });
         return;
     }
+
+    verificationBadgeLoading = true;
 
     try{
-
         const { data, error } = await supabaseClient
             .from("verification_applications")
             .select("category,status,username")
@@ -5061,40 +5059,32 @@ async function addTikNationVerificationBadge(){
             return;
         }
 
-        const badge =
-            document.createElement("div");
+        // The profile may have re-rendered while the database request was running.
+        const liveContent = document.getElementById("profileContent");
+        const liveHeading = liveContent?.querySelector(".profile-header h1");
 
+        if(!liveContent || !liveHeading || liveContent.querySelector(".verification-badge")){
+            return;
+        }
+
+        const badge = document.createElement("div");
         const isFounder =
-            currentProfile?.username ===
-            "TikNationStudio" ||
-            data[0]?.username ===
-            "TikNationStudio";
+            currentProfile?.username === "TikNationStudio" ||
+            data[0]?.username === "TikNationStudio";
 
         badge.className =
-            "verification-badge " +
-            (
-                isFounder
-                    ? "founder"
-                    : "verified"
-            );
+            "verification-badge " + (isFounder ? "founder" : "verified");
 
-        badge.innerHTML =
-            isFounder
-                ? "👑 <span class=\"verification-check\">✓</span> FOUNDER MARK"
-                : "<span class=\"verification-check\">✓</span> VERIFIED CREATOR";
+        badge.innerHTML = isFounder
+            ? "👑 <span class=\"verification-check\">✓</span> FOUNDER MARK"
+            : "<span class=\"verification-check\">✓</span> VERIFIED CREATOR";
 
-        heading.insertAdjacentElement(
-            "afterend",
-            badge
-        );
+        liveHeading.insertAdjacentElement("afterend", badge);
 
     }catch(error){
-
-        console.error(
-            "Verification badge error:",
-            error
-        );
-
+        console.error("Verification badge error:", error);
+    }finally{
+        verificationBadgeLoading = false;
     }
 }
 
