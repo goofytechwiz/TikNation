@@ -3618,6 +3618,12 @@ async function toggleLike(postId){
             if(insertError){
                 throw insertError;
             }
+
+            await createPostOwnerNotification(
+                postId,
+                "like",
+                (currentProfile && currentProfile.username ? "@" + currentProfile.username : "A TikNation creator") + " liked your post."
+            );
         }
 
         await loadLikeState(postId);
@@ -3889,6 +3895,12 @@ async function submitComment(postId){
         if(error){
             throw error;
         }
+
+        await createPostOwnerNotification(
+            postId,
+            "comment",
+            (currentProfile && currentProfile.username ? "@" + currentProfile.username : "A TikNation creator") + " commented on your post."
+        );
 
         input.value = "";
 
@@ -5212,6 +5224,23 @@ async function createTikNationNotification(recipientId,type,message){
         message:message
     });
     if(error) console.error("Notification creation failed:",error);
+}
+
+async function createPostOwnerNotification(postId,type,message){
+    if(!currentUser) return;
+    const {data,error} = await supabaseClient
+        .from("creator_posts")
+        .select("user_id")
+        .eq("id",postId)
+        .limit(1);
+    if(error){
+        console.error("Could not find post owner for notification:",error);
+        return;
+    }
+    const ownerId = data && data[0] && data[0].user_id;
+    if(ownerId && ownerId !== currentUser.id){
+        await createTikNationNotification(ownerId,type,message);
+    }
 }
 
 function markAllNotificationsRead(){
