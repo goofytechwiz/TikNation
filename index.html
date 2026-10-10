@@ -5166,8 +5166,8 @@ async function renderTikNationNotifications(){
         if(!error && Array.isArray(data)){
             items = data.map(item => ({
                 id:item.id,
-                icon:item.type === "follow" ? "👤" : "🔔",
-                title:item.type === "follow" ? "New follower" : "TikNation update",
+                icon:item.type === "follow" ? "👤" : item.type === "like" ? "❤️" : item.type === "comment" ? "💬" : "🔔",
+                title:item.type === "follow" ? "New follower" : item.type === "like" ? "New like" : item.type === "comment" ? "New comment" : "TikNation update",
                 message:item.message,
                 createdAt:item.created_at,
                 read:Boolean(item.read_at),
