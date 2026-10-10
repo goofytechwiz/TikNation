@@ -179,6 +179,10 @@ body.tn-compact-feed .video-info p{
 .profile-mini{
     width:42px;
     height:42px;
+    padding:0;
+    overflow:hidden;
+    flex-shrink:0;
+    border:1px solid rgba(255,255,255,.2);
     border-radius:50%;
     display:flex;
     align-items:center;
@@ -2314,14 +2318,52 @@ function updateAuthUI(){
                 currentUser.email
             );
 
+        loadHeaderProfileAvatar();
+
     }else{
 
         authButton.textContent =
             "SIGN IN";
 
-        profileMini.textContent =
-            "T";
+        profileMini.replaceChildren();
+        profileMini.textContent = "T";
+        profileMini.style.backgroundImage = "";
     }
+}
+
+async function loadHeaderProfileAvatar(){
+
+    const profileMini =
+        document.getElementById("profileMini");
+
+    const userId = currentUser?.id;
+    const avatarPath = currentProfile?.avatar_url;
+
+    if(!profileMini || !userId || !avatarPath){
+        return;
+    }
+
+    const { data, error } = await supabaseClient
+        .storage
+        .from("profile-pictures")
+        .createSignedUrl(avatarPath, 3600);
+
+    if(error || !data?.signedUrl ||
+       currentUser?.id !== userId ||
+       currentProfile?.avatar_url !== avatarPath){
+        return;
+    }
+
+    const avatar = document.createElement("img");
+    avatar.src = data.signedUrl;
+    avatar.alt = "Your profile picture";
+    avatar.style.width = "100%";
+    avatar.style.height = "100%";
+    avatar.style.objectFit = "cover";
+    avatar.style.borderRadius = "50%";
+
+    profileMini.replaceChildren(avatar);
+    profileMini.style.backgroundImage = "none";
 }
 
 function getInitial(value){
