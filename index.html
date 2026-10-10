@@ -2762,10 +2762,7 @@ async function loadProfilePage(){
                     <div class="card" style="padding:14px;"><p class="muted">Action taken</p><h3 id="adminReportActionTaken">—</h3></div>
                     <div class="card" style="padding:14px;"><p class="muted">Test records</p><h3 id="adminReportTestTotal">—</h3></div>
                 </div>
-                <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0;">
-                    <label for="contentReportAdminSearch" class="muted">Search reports:</label>
-                    <input id="contentReportAdminSearch" type="search" placeholder="Content ID, reason, or details" oninput="filterContentReports()" style="flex:1;min-width:190px;padding:10px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);">
-                    <label for="contentReportAdminFilter" class="muted">Show:</label>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0;"><label for="contentReportAdminFilter" class="muted">Show:</label>
                     <select id="contentReportAdminFilter" onchange="filterContentReports()" style="padding:10px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);"><option value="all">All records</option><option value="pending">Pending</option><option value="reviewed">Reviewed</option><option value="dismissed">Dismissed</option><option value="action_taken">Action taken</option><option value="test">Test records only</option></select>
                     <button type="button" class="small-button" onclick="loadContentReports()">↻ Refresh reports</button>
                 </div><div id="contentReportsAdminList">Reports will appear here.</div>
@@ -5334,10 +5331,7 @@ async function loadContentReports(){
  contentReportsCache=data||[];
  const communityReports=contentReportsCache.filter(x=>!isTikNationTestReport(x));
  const testReports=contentReportsCache.filter(isTikNationTestReport);
- const total=document.getElementById("adminReportTotal");
- const pending=document.getElementById("adminReportPending");
- const taken=document.getElementById("adminReportActionTaken");
- const tests=document.getElementById("adminReportTestTotal");
+ const total=document.getElementById("adminReportTotal"), pending=document.getElementById("adminReportPending"), taken=document.getElementById("adminReportActionTaken"), tests=document.getElementById("adminReportTestTotal");
  if(total)total.textContent=communityReports.length;
  if(pending)pending.textContent=communityReports.filter(x=>x.status==="pending").length;
  if(taken)taken.textContent=communityReports.filter(x=>x.status==="action_taken").length;
@@ -5347,27 +5341,15 @@ async function loadContentReports(){
 function filterContentReports(){
  const list=document.getElementById("contentReportsAdminList");
  const filter=document.getElementById("contentReportAdminFilter");
- const searchInput=document.getElementById("contentReportAdminSearch");
  if(!list)return;
  const status=filter?filter.value:"all";
- const term=(searchInput?.value||"").trim().toLowerCase();
- let reports=status==="test"
+ const reports=status==="test"
   ? contentReportsCache.filter(isTikNationTestReport)
   : status==="all"
-   ? contentReportsCache.slice()
+   ? contentReportsCache
    : contentReportsCache.filter(x=>x.status===status && !isTikNationTestReport(x));
- if(term){
-  reports=reports.filter(function(r){
-   return [r.target_id,r.reason,r.details,r.target_type,r.status]
-    .some(function(value){return String(value||"").toLowerCase().includes(term);});
-  });
- }
  if(!reports.length){
-  if(term){
-   list.textContent="No records match \""+term+"\""+(status==="all"?" in any status.":status==="test"?" in test records.":" with status "+status.replace("_"," ")+".");
-  }else{
-   list.textContent=status==="test"?"No test records found.":status==="all"?"No reports or test records yet. Community reports will appear here.":"No community reports with status "+status.replace("_"," ")+".";
-  }
+  list.textContent=status==="test"?"No test records found.":status==="all"?"No reports or test records yet. Community reports will appear here.":"No community reports with status "+status.replace("_"," ")+".";
   return;
  }
  list.innerHTML=reports.map(function(r){
