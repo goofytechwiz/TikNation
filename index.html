@@ -1702,7 +1702,8 @@ textarea.form-control{
     <p class="muted" style="margin-bottom:18px;">Your updates will appear here as TikNation features become available.</p>
 
     <div class="notification-actions">
-        <button type="button" class="primary-button" onclick="markAllNotificationsRead()">MARK ALL AS READ</button>
+        <button type="button" class="primary-button" onclick="renderTikNationNotifications()">↻ REFRESH</button>
+        <button type="button" class="secondary-button" onclick="markAllNotificationsRead()">MARK ALL AS READ</button>
         <button type="button" class="secondary-button" onclick="clearTikNationNotifications()">CLEAR NOTIFICATIONS</button>
     </div>
 
@@ -5427,6 +5428,13 @@ function escapeNotificationText(value){
     });
 }
 
+function formatNotificationDate(value){
+    if(!value) return "";
+    const date = new Date(value);
+    if(Number.isNaN(date.getTime())) return "";
+    return date.toLocaleString([], {month:"short",day:"numeric",hour:"numeric",minute:"2-digit"});
+}
+
 async function renderTikNationNotifications(){
     const list = document.getElementById("notificationList");
     const count = document.getElementById("notificationCount");
@@ -5466,7 +5474,7 @@ async function renderTikNationNotifications(){
             '<div class="notification-icon">' + escapeNotificationText(item.icon || "🔔") + '</div>' +
             '<div class="notification-body"><strong>' + escapeNotificationText(item.title || "TikNation update") + '</strong>' +
             '<p class="muted">' + escapeNotificationText(item.message || "") + '</p>' +
-            '<div class="notification-meta">' + (item.read ? "Read" : "Unread") + '</div>' +
+            '<div class="notification-meta">' + (item.read ? "Read" : "Unread") + (item.createdAt ? " · " + escapeNotificationText(formatNotificationDate(item.createdAt)) : "") + '</div>' +
             '<div class="notification-item-actions">' +
             (!item.read ? '<button type="button" onclick="markTikNationNotificationRead(\'' + escapeNotificationText(item.id) + '\',' + Boolean(item.remote) + ')">MARK READ</button>' : '') +
             (!item.remote ? '<button type="button" onclick="removeTikNationNotification(\'' + escapeNotificationText(item.id) + '\')">DISMISS</button>' : '') +
