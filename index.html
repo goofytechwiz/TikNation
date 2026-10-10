@@ -944,6 +944,47 @@ textarea.form-control{
     font-size:24px;
 }
 
+/* NOTIFICATION CENTER */
+.notification-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:0 0 18px;
+}
+.notification-actions button{
+    padding:10px 14px;
+}
+.secondary-button{
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:12px;
+    padding:10px 14px;
+    background:rgba(255,255,255,.05);
+    color:#e8e8f4;
+}
+.notification.unread{
+    border-color:rgba(0,210,255,.35);
+    background:linear-gradient(110deg,rgba(0,170,255,.10),rgba(15,15,27,.85));
+}
+.notification-body{flex:1;min-width:0;}
+.notification-body p{margin-top:5px;line-height:1.5;}
+.notification-meta{font-size:12px;color:#858599;margin-top:8px;}
+.notification-item-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.notification-item-actions button{
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:9px;
+    background:rgba(255,255,255,.05);
+    color:#d9d9eb;
+    padding:6px 10px;
+    font-size:12px;
+}
+.notification-empty{
+    padding:28px 20px;
+    text-align:center;
+    border:1px dashed rgba(255,255,255,.15);
+    border-radius:18px;
+    color:#aaaabd;
+}
+
 /* SEARCH */
 
 .search-results{
@@ -1623,23 +1664,18 @@ textarea.form-control{
 <section id="notifications" class="page">
 
     <div class="section-head">
-        <h2>Notifications</h2>
-        <span class="muted">Stay connected</span>
+        <h2>🔔 Notifications</h2>
+        <span id="notificationCount" class="muted">Your TikNation updates</span>
     </div>
 
-    <div class="notification">
+    <p class="muted" style="margin-bottom:18px;">Your updates will appear here as TikNation features become available.</p>
 
-        <div class="notification-icon">✨</div>
-
-        <div>
-            <strong>Welcome to TikNation.</strong>
-
-            <p class="muted">
-                Your creator journey has begun.
-            </p>
-        </div>
-
+    <div class="notification-actions">
+        <button type="button" class="primary-button" onclick="markAllNotificationsRead()">MARK ALL AS READ</button>
+        <button type="button" class="secondary-button" onclick="clearTikNationNotifications()">CLEAR NOTIFICATIONS</button>
     </div>
+
+    <div id="notificationList" aria-live="polite"></div>
 
 </section>
 
@@ -1984,6 +2020,10 @@ function showPage(pageId,button){
 
     if(pageId === "settings"){
         refreshSecuritySettings();
+    }
+
+    if(pageId === "notifications"){
+        renderTikNationNotifications();
     }
 }
 
@@ -4720,6 +4760,97 @@ loadSession();
 </script>
 
 <script>
+
+/* =========================
+   TIKNATION NOTIFICATION CENTER
+========================= */
+function getTikNationNotifications(){
+    const welcome = {
+        id:"welcome-tiknation",
+        icon:"✨",
+        title:"Welcome to TikNation.",
+        message:"Your creator journey has begun. Your notifications will grow as more TikNation features become available.",
+        createdAt:"2026-10-09T00:00:00.000Z",
+        read:false
+    };
+    try{
+        const saved = JSON.parse(localStorage.getItem("tiknationNotifications") || "null");
+        if(Array.isArray(saved)) return saved;
+    }catch(error){}
+    return [welcome];
+}
+
+function saveTikNationNotifications(items){
+    try{
+        localStorage.setItem("tiknationNotifications",JSON.stringify(items));
+        return true;
+    }catch(error){
+        return false;
+    }
+}
+
+function escapeNotificationText(value){
+    return String(value ?? "").replace(/[&<>"']/g,function(char){
+        return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char];
+    });
+}
+
+function renderTikNationNotifications(){
+    const list = document.getElementById("notificationList");
+    const count = document.getElementById("notificationCount");
+    if(!list || !count) return;
+    const items = getTikNationNotifications();
+    const unread = items.filter(item => !item.read).length;
+    count.textContent = unread ? unread + " unread update" + (unread === 1 ? "" : "s") : "You're all caught up";
+    if(!items.length){
+        list.innerHTML = '<div class="notification-empty"><div style="font-size:30px;margin-bottom:10px;">🔕</div><strong>No notifications</strong><p style="margin-top:6px;">You’re all caught up. New updates will appear here when available.</p></div>';
+        return;
+    }
+    list.innerHTML = items.map(function(item){
+        return '<article class="notification ' + (item.read ? '' : 'unread') + '">' +
+            '<div class="notification-icon">' + escapeNotificationText(item.icon || "🔔") + '</div>' +
+            '<div class="notification-body"><strong>' + escapeNotificationText(item.title || "TikNation update") + '</strong>' +
+            '<p class="muted">' + escapeNotificationText(item.message || "") + '</p>' +
+            '<div class="notification-meta">' + (item.read ? "Read" : "Unread") + '</div>' +
+            '<div class="notification-item-actions">' +
+            (!item.read ? '<button type="button" onclick="markTikNationNotificationRead(\'' + escapeNotificationText(item.id) + '\')">MARK READ</button>' : '') +
+            '<button type="button" onclick="removeTikNationNotification(\'' + escapeNotificationText(item.id) + '\')">DISMISS</button>' +
+            '</div></div></article>';
+    }).join("");
+}
+
+function markTikNationNotificationRead(id){
+    const items = getTikNationNotifications().map(item => item.id === id ? {...item,read:true} : item);
+    saveTikNationNotifications(items);
+    renderTikNationNotifications();
+}
+
+function markAllNotificationsRead(){
+    const items = getTikNationNotifications().map(item => ({...item,read:true}));
+    if(!saveTikNationNotifications(items)){
+        alert("Your browser could not save this change.");
+        return;
+    }
+    renderTikNationNotifications();
+}
+
+function removeTikNationNotification(id){
+    const items = getTikNationNotifications().filter(item => item.id !== id);
+    if(!saveTikNationNotifications(items)){
+        alert("Your browser could not save this change.");
+        return;
+    }
+    renderTikNationNotifications();
+}
+
+function clearTikNationNotifications(){
+    if(!confirm("Clear all notifications from this browser?")) return;
+    if(!saveTikNationNotifications([])){
+        alert("Your browser could not save this change.");
+        return;
+    }
+    renderTikNationNotifications();
+}
 
 /* =========================
    TIKNATION PREFERENCES
