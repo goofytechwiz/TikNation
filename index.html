@@ -5366,18 +5366,13 @@ async function loadContentReports(){
   if(testRecord){
    actions='<p class="muted">Test record — moderation actions are disabled for this record.</p>';
   }else if(r.status==="pending"){
-   actions='<button type="button" class="small-button" onclick="updateContentReport(\\''+escapeJs(r.id)+'\\',\\'reviewed\\')">Mark reviewed</button> <button type="button" class="small-button" onclick="updateContentReport(\\''+escapeJs(r.id)+'\\',\\'dismissed\\')">Dismiss</button> <button type="button" class="primary-button" onclick="updateContentReport(\\''+escapeJs(r.id)+'\\',\\'action_taken\\')">Action taken</button>';
+   actions='<button type="button" class="small-button" onclick="updateContentReport(\''+escapeJs(r.id)+'\',\'reviewed\')">Mark reviewed</button> <button type="button" class="small-button" onclick="updateContentReport(\''+escapeJs(r.id)+'\',\'dismissed\')">Dismiss</button> <button type="button" class="primary-button" onclick="updateContentReport(\''+escapeJs(r.id)+'\',\'action_taken\')">Action taken</button>';
   }else{
-   actions='<button type="button" class="small-button" onclick="updateContentReport(\\''+escapeJs(r.id)+'\\',\\'pending\\')">Reopen</button>';
+   actions='<button type="button" class="small-button" onclick="updateContentReport(\''+escapeJs(r.id)+'\',\'pending\')">Reopen</button>';
   }
   return '<div class="card" style="margin:12px 0;padding:16px;">'
    +(testRecord?'<p><strong>🧪 TEST RECORD — NOT A COMMUNITY REPORT</strong></p>':'')
    +'<p><strong>'+escapeHtml(String(r.target_type||"content").toUpperCase())+'</strong> · Status: <strong>'+escapeHtml(r.status||"unknown")+'</strong></p>'
-   +'<p>Content ID: '+escapeHtml(r.target_id||"—")+'</p><p>Reason: '+escapeHtml(r.reason||"—")+'</p>'
-   +(r.details?'<p>Details: '+escapeHtml(r.details)+'</p>':'')
-   +'<p class="muted">Submitted: '+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString():"Unknown")+'</p>'+actions+'</div>';
- }).join("");
-}se())+'</strong> · Status: <strong>'+escapeHtml(r.status||"unknown")+'</strong></p>'
    +'<p>Content ID: '+escapeHtml(r.target_id||"—")+'</p><p>Reason: '+escapeHtml(r.reason||"—")+'</p>'
    +(r.details?'<p>Details: '+escapeHtml(r.details)+'</p>':'')
    +'<p class="muted">Submitted: '+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString():"Unknown")+'</p>'+actions+'</div>';
