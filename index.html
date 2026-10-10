@@ -1666,8 +1666,8 @@ textarea.form-control{
         <div class="card">
             <div class="card-icon">🔒</div>
             <h3>Privacy & Security</h3>
-            <p>Account privacy and security controls are planned for a future update. They are not available here yet.</p>
-            <span class="muted">IN DEVELOPMENT</span>
+            <p>Change your account password and review your sign-in status below.</p>
+            <button type="button" class="primary-button" onclick="document.getElementById('securitySettings').scrollIntoView({behavior:'smooth',block:'start'})">OPEN SECURITY</button>
         </div>
 
         <div class="card">
@@ -1679,10 +1679,24 @@ textarea.form-control{
 
     </div>
 
-    <div class="card" style="margin-top:24px;">
-        <h3>Need to switch accounts?</h3>
-        <p class="muted">You can sign out securely from your profile.</p>
-        <button type="button" class="primary-button" onclick="openProfileOrAuth()">ACCOUNT OPTIONS</button>
+    <div id="securitySettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
+        <h3>🔐 Password & Account Security</h3>
+        <p class="muted">Change your password for the account currently signed in to TikNation.</p>
+        <p id="securitySignedInAs" class="muted" aria-live="polite">Checking sign-in status…</p>
+        <form id="changePasswordForm" onsubmit="changeAccountPassword(event)">
+            <label for="newAccountPassword">New password</label>
+            <input id="newAccountPassword" type="password" minlength="8" autocomplete="new-password" required placeholder="At least 8 characters" style="width:100%;margin:8px 0 14px;padding:12px;border-radius:10px;">
+            <label for="confirmAccountPassword">Confirm new password</label>
+            <input id="confirmAccountPassword" type="password" minlength="8" autocomplete="new-password" required placeholder="Enter it again" style="width:100%;margin:8px 0 14px;padding:12px;border-radius:10px;">
+            <button id="changePasswordButton" type="submit" class="primary-button">UPDATE PASSWORD</button>
+            <p id="changePasswordMessage" class="auth-message" aria-live="polite"></p>
+        </form>
+        <div style="border-top:1px solid var(--border-color,rgba(255,255,255,.12));margin-top:20px;padding-top:18px;">
+            <h3>Sign out</h3>
+            <p class="muted">Sign out of this TikNation session on this browser.</p>
+            <button type="button" class="primary-button" onclick="signOutUser()">SIGN OUT</button>
+        </div>
+        <p class="muted" style="margin-top:18px;">Profile visibility, blocked accounts, and additional session controls are not enabled yet. We'll add them after their storage and security rules are in place.</p>
     </div>
 
 </section>
@@ -1903,6 +1917,10 @@ function showPage(pageId,button){
 
     if(pageId === "profile"){
         loadProfilePage();
+    }
+
+    if(pageId === "settings"){
+        refreshSecuritySettings();
     }
 }
 
@@ -3837,6 +3855,79 @@ async function signOutUser(){
     showPage("home");
 }
 
+async function changeAccountPassword(event){
+
+    if(event){
+        event.preventDefault();
+    }
+
+    const message = document.getElementById("changePasswordMessage");
+    const passwordInput = document.getElementById("newAccountPassword");
+    const confirmInput = document.getElementById("confirmAccountPassword");
+    const submit = document.getElementById("changePasswordButton");
+
+    message.className = "auth-message";
+    message.textContent = "";
+
+    if(!currentUser){
+        message.className = "auth-message error";
+        message.textContent = "Please sign in before changing your password.";
+        return;
+    }
+
+    const password = passwordInput.value;
+    const confirmation = confirmInput.value;
+
+    if(password.length < 8){
+        message.className = "auth-message error";
+        message.textContent = "Use at least 8 characters for your new password.";
+        return;
+    }
+
+    if(password !== confirmation){
+        message.className = "auth-message error";
+        message.textContent = "The passwords do not match. Please try again.";
+        return;
+    }
+
+    submit.disabled = true;
+    submit.textContent = "UPDATING…";
+
+    try{
+        const { error } = await supabaseClient.auth.updateUser({ password: password });
+
+        if(error){
+            throw error;
+        }
+
+        passwordInput.value = "";
+        confirmInput.value = "";
+        message.className = "auth-message success";
+        message.textContent = "Password updated successfully.";
+    }catch(error){
+        message.className = "auth-message error";
+        message.textContent = error.message || "Unable to update your password. Please try again.";
+    }finally{
+        submit.disabled = false;
+        submit.textContent = "UPDATE PASSWORD";
+    }
+}
+
+function refreshSecuritySettings(){
+
+    const status = document.getElementById("securitySignedInAs");
+
+    if(!status){
+        return;
+    }
+
+    if(currentUser){
+        status.textContent = "Signed in as " + (currentUser.email || "your TikNation account") + ".";
+    }else{
+        status.textContent = "You are not signed in. Sign in to change your password.";
+    }
+}
+
 /* =========================
    AUTH STATE
 ========================= */
@@ -3848,6 +3939,7 @@ supabaseClient.auth.onAuthStateChange(
             session?.user || null;
 
         updateAuthUI();
+        refreshSecuritySettings();
 
         if(currentUser){
 
