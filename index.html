@@ -751,6 +751,7 @@ textarea.form-control{
 /* PROFILE */
 
 .profile-header{
+    position:relative;
     padding:35px;
     border-radius:25px;
     background:linear-gradient(
@@ -759,6 +760,39 @@ textarea.form-control{
         rgba(0,160,220,.1)
     );
     border:1px solid rgba(255,255,255,.08);
+    overflow:hidden;
+}
+
+.creator-banner{
+    width:100%;
+    height:190px;
+    margin-bottom:24px;
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,.12);
+    background:
+        radial-gradient(ellipse at 20% 20%,rgba(0,200,255,.45),transparent 45%),
+        radial-gradient(ellipse at 80% 70%,rgba(141,99,255,.6),transparent 50%),
+        linear-gradient(120deg,#11112b,#24154b,#063247);
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.creator-banner span{
+    color:rgba(255,255,255,.8);
+    font-size:clamp(13px,2vw,20px);
+    font-weight:900;
+    letter-spacing:.2em;
+    text-align:center;
+    text-shadow:0 2px 15px rgba(0,0,0,.5);
+}
+
+@media(max-width:600px){
+    .profile-header{padding:18px;}
+    .creator-banner{height:125px;margin-bottom:18px;}
 }
 
 .profile-avatar{
@@ -2394,7 +2428,7 @@ async function ensureProfile(user){
         await supabaseClient
             .from("profiles")
             .select(
-                "id,username,display_name,bio,avatar_url"
+                "id,username,display_name,bio,avatar_url,banner_url"
             )
             .eq("id",user.id)
             .maybeSingle();
@@ -2520,9 +2554,21 @@ async function loadProfilePage(){
         avatarDisplayUrl = avatarLink?.signedUrl || "";
     }
 
+    let bannerDisplayUrl = "";
+    if(profile.banner_url){
+        const { data: bannerLink } = await supabaseClient
+            .storage.from("profile-pictures")
+            .createSignedUrl(profile.banner_url, 3600);
+        bannerDisplayUrl = bannerLink?.signedUrl || "";
+    }
+
     container.innerHTML = `
 
         <div class="profile-header">
+
+            <div class="creator-banner" style="${bannerDisplayUrl ? 'background-image:url(' + escapeHtml(bannerDisplayUrl) + ')' : ''}">
+                ${bannerDisplayUrl ? '' : '<span>YOUR CREATOR WORLD</span>'}
+            </div>
 
             <div class="profile-avatar" id="creatorProfileAvatar" style="overflow:hidden;">
                 ${avatarDisplayUrl
@@ -2591,6 +2637,13 @@ async function loadProfilePage(){
                 <input id="creatorAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" style="display:block;width:100%;margin:8px 0 12px;color:#fff;">
                 <button class="secondary-button" type="button" id="creatorAvatarUpload" onclick="uploadCreatorAvatar()">UPLOAD PROFILE PICTURE</button>
                 <p id="creatorAvatarMessage" class="auth-message" aria-live="polite" style="margin-top:10px;"></p>
+
+                <div style="height:1px;background:rgba(255,255,255,.1);margin:20px 0;"></div>
+                <label for="creatorBannerFile">Creator banner</label>
+                <p class="muted" style="font-size:12px;margin:6px 0 10px;">Choose a JPG, PNG, WEBP, or GIF image up to 5 MB. Wide images look best.</p>
+                <input id="creatorBannerFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif" style="display:block;width:100%;margin:8px 0 12px;color:#fff;">
+                <button class="secondary-button" type="button" id="creatorBannerUpload" onclick="uploadCreatorBanner()">UPLOAD CREATOR BANNER</button>
+                <p id="creatorBannerMessage" class="auth-message" aria-live="polite" style="margin-top:10px;"></p>
                 <div style="height:1px;background:rgba(255,255,255,.1);margin:20px 0;"></div>
                 <label for="creatorDisplayName">Display name</label>
                 <input id="creatorDisplayName" type="text" maxlength="50" required value="${escapeHtml(displayName)}" style="width:100%;margin:8px 0 16px;padding:12px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);">
@@ -2705,6 +2758,69 @@ async function loadProfilePage(){
     await loadVerificationArea();
 }
 
+async function uploadCreatorBanner(){
+    const input = document.getElementById("creatorBannerFile");
+    const message = document.getElementById("creatorBannerMessage");
+    const file = input?.files?.[0];
+
+    if(!currentUser){
+        if(message) message.textContent = "Please sign in first.";
+        return;
+    }
+    if(!file){
+        if(message) message.textContent = "Choose a banner image first.";
+        return;
+    }
+    if(!["image/jpeg","image/png","image/webp","image/gif"].includes(file.type)){
+        if(message) message.textContent = "Please choose a JPG, PNG, WEBP, or GIF image.";
+        return;
+    }
+    if(file.size > 5 * 1024 * 1024){
+        if(message) message.textContent = "Image must be 5 MB or smaller.";
+        return;
+    }
+
+    const button = document.getElementById("creatorBannerUpload");
+    if(button){ button.disabled = true; button.textContent = "UPLOADING..."; }
+    if(message) message.textContent = "";
+
+    try{
+        const extension = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g,"");
+        const path = currentUser.id + "/banner-" + Date.now() + "." + (extension || "jpg");
+        const { error: uploadError } = await supabaseClient
+            .storage.from("profile-pictures")
+            .upload(path, file, { cacheControl:"3600", upsert:false, contentType:file.type });
+
+        if(uploadError) throw uploadError;
+
+        const { data, error: updateError } = await supabaseClient
+            .from("profiles")
+            .update({ banner_url:path })
+            .eq("id",currentUser.id)
+            .select("id,username,display_name,bio,avatar_url,banner_url")
+            .single();
+
+        if(updateError) throw updateError;
+
+        currentProfile = data;
+        updateAuthUI();
+        await loadProfilePage();
+        const refreshedMessage = document.getElementById("creatorBannerMessage");
+        if(refreshedMessage){
+            refreshedMessage.textContent = "✨ Creator banner updated!";
+            refreshedMessage.classList.add("success");
+        }
+    }catch(error){
+        console.error("Creator banner upload error:",error);
+        if(message){
+            message.textContent = error?.message || "We couldn't upload your banner. Please check Storage permissions and try again.";
+        }
+    }finally{
+        const currentButton = document.getElementById("creatorBannerUpload");
+        if(currentButton){ currentButton.disabled = false; currentButton.textContent = "UPLOAD CREATOR BANNER"; }
+    }
+}
+
 async function uploadCreatorAvatar(){
     const input = document.getElementById("creatorAvatarFile");
     const message = document.getElementById("creatorAvatarMessage");
@@ -2744,7 +2860,7 @@ async function uploadCreatorAvatar(){
             .from("profiles")
             .update({ avatar_url:path })
             .eq("id",currentUser.id)
-            .select("id,username,display_name,bio,avatar_url")
+            .select("id,username,display_name,bio,avatar_url,banner_url")
             .single();
 
         if(updateError) throw updateError;
@@ -2815,7 +2931,7 @@ async function saveCreatorProfile(event){
             bio: bio
         })
         .eq("id", currentUser.id)
-        .select("id,username,display_name,bio,avatar_url")
+        .select("id,username,display_name,bio,avatar_url,banner_url")
         .single();
 
     if(button){
