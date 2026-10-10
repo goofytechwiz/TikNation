@@ -2059,6 +2059,7 @@ const supabaseClient =
 
 let currentUser = null;
 let currentProfile = null;
+let creatorProfileEditorOpen = false;
 let authMode = "signin";
 
 /* =========================
@@ -2535,6 +2536,39 @@ async function ensureProfile(user){
     updateAuthUI();
 }
 
+
+function toggleCreatorProfileEditor(){
+
+    creatorProfileEditorOpen = !creatorProfileEditorOpen;
+
+    const editor =
+        document.getElementById("creatorProfileEditor");
+
+    const button =
+        document.getElementById("toggleCreatorProfileEditorButton");
+
+    if(editor){
+        editor.style.display =
+            creatorProfileEditorOpen ? "block" : "none";
+    }
+
+    if(button){
+        button.setAttribute(
+            "aria-expanded",
+            creatorProfileEditorOpen ? "true" : "false"
+        );
+        button.textContent =
+            creatorProfileEditorOpen ? "CLOSE EDITOR" : "EDIT PROFILE";
+    }
+
+    if(creatorProfileEditorOpen && editor){
+        editor.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+    }
+}
+
 async function loadProfilePage(){
 
     const container =
@@ -2664,13 +2698,25 @@ async function loadProfilePage(){
             <button
                 type="button"
                 class="primary-button"
+                id="toggleCreatorProfileEditorButton"
+                aria-expanded="${creatorProfileEditorOpen ? "true" : "false"}"
+                onclick="toggleCreatorProfileEditor()"
+            >
+                ${creatorProfileEditorOpen ? "CLOSE EDITOR" : "EDIT PROFILE"}
+            </button>
+
+            <button
+                type="button"
+                class="secondary-button"
                 onclick="signOutUser()"
+                style="margin-top:10px;"
             >
                 SIGN OUT
             </button>
 
         </div>
 
+        <div id="creatorProfileEditor" style="display:${creatorProfileEditorOpen ? "block" : "none"};">
         <div class="section-head">
             <h2>✏️ Edit Your Creator Profile</h2>
             <span class="muted">Make your TikNation identity yours</span>
@@ -2704,6 +2750,7 @@ async function loadProfilePage(){
                 <button class="primary-button" type="submit" id="creatorProfileSave">SAVE PROFILE</button>
                 <p id="creatorProfileMessage" class="auth-message" aria-live="polite" style="margin-top:12px;"></p>
             </form>
+        </div>
         </div>
 
         <div class="section-head">
