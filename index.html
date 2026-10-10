@@ -1473,52 +1473,17 @@ textarea.form-control{
 </section>
 
 <section id="discover" class="page">
-
     <div class="section-head">
-        <h2>Discover</h2>
-        <span class="muted">Find your world</span>
+        <h2>🔎 Discover Creators</h2>
+        <span class="muted">Find your people</span>
     </div>
-
-    <div class="card-grid">
-
-        <div class="card">
-            <div class="card-icon">🎮</div>
-            <h3>Gaming</h3>
-            <p>Games, gameplay, creators and communities.</p>
-        </div>
-
-        <div class="card">
-            <div class="card-icon">🎵</div>
-            <h3>Music</h3>
-            <p>Discover artists, songs and musical worlds.</p>
-        </div>
-
-        <div class="card">
-            <div class="card-icon">🎨</div>
-            <h3>Creative</h3>
-            <p>Art, filmmaking, imagination and creation.</p>
-        </div>
-
-        <div class="card">
-            <div class="card-icon">🎬</div>
-            <h3>Entertainment</h3>
-            <p>Stories, shows, movies and experiences.</p>
-        </div>
-
-        <div class="card">
-            <div class="card-icon">🚀</div>
-            <h3>Future</h3>
-            <p>Technology, ideas and what's coming next.</p>
-        </div>
-
-        <div class="card">
-            <div class="card-icon">👥</div>
-            <h3>Communities</h3>
-            <p>Find people who share your interests.</p>
-        </div>
-
-    </div>
-
+    <p class="muted" style="margin-bottom:18px;">Search TikNation creators by username or display name, then open their profile and follow their journey.</p>
+    <form onsubmit="searchTikNationCreators(event)" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;">
+        <input id="creatorSearchInput" type="search" maxlength="40" placeholder="Search creators..." aria-label="Search creators" style="flex:1;min-width:180px;padding:13px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);">
+        <button class="primary-button" type="submit">SEARCH</button>
+    </form>
+    <div id="creatorSearchMessage" class="muted" aria-live="polite" style="margin-bottom:14px;">Loading creators...</div>
+    <div id="creatorSearchResults" class="card-grid"></div>
 </section>
 
 <section id="create" class="page">
@@ -2064,6 +2029,10 @@ function showPage(pageId,button){
 
     if(pageId === "watch"){
         loadWatchFeed();
+    }
+
+    if(pageId === "discover"){
+        searchTikNationCreators();
     }
 
     if(pageId === "profile"){
@@ -3291,6 +3260,57 @@ async function loadWatchFeed(){
         }).join("");
 
     await hydrateWatchInteractions(data);
+}
+
+async function searchTikNationCreators(event){
+    if(event && typeof event.preventDefault === "function"){
+        event.preventDefault();
+    }
+
+    const input = document.getElementById("creatorSearchInput");
+    const results = document.getElementById("creatorSearchResults");
+    const message = document.getElementById("creatorSearchMessage");
+    if(!results || !message){
+        return;
+    }
+
+    const term = (input ? input.value : "").trim().replace(/[^a-zA-Z0-9_. -]/g,"").slice(0,40);
+    message.textContent = term ? "Searching creators..." : "Showing creators on TikNation...";
+    results.innerHTML = "";
+
+    let request = supabaseClient
+        .from("profiles")
+        .select("id,username,display_name,bio")
+        .order("username",{ascending:true})
+        .limit(24);
+
+    if(term){
+        const safeTerm = term.replace(/[,%()]/g,"").trim();
+        if(!safeTerm){
+            message.textContent = "Enter a username or display name to search.";
+            return;
+        }
+        request = request.or("username.ilike.%"+safeTerm+"%,display_name.ilike.%"+safeTerm+"%");
+    }
+
+    const {data,error} = await request;
+    if(error){
+        console.error("Creator search error:",error);
+        message.textContent = "Creators could not be loaded right now. Please try again.";
+        return;
+    }
+
+    if(!data || data.length === 0){
+        message.textContent = term ? "No creators matched that search yet." : "No creator profiles to show yet. Check back soon!";
+        return;
+    }
+
+    message.textContent = data.length + (data.length === 1 ? " creator found" : " creators found");
+    results.innerHTML = data.map(function(profile){
+        const name = profile.display_name || profile.username || "TikNation Creator";
+        const username = profile.username || "TikNationCreator";
+        return '<article class="card"><div class="card-icon">👤</div><h3>'+escapeHtml(name)+'</h3><p class="muted">@'+escapeHtml(username)+'</p><p>'+escapeHtml(profile.bio || "Creating my world on TikNation.")+'</p><button type="button" class="primary-button" onclick="openPublicCreatorProfile(\''+escapeJs(profile.id)+'\')">VIEW PROFILE</button></article>';
+    }).join("");
 }
 
 let viewingCreatorId = null;
