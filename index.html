@@ -1751,6 +1751,16 @@ textarea.form-control{
 
 </section>
 
+<section id="publicCreatorProfile" class="page">
+    <div class="section-head">
+        <h2>👤 Creator Profile</h2>
+        <button type="button" class="small-button" onclick="showPage('watch')">← BACK TO WATCH</button>
+    </div>
+    <div id="publicCreatorProfileContent">
+        <div class="card"><p class="muted">Choose a creator from Watch to view their profile.</p></div>
+    </div>
+</section>
+
 <section id="settings" class="page">
 
     <div class="section-head">
@@ -3283,6 +3293,145 @@ async function loadWatchFeed(){
     await hydrateWatchInteractions(data);
 }
 
+let viewingCreatorId = null;
+
+async function openPublicCreatorProfile(userId){
+    if(!userId){
+        return;
+    }
+
+    if(currentUser && userId === currentUser.id){
+        showPage("profile");
+        return;
+    }
+
+    viewingCreatorId = userId;
+    showPage("publicCreatorProfile");
+    await loadPublicCreatorProfile(userId);
+}
+
+async function loadPublicCreatorProfile(userId){
+    const container = document.getElementById("publicCreatorProfileContent");
+    if(!container || !userId){
+        return;
+    }
+
+    container.innerHTML = '<div class="card"><p class="muted">Loading creator profile...</p></div>';
+
+    const profileResult = await supabaseClient
+        .from("profiles")
+        .select("id,username,display_name,bio,avatar_url,banner_url")
+        .eq("id",userId)
+        .maybeSingle();
+
+    if(profileResult.error){
+        console.error("Public creator profile error:",profileResult.error);
+        container.innerHTML = '<div class="card"><h3>Profile unavailable</h3><p class="muted">This creator profile could not be loaded. Please try again later.</p></div>';
+        return;
+    }
+
+    const profile = profileResult.data;
+    if(!profile){
+        container.innerHTML = '<div class="card"><h3>Profile not found</h3><p class="muted">This creator profile is not available.</p></div>';
+        return;
+    }
+
+    const username = profile.username || "TikNationCreator";
+    const displayName = profile.display_name || username;
+    let avatarUrl = "";
+    let bannerUrl = "";
+
+    if(profile.avatar_url){
+        const result = await supabaseClient.storage.from("profile-pictures").createSignedUrl(profile.avatar_url,3600);
+        avatarUrl = result.data?.signedUrl || "";
+    }
+    if(profile.banner_url){
+        const result = await supabaseClient.storage.from("profile-pictures").createSignedUrl(profile.banner_url,3600);
+        bannerUrl = result.data?.signedUrl || "";
+    }
+
+    const [followersResult,followingResult,postsResult,followResult] = await Promise.all([
+        supabaseClient.from("follows").select("id",{count:"exact",head:true}).eq("following_id",userId),
+        supabaseClient.from("follows").select("id",{count:"exact",head:true}).eq("follower_id",userId),
+        supabaseClient.from("creator_posts").select("id,created_at,username,title,description,media_url,media_type,status").eq("user_id",userId).eq("status","published").order("created_at",{ascending:false}),
+        currentUser ? supabaseClient.from("follows").select("id").eq("follower_id",currentUser.id).eq("following_id",userId).limit(1) : Promise.resolve({data:[],error:null})
+    ]);
+
+    const posts = postsResult.data || [];
+    const isFollowing = !!(followResult.data && followResult.data.length);
+    const bannerStyle = bannerUrl ? 'background-image:url(' + escapeHtml(bannerUrl) + ')' : '';
+    const avatar = avatarUrl
+        ? '<img src="' + escapeHtml(avatarUrl) + '" alt="Creator profile picture" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">'
+        : escapeHtml(getInitial(displayName));
+
+    container.innerHTML = `
+        <div class="profile-header">
+            <div class="creator-banner" style="${bannerStyle}">${bannerUrl ? '' : '<span>CREATOR WORLD</span>'}</div>
+            <div class="profile-avatar" style="overflow:hidden;">${avatar}</div>
+            <h1>${escapeHtml(displayName)}</h1>
+            <p>@${escapeHtml(username)}</p>
+            <p style="margin-top:12px;">${escapeHtml(profile.bio || "Creating my world on TikNation.")}</p>
+            <div class="stats">
+                <div class="stat"><strong>${followersResult.count || 0}</strong><span>Followers</span></div>
+                <div class="stat"><strong>${followingResult.count || 0}</strong><span>Following</span></div>
+                <div class="stat"><strong>${posts.length}</strong><span>Creations</span></div>
+            </div>
+            ${currentUser ? `
+                <button type="button" class="primary-button" id="publicCreatorFollowButton" onclick="togglePublicCreatorFollow()">${isFollowing ? '✓ FOLLOWING' : '+ FOLLOW'}</button>
+            ` : `
+                <button type="button" class="primary-button" onclick="openAuthModal('signin')">SIGN IN TO FOLLOW</button>
+            `}
+        </div>
+        <div class="section-head"><h2>🎬 Published Creations</h2></div>
+        <div class="card-grid">
+            ${posts.length ? posts.map(function(post){
+                return '<article class="card"><h3>' + escapeHtml(post.title || "Untitled Creation") + '</h3><p>' + escapeHtml(post.description || "A TikNation creation.") + '</p>' + (post.media_url ? '<p><a href="' + escapeHtml(post.media_url) + '" target="_blank" rel="noopener noreferrer">View creation</a></p>' : '') + '</article>';
+            }).join('') : '<div class="card"><h3>No published creations yet</h3><p class="muted">This creator has not published anything yet.</p></div>'}
+        </div>
+    `;
+}
+
+async function togglePublicCreatorFollow(){
+    if(!currentUser){
+        openAuthModal("signin");
+        return;
+    }
+    if(!viewingCreatorId || viewingCreatorId === currentUser.id){
+        return;
+    }
+    const button = document.getElementById("publicCreatorFollowButton");
+    if(button) button.disabled = true;
+
+    try{
+        const {data,error} = await supabaseClient.from("follows")
+            .select("id").eq("follower_id",currentUser.id)
+            .eq("following_id",viewingCreatorId).limit(1);
+        if(error) throw error;
+
+        if(data && data.length){
+            const {error:deleteError} = await supabaseClient.from("follows")
+                .delete().eq("id",data[0].id).eq("follower_id",currentUser.id);
+            if(deleteError) throw deleteError;
+        }else{
+            const {error:insertError} = await supabaseClient.from("follows")
+                .insert({follower_id:currentUser.id,following_id:viewingCreatorId});
+            if(insertError) throw insertError;
+
+            await createTikNationNotification(
+                viewingCreatorId,
+                "follow",
+                (currentProfile && currentProfile.username ? "@" + currentProfile.username : "A TikNation creator") + " started following you."
+            );
+        }
+        await loadPublicCreatorProfile(viewingCreatorId);
+    }catch(error){
+        console.error("Public profile follow error:",error);
+        alert(error.message || "Unable to update this follow right now.");
+    }finally{
+        if(button) button.disabled = false;
+    }
+}
+
 function renderWatchPost(post){
 
     const media =
@@ -3322,10 +3471,12 @@ function renderWatchPost(post){
                 </p>
 
                 <p class="creator-name">
-                    @${escapeHtml(
-                        post.username ||
-                        "TikNationCreator"
-                    )}
+                    <button type="button" class="creator-profile-link" style="background:none;border:0;padding:0;color:inherit;font:inherit;text-decoration:underline;text-underline-offset:4px;cursor:pointer;" onclick="openPublicCreatorProfile('${escapeJs(post.user_id)}')">
+                        @${escapeHtml(
+                            post.username ||
+                            "TikNationCreator"
+                        )}
+                    </button>
                 </p>
 
                 ${
