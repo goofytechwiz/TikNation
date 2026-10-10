@@ -5334,7 +5334,17 @@ async function loadContentReports(){
  contentReportsCache=data||[];
  const communityReports=contentReportsCache.filter(x=>!isTikNationTestReport(x));
  const testReports=contentReportsCache.filter(isTikNationTestReport);
- const total=document.getElementById("adminReportTotal"), pending=document.getElementById("adminReportPending"), taken=document.getEfunction filterContentReports(){
+ const total=document.getElementById("adminReportTotal");
+ const pending=document.getElementById("adminReportPending");
+ const taken=document.getElementById("adminReportActionTaken");
+ const tests=document.getElementById("adminReportTestTotal");
+ if(total)total.textContent=communityReports.length;
+ if(pending)pending.textContent=communityReports.filter(x=>x.status==="pending").length;
+ if(taken)taken.textContent=communityReports.filter(x=>x.status==="action_taken").length;
+ if(tests)tests.textContent=testReports.length;
+ filterContentReports();
+}
+function filterContentReports(){
  const list=document.getElementById("contentReportsAdminList");
  const filter=document.getElementById("contentReportAdminFilter");
  const searchInput=document.getElementById("contentReportAdminSearch");
