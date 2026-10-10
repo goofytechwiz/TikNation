@@ -3398,6 +3398,7 @@ async function loadPublicCreatorProfile(userId){
             </div>
             ${currentUser ? `
                 <button type="button" class="primary-button" id="publicCreatorFollowButton" onclick="togglePublicCreatorFollow()">${isFollowing ? '✓ FOLLOWING' : '+ FOLLOW'}</button>
+                ${userId !== currentUser.id ? '<button type="button" class="small-button" style="margin-left:8px;" onclick="reportContent(\\\'profile\\\',\\\'' + escapeJs(userId) + '\\\',\\\'' + escapeJs(userId) + '\\\')">🚩 Report profile</button>' : ''}
             ` : `
                 <button type="button" class="primary-button" onclick="openAuthModal('signin')">SIGN IN TO FOLLOW</button>
             `}
@@ -5179,7 +5180,8 @@ async function loadVerificationAdminApplications(){
 let contentReportsCache = [];
 async function reportContent(targetType,targetId,targetUserId){
  if(!currentUser){openAuthModal('signin');return;}
- const reason=prompt("Why are you reporting this post? (Harassment, spam, impersonation, harmful content, etc.)");
+ const targetLabel=targetType==="profile"?"this creator profile":"this post";
+ const reason=prompt("Why are you reporting "+targetLabel+"? (Harassment, spam, impersonation, harmful content, etc.)");
  if(!reason||!reason.trim())return;
  const details=prompt("Optional: add details for the TikNation safety team.")||"";
  const {error}=await supabaseClient.from("content_reports").insert({reporter_id:currentUser.id,target_type:targetType,target_id:String(targetId),target_user_id:targetUserId||null,reason:reason.trim().slice(0,200),details:details.trim().slice(0,2000),status:"pending"});
