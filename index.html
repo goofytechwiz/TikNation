@@ -1779,6 +1779,9 @@ textarea.form-control{
         <button type="button" class="small-button" onclick="loadDirectMessageInbox()">↻ REFRESH</button>
     </div>
     <p class="muted" style="margin-bottom:18px;">Private conversations between creators. Choose someone to start talking.</p>
+    <div class="dm-new-message-action" style="margin:0 0 18px;">
+        <button type="button" class="primary-button" onclick="startNewDirectMessage()">✉️ NEW MESSAGE</button>
+    </div>
     <div id="dmSignInPrompt" class="card" style="display:none;">
         <h3>Sign in to message creators</h3>
         <p class="muted">Your conversations belong to your TikNation account.</p>
@@ -5356,6 +5359,17 @@ function dmPersonButton(profile,preview,active){
         '<span class="dm-avatar">'+dmAvatarMarkup(profile)+'</span>'+
         '<span class="dm-person-copy"><strong>'+escapeHtml(name)+'</strong><span>@'+escapeHtml(username)+(preview ? ' · '+escapeHtml(preview) : '')+'</span></span></button>';
 }
+function startNewDirectMessage(){
+    if(!currentUser){ openAuthModal("signin"); return; }
+    const input = document.getElementById("dmPeopleSearch");
+    const status = document.getElementById("dmPeopleStatus");
+    if(status) status.textContent = "Search for a creator, then select them to start a conversation.";
+    if(input){
+        input.scrollIntoView({behavior:"smooth",block:"center"});
+        input.focus({preventScroll:true});
+    }
+}
+
 async function searchMessagePeople(event){
     if(event && typeof event.preventDefault === "function") event.preventDefault();
     if(!currentUser){ openAuthModal("signin"); return; }
