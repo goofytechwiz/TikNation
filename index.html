@@ -2526,6 +2526,28 @@ async function loadProfilePage(){
         </div>
 
         <div class="section-head">
+            <h2>✏️ Edit Your Creator Profile</h2>
+            <span class="muted">Make your TikNation identity yours</span>
+        </div>
+
+        <div class="card" style="margin-bottom:28px;">
+            <form id="creatorProfileForm" onsubmit="saveCreatorProfile(event)">
+                <label for="creatorDisplayName">Display name</label>
+                <input id="creatorDisplayName" type="text" maxlength="50" required value="${escapeHtml(displayName)}" style="width:100%;margin:8px 0 16px;padding:12px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);">
+
+                <label for="creatorUsername">Username</label>
+                <input id="creatorUsername" type="text" maxlength="24" minlength="3" pattern="[A-Za-z0-9_.]{3,24}" required value="${escapeHtml(username)}" aria-describedby="creatorUsernameHelp" style="width:100%;margin:8px 0 6px;padding:12px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);">
+                <p id="creatorUsernameHelp" class="muted" style="font-size:12px;margin-bottom:16px;">3–24 characters. Use letters, numbers, underscores, or periods.</p>
+
+                <label for="creatorBio">Creator bio</label>
+                <textarea id="creatorBio" maxlength="300" rows="4" placeholder="Tell the Nation a little about yourself..." style="width:100%;margin:8px 0 16px;padding:12px;border-radius:10px;background:#11111c;color:#fff;border:1px solid rgba(255,255,255,.18);resize:vertical;">${escapeHtml(profile.bio || "")}</textarea>
+
+                <button class="primary-button" type="submit" id="creatorProfileSave">SAVE PROFILE</button>
+                <p id="creatorProfileMessage" class="auth-message" aria-live="polite" style="margin-top:12px;"></p>
+            </form>
+        </div>
+
+        <div class="section-head">
             <h2>Creator Verification</h2>
             <span class="muted">Apply for your verification mark</span>
         </div>
@@ -2621,6 +2643,82 @@ async function loadProfilePage(){
     await loadProfileStats();
     await loadProfileCreations();
     await loadVerificationArea();
+}
+
+async function saveCreatorProfile(event){
+
+    if(event){
+        event.preventDefault();
+    }
+
+    const message = document.getElementById("creatorProfileMessage");
+    const button = document.getElementById("creatorProfileSave");
+
+    if(!currentUser){
+        if(message) message.textContent = "Please sign in to edit your profile.";
+        return;
+    }
+
+    const displayName = document.getElementById("creatorDisplayName").value.trim();
+    const username = document.getElementById("creatorUsername").value.trim();
+    const bio = document.getElementById("creatorBio").value.trim();
+
+    if(displayName.length < 1 || displayName.length > 50){
+        message.textContent = "Display name must be between 1 and 50 characters.";
+        return;
+    }
+
+    if(!/^[A-Za-z0-9_.]{3,24}$/.test(username)){
+        message.textContent = "Username must be 3–24 characters using letters, numbers, underscores, or periods.";
+        return;
+    }
+
+    if(bio.length > 300){
+        message.textContent = "Your bio must be 300 characters or fewer.";
+        return;
+    }
+
+    if(button){
+        button.disabled = true;
+        button.textContent = "SAVING...";
+    }
+    if(message) message.textContent = "";
+
+    const {data,error} = await supabaseClient
+        .from("profiles")
+        .update({
+            display_name: displayName,
+            username: username,
+            bio: bio
+        })
+        .eq("id", currentUser.id)
+        .select("id,username,display_name,bio,avatar_url")
+        .single();
+
+    if(button){
+        button.disabled = false;
+        button.textContent = "SAVE PROFILE";
+    }
+
+    if(error){
+        console.error("Creator profile save error:", error);
+        if(message){
+            message.textContent = error.code === "23505"
+                ? "That username is already taken. Please choose another."
+                : "We couldn't save your profile. Please try again.";
+        }
+        return;
+    }
+
+    currentProfile = data;
+    updateAuthUI();
+    await loadProfilePage();
+
+    const savedMessage = document.getElementById("creatorProfileMessage");
+    if(savedMessage){
+        savedMessage.textContent = "✨ Your creator profile has been saved!";
+        savedMessage.classList.add("success");
+    }
 }
 
 async function loadProfileStats(){
