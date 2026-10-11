@@ -5974,13 +5974,27 @@ async function createPostOwnerNotification(postId,type,message){
     }
 }
 
-function markAllNotificationsRead(){
+async function markAllNotificationsRead(){
+    if(currentUser){
+        const {error} = await supabaseClient
+            .from("notifications")
+            .update({read_at:new Date().toISOString()})
+            .eq("recipient_id",currentUser.id)
+            .is("read_at",null);
+
+        if(error){
+            console.error("Could not mark account notifications as read:",error);
+            alert("Couldn't mark your account notifications as read. Please try again.");
+            return;
+        }
+    }
+
     const items = getTikNationNotifications().map(item => ({...item,read:true}));
     if(!saveTikNationNotifications(items)){
         alert("Your browser could not save this change.");
         return;
     }
-    renderTikNationNotifications();
+    await renderTikNationNotifications();
 }
 
 function removeTikNationNotification(id){
