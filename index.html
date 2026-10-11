@@ -1687,6 +1687,7 @@ textarea.form-control{
                     id="postTitle"
                     class="form-control"
                     type="text"
+                    maxlength="100"
                     placeholder="Give your creation a title"
                 >
 
@@ -1701,6 +1702,7 @@ textarea.form-control{
                 <textarea
                     id="postDescription"
                     class="form-control"
+                    maxlength="2000"
                     placeholder="Tell the TikNation world about your creation..."
                 ></textarea>
 
@@ -4316,6 +4318,11 @@ async function submitComment(postId){
         return;
     }
 
+    if(comment.length > 500){
+        alert("Comments must be 500 characters or fewer.");
+        return;
+    }
+
     const username =
         currentProfile?.username ||
         currentUser.user_metadata?.username ||
@@ -4955,6 +4962,18 @@ async function publishCreation(){
         message.textContent =
             "Give your creation a title.";
 
+        return;
+    }
+
+    if(title.length > 100){
+        message.className = "auth-message error";
+        message.textContent = "Keep your title to 100 characters or fewer.";
+        return;
+    }
+
+    if(description.length > 2000){
+        message.className = "auth-message error";
+        message.textContent = "Keep your description to 2,000 characters or fewer.";
         return;
     }
 
