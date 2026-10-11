@@ -4743,6 +4743,21 @@ function renderMediaElement(post,className){
    FILE PICKER
 ========================= */
 
+function isSupportedCreatorMediaFile(file){
+    if(!file) return false;
+    const allowedTypes = new Set([
+        "image/jpeg","image/png","image/gif","image/webp","image/avif","image/heic","image/heif",
+        "video/mp4","video/webm","video/quicktime","video/x-m4v"
+    ]);
+    const type = String(file.type || "").toLowerCase();
+    if(allowedTypes.has(type)) return true;
+    const extension = String(file.name || "").split(".").pop().toLowerCase();
+    const allowedExtensions = new Set([
+        "jpg","jpeg","png","gif","webp","avif","heic","heif","mp4","webm","mov","m4v"
+    ]);
+    return !type && allowedExtensions.has(extension);
+}
+
 function handleMediaSelection(input){
 
     const fileName =
@@ -4764,9 +4779,9 @@ function handleMediaSelection(input){
             return;
         }
 
-        if(file.type && !file.type.startsWith("image/") && !file.type.startsWith("video/")){
+        if(!isSupportedCreatorMediaFile(file)){
             input.value = "";
-            fileName.textContent = "Please choose an image or video file.";
+            fileName.textContent = "Choose a supported image (JPG, PNG, GIF, WebP) or video (MP4, WebM, MOV) file.";
             fileName.style.color = "#ff8a8a";
             return;
         }
@@ -5033,6 +5048,12 @@ async function publishCreation(){
         message.textContent =
             "That file is larger than 100 MB.";
 
+        return;
+    }
+
+    if(!isSupportedCreatorMediaFile(file)){
+        message.className = "auth-message error";
+        message.textContent = "Choose a supported image (JPG, PNG, GIF, WebP) or video (MP4, WebM, MOV) file.";
         return;
     }
 
