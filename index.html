@@ -3689,7 +3689,8 @@ async function loadPublicCreatorProfile(userId){
         <div class="section-head"><h2>🎬 Published Creations</h2></div>
         <div class="card-grid">
             ${posts.length ? posts.map(function(post){
-                return '<article class="card"><h3>' + escapeHtml(post.title || "Untitled Creation") + '</h3><p>' + escapeHtml(post.description || "A TikNation creation.") + '</p>' + (post.media_url ? '<p><a href="' + escapeHtml(post.media_url) + '" target="_blank" rel="noopener noreferrer">View creation</a></p>' : '') + '</article>';
+                const safeMediaUrl = getSafeCreatorMediaUrl(post.media_url);
+                return '<article class="card"><h3>' + escapeHtml(post.title || "Untitled Creation") + '</h3><p>' + escapeHtml(post.description || "A TikNation creation.") + '</p>' + (safeMediaUrl ? '<p><a href="' + escapeHtml(safeMediaUrl) + '" target="_blank" rel="noopener noreferrer">View creation</a></p>' : '<p class="muted">Media unavailable.</p>') + '</article>';
             }).join('') : '<div class="card"><h3>No published creations yet</h3><p class="muted">This creator has not published anything yet.</p></div>'}
         </div>
     `;
@@ -4646,6 +4647,24 @@ async function toggleFollow(
    MEDIA
 ========================= */
 
+function getSafeCreatorMediaUrl(value){
+    try{
+        const url = new URL(String(value || ""));
+        if(
+            url.protocol !== "https:" ||
+            url.origin !== "https://mekzfezaefcimxncklfj.supabase.co" ||
+            !url.pathname.startsWith("/storage/v1/object/public/creator-media/") ||
+            url.username ||
+            url.password
+        ){
+            return "";
+        }
+        return url.href;
+    }catch(error){
+        return "";
+    }
+}
+
 function renderMediaElement(post,className){
 
     const mediaType =
@@ -4653,10 +4672,14 @@ function renderMediaElement(post,className){
             post.media_type || ""
         ).toLowerCase();
 
-    const url =
-        escapeHtml(
-            post.media_url || ""
-        );
+    const safeUrl =
+        getSafeCreatorMediaUrl(post.media_url);
+
+    if(!safeUrl || (!mediaType.startsWith("video/") && !mediaType.startsWith("image/"))){
+        return '<div class="' + escapeHtml(className) + '"><p class="muted">Media unavailable.</p></div>';
+    }
+
+    const url = escapeHtml(safeUrl);
 
     if(mediaType.startsWith("video/")){
 
