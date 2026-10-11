@@ -4734,6 +4734,20 @@ function handleMediaSelection(input){
         const file =
             input.files[0];
 
+        if(file.size > 100 * 1024 * 1024){
+            input.value = "";
+            fileName.textContent = "That file is larger than 100 MB. Please choose a smaller file.";
+            fileName.style.color = "#ff8a8a";
+            return;
+        }
+
+        if(file.type && !file.type.startsWith("image/") && !file.type.startsWith("video/")){
+            input.value = "";
+            fileName.textContent = "Please choose an image or video file.";
+            fileName.style.color = "#ff8a8a";
+            return;
+        }
+
         fileName.textContent =
             "Selected: " + file.name;
 
