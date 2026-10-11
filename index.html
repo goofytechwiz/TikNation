@@ -5635,6 +5635,22 @@ async function submitVerificationApplication(event){
     const reason = document.getElementById("verificationReason").value.trim();
     const supportingLinks = document.getElementById("verificationLinks").value.trim();
 
+    if(!presence || presence.length > 500){
+        message.className = "auth-message error";
+        message.textContent = "Enter your public presence using 1–500 characters.";
+        return;
+    }
+    if(!reason || reason.length > 2000){
+        message.className = "auth-message error";
+        message.textContent = "Your verification reason must be between 1 and 2,000 characters.";
+        return;
+    }
+    if(supportingLinks.length > 2000){
+        message.className = "auth-message error";
+        message.textContent = "Supporting links must be 2,000 characters or fewer.";
+        return;
+    }
+
     message.className = "auth-message";
     message.textContent = "";
     button.disabled = true;
