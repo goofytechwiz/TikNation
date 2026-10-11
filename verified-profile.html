@@ -119,224 +119,103 @@ h1{
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+const SUPABASE_URL = "https://mekzfezaefcimxncklfj.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ";
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
-const SUPABASE_URL =
-    "https://mekzfezaefcimxncklfj.supabase.co";
+function addTextElement(parent, tagName, className, text) {
+  const element = document.createElement(tagName);
+  if (className) element.className = className;
+  element.textContent = text;
+  parent.appendChild(element);
+  return element;
+}
 
-const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ";
+function showProfileMessage(title, message) {
+  const container = document.getElementById("profile");
+  container.replaceChildren();
+  addTextElement(container, "h1", "", title);
+  addTextElement(container, "p", "bio", message);
+  const back = document.createElement("a");
+  back.className = "back";
+  back.href = "index.html";
+  back.textContent = "← Back to TikNation";
+  container.appendChild(back);
+}
 
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
+async function loadVerifiedProfile() {
+  const container = document.getElementById("profile");
+  const params = new URLSearchParams(window.location.search);
+  const requestedUsername = (params.get("username") || "TikNationStudio").trim().replace(/^@/, "");
+
+  if (!requestedUsername || requestedUsername.length > 40) {
+    showProfileMessage("Profile not found", "That verification profile could not be found.");
+    return;
+  }
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("verification_applications")
+      .select("username,category,presence,status")
+      .eq("username", requestedUsername)
+      .eq("status", "verified")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error || !data) {
+      showProfileMessage(
+        "Profile not available",
+        "This creator does not currently have a publicly available approved verification record."
+      );
+      return;
+    }
+
+    container.replaceChildren();
+
+    const initial = requestedUsername.charAt(0).toUpperCase();
+    addTextElement(container, "div", "avatar", initial);
+    addTextElement(container, "h1", "", requestedUsername);
+
+    const isFounder = requestedUsername.toLowerCase() === "tiknationstudio";
+    const badge = document.createElement("div");
+    badge.className = "verification-badge " + (isFounder ? "founder" : "verified");
+    badge.textContent = isFounder ? "🟡 FOUNDER MARK" : "🔵 VERIFIED CREATOR";
+    container.appendChild(badge);
+
+    addTextElement(container, "div", "username", "@" + requestedUsername);
+    addTextElement(
+      container,
+      "p",
+      "bio",
+      data.presence || (isFounder ? "Founder and creator of TikNation." : "TikNation creator.")
     );
 
+    const status = document.createElement("div");
+    status.className = "status";
+    addTextElement(status, "strong", "", "Verification Status");
+    addTextElement(status, "p", "bio", "✓ Verified by TikNation");
+    addTextElement(status, "p", "bio", "Category: " + (data.category || "Creator"));
+    container.appendChild(status);
 
-async function loadVerifiedProfile(){
-
-    const container =
-        document.getElementById("profile");
-
-    const { data, error } =
-        await supabaseClient
-            .from("verification_applications")
-            .select("username,category,presence,reason,status")
-            .eq("username","TikNationStudio")
-            .eq("status","verified")
-            .limit(1);
-
-    console.log("Verification result:", data);
-    console.log("Verification error:", error);
-
-    if(error){
-
-        container.innerHTML = `
-            <h1>Profile Error</h1>
-            <p class="error">
-                ${error.message}
-            </p>
-        `;
-
-        return;
-    }
-
-    if(!data || data.length === 0){
-
-        container.innerHTML = `
-            <h1>Profile Not Verified</h1>
-            <p class="bio">
-                No verified TikNationStudio record was found.
-            </p>
-        `;
-
-        return;
-    }
-
-    const profile = data[0];
-
-    container.innerHTML = `
-
-        <div class="avatar">
-            T
-        </div>
-
-        <h1>
-            TikNationStudio
-        </h1>
-
-        <div class="verification-badge founder">
-            🟡 FOUNDER MARK
-        </div>
-
-        <div class="username">
-            @TikNationStudio
-        </div>
-
-        <p class="bio">
-            ${profile.presence || "Founder and creator of TikNation."}
-        </p>
-
-        <div class="status">
-
-            <strong>
-                Verification Status
-            </strong>
-
-            <p class="bio">
-                ✓ Verified by TikNation
-            </p>
-
-            <p class="bio">
-                Category: ${profile.category || "Creator"}
-            </p>
-
-        </div>
-
-        <a class="back" href="index.html">
-            ← Back to TikNation
-        </a>
-
-    `;
+    const back = document.createElement("a");
+    back.className = "back";
+    back.href = "index.html";
+    back.textContent = "← Back to TikNation";
+    container.appendChild(back);
+  } catch (error) {
+    console.error("Unable to load verified profile.");
+    showProfileMessage(
+      "Profile temporarily unavailable",
+      "Please return to TikNation and try again later."
+    );
+  }
 }
-
-    const params =
-        new URLSearchParams(window.location.search);
-
-    const username =
-        params.get("username") || "TikNationStudio";
-
-    const container =
-        document.getElementById("profile");
-
-    const { data, error } =
-        await supabaseClient
-            .from("verification_applications")
-            .select("username,category,presence,reason,status")
-            .eq("username",username)
-            .eq("status","verified")
-            .order("created_at",{ascending:false})
-            .limit(1)
-            .maybeSingle();
-
-    if(error){
-
-        console.error(error);
-
-        container.innerHTML = `
-            <h1>Profile Error</h1>
-            <p class="error">
-                Unable to load this profile.
-            </p>
-        `;
-
-        return;
-    }
-
-    if(!data){
-
-        container.innerHTML = `
-            <h1>Profile Not Verified</h1>
-            <p class="bio">
-                This creator does not currently have an approved verification record.
-            </p>
-
-            <a class="back" href="index.html">
-                ← Back to TikNation
-            </a>
-        `;
-
-        return;
-    }
-
-    const initial =
-        username.charAt(0).toUpperCase();
-
-    let badge = "";
-
-    if(username === "TikNationStudio"){
-
-        badge = `
-            <div class="verification-badge founder">
-                🟡 FOUNDER MARK
-            </div>
-        `;
-
-    }else{
-
-        badge = `
-            <div class="verification-badge verified">
-                🔵 VERIFIED CREATOR
-            </div>
-        `;
-    }
-
-    container.innerHTML = `
-
-        <div class="avatar">
-            ${initial}
-        </div>
-
-        <h1>
-            ${username}
-        </h1>
-
-        ${badge}
-
-        <div class="username">
-            @${username}
-        </div>
-
-        <p class="bio">
-            ${data.presence || "TikNation creator."}
-        </p>
-
-        <div class="status">
-
-            <strong>
-                Verification Status
-            </strong>
-
-            <p class="bio">
-                ✓ Verified by TikNation
-            </p>
-
-            <p class="bio">
-                Category: ${data.category || "Creator"}
-            </p>
-
-        </div>
-
-        <a class="back" href="index.html">
-            ← Back to TikNation
-        </a>
-
-    `;
-}
-
 
 loadVerifiedProfile();
-
 </script>
 
 </body>
