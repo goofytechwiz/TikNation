@@ -3521,7 +3521,13 @@ async function loadWatchFeed(){
         return;
     }
 
-    if(!data || data.length === 0){
+    let visiblePosts = data || [];
+    if(currentUser){
+        const blockedIds = await getBlockRelatedCreatorIds();
+        visiblePosts = visiblePosts.filter(post => !blockedIds.has(post.user_id));
+    }
+
+    if(!visiblePosts.length){
 
         grid.innerHTML = `
 
@@ -3556,11 +3562,11 @@ async function loadWatchFeed(){
     }
 
     grid.innerHTML =
-        data.map(function(post){
+        visiblePosts.map(function(post){
             return renderWatchPost(post);
         }).join("");
 
-    await hydrateWatchInteractions(data);
+    await hydrateWatchInteractions(visiblePosts);
 }
 
 async function searchTikNationCreators(event){
@@ -3733,6 +3739,16 @@ async function loadPublicCreatorProfile(userId){
         return;
     }
 
+    if(currentUser && userId !== currentUser.id){
+        const rows = await getBlockRowsForCurrentUser();
+        const relation = rows.find(row => (row.blocker_id === currentUser.id && row.blocked_id === userId) || (row.blocker_id === userId && row.blocked_id === currentUser.id));
+        if(relation){
+            const ownBlock = relation.blocker_id === currentUser.id;
+            container.innerHTML = "<div class=\"card\"><h3>🛡️ Creator unavailable</h3><p class=\"muted\">"+(ownBlock ? "You have blocked this creator." : "This creator has blocked your account.")+"</p>"+(ownBlock ? "<button type=\"button\" class=\"primary-button\" onclick=\"unblockCreator('"+escapeJs(userId)+"')\">UNBLOCK CREATOR</button>" : "")+"</div>";
+            return;
+        }
+    }
+
     const username = profile.username || "TikNationCreator";
     const displayName = profile.display_name || username;
     let avatarUrl = "";
@@ -3775,7 +3791,7 @@ async function loadPublicCreatorProfile(userId){
             </div>
             ${currentUser ? `
                 <button type="button" class="primary-button" id="publicCreatorFollowButton" onclick="togglePublicCreatorFollow()">${isFollowing ? '✓ FOLLOWING' : '+ FOLLOW'}</button>
-                ${userId !== currentUser.id ? `<button type="button" class="small-button" style="margin-left:8px;" onclick="reportContent('profile','${escapeJs(userId)}','${escapeJs(userId)}')">🚩 Report profile</button>` : ''}
+                ${userId !== currentUser.id ? renderCreatorActionMenu(userId, displayName) : ''}
             ` : `
                 <button type="button" class="primary-button" onclick="openAuthModal('signin')">SIGN IN TO FOLLOW</button>
             `}
@@ -3935,7 +3951,7 @@ function renderWatchPost(post){
                             0
                         </span>
                     </button>
-                    ${!isOwnPost ? `<button type="button" class="small-button" onclick="reportContent('post','${escapeJs(post.id)}','${escapeJs(post.user_id)}')">🚩 Report</button>` : ""}
+                    ${!isOwnPost ? renderPostActionMenu(post.id, post.user_id) : ""}
                 </div>
 
                 <div
