@@ -1897,7 +1897,7 @@ textarea.form-control{
     </div>
 
     <p class="muted" style="margin-bottom:22px;">
-        Manage your account and find your privacy, safety, and creator tools in one place.
+        Manage your account, privacy settings, and creator tools in one place.
     </p>
 
     <div id="accountOverview" class="card" style="margin-bottom:22px;">
@@ -3697,11 +3697,11 @@ async function unblockCreator(userId){
 }
 
 function renderCreatorActionMenu(userId,displayName){
-    return "<details class=\"creator-actions-menu\" style=\"margin-left:8px;vertical-align:middle;\"><summary aria-label=\"Creator actions\" title=\"Creator actions\">⋯</summary><div class=\"creator-actions-popover\"><button type=\"button\" onclick=\"reportContent('profile','"+escapeJs(userId)+"','"+escapeJs(userId)+"')\">🚩 Report creator</button><button type=\"button\" onclick=\"blockCreator('"+escapeJs(userId)+"','"+escapeJs(displayName)+"')\">🚫 Block creator</button></div></details>";
+    return "<details class=\"creator-actions-menu\" style=\"margin-left:8px;vertical-align:middle;\"><summary aria-label=\"Creator actions\" title=\"Creator actions\">⋯</summary><div class=\"creator-actions-popover\"><button type=\"button\" onclick=\"this.closest('details').open=false;reportContent('profile','"+escapeJs(userId)+"','"+escapeJs(userId)+"')\">🚩 Report creator</button><button type=\"button\" onclick=\"this.closest('details').open=false;blockCreator('"+escapeJs(userId)+"')\">🚫 Block creator</button></div></details>";
 }
 
 function renderPostActionMenu(postId,userId){
-    return "<details class=\"creator-actions-menu\"><summary aria-label=\"Post actions\" title=\"Post actions\">⋯</summary><div class=\"creator-actions-popover\"><button type=\"button\" onclick=\"reportContent('post','"+escapeJs(postId)+"','"+escapeJs(userId)+"')\">🚩 Report post</button></div></details>";
+    return "<details class=\"creator-actions-menu\"><summary aria-label=\"Post actions\" title=\"Post actions\">⋯</summary><div class=\"creator-actions-popover\"><button type=\"button\" onclick=\"this.closest('details').open=false;reportContent('post','"+escapeJs(postId)+"','"+escapeJs(userId)+"')\">🚩 Report post</button></div></details>";
 }
 
 async function openPublicCreatorProfile(userId){
@@ -5890,6 +5890,7 @@ let pendingReportTarget = null;
 function reportContent(targetType,targetId,targetUserId){
  if(!currentUser){openAuthModal('signin');return;}
  if(!['post','profile'].includes(targetType)||!targetId){alert("This item cannot be reported right now.");return;}
+ if(targetUserId && targetUserId === currentUser.id){alert("You cannot report your own profile or post.");return;}
  pendingReportTarget={targetType,targetId:String(targetId),targetUserId:targetUserId||null};
  const title=document.getElementById("reportModalTitle");
  const intro=document.getElementById("reportModalIntro");
