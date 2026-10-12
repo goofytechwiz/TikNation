@@ -3747,7 +3747,7 @@ async function loadPublicCreatorProfile(userId){
 
     if(currentUser && userId !== currentUser.id){
         const rows = await getBlockRowsForCurrentUser();
-        const relation = rows.find(row => (row.blocker_id === currentUser.id && row.blocked_id === userId) || (row.blocker_id === userId && row.blocked_id === currentUser.id));
+        const relation = rows.find(row => row.blocker_id === currentUser.id && row.blocked_id === userId) || rows.find(row => row.blocker_id === userId && row.blocked_id === currentUser.id);
         if(relation){
             const ownBlock = relation.blocker_id === currentUser.id;
             container.innerHTML = "<div class=\"card\"><h3>🛡️ Creator unavailable</h3><p class=\"muted\">"+(ownBlock ? "You have blocked this creator." : "This creator has blocked your account.")+"</p>"+(ownBlock ? "<button type=\"button\" class=\"primary-button\" onclick=\"unblockCreator('"+escapeJs(userId)+"')\">UNBLOCK CREATOR</button>" : "")+"</div>";
