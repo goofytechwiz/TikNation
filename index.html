@@ -2090,6 +2090,12 @@ textarea.form-control{
                     <button type="button" class="small-button" onclick="loadContentReports()">↻ Refresh reports</button>
                 </div><div id="contentReportsAdminList">Reports will appear here.</div>
             </div>
+            <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:24px;padding-top:20px;">
+                <h3>💡 Beta Feedback</h3>
+                <p class="muted">Suggestions and bug reports submitted by signed-in beta testers.</p>
+                <button type="button" class="small-button" onclick="loadVerificationAdminApplications()">↻ Refresh feedback</button>
+                <div id="betaFeedbackAdminList" style="margin-top:14px;">Feedback will appear here.</div>
+            </div>
         </div>
             </div>
         </details>
@@ -6043,6 +6049,30 @@ async function submitVerificationApplication(event){
 }
 
 let verificationAdminApplicationsCache = [];
+let betaFeedbackCache = [];
+
+function renderBetaFeedbackAdminList(){
+    const list = document.getElementById("betaFeedbackAdminList");
+    if(!list) return;
+    if(!isTikNationAdmin()){
+        list.textContent = "";
+        betaFeedbackCache = [];
+        return;
+    }
+    if(!betaFeedbackCache.length){
+        list.innerHTML = '<p class="muted">No beta feedback has been submitted yet.</p>';
+        return;
+    }
+    list.innerHTML = betaFeedbackCache.map(function(item){
+        const date = item.created_at ? new Date(item.created_at).toLocaleString() : "Date unavailable";
+        return '<article class="card" style="padding:16px;margin:10px 0;">'
+            + '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;">'
+            + '<strong>' + escapeHtml(item.feedback_type || "Feedback") + '</strong>'
+            + '<span class="muted" style="font-size:12px;">' + escapeHtml(date) + '</span></div>'
+            + '<p style="white-space:pre-wrap;overflow-wrap:anywhere;margin:12px 0 0;">' + escapeHtml(item.message || "") + '</p>'
+            + '</article>';
+    }).join("");
+}
 
 async function loadCommandCenterData(){
     if(!isTikNationAdmin()) throw new Error("Administrator access required.");
@@ -6053,6 +6083,8 @@ async function loadCommandCenterData(){
     if(!data || data.success !== true) throw new Error(data?.error || "Command Center data could not be loaded.");
     verificationAdminApplicationsCache = Array.isArray(data.applications) ? data.applications : [];
     contentReportsCache = Array.isArray(data.reports) ? data.reports : [];
+    betaFeedbackCache = Array.isArray(data.feedback) ? data.feedback : [];
+    renderBetaFeedbackAdminList();
 }
 
 async function loadVerificationAdminApplications(){
