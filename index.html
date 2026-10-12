@@ -5873,40 +5873,45 @@ async function submitVerificationApplication(event){
 
 let verificationAdminApplicationsCache = [];
 
+async function loadCommandCenterData(){
+    if(!isTikNationAdmin()) throw new Error("Administrator access required.");
+    const {data,error} = await supabaseClient.functions.invoke("tiknation-command-center", {
+        body:{action:"list"}
+    });
+    if(error) throw error;
+    if(!data || data.success !== true) throw new Error(data?.error || "Command Center data could not be loaded.");
+    verificationAdminApplicationsCache = Array.isArray(data.applications) ? data.applications : [];
+    contentReportsCache = Array.isArray(data.reports) ? data.reports : [];
+}
+
 async function loadVerificationAdminApplications(){
     const list = document.getElementById("verificationAdminList");
     if(!list || !isTikNationAdmin()) return;
-
     list.textContent = "Loading applications...";
-    const { data, error } = await supabaseClient
-        .from("verification_applications")
-        .select("id,created_at,username,category,presence,reason,supporting_links,status")
-        .order("created_at", { ascending:false })
-        .limit(100);
-
-    if(error){
-        list.textContent = "Could not load applications: " + error.message;
-        return;
+    try{
+        await loadCommandCenterData();
+        const counts = {
+            total: verificationAdminApplicationsCache.length,
+            pending: verificationAdminApplicationsCache.filter(app => app.status === "pending").length,
+            verified: verificationAdminApplicationsCache.filter(app => app.status === "verified").length,
+            rejected: verificationAdminApplicationsCache.filter(app => app.status === "rejected").length
+        };
+        const totalEl = document.getElementById("adminVerificationTotal");
+        const pendingEl = document.getElementById("adminVerificationPending");
+        const verifiedEl = document.getElementById("adminVerificationVerified");
+        const rejectedEl = document.getElementById("adminVerificationRejected");
+        if(totalEl) totalEl.textContent = counts.total;
+        if(pendingEl) pendingEl.textContent = counts.pending;
+        if(verifiedEl) verifiedEl.textContent = counts.verified;
+        if(rejectedEl) rejectedEl.textContent = counts.rejected;
+        filterVerificationAdminApplications();
+        filterContentReports();
+    }catch(error){
+        console.error("Command Center load error:", error);
+        list.textContent = error?.message || "Could not load applications. Please try again.";
+        const reports = document.getElementById("contentReportsAdminList");
+        if(reports) reports.textContent = "Command Center data could not be loaded.";
     }
-
-    verificationAdminApplicationsCache = data || [];
-    const counts = {
-        total: verificationAdminApplicationsCache.length,
-        pending: verificationAdminApplicationsCache.filter(app => app.status === "pending").length,
-        verified: verificationAdminApplicationsCache.filter(app => app.status === "verified").length,
-        rejected: verificationAdminApplicationsCache.filter(app => app.status === "rejected").length
-    };
-    const totalEl = document.getElementById("adminVerificationTotal");
-    const pendingEl = document.getElementById("adminVerificationPending");
-    const verifiedEl = document.getElementById("adminVerificationVerified");
-    const rejectedEl = document.getElementById("adminVerificationRejected");
-    if(totalEl) totalEl.textContent = counts.total;
-    if(pendingEl) pendingEl.textContent = counts.pending;
-    if(verifiedEl) verifiedEl.textContent = counts.verified;
-    if(rejectedEl) rejectedEl.textContent = counts.rejected;
-
-    filterVerificationAdminApplications();
-    await loadContentReports();
 }
 
 let contentReportsCache = [];
@@ -5979,17 +5984,20 @@ async function loadContentReports(){
  const list=document.getElementById("contentReportsAdminList");
  if(!list||!isTikNationAdmin())return;
  list.textContent="Loading reports...";
- const {data,error}=await supabaseClient.from("content_reports").select("id,created_at,reporter_id,target_type,target_id,target_user_id,reason,details,status").order("created_at",{ascending:false}).limit(200);
- if(error){list.textContent="Could not load reports: "+error.message;return;}
- contentReportsCache=data||[];
- const communityReports=contentReportsCache.filter(x=>!isTikNationTestReport(x));
- const testReports=contentReportsCache.filter(isTikNationTestReport);
- const total=document.getElementById("adminReportTotal"), pending=document.getElementById("adminReportPending"), taken=document.getElementById("adminReportActionTaken"), tests=document.getElementById("adminReportTestTotal");
- if(total)total.textContent=communityReports.length;
- if(pending)pending.textContent=communityReports.filter(x=>x.status==="pending").length;
- if(taken)taken.textContent=communityReports.filter(x=>x.status==="action_taken").length;
- if(tests)tests.textContent=testReports.length;
- filterContentReports();
+ try{
+  await loadCommandCenterData();
+  const communityReports=contentReportsCache.filter(x=>!isTikNationTestReport(x));
+  const testReports=contentReportsCache.filter(isTikNationTestReport);
+  const total=document.getElementById("adminReportTotal"), pending=document.getElementById("adminReportPending"), taken=document.getElementById("adminReportActionTaken"), tests=document.getElementById("adminReportTestTotal");
+  if(total)total.textContent=communityReports.length;
+  if(pending)pending.textContent=communityReports.filter(x=>x.status==="pending").length;
+  if(taken)taken.textContent=communityReports.filter(x=>x.status==="action_taken").length;
+  if(tests)tests.textContent=testReports.length;
+  filterContentReports();
+ }catch(error){
+  console.error("Command Center report load error:",error);
+  list.textContent=error?.message||"Could not load reports. Please try again.";
+ }
 }
 function filterContentReports(){
  const list=document.getElementById("contentReportsAdminList");
@@ -6026,9 +6034,16 @@ function filterContentReports(){
 async function updateContentReport(id,status){
  if(!isTikNationAdmin()){alert("Administrator access required.");return;}
  if(!["pending","reviewed","dismissed","action_taken"].includes(status))return;
- const {error}=await supabaseClient.from("content_reports").update({status,reviewed_by:currentUser.id,reviewed_at:new Date().toISOString()}).eq("id",id);
- if(error){alert("Could not update report: "+error.message);return;}
- await loadContentReports();
+ try{
+  const {data,error}=await supabaseClient.functions.invoke("tiknation-command-center",{
+   body:{action:"review_report",report_id:id,status}
+  });
+  if(error)throw error;
+  if(!data||data.success!==true)throw new Error(data?.error||"Could not update report.");
+  await loadContentReports();
+ }catch(error){
+  alert(error?.message||"Could not update report. Please try again.");
+ }
 }
 
 function filterVerificationAdminApplications(){
@@ -6064,29 +6079,25 @@ function filterVerificationAdminApplications(){
 }
 
 async function reviewVerificationApplication(applicationId, newStatus){
-    if((currentUser?.email || "").toLowerCase() !== TIKNATION_ADMIN_EMAIL.toLowerCase()){
+    if(!isTikNationAdmin()){
         alert("Administrator access required.");
         return;
     }
-
     if(!["verified","rejected"].includes(newStatus)) return;
-
     const action = newStatus === "verified" ? "approve" : "reject";
     if(!confirm("Are you sure you want to " + action + " this application?")) return;
-
-    const { error } = await supabaseClient
-        .from("verification_applications")
-        .update({ status:newStatus })
-        .eq("id", applicationId);
-
-    if(error){
-        alert("Could not update application: " + error.message);
-        return;
+    try{
+        const {data,error} = await supabaseClient.functions.invoke("tiknation-command-center", {
+            body:{action:"review_verification",application_id:applicationId,status:newStatus}
+        });
+        if(error) throw error;
+        if(!data || data.success !== true) throw new Error(data?.error || "Could not update application.");
+        await loadVerificationAdminApplications();
+        await loadVerificationArea();
+        alert(newStatus === "verified" ? "Creator verified!" : "Application rejected.");
+    }catch(error){
+        alert(error?.message || "Could not update application. Please try again.");
     }
-
-    await loadVerificationAdminApplications();
-    await loadVerificationArea();
-    alert(newStatus === "verified" ? "Creator verified!" : "Application rejected.");
 }
 
 /* =========================
