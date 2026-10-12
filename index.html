@@ -2433,15 +2433,13 @@ async function submitBetaFeedback(event){
     submit.disabled = true;
     status.textContent = "Sending feedback…";
     try{
-        const { data, error } = await supabaseClient
+        const { error } = await supabaseClient
             .from("beta_feedback")
             .insert({
                 user_id: currentUser.id,
                 feedback_type: type.value,
                 message: feedback
-            })
-            .select("id")
-            .single();
+            });
         if(error) throw error;
         message.value = "";
         status.textContent = "Thank you! Your feedback has been submitted.";
