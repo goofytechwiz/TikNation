@@ -3607,13 +3607,19 @@ async function searchTikNationCreators(event){
         return;
     }
 
-    if(!data || data.length === 0){
+    let visibleProfiles = data || [];
+    if(currentUser){
+        const blockedIds = await getBlockRelatedCreatorIds();
+        visibleProfiles = visibleProfiles.filter(profile => !blockedIds.has(profile.id));
+    }
+
+    if(!visibleProfiles.length){
         message.textContent = term ? "No creators matched that search yet. Try another name or interest." : "No creator profiles to show yet. Check back soon!";
         return;
     }
 
-    message.textContent = data.length + (data.length === 1 ? " creator found" : " creators found") + (data.length === 24 ? " · Showing the first 24 results" : "");
-    results.innerHTML = data.map(function(profile){
+    message.textContent = visibleProfiles.length + (visibleProfiles.length === 1 ? " creator found" : " creators found");
+    results.innerHTML = visibleProfiles.map(function(profile){
         const name = profile.display_name || profile.username || "TikNation Creator";
         const username = profile.username || "TikNationCreator";
         return '<article class="card"><div class="card-icon">👤</div><h3>'+escapeHtml(name)+'</h3><p class="muted">@'+escapeHtml(username)+'</p><p>'+escapeHtml(profile.bio || "Creating my world on TikNation.")+'</p><button type="button" class="primary-button" onclick="openPublicCreatorProfile(\''+escapeJs(profile.id)+'\')">VIEW PROFILE</button></article>';
