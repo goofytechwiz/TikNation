@@ -5678,19 +5678,20 @@ async function submitVerificationApplication(event){
     button.textContent = "SUBMITTING...";
 
     try{
-        const { error } = await supabaseClient
-            .from("verification_applications")
-            .insert({
-                user_id: currentUser.id,
+        const { data, error } = await supabaseClient.functions.invoke("tiknation-backend", {
+            body: {
                 username: username,
                 category: category,
                 presence: presence,
                 reason: reason,
-                supporting_links: supportingLinks,
-                status: "pending"
-            });
+                supporting_links: supportingLinks
+            }
+        });
 
         if(error) throw error;
+        if(!data || data.success !== true){
+            throw new Error("The verification service could not confirm your application. Please try again.");
+        }
 
         message.className = "auth-message success";
         message.textContent = "Application submitted! Your status is pending review.";
