@@ -1146,6 +1146,13 @@ textarea.form-control{
 .report-actions{display:flex;gap:10px;margin-top:18px;}
 .report-actions button{flex:1;min-height:44px;}
 .report-cancel{border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(255,255,255,.05);color:#eee;}
+.creator-actions-menu{position:relative;display:inline-block;}
+.creator-actions-menu > summary{list-style:none;display:inline-flex;align-items:center;justify-content:center;min-width:40px;min-height:38px;padding:4px 10px;border:1px solid rgba(255,255,255,.14);border-radius:11px;background:rgba(255,255,255,.05);color:#fff;font-size:24px;line-height:1;cursor:pointer;}
+.creator-actions-menu > summary::-webkit-details-marker{display:none;}
+.creator-actions-menu[open] > summary{border-color:rgba(66,211,255,.55);background:rgba(66,211,255,.1);}
+.creator-actions-menu .creator-actions-popover{position:absolute;right:0;top:calc(100% + 7px);z-index:50;min-width:190px;padding:7px;border:1px solid rgba(255,255,255,.14);border-radius:13px;background:#11101e;box-shadow:0 16px 40px rgba(0,0,0,.45);}
+.creator-actions-menu .creator-actions-popover button{display:block;width:100%;padding:10px 11px;border:0;border-radius:8px;background:transparent;color:#f4f2ff;text-align:left;cursor:pointer;font:inherit;font-size:13px;}
+.creator-actions-menu .creator-actions-popover button:hover{background:rgba(255,255,255,.08);}
 @media(max-width:480px){.report-modal-card{padding:20px}.report-actions{flex-direction:column}}
 
 /* AUTH MODAL */
@@ -1912,13 +1919,6 @@ textarea.form-control{
         </div>
 
         <div class="card">
-            <div class="card-icon">🛡️</div>
-            <h3>Safety & Reporting</h3>
-            <p>Report content from the Watch feed. Reports are reviewed through TikNation's moderation tools.</p>
-            <button type="button" class="primary-button" onclick="showPage('watch')">GO TO WATCH</button>
-        </div>
-
-        <div class="card">
             <div class="card-icon">🔔</div>
             <h3>Notifications</h3>
             <p>Visit your notification area. More notification controls are planned.</p>
@@ -1928,8 +1928,22 @@ textarea.form-control{
         <div class="card">
             <div class="card-icon">🔒</div>
             <h3>Privacy & Security</h3>
-            <p>Change your account password and review your sign-in status below.</p>
+            <p>Review your sign-in status and account security controls.</p>
             <button type="button" class="primary-button" onclick="document.getElementById('securitySettings').scrollIntoView({behavior:'smooth',block:'start'})">OPEN SECURITY</button>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🔑</div>
+            <h3>Change Password</h3>
+            <p>Update the password for your TikNation account.</p>
+            <button type="button" class="primary-button" onclick="document.getElementById('changePasswordSettings').scrollIntoView({behavior:'smooth',block:'start'})">CHANGE PASSWORD</button>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🛡️</div>
+            <h3>Privacy Settings</h3>
+            <p>Manage creators you have blocked on TikNation.</p>
+            <button type="button" class="primary-button" onclick="document.getElementById('privacySettings').scrollIntoView({behavior:'smooth',block:'start'})">OPEN PRIVACY SETTINGS</button>
         </div>
 
         <div class="card">
@@ -2035,10 +2049,10 @@ textarea.form-control{
         <button type="button" class="primary-button" onclick="resetTikNationPreferences()">RESET PREFERENCES</button>
     </div>
 
-    <div id="securitySettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
-        <h3>🔐 Password & Account Security</h3>
-        <p class="muted">Change your password for the account currently signed in to TikNation.</p>
-        <p id="securitySignedInAs" class="muted" aria-live="polite">Checking sign-in status…</p>
+    <div id="changePasswordSettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
+        <h3>🔑 Change Password</h3>
+        <p class="muted">Choose a new password for the account currently signed in to TikNation.</p>
+        <p id="passwordSettingsSignedInAs" class="muted" aria-live="polite">Checking sign-in status…</p>
         <form id="changePasswordForm" onsubmit="changeAccountPassword(event)">
             <label for="newAccountPassword">New password</label>
             <input id="newAccountPassword" type="password" minlength="8" autocomplete="new-password" required placeholder="At least 8 characters" style="width:100%;margin:8px 0 14px;padding:12px;border-radius:10px;">
@@ -2047,12 +2061,23 @@ textarea.form-control{
             <button id="changePasswordButton" type="submit" class="primary-button">UPDATE PASSWORD</button>
             <p id="changePasswordMessage" class="auth-message" aria-live="polite"></p>
         </form>
+    </div>
+
+    <div id="securitySettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
+        <h3>🔐 Password & Account Security</h3>
+        <p class="muted">Review your current sign-in status and securely end this browser session.</p>
+        <p id="securitySignedInAs" class="muted" aria-live="polite">Checking sign-in status…</p>
         <div style="border-top:1px solid var(--border-color,rgba(255,255,255,.12));margin-top:20px;padding-top:18px;">
             <h3>Sign out</h3>
             <p class="muted">Sign out of this TikNation session on this browser.</p>
             <button type="button" class="primary-button" onclick="signOutUser()">SIGN OUT</button>
         </div>
-        <p class="muted" style="margin-top:18px;">Profile visibility, blocked accounts, and additional session controls are not enabled yet. We'll add them after their storage and security rules are in place.</p>
+    </div>
+
+    <div id="privacySettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
+        <h3>🛡️ Privacy Settings</h3>
+        <p class="muted">Blocked creators are hidden from your Watch feed and their profiles cannot be opened while the block is active. Blocking also prevents follows, likes, comments, and direct messages between the two accounts.</p>
+        <div id="blockedCreatorsList" aria-live="polite" style="margin-top:16px;">Sign in to manage blocked creators.</div>
     </div>
 
 </section>
@@ -2331,6 +2356,7 @@ function showPage(pageId,button){
         refreshSecuritySettings();
         refreshAccountOverview();
         loadVerificationArea();
+        loadBlockSettings();
     }
 
     if(pageId === "notifications"){
@@ -4900,11 +4926,12 @@ function refreshAccountOverview(){
 
 function refreshSecuritySettings(){
     const status = document.getElementById("securitySignedInAs");
-    if(status){
-        status.textContent = currentUser
-            ? "Signed in as " + (currentUser.email || "your TikNation account") + "."
-            : "You are not signed in. Sign in to change your password.";
-    }
+    const passwordStatus = document.getElementById("passwordSettingsSignedInAs");
+    const statusText = currentUser
+        ? "Signed in as " + (currentUser.email || "your TikNation account") + "."
+        : "You are not signed in. Sign in to change your password.";
+    if(status) status.textContent = statusText;
+    if(passwordStatus) passwordStatus.textContent = statusText;
     refreshAccountOverview();
 }
 
@@ -4920,6 +4947,7 @@ supabaseClient.auth.onAuthStateChange(
 
         updateAuthUI();
         refreshSecuritySettings();
+        syncCommandCenterVisibility();
 
         if(currentUser){
 
@@ -4958,6 +4986,7 @@ async function loadSession(){
     }
 
     updateAuthUI();
+    syncCommandCenterVisibility();
 
     await loadWatchFeed();
 }
@@ -5607,14 +5636,34 @@ async function sendDirectMessage(event){
 
 const TIKNATION_ADMIN_EMAIL = "TikNationStudio@gmail.com";
 
-async function loadVerificationArea(){
-    if(!currentUser) return;
+function isTikNationAdmin(){
+    return !!currentUser && (currentUser.email || "").toLowerCase() === TIKNATION_ADMIN_EMAIL.toLowerCase();
+}
 
+function syncCommandCenterVisibility(){
     const adminPanel = document.getElementById("verificationAdminPanel");
     const adminDisclosure = document.getElementById("commandCenterDisclosure");
-    if((currentUser.email || "").toLowerCase() === TIKNATION_ADMIN_EMAIL.toLowerCase()){
-        if(adminDisclosure) adminDisclosure.style.display = "block";
-        if(adminPanel) adminPanel.style.display = "block";
+    const isAdmin = isTikNationAdmin();
+    if(adminDisclosure){
+        adminDisclosure.style.display = isAdmin ? "block" : "none";
+        if(!isAdmin) adminDisclosure.open = false;
+    }
+    if(adminPanel) adminPanel.style.display = isAdmin ? "block" : "none";
+    if(!isAdmin){
+        const appList = document.getElementById("verificationAdminList");
+        const reportList = document.getElementById("contentReportsAdminList");
+        if(appList) appList.textContent = "";
+        if(reportList) reportList.textContent = "";
+        verificationAdminApplicationsCache = [];
+        contentReportsCache = [];
+    }
+}
+
+async function loadVerificationArea(){
+    syncCommandCenterVisibility();
+    if(!currentUser) return;
+
+    if(isTikNationAdmin()){
         await loadVerificationAdminApplications();
     }
 
@@ -5711,7 +5760,7 @@ let verificationAdminApplicationsCache = [];
 
 async function loadVerificationAdminApplications(){
     const list = document.getElementById("verificationAdminList");
-    if(!list || (currentUser?.email || "").toLowerCase() !== TIKNATION_ADMIN_EMAIL.toLowerCase()) return;
+    if(!list || !isTikNationAdmin()) return;
 
     list.textContent = "Loading applications...";
     const { data, error } = await supabaseClient
@@ -5812,7 +5861,7 @@ function isTikNationTestReport(report){
 }
 async function loadContentReports(){
  const list=document.getElementById("contentReportsAdminList");
- if(!list||(currentUser?.email||"").toLowerCase()!==TIKNATION_ADMIN_EMAIL.toLowerCase())return;
+ if(!list||!isTikNationAdmin())return;
  list.textContent="Loading reports...";
  const {data,error}=await supabaseClient.from("content_reports").select("id,created_at,reporter_id,target_type,target_id,target_user_id,reason,details,status").order("created_at",{ascending:false}).limit(200);
  if(error){list.textContent="Could not load reports: "+error.message;return;}
@@ -5859,7 +5908,7 @@ function filterContentReports(){
  }).join("");
 }
 async function updateContentReport(id,status){
- if((currentUser?.email||"").toLowerCase()!==TIKNATION_ADMIN_EMAIL.toLowerCase()){alert("Administrator access required.");return;}
+ if(!isTikNationAdmin()){alert("Administrator access required.");return;}
  if(!["pending","reviewed","dismissed","action_taken"].includes(status))return;
  const {error}=await supabaseClient.from("content_reports").update({status,reviewed_by:currentUser.id,reviewed_at:new Date().toISOString()}).eq("id",id);
  if(error){alert("Could not update report: "+error.message);return;}
