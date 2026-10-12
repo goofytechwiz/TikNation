@@ -3624,6 +3624,74 @@ function clearCreatorSearch(){
 
 let viewingCreatorId = null;
 
+async function getBlockRowsForCurrentUser(){
+    if(!currentUser) return [];
+    const {data,error} = await supabaseClient.from("user_blocks")
+        .select("blocker_id,blocked_id,created_at")
+        .or("blocker_id.eq."+currentUser.id+",blocked_id.eq."+currentUser.id);
+    if(error){ console.error("Block list lookup failed:",error); return []; }
+    return data || [];
+}
+
+async function getBlockRelatedCreatorIds(){
+    const rows = await getBlockRowsForCurrentUser();
+    const ids = new Set();
+    rows.forEach(row => {
+        if(row.blocker_id === currentUser.id) ids.add(row.blocked_id);
+        else if(row.blocked_id === currentUser.id) ids.add(row.blocker_id);
+    });
+    return ids;
+}
+
+async function loadBlockSettings(){
+    const list = document.getElementById("blockedCreatorsList");
+    if(!list) return;
+    if(!currentUser){ list.textContent = "Sign in to manage blocked creators."; return; }
+    list.textContent = "Loading blocked creators…";
+    const {data,error} = await supabaseClient.from("user_blocks")
+        .select("blocked_id,created_at").eq("blocker_id",currentUser.id).order("created_at",{ascending:false});
+    if(error){ list.textContent = "Blocked creators could not be loaded. Please try again."; console.error(error); return; }
+    if(!data || !data.length){ list.textContent = "You have not blocked any creators."; return; }
+    const ids = data.map(row => row.blocked_id);
+    const profileResult = await supabaseClient.from("profiles").select("id,username,display_name").in("id",ids);
+    const profiles = new Map((profileResult.data || []).map(profile => [profile.id,profile]));
+    list.innerHTML = data.map(function(row){
+        const profile = profiles.get(row.blocked_id) || {};
+        const name = profile.display_name || profile.username || "TikNation creator";
+        const username = profile.username ? "@" + profile.username : "";
+        return "<div class=\"preference-row\" style=\"gap:12px;align-items:center;\"><div><strong>"+escapeHtml(name)+"</strong><p class=\"muted\" style=\"margin:3px 0 0;\">"+escapeHtml(username)+"</p></div><button type=\"button\" class=\"small-button\" onclick=\"unblockCreator('"+escapeJs(row.blocked_id)+"')\">UNBLOCK</button></div>";
+    }).join("");
+}
+
+async function blockCreator(userId,displayName){
+    if(!currentUser){openAuthModal("signin");return;}
+    if(!userId || userId === currentUser.id) return;
+    if(!confirm("Block "+(displayName || "this creator")+"? Their content will be hidden, and follows, likes, comments, and direct messages between both accounts will be blocked.")) return;
+    const {error} = await supabaseClient.from("user_blocks").insert({blocker_id:currentUser.id,blocked_id:userId});
+    if(error){ alert(error.message || "Unable to block this creator right now."); return; }
+    await loadBlockSettings();
+    await loadWatchFeed();
+    if(viewingCreatorId === userId) await loadPublicCreatorProfile(userId);
+}
+
+async function unblockCreator(userId){
+    if(!currentUser || !userId) return;
+    if(!confirm("Unblock this creator? Their content and interactions may become available again.")) return;
+    const {error} = await supabaseClient.from("user_blocks").delete().eq("blocker_id",currentUser.id).eq("blocked_id",userId);
+    if(error){ alert(error.message || "Unable to unblock this creator right now."); return; }
+    await loadBlockSettings();
+    await loadWatchFeed();
+    if(viewingCreatorId === userId) await loadPublicCreatorProfile(userId);
+}
+
+function renderCreatorActionMenu(userId,displayName){
+    return "<details class=\"creator-actions-menu\" style=\"margin-left:8px;vertical-align:middle;\"><summary aria-label=\"Creator actions\" title=\"Creator actions\">⋯</summary><div class=\"creator-actions-popover\"><button type=\"button\" onclick=\"reportContent('profile','"+escapeJs(userId)+"','"+escapeJs(userId)+"')\">🚩 Report creator</button><button type=\"button\" onclick=\"blockCreator('"+escapeJs(userId)+"','"+escapeJs(displayName)+"')\">🚫 Block creator</button></div></details>";
+}
+
+function renderPostActionMenu(postId,userId){
+    return "<details class=\"creator-actions-menu\"><summary aria-label=\"Post actions\" title=\"Post actions\">⋯</summary><div class=\"creator-actions-popover\"><button type=\"button\" onclick=\"reportContent('post','"+escapeJs(postId)+"','"+escapeJs(userId)+"')\">🚩 Report post</button></div></details>";
+}
+
 async function openPublicCreatorProfile(userId){
     if(!userId){
         return;
