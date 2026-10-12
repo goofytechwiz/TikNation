@@ -1146,6 +1146,14 @@ textarea.form-control{
 .report-actions{display:flex;gap:10px;margin-top:18px;}
 .report-actions button{flex:1;min-height:44px;}
 .report-cancel{border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(255,255,255,.05);color:#eee;}
+.settings-panel{padding:0;overflow:hidden;}
+.settings-panel > summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;cursor:pointer;font-weight:700;}
+.settings-panel > summary::-webkit-details-marker{display:none;}
+.settings-panel > summary::after{content:"＋";font-size:20px;opacity:.8;flex-shrink:0;}
+.settings-panel[open] > summary::after{content:"−";}
+.settings-panel[open] > summary{border-bottom:1px solid var(--border-color,rgba(255,255,255,.12));}
+.settings-panel-content{padding:18px 20px 20px;}
+.settings-panel-content > .profile-disclosure{margin-top:10px;}
 .creator-actions-menu{position:relative;display:inline-block;}
 .creator-actions-menu > summary{list-style:none;display:inline-flex;align-items:center;justify-content:center;min-width:40px;min-height:38px;padding:4px 10px;border:1px solid rgba(255,255,255,.14);border-radius:11px;background:rgba(255,255,255,.05);color:#fff;font-size:24px;line-height:1;cursor:pointer;}
 .creator-actions-menu > summary::-webkit-details-marker{display:none;}
@@ -1913,9 +1921,9 @@ textarea.form-control{
 
         <div class="card">
             <div class="card-icon">👤</div>
-            <h3>✨ Creator Tools</h3>
-            <p>Manage your creator verification application and check its status.</p>
-            <button type="button" class="primary-button" onclick="document.getElementById('creatorToolsSettings').scrollIntoView({behavior:'smooth',block:'start'})">OPEN CREATOR TOOLS</button>
+            <h3>🛡️ Creator Verification</h3>
+            <p>Apply for verification or check the status of your latest application.</p>
+            <button type="button" class="primary-button" onclick="openSettingsPanel('creatorToolsSettings')">OPEN CREATOR TOOLS</button>
         </div>
 
         <div class="card">
@@ -1929,34 +1937,35 @@ textarea.form-control{
             <div class="card-icon">🔒</div>
             <h3>Privacy & Security</h3>
             <p>Review your sign-in status and account security controls.</p>
-            <button type="button" class="primary-button" onclick="document.getElementById('securitySettings').scrollIntoView({behavior:'smooth',block:'start'})">OPEN SECURITY</button>
+            <button type="button" class="primary-button" onclick="openSettingsPanel('securitySettings')">OPEN SECURITY</button>
         </div>
 
         <div class="card">
             <div class="card-icon">🔑</div>
             <h3>Change Password</h3>
             <p>Update the password for your TikNation account.</p>
-            <button type="button" class="primary-button" onclick="document.getElementById('changePasswordSettings').scrollIntoView({behavior:'smooth',block:'start'})">CHANGE PASSWORD</button>
+            <button type="button" class="primary-button" onclick="openSettingsPanel('changePasswordSettings')">CHANGE PASSWORD</button>
         </div>
 
         <div class="card">
             <div class="card-icon">🛡️</div>
             <h3>Privacy Settings</h3>
             <p>Manage creators you have blocked on TikNation.</p>
-            <button type="button" class="primary-button" onclick="document.getElementById('privacySettings').scrollIntoView({behavior:'smooth',block:'start'})">OPEN PRIVACY SETTINGS</button>
+            <button type="button" class="primary-button" onclick="openSettingsPanel('privacySettings')">OPEN PRIVACY SETTINGS</button>
         </div>
 
         <div class="card">
             <div class="card-icon">🎛️</div>
             <h3>Preferences</h3>
             <p>Customize motion effects, feed layout, and video playback for this browser.</p>
-            <button type="button" class="primary-button" onclick="document.getElementById('preferenceSettings').scrollIntoView({behavior:'smooth',block:'start'})">OPEN PREFERENCES</button>
+            <button type="button" class="primary-button" onclick="openSettingsPanel('preferenceSettings')">OPEN PREFERENCES</button>
         </div>
 
     </div>
 
-    <div id="creatorToolsSettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
-        <h3>✨ Creator Tools</h3>
+    <details id="creatorToolsSettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;">
+        <summary>✨ Creator Tools <span class="muted" style="font-size:12px;font-weight:500;">Verification and administration</span></summary>
+        <div class="settings-panel-content">
         <p class="muted" style="margin-bottom:18px;">Apply for creator verification and access platform administration tools when authorized.</p>
         <details class="profile-disclosure">
             <summary>🛡️ Creator Verification <span class="muted" style="font-size:12px;font-weight:500;">Apply or check status</span></summary>
@@ -2028,10 +2037,12 @@ textarea.form-control{
         </div>
             </div>
         </details>
-    </div>
+        </div>
+    </details>
 
-    <div id="preferenceSettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
-        <h3>🎛️ Your TikNation Preferences</h3>
+    <details id="preferenceSettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;">
+        <summary>🎛️ Your TikNation Preferences <span class="muted" style="font-size:12px;font-weight:500;">This browser only</span></summary>
+        <div class="settings-panel-content">
         <p class="muted" style="margin-bottom:18px;">These choices are saved in this browser and apply to this device only.</p>
         <div class="preference-row">
             <div><strong>Reduce motion</strong><p class="muted">Reduce animated movement and transitions.</p></div>
@@ -2047,10 +2058,12 @@ textarea.form-control{
         </div>
         <p id="preferencesMessage" class="auth-message" aria-live="polite">Preferences are ready.</p>
         <button type="button" class="primary-button" onclick="resetTikNationPreferences()">RESET PREFERENCES</button>
-    </div>
+        </div>
+    </details>
 
-    <div id="changePasswordSettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
-        <h3>🔑 Change Password</h3>
+    <details id="changePasswordSettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;">
+        <summary>🔑 Change Password</summary>
+        <div class="settings-panel-content">
         <p class="muted">Choose a new password for the account currently signed in to TikNation.</p>
         <p id="passwordSettingsSignedInAs" class="muted" aria-live="polite">Checking sign-in status…</p>
         <form id="changePasswordForm" onsubmit="changeAccountPassword(event)">
@@ -2061,10 +2074,12 @@ textarea.form-control{
             <button id="changePasswordButton" type="submit" class="primary-button">UPDATE PASSWORD</button>
             <p id="changePasswordMessage" class="auth-message" aria-live="polite"></p>
         </form>
-    </div>
+        </div>
+    </details>
 
-    <div id="securitySettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
-        <h3>🔐 Password & Account Security</h3>
+    <details id="securitySettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;">
+        <summary>🔐 Password & Account Security</summary>
+        <div class="settings-panel-content">
         <p class="muted">Review your current sign-in status and securely end this browser session.</p>
         <p id="securitySignedInAs" class="muted" aria-live="polite">Checking sign-in status…</p>
         <div style="border-top:1px solid var(--border-color,rgba(255,255,255,.12));margin-top:20px;padding-top:18px;">
@@ -2072,13 +2087,16 @@ textarea.form-control{
             <p class="muted">Sign out of this TikNation session on this browser.</p>
             <button type="button" class="primary-button" onclick="signOutUser()">SIGN OUT</button>
         </div>
-    </div>
+        </div>
+    </details>
 
-    <div id="privacySettings" class="card" style="margin-top:24px;scroll-margin-top:90px;">
-        <h3>🛡️ Privacy Settings</h3>
+    <details id="privacySettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;">
+        <summary>🛡️ Privacy Settings</summary>
+        <div class="settings-panel-content">
         <p class="muted">Blocked creators are hidden from your Watch feed and their profiles cannot be opened while the block is active. Blocking also prevents follows, likes, comments, and direct messages between the two accounts.</p>
         <div id="blockedCreatorsList" aria-live="polite" style="margin-top:16px;">Sign in to manage blocked creators.</div>
-    </div>
+        </div>
+    </details>
 
 </section>
 
@@ -2295,6 +2313,13 @@ let authMode = "signin";
 /* =========================
    PAGE NAVIGATION
 ========================= */
+
+function openSettingsPanel(panelId){
+    const panel = document.getElementById(panelId);
+    if(!panel) return;
+    panel.open = true;
+    panel.scrollIntoView({behavior:"smooth",block:"start"});
+}
 
 function showPage(pageId,button){
 
