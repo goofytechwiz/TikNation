@@ -1544,6 +1544,7 @@ textarea.form-control{
                 <button type="button" id="headerMenuCommandCenter" class="header-menu-item" role="menuitem" style="display:none;" onclick="openTikNationMenuDestination('command-center')"><span class="menu-item-icon">👑</span>TikNation Command Center</button>
                 <div class="header-menu-divider"></div>
                 <button type="button" class="header-menu-item" role="menuitem" onclick="openTikNationMenuDestination('settings')"><span class="menu-item-icon">⚙️</span>Settings</button>
+                <button type="button" class="header-menu-item" role="menuitem" onclick="openTikNationMenuDestination('beta-feedback')"><span class="menu-item-icon">💡</span>Send Beta Feedback</button>
             </div>
         </div>
 
@@ -2116,6 +2117,27 @@ textarea.form-control{
         </div>
     </details>
 
+    <details id="betaFeedbackSettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;">
+        <summary>💡 Send Beta Feedback</summary>
+        <div class="settings-panel-content">
+            <p class="muted">Help improve TikNation during beta. Tell us what happened or what you would like to see next.</p>
+            <form id="betaFeedbackForm" onsubmit="submitBetaFeedback(event)">
+                <label for="betaFeedbackType">Feedback type</label>
+                <select id="betaFeedbackType" required style="display:block;width:100%;margin:8px 0 16px;padding:12px;border-radius:12px;background:#11111d;color:white;border:1px solid rgba(255,255,255,.15);">
+                    <option value="General feedback">General feedback</option>
+                    <option value="Bug report">Bug report</option>
+                    <option value="Feature request">Feature request</option>
+                    <option value="Design suggestion">Design suggestion</option>
+                </select>
+                <label for="betaFeedbackMessage">Your feedback</label>
+                <textarea id="betaFeedbackMessage" required maxlength="4000" rows="5" placeholder="Tell us what you noticed, what went wrong, or what would make TikNation better..." style="display:block;width:100%;margin:8px 0 12px;padding:12px;border-radius:12px;background:#11111d;color:white;border:1px solid rgba(255,255,255,.15);resize:vertical;"></textarea>
+                <p class="muted" style="font-size:12px;">Please don't include passwords or other sensitive information.</p>
+                <button id="betaFeedbackSubmit" type="submit" class="primary-button">SEND FEEDBACK</button>
+                <p id="betaFeedbackStatus" class="muted" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </details>
+
     <details id="changePasswordSettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;">
         <summary>🔑 Change Password</summary>
         <div class="settings-panel-content">
@@ -2386,6 +2408,51 @@ function toggleHeaderMenu(forceOpen){
     button.setAttribute("aria-label",shouldOpen ? "Close account menu" : "Open account menu");
 }
 
+function openBetaFeedback(){
+    showPage("settings");
+    const panel = document.getElementById("betaFeedbackSettings");
+    if(panel){
+        panel.open = true;
+        panel.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+}
+
+async function submitBetaFeedback(event){
+    if(event) event.preventDefault();
+    const type = document.getElementById("betaFeedbackType");
+    const message = document.getElementById("betaFeedbackMessage");
+    const status = document.getElementById("betaFeedbackStatus");
+    const submit = document.getElementById("betaFeedbackSubmit");
+    if(!type || !message || !status || !submit) return;
+    const feedback = message.value.trim();
+    if(!feedback){ status.textContent = "Please enter your feedback before sending."; return; }
+    if(!currentUser){
+        status.textContent = "Please sign in to send beta feedback.";
+        return;
+    }
+    submit.disabled = true;
+    status.textContent = "Sending feedback…";
+    try{
+        const { data, error } = await supabaseClient
+            .from("beta_feedback")
+            .insert({
+                user_id: currentUser.id,
+                feedback_type: type.value,
+                message: feedback
+            })
+            .select("id")
+            .single();
+        if(error) throw error;
+        message.value = "";
+        status.textContent = "Thank you! Your feedback has been submitted.";
+    }catch(error){
+        console.error("Beta feedback submission error:",error);
+        status.textContent = "We couldn't send your feedback right now. Please try again later.";
+    }finally{
+        submit.disabled = false;
+    }
+}
+
 function openTikNationMenuDestination(destination){
     toggleHeaderMenu(false);
     if(destination === "profile"){
@@ -2411,6 +2478,8 @@ function openTikNationMenuDestination(destination){
             disclosure.open = true;
             disclosure.scrollIntoView({behavior:"smooth",block:"start"});
         }
+    }else if(destination === "beta-feedback"){
+        openBetaFeedback();
     }
 }
 
