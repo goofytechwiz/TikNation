@@ -1,6 +1,6 @@
 # TikNation Live — beta verification plan
 
-This checklist applies to the feature branch only. Do not deploy the function or apply the migration to production until the blockers below are addressed and the tests pass.
+This checklist tracks the feature branch and production backend foundation. The migration and Edge Function have been activated in Supabase production with JWT verification enabled; the frontend remains unpublished and release tests are still required. Do not invite creators or call this a beta launch until the remaining blockers below are addressed and tests pass.
 
 ## Release blockers to resolve
 
@@ -21,7 +21,8 @@ This checklist applies to the feature branch only. Do not deploy the function or
 - [x] Keep participant tokens server-generated and rely on LiveKit's documented server-managed token refresh; no unsupported client-side refresh event is used.
 - [x] Add best-effort LiveKit room cleanup if startup fails.
 - [x] Add server-side rolling-window throttles for chat and reports; end-to-end abuse-throttle tests remain pending.
-- [ ] Deploy the function and apply the migration only after runtime checks, moderator metadata setup, permission verification, and remaining release blockers are addressed.
+- [x] Apply the database migration and deploy the Edge Function with JWT verification enabled.
+- [ ] Complete runtime checks, moderator metadata setup, credential verification, and remaining release blockers before inviting beta creators or publishing the Live UI.
 
 ## Database and authorization tests
 
@@ -59,4 +60,4 @@ This checklist applies to the feature branch only. Do not deploy the function or
 
 ## Current known limitations
 
-The draft backend issues 10-minute participant tokens; the built-in LiveKit SDK refresh/reconnect behavior still needs to be verified in real sessions. Startup failure cleanup marks the database session ended and attempts to delete the LiveKit room, but cleanup can still fail and needs testing. Basic chat/report rate limiting is implemented on the feature branch but has not been load-tested or verified in a deployed function. Moderator review tooling and opportunistic stale-session recovery are implemented on the feature branch but remain untested in a deployed runtime. LiveKit's server-managed token refresh is documented by the provider and still needs verification in TikNation's actual browser flow. The browser UI is present on this feature branch but has not been deployed or end-to-end tested. This plan is not evidence that any test has passed.
+The deployed backend issues 10-minute participant tokens and now exposes an authenticated refresh action; the browser listens for token expiry and requests a fresh role-appropriate token. This flow still needs to be verified in real sessions. Startup failure cleanup marks the database session ended and attempts to delete the LiveKit room, but cleanup can still fail and needs testing. Basic chat/report rate limiting is implemented on the feature branch but has not been load-tested or verified in a deployed function. Moderator review tooling and opportunistic stale-session recovery are implemented on the feature branch but remain untested in a deployed runtime. LiveKit's server-managed token refresh is documented by the provider and still needs verification in TikNation's actual browser flow. The browser UI is present on this feature branch but has not been deployed or end-to-end tested. This plan is not evidence that any test has passed.
