@@ -20,7 +20,7 @@ This is a development implementation on a feature branch. It is not deployed and
 5. Deploy `supabase/functions/tiknation-live/index.ts` with JWT verification enabled.
 6. Add approved creator UUIDs to `live_creator_access` using an administrator-only process.
 7. Test camera/microphone permission flows on Android Chrome and desktop browsers, including permission denial, device switching, reconnects, and host cleanup if media setup fails.
-8. Add admin moderation controls for `live_stream_reports`, room cleanup for disconnected sessions, token renewal, and rate limiting before public beta.
+8. Verify token renewal in real browser sessions; add admin moderation controls for `live_stream_reports`, stale/disconnected-room recovery, and rate limiting before public beta.
 
 ## Function actions
 POST JSON actions: `start` (title), `join` (session_id), `end` (session_id), `chat` (session_id, message), `report` (session_id, reason, optional details), and `list`.
@@ -31,4 +31,4 @@ POST JSON actions: `start` (title), `join` (session_id), `end` (session_id), `ch
 - Viewer token grants set `canPublish: false`.
 - Access-grant, session lifecycle, and report tables intentionally have no direct client write policies.
 - Chat read access is restricted to signed-in users and currently live sessions. Writes use the Edge Function so server-side validation is applied.
-- The browser interface is implemented on the feature branch, but the complete feature is not yet operational: the Edge Function has not been deployed, the migration has not been applied to production, and LiveKit credentials have not been configured. Token renewal, moderation workflow, abuse throttling, stale-session recovery, accessibility review, and cross-browser/device tests remain required.
+- The browser interface is implemented on the feature branch, but the complete feature is not yet operational: the Edge Function has not been deployed, the migration has not been applied to production, and LiveKit credentials have not been configured. Token renewal is implemented but not yet runtime-tested. Moderation workflow, abuse throttling, stale-session recovery, accessibility review, and cross-browser/device tests remain required.
