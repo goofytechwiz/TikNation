@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080813"><title>TikNation Live — Moderation</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0%,#20123c 0,transparent 45%),var(--bg);color:#fff;font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+.wrap{max-width:1100px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:18px}.brand{font-size:1.3rem;font-weight:900}.brand span{color:var(--cyan)}.sub,.muted{color:var(--muted);font-size:.9rem}
+button,a.button{cursor:pointer;border:0;border-radius:11px;padding:10px 13px;background:#28213d;color:#fff;font:inherit;font-weight:700;text-decoration:none}button.primary{background:linear-gradient(110deg,var(--purple),#5c55ff)}button.danger{background:#4a1e32;color:#ffb9c9}button:disabled{opacity:.5;cursor:wait}
+.panel{margin-top:20px;background:#10101deF;border:1px solid var(--line);border-radius:18px;padding:18px}.status{padding:11px 13px;background:#181629;border-radius:11px;margin:15px 0;white-space:pre-wrap}.status.error{background:#351725;color:#ffb9c9}.status.ok{background:#102b26;color:#a9ffdc}
+.report{border:1px solid var(--line);border-radius:14px;background:#0b0b14;padding:16px;margin:12px 0}.head{display:flex;justify-content:space-between;gap:12px;align-items:start;flex-wrap:wrap}.reason{font-weight:800;color:#d8cbff}.details{white-space:pre-wrap;overflow-wrap:anywhere;background:#080812;border-radius:10px;padding:11px;margin:10px 0}.actions{display:flex;gap:8px;flex-wrap:wrap}.small{font-size:.8rem;color:var(--muted)}a{color:#b8a4ff}
+</style>
+</head>
+<body><main class="wrap">
+<header class="top"><div><div class="brand">TikNation <span>LIVE · MODERATION</span></div><div class="sub">Private report-review console for authorized moderators.</div></div><div><a class="button" href="./live.html">Back to Live</a> <a class="button" href="./index.html">TikNation home</a></div></header>
+<div id="status" class="status" role="status" aria-live="polite">Checking sign-in…</div>
+<section class="panel"><div class="head"><div><h2 style="margin:0">Pending stream reports</h2><div class="muted">Only pending reports are listed. Review outcomes are recorded with your account and timestamp.</div></div><button id="refresh" class="primary" type="button">Refresh</button></div><div id="reports" style="margin-top:16px"><p class="muted">Loading reports…</p></div></section>
+<p class="small">Access is enforced by the Supabase Edge Function using server-managed <code>app_metadata</code>. A visible page or modified browser state does not grant moderator access. Marking “Action taken” records the review outcome; it does not automatically ban an account or terminate a broadcast.</p>
+</main>
+<script>
+const SUPABASE_URL="https://mekzfezaefcimxncklfj.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ";
+const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const API=SUPABASE_URL+"/functions/v1/tiknation-live";
+const $=id=>document.getElementById(id);
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function status(message,type=""){ $("status").textContent=message;$("status").className="status"+(type?" "+type:"");}
+async function api(action,extra={}){const {data:{session}}=await supabase.auth.getSession();if(!session?.access_token)throw new Error("Sign in with your TikNation moderator account first.");const res=await fetch(API,{method:"POST",headers:{"Authorization":"Bearer "+session.access_token,"apikey":SUPABASE_PUBLISHABLE_KEY,"Content-Type":"application/json"},body:JSON.stringify({action,...extra})});let body={};try{body=await res.json()}catch{}if(!res.ok)throw new Error(body.error||"Moderation request failed.");return body;}
+async function load(){const box=$("reports");box.innerHTML='<p class="muted">Loading pending reports…</p>';try{const out=await api("moderation_list");const reports=out.reports||[];if(!reports.length){box.innerHTML='<div class="status">No pending reports. You’re all caught up.</div>';status("Moderator access verified.","ok");return;}box.innerHTML="";for(const r of reports){const card=document.createElement("article");card.className="report";card.innerHTML='<div class="head"><div><div class="reason">'+esc(r.reason)+'</div><div class="small">Reported '+esc(new Date(r.created_at).toLocaleString())+' · Stream ID '+esc(r.session_id)+'</div></div><span class="small">Pending</span></div>'+(r.details?'<div class="details">'+esc(r.details)+'</div>':'<p class="small">No additional details provided.</p>')+'<div class="actions"><button class="primary" data-status="reviewed">Mark reviewed</button><button data-status="dismissed">Dismiss report</button><button class="danger" data-status="action_taken">Record action taken</button></div>';for(const btn of card.querySelectorAll("button"))btn.addEventListener("click",()=>review(r.id,btn.dataset.status,card));box.appendChild(card);}status("Moderator access verified · "+reports.length+" pending report(s).","ok");}catch(e){box.innerHTML='<div class="status error">'+esc(e.message)+'</div>';status(e.message,"error");}}
+async function review(id,outcome,card){const buttons=[...card.querySelectorAll("button")];buttons.forEach(b=>b.disabled=true);try{await api("review_report",{report_id:id,status:outcome});card.remove();status("Report updated: "+outcome.replace("_"," ")+".","ok");if(!$("reports").querySelector(".report"))$("reports").innerHTML='<div class="status">No pending reports. You’re all caught up.</div>';}catch(e){status(e.message,"error");buttons.forEach(b=>b.disabled=false);}}
+$("refresh").addEventListener("click",load);
+async function boot(){const {data:{session}}=await supabase.auth.getSession();if(!session){status("Please sign in to TikNation with an authorized moderator account.","error");$("reports").innerHTML='<p class="muted">No report data is shown until the server confirms moderator access.</p>';return;}await load();}
+// This page has no in-page sign-in flow; read the persisted session once. Avoid
+// calling getSession() from inside onAuthStateChange, which can contend with the auth lock.
+boot();
+</script></body></html>
