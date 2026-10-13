@@ -132,6 +132,19 @@ Deno.serve(async (req: Request) => {
     }
   }
 
+  if (action === "refresh") {
+    const sessionId = String(body.session_id ?? "");
+    if (!/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Invalid live session." }, 400);
+    const { data: session, error } = await admin.from("live_sessions")
+      .select("id,room_name,status,creator_id").eq("id", sessionId).eq("status", "live").maybeSingle();
+    if (error) return json({ error: "Could not refresh the broadcast connection." }, 500);
+    if (!session) return json({ error: "This broadcast has ended or is unavailable." }, 404);
+    // Reissue permissions from the stored creator identity; never trust a client-supplied host flag.
+    const isCreator = session.creator_id === user.id;
+    const credentials = await issueToken(session.room_name, isCreator, true);
+    return json(credentials);
+  }
+
   if (action === "join") {
     const sessionId = String(body.session_id ?? "");
     if (!/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Invalid live session." }, 400);
