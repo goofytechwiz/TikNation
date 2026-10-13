@@ -86,5 +86,7 @@ create policy "Signed-in users can read chat for live sessions"
 grant select on public.live_sessions to authenticated;
 grant select on public.live_chat_messages to authenticated;
 
--- No anon grants. Supabase service-role Edge Function calls bypass RLS and
--- must perform explicit user/session/approval checks before every write.
+-- These policies do not grant anonymous row access. Before deployment, verify
+-- table-level grants and ensure anon has no SELECT privilege on these tables.
+-- Supabase service-role Edge Function calls bypass RLS and must perform explicit
+-- user/session/approval checks before every write.
