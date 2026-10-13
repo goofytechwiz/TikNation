@@ -206,12 +206,63 @@ Deno.serve(async (req: Request) => {
     return json({ report });
   }
 
+  if (action === "moderation_list" || action === "review_report") {
+    // Authorization uses server-managed Supabase app_metadata, never user-editable
+    // user_metadata or a client-supplied role.
+    const appMeta = user.app_metadata ?? {};
+    const roles = Array.isArray(appMeta.roles) ? appMeta.roles : [];
+    const isModerator = roles.includes("moderator") || roles.includes("admin") ||
+      appMeta.role === "moderator" || appMeta.role === "admin";
+    if (!isModerator) return json({ error: "Moderator access is required." }, 403);
+
+    if (action === "moderation_list") {
+      const { data, error } = await admin.from("live_stream_reports")
+        .select("id,session_id,reporter_id,reason,details,status,created_at,reviewed_by,reviewed_at")
+        .eq("status", "pending").order("created_at", { ascending: true }).limit(100);
+      if (error) return json({ error: "Could not load pending reports." }, 500);
+      return json({ reports: data ?? [] });
+    }
+
+    const reportId = String(body.report_id ?? "");
+    const status = String(body.status ?? "");
+    if (!/^[0-9a-f-]{36}$/i.test(reportId)) return json({ error: "Invalid report ID." }, 400);
+    if (!["reviewed", "dismissed", "action_taken"].includes(status)) {
+      return json({ error: "Choose a valid review outcome." }, 400);
+    }
+    const { data: updated, error } = await admin.from("live_stream_reports")
+      .update({ status, reviewed_by: user.id, reviewed_at: new Date().toISOString() })
+      .eq("id", reportId).eq("status", "pending")
+      .select("id,status,reviewed_by,reviewed_at").maybeSingle();
+    if (error) return json({ error: "Could not update the report." }, 500);
+    if (!updated) return json({ error: "This report was already reviewed or no longer exists." }, 409);
+    return json({ report: updated });
+  }
+
   if (action === "list") {
     const { data, error } = await admin.from("live_sessions")
-      .select("id,creator_id,title,status,started_at")
+      .select("id,creator_id,title,status,started_at,room_name")
       .eq("status", "live").order("started_at", { ascending: false }).limit(50);
     if (error) return json({ error: "Could not load live broadcasts." }, 500);
-    return json({ sessions: data ?? [] });
+
+    // Opportunistic stale-session recovery: only mark rooms missing from a
+    // successful LiveKit room listing as ended. Never infer this from API failure.
+    let liveRooms;
+    try {
+      liveRooms = await rooms.listRooms();
+    } catch (recoveryError) {
+      console.error("Live stale-session check failed:", recoveryError);
+      return json({ error: "Live broadcasts are temporarily unavailable. Please refresh shortly." }, 503);
+    }
+    const roomNames = new Set(liveRooms.map((r) => r.name));
+    const stale = (data ?? []).filter((s) => !roomNames.has(s.room_name));
+    if (stale.length) {
+      const staleIds = stale.map((s) => s.id);
+      const { error: cleanupError } = await admin.from("live_sessions")
+        .update({ status: "ended", ended_at: new Date().toISOString() })
+        .in("id", staleIds).eq("status", "live");
+      if (cleanupError) console.error("Stale Live session database cleanup failed:", cleanupError);
+    }
+    return json({ sessions: (data ?? []).filter((s) => roomNames.has(s.room_name)).map(({ room_name, ...s }) => s) });
   }
 
   return json({ error: "Unknown action." }, 400);
