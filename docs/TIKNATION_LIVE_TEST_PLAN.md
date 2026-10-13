@@ -6,11 +6,11 @@ This checklist applies to the feature branch only. Do not deploy the function or
 
 - [ ] Test LiveKit's built-in token refresh/reconnect lifecycle in real browser sessions for broadcasters and viewers; verify a stream survives beyond 10 minutes and a revoked creator cannot start a new publishing session.
 - [ ] Simulate camera permission denial and LiveKit connection failures; verify the startup error path ends the database session and attempts to delete the LiveKit room.
-- [ ] Add rate limiting/abuse controls for chat and reports. The unique report constraint prevents repeat reports by the same account per stream, but it is not general throttling.
+- [ ] Test server-side rolling-window throttles: chat is limited to 8 attempts per account per minute and reports to 3 attempts per account per hour. Confirm HTTP 429 responses, fail-closed behavior if the counter cannot be checked, and cleanup of old counter events. The unique report constraint also prevents repeat reports by the same account per stream.
 - [ ] Add a moderator-only report review workflow and an operational response process before inviting real creators.
 - [ ] Add stale-session recovery for browser crashes, network loss, and function/room cleanup failures.
 - [ ] Verify the actual published GitHub Pages origin and any custom domain; update the exact CORS allowlist only if needed.
-- [ ] Confirm database grants as well as RLS policies for all four new tables. Do not rely on a SQL comment as proof of grants/revokes.
+- [ ] Confirm database grants as well as RLS policies for all five new tables, including the server-only action-event table. The migration now explicitly revokes client privileges and grants only the intended signed-in read surfaces; verify this against the actual catalog after applying it.
 - [ ] Confirm that function deployment keeps JWT verification enabled and that service-role credentials remain server-side.
 - [ ] Validate LiveKit server URL and SDK compatibility in the target Supabase Edge Runtime before deployment.
 
@@ -20,6 +20,7 @@ This checklist applies to the feature branch only. Do not deploy the function or
 - [x] Add desktop and mobile navigation entries in `index.html` on the feature branch.
 - [x] Keep short-lived participant tokens server-generated and rely on the LiveKit SDK/server token-refresh lifecycle instead of a client-side token timer.
 - [x] Add best-effort LiveKit room cleanup if startup fails.
+- [x] Add server-side rolling-window throttles for chat and reports; end-to-end abuse-throttle tests remain pending.
 - [ ] Deploy the function and apply the migration only after LiveKit secrets are configured and the remaining release blockers are addressed.
 
 ## Database and authorization tests
@@ -58,4 +59,4 @@ This checklist applies to the feature branch only. Do not deploy the function or
 
 ## Current known limitations
 
-The draft backend issues 10-minute participant tokens; the built-in LiveKit SDK refresh/reconnect behavior still needs to be verified in real sessions. Startup failure cleanup marks the database session ended and attempts to delete the LiveKit room, but cleanup can still fail and needs testing. Chat/report rate limiting, moderator review tooling, and stale-session recovery remain incomplete. The browser UI is present on this feature branch but has not been deployed or end-to-end tested. This plan is not evidence that any test has passed.
+The draft backend issues 10-minute participant tokens; the built-in LiveKit SDK refresh/reconnect behavior still needs to be verified in real sessions. Startup failure cleanup marks the database session ended and attempts to delete the LiveKit room, but cleanup can still fail and needs testing. Basic chat/report rate limiting is implemented on the feature branch but has not been load-tested or verified in a deployed function. Moderator review tooling and stale-session recovery remain incomplete. The browser UI is present on this feature branch but has not been deployed or end-to-end tested. This plan is not evidence that any test has passed.
