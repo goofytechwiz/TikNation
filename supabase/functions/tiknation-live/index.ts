@@ -60,6 +60,33 @@ Deno.serve(async (req: Request) => {
   const livekitHttpUrl = livekitUrl.replace(/^wss:/i, "https:").replace(/^ws:/i, "http:");
   const rooms = new RoomServiceClient(livekitHttpUrl, livekitApiKey, livekitApiSecret);
 
+  // Fail closed if the server-only abuse counter cannot be checked.
+  async function isRateLimited(actionName: "chat" | "report", limit: number, windowMs: number) {
+    const cutoff = new Date(Date.now() - windowMs).toISOString();
+    const retentionCutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    await admin.from("live_action_events").delete().lt("created_at", retentionCutoff);
+
+    const { error: eventError } = await admin.from("live_action_events").insert({
+      actor_id: user.id,
+      action: actionName,
+    });
+    if (eventError) {
+      console.error("TikNation Live rate-limit event write failed:", eventError);
+      return true;
+    }
+
+    const { count, error: countError } = await admin.from("live_action_events")
+      .select("id", { count: "exact", head: true })
+      .eq("actor_id", user.id)
+      .eq("action", actionName)
+      .gte("created_at", cutoff);
+    if (countError) {
+      console.error("TikNation Live rate-limit check failed:", countError);
+      return true;
+    }
+    return (count ?? 0) > limit;
+  }
+
   async function issueToken(roomName: string, canPublish: boolean, canSubscribe: boolean) {
     const { data: profile } = await admin.from("profiles").select("username,display_name").eq("id", user.id).maybeSingle();
     const identity = user.id;
@@ -150,6 +177,9 @@ Deno.serve(async (req: Request) => {
     if (message.length < 1 || message.length > 500) return json({ error: "Chat messages must be 1–500 characters." }, 400);
     const { data: session } = await admin.from("live_sessions").select("id").eq("id", sessionId).eq("status", "live").maybeSingle();
     if (!session) return json({ error: "This broadcast has ended." }, 404);
+    if (await isRateLimited("chat", 8, 60_000)) {
+      return json({ error: "You're sending messages too quickly. Please wait a minute and try again." }, 429);
+    }
     const { data: saved, error } = await admin.from("live_chat_messages")
       .insert({ session_id: sessionId, user_id: user.id, message })
       .select("id,session_id,user_id,message,created_at").single();
@@ -165,6 +195,9 @@ Deno.serve(async (req: Request) => {
     if (reason.length < 2 || reason.length > 80 || details.length > 1000) return json({ error: "Please choose a valid report reason and keep details under 1,000 characters." }, 400);
     const { data: session } = await admin.from("live_sessions").select("id").eq("id", sessionId).maybeSingle();
     if (!session) return json({ error: "This broadcast could not be found." }, 404);
+    if (await isRateLimited("report", 3, 60 * 60_000)) {
+      return json({ error: "You've submitted several reports recently. Please try again later." }, 429);
+    }
     const { data: report, error } = await admin.from("live_stream_reports").insert({
       session_id: sessionId, reporter_id: user.id, reason, details: details || null,
     }).select("id,status,created_at").single();
