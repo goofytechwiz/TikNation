@@ -60,10 +60,36 @@ create table if not exists public.live_stream_reports (
 create index if not exists live_stream_reports_status_created_idx
   on public.live_stream_reports (status, created_at desc);
 
+-- Server-only rolling-window events for basic chat/report abuse throttling.
+create table if not exists public.live_action_events (
+  id bigint generated always as identity primary key,
+  actor_id uuid not null references auth.users(id) on delete cascade,
+  action text not null check (action in ('chat', 'report')),
+  created_at timestamptz not null default now()
+);
+create index if not exists live_action_events_actor_action_created_idx
+  on public.live_action_events (actor_id, action, created_at desc);
+create index if not exists live_action_events_created_idx
+  on public.live_action_events (created_at);
+
 alter table public.live_creator_access enable row level security;
 alter table public.live_sessions enable row level security;
 alter table public.live_chat_messages enable row level security;
 alter table public.live_stream_reports enable row level security;
+alter table public.live_action_events enable row level security;
+
+-- Explicitly keep all Live tables inaccessible to anonymous clients and limit
+-- signed-in client access to the two intended read-only surfaces.
+revoke all privileges on table public.live_creator_access from anon, authenticated;
+revoke all privileges on table public.live_sessions from anon, authenticated;
+revoke all privileges on table public.live_chat_messages from anon, authenticated;
+revoke all privileges on table public.live_stream_reports from anon, authenticated;
+revoke all privileges on table public.live_action_events from anon, authenticated;
+grant all privileges on table public.live_creator_access to service_role;
+grant all privileges on table public.live_sessions to service_role;
+grant all privileges on table public.live_chat_messages to service_role;
+grant all privileges on table public.live_stream_reports to service_role;
+grant all privileges on table public.live_action_events to service_role;
 
 -- No client policies on access grants, session lifecycle, or reports:
 -- those operations are performed by the authenticated Edge Function only.
@@ -86,7 +112,6 @@ create policy "Signed-in users can read chat for live sessions"
 grant select on public.live_sessions to authenticated;
 grant select on public.live_chat_messages to authenticated;
 
--- These policies do not grant anonymous row access. Before deployment, verify
--- table-level grants and ensure anon has no SELECT privilege on these tables.
 -- Supabase service-role Edge Function calls bypass RLS and must perform explicit
--- user/session/approval checks before every write.
+-- user/session/approval checks before every write. The service role is never sent
+-- to the browser.
