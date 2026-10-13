@@ -23,7 +23,6 @@ This checklist tracks the feature branch and production backend foundation. The 
 - [x] Add server-side rolling-window throttles for chat and reports; end-to-end abuse-throttle tests remain pending.
 - [x] Apply the database migration and deploy the Edge Function with JWT verification enabled.
 - [x] Approve the existing TikNationStudio account for the first creator test.
-- [x] Approve the existing TikNationStudio account for the first creator test.
 - [ ] Complete runtime checks, moderator metadata setup, credential verification, and remaining release blockers before inviting beta creators or publishing the Live UI.
 
 ## Database and authorization tests
