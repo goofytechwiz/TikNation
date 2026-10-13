@@ -4,7 +4,7 @@ This checklist applies to the feature branch only. Do not deploy the function or
 
 ## Release blockers to resolve
 
-- [ ] Test the explicit LiveKit token-refresh event handler and server `refresh` action in real browser sessions for broadcasters and viewers; verify a stream survives beyond 10 minutes and a revoked creator cannot refresh a publishing token or start a new session.
+- [ ] Test LiveKit's documented server-managed token refresh/reconnect behavior in real browser sessions for broadcasters and viewers; verify a stream survives beyond 10 minutes and the creator can reconnect after network loss.
 - [ ] Simulate camera permission denial and LiveKit connection failures; verify the startup error path ends the database session and attempts to delete the LiveKit room.
 - [ ] Test server-side rolling-window throttles: chat is limited to 8 attempts per account per minute and reports to 3 attempts per account per hour. Confirm HTTP 429 responses, fail-closed behavior if the counter cannot be checked, and cleanup of old counter events. The unique report constraint also prevents repeat reports by the same account per stream.
 - [x] Add a private moderator-only report review workflow on the feature branch; still define and verify the operational response process before inviting real creators.
@@ -18,7 +18,7 @@ This checklist applies to the feature branch only. Do not deploy the function or
 
 - [x] Add the Live page with live discovery, creator start/end controls, viewer media playback, chat, and stream reporting.
 - [x] Add desktop and mobile navigation entries in `index.html` on the feature branch.
-- [x] Keep short-lived participant tokens server-generated and handle LiveKit's token-refresh event by requesting a fresh, authorization-checked token from the Edge Function.
+- [x] Keep participant tokens server-generated and rely on LiveKit's documented server-managed token refresh; no unsupported client-side refresh event is used.
 - [x] Add best-effort LiveKit room cleanup if startup fails.
 - [x] Add server-side rolling-window throttles for chat and reports; end-to-end abuse-throttle tests remain pending.
 - [ ] Deploy the function and apply the migration only after runtime checks, moderator metadata setup, permission verification, and remaining release blockers are addressed.
@@ -59,4 +59,4 @@ This checklist applies to the feature branch only. Do not deploy the function or
 
 ## Current known limitations
 
-The draft backend issues 10-minute participant tokens; the built-in LiveKit SDK refresh/reconnect behavior still needs to be verified in real sessions. Startup failure cleanup marks the database session ended and attempts to delete the LiveKit room, but cleanup can still fail and needs testing. Basic chat/report rate limiting is implemented on the feature branch but has not been load-tested or verified in a deployed function. Moderator review tooling, stale-session recovery, and token-refresh handling are implemented on the feature branch but remain untested in a deployed runtime. The browser UI is present on this feature branch but has not been deployed or end-to-end tested. This plan is not evidence that any test has passed.
+The draft backend issues 10-minute participant tokens; the built-in LiveKit SDK refresh/reconnect behavior still needs to be verified in real sessions. Startup failure cleanup marks the database session ended and attempts to delete the LiveKit room, but cleanup can still fail and needs testing. Basic chat/report rate limiting is implemented on the feature branch but has not been load-tested or verified in a deployed function. Moderator review tooling and opportunistic stale-session recovery are implemented on the feature branch but remain untested in a deployed runtime. LiveKit's server-managed token refresh is documented by the provider and still needs verification in TikNation's actual browser flow. The browser UI is present on this feature branch but has not been deployed or end-to-end tested. This plan is not evidence that any test has passed.
