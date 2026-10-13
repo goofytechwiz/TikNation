@@ -4,8 +4,8 @@ This checklist applies to the feature branch only. Do not deploy the function or
 
 ## Release blockers to resolve
 
-- [ ] Add token renewal or a safe reconnect flow before the 10-minute LiveKit token expires. Test both broadcasters and viewers.
-- [ ] In the `start` error path, attempt to delete the LiveKit room as well as mark any inserted database session ended; log cleanup failures without leaking credentials.
+- [ ] Exercise the new 7-minute token-renewal action in real browser sessions for both broadcasters and viewers; verify the stream survives beyond 10 minutes and a revoked creator cannot renew a publishing token.
+- [ ] Simulate camera permission denial and LiveKit connection failures; verify the startup error path ends the database session and attempts to delete the LiveKit room.
 - [ ] Add rate limiting/abuse controls for chat and reports. The unique report constraint prevents repeat reports by the same account per stream, but it is not general throttling.
 - [ ] Add a moderator-only report review workflow and an operational response process before inviting real creators.
 - [ ] Add stale-session recovery for browser crashes, network loss, and function/room cleanup failures.
@@ -13,6 +13,14 @@ This checklist applies to the feature branch only. Do not deploy the function or
 - [ ] Confirm database grants as well as RLS policies for all four new tables. Do not rely on a SQL comment as proof of grants/revokes.
 - [ ] Confirm that function deployment keeps JWT verification enabled and that service-role credentials remain server-side.
 - [ ] Validate LiveKit server URL and SDK compatibility in the target Supabase Edge Runtime before deployment.
+
+## Browser implementation status
+
+- [x] Add the Live page with live discovery, creator start/end controls, viewer media playback, chat, and stream reporting.
+- [x] Add desktop and mobile navigation entries in `index.html` on the feature branch.
+- [x] Add a server-validated token-renewal action and client-side renewal timer.
+- [x] Add best-effort LiveKit room cleanup if startup fails.
+- [ ] Deploy the function and apply the migration only after LiveKit secrets are configured and the remaining release blockers are addressed.
 
 ## Database and authorization tests
 
