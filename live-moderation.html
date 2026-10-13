@@ -32,5 +32,7 @@ async function load(){const box=$("reports");box.innerHTML='<p class="muted">Loa
 async function review(id,outcome,card){const buttons=[...card.querySelectorAll("button")];buttons.forEach(b=>b.disabled=true);try{await api("review_report",{report_id:id,status:outcome});card.remove();status("Report updated: "+outcome.replace("_"," ")+".","ok");if(!$("reports").querySelector(".report"))$("reports").innerHTML='<div class="status">No pending reports. You’re all caught up.</div>';}catch(e){status(e.message,"error");buttons.forEach(b=>b.disabled=false);}}
 $("refresh").addEventListener("click",load);
 async function boot(){const {data:{session}}=await supabase.auth.getSession();if(!session){status("Please sign in to TikNation with an authorized moderator account.","error");$("reports").innerHTML='<p class="muted">No report data is shown until the server confirms moderator access.</p>';return;}await load();}
-supabase.auth.onAuthStateChange(()=>{boot();});boot();
+// This page has no in-page sign-in flow; read the persisted session once. Avoid
+// calling getSession() from inside onAuthStateChange, which can contend with the auth lock.
+boot();
 </script></body></html>
