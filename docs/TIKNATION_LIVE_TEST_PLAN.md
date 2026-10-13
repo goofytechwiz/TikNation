@@ -58,4 +58,4 @@ This checklist applies to the feature branch only. Do not deploy the function or
 
 ## Current known limitations
 
-The draft backend currently issues 10-minute tokens without a renewal action. If token creation fails after room/session creation, the catch path marks the session ended but may leave a LiveKit room behind. Chat/report rate limiting, moderation tooling, stale-session recovery, and browser UI are not implemented yet. This plan is not evidence that any test has passed.
+The draft backend issues 10-minute participant tokens; the built-in LiveKit SDK refresh/reconnect behavior still needs to be verified in real sessions. Startup failure cleanup marks the database session ended and attempts to delete the LiveKit room, but cleanup can still fail and needs testing. Chat/report rate limiting, moderator review tooling, and stale-session recovery remain incomplete. The browser UI is present on this feature branch but has not been deployed or end-to-end tested. This plan is not evidence that any test has passed.
