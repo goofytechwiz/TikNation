@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080813">
+<title>TikNation Live</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0%,#20123c 0,transparent 45%),var(--bg);color:#fff;font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;background:#242039;color:#fff;font-weight:700}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:linear-gradient(110deg,var(--purple),#5c55ff);box-shadow:0 5px 24px #8d63ff2b}.danger{background:#4a1e32;color:#ffb9c9}.ghost{border:1px solid var(--line);background:transparent}.wrap{max-width:1180px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:18px}.brand{font-size:1.35rem;font-weight:900;letter-spacing:.03em}.brand span{color:var(--cyan)}.sub{color:var(--muted);font-size:.9rem}.pill{border:1px solid #523f7b;background:#211737;color:#d9c9ff;border-radius:99px;padding:5px 10px;font-size:.78rem}.layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:18px;margin-top:22px}.panel{background:#10101deF;border:1px solid var(--line);border-radius:20px;padding:18px;min-width:0}.panel h2,.panel h3{margin:0 0 12px}.controls{display:flex;gap:9px;flex-wrap:wrap}.field{display:grid;gap:6px;margin:12px 0}.field label{color:#d4d0e5;font-size:.88rem}.field input,.field textarea,.field select{width:100%;background:#080812;border:1px solid #37314d;border-radius:11px;color:#fff;padding:12px;outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--cyan)}.status{padding:10px 12px;border-radius:12px;background:#181629;color:#c9c3df;margin:12px 0;white-space:pre-wrap}.status.error{color:#ffb9c9;background:#351725}.status.ok{color:#a9ffdc;background:#102b26}.video{width:100%;aspect-ratio:16/9;background:radial-gradient(ellipse,#19132e,#030308);border:1px solid #2b2542;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;color:var(--muted)}.video video{width:100%;height:100%;object-fit:contain}.video .placeholder{padding:24px;text-align:center}.stream-head{display:flex;justify-content:space-between;gap:12px;align-items:start;margin:14px 0}.live-dot{color:#ff5479;font-weight:900}.list{display:grid;gap:10px}.stream{border:1px solid var(--line);background:#0b0b14;border-radius:14px;padding:14px;display:flex;justify-content:space-between;gap:10px;align-items:center}.stream strong{display:block;overflow-wrap:anywhere}.stream small{color:var(--muted)}.chat{display:flex;flex-direction:column;min-height:300px}.messages{height:300px;overflow:auto;border:1px solid var(--line);background:#080811;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:9px}.message{overflow-wrap:anywhere}.message b{color:#bda7ff}.message time{font-size:.75rem;color:#77738d;margin-left:6px}.chat-form{display:flex;gap:8px;margin-top:10px}.chat-form input{min-width:0;flex:1;background:#080812;border:1px solid #37314d;border-radius:11px;padding:11px;color:#fff}.small{font-size:.82rem;color:var(--muted)}.divider{height:1px;background:var(--line);margin:18px 0}.hide{display:none!important}.footer{color:#7f7b94;font-size:.8rem;margin:20px 0}.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:780px){.layout{grid-template-columns:1fr}.wrap{padding:14px}.panel{padding:14px}.messages{height:230px}.top{align-items:flex-start}.report-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div><div class="brand">TikNation <span>LIVE</span></div><div class="sub">Creator broadcasts, live chat, and community safety.</div></div>
+  <div class="controls"><span class="pill" id="authBadge">Checking sign-in…</span><button class="ghost" id="backBtn" type="button">Back to TikNation</button></div>
+</header>
+<div id="notice" class="status" role="status" aria-live="polite">Connecting to TikNation…</div>
+<div class="layout">
+<main class="panel">
+  <div class="stream-head"><div><h2 id="viewTitle">Live now</h2><div class="sub">Only approved beta creators can broadcast.</div></div><button class="ghost" id="refreshBtn" type="button">Refresh</button></div>
+  <div id="liveList" class="list"><div class="small">Loading live broadcasts…</div></div>
+  <div class="divider"></div>
+  <section id="viewer" class="hide">
+    <div class="stream-head"><div><h2 id="viewerTitle">Watching live</h2><div class="small" id="viewerMeta"></div></div><button class="danger" id="leaveBtn" type="button">Leave</button></div>
+    <div id="viewerVideo" class="video"><div class="placeholder">Connecting to broadcast…</div></div>
+    <div class="controls" style="margin-top:12px"><button class="ghost" id="reportToggle" type="button">Report stream</button></div>
+    <form id="reportForm" class="hide">
+      <div class="field"><label for="reportReason">Why are you reporting this stream?</label><select id="reportReason" required><option value="">Choose a reason</option><option>Harassment or bullying</option><option>Hateful content</option><option>Sexual content</option><option>Violence or dangerous activity</option><option>Spam or scam</option><option>Other safety concern</option></select></div>
+      <div class="field"><label for="reportDetails">Details (optional)</label><textarea id="reportDetails" rows="3" maxlength="1000" placeholder="Share details to help the moderation team."></textarea></div>
+      <button class="danger" type="submit">Submit report</button>
+    </form>
+  </section>
+  <section id="creator" class="hide">
+    <div class="divider"></div><h2>Creator studio</h2>
+    <p class="small">Your camera and microphone are only requested when you start a broadcast. Check your surroundings before going live.</p>
+    <form id="startForm">
+      <div class="field"><label for="streamTitle">Stream title</label><input id="streamTitle" required maxlength="100" placeholder="What are you sharing today?"></div>
+      <button class="primary" type="submit" id="startBtn">Start live broadcast</button>
+    </form>
+    <div id="creatorVideo" class="video hide" style="margin-top:14px"><div class="placeholder">Your live preview will appear here.</div></div>
+    <div class="controls hide" id="creatorControls" style="margin-top:12px"><button class="danger" id="endBtn" type="button">End broadcast</button></div>
+    <p class="small" id="creatorHint" style="margin-top:10px">Broadcasting is invite-only during beta.</p>
+  </section>
+</main>
+<aside class="panel">
+  <h2>Live chat</h2><div class="sub" id="chatHint">Join a live stream to see and send messages.</div>
+  <div class="chat" style="margin-top:12px"><div class="messages" id="chatMessages" aria-live="polite"><div class="small">Chat messages appear here.</div></div>
+  <form class="chat-form" id="chatForm"><input id="chatInput" maxlength="500" placeholder="Sign in and join a stream to chat…" disabled aria-label="Chat message"><button class="primary" id="sendChat" disabled>Send</button></form></div>
+  <div class="divider"></div><h3>Creator access</h3><p class="small">TikNation Live is currently a private beta. If your account has been approved, you can start your stream here. If not, you can still watch active broadcasts.</p>
+  <div class="footer">Be respectful. Do not share private information. Report harmful content. Live access and chat require sign-in.</div>
+</aside>
+</div>
+<div class="footer">TikNation Live beta · Streaming connection tokens are short-lived. If a stream stops after a period of time, reconnect after the platform's token-renewal feature is enabled.</div>
+</div>
+<script type="module">
+import { Room, RoomEvent, Track, createLocalTracks } from "https://esm.sh/livekit-client@2";
+const SUPABASE_URL = "https://mekzfezaefcimxncklfj.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const API = SUPABASE_URL + "/functions/v1/tiknation-live";
+const $ = id => document.getElementById(id);
+let user = null, activeSession = null, room = null, localTracks = [], isHost = false, chatTimer = null, lastMessageAt = null, listedSessions = [];
+function notice(message, type=""){const n=$("notice");n.textContent=message;n.className="status"+(type?" "+type:"");}
+function esc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+async function api(action, extra={}){const {data:{session}}=await supabase.auth.getSession();if(!session?.access_token)throw new Error("Please sign in to use TikNation Live.");const res=await fetch(API,{method:"POST",headers:{"Authorization":"Bearer "+session.access_token,"apikey":SUPABASE_PUBLISHABLE_KEY,"Content-Type":"application/json"},body:JSON.stringify({action,...extra})});let body={};try{body=await res.json()}catch{}if(!res.ok)throw new Error(body.error||"TikNation Live request failed.");return body;}
+function resetVideo(id,text){$(id).innerHTML='<div class="placeholder">'+esc(text)+'</div>';}
+function attachTrack(track, elementId){const el=track.attach();el.autoplay=true;el.playsInline=true;if(track.kind==="video")el.controls=false;$(elementId).innerHTML="";$(elementId).appendChild(el);}
+function stopChat(){if(chatTimer)clearInterval(chatTimer);chatTimer=null;lastMessageAt=null;}
+function renderChat(messages){const box=$("chatMessages");if(!messages?.length&&!lastMessageAt){box.innerHTML='<div class="small">No messages yet. Say hello!</div>';return;}for(const m of messages||[]){if(lastMessageAt&&m.created_at<=lastMessageAt)continue;const node=document.createElement("div");node.className="message";node.innerHTML='<b>'+esc(m.username||"TikNation member")+'</b><time>'+new Date(m.created_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})+'</time><div>'+esc(m.message)+'</div>';box.appendChild(node);lastMessageAt=m.created_at;}box.scrollTop=box.scrollHeight;}
+async function loadChat(){if(!activeSession)return;try{const {data,error}=await supabase.from("live_chat_messages").select("id,user_id,message,created_at").eq("session_id",activeSession.id).order("created_at",{ascending:true}).limit(100);if(error)throw error;const ids=[...new Set((data||[]).map(m=>m.user_id))];let profiles={};if(ids.length){const p=await supabase.from("profiles").select("id,username,display_name").in("id",ids);for(const x of p.data||[])profiles[x.id]=x.display_name||x.username||"TikNation member";}renderChat((data||[]).map(m=>({...m,username:profiles[m.user_id]||"TikNation member"})));}catch(e){console.warn("Chat refresh:",e.message);}}
+async function startChat(){stopChat();$("chatInput").disabled=!user;$("sendChat").disabled=!user;$("chatHint").textContent=user?"Chat is open. Keep it friendly.":"Sign in to send messages.";await loadChat();chatTimer=setInterval(loadChat,4000);}
+async function loadStreams(){try{const out=await api("list");listedSessions=out.sessions||[];const box=$("liveList");if(!listedSessions.length){box.innerHTML='<div class="status">Nobody is live right now. Check back soon.</div>';return;}box.innerHTML="";for(const s of listedSessions){const row=document.createElement("div");row.className="stream";row.innerHTML='<div><strong><span class="live-dot">● LIVE</span> '+esc(s.title)+'</strong><small>Started '+new Date(s.started_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})+'</small></div><button class="primary" type="button">Watch</button>';row.querySelector("button").addEventListener("click",()=>joinStream(s));box.appendChild(row);}}catch(e){$("liveList").innerHTML='<div class="status error">'+esc(e.message)+'</div>';}}
+async function connectRoom(serverUrl,token,targetId,host){room=new Room({adaptiveStream:true,dynacast:true});room.on(RoomEvent.TrackSubscribed,(track)=>attachTrack(track,targetId));room.on(RoomEvent.TrackUnsubscribed,(track)=>track.detach().forEach(el=>el.remove()));room.on(RoomEvent.Disconnected,()=>{if(activeSession)notice("Streaming connection ended. Refresh the live list or reconnect.", "error");});await room.connect(serverUrl,token);for(const p of room.remoteParticipants.values()){for(const pub of p.trackPublications.values())if(pub.track)attachTrack(pub.track,targetId);}if(host){localTracks=await createLocalTracks({audio:true,video:true});for(const track of localTracks){const el=track.attach();el.autoplay=true;el.playsInline=true;if(track.kind==="video"){$("creatorVideo").innerHTML="";$("creatorVideo").appendChild(el);}await room.localParticipant.publishTrack(track);}}}
+async function joinStream(s){try{await leaveStream(false);notice("Joining live broadcast…");const out=await api("join",{session_id:s.id});activeSession=out.session;isHost=false;$("viewer").classList.remove("hide");$("creator").classList.add("hide");$("viewerTitle").textContent=out.session.title;$("viewerMeta").textContent="Live since "+new Date(out.session.started_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});resetVideo("viewerVideo","Connecting to live video…");await connectRoom(out.serverUrl,out.token,"viewerVideo",false);$("viewTitle").textContent="Watching live";await startChat();notice("You’re watching TikNation Live.", "ok");$("viewer").scrollIntoView({behavior:"smooth",block:"start"});}catch(e){notice(e.message,"error");}}
+async function leaveStream(showNotice=true){stopChat();if(room){try{await room.disconnect();}catch{}room=null;}for(const t of localTracks){try{t.stop();t.detach().forEach(el=>el.remove());}catch{}}localTracks=[];activeSession=null;isHost=false;$("viewer").classList.add("hide");$("creatorVideo").classList.add("hide");$("creatorControls").classList.add("hide");$("startForm").classList.remove("hide");$("creator").classList.add("hide");$("chatInput").disabled=true;$("sendChat").disabled=true;$("chatMessages").innerHTML='<div class="small">Join a live stream to chat.</div>';resetVideo("viewerVideo","Select a live broadcast to watch.");if(showNotice)notice("You left the broadcast.");}
+async function startBroadcast(title){const out=await api("start",{title});activeSession=out.session;isHost=true;$("creator").classList.remove("hide");$("startForm").classList.add("hide");$("creatorVideo").classList.remove("hide");$("creatorControls").classList.remove("hide");$("creatorHint").textContent="You are live. End the broadcast when you are finished.";await connectRoom(out.serverUrl,out.token,"creatorVideo",true);$("viewTitle").textContent="Your live broadcast";await loadStreams();notice("You’re live! Keep this page open while broadcasting.","ok");}
+async function endBroadcast(){if(!activeSession||!isHost)return;const id=activeSession.id;$("endBtn").disabled=true;try{await api("end",{session_id:id});await leaveStream(false);await loadStreams();notice("Your broadcast has ended.","ok");}catch(e){notice(e.message,"error");}finally{$("endBtn").disabled=false;}}
+$("startForm").addEventListener("submit",async e=>{e.preventDefault();if(!user){notice("Please sign in on TikNation before going live.","error");return;}const title=$("streamTitle").value.trim();if(!title)return;$("startBtn").disabled=true;try{await startBroadcast(title);}catch(err){await leaveStream(false);notice(err.message,"error");}finally{$("startBtn").disabled=false;}});
+$("endBtn").addEventListener("click",endBroadcast);
+$("leaveBtn").addEventListener("click",async()=>{await leaveStream();$("viewTitle").textContent="Live now";});
+$("refreshBtn").addEventListener("click",loadStreams);
+$("backBtn").addEventListener("click",()=>location.href="./index.html");
+$("chatForm").addEventListener("submit",async e=>{e.preventDefault();const message=$("chatInput").value.trim();if(!message||!activeSession||!user)return;const btn=$("sendChat");btn.disabled=true;try{await api("chat",{session_id:activeSession.id,message});$("chatInput").value="";await loadChat();}catch(err){notice(err.message,"error");}finally{btn.disabled=false;}});
+$("reportToggle").addEventListener("click",()=>$("reportForm").classList.toggle("hide"));
+$("reportForm").addEventListener("submit",async e=>{e.preventDefault();if(!activeSession)return;try{await api("report",{session_id:activeSession.id,reason:$("reportReason").value,details:$("reportDetails").value});$("reportForm").classList.add("hide");$("reportDetails").value="";notice("Report submitted. Thank you for helping keep TikNation safe.","ok");}catch(err){notice(err.message,"error");}});
+async function boot(){const {data:{session}}=await supabase.auth.getSession();user=session?.user||null;$("authBadge").textContent=user?"Signed in":"Viewer mode";if(user){$("creator").classList.remove("hide");$("chatInput").placeholder="Write a message…";}else{$("creatorHint").textContent="Sign in to TikNation, then return here to use Live. Broadcasting is invite-only.";notice("You can browse streams, but sign-in is required to join, chat, report, or broadcast.");}await loadStreams();if(user){const {data}=await supabase.from("live_creator_access").select("status").eq("creator_id",user.id).maybeSingle();if(data?.status==="approved")$("creatorHint").textContent="Your creator account is approved for the private beta.";else $("creatorHint").textContent="Your account is not yet approved to broadcast. You can still watch active streams.";}}
+supabase.auth.onAuthStateChange((_event,session)=>{user=session?.user||null;$("authBadge").textContent=user?"Signed in":"Viewer mode";});
+boot();
+</script>
+</body>
+</html>
