@@ -4,7 +4,7 @@ This checklist applies to the feature branch only. Do not deploy the function or
 
 ## Release blockers to resolve
 
-- [ ] Exercise the new 7-minute token-renewal action in real browser sessions for both broadcasters and viewers; verify the stream survives beyond 10 minutes and a revoked creator cannot renew a publishing token.
+- [ ] Test LiveKit's built-in token refresh/reconnect lifecycle in real browser sessions for broadcasters and viewers; verify a stream survives beyond 10 minutes and a revoked creator cannot start a new publishing session.
 - [ ] Simulate camera permission denial and LiveKit connection failures; verify the startup error path ends the database session and attempts to delete the LiveKit room.
 - [ ] Add rate limiting/abuse controls for chat and reports. The unique report constraint prevents repeat reports by the same account per stream, but it is not general throttling.
 - [ ] Add a moderator-only report review workflow and an operational response process before inviting real creators.
@@ -18,7 +18,7 @@ This checklist applies to the feature branch only. Do not deploy the function or
 
 - [x] Add the Live page with live discovery, creator start/end controls, viewer media playback, chat, and stream reporting.
 - [x] Add desktop and mobile navigation entries in `index.html` on the feature branch.
-- [x] Add a server-validated token-renewal action and client-side renewal timer.
+- [x] Keep short-lived participant tokens server-generated and rely on the LiveKit SDK/server token-refresh lifecycle instead of a client-side token timer.
 - [x] Add best-effort LiveKit room cleanup if startup fails.
 - [ ] Deploy the function and apply the migration only after LiveKit secrets are configured and the remaining release blockers are addressed.
 
