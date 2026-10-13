@@ -62,7 +62,7 @@ create index if not exists live_stream_reports_status_created_idx
 
 -- Server-only rolling-window events for basic chat/report abuse throttling.
 create table if not exists public.live_action_events (
-  id bigint generated always as identity primary key,
+  id uuid primary key default gen_random_uuid(),
   actor_id uuid not null references auth.users(id) on delete cascade,
   action text not null check (action in ('chat', 'report')),
   created_at timestamptz not null default now()
