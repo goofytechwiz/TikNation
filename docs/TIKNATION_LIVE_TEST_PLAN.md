@@ -9,9 +9,9 @@ This checklist tracks the feature branch and production backend foundation. The 
 - [ ] Test server-side rolling-window throttles: chat is limited to 8 attempts per account per minute and reports to 3 attempts per account per hour. Confirm HTTP 429 responses, fail-closed behavior if the counter cannot be checked, and cleanup of old counter events. The unique report constraint also prevents repeat reports by the same account per stream.
 - [x] Add a private moderator-only report review workflow on the feature branch; still define and verify the operational response process before inviting real creators.
 - [x] Add opportunistic stale-session recovery when the Live listing can successfully enumerate LiveKit rooms; test browser crashes, network loss, API failure, and room cleanup failure.
-- [ ] Verify the actual published GitHub Pages origin and any custom domain; update the exact CORS allowlist only if needed.
-- [ ] Confirm database grants as well as RLS policies for all five new tables, including the server-only action-event table. The migration now explicitly revokes client privileges and grants only the intended signed-in read surfaces; verify this against the actual catalog after applying it.
-- [ ] Confirm that function deployment keeps JWT verification enabled and that service-role credentials remain server-side.
+- [ ] Verify the actual published GitHub Pages origin and any custom domain in a real browser; the deployed function currently allows `https://goofytechwiz.github.io`.
+- [x] Confirm database grants as well as RLS policies for all five new tables, including the server-only action-event table. Verified in production: all five tables have RLS enabled; the rate-limit RPC is not executable by `anon` or `authenticated` and is executable by `service_role`. The migration is recorded as applied.
+- [x] Confirm the deployed Live Edge Function is active with JWT verification enabled. Static source review confirms the browser does not contain LiveKit API credentials; secret values themselves were not read back.
 - [ ] Validate LiveKit server URL and SDK compatibility in the target Supabase Edge Runtime before deployment.
 
 ## Browser implementation status
@@ -22,6 +22,7 @@ This checklist tracks the feature branch and production backend foundation. The 
 - [x] Add best-effort LiveKit room cleanup if startup fails.
 - [x] Add server-side rolling-window throttles for chat and reports; end-to-end abuse-throttle tests remain pending.
 - [x] Apply the database migration and deploy the Edge Function with JWT verification enabled.
+- [x] Approve the existing TikNationStudio account for the first creator test.
 - [x] Approve the existing TikNationStudio account for the first creator test.
 - [ ] Complete runtime checks, moderator metadata setup, credential verification, and remaining release blockers before inviting beta creators or publishing the Live UI.
 
