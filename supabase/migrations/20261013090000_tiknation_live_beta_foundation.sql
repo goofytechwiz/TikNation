@@ -123,7 +123,7 @@ create or replace function public.tiknation_live_consume_rate_limit(
 language plpgsql
 security definer
 set search_path = ''
-as $
+as $$
 declare
   event_count integer;
   lock_key bigint;
@@ -153,7 +153,7 @@ begin
 
   return event_count > p_limit;
 end;
-$;
+$$;
 
 revoke all on function public.tiknation_live_consume_rate_limit(uuid, text, integer, integer) from public, anon, authenticated;
 grant execute on function public.tiknation_live_consume_rate_limit(uuid, text, integer, integer) to service_role;
