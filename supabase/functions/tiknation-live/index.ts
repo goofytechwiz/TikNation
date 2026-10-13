@@ -117,42 +117,6 @@ Deno.serve(async (req: Request) => {
     }
   }
 
-  if (action === "renew") {
-    const sessionId = String(body.session_id ?? "");
-    if (!/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Invalid live session." }, 400);
-    const { data: session, error } = await admin
-      .from("live_sessions")
-      .select("id,title,room_name,status,started_at,creator_id")
-      .eq("id", sessionId)
-      .eq("status", "live")
-      .maybeSingle();
-    if (error) return json({ error: "Could not refresh the live connection." }, 500);
-    if (!session) return json({ error: "This broadcast has ended or is unavailable." }, 404);
-
-    const isCreator = session.creator_id === user.id;
-    if (isCreator) {
-      const { data: access, error: accessError } = await admin
-        .from("live_creator_access")
-        .select("status")
-        .eq("creator_id", user.id)
-        .maybeSingle();
-      if (accessError) return json({ error: "Could not verify creator access." }, 500);
-      if (access?.status !== "approved") return json({ error: "Creator access is no longer approved." }, 403);
-    }
-
-    const credentials = await issueToken(session.room_name, isCreator, true);
-    return json({
-      session: {
-        id: session.id,
-        title: session.title,
-        status: session.status,
-        started_at: session.started_at,
-        creator_id: session.creator_id,
-      },
-      ...credentials,
-    });
-  }
-
   if (action === "join") {
     const sessionId = String(body.session_id ?? "");
     if (!/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Invalid live session." }, 400);
