@@ -150,11 +150,23 @@ Deno.serve(async (req: Request) => {
       .select("id,room_name,status").eq("id", sessionId).eq("creator_id", user.id).maybeSingle();
     if (error) return json({ error: "Could not load the broadcast." }, 500);
     if (!session) return json({ error: "You cannot end this broadcast." }, 404);
+
+    // Remove the media room before finalizing the database status. If LiveKit
+    // is unavailable, keep a live session visible so the creator can retry.
+    try {
+      const existingRooms = await rooms.listRooms([session.room_name]);
+      if (existingRooms.some((r) => r.name === session.room_name)) {
+        await rooms.deleteRoom(session.room_name);
+      }
+    } catch (cleanupError) {
+      console.error("Live room cleanup failed:", cleanupError);
+      return json({ error: "LiveKit could not end the media room. Please retry in a moment." }, 502);
+    }
+
     if (session.status === "ended") return json({ ok: true, already_ended: true });
     const { error: updateError } = await admin.from("live_sessions")
       .update({ status: "ended", ended_at: new Date().toISOString() }).eq("id", session.id).eq("creator_id", user.id).eq("status", "live");
-    if (updateError) return json({ error: "Could not end the broadcast." }, 500);
-    try { await rooms.deleteRoom(session.room_name); } catch (error) { console.error("Live room cleanup failed:", error); }
+    if (updateError) return json({ error: "The media room has ended, but the session record needs recovery. Refresh the Live list in a moment." }, 500);
     return json({ ok: true });
   }
 
