@@ -60,31 +60,19 @@ Deno.serve(async (req: Request) => {
   const livekitHttpUrl = livekitUrl.replace(/^wss:/i, "https:").replace(/^ws:/i, "http:");
   const rooms = new RoomServiceClient(livekitHttpUrl, livekitApiKey, livekitApiSecret);
 
-  // Fail closed if the server-only abuse counter cannot be checked.
+  // The database function serializes checks per actor/action to prevent parallel requests bypassing limits.
   async function isRateLimited(actionName: "chat" | "report", limit: number, windowMs: number) {
-    const cutoff = new Date(Date.now() - windowMs).toISOString();
-    const retentionCutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    await admin.from("live_action_events").delete().lt("created_at", retentionCutoff);
-
-    const { error: eventError } = await admin.from("live_action_events").insert({
-      actor_id: user.id,
-      action: actionName,
+    const { data, error } = await admin.rpc("tiknation_live_consume_rate_limit", {
+      p_actor_id: user.id,
+      p_action: actionName,
+      p_limit: limit,
+      p_window_seconds: Math.ceil(windowMs / 1000),
     });
-    if (eventError) {
-      console.error("TikNation Live rate-limit event write failed:", eventError);
+    if (error || typeof data !== "boolean") {
+      console.error("TikNation Live rate-limit check failed:", error);
       return true;
     }
-
-    const { count, error: countError } = await admin.from("live_action_events")
-      .select("id", { count: "exact", head: true })
-      .eq("actor_id", user.id)
-      .eq("action", actionName)
-      .gte("created_at", cutoff);
-    if (countError) {
-      console.error("TikNation Live rate-limit check failed:", countError);
-      return true;
-    }
-    return (count ?? 0) > limit;
+    return data;
   }
 
   async function issueToken(roomName: string, canPublish: boolean, canSubscribe: boolean) {
