@@ -108,6 +108,11 @@ Deno.serve(async (req: Request) => {
     } catch (error) {
       console.error("TikNation Live start failed:", error);
       await admin.from("live_sessions").update({ status: "ended", ended_at: new Date().toISOString() }).eq("id", sessionId).eq("status", "live");
+      try {
+        await rooms.deleteRoom(roomName);
+      } catch (cleanupError) {
+        console.error("Live room cleanup after start failure failed:", cleanupError);
+      }
       return json({ error: "The broadcast could not be started. Please try again." }, 502);
     }
   }
