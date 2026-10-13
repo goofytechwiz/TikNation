@@ -112,6 +112,52 @@ create policy "Signed-in users can read chat for live sessions"
 grant select on public.live_sessions to authenticated;
 grant select on public.live_chat_messages to authenticated;
 
+-- Atomic rolling-window limiter. A transaction-scoped advisory lock per actor/action
+-- prevents concurrent requests from all passing the same count check.
+create or replace function public.tiknation_live_consume_rate_limit(
+  p_actor_id uuid,
+  p_action text,
+  p_limit integer,
+  p_window_seconds integer
+) returns boolean
+language plpgsql
+security definer
+set search_path = ''
+as $
+declare
+  event_count integer;
+  lock_key bigint;
+begin
+  if p_actor_id is null
+     or p_action not in ('chat', 'report')
+     or p_limit < 1
+     or p_window_seconds < 1
+     or p_window_seconds > 86400 then
+    raise exception 'Invalid rate limit arguments';
+  end if;
+
+  lock_key := pg_catalog.hashtextextended(p_actor_id::text || ':' || p_action, 0);
+  perform pg_catalog.pg_advisory_xact_lock(lock_key);
+
+  delete from public.live_action_events
+    where created_at < pg_catalog.now() - interval '24 hours';
+
+  insert into public.live_action_events (actor_id, action)
+    values (p_actor_id, p_action);
+
+  select pg_catalog.count(*)::integer into event_count
+    from public.live_action_events
+    where actor_id = p_actor_id
+      and action = p_action
+      and created_at >= pg_catalog.now() - pg_catalog.make_interval(secs => p_window_seconds);
+
+  return event_count > p_limit;
+end;
+$;
+
+revoke all on function public.tiknation_live_consume_rate_limit(uuid, text, integer, integer) from public, anon, authenticated;
+grant execute on function public.tiknation_live_consume_rate_limit(uuid, text, integer, integer) to service_role;
+
 -- Supabase service-role Edge Function calls bypass RLS and must perform explicit
 -- user/session/approval checks before every write. The service role is never sent
 -- to the browser.
