@@ -1719,6 +1719,17 @@ textarea.form-control{
             START CREATING
         </button>
 
+        <button
+            type="button"
+            id="installTikNationButton"
+            class="primary-button"
+            style="margin-left:10px;background:linear-gradient(90deg,#00aeca,#7656ff);"
+            onclick="installTikNation()"
+        >
+            ⬇ INSTALL TIKNATION
+        </button>
+        <p id="installTikNationHelp" hidden role="status" style="position:relative;margin-top:14px;max-width:600px;padding:13px 15px;border:1px solid rgba(0,200,255,.28);border-radius:14px;background:rgba(0,200,255,.07);color:#d9f8ff;line-height:1.6;"></p>
+
     </div>
 
     <div class="section-head">
@@ -6858,6 +6869,72 @@ if ("serviceWorker" in navigator) {
       .catch(function (error) { console.warn("TikNation offline setup:", error); });
   });
 }
+</script>
+
+<script>
+/* TikNation install experience: browser prompt where supported, clear manual steps elsewhere. */
+(function(){
+  let deferredInstallPrompt = null;
+  const button = document.getElementById("installTikNationButton");
+  const help = document.getElementById("installTikNationHelp");
+  if(!button || !help) return;
+
+  function showInstallHelp(message){
+    help.textContent = message;
+    help.hidden = false;
+  }
+  function isIosDevice(){
+    return /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  }
+  function isStandalone(){
+    return window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  }
+  if(isStandalone()){
+    button.textContent = "✓ TIKNATION INSTALLED";
+    button.disabled = true;
+    button.style.opacity = ".75";
+  }
+
+  window.addEventListener("beforeinstallprompt", function(event){
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    button.textContent = "⬇ INSTALL TIKNATION";
+  });
+  window.addEventListener("appinstalled", function(){
+    deferredInstallPrompt = null;
+    button.textContent = "✓ TIKNATION INSTALLED";
+    button.disabled = true;
+    showInstallHelp("TikNation is installed on this device. Open it from your home screen whenever you're ready.");
+  });
+
+  window.installTikNation = async function(){
+    if(isStandalone()){
+      showInstallHelp("TikNation is already installed on this device. Look for the TikNation icon on your home screen or app list.");
+      return;
+    }
+    if(deferredInstallPrompt){
+      deferredInstallPrompt.prompt();
+      try{
+        const choice = await deferredInstallPrompt.userChoice;
+        if(choice && choice.outcome === "accepted"){
+          showInstallHelp("Thanks for installing TikNation! If the icon doesn't appear right away, check your home screen or app list.");
+        }else{
+          showInstallHelp("No problem. You can install TikNation whenever you're ready.");
+        }
+      }catch(error){
+        showInstallHelp("Open your browser menu and choose Install app or Add to Home screen.");
+      }
+      deferredInstallPrompt = null;
+      return;
+    }
+    if(isIosDevice()){
+      showInstallHelp("To add TikNation on iPhone or iPad: open this page in Safari (or use your browser's Share menu), tap Share, choose Add to Home Screen, then tap Add.");
+      return;
+    }
+    showInstallHelp("To add TikNation: open your browser menu (⋮ on Chrome), then choose Install app or Add to Home screen. The wording varies by browser and device.");
+  };
+})();
 </script>
 
 <script src="gifts.js"></script>
