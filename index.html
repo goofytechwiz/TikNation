@@ -792,6 +792,9 @@ textarea.form-control{
 .gift-history-item{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px;}
 .gift-flash{animation:giftFlash .65s ease-out;}
 @keyframes giftFlash{0%{box-shadow:0 0 0 rgba(0,200,255,0)}35%{box-shadow:0 0 35px rgba(0,200,255,.3)}100%{box-shadow:0 0 0 rgba(0,200,255,0)}}
+.gift-signature{background-image:radial-gradient(circle at 15% 15%,rgba(0,200,255,.18),transparent 38%),radial-gradient(circle at 85% 80%,rgba(141,99,255,.22),transparent 42%);border-color:rgba(141,99,255,.45);}
+.gift-signature.gift-flash{animation:giftSignature 1.15s ease-out;}
+@keyframes giftSignature{0%{box-shadow:0 0 0 rgba(141,99,255,0);transform:scale(1)}30%{box-shadow:0 0 42px rgba(141,99,255,.34),inset 0 0 26px rgba(0,200,255,.10);transform:scale(1.008)}100%{box-shadow:0 0 0 rgba(141,99,255,0);transform:scale(1)}}
 @media(max-width:420px){.gift-grid{grid-template-columns:1fr}.gift-choice{flex-direction:row;align-items:center}.gift-choice .gift-emoji{width:34px;flex-shrink:0}.gift-choice small{margin-left:auto}}
 @media(prefers-reduced-motion:reduce){.gift-flash{animation:none!important;}}
 
