@@ -421,6 +421,26 @@ body.tn-compact-feed .video-info p{
     font-size:14px;
 }
 
+/* BOO! MODE — horror labels and opt-in playback effects */
+.boo-content-label{position:absolute;top:9px;left:9px;z-index:5;padding:7px 10px;border:1px solid rgba(255,130,170,.48);border-radius:999px;background:rgba(15,4,20,.92);color:#ffd7e4;font-size:10px;font-weight:900;letter-spacing:.06em;box-shadow:0 0 18px rgba(180,40,100,.16);}
+.boo-media-stage{position:relative;isolation:isolate;}
+.boo-media-stage video,.boo-media-stage img{position:relative;z-index:1;}
+.boo-playback-effect{position:absolute;inset:0;z-index:3;display:grid;place-items:center;pointer-events:none;opacity:0;background:rgba(0,0,0,.04);overflow:hidden;}
+.boo-playback-effect span{font-size:clamp(70px,18vw,180px);font-weight:900;color:#fff;text-shadow:0 0 12px #ff1b65,0 0 40px #8b00ff;filter:drop-shadow(0 0 25px #d000ff);transform:scale(.1);opacity:0;}
+.boo-effect-shadow span{font-size:clamp(110px,30vw,260px);color:#05050a;text-shadow:0 0 8px #fff,0 0 30px #a900ff;}
+.boo-effect-glitch span{font-family:monospace;color:#ff276b;text-shadow:8px 0 #00eaff,-8px 0 #b000ff;}
+.boo-effect-creepy_eyes span{color:#ff174d;text-shadow:0 0 18px #ff003c,0 0 55px #ff003c;}
+.boo-media-stage.boo-effect-armed .boo-playback-effect{animation:booFlash 1.35s 3s ease-out both;}
+.boo-media-stage.boo-effect-armed .boo-playback-effect span{animation:booReveal 1.35s 3s cubic-bezier(.15,.8,.25,1) both;}
+@keyframes booFlash{0%,100%{opacity:0;background:transparent}12%,62%{opacity:1;background:rgba(0,0,0,.86)}}
+@keyframes booReveal{0%,100%{opacity:0;transform:scale(.1) rotate(-8deg)}14%{opacity:1;transform:scale(1.12) rotate(2deg)}25%,62%{opacity:1;transform:scale(1) rotate(0)}}
+.boo-creator-preview{display:grid;place-items:center;gap:9px;min-height:150px;margin-top:12px;padding:20px;border:1px solid rgba(190,80,255,.3);border-radius:16px;background:radial-gradient(circle at center,rgba(125,25,180,.22),rgba(6,6,16,.98));text-align:center;overflow:hidden;}
+.boo-preview-label{font-size:10px;letter-spacing:.2em;color:#cba6ff;font-weight:900;}
+.boo-preview-symbol{font-size:48px;text-shadow:0 0 24px #a900ff;}
+.boo-creator-preview[hidden],#booEffectGroup[hidden]{display:none!important;}
+body.tn-reduce-motion .boo-playback-effect,body.tn-reduce-motion .boo-playback-effect span{animation:none!important;display:none!important;}
+@media(prefers-reduced-motion:reduce){.boo-playback-effect,.boo-playback-effect span{animation:none!important;display:none!important;}}
+
 /* VIDEO */
 
 .video-grid{
@@ -1669,6 +1689,11 @@ textarea.form-control{
         Live
     </button>
 
+    <button type="button" class="nav-button" onclick="window.location.href='./horror-zone.html'">
+        <span class="nav-icon">👻</span>
+        Horror Zone
+    </button>
+
     <button type="button" class="nav-button" onclick="showPage('discover',this)">
         <span class="nav-icon">🌎</span>
         Discover
@@ -1772,6 +1797,7 @@ textarea.form-control{
         <h2>Watch</h2>
         <span class="muted">TikNation videos</span>
     </div>
+    <p class="muted" style="margin:-6px 0 18px;">Horror posts stay out of this feed unless you enable them in Settings. Visit the Horror Zone to explore labeled horror content.</p>
 
     <div id="watchGrid" class="video-grid"></div>
 
@@ -1872,6 +1898,31 @@ textarea.form-control{
                     placeholder="Tell the TikNation world about your creation..."
                 ></textarea>
 
+            </div>
+
+            <div class="form-group">
+                <label for="postCategory">Content category</label>
+                <select id="postCategory" class="form-control" onchange="updateBooCreatorPreview()">
+                    <option value="general">General — regular TikNation post</option>
+                    <option value="horror">👻 Horror — label this as horror content</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="booEffectGroup" hidden>
+                <label for="postScareEffect">BOO! visual effect</label>
+                <select id="postScareEffect" class="form-control" onchange="updateBooCreatorPreview()">
+                    <option value="none">No jump-scare effect</option>
+                    <option value="shadow">Shadow figure reveal</option>
+                    <option value="glitch">Digital glitch reveal</option>
+                    <option value="creepy_eyes">Creepy eyes reveal</option>
+                </select>
+                <p class="muted" style="margin-top:8px;font-size:12px;">Effects are a visual layer in TikNation playback, not permanently embedded into your original video. Horror posts will be labeled before viewing.</p>
+                <div id="booCreatorPreview" class="boo-creator-preview" aria-live="polite">
+                    <span class="boo-preview-label">BOO! PREVIEW</span>
+                    <span id="booCreatorPreviewSymbol" class="boo-preview-symbol">👻</span>
+                    <strong id="booCreatorPreviewName">No jump-scare effect</strong>
+                    <span class="muted">Preview only — no sound will play.</span>
+                </div>
             </div>
 
             <div class="form-group">
@@ -2213,6 +2264,14 @@ textarea.form-control{
             <div><strong>Autoplay videos</strong><p class="muted">Videos may start muted automatically when supported by your browser.</p></div>
             <label class="preference-toggle"><input id="prefAutoplayVideos" type="checkbox" onchange="saveTikNationPreferences()"> <span>ON</span></label>
         </div>
+        <div class="preference-row">
+            <div><strong>Show horror in regular feed</strong><p class="muted">Off by default. Horror posts remain available in the separate Horror Zone.</p></div>
+            <label class="preference-toggle"><input id="prefShowHorrorInFeed" type="checkbox" onchange="saveTikNationPreferences()"> <span>ON</span></label>
+        </div>
+        <div class="preference-row">
+            <div><strong>Horror sound effects</strong><p class="muted">Reserved for future effects. TikNation will not add surprise audio in this beta.</p></div>
+            <label class="preference-toggle"><input id="prefHorrorSound" type="checkbox" onchange="saveTikNationPreferences()" disabled> <span>OFF</span></label>
+        </div>
         <p id="preferencesMessage" class="auth-message" aria-live="polite">Preferences are ready.</p>
         <button type="button" class="primary-button" onclick="resetTikNationPreferences()">RESET PREFERENCES</button>
         </div>
@@ -2310,6 +2369,11 @@ textarea.form-control{
     <button type="button" onclick="window.location.href='./live.html'">
         <span>🔴</span>
         Live
+    </button>
+
+    <button type="button" onclick="window.location.href='./horror-zone.html'">
+        <span>👻</span>
+        Horror
     </button>
 
     <button type="button" onclick="requireAuth('create')">
@@ -3854,7 +3918,7 @@ async function loadWatchFeed(){
         await supabaseClient
             .from("creator_posts")
             .select(
-                "id,created_at,user_id,username,title,description,media_url,media_path,media_type,status"
+                "id,created_at,user_id,username,title,description,media_url,media_path,media_type,status,content_category,scare_effect,horror_warning"
             )
             .eq("status","published")
             .order("created_at",{ascending:false});
@@ -3890,6 +3954,9 @@ async function loadWatchFeed(){
     }
 
     let visiblePosts = data || [];
+    if(!getTikNationPreference("showHorrorInFeed")){
+        visiblePosts = visiblePosts.filter(post => post.content_category !== "horror");
+    }
     if(currentUser){
         const blockedIds = await getBlockRelatedCreatorIds();
         visiblePosts = visiblePosts.filter(post => !blockedIds.has(post.user_id));
@@ -5176,6 +5243,28 @@ function getSafeCreatorMediaUrl(value){
     }
 }
 
+function updateBooCreatorPreview(){
+    const category = document.getElementById("postCategory");
+    const group = document.getElementById("booEffectGroup");
+    const select = document.getElementById("postScareEffect");
+    const preview = document.getElementById("booCreatorPreview");
+    const symbol = document.getElementById("booCreatorPreviewSymbol");
+    const name = document.getElementById("booCreatorPreviewName");
+    if(!category || !group || !select) return;
+    const isHorror = category.value === "horror";
+    group.hidden = !isHorror;
+    if(preview) preview.hidden = !isHorror;
+    const effects = {
+        none:{symbol:"👻",name:"No jump-scare effect"},
+        shadow:{symbol:"♟",name:"Shadow figure reveal"},
+        glitch:{symbol:"▓▒░",name:"Digital glitch reveal"},
+        creepy_eyes:{symbol:"👁️",name:"Creepy eyes reveal"}
+    };
+    const choice = effects[select.value] || effects.none;
+    if(symbol) symbol.textContent = choice.symbol;
+    if(name) name.textContent = choice.name;
+}
+
 function renderMediaElement(post,className){
 
     const mediaType =
@@ -5195,19 +5284,28 @@ function renderMediaElement(post,className){
     if(mediaType.startsWith("video/")){
 
         const autoplayAttributes =
-            getTikNationPreference("autoplayVideos")
+            getTikNationPreference("autoplayVideos") && post.content_category !== "horror"
                 ? "autoplay muted loop"
                 : "";
+        const effect = ["shadow","glitch","creepy_eyes"].includes(post.scare_effect) ? post.scare_effect : "none";
+        const horrorLabel = post.content_category === "horror"
+            ? '<span class="boo-content-label">👻 HORROR · VIEWER DISCRETION</span>'
+            : "";
+        const effectLayer = effect !== "none"
+            ? '<div class="boo-playback-effect boo-effect-' + effect + '" aria-hidden="true"><span>' + (effect === "shadow" ? "♟" : effect === "glitch" ? "▓▒░" : "👁️") + '</span></div>'
+            : "";
 
         return `
 
-            <div class="${className}">
-
+            <div class="${className} boo-media-stage ${effect !== "none" ? "boo-has-effect" : ""}">
+                ${horrorLabel}
                 <video
                     controls
                     playsinline
                     preload="metadata"
                     ${autoplayAttributes}
+                    onplay="this.closest('.boo-media-stage')?.classList.add('boo-effect-armed')"
+                    onended="this.closest('.boo-media-stage')?.classList.remove('boo-effect-armed')"
                 >
                     <source
                         src="${url}"
@@ -5215,7 +5313,7 @@ function renderMediaElement(post,className){
                     >
                     Your browser does not support video playback.
                 </video>
-
+                ${effectLayer}
             </div>
 
         `;
@@ -5223,10 +5321,14 @@ function renderMediaElement(post,className){
 
     if(mediaType.startsWith("image/")){
 
+        const horrorLabel = post.content_category === "horror"
+            ? '<span class="boo-content-label">👻 HORROR · VIEWER DISCRETION</span>'
+            : "";
+
         return `
 
-            <div class="${className}">
-
+            <div class="${className} boo-media-stage">
+                ${horrorLabel}
                 <img
                     src="${url}"
                     alt="${escapeHtml(
@@ -5235,7 +5337,6 @@ function renderMediaElement(post,className){
                     )}"
                     loading="lazy"
                 >
-
             </div>
 
         `;
@@ -5703,6 +5804,17 @@ async function publishCreation(){
                     media_type:
                         file.type,
 
+                    content_category:
+                        document.getElementById("postCategory")?.value === "horror" ? "horror" : "general",
+
+                    scare_effect:
+                        document.getElementById("postCategory")?.value === "horror"
+                            ? (document.getElementById("postScareEffect")?.value || "none")
+                            : "none",
+
+                    horror_warning:
+                        document.getElementById("postCategory")?.value === "horror",
+
                     status:
                         "published"
 
@@ -5751,6 +5863,12 @@ async function publishCreation(){
         document.getElementById(
             "postDescription"
         ).value = "";
+
+        const postCategory = document.getElementById("postCategory");
+        const postScareEffect = document.getElementById("postScareEffect");
+        if(postCategory) postCategory.value = "general";
+        if(postScareEffect) postScareEffect.value = "none";
+        updateBooCreatorPreview();
 
         fileInput.value = "";
 
@@ -6690,7 +6808,7 @@ function clearTikNationNotifications(){
    TIKNATION PREFERENCES
 ========================= */
 function getTikNationPreferences(){
-    const defaults = { reduceMotion:false, compactFeed:false, autoplayVideos:false };
+    const defaults = { reduceMotion:false, compactFeed:false, autoplayVideos:false, showHorrorInFeed:false, horrorSound:false };
     try{
         const saved = JSON.parse(localStorage.getItem("tiknationPreferences") || "{}");
         return { ...defaults, ...saved };
@@ -6710,7 +6828,9 @@ function applyTikNationPreferences(){
     const mapping = {
         prefReduceMotion:"reduceMotion",
         prefCompactFeed:"compactFeed",
-        prefAutoplayVideos:"autoplayVideos"
+        prefAutoplayVideos:"autoplayVideos",
+        prefShowHorrorInFeed:"showHorrorInFeed",
+        prefHorrorSound:"horrorSound"
     };
     Object.keys(mapping).forEach(function(id){
         const input = document.getElementById(id);
@@ -6722,7 +6842,9 @@ function saveTikNationPreferences(){
     const preferences = {
         reduceMotion:document.getElementById("prefReduceMotion")?.checked || false,
         compactFeed:document.getElementById("prefCompactFeed")?.checked || false,
-        autoplayVideos:document.getElementById("prefAutoplayVideos")?.checked || false
+        autoplayVideos:document.getElementById("prefAutoplayVideos")?.checked || false,
+        showHorrorInFeed:document.getElementById("prefShowHorrorInFeed")?.checked || false,
+        horrorSound:document.getElementById("prefHorrorSound")?.checked || false
     };
     try{
         localStorage.setItem("tiknationPreferences", JSON.stringify(preferences));
