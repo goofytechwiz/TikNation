@@ -1345,6 +1345,33 @@ textarea.form-control{
     }
 }
 
+/* Shared unread badges for header, account menu, and desktop navigation. */
+.nav-unread-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:16px;
+    height:16px;
+    padding:0 4px;
+    border-radius:999px;
+    background:#ff3b68;
+    color:#fff;
+    border:1.5px solid #090912;
+    font-size:10px;
+    font-weight:800;
+    line-height:1;
+    box-shadow:0 0 10px rgba(255,59,104,.35);
+}
+.nav-unread-badge[hidden]{display:none!important;}
+.nav-badge-anchor{position:relative;}
+.header-actions .nav-badge-anchor .nav-unread-badge{
+    position:absolute;
+    top:-4px;
+    right:-5px;
+}
+.header-menu-item .menu-unread-badge{margin-left:auto;flex-shrink:0;}
+.nav-button .nav-sidebar-badge{margin-left:auto;flex-shrink:0;}
+
 @media(max-width:650px){
 
     .header{
