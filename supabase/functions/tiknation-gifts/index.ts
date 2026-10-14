@@ -53,7 +53,7 @@ Deno.serve(async (req: Request) => {
       const giftCode = body.gift_code;
       const requestId = body.request_id;
       if (!isUuid(recipientId) || !isUuid(requestId) ||
-          !["heart_pulse", "magic_spark", "creator_crown", "infinity_crystal"].includes(String(giftCode))) {
+          !["heart_pulse", "magic_spark", "creator_crown", "infinity_crystal", "melody_note", "heartbeat_beat", "symphony", "mystic_portal", "dragon_spirit", "galaxy_gift"].includes(String(giftCode))) {
         return json({ error: "Choose a valid gift and creator profile." }, 400);
       }
       const { data, error } = await admin.rpc("send_test_gift", {
