@@ -39,6 +39,43 @@ Deno.serve(async (req: Request) => {
     }
 
     const admin = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
+    if (body.action === "send_live") {
+      const sessionId = body.session_id;
+      const giftCode = body.gift_code;
+      const requestId = body.request_id;
+      const allowedGifts = ["heart_pulse", "magic_spark", "creator_crown", "infinity_crystal", "melody_note", "heartbeat_beat", "symphony", "mystic_portal", "dragon_spirit", "galaxy_gift"];
+      if (!isUuid(sessionId) || !isUuid(requestId) || !allowedGifts.includes(String(giftCode))) return json({ error: "Choose a valid gift and active livestream." }, 400);
+      const { data: liveSession, error: sessionError } = await admin.from("live_sessions").select("id,creator_id,status").eq("id", sessionId).eq("status", "live").maybeSingle();
+      if (sessionError || !liveSession) return json({ error: "This livestream has ended or is unavailable." }, 404);
+      const { data, error } = await admin.rpc("send_test_gift", { p_sender_id: user.id, p_recipient_id: liveSession.creator_id, p_gift_code: giftCode, p_request_id: requestId });
+      if (error) {
+        const messages: Record<string, string> = { cannot_gift_self: "You can't send a gift to your own livestream.", recipient_profile_not_found: "That creator profile could not be found.", gifting_unavailable: "Gifting isn't available between these accounts.", invalid_gift: "That gift isn't available yet.", insufficient_test_coins: "You don't have enough test coins for that gift.", invalid_user: "Please sign in again before sending a gift." };
+        const key = Object.keys(messages).find((item) => error.message?.includes(item));
+        if (key) return json({ error: messages[key] }, 400);
+        console.error("Live gift send failed:", error.code ?? "unknown");
+        return json({ error: "We couldn't send that live gift. Please try again." }, 500);
+      }
+      if (data?.gift_id) {
+        const { error: eventError } = await admin.from("live_gift_events").upsert({ session_id: liveSession.id, transaction_id: data.gift_id, sender_id: user.id, recipient_id: liveSession.creator_id, gift_code: data.gift_code || giftCode, coin_cost: data.coin_cost }, { onConflict: "transaction_id", ignoreDuplicates: true });
+        if (eventError) console.error("Live gift announcement failed:", eventError.code ?? "unknown");
+      }
+      return json({ ...data, session_id: liveSession.id, live_gift: true });
+    }
+
+    if (body.action === "live_events") {
+      const sessionId = body.session_id;
+      if (!isUuid(sessionId)) return json({ error: "Invalid livestream." }, 400);
+      const { data: liveSession, error: sessionError } = await admin.from("live_sessions").select("id,status").eq("id", sessionId).eq("status", "live").maybeSingle();
+      if (sessionError || !liveSession) return json({ error: "This livestream has ended or is unavailable." }, 404);
+      const after = typeof body.after === "string" && !Number.isNaN(Date.parse(body.after)) ? new Date(body.after).toISOString() : new Date(Date.now() - 10000).toISOString();
+      const { data: events, error: eventsError } = await admin.from("live_gift_events").select("id,session_id,sender_id,gift_code,coin_cost,created_at").eq("session_id", sessionId).gt("created_at", after).order("created_at", { ascending: true }).limit(30);
+      if (eventsError) { console.error("Live gift feed failed:", eventsError.code ?? "unknown"); return json({ error: "Live gifts could not be refreshed." }, 500); }
+      const senderIds = [...new Set((events ?? []).map((event) => event.sender_id))];
+      const { data: profiles } = senderIds.length ? await admin.from("profiles").select("id,username,display_name").in("id", senderIds) : { data: [] };
+      const profileMap = new Map((profiles ?? []).map((profile) => [profile.id, profile]));
+      return json({ success: true, events: (events ?? []).map((event) => ({ ...event, sender_name: profileMap.get(event.sender_id)?.display_name || profileMap.get(event.sender_id)?.username || "TikNation member" })) });
+    }
+
     if (body.action === "balance") {
       const { data, error } = await admin.rpc("ensure_test_gift_wallet", { p_user_id: user.id });
       if (error) {
