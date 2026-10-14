@@ -1391,6 +1391,33 @@ textarea.form-control{
         font-size:21px;
     }
 
+    .nav-badge-anchor{position:relative;}
+    .nav-unread-badge{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        min-width:16px;
+        height:16px;
+        padding:0 4px;
+        border-radius:999px;
+        background:#ff3b68;
+        color:#fff;
+        border:1.5px solid #090912;
+        font-size:10px;
+        font-weight:800;
+        line-height:1;
+        box-shadow:0 0 10px rgba(255,59,104,.35);
+    }
+    .nav-unread-badge[hidden]{display:none!important;}
+    .header-actions .nav-badge-anchor .nav-unread-badge{
+        position:absolute;
+        top:-4px;
+        right:-5px;
+    }
+    .header-menu-item .menu-unread-badge{margin-left:auto;flex-shrink:0;}
+    .nav-sidebar-badge{margin-left:auto;flex-shrink:0;}
+    .nav-button{display:flex;align-items:center;gap:10px;}
+
     .auth-button{
         padding:6px 8px;
         font-size:10px;
@@ -1519,11 +1546,12 @@ textarea.form-control{
 
         <button
             type="button"
-            class="icon-button"
+            class="icon-button nav-badge-anchor"
             onclick="showPage('notifications')"
             title="Notifications"
+            aria-label="Notifications"
         >
-            🔔
+            🔔<span id="headerNotificationsBadge" class="nav-unread-badge" hidden></span>
         </button>
 
         <button
@@ -1538,11 +1566,12 @@ textarea.form-control{
 
         <button
             type="button"
-            class="icon-button"
+            class="icon-button nav-badge-anchor"
             onclick="showPage('messages')"
             title="Messages"
+            aria-label="Messages"
         >
-            💬
+            💬<span id="headerMessagesBadge" class="nav-unread-badge" hidden></span>
         </button>
 
         <button
@@ -1582,8 +1611,8 @@ textarea.form-control{
                 <button type="button" class="header-menu-item" role="menuitem" onclick="openTikNationMenuDestination('privacy')"><span class="menu-item-icon">🛡️</span>Privacy</button>
                 <button type="button" class="header-menu-item" role="menuitem" onclick="openTikNationMenuDestination('creator-tools')"><span class="menu-item-icon">🧰</span>Creator tools</button>
                 <div class="header-menu-divider"></div>
-                <button type="button" class="header-menu-item" role="menuitem" onclick="openTikNationMenuDestination('messages')"><span class="menu-item-icon">💬</span>Messages</button>
-                <button type="button" class="header-menu-item" role="menuitem" onclick="openTikNationMenuDestination('notifications')"><span class="menu-item-icon">🔔</span>Notifications</button>
+                <button type="button" class="header-menu-item" role="menuitem" onclick="openTikNationMenuDestination('messages')"><span class="menu-item-icon">💬</span>Messages<span id="menuMessagesBadge" class="nav-unread-badge menu-unread-badge" hidden></span></button>
+                <button type="button" class="header-menu-item" role="menuitem" onclick="openTikNationMenuDestination('notifications')"><span class="menu-item-icon">🔔</span>Notifications<span id="menuNotificationsBadge" class="nav-unread-badge menu-unread-badge" hidden></span></button>
                 <button type="button" id="headerMenuCommandCenter" class="header-menu-item" role="menuitem" style="display:none;" onclick="openTikNationMenuDestination('command-center')"><span class="menu-item-icon">👑</span>TikNation Command Center</button>
                 <div class="header-menu-divider"></div>
                 <button type="button" class="header-menu-item" role="menuitem" onclick="openTikNationMenuDestination('beta-feedback')"><span class="menu-item-icon">💡</span>Send Beta Feedback</button>
@@ -1625,12 +1654,12 @@ textarea.form-control{
 
     <button type="button" class="nav-button" onclick="showPage('messages',this)">
         <span class="nav-icon">💬</span>
-        Messages
+        Messages<span id="sidebarMessagesBadge" class="nav-unread-badge nav-sidebar-badge" hidden></span>
     </button>
 
     <button type="button" class="nav-button" onclick="showPage('notifications',this)">
         <span class="nav-icon">🔔</span>
-        Notifications
+        Notifications<span id="sidebarNotificationsBadge" class="nav-unread-badge nav-sidebar-badge" hidden></span>
     </button>
 
 </aside>
@@ -2538,6 +2567,60 @@ document.addEventListener("keydown",function(event){
     if(event.key === "Escape") toggleHeaderMenu(false);
 });
 
+async function updateTikNationNavBadges(){
+    const setBadge = (ids,count) => {
+        ids.forEach(id=>{
+            const el=document.getElementById(id);
+            if(!el) return;
+            const amount=Math.max(0,Number(count)||0);
+            el.textContent=amount>99 ? "99+" : String(amount);
+            el.hidden=amount===0;
+            const parent=el.closest("button");
+            if(parent){
+                const label=parent.getAttribute("aria-label") || parent.getAttribute("title") || parent.textContent.trim();
+                parent.setAttribute("aria-label",amount ? label.replace(/, \\d+ unread$/,"")+" , "+amount+" unread" : label.replace(/, \\d+ unread$/,""));
+            }
+        });
+    };
+    if(!currentUser){
+        setBadge(["headerNotificationsBadge","menuNotificationsBadge","sidebarNotificationsBadge"],0);
+        setBadge(["headerMessagesBadge","menuMessagesBadge","sidebarMessagesBadge"],0);
+        return;
+    }
+
+    let unreadNotifications=0;
+    try{
+        const {data,error}=await supabaseClient.from("notifications")
+            .select("id,read_at")
+            .eq("recipient_id",currentUser.id)
+            .is("read_at",null)
+            .limit(100);
+        if(!error && Array.isArray(data)) unreadNotifications=data.length;
+    }catch(error){
+        console.warn("Could not refresh notification badge:",error);
+    }
+    setBadge(["headerNotificationsBadge","menuNotificationsBadge","sidebarNotificationsBadge"],unreadNotifications);
+
+    // Direct messages currently have no server-side read receipt. Use the last time
+    // this account opened Messages as a local "new since last visit" indicator.
+    let unreadMessages=0;
+    try{
+        const lastSeenKey="tiknationMessagesLastSeen:"+currentUser.id;
+        const lastSeen=localStorage.getItem(lastSeenKey);
+        if(lastSeen){
+            const {data,error}=await supabaseClient.from("direct_messages")
+                .select("id")
+                .eq("recipient_id",currentUser.id)
+                .gt("created_at",lastSeen)
+                .limit(100);
+            if(!error && Array.isArray(data)) unreadMessages=data.length;
+        }
+    }catch(error){
+        console.warn("Could not refresh message badge:",error);
+    }
+    setBadge(["headerMessagesBadge","menuMessagesBadge","sidebarMessagesBadge"],unreadMessages);
+}
+
 function showPage(pageId,button){
 
     document.querySelectorAll(".page")
@@ -2568,6 +2651,10 @@ function showPage(pageId,button){
     });
 
     if(pageId === "messages"){
+        if(currentUser){
+            try{localStorage.setItem("tiknationMessagesLastSeen:"+currentUser.id,new Date().toISOString());}catch(error){}
+            updateTikNationNavBadges();
+        }
         if(!currentUser){
             const prompt = document.getElementById("dmSignInPrompt");
             const app = document.getElementById("dmApp");
@@ -5317,6 +5404,7 @@ supabaseClient.auth.onAuthStateChange(
         updateAuthUI();
         refreshSecuritySettings();
         syncCommandCenterVisibility();
+        updateTikNationNavBadges();
 
         if(currentUser){
 
@@ -5356,6 +5444,7 @@ async function loadSession(){
 
     updateAuthUI();
     syncCommandCenterVisibility();
+    updateTikNationNavBadges();
 
     await loadWatchFeed();
 }
