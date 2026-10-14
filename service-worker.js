@@ -1,7 +1,8 @@
-const CACHE_NAME = "tiknation-shell-v3";
+const CACHE_NAME = "tiknation-shell-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
+  "./horror-zone.html",
   "./manifest.json",
   "./icons/tiknation.svg"
 ];
@@ -42,8 +43,11 @@ self.addEventListener("fetch", function (event) {
         }
         return response;
       }).catch(function () {
-        return caches.match("./index.html").then(function (cached) {
-          return cached || caches.match("./");
+        return caches.match(request).then(function (cachedPage) {
+          if (cachedPage) return cachedPage;
+          return caches.match("./index.html").then(function (cached) {
+            return cached || caches.match("./");
+          });
         });
       })
     );
