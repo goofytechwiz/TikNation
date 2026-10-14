@@ -780,6 +780,26 @@ textarea.form-control{
 .gift-panel-copy{color:var(--muted,#a9a9c3);font-size:13px;line-height:1.5;margin:0 0 14px;}
 .gift-balance{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(0,0,0,.2);font-weight:800;margin:0 0 14px;}
 .gift-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.gift-category-label{grid-column:1/-1;padding:8px 2px 2px;color:#a8dfff;font-size:11px;font-weight:900;letter-spacing:.16em;}
+.gift-choice-text{display:flex;flex-direction:column;gap:5px;min-width:0;}
+.gift-choice{transition:transform .18s ease,border-color .18s ease,background .18s ease;}
+.gift-choice:hover{transform:translateY(-2px);border-color:rgba(0,200,255,.48);background:rgba(0,200,255,.07);}
+.gift-celebration{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at center,rgba(9,13,35,.88),rgba(4,5,15,.78) 55%,rgba(4,5,15,.16));animation:giftOverlayIn .25s ease-out;}
+.gift-celebration-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:10px;width:min(88vw,380px);padding:28px 22px;border:1px solid rgba(125,218,255,.5);border-radius:24px;background:linear-gradient(145deg,rgba(17,28,62,.94),rgba(32,17,62,.94));box-shadow:0 0 70px rgba(72,116,255,.28);text-align:center;color:#fff;animation:giftCardPop .55s cubic-bezier(.2,.9,.2,1.2);}
+.gift-celebration-content strong{font-size:clamp(22px,5vw,30px);letter-spacing:.01em;}
+.gift-celebration-content>span:not(.gift-celebration-emoji){color:#d8e8ff;font-size:14px;}
+.gift-celebration-content small{margin-top:6px;color:#9eb9de;font-size:9px;font-weight:800;letter-spacing:.18em;}
+.gift-celebration-emoji{font-size:clamp(58px,16vw,92px);filter:drop-shadow(0 0 22px rgba(0,200,255,.55));animation:giftEmojiFloat 1.4s ease-in-out infinite alternate;}
+.gift-celebration-orbit{position:absolute;width:min(76vw,390px);aspect-ratio:1;border:1px solid rgba(90,214,255,.5);border-radius:50%;box-shadow:0 0 35px rgba(0,200,255,.2),inset 0 0 35px rgba(145,83,255,.15);animation:giftOrbit 2.6s linear infinite;}
+.gift-celebration-particle{position:absolute;left:50%;top:50%;color:#a7e8ff;font-size:clamp(18px,5vw,30px);text-shadow:0 0 15px #5acbff;animation:giftParticleBurst 1.8s ease-out both;--angle:calc(var(--particle-index)*20deg);transform:rotate(var(--angle)) translateY(-15px);}
+.gift-celebration-musical .gift-celebration-content{border-color:rgba(105,222,255,.7);box-shadow:0 0 70px rgba(0,200,255,.3);}
+.gift-celebration-magical .gift-celebration-content,.gift-celebration-portal .gift-celebration-content,.gift-celebration-dragon .gift-celebration-content,.gift-celebration-galaxy .gift-celebration-content,.gift-celebration-infinity .gift-celebration-content{border-color:rgba(174,119,255,.75);box-shadow:0 0 75px rgba(137,78,255,.32);}
+.gift-celebration-reduced,.gift-celebration-reduced *{animation:none!important;}
+@keyframes giftOverlayIn{from{opacity:0}to{opacity:1}}
+@keyframes giftCardPop{0%{opacity:0;transform:scale(.72) translateY(18px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes giftEmojiFloat{from{transform:translateY(4px) scale(.98)}to{transform:translateY(-7px) scale(1.04)}}
+@keyframes giftOrbit{to{transform:rotate(360deg)}}
+@keyframes giftParticleBurst{0%{opacity:0;transform:rotate(var(--angle)) translateY(-15px) scale(.3)}20%{opacity:1}100%{opacity:0;transform:rotate(var(--angle)) translateY(-min(44vh,320px)) scale(1.25)}}
 .gift-choice{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0;width:100%;padding:13px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.035);color:#fff;text-align:left;cursor:pointer;}
 .gift-choice:disabled{opacity:.55;cursor:wait;}
 .gift-choice .gift-emoji{font-size:25px;}
@@ -795,7 +815,7 @@ textarea.form-control{
 .gift-signature{background-image:radial-gradient(circle at 15% 15%,rgba(0,200,255,.18),transparent 38%),radial-gradient(circle at 85% 80%,rgba(141,99,255,.22),transparent 42%);border-color:rgba(141,99,255,.45);}
 .gift-signature.gift-flash{animation:giftSignature 1.15s ease-out;}
 @keyframes giftSignature{0%{box-shadow:0 0 0 rgba(141,99,255,0);transform:scale(1)}30%{box-shadow:0 0 42px rgba(141,99,255,.34),inset 0 0 26px rgba(0,200,255,.10);transform:scale(1.008)}100%{box-shadow:0 0 0 rgba(141,99,255,0);transform:scale(1)}}
-@media(max-width:420px){.gift-grid{grid-template-columns:1fr}.gift-choice{flex-direction:row;align-items:center}.gift-choice .gift-emoji{width:34px;flex-shrink:0}.gift-choice small{margin-left:auto}}
+@media(max-width:420px){.gift-grid{grid-template-columns:1fr}.gift-choice{flex-direction:row;align-items:center}.gift-choice .gift-emoji{width:34px;flex-shrink:0}.gift-choice small{margin-left:0}.gift-choice-text{flex:1}.gift-category-label{padding-top:12px}}
 @media(prefers-reduced-motion:reduce){.gift-flash{animation:none!important;}}
 
 /* CLEAN PROFILE LAYOUT */
@@ -4052,10 +4072,19 @@ async function loadPublicCreatorProfile(userId){
             <div class="gift-balance" id="publicCreatorGiftBalance">🪙 Sign in to check test coins</div>
             ${currentUser ? `
                 <div class="gift-grid">
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','heart_pulse')"><span class="gift-emoji">💗</span><strong>Heart Pulse</strong><small>5 test coins</small></button>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','magic_spark')"><span class="gift-emoji">✨</span><strong>Magic Spark</strong><small>10 test coins</small></button>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','creator_crown')"><span class="gift-emoji">👑</span><strong>Creator’s Crown</strong><small>50 test coins</small></button>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','infinity_crystal')"><span class="gift-emoji">💎</span><strong>Infinity Crystal</strong><small>100 test coins</small></button>
+                    <div class="gift-category-label">🎵 MUSICAL GIFTS</div>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','melody_note')"><span class="gift-emoji">🎵</span><span class="gift-choice-text"><strong>Melody Note</strong><small>5 test coins · Tiny tune</small></span></button>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','heart_pulse')"><span class="gift-emoji">💗</span><span class="gift-choice-text"><strong>Heart Pulse</strong><small>5 test coins · Heartbeat chime</small></span></button>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','heartbeat_beat')"><span class="gift-emoji">🥁</span><span class="gift-choice-text"><strong>Heartbeat Beat</strong><small>10 test coins · Feel the rhythm</small></span></button>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','symphony')"><span class="gift-emoji">🎼</span><span class="gift-choice-text"><strong>Symphony</strong><small>50 test coins · Grand flourish</small></span></button>
+                    <div class="gift-category-label">✨ MAGICAL GIFTS</div>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','magic_spark')"><span class="gift-emoji">✨</span><span class="gift-choice-text"><strong>Magic Spark</strong><small>10 test coins · Sparkle burst</small></span></button>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','mystic_portal')"><span class="gift-emoji">🌀</span><span class="gift-choice-text"><strong>Mystic Portal</strong><small>25 test coins · Portal glow</small></span></button>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','dragon_spirit')"><span class="gift-emoji">🐉</span><span class="gift-choice-text"><strong>Dragon Spirit</strong><small>75 test coins · Legendary spirit</small></span></button>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','galaxy_gift')"><span class="gift-emoji">🌌</span><span class="gift-choice-text"><strong>Galaxy Gift</strong><small>100 test coins · Cosmic celebration</small></span></button>
+                    <div class="gift-category-label">👑 LEGENDARY GIFTS</div>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','creator_crown')"><span class="gift-emoji">👑</span><span class="gift-choice-text"><strong>Creator’s Crown</strong><small>50 test coins · Creator celebration</small></span></button>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','infinity_crystal')"><span class="gift-emoji">💎</span><span class="gift-choice-text"><strong>Infinity Crystal</strong><small>150 test coins · Beyond the ordinary</small></span></button>
                 </div>
             ` : `
                 <button type="button" class="primary-button" onclick="openAuthModal('signin')">SIGN IN TO SEND A GIFT</button>
