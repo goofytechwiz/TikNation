@@ -77,7 +77,7 @@ function showTikNationGiftEffect(gift) {
   if (old) old.remove();
   const overlay = document.createElement("div");
   overlay.id = "tikNationGiftCelebration";
-  overlay.className = "gift-celebration gift-celebration-" + gift.style + (reduced ? " gift-celebration-reduced" : "");
+  overlay.className = "gift-celebration gift-celebration-" + gift.category.toLowerCase() + " gift-celebration-" + gift.style + (reduced ? " gift-celebration-reduced" : "");
   overlay.setAttribute("role", "status");
   overlay.setAttribute("aria-live", "polite");
   const safeName = escapeHtml(gift.name);
