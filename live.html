@@ -115,7 +115,9 @@ function renderLiveGiftCatalog() {
   root.querySelectorAll("[data-gift-code]").forEach(button=>button.addEventListener("click",()=>void sendLiveGift(button.dataset.giftCode,button)));
 }
 async function refreshLiveGiftBalance() {
-  const node=$("liveGiftBalance");if(!node||!user||isHost)return;
+  const node=$("liveGiftBalance");if(!node)return;
+  if(isHost){node.textContent="🎁 Live gift receiver · Waiting for viewer gifts";return;}
+  if(!user){node.textContent="Sign in to view your test coin balance";return;}
   try{const data=await giftApi("balance");node.textContent="🪙 "+Number(data.balance||0).toLocaleString()+" test coins";}
   catch(error){node.textContent="Test coin balance unavailable";setLiveGiftStatus(error.message,"error");}
 }
