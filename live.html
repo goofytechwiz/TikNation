@@ -9,6 +9,19 @@
 <style>
 :root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0%,#20123c 0,transparent 45%),var(--bg);color:#fff;font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;background:#242039;color:#fff;font-weight:700}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:linear-gradient(110deg,var(--purple),#5c55ff);box-shadow:0 5px 24px #8d63ff2b}.danger{background:#4a1e32;color:#ffb9c9}.ghost{border:1px solid var(--line);background:transparent}.wrap{max-width:1180px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:18px}.brand{font-size:1.35rem;font-weight:900;letter-spacing:.03em}.brand span{color:var(--cyan)}.sub{color:var(--muted);font-size:.9rem}.pill{border:1px solid #523f7b;background:#211737;color:#d9c9ff;border-radius:99px;padding:5px 10px;font-size:.78rem}.layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:18px;margin-top:22px}.panel{background:#10101deF;border:1px solid var(--line);border-radius:20px;padding:18px;min-width:0}.panel h2,.panel h3{margin:0 0 12px}.controls{display:flex;gap:9px;flex-wrap:wrap}.field{display:grid;gap:6px;margin:12px 0}.field label{color:#d4d0e5;font-size:.88rem}.field input,.field textarea,.field select{width:100%;background:#080812;border:1px solid #37314d;border-radius:11px;color:#fff;padding:12px;outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--cyan)}.status{padding:10px 12px;border-radius:12px;background:#181629;color:#c9c3df;margin:12px 0;white-space:pre-wrap}.status.error{color:#ffb9c9;background:#351725}.status.ok{color:#a9ffdc;background:#102b26}.video{width:100%;aspect-ratio:16/9;min-height:300px;background:radial-gradient(ellipse,#19132e,#030308);border:1px solid #2b2542;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;color:var(--muted)}.video video{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.video .placeholder{position:relative;z-index:1;padding:24px;text-align:center}.stream-head{display:flex;justify-content:space-between;gap:12px;align-items:start;margin:14px 0}.live-dot{color:#ff5479;font-weight:900}.list{display:grid;gap:10px}.stream{border:1px solid var(--line);background:#0b0b14;border-radius:14px;padding:14px;display:flex;justify-content:space-between;gap:10px;align-items:center}.stream strong{display:block;overflow-wrap:anywhere}.stream small{color:var(--muted)}.chat{display:flex;flex-direction:column;min-height:300px}.messages{height:300px;overflow:auto;border:1px solid var(--line);background:#080811;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:9px}.message{overflow-wrap:anywhere}.message b{color:#bda7ff}.message time{font-size:.75rem;color:#77738d;margin-left:6px}.chat-form{display:flex;gap:8px;margin-top:10px}.chat-form input{min-width:0;flex:1;background:#080812;border:1px solid #37314d;border-radius:11px;padding:11px;color:#fff}.small{font-size:.82rem;color:var(--muted)}.divider{height:1px;background:var(--line);margin:18px 0}.hide{display:none!important}.footer{color:#7f7b94;font-size:.8rem;margin:20px 0}.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:780px){.layout{grid-template-columns:1fr}.wrap{padding:14px}.panel{padding:14px}.messages{height:230px}.top{align-items:flex-start}.report-grid{grid-template-columns:1fr}.video{aspect-ratio:4/5;min-height:320px}}
+
+.live-gifts{margin-top:18px;padding:16px;border:1px solid #46396b;border-radius:16px;background:linear-gradient(145deg,#171126,#0b1020)}
+.live-gifts h3{margin:0 0 6px}.live-gift-note{color:#aaa6bd;font-size:.82rem;margin-bottom:12px}.live-gift-balance{font-weight:800;color:#7deaff;margin:8px 0 12px}
+.live-gift-categories{display:grid;gap:12px}.live-gift-category h4{font-size:.83rem;letter-spacing:.08em;text-transform:uppercase;color:#c4b2ff;margin-bottom:7px}
+.live-gift-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.live-gift-choice{border:1px solid #3a3157;background:#100e1e;border-radius:12px;padding:10px 8px;text-align:center;min-width:0}
+.live-gift-choice:hover:not(:disabled){border-color:#00c8ff;background:#17162b}.live-gift-choice:disabled{opacity:.45}.live-gift-emoji{display:block;font-size:1.6rem}.live-gift-name{display:block;font-size:.78rem;overflow-wrap:anywhere}.live-gift-cost{display:block;color:#83eaff;font-size:.75rem;margin-top:3px}
+.live-gift-status{min-height:24px;margin:10px 0;color:#cfc9e4;font-size:.85rem}.live-gift-status.error{color:#ffb9c9}.live-gift-status.success{color:#a9ffdc}
+.live-gift-feed{display:grid;gap:7px;margin-top:10px}.live-gift-feed-item{padding:9px 10px;border-radius:10px;background:#0a0a14;border:1px solid #29243d;font-size:.83rem;overflow-wrap:anywhere}.live-gift-feed-item strong{color:#d9c9ff}
+.live-gift-celebration{position:fixed;z-index:9999;inset:0;display:grid;place-items:center;pointer-events:none;background:radial-gradient(ellipse at center,rgba(70,38,120,.42),rgba(3,3,10,.08) 65%,transparent)}
+.live-gift-celebration-card{padding:25px 30px;border:1px solid rgba(146,110,255,.7);border-radius:24px;background:rgba(12,9,26,.94);box-shadow:0 0 70px #805bff66;text-align:center;animation:liveGiftPop .55s cubic-bezier(.2,1.6,.4,1) both;max-width:min(88vw,360px)}
+.live-gift-celebration-card span{display:block;font-size:4rem;line-height:1.3}.live-gift-celebration-card strong{display:block;font-size:1.35rem}.live-gift-celebration-card small{display:block;color:#8ceaff;margin-top:8px}
+@keyframes liveGiftPop{from{opacity:0;transform:scale(.45) translateY(25px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@media(prefers-reduced-motion:reduce){.live-gift-celebration-card{animation:none}}
 </style>
 </head>
 <body>
@@ -44,6 +57,15 @@
     <div class="controls hide" id="creatorControls" style="margin-top:12px"><button class="danger" id="endBtn" type="button">End broadcast</button></div>
     <p class="small" id="creatorHint" style="margin-top:10px">Broadcasting is invite-only during beta.</p>
   </section>
+  <section id="liveGiftPanel" class="live-gifts hide" aria-label="Live gifts">
+    <h3>🎁 Live Gifts</h3>
+    <div class="live-gift-note">Send a Musical, Magical, or Legendary gift without leaving the livestream. Free test coins only; no cash value or payouts.</div>
+    <div id="liveGiftBalance" class="live-gift-balance">Loading test coin balance…</div>
+    <div id="liveGiftCategories" class="live-gift-categories"></div>
+    <div id="liveGiftStatus" class="live-gift-status" role="status" aria-live="polite"></div>
+    <h4>✨ Live gift celebrations</h4>
+    <div id="liveGiftFeed" class="live-gift-feed"><div class="small">Gifts sent during this live will appear here.</div></div>
+  </section>
 </main>
 <aside class="panel">
   <h2>Live chat</h2><div class="sub" id="chatHint">Join a live stream to see and send messages.</div>
@@ -63,9 +85,79 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE
 const API = SUPABASE_URL + "/functions/v1/tiknation-live";
 const $ = id => document.getElementById(id);
 let user = null, activeSession = null, room = null, localTracks = [], isHost = false, chatTimer = null, lastMessageAt = null, listedSessions = [];
+const LIVE_GIFT_CATALOG = {
+  heart_pulse:{name:"Heart Pulse",emoji:"💗",category:"Musical",cost:5}, melody_note:{name:"Melody Note",emoji:"🎵",category:"Musical",cost:5}, heartbeat_beat:{name:"Heartbeat Beat",emoji:"🥁",category:"Musical",cost:10}, symphony:{name:"Symphony",emoji:"🎼",category:"Musical",cost:50},
+  magic_spark:{name:"Magic Spark",emoji:"✨",category:"Magical",cost:10}, mystic_portal:{name:"Mystic Portal",emoji:"🌀",category:"Magical",cost:25}, dragon_spirit:{name:"Dragon Spirit",emoji:"🐉",category:"Magical",cost:75}, galaxy_gift:{name:"Galaxy Gift",emoji:"🌌",category:"Magical",cost:100},
+  creator_crown:{name:"Creator’s Crown",emoji:"👑",category:"Legendary",cost:50}, infinity_crystal:{name:"Infinity Crystal",emoji:"💎",category:"Legendary",cost:150}
+};
+let liveGiftTimer = null, liveGiftCursor = null, seenLiveGiftIds = new Set(), liveGiftRequestBusy = false;
 function notice(message, type=""){const n=$("notice");n.textContent=message;n.className="status"+(type?" "+type:"");}
 function esc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 async function api(action, extra={}){const {data:{session}}=await supabase.auth.getSession();if(!session?.access_token)throw new Error("Please sign in to use TikNation Live.");const res=await fetch(API,{method:"POST",headers:{"Authorization":"Bearer "+session.access_token,"apikey":SUPABASE_PUBLISHABLE_KEY,"Content-Type":"application/json"},body:JSON.stringify({action,...extra})});let body={};try{body=await res.json()}catch{}if(!res.ok)throw new Error(body.error||"TikNation Live request failed.");return body;}
+
+async function giftApi(action, extra={}) {
+  if (!user) throw new Error("Please sign in to send live gifts.");
+  const { data, error } = await supabase.functions.invoke("tiknation-gifts", { body: { action, ...extra } });
+  if (error) {
+    let message = error.message || "Live gifts could not connect.";
+    try { if (error.context && typeof error.context.json === "function") { const body = await error.context.json(); if (body?.error) message = body.error; } } catch {}
+    throw new Error(message);
+  }
+  if (data?.error) throw new Error(data.error);
+  return data;
+}
+function setLiveGiftStatus(message, type="") { const node=$("liveGiftStatus");if(node){node.textContent=message;node.className="live-gift-status"+(type?" "+type:"");} }
+function renderLiveGiftCatalog() {
+  const root=$("liveGiftCategories");if(!root)return;
+  if(isHost){root.innerHTML='<p class="small">You are hosting this live. Viewers can send you gifts, and their celebrations will appear below.</p>';return;}
+  const groups=["Musical","Magical","Legendary"];
+  root.innerHTML=groups.map(category=>'<div class="live-gift-category"><h4>'+category+' Gifts</h4><div class="live-gift-grid">'+Object.entries(LIVE_GIFT_CATALOG).filter(([,gift])=>gift.category===category).map(([code,gift])=>'<button type="button" class="live-gift-choice" data-gift-code="'+code+'"><span class="live-gift-emoji">'+gift.emoji+'</span><span class="live-gift-name">'+gift.name+'</span><span class="live-gift-cost">🪙 '+gift.cost+' test coins</span></button>').join("")+'</div></div>').join("");
+  root.querySelectorAll("[data-gift-code]").forEach(button=>button.addEventListener("click",()=>void sendLiveGift(button.dataset.giftCode,button)));
+}
+async function refreshLiveGiftBalance() {
+  const node=$("liveGiftBalance");if(!node||!user||isHost)return;
+  try{const data=await giftApi("balance");node.textContent="🪙 "+Number(data.balance||0).toLocaleString()+" test coins";}
+  catch(error){node.textContent="Test coin balance unavailable";setLiveGiftStatus(error.message,"error");}
+}
+function showLiveGiftCelebration(event) {
+  const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
+  const old=$("liveGiftCelebration");if(old)old.remove();
+  const overlay=document.createElement("div");overlay.id="liveGiftCelebration";overlay.className="live-gift-celebration";overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");
+  const card=document.createElement("div");card.className="live-gift-celebration-card";
+  const emoji=document.createElement("span");emoji.textContent=gift.emoji;
+  const title=document.createElement("strong");title.textContent=(event.sender_name||"TikNation member")+" sent "+gift.name+"!";
+  const note=document.createElement("small");note.textContent="TIKNATION LIVE · "+gift.cost+" TEST COINS";
+  card.append(emoji,title,note);overlay.appendChild(card);document.body.appendChild(overlay);
+  if(!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)){try{const C=window.AudioContext||window.webkitAudioContext;if(C){const ctx=new C();[523,659,784].forEach((f,i)=>{const osc=ctx.createOscillator(),gain=ctx.createGain();osc.frequency.value=f;gain.gain.setValueAtTime(.0001,ctx.currentTime+i*.1);gain.gain.exponentialRampToValueAtTime(.07,ctx.currentTime+i*.1+.03);gain.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+i*.1+.22);osc.connect(gain);gain.connect(ctx.destination);osc.start(ctx.currentTime+i*.1);osc.stop(ctx.currentTime+i*.1+.24);});setTimeout(()=>ctx.close().catch(()=>{}),1300);}}catch{}}
+  window.setTimeout(()=>overlay.remove(),2300);
+}
+function renderLiveGiftEvent(event) {
+  const feed=$("liveGiftFeed");if(!feed)return;const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
+  const empty=feed.querySelector(".small");if(empty)feed.innerHTML="";
+  const row=document.createElement("div");row.className="live-gift-feed-item";const strong=document.createElement("strong");strong.textContent=event.sender_name||"TikNation member";
+  row.append(strong,document.createTextNode(" sent "+gift.emoji+" "+gift.name+" · "+gift.cost+" test coins"));feed.prepend(row);while(feed.children.length>8)feed.lastElementChild.remove();showLiveGiftCelebration(event);
+}
+async function pollLiveGiftEvents() {
+  if(!activeSession||!user)return;
+  try{const result=await giftApi("live_events",{session_id:activeSession.id,after:liveGiftCursor});for(const event of result.events||[]){if(seenLiveGiftIds.has(event.id))continue;seenLiveGiftIds.add(event.id);renderLiveGiftEvent(event);if(event.created_at&&(!liveGiftCursor||event.created_at>liveGiftCursor))liveGiftCursor=event.created_at;}}
+  catch(error){if(!/ended or is unavailable/i.test(error.message))console.warn("Live gift feed:",error.message);}
+}
+function startLiveGiftPolling() {
+  stopLiveGiftPolling();$("liveGiftPanel").classList.remove("hide");liveGiftCursor=new Date().toISOString();seenLiveGiftIds=new Set();
+  $("liveGiftFeed").innerHTML='<div class="small">Gifts sent during this live will appear here.</div>';renderLiveGiftCatalog();void refreshLiveGiftBalance();void pollLiveGiftEvents();liveGiftTimer=window.setInterval(()=>void pollLiveGiftEvents(),3000);
+}
+function stopLiveGiftPolling() {
+  if(liveGiftTimer)window.clearInterval(liveGiftTimer);liveGiftTimer=null;liveGiftCursor=null;seenLiveGiftIds=new Set();const panel=$("liveGiftPanel");if(panel)panel.classList.add("hide");
+}
+async function sendLiveGift(giftCode,button) {
+  if(liveGiftRequestBusy||!activeSession||isHost)return;const gift=LIVE_GIFT_CATALOG[giftCode];if(!gift)return;
+  if(!window.crypto||!window.crypto.randomUUID){setLiveGiftStatus("Please update your browser before sending gifts.","error");return;}
+  liveGiftRequestBusy=true;const buttons=Array.from(document.querySelectorAll(".live-gift-choice"));buttons.forEach(b=>b.disabled=true);setLiveGiftStatus("Sending "+gift.name+"…");
+  try{const result=await giftApi("send_live",{session_id:activeSession.id,gift_code:giftCode,request_id:window.crypto.randomUUID()});$("liveGiftBalance").textContent="🪙 "+Number(result.balance||0).toLocaleString()+" test coins remaining";setLiveGiftStatus("✨ "+gift.name+" sent! Your gift will appear in the live celebration.","success");await pollLiveGiftEvents();}
+  catch(error){setLiveGiftStatus(error.message||"Gift could not be sent.","error");}
+  finally{liveGiftRequestBusy=false;buttons.forEach(b=>b.disabled=false);}
+}
+
 function resetVideo(id,text){$(id).innerHTML='<div class="placeholder">'+esc(text)+'</div>';}
 function attachTrack(track, elementId){const box=$(elementId);const placeholder=box.querySelector(".placeholder");if(placeholder)placeholder.remove();const el=track.attach();el.autoplay=true;el.playsInline=true;if(track.kind==="video")el.controls=false;box.appendChild(el);}
 function stopChat(){if(chatTimer)clearInterval(chatTimer);chatTimer=null;lastMessageAt=null;}
@@ -74,9 +166,9 @@ async function loadChat(){if(!activeSession)return;try{const {data,error}=await 
 async function startChat(){stopChat();$("chatInput").disabled=!user;$("sendChat").disabled=!user;$("chatHint").textContent=user?"Chat is open. Keep it friendly.":"Sign in to send messages.";await loadChat();chatTimer=setInterval(loadChat,4000);}
 async function loadStreams(){try{const out=await api("list");listedSessions=out.sessions||[];const box=$("liveList");if(!listedSessions.length){box.innerHTML='<div class="status">Nobody is live right now. Check back soon.</div>';return;}box.innerHTML="";for(const s of listedSessions){const row=document.createElement("div");row.className="stream";row.innerHTML='<div><strong><span class="live-dot">● LIVE</span> '+esc(s.title)+'</strong><small>Started '+new Date(s.started_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})+'</small></div><button class="primary" type="button">Watch</button>';row.querySelector("button").addEventListener("click",()=>joinStream(s));box.appendChild(row);}}catch(e){$("liveList").innerHTML='<div class="status error">'+esc(e.message)+'</div>';}}
 async function connectRoom(serverUrl,token,targetId,host){room=new Room({adaptiveStream:true,dynacast:true});const currentRoom=room;currentRoom.on(RoomEvent.TrackSubscribed,(track)=>attachTrack(track,targetId));currentRoom.on(RoomEvent.TrackUnsubscribed,(track)=>track.detach().forEach(el=>el.remove()));currentRoom.on(RoomEvent.Reconnecting,()=>{if(room===currentRoom)notice("Connection interrupted. TikNation Live is trying to reconnect…");});currentRoom.on(RoomEvent.Reconnected,()=>{if(room===currentRoom)notice("Connection restored.", "ok");});currentRoom.on(RoomEvent.TokenExpiring,()=>{if(room!==currentRoom||!activeSession)return;void (async()=>{try{const refreshed=await api("refresh",{session_id:activeSession.id});await currentRoom.updateToken(refreshed.token);notice("Live connection credentials refreshed.", "ok");}catch(refreshError){console.warn("Live token refresh failed:",refreshError.message);notice("Could not refresh the live connection. Please reconnect.", "error");}})();});currentRoom.on(RoomEvent.Disconnected,()=>{if(room!==currentRoom||!activeSession)return;const endedSession=activeSession;notice("Live connection ended. Cleaning up this session…","error");void (async()=>{if(host){try{await api("end",{session_id:endedSession.id});}catch(e){console.warn("Could not end disconnected broadcast:",e.message);}}if(room===currentRoom){await leaveStream(false);if(host)await loadStreams();notice(host?"Your broadcast connection ended. Start a new broadcast when you are ready.":"You were disconnected from the broadcast. Select Watch to try again.","error");}})();});await currentRoom.connect(serverUrl,token);for(const p of currentRoom.remoteParticipants.values()){for(const pub of p.trackPublications.values())if(pub.track)attachTrack(pub.track,targetId);}if(host){localTracks=await createLocalTracks({audio:true,video:true});for(const track of localTracks){const el=track.attach();el.autoplay=true;el.playsInline=true;if(track.kind==="video"){$("creatorVideo").innerHTML="";$("creatorVideo").appendChild(el);}await currentRoom.localParticipant.publishTrack(track);}}}
-async function joinStream(s){try{await leaveStream(false);notice("Joining live broadcast…");const out=await api("join",{session_id:s.id});activeSession=out.session;isHost=false;$("viewer").classList.remove("hide");$("creator").classList.add("hide");$("viewerTitle").textContent=out.session.title;$("viewerMeta").textContent="Live since "+new Date(out.session.started_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});resetVideo("viewerVideo","Connecting to live video…");await connectRoom(out.serverUrl,out.token,"viewerVideo",false);$("viewTitle").textContent="Watching live";await startChat();notice("You’re watching TikNation Live.", "ok");$("viewer").scrollIntoView({behavior:"smooth",block:"start"});}catch(e){if(!isHost&&(activeSession||room))await leaveStream(false);notice(e.message,"error");}}
-async function leaveStream(showNotice=true){stopChat();const closingRoom=room;room=null;if(closingRoom){try{await closingRoom.disconnect();}catch{}}for(const t of localTracks){try{t.stop();t.detach().forEach(el=>el.remove());}catch{}}localTracks=[];activeSession=null;isHost=false;$("viewer").classList.add("hide");$("creatorVideo").classList.add("hide");$("creatorControls").classList.add("hide");$("startForm").classList.remove("hide");$("creator").classList.add("hide");$("chatInput").disabled=true;$("sendChat").disabled=true;$("chatMessages").innerHTML='<div class="small">Join a live stream to chat.</div>';resetVideo("viewerVideo","Select a live broadcast to watch.");if(showNotice)notice("You left the broadcast.");}
-async function startBroadcast(title){const out=await api("start",{title});activeSession=out.session;isHost=true;$("creator").classList.remove("hide");$("startForm").classList.add("hide");$("creatorVideo").classList.remove("hide");$("creatorControls").classList.remove("hide");$("creatorHint").textContent="You are live. End the broadcast when you are finished.";await connectRoom(out.serverUrl,out.token,"creatorVideo",true);$("viewTitle").textContent="Your live broadcast";await loadStreams();notice("You’re live! Keep this page open while broadcasting.","ok");}
+async function joinStream(s){try{await leaveStream(false);notice("Joining live broadcast…");const out=await api("join",{session_id:s.id});activeSession=out.session;isHost=false;$("viewer").classList.remove("hide");$("creator").classList.add("hide");$("viewerTitle").textContent=out.session.title;$("viewerMeta").textContent="Live since "+new Date(out.session.started_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});resetVideo("viewerVideo","Connecting to live video…");await connectRoom(out.serverUrl,out.token,"viewerVideo",false);$("viewTitle").textContent="Watching live";await startChat();startLiveGiftPolling();notice("You’re watching TikNation Live.", "ok");$("viewer").scrollIntoView({behavior:"smooth",block:"start"});}catch(e){if(!isHost&&(activeSession||room))await leaveStream(false);notice(e.message,"error");}}
+async function leaveStream(showNotice=true){stopLiveGiftPolling();stopChat();const closingRoom=room;room=null;if(closingRoom){try{await closingRoom.disconnect();}catch{}}for(const t of localTracks){try{t.stop();t.detach().forEach(el=>el.remove());}catch{}}localTracks=[];activeSession=null;isHost=false;$("viewer").classList.add("hide");$("creatorVideo").classList.add("hide");$("creatorControls").classList.add("hide");$("startForm").classList.remove("hide");$("creator").classList.add("hide");$("chatInput").disabled=true;$("sendChat").disabled=true;$("chatMessages").innerHTML='<div class="small">Join a live stream to chat.</div>';resetVideo("viewerVideo","Select a live broadcast to watch.");if(showNotice)notice("You left the broadcast.");}
+async function startBroadcast(title){const out=await api("start",{title});activeSession=out.session;isHost=true;$("creator").classList.remove("hide");$("startForm").classList.add("hide");$("creatorVideo").classList.remove("hide");$("creatorControls").classList.remove("hide");$("creatorHint").textContent="You are live. End the broadcast when you are finished.";await connectRoom(out.serverUrl,out.token,"creatorVideo",true);$("viewTitle").textContent="Your live broadcast";await loadStreams();startLiveGiftPolling();notice("You’re live! Keep this page open while broadcasting.","ok");}
 async function endBroadcast(){if(!activeSession||!isHost)return;const id=activeSession.id;$("endBtn").disabled=true;try{await api("end",{session_id:id});await leaveStream(false);await loadStreams();notice("Your broadcast has ended.","ok");}catch(e){notice(e.message,"error");}finally{$("endBtn").disabled=false;}}
 $("startForm").addEventListener("submit",async e=>{e.preventDefault();if(!user){notice("Please sign in on TikNation before going live.","error");return;}const title=$("streamTitle").value.trim();if(!title)return;$("startBtn").disabled=true;try{await startBroadcast(title);}catch(err){const failedSession=activeSession?.id;if(failedSession&&isHost){try{await api("end",{session_id:failedSession});}catch(cleanupError){console.warn("Could not clean up failed broadcast:",cleanupError.message);}}await leaveStream(false);if(user)$("creator").classList.remove("hide");notice(err.message,"error");}finally{$("startBtn").disabled=false;}});
 $("endBtn").addEventListener("click",endBroadcast);
