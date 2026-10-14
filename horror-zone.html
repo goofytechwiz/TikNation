@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080813">
+<title>Horror Zone — TikNation</title>
+<meta name="description" content="TikNation Horror Zone — opt-in horror videos and BOO! creator effects.">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{color-scheme:dark;--bg:#07070e;--panel:#11101d;--line:#342541;--muted:#aaa5bd;--pink:#ff719d;--violet:#ad7bff;--cyan:#75eaff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,rgba(110,26,120,.25),transparent 48%),var(--bg);color:#fff;font:16px/1.5 Arial,Helvetica,sans-serif;min-height:100vh}button,a{font:inherit}a{color:#c7b1ff}.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px clamp(14px,4vw,34px);background:rgba(7,7,14,.93);backdrop-filter:blur(18px);border-bottom:1px solid #ffffff17}.brand{font-weight:900;letter-spacing:.1em}.brand span{color:var(--pink)}.back{display:inline-flex;padding:9px 13px;border:1px solid #ffffff22;border-radius:999px;text-decoration:none;color:white;background:#ffffff08}.wrap{width:min(1100px,100%);margin:auto;padding:26px 16px 70px}.hero{padding:clamp(22px,5vw,48px);border:1px solid #b34bff55;border-radius:26px;background:radial-gradient(circle at 80% 20%,#6e1d7044,transparent 35%),linear-gradient(135deg,#171022,#090912 75%);box-shadow:0 24px 80px #0008}.eyebrow{font-size:11px;letter-spacing:.22em;font-weight:900;color:#d0a5ff}.hero h1{font-size:clamp(38px,8vw,70px);line-height:.98;margin:13px 0}.hero h1 span{background:linear-gradient(90deg,#ff79a7,#bb8aff,#65e8ff);color:transparent;background-clip:text}.hero p{max-width:720px;color:#c2bdd0}.controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:20px}.toggle{display:flex;align-items:center;gap:9px;padding:10px 13px;border:1px solid #ffffff20;border-radius:13px;background:#090812}.toggle input{width:19px;height:19px;accent-color:#b47cff}.status{margin:18px 0;color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:17px;margin-top:18px}.card{min-width:0;overflow:hidden;border:1px solid #ffffff17;border-radius:20px;background:var(--panel)}.media{position:relative;aspect-ratio:9/12;max-height:580px;background:radial-gradient(circle at 50% 30%,#401c54,#080710 65%);display:grid;place-items:center;overflow:hidden}.warning{max-width:330px;padding:25px;text-align:center}.warning .emoji{font-size:46px}.warning h3{margin:10px 0}.warning p{color:#c0b7d0;font-size:14px}.primary,.secondary{border:0;border-radius:999px;padding:11px 16px;font-weight:800;cursor:pointer}.primary{background:linear-gradient(90deg,#8d50ff,#cf4d98);color:white}.secondary{border:1px solid #ffffff26;background:#ffffff09;color:white}.media video,.media img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}.media video{z-index:1}.media img{z-index:1}.effect{position:absolute;inset:0;z-index:3;display:grid;place-items:center;pointer-events:none;opacity:0;overflow:hidden}.effect span{font-size:clamp(100px,24vw,220px);font-weight:900;color:#fff;text-shadow:0 0 15px #ff1b65,0 0 45px #a100ff;transform:scale(.1);opacity:0}.effect.shadow span{color:#05050a;text-shadow:0 0 9px white,0 0 35px #b000ff}.effect.glitch span{font-family:monospace;color:#ff276b;text-shadow:8px 0 #00eaff,-8px 0 #b000ff}.effect.creepy_eyes span{color:#ff174d;text-shadow:0 0 18px #ff003c,0 0 55px #ff003c}.armed .effect{animation:flash 1.3s 3s ease-out both}.armed .effect span{animation:reveal 1.3s 3s cubic-bezier(.15,.8,.25,1) both}@keyframes flash{0%,100%{opacity:0;background:transparent}12%,62%{opacity:1;background:#000e}}@keyframes reveal{0%,100%{opacity:0;transform:scale(.1) rotate(-8deg)}14%{opacity:1;transform:scale(1.12) rotate(2deg)}25%,62%{opacity:1;transform:scale(1) rotate(0)}}.content{padding:16px}.content h2{font-size:18px;margin:0 0 7px;overflow-wrap:anywhere}.meta{color:var(--muted);font-size:13px}.tag{display:inline-block;padding:5px 9px;border-radius:999px;background:#391426;color:#ffd2e0;font-size:10px;font-weight:900;letter-spacing:.07em;margin-bottom:10px}.empty{padding:24px;border:1px solid #ffffff16;border-radius:18px;background:#11101d;color:var(--muted)}.reduced .effect,.reduced .effect span,.motion-off .effect,.motion-off .effect span{animation:none!important;display:none!important}@media(prefers-reduced-motion:reduce){.effect,.effect span{animation:none!important;display:none!important}}@media(max-width:560px){.top{align-items:flex-start}.controls{align-items:stretch;flex-direction:column}.toggle{justify-content:space-between}.media{aspect-ratio:3/4}}
+</style>
+</head>
+<body>
+<header class="top"><div class="brand">TIKNATION <span>HORROR ZONE</span></div><a class="back" href="./index.html">← Back to TikNation</a></header>
+<main class="wrap">
+<section class="hero">
+  <div class="eyebrow">OPTIONAL · VIEWER CONTROLLED · BETA</div>
+  <h1>ENTER THE <span>HORROR ZONE</span></h1>
+  <p>Explore horror shorts, creepy transformations, and creator-made BOO! effects. Horror content is kept out of the regular Watch feed unless you choose to allow it. Nothing here autoplays, and TikNation adds no surprise audio.</p>
+  <div class="controls">
+    <label class="toggle"><span>Show horror in regular feed</span><input id="feedToggle" type="checkbox"></label>
+    <label class="toggle"><span>Reduce motion effects</span><input id="motionToggle" type="checkbox"></label>
+    <span class="meta">Sound effects are off in this beta.</span>
+  </div>
+</section>
+<p id="status" class="status" role="status" aria-live="polite">Loading labeled horror posts…</p>
+<section id="horrorGrid" class="grid" aria-label="Horror videos"></section>
+</main>
+<script>
+(function(){
+"use strict";
+const SUPABASE_URL="https://mekzfezaefcimxncklfj.supabase.co";
+const SUPABASE_KEY="sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=id=>document.getElementById(id);
+function prefs(){try{return JSON.parse(localStorage.getItem("tiknationPreferences")||"{}")}catch{return {}}}
+function savePrefs(p){try{localStorage.setItem("tiknationPreferences",JSON.stringify({...prefs(),...p}));return true}catch{return false}}
+function esc(v){return String(v??"").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
+function safeUrl(value){try{const u=new URL(value,location.href);return ["https:","http:"].includes(u.protocol)?u.href:""}catch{return ""}}
+function effectMarkup(effect){const valid=["shadow","glitch","creepy_eyes"].includes(effect)?effect:"none";if(valid==="none")return "";const glyph=valid==="shadow"?"♟":valid==="glitch"?"▓▒░":"👁️";return '<div class="effect '+valid+'" aria-hidden="true"><span>'+glyph+'</span></div>'}
+function renderCard(post){
+ const mediaType=String(post.media_type||"").toLowerCase();
+ const title=esc(post.title||"Untitled horror creation");
+ const creator=esc(post.username||"TikNationCreator");
+ const desc=esc(post.description||"A horror creation from the TikNation community.");
+ const validUrl=safeUrl(post.media_url);
+ const mediaId="horror-media-"+String(post.id).replace(/[^a-zA-Z0-9_-]/g,"");
+ const validEffect=["shadow","glitch","creepy_eyes"].includes(post.scare_effect)?post.scare_effect:"none";
+ const card=document.createElement("article");card.className="card";
+ const media=document.createElement("div");media.className="media";media.id=mediaId;
+ const warning=document.createElement("div");warning.className="warning";
+ warning.innerHTML='<div class="emoji">👻</div><span class="tag">HORROR · VIEWER DISCRETION</span><h3>Ready for this scare?</h3><p>This creator marked this post as horror. Choose when to reveal the content. Sound effects are off.</p><button type="button" class="primary">I understand — show content</button>';
+ media.appendChild(warning);
+ warning.querySelector("button").addEventListener("click",function(){
+   if(!validUrl){warning.innerHTML="<p>This media is unavailable.</p>";return;}
+   warning.remove();
+   if(mediaType.startsWith("video/")){
+    const video=document.createElement("video");video.controls=true;video.playsInline=true;video.preload="metadata";
+    const source=document.createElement("source");source.src=validUrl;source.type=mediaType;video.appendChild(source);
+    media.appendChild(video);
+    if(validEffect!=="none"){
+      const layer=document.createElement("div");layer.className="effect "+validEffect;layer.setAttribute("aria-hidden","true");
+      const span=document.createElement("span");span.textContent=validEffect==="shadow"?"♟":validEffect==="glitch"?"▓▒░":"👁️";layer.appendChild(span);media.appendChild(layer);
+      video.addEventListener("play",()=>{if(!$("motionToggle").checked&&!matchMedia("(prefers-reduced-motion: reduce)").matches){media.classList.remove("armed");void media.offsetWidth;media.classList.add("armed");}});
+      video.addEventListener("ended",()=>media.classList.remove("armed"));
+    }
+   }else if(mediaType.startsWith("image/")){
+    const img=document.createElement("img");img.src=validUrl;img.alt=title;img.loading="lazy";media.appendChild(img);
+   }else{
+    media.innerHTML='<div class="warning"><p>This file type cannot be shown in the Horror Zone yet.</p></div>';
+   }
+ });
+ const content=document.createElement("div");content.className="content";
+ content.innerHTML='<span class="tag">👻 HORROR · VIEWER DISCRETION</span><h2>'+title+'</h2><p class="meta">@'+creator+'</p><p>'+desc+'</p>'+(validEffect!=="none"?'<p class="meta">BOO! effect: '+esc(({shadow:"Shadow figure",glitch:"Digital glitch",creepy_eyes:"Creepy eyes"})[validEffect])+'</p>':'');
+ card.append(media,content);return card;
+}
+async function load(){
+ const grid=$("horrorGrid");grid.innerHTML="";
+ const {data,error}=await db.from("creator_posts").select("id,created_at,user_id,username,title,description,media_url,media_type,status,content_category,scare_effect,horror_warning").eq("status","published").eq("content_category","horror").order("created_at",{ascending:false}).limit(60);
+ if(error){$("status").textContent="The Horror Zone couldn't load posts right now. Please try again later.";console.error("Horror Zone load:",error);return;}
+ const posts=data||[];
+ if(!posts.length){$("status").textContent="The Horror Zone is waiting for its first creator. Publish a post from Creator Studio and mark it Horror to appear here.";grid.innerHTML='<div class="empty"><h2>👻 No horror posts yet</h2><p>Open Creator Studio, choose “Horror,” and publish a labeled horror creation. This section only shows posts that creators have explicitly marked as horror.</p><a href="./index.html">Go to TikNation Creator Studio</a></div>';return;}
+ $("status").textContent=posts.length+" labeled horror "+(posts.length===1?"creation":"creations")+" · Nothing autoplays.";
+ posts.forEach(post=>grid.appendChild(renderCard(post)));
+}
+const p=prefs();$("feedToggle").checked=Boolean(p.showHorrorInFeed);$("motionToggle").checked=Boolean(p.reduceMotion);
+if(p.reduceMotion)document.body.classList.add("reduced");
+$("feedToggle").addEventListener("change",()=>{const ok=savePrefs({showHorrorInFeed:$("feedToggle").checked});$("status").textContent=ok?($("feedToggle").checked?"Horror posts may now appear in Watch, alongside their warning labels.":"Horror posts are hidden from Watch. The Horror Zone remains available."):"Your browser could not save this preference.";});
+$("motionToggle").addEventListener("change",()=>{const ok=savePrefs({reduceMotion:$("motionToggle").checked});document.body.classList.toggle("reduced",$("motionToggle").checked);$("status").textContent=ok?"Motion preference saved on this browser.":"Your browser could not save this preference.";});
+load();
+})();
+</script>
+</body>
+</html>
