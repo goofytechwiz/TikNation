@@ -1,7 +1,16 @@
 async function invokeTikNationGifts(payload) {
   if (!currentUser) throw new Error("Please sign in to use Gifts.");
   const result = await supabaseClient.functions.invoke("tiknation-gifts", { body: payload });
-  if (result.error) throw new Error(result.error.message || "Gifts could not connect.");
+  if (result.error) {
+    let message = result.error.message || "Gifts could not connect.";
+    try {
+      if (result.error.context && typeof result.error.context.json === "function") {
+        const body = await result.error.context.json();
+        if (body && body.error) message = body.error;
+      }
+    } catch (_ignored) {}
+    throw new Error(message);
+  }
   if (result.data && result.data.error) throw new Error(result.data.error);
   return result.data;
 }
