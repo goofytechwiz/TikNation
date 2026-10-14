@@ -90,6 +90,7 @@ function showTikNationGiftEffect(gift) {
       particle.className = "gift-celebration-particle";
       particle.textContent = ["✦", "·", "✧", "✶"][i % 4];
       particle.style.setProperty("--particle-index", String(i));
+      particle.style.setProperty("--angle", (i * 20) + "deg");
       overlay.appendChild(particle);
     }
   }
