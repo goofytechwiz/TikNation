@@ -151,7 +151,7 @@ async function loadTikNationGiftDashboard() {
     ]);
     balance.textContent = "🪙 " + Number(values[0].balance || 0).toLocaleString() + " test coins";
     const data = values[1];
-    summary.textContent = "Received " + Number(data.received_count || 0) + " gifts · " + Number(data.received_test_coins || 0).toLocaleString() + " test coins received. Not real earnings.";
+    summary.textContent = "Received " + Number(data.received_count || 0) + " gifts · " + Number(data.received_test_coins || 0).toLocaleString() + " test-coin gift value. Not real earnings.";
     const rows = data.history || [];
     historyNode.innerHTML = rows.length ? rows.map(item => {
       const other = item.other_user || {};
