@@ -774,6 +774,27 @@ textarea.form-control{
     transition:width .25s ease;
 }
 
+/* TIKNATION GIFTS */
+.gift-panel{margin:22px 0;padding:clamp(16px,3vw,24px);border:1px solid rgba(0,200,255,.22);border-radius:20px;background:linear-gradient(135deg,rgba(0,200,255,.07),rgba(141,99,255,.10),rgba(15,15,27,.92));}
+.gift-panel h2,.gift-panel h3{margin:0 0 8px;}
+.gift-panel-copy{color:var(--muted,#a9a9c3);font-size:13px;line-height:1.5;margin:0 0 14px;}
+.gift-balance{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(0,0,0,.2);font-weight:800;margin:0 0 14px;}
+.gift-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.gift-choice{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0;width:100%;padding:13px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.035);color:#fff;text-align:left;cursor:pointer;}
+.gift-choice:disabled{opacity:.55;cursor:wait;}
+.gift-choice .gift-emoji{font-size:25px;}
+.gift-choice strong{font-size:14px;}
+.gift-choice small{color:#b7b7ce;font-size:12px;}
+.gift-status{min-height:22px;margin:12px 0 0;font-size:13px;line-height:1.45;}
+.gift-status.success{color:#7df5c5;}
+.gift-status.error{color:#ff9fae;}
+.gift-history-list{display:grid;gap:8px;margin-top:12px;}
+.gift-history-item{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px;}
+.gift-flash{animation:giftFlash .65s ease-out;}
+@keyframes giftFlash{0%{box-shadow:0 0 0 rgba(0,200,255,0)}35%{box-shadow:0 0 35px rgba(0,200,255,.3)}100%{box-shadow:0 0 0 rgba(0,200,255,0)}}
+@media(max-width:420px){.gift-grid{grid-template-columns:1fr}.gift-choice{flex-direction:row;align-items:center}.gift-choice .gift-emoji{width:34px;flex-shrink:0}.gift-choice small{margin-left:auto}}
+@media(prefers-reduced-motion:reduce){.gift-flash{animation:none!important;}}
+
 /* CLEAN PROFILE LAYOUT */
 .profile-header{
     padding:clamp(18px,3vw,34px);
@@ -3174,6 +3195,15 @@ async function loadProfilePage(){
 
         </div>
 
+        <section class="gift-panel" id="creatorGiftDashboard" aria-labelledby="creatorGiftDashboardTitle">
+            <h2 id="creatorGiftDashboardTitle">🎁 Your Gift Activity</h2>
+            <p class="gift-panel-copy">Free test coins only. Test gifts have no cash value, and creator payouts are not enabled.</p>
+            <div class="gift-balance" id="creatorGiftBalance">🪙 Loading test coins…</div>
+            <div id="creatorGiftSummary" class="gift-panel-copy">Loading your gift activity…</div>
+            <button type="button" class="secondary-button" id="refreshGiftHistoryButton" onclick="loadTikNationGiftDashboard()">↻ REFRESH GIFT ACTIVITY</button>
+            <div id="creatorGiftHistory" class="gift-history-list" aria-live="polite"></div>
+        </section>
+
         <div id="creatorProfileEditor" style="display:${creatorProfileEditorOpen ? "block" : "none"};">
         <div class="section-head">
             <h2>✏️ Edit Your Creator Profile</h2>
@@ -4012,6 +4042,23 @@ async function loadPublicCreatorProfile(userId){
                 <button type="button" class="primary-button" onclick="openAuthModal('signin')">SIGN IN TO FOLLOW</button>
             `}
         </div>
+        <section class="gift-panel" id="publicCreatorGiftPanel" aria-labelledby="publicCreatorGiftTitle">
+            <h2 id="publicCreatorGiftTitle">🎁 Send a Gift</h2>
+            <p class="gift-panel-copy">Show this creator some support with a virtual gift. Test coins are free and have no cash value.</p>
+            <div class="gift-balance" id="publicCreatorGiftBalance">🪙 Sign in to check test coins</div>
+            ${currentUser ? `
+                <div class="gift-grid">
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','heart_pulse')"><span class="gift-emoji">💗</span><strong>Heart Pulse</strong><small>5 test coins</small></button>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','magic_spark')"><span class="gift-emoji">✨</span><strong>Magic Spark</strong><small>10 test coins</small></button>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','creator_crown')"><span class="gift-emoji">👑</span><strong>Creator’s Crown</strong><small>50 test coins</small></button>
+                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','infinity_crystal')"><span class="gift-emoji">💎</span><strong>Infinity Crystal</strong><small>100 test coins</small></button>
+                </div>
+            ` : `
+                <button type="button" class="primary-button" onclick="openAuthModal('signin')">SIGN IN TO SEND A GIFT</button>
+            `}
+            <p class="gift-status" id="publicCreatorGiftStatus" aria-live="polite"></p>
+        </section>
+
         <div class="section-head"><h2>🎬 Published Creations</h2></div>
         <div class="card-grid">
             ${posts.length ? posts.map(function(post){
