@@ -3276,6 +3276,7 @@ async function loadProfilePage(){
 
     await loadProfileStats();
     await loadProfileCreations();
+    await loadTikNationGiftDashboard();
 }
 
 async function uploadCreatorBanner(){
@@ -4067,6 +4068,7 @@ async function loadPublicCreatorProfile(userId){
             }).join('') : '<div class="card"><h3>No published creations yet</h3><p class="muted">This creator has not published anything yet.</p></div>'}
         </div>
     `;
+    await refreshPublicGiftBalance();
 }
 
 async function togglePublicCreatorFollow(){
