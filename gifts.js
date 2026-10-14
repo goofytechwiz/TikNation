@@ -47,7 +47,12 @@ async function sendTikNationGift(recipientId, giftCode) {
     });
     const balance = document.getElementById("publicCreatorGiftBalance");
     if (balance) balance.textContent = "🪙 " + Number(data.balance || 0).toLocaleString() + " test coins remaining";
-    if (panel) { panel.classList.remove("gift-flash"); void panel.offsetWidth; panel.classList.add("gift-flash"); }
+    if (panel) {
+      panel.classList.remove("gift-flash", "gift-signature");
+      void panel.offsetWidth;
+      panel.classList.add("gift-flash");
+      if (giftCode === "creator_crown" || giftCode === "infinity_crystal") panel.classList.add("gift-signature");
+    }
     const names = { heart_pulse: "Heart Pulse", magic_spark: "Magic Spark", creator_crown: "Creator’s Crown", infinity_crystal: "Infinity Crystal" };
     if (status) { status.className = "gift-status success"; status.textContent = "✨ " + (names[giftCode] || "Gift") + " sent! Test gifts have no cash value."; }
   } catch (error) {
