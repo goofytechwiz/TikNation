@@ -25,8 +25,21 @@ Deno.serve(async (req: Request) => {
   if (!authorization?.startsWith("Bearer ")) return json({ error: "Sign in first." }, 401);
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
-  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  // Support both legacy Supabase environment variables and the current key maps.
+  function keyFromMap(raw: string | undefined, keyName = "default"): string | undefined {
+    if (!raw) return undefined;
+    try {
+      const parsed = JSON.parse(raw);
+      const value = parsed && typeof parsed === "object" ? parsed[keyName] : undefined;
+      return typeof value === "string" && value.trim() ? value.trim() : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ||
+    keyFromMap(Deno.env.get("SUPABASE_PUBLISHABLE_KEYS"));
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
+    keyFromMap(Deno.env.get("SUPABASE_SECRET_KEYS"));
   if (!supabaseUrl || !anonKey || !serviceKey) return json({ error: "Notification service is not configured." }, 503);
 
   const token = authorization.slice(7).trim();
