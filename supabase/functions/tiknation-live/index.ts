@@ -161,6 +161,14 @@ Deno.serve(async (req: Request) => {
       if (blockError) return json({ error: "Could not verify access to this broadcast. Please try again." }, 500);
       if (blockRows?.length) return json({ error: "This broadcast is unavailable because of a block between these accounts." }, 403);
     }
+    if (session.creator_id !== user.id) {
+      const { data: restrictions, error: restrictionError } = await admin.from("live_moderation_actions")
+        .select("id,action_type").eq("session_id", sessionId).eq("target_user_id", user.id)
+        .is("revoked_at", null).in("action_type", ["remove", "creator_live_block"])
+        .or("expires_at.is.null,expires_at.gt." + new Date().toISOString()).limit(1);
+      if (restrictionError) return json({ error: "Could not verify Live access. Please try again." }, 500);
+      if (restrictions?.length) return json({ error: "The creator has restricted your access to this Live." }, 403);
+    }
     const credentials = await issueToken(session.room_name, false, true);
     return json({ session: { id: session.id, title: session.title, status: session.status, started_at: session.started_at, creator_id: session.creator_id }, ...credentials });
   }
@@ -209,6 +217,14 @@ Deno.serve(async (req: Request) => {
       if (blockError) return json({ error: "Could not verify chat access. Please try again." }, 500);
       if (blockRows?.length) return json({ error: "Chat is unavailable because of a block between these accounts." }, 403);
     }
+    if (session.creator_id !== user.id) {
+      const { data: restrictions, error: restrictionError } = await admin.from("live_moderation_actions")
+        .select("id,action_type").eq("session_id", sessionId).eq("target_user_id", user.id)
+        .is("revoked_at", null).in("action_type", ["chat_mute", "timeout", "remove", "creator_live_block"])
+        .or("expires_at.is.null,expires_at.gt." + new Date().toISOString()).limit(1);
+      if (restrictionError) return json({ error: "Could not verify chat permissions. Please try again." }, 500);
+      if (restrictions?.length) return json({ error: "You cannot chat in this Live right now." }, 403);
+    }
     if (await isRateLimited("chat", 8, 60_000)) {
       return json({ error: "You're sending messages too quickly. Please wait a minute and try again." }, 429);
     }
@@ -217,6 +233,39 @@ Deno.serve(async (req: Request) => {
       .select("id,session_id,user_id,message,created_at").single();
     if (error || !saved) return json({ error: "Could not send the chat message." }, 500);
     return json({ message: saved });
+  }
+
+  if (action === "moderate") {
+    const sessionId = String(body.session_id ?? "");
+    const targetUserId = String(body.target_user_id ?? "");
+    const actionType = String(body.action_type ?? "");
+    const reason = String(body.reason ?? "").trim().slice(0, 300) || null;
+    const durationMinutes = Number(body.duration_minutes ?? 5);
+    const allowedTypes = ["chat_mute", "timeout", "remove", "creator_live_block"];
+    if (!/^[0-9a-f-]{36}$/i.test(sessionId) || !/^[0-9a-f-]{36}$/i.test(targetUserId) ||
+        !allowedTypes.includes(actionType) || targetUserId === user.id) {
+      return json({ error: "Choose a valid viewer and moderation action." }, 400);
+    }
+    if (actionType === "timeout" && ![1, 5, 11, 30, 60, 1440].includes(durationMinutes)) {
+      return json({ error: "Choose one of the available timeout durations." }, 400);
+    }
+    const { data: session, error: sessionError } = await admin.from("live_sessions")
+      .select("id,room_name,creator_id,status").eq("id", sessionId).eq("creator_id", user.id).maybeSingle();
+    if (sessionError) return json({ error: "Could not verify stream ownership." }, 500);
+    if (!session || session.status !== "live") return json({ error: "Only the creator of an active Live can moderate it." }, 403);
+    const expiresAt = actionType === "timeout"
+      ? new Date(Date.now() + durationMinutes * 60_000).toISOString()
+      : null;
+    const { data: saved, error: saveError } = await admin.from("live_moderation_actions").insert({
+      session_id: sessionId, creator_id: user.id, target_user_id: targetUserId,
+      action_type: actionType, reason, starts_at: new Date().toISOString(), expires_at: expiresAt,
+    }).select("id,action_type,target_user_id,expires_at,created_at").single();
+    if (saveError || !saved) return json({ error: "Could not save the moderation action. Confirm the community-controls migration is installed." }, 500);
+    if (actionType === "remove" || actionType === "creator_live_block") {
+      try { await rooms.removeParticipant(session.room_name, targetUserId); }
+      catch (removeError) { console.warn("Live participant removal did not complete; join/chat restrictions remain active.", removeError); }
+    }
+    return json({ moderation: saved });
   }
 
   if (action === "report") {
