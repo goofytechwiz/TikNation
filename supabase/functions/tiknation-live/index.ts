@@ -119,6 +119,48 @@ Deno.serve(async (req: Request) => {
         return json({ error: "Could not start the broadcast." }, 500);
       }
       const credentials = await issueToken(roomName, true, true);
+
+      // Best-effort alert delivery; notification failures must not break a Live start.
+      try {
+        const { data: follows, error: followsError } = await admin.from("follows")
+          .select("follower_id").eq("following_id", user.id);
+        if (followsError) throw followsError;
+        const followerIds = [...new Set((follows ?? []).map((row: { follower_id: string }) => row.follower_id)
+          .filter((id: string) => id !== user.id))];
+        if (followerIds.length) {
+          const [preferencesResult, mutesResult, blocksResult] = await Promise.all([
+            admin.from("creator_notification_preferences").select("user_id,live_alerts")
+              .eq("creator_id", user.id).in("user_id", followerIds),
+            admin.from("user_mutes").select("muter_id,mute_notifications")
+              .eq("muted_id", user.id).in("muter_id", followerIds),
+            admin.from("user_blocks").select("blocker_id,blocked_id")
+              .or("blocker_id.eq." + user.id + ",blocked_id.eq." + user.id),
+          ]);
+          if (preferencesResult.error || mutesResult.error || blocksResult.error) {
+            throw preferencesResult.error || mutesResult.error || blocksResult.error;
+          }
+          const optedIn = new Set((preferencesResult.data ?? [])
+            .filter((row: { user_id: string; live_alerts: boolean }) => row.live_alerts)
+            .map((row: { user_id: string }) => row.user_id));
+          const muted = new Set((mutesResult.data ?? [])
+            .filter((row: { muter_id: string; mute_notifications: boolean }) => row.mute_notifications)
+            .map((row: { muter_id: string }) => row.muter_id));
+          const blocked = new Set<string>();
+          for (const row of blocksResult.data ?? []) {
+            if (row.blocker_id === user.id) blocked.add(row.blocked_id);
+            if (row.blocked_id === user.id) blocked.add(row.blocker_id);
+          }
+          const recipients = followerIds.filter((id) => optedIn.has(id) && !muted.has(id) && !blocked.has(id));
+          if (recipients.length) {
+            const { error: notifyError } = await admin.from("notifications").insert(recipients.map((recipient_id) => ({
+              recipient_id, actor_id: user.id, type: "creator_live", message: "Started a Live broadcast: " + title,
+            })));
+            if (notifyError) throw notifyError;
+          }
+        }
+      } catch (notificationError) {
+        console.warn("Live started successfully, but follower alerts could not be delivered.", notificationError);
+      }
       return json({ session, ...credentials });
     } catch (error) {
       console.error("TikNation Live start failed:", error);
