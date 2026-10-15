@@ -47,3 +47,19 @@ Create a distinct TikNation magical interface: midnight-indigo surfaces, cyan en
 - [ ] Test two-account follow/unfollow, block/mute, Live timeout/rejoin, and notifications.
 - [ ] Check mobile layout, focus states, screen-reader labels, and reduced-motion mode.
 - [ ] Merge/deploy only after successful end-to-end tests.
+
+## Implementation status — 2026-10-15
+
+- [x] Added a visual-only magical community-controls preview at `community-controls.html`.
+- [x] Added a draft additive SQL migration for creator post/notification mutes, per-creator alert preferences, and durable Live moderation actions with RLS and no direct client access to moderation records.
+- [x] Added separate Mute posts and Mute notifications actions to creator menus. Watch filters muted creators when the migration exists and gracefully continues if the new table is not yet available.
+- [x] Added server-side mutual-block checks for Live join and chat.
+- [x] Added a creator-owned Live moderation endpoint and backend enforcement for active chat mutes, timeouts, removals, and current-Live blocks.
+- [x] Added broadcaster-only controls in the Live studio to select a viewer from chat and apply the supported moderation actions.
+- [ ] Wire per-creator Live/post alert preferences into the creator menu and notification event creation/delivery.
+- [ ] Add manageable muted-account UI and explicit unmute controls.
+- [ ] Validate migration against current production data; check for duplicate follow rows before adding the unique index.
+- [ ] Run SQL security advisors, TypeScript/browser syntax checks, and two-account end-to-end tests.
+- [ ] Apply migration and deploy Edge Function only after review and tests. Nothing in this draft has been merged to `main` or deployed.
+
+Draft review: https://github.com/goofytechwiz/TikNation/pull/2
