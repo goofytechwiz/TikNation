@@ -4028,6 +4028,15 @@ async function loadWatchFeed(){
     if(currentUser){
         const blockedIds = await getBlockRelatedCreatorIds();
         visiblePosts = visiblePosts.filter(post => !blockedIds.has(post.user_id));
+        // Mutes are additive: if the migration is not installed yet, keep the feed working.
+        const {data:muteRows,error:muteError} = await supabaseClient.from("user_mutes")
+            .select("muted_id").eq("muter_id",currentUser.id).eq("mute_posts",true);
+        if(muteError){
+            console.warn("Creator post mutes are not active yet; apply the reviewed community-controls migration first.",muteError);
+        }else if(muteRows?.length){
+            const mutedIds = new Set(muteRows.map(row => row.muted_id));
+            visiblePosts = visiblePosts.filter(post => !mutedIds.has(post.user_id));
+        }
     }
 
     if(!visiblePosts.length){
