@@ -6016,6 +6016,20 @@ async function publishCreation(){
             throw postError;
         }
 
+        // Deliver opted-in follower alerts through the trusted Edge Function.
+        // A notification failure must never undo a successfully published post.
+        if(postData?.id){
+            try{
+                const {error:alertError} = await supabaseClient.functions.invoke(
+                    "tiknation-community-notifications",
+                    {body:{action:"post_published",post_id:postData.id}}
+                );
+                if(alertError) console.warn("Post published; follower alerts were unavailable:",alertError);
+            }catch(alertError){
+                console.warn("Post published; follower alerts could not be requested:",alertError);
+            }
+        }
+
         progressBar.style.width =
             "100%";
 
