@@ -58,10 +58,13 @@ Create a distinct TikNation magical interface: midnight-indigo surfaces, cyan en
 - [x] Added broadcaster-only controls in the Live studio to select a viewer from chat and apply the supported moderation actions.
 - [x] Wire per-creator Live/post alert preference toggles into the creator menu; preference storage is ready once the migration is installed.
 - [x] Suppress new in-app notifications from creators the recipient has muted for notifications (when the community-controls table is installed).
-- [ ] Implement trusted event generation/delivery for followed creators going Live and publishing posts; preference toggles alone do not deliver these alerts. The existing notification RLS rules must be reviewed before choosing a server-side delivery path.
+- [x] Add trusted server-side delivery code for opted-in followers when a creator starts Live and publishes a post; both paths respect notification mutes and blocks. Post alerts use server-side idempotency receipts.
+- [ ] Verify the new notification event types against the production notifications schema and test delivery after migration/function deployment.
 - [x] Add a muted-creators manager under Privacy Settings with separate Unmute posts and Unmute notifications controls.
-- [ ] Validate migration against current production data; check for duplicate follow rows before adding the unique index.
-- [ ] Run SQL security advisors, TypeScript/browser syntax checks, and two-account end-to-end tests. These checks have not yet passed and are a release blocker.
+- [x] Add a non-destructive migration preflight that stops with a clear error if duplicate follow pairs exist.
+- [ ] Validate migration against actual production data and resolve any duplicate follow pairs manually if the preflight finds them.
+- [x] Add a GitHub Actions workflow for Deno Edge Function type checks and inline browser-script syntax checks.
+- [ ] Confirm the workflow passes, run SQL security advisors, and complete two-account end-to-end tests. These checks have not yet passed and are a release blocker.
 - [ ] Apply migration and deploy Edge Function only after review and tests. Nothing in this draft has been merged to `main` or deployed.
 
 Draft review: https://github.com/goofytechwiz/TikNation/pull/2
