@@ -39,7 +39,7 @@ jobs:
           count = 0
           for page in pages:
               text = page.read_text(encoding="utf-8")
-              for index, match in enumerate(re.finditer(r"<script\\b[^>]*>(.*?)</script\\s*>", text, re.I | re.S)):
+              for index, match in enumerate(re.finditer(r"<script\b[^>]*>(.*?)</script\s*>", text, re.I | re.S)):
                   source = match.group(1).strip()
                   if not source:
                       continue
