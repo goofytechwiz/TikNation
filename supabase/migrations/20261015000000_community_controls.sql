@@ -2,7 +2,19 @@
 -- Review and test before applying to the production Supabase project.
 -- This migration intentionally does not change the currently working Live function.
 
--- Existing follows table already has RLS and a self-follow check. Enforce one row per pair.
+-- Existing follows table already has RLS and a self-follow check. Check for duplicates
+-- first so an existing account is never silently altered by this migration.
+do $
+begin
+  if exists (
+    select 1 from public.follows
+    group by follower_id, following_id
+    having count(*) > 1
+  ) then
+    raise exception 'Community-controls migration stopped: duplicate follows exist. Review duplicate rows in public.follows, then rerun this migration.';
+  end if;
+end $;
+
 create unique index if not exists follows_follower_following_unique
   on public.follows (follower_id, following_id);
 
@@ -68,6 +80,19 @@ drop policy if exists "Users delete their creator alert preferences" on public.c
 create policy "Users delete their creator alert preferences"
   on public.creator_notification_preferences for delete to authenticated
   using ((select auth.uid()) = user_id);
+
+
+-- Idempotency receipts prevent repeated client requests from spamming post alerts.
+create table if not exists public.creator_notification_deliveries (
+  post_id uuid not null references public.creator_posts(id) on delete cascade,
+  recipient_id uuid not null references auth.users(id) on delete cascade,
+  notification_type text not null check (notification_type = 'creator_post'),
+  created_at timestamptz not null default now(),
+  primary key (post_id, recipient_id, notification_type)
+);
+alter table public.creator_notification_deliveries enable row level security;
+revoke all on public.creator_notification_deliveries from anon, authenticated;
+-- The trusted notification Edge Function uses the service role; clients cannot inspect or edit receipts.
 
 -- Durable Live timeouts / bans. Read/write only via the authenticated server-side
 -- tiknation-live Edge Function using the service role; never expose to client roles.
