@@ -32,6 +32,8 @@ create table if not exists public.user_mutes (
 );
 
 alter table public.user_mutes enable row level security;
+revoke all on public.user_mutes from anon;
+grant select, insert, update, delete on public.user_mutes to authenticated;
 drop policy if exists "Users view their mute preferences" on public.user_mutes;
 create policy "Users view their mute preferences"
   on public.user_mutes for select to authenticated
@@ -63,6 +65,8 @@ create table if not exists public.creator_notification_preferences (
 );
 
 alter table public.creator_notification_preferences enable row level security;
+revoke all on public.creator_notification_preferences from anon;
+grant select, insert, update, delete on public.creator_notification_preferences to authenticated;
 drop policy if exists "Users view their creator alert preferences" on public.creator_notification_preferences;
 create policy "Users view their creator alert preferences"
   on public.creator_notification_preferences for select to authenticated
@@ -92,6 +96,7 @@ create table if not exists public.creator_notification_deliveries (
 );
 alter table public.creator_notification_deliveries enable row level security;
 revoke all on public.creator_notification_deliveries from anon, authenticated;
+grant all on public.creator_notification_deliveries to service_role;
 -- The trusted notification Edge Function uses the service role; clients cannot inspect or edit receipts.
 
 -- Durable Live timeouts / bans. Read/write only via the authenticated server-side
@@ -120,6 +125,7 @@ create index if not exists live_moderation_creator_target_idx
 
 alter table public.live_moderation_actions enable row level security;
 revoke all on public.live_moderation_actions from anon, authenticated;
+grant all on public.live_moderation_actions to service_role;
 -- No client-facing policies by design. The trusted Edge Function must verify
 -- the caller owns the session before writing moderation actions and enforce
 -- active actions before join/chat/token issuance.
