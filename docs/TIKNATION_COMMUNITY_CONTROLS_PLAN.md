@@ -56,12 +56,12 @@ Create a distinct TikNation magical interface: midnight-indigo surfaces, cyan en
 - [x] Production migration preflight: the current `public.follows` table had zero duplicate follower/following pairs.
 - [x] Added separate Mute posts and Mute notifications actions, Watch-feed filtering, and a muted-creators manager with independent unmute controls.
 - [x] Added per-creator Live and post alert preferences.
-- [x] Deployed `tiknation-community-notifications` Edge Function for authenticated, server-side post-alert delivery with mute/block checks and duplicate-delivery protection.
+- [x] Deployed `tiknation-community-notifications` Edge Function version 2 for authenticated, server-side post-alert delivery with mute/block checks, duplicate-delivery protection, and support for current Supabase key-map environment variables.
 - [x] Deployed `tiknation-live` version 8, preserving the deployed environment-key fallback and LiveKit error handling while adding mutual-block checks on join/chat/refresh, streamer moderation, timeout enforcement, and opted-in Live-start alerts.
-- [x] GitHub Actions passed Deno type checks for both Edge Functions and browser inline JavaScript syntax checks before merge.
-- [ ] Complete real two-account end-to-end tests for follow/unfollow, mute/unmute, alert opt-in/out, timeout expiry, Live removal/rejoin, and mobile behavior.
+- [x] GitHub Actions passed Deno type checks for both Edge Functions and browser inline JavaScript syntax checks before merge. The deployed Live function source passed type checks; notification function version 2 was successfully deployed after adding matching key-map compatibility.
+- [ ] Complete real two-account end-to-end tests for follow/unfollow, mute/unmute, alert opt-in/out, timeout expiry, Live removal/rejoin, and mobile behavior. These require authenticated test accounts and a real Live session.
 - [ ] Verify GitHub Pages has finished publishing the merged `main` branch and check the live site on phone and desktop.
-- [ ] Confirm actual notification delivery in the app. CI validates syntax/types; it does not simulate signed-in accounts or a real broadcast.
+- [ ] Confirm actual notification delivery in the app. CI validates syntax/types and deployment; it does not simulate signed-in accounts or a real broadcast.
 - [ ] Review Supabase security-advisor findings. The current project has pre-existing RLS warnings for several service-only tables and a disabled leaked-password protection setting; these are documented for follow-up rather than changed as part of this release.
 
 **Deployment note:** The migration and two Edge Functions are deployed. The website code is merged to `main`; public GitHub Pages publication and signed-in end-to-end behavior still need a final smoke test.
