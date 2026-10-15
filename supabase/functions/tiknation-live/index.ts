@@ -18,6 +18,20 @@ function record(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === "object" && !Array.isArray(value);
 }
 
+function liveKitFailure(error: unknown, operation: string): string {
+  const message = error instanceof Error ? error.message : String(error ?? "");
+  if (/unauthorized|invalid api key|401/i.test(message)) {
+    return "LiveKit rejected the API credentials (401 Unauthorized).";
+  }
+  if (/forbidden|403/i.test(message)) {
+    return "LiveKit denied this request (403 Forbidden).";
+  }
+  if (/enotfound|failed to fetch|network|connection refused|timed out/i.test(message)) {
+    return "TikNation could not reach the LiveKit server. Check the server URL.";
+  }
+  return "LiveKit could not complete the " + operation + " request. The detailed error is saved in Supabase function logs.";
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "Method not allowed." }, 405);
@@ -26,14 +40,39 @@ Deno.serve(async (req: Request) => {
   if (!authHeader?.startsWith("Bearer ")) return json({ error: "Sign in to use TikNation Live." }, 401);
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
-  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  // New Supabase projects expose key maps; retain support for legacy env vars.
+  function keyFromMap(raw: string | undefined, keyName = "default"): string | undefined {
+    if (!raw) return undefined;
+    try {
+      const parsed = JSON.parse(raw);
+      const value = parsed && typeof parsed === "object" ? parsed[keyName] : undefined;
+      return typeof value === "string" && value.trim() ? value.trim() : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ||
+    keyFromMap(Deno.env.get("SUPABASE_PUBLISHABLE_KEYS"));
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
+    keyFromMap(Deno.env.get("SUPABASE_SECRET_KEYS"));
   const livekitUrl = Deno.env.get("LIVEKIT_URL");
   const livekitApiKey = Deno.env.get("LIVEKIT_API_KEY");
   const livekitApiSecret = Deno.env.get("LIVEKIT_API_SECRET");
 
-  if (!supabaseUrl || !anonKey || !serviceKey || !livekitUrl || !livekitApiKey || !livekitApiSecret) {
-    return json({ error: "TikNation Live is not configured yet." }, 503);
+  const missingConfig = [
+    !supabaseUrl && "SUPABASE_URL",
+    !anonKey && "SUPABASE_ANON_KEY or SUPABASE_PUBLISHABLE_KEYS[default]",
+    !serviceKey && "SUPABASE_SERVICE_ROLE_KEY or SUPABASE_SECRET_KEYS[default]",
+    !livekitUrl && "LIVEKIT_URL",
+    !livekitApiKey && "LIVEKIT_API_KEY",
+    !livekitApiSecret && "LIVEKIT_API_SECRET",
+  ].filter(Boolean);
+  if (missingConfig.length) {
+    console.error("TikNation Live missing configuration:", missingConfig);
+    return json({
+      error: "TikNation Live is not configured yet. Missing configuration: " + missingConfig.join(", "),
+      missing: missingConfig,
+    }, 503);
   }
 
   const token = authHeader.slice("Bearer ".length).trim();
@@ -120,8 +159,6 @@ Deno.serve(async (req: Request) => {
         return json({ error: "Could not start the broadcast." }, 500);
       }
       const credentials = await issueToken(roomName, true, true);
-
-      // Best-effort alert delivery; notification failures must not break a Live start.
       try {
         const { data: follows, error: followsError } = await admin.from("follows")
           .select("follower_id").eq("following_id", user.id);
@@ -165,13 +202,14 @@ Deno.serve(async (req: Request) => {
       return json({ session, ...credentials });
     } catch (error) {
       console.error("TikNation Live start failed:", error);
+      const failureMessage = liveKitFailure(error, "broadcast start");
       await admin.from("live_sessions").update({ status: "ended", ended_at: new Date().toISOString() }).eq("id", sessionId).eq("status", "live");
       try {
         await rooms.deleteRoom(roomName);
       } catch (cleanupError) {
         console.error("Live room cleanup after start failure failed:", cleanupError);
       }
-      return json({ error: "The broadcast could not be started. Please try again." }, 502);
+      return json({ error: failureMessage }, 502);
     }
   }
 
@@ -182,8 +220,6 @@ Deno.serve(async (req: Request) => {
       .select("id,room_name,status,creator_id").eq("id", sessionId).eq("status", "live").maybeSingle();
     if (error) return json({ error: "Could not refresh the broadcast connection." }, 500);
     if (!session) return json({ error: "This broadcast has ended or is unavailable." }, 404);
-    // Re-check block and moderation state on token refresh so a removed viewer
-    // cannot bypass a Live restriction by refreshing their credentials.
     const isCreator = session.creator_id === user.id;
     if (!isCreator) {
       const { data: blockRows, error: blockError } = await admin.from("user_blocks")
@@ -199,7 +235,6 @@ Deno.serve(async (req: Request) => {
       if (restrictionError) return json({ error: "Could not verify Live access. Please try again." }, 500);
       if (restrictions?.length) return json({ error: "The creator has restricted your access to this Live." }, 403);
     }
-    // Never trust a client-supplied host flag.
     const credentials = await issueToken(session.room_name, isCreator, true);
     return json(credentials);
   }
@@ -211,7 +246,6 @@ Deno.serve(async (req: Request) => {
       .select("id,title,room_name,status,started_at,creator_id").eq("id", sessionId).eq("status", "live").maybeSingle();
     if (error) return json({ error: "Could not load the live broadcast." }, 500);
     if (!session) return json({ error: "This broadcast has ended or is unavailable." }, 404);
-    // Enforce blocks on the trusted server path, not only in the public feed UI.
     if (session.creator_id !== user.id) {
       const { data: blockRows, error: blockError } = await admin.from("user_blocks")
         .select("blocker_id")
@@ -219,8 +253,6 @@ Deno.serve(async (req: Request) => {
         .limit(1);
       if (blockError) return json({ error: "Could not verify access to this broadcast. Please try again." }, 500);
       if (blockRows?.length) return json({ error: "This broadcast is unavailable because of a block between these accounts." }, 403);
-    }
-    if (session.creator_id !== user.id) {
       const { data: restrictions, error: restrictionError } = await admin.from("live_moderation_actions")
         .select("id,action_type").eq("session_id", sessionId).eq("target_user_id", user.id)
         .is("revoked_at", null).in("action_type", ["remove", "creator_live_block"])
@@ -228,7 +260,7 @@ Deno.serve(async (req: Request) => {
       if (restrictionError) return json({ error: "Could not verify Live access. Please try again." }, 500);
       if (restrictions?.length) return json({ error: "The creator has restricted your access to this Live." }, 403);
     }
-    const credentials = await issueToken(session.room_name, false, true);
+    const credentials = await issueToken(session.room_name, session.creator_id === user.id, true);
     return json({ session: { id: session.id, title: session.title, status: session.status, started_at: session.started_at, creator_id: session.creator_id }, ...credentials });
   }
 
@@ -391,7 +423,7 @@ Deno.serve(async (req: Request) => {
       liveRooms = await rooms.listRooms();
     } catch (recoveryError) {
       console.error("Live stale-session check failed:", recoveryError);
-      return json({ error: "Live broadcasts are temporarily unavailable. Please refresh shortly." }, 503);
+      return json({ error: liveKitFailure(recoveryError, "live list") }, 503);
     }
     const roomNames = new Set(liveRooms.map((r) => r.name));
     const stale = (data ?? []).filter((s) => !roomNames.has(s.room_name));
