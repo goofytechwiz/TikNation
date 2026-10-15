@@ -181,8 +181,24 @@ Deno.serve(async (req: Request) => {
       .select("id,room_name,status,creator_id").eq("id", sessionId).eq("status", "live").maybeSingle();
     if (error) return json({ error: "Could not refresh the broadcast connection." }, 500);
     if (!session) return json({ error: "This broadcast has ended or is unavailable." }, 404);
-    // Reissue permissions from the stored creator identity; never trust a client-supplied host flag.
+    // Re-check block and moderation state on token refresh so a removed viewer
+    // cannot bypass a Live restriction by refreshing their credentials.
     const isCreator = session.creator_id === user.id;
+    if (!isCreator) {
+      const { data: blockRows, error: blockError } = await admin.from("user_blocks")
+        .select("blocker_id")
+        .or("and(blocker_id.eq." + user.id + ",blocked_id.eq." + session.creator_id + "),and(blocker_id.eq." + session.creator_id + ",blocked_id.eq." + user.id + ")")
+        .limit(1);
+      if (blockError) return json({ error: "Could not verify access to this broadcast. Please try again." }, 500);
+      if (blockRows?.length) return json({ error: "This broadcast is unavailable because of a block between these accounts." }, 403);
+      const { data: restrictions, error: restrictionError } = await admin.from("live_moderation_actions")
+        .select("id,action_type").eq("session_id", sessionId).eq("target_user_id", user.id)
+        .is("revoked_at", null).in("action_type", ["remove", "creator_live_block"])
+        .or("expires_at.is.null,expires_at.gt." + new Date().toISOString()).limit(1);
+      if (restrictionError) return json({ error: "Could not verify Live access. Please try again." }, 500);
+      if (restrictions?.length) return json({ error: "The creator has restricted your access to this Live." }, 403);
+    }
+    // Never trust a client-supplied host flag.
     const credentials = await issueToken(session.room_name, isCreator, true);
     return json(credentials);
   }
