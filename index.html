@@ -4214,6 +4214,25 @@ function renderCreatorActionMenu(userId,displayName){
     return "<details class=\"creator-actions-menu\" style=\"margin-left:8px;vertical-align:middle;\"><summary aria-label=\"Creator actions\" title=\"Creator actions\">⋯</summary><div class=\"creator-actions-popover\"><button type=\"button\" onclick=\"this.closest('details').open=false;reportContent('profile','"+safeId+"','"+safeId+"')\">🚩 Report creator</button><button type=\"button\" onclick=\"this.closest('details').open=false;toggleCreatorMute('"+safeId+"','posts','"+safeName+"')\">🔕 Mute posts</button><button type=\"button\" onclick=\"this.closest('details').open=false;toggleCreatorMute('"+safeId+"','notifications','"+safeName+"')\">🔕 Mute notifications</button><button type=\"button\" onclick=\"this.closest('details').open=false;blockCreator('"+safeId+"','"+safeName+"')\">🚫 Block creator</button></div></details>";
 }
 
+async function toggleCreatorAlert(creatorId,kind,displayName){
+    if(!currentUser){openAuthModal("signin");return;}
+    if(!creatorId || creatorId===currentUser.id || !["live","posts"].includes(kind)) return;
+    const column = kind==="live" ? "live_alerts" : "post_alerts";
+    const {data:existing,error:readError} = await supabaseClient.from("creator_notification_preferences")
+        .select("live_alerts,post_alerts").eq("user_id",currentUser.id).eq("creator_id",creatorId).maybeSingle();
+    if(readError){alert("Creator alerts require the community-controls database update first.");console.error(readError);return;}
+    const nextValue = !(existing && existing[column]);
+    const values = {user_id:currentUser.id,creator_id:creatorId,
+        live_alerts:column==="live_alerts"?nextValue:Boolean(existing?.live_alerts),
+        post_alerts:column==="post_alerts"?nextValue:Boolean(existing?.post_alerts),
+        updated_at:new Date().toISOString()};
+    const result = values.live_alerts || values.post_alerts
+        ? await supabaseClient.from("creator_notification_preferences").upsert(values,{onConflict:"user_id,creator_id"})
+        : await supabaseClient.from("creator_notification_preferences").delete().eq("user_id",currentUser.id).eq("creator_id",creatorId);
+    if(result.error){alert("Could not save the alert preference. Please try again.");console.error(result.error);return;}
+    alert((nextValue?"Enabled ":"Disabled ")+(kind==="live"?"Live alerts":"post alerts")+" for "+(displayName||"this creator")+".");
+}
+
 async function toggleCreatorMute(userId,kind,displayName){
     if(!currentUser){openAuthModal("signin");return;}
     if(!userId || userId===currentUser.id || !["posts","notifications"].includes(kind)) return;
