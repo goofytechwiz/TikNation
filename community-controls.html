@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>TikNation • Community Controls</title>
+<style>
+:root{--bg:#090b20;--panel:#11152f;--panel2:#171c3d;--line:#343b70;--cyan:#68f3ff;--violet:#b99aff;--text:#f3f5ff;--muted:#aeb6d9;--pink:#ff8fcf}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 85% 0%,#28205b 0,transparent 42%),radial-gradient(ellipse at 0% 45%,#103e5a55 0,transparent 35%),var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+.wrap{max-width:900px;margin:auto;padding:24px 16px 64px}.brand{display:flex;align-items:center;gap:12px;margin-bottom:24px}.sigil{width:46px;height:46px;border:1px solid var(--cyan);border-radius:15px;display:grid;place-items:center;color:var(--cyan);box-shadow:0 0 22px #68f3ff35;font-size:24px}.eyebrow{font-size:12px;letter-spacing:.19em;text-transform:uppercase;color:var(--cyan)}h1{font-size:clamp(27px,5vw,42px);line-height:1.1;margin:5px 0 8px}h2{font-size:19px;margin:0 0 4px}p{margin:0;color:var(--muted)}.hero{padding:24px;border:1px solid #5a62a4;border-radius:24px;background:linear-gradient(125deg,#171b3cdd,#11142ddd);box-shadow:0 15px 50px #0005;position:relative;overflow:hidden}.hero:after{content:"✧  ·  ✦  ·  ✧";position:absolute;right:18px;top:18px;color:#9c8cff66;letter-spacing:.4em;font-size:21px}.notice{margin-top:14px;padding:10px 12px;border-radius:12px;background:#3e326022;border:1px solid #6d5ca8;color:#dcd3ff;font-size:13px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.tab,button,select{font:inherit}.tab{border:1px solid var(--line);background:#11152f;color:var(--muted);border-radius:999px;padding:10px 14px;cursor:pointer}.tab[aria-selected=true]{color:#07131f;background:var(--cyan);border-color:var(--cyan);font-weight:700}.panel{background:#10142beF;border:1px solid var(--line);border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 8px 28px #0002}.panel-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}.glyph{flex:0 0 42px;height:42px;border-radius:14px;display:grid;place-items:center;background:#27204b;color:var(--violet);font-size:21px}.sub{font-size:13px;color:var(--muted)}.item{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-top:1px solid #30365b}.item:first-of-type{border-top:0}.item p{font-size:14px}.toggle{appearance:none;width:46px;height:27px;flex:0 0 46px;border:1px solid #626b9e;border-radius:99px;background:#303654;position:relative;cursor:pointer}.toggle:before{content:"";position:absolute;width:19px;height:19px;left:3px;top:3px;background:#e7eaff;border-radius:50%;transition:transform .18s}.toggle:checked{background:#1a8d9a;border-color:var(--cyan)}.toggle:checked:before{transform:translateX(19px);background:white}.action{border:1px solid #58639c;background:#1a2046;color:var(--text);border-radius:11px;padding:9px 12px;cursor:pointer}.action:hover{border-color:var(--cyan)}.danger{border-color:#8e4f7a;color:#ffc0e2}.select{max-width:150px;background:#171c3d;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px}.profile{display:flex;align-items:center;gap:12px}.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(140deg,#46d9e8,#9167f4);color:#07121f;font-weight:900}.pill{font-size:11px;letter-spacing:.08em;color:var(--cyan);border:1px solid #397d8b;border-radius:99px;padding:4px 8px}.empty{border:1px dashed #414b7d;border-radius:14px;padding:16px;color:var(--muted);text-align:center}.foot{margin-top:20px;text-align:center;color:#8c96bf;font-size:12px}
+[hidden]{display:none!important}
+@media(max-width:560px){.wrap{padding:16px 12px 40px}.hero{padding:20px}.hero:after{opacity:.35}.panel{padding:14px}.item{align-items:flex-start}.item .action,.item .select{align-self:center}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body><main class="wrap">
+<header class="brand"><div class="sigil" aria-hidden="true">✦</div><div><div class="eyebrow">TikNation · Creator Space</div><strong>Your voice. Your world.</strong></div></header>
+<section class="hero"><div class="eyebrow">Your space · Your choices</div><h1>Community Controls</h1><p>Shape your experience, protect your peace, and set the vibe for your Live.</p><div class="notice">Design preview only — these controls are not connected to your TikNation account yet. No real account settings are changed here.</div></section>
+<nav class="tabs" role="tablist" aria-label="Community control sections">
+<button class="tab" role="tab" aria-selected="true" aria-controls="following" id="tab-following">Following</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="privacy" id="tab-privacy">Block &amp; mute</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="live" id="tab-live">Live safety</button>
+<button class="tab" role="tab" aria-selected="false" aria-controls="alerts" id="tab-alerts">Notifications</button></nav>
+<section id="following" role="tabpanel" aria-labelledby="tab-following">
+<div class="panel"><div class="panel-head"><div class="glyph">✧</div><div><h2>Your circle</h2><p class="sub">Manage who you follow and how you stay connected.</p></div></div>
+<div class="item"><div><strong>Following list</strong><p>Find creators you follow and visit their profiles.</p></div><button class="action" data-demo="Following list">Preview</button></div>
+<div class="item"><div><strong>Unfollow confirmation</strong><p>A second check helps prevent accidental unfollows.</p></div><span class="pill">PLANNED</span></div>
+<div class="item"><div><strong>Follower activity</strong><p>Follow alerts will respect your notification choices.</p></div><span class="pill">PLANNED</span></div></div>
+</section>
+<section id="privacy" role="tabpanel" aria-labelledby="tab-privacy" hidden>
+<div class="panel"><div class="panel-head"><div class="glyph">◈</div><div><h2>Boundaries that work for you</h2><p class="sub">Blocking and muting are separate choices.</p></div></div>
+<div class="item"><div><strong>Blocked accounts</strong><p>Review blocked people and restore access if you choose.</p></div><button class="action" data-demo="Blocked accounts">Preview</button></div>
+<div class="item"><div><strong>Muted posts</strong><p>Quiet someone's posts without notifying them.</p></div><button class="action" data-demo="Muted posts">Preview</button></div>
+<div class="item"><div><strong>Muted notifications</strong><p>Keep a follow while silencing their alerts.</p></div><button class="action" data-demo="Muted notifications">Preview</button></div>
+<div class="notice">Blocking must be enforced by the backend too—not just by hiding buttons on screen.</div></div>
+</section>
+<section id="live" role="tabpanel" aria-labelledby="tab-live" hidden>
+<div class="panel"><div class="panel-head"><div class="glyph">✦</div><div><h2>Live moderation defaults</h2><p class="sub">A creator should be able to tune these for each broadcast.</p></div></div>
+<div class="item"><div><strong>Who can chat?</strong><p>Choose the audience allowed to participate.</p></div><select class="select" aria-label="Who can chat"><option>Everyone</option><option>Followers</option><option>Approved people</option></select></div>
+<div class="item"><div><strong>Timeout duration</strong><p>Temporarily pause disruptive chat access.</p></div><select class="select" aria-label="Timeout duration"><option>1 minute</option><option selected>5 minutes</option><option>10 minutes</option><option>15 minutes</option><option>30 minutes</option></select></div>
+<div class="item"><div><strong>Repeat disruption</strong><p>Escalate repeated problems to a longer timeout or Live block.</p></div><select class="select" aria-label="Repeat disruption"><option>10 minutes</option><option>30 minutes</option><option>60 minutes</option><option>Review manually</option></select></div>
+<div class="item"><div><strong>Reporting</strong><p>Safety reporting remains available during every Live.</p></div><span class="pill">ALWAYS ON</span></div>
+<div class="notice">These are proposed settings for the design preview only. Actual timeout, rejoin, and chat enforcement requires server-side implementation and testing.</div></div>
+</section>
+<section id="alerts" role="tabpanel" aria-labelledby="tab-alerts" hidden>
+<div class="panel"><div class="panel-head"><div class="glyph">♧</div><div><h2>Your notifications</h2><p class="sub">Choose what deserves your attention.</p></div></div>
+<div class="item"><div><strong>In-app notifications</strong><p>See updates inside TikNation.</p></div><input class="toggle" type="checkbox" checked aria-label="In-app notifications"></div>
+<div class="item"><div><strong>Creator goes Live</strong><p>Get an alert when a followed creator starts a broadcast.</p></div><input class="toggle" type="checkbox" checked aria-label="Creator Live alerts"></div>
+<div class="item"><div><strong>New posts</strong><p>Hear when followed creators share something new.</p></div><input class="toggle" type="checkbox" aria-label="New post alerts"></div>
+<div class="item"><div><strong>New followers</strong><p>Know when someone joins your circle.</p></div><input class="toggle" type="checkbox" checked aria-label="New follower alerts"></div>
+<div class="item"><div><strong>Security notices</strong><p>Keep important account and safety alerts enabled.</p></div><span class="pill">IMPORTANT</span></div>
+<div class="notice">The switches above are visual examples only. Saving preferences and phone push delivery are not wired up.</div></div>
+</section>
+<div class="foot">TIKNATION ✦ YOUR VOICE. YOUR WORLD. · Community Controls preview</div>
+</main>
+<script>
+const tabs=[...document.querySelectorAll('[role="tab"]')];
+tabs.forEach(tab=>tab.addEventListener('click',()=>{tabs.forEach(t=>t.setAttribute('aria-selected',String(t===tab)));document.querySelectorAll('[role="tabpanel"]').forEach(p=>p.hidden=p.id!==tab.getAttribute('aria-controls'));}));
+document.querySelectorAll('[data-demo]').forEach(button=>button.addEventListener('click',()=>{const note=document.createElement('div');note.className='notice';note.setAttribute('role','status');note.textContent=button.dataset.demo+' will appear here when account controls are connected. This preview does not change your account.';button.closest('.panel').append(note);button.disabled=true;button.textContent='Previewed';}));
+</script></body></html>
