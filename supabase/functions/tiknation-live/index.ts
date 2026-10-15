@@ -53,6 +53,7 @@ Deno.serve(async (req: Request) => {
     return json({ error: "Invalid request." }, 400);
   }
 
+  const authenticatedUser = user;
   const action = String(body.action ?? "");
   const admin = createClient(supabaseUrl, serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },
@@ -63,7 +64,7 @@ Deno.serve(async (req: Request) => {
   // The database function serializes checks per actor/action to prevent parallel requests bypassing limits.
   async function isRateLimited(actionName: "chat" | "report", limit: number, windowMs: number) {
     const { data, error } = await admin.rpc("tiknation_live_consume_rate_limit", {
-      p_actor_id: user.id,
+      p_actor_id: authenticatedUser.id,
       p_action: actionName,
       p_limit: limit,
       p_window_seconds: Math.ceil(windowMs / 1000),
@@ -76,8 +77,8 @@ Deno.serve(async (req: Request) => {
   }
 
   async function issueToken(roomName: string, canPublish: boolean, canSubscribe: boolean) {
-    const { data: profile } = await admin.from("profiles").select("username,display_name").eq("id", user.id).maybeSingle();
-    const identity = user.id;
+    const { data: profile } = await admin.from("profiles").select("username,display_name").eq("id", authenticatedUser.id).maybeSingle();
+    const identity = authenticatedUser.id;
     const participantName = String(profile?.display_name || profile?.username || "TikNation Creator").slice(0, 64);
     const access = new AccessToken(livekitApiKey, livekitApiSecret, {
       identity,
