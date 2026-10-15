@@ -74,6 +74,10 @@ Deno.serve(async (req: Request) => {
       missing: missingConfig,
     }, 503);
   }
+  // Keep the environment values narrowed after the diagnostic missing-config array.
+  if (!supabaseUrl || !anonKey || !serviceKey || !livekitUrl || !livekitApiKey || !livekitApiSecret) {
+    return json({ error: "TikNation Live is not configured yet." }, 503);
+  }
 
   const token = authHeader.slice("Bearer ".length).trim();
   const authClient = createClient(supabaseUrl, anonKey, {
