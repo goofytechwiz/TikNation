@@ -4200,7 +4200,40 @@ async function unblockCreator(userId){
 }
 
 function renderCreatorActionMenu(userId,displayName){
-    return "<details class=\"creator-actions-menu\" style=\"margin-left:8px;vertical-align:middle;\"><summary aria-label=\"Creator actions\" title=\"Creator actions\">⋯</summary><div class=\"creator-actions-popover\"><button type=\"button\" onclick=\"this.closest('details').open=false;reportContent('profile','"+escapeJs(userId)+"','"+escapeJs(userId)+"')\">🚩 Report creator</button><button type=\"button\" onclick=\"this.closest('details').open=false;blockCreator('"+escapeJs(userId)+"')\">🚫 Block creator</button></div></details>";
+    const safeId = escapeJs(userId);
+    const safeName = escapeJs(displayName || "this creator");
+    return "<details class=\"creator-actions-menu\" style=\"margin-left:8px;vertical-align:middle;\"><summary aria-label=\"Creator actions\" title=\"Creator actions\">⋯</summary><div class=\"creator-actions-popover\"><button type=\"button\" onclick=\"this.closest('details').open=false;reportContent('profile','"+safeId+"','"+safeId+"')\">🚩 Report creator</button><button type=\"button\" onclick=\"this.closest('details').open=false;toggleCreatorMute('"+safeId+"','posts','"+safeName+"')\">🔕 Mute posts</button><button type=\"button\" onclick=\"this.closest('details').open=false;toggleCreatorMute('"+safeId+"','notifications','"+safeName+"')\">🔕 Mute notifications</button><button type=\"button\" onclick=\"this.closest('details').open=false;blockCreator('"+safeId+"','"+safeName+"')\">🚫 Block creator</button></div></details>";
+}
+
+async function toggleCreatorMute(userId,kind,displayName){
+    if(!currentUser){openAuthModal("signin");return;}
+    if(!userId || userId===currentUser.id || !["posts","notifications"].includes(kind)) return;
+    const column = kind === "posts" ? "mute_posts" : "mute_notifications";
+    const {data:existing,error:readError} = await supabaseClient.from("user_mutes")
+        .select("mute_posts,mute_notifications").eq("muter_id",currentUser.id).eq("muted_id",userId).maybeSingle();
+    if(readError){
+        alert("Mute controls are not available until the community-controls database update is installed. Your account was not changed.");
+        console.error("Mute preference lookup failed:",readError);
+        return;
+    }
+    const nextValue = !(existing && existing[column]);
+    const values = {
+        muter_id:currentUser.id,
+        muted_id:userId,
+        mute_posts:column==="mute_posts" ? nextValue : Boolean(existing?.mute_posts),
+        mute_notifications:column==="mute_notifications" ? nextValue : Boolean(existing?.mute_notifications),
+        updated_at:new Date().toISOString()
+    };
+    const {error:writeError} = values.mute_posts || values.mute_notifications
+        ? await supabaseClient.from("user_mutes").upsert(values,{onConflict:"muter_id,muted_id"})
+        : await supabaseClient.from("user_mutes").delete().eq("muter_id",currentUser.id).eq("muted_id",userId);
+    if(writeError){
+        alert("We couldn't save that mute setting. Please try again.");
+        console.error("Mute preference save failed:",writeError);
+        return;
+    }
+    alert((nextValue ? "Muted " : "Unmuted ") + (displayName || "this creator") + (kind==="posts" ? " posts." : " notifications."));
+    if(kind==="posts" && typeof loadWatchFeed==="function") await loadWatchFeed();
 }
 
 function renderPostActionMenu(postId,userId){
