@@ -3749,7 +3749,7 @@ async function loadProfileCreations(){
         await supabaseClient
             .from("creator_posts")
             .select(
-                "id,created_at,username,title,description,media_url,media_type,status"
+                "id,created_at,username,title,description,media_url,media_path,media_type,status"
             )
             .eq("user_id",currentUser.id)
             .eq("status","published")
@@ -3869,11 +3869,79 @@ function renderProfileCreation(post){
                     )}
                 </p>
 
+                <div class="video-actions">
+                    <button type="button" class="small-button" onclick="deleteCreatorPost('${escapeJs(post.id)}')">🗑️ Delete post</button>
+                </div>
+
             </div>
 
         </article>
 
     `;
+}
+
+async function deleteCreatorPost(postId){
+    if(!currentUser){
+        alert("Please sign in to delete your post.");
+        return;
+    }
+    if(!postId || !confirm("Delete this post permanently? This cannot be undone.")){
+        return;
+    }
+
+    try{
+        // Read the stored media path only for a post owned by the signed-in user.
+        const {data:post,error:lookupError} = await supabaseClient
+            .from("creator_posts")
+            .select("id,user_id,media_path")
+            .eq("id",postId)
+            .eq("user_id",currentUser.id)
+            .maybeSingle();
+
+        if(lookupError) throw lookupError;
+        if(!post) throw new Error("This post was not found in your account.");
+
+        const {data:deleted,error:deleteError} = await supabaseClient
+            .from("creator_posts")
+            .delete()
+            .eq("id",postId)
+            .eq("user_id",currentUser.id)
+            .select("id")
+            .maybeSingle();
+
+        if(deleteError) throw deleteError;
+        if(!deleted) throw new Error("TikNation could not confirm the post was deleted. Please refresh and try again.");
+
+        // Only remove media stored inside this user's own folder. A storage cleanup
+        // failure must not undo the successful database deletion.
+        let mediaCleanupFailed = false;
+        const mediaPath = String(post.media_path || "");
+        if(mediaPath && mediaPath.startsWith(currentUser.id + "/") && !mediaPath.split("/").includes("..")){
+            const {error:storageError} = await supabaseClient
+                .storage.from("creator-media").remove([mediaPath]);
+            if(storageError){
+                mediaCleanupFailed = true;
+                console.warn("Post deleted, but its media file could not be removed:",storageError);
+            }
+        }
+
+        const card = document.querySelector('[data-post-id="' + CSS.escape(String(postId)) + '"]');
+        if(card) card.remove();
+
+        await Promise.all([
+            loadWatchFeed(),
+            loadProfileCreations()
+        ]);
+
+        if(mediaCleanupFailed){
+            alert("Your post was deleted. Its old media file could not be cleaned up automatically.");
+        }else{
+            alert("Your post has been deleted.");
+        }
+    }catch(error){
+        console.error("Delete creator post error:",error);
+        alert(error?.message || "Unable to delete your post right now. Please try again.");
+    }
 }
 
 /* =========================
@@ -4389,6 +4457,8 @@ function renderWatchPost(post){
                 }
 
                 <div class="video-actions">
+
+                    ${isOwnPost ? `<button type="button" class="small-button" onclick="deleteCreatorPost('${escapeJs(post.id)}')">🗑️ Delete post</button>` : ""}
 
                     <button
                         type="button"
