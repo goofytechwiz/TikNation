@@ -6868,6 +6868,20 @@ async function markTikNationNotificationRead(id,remote){
 
 async function createTikNationNotification(recipientId,type,message){
     if(!currentUser || !recipientId || recipientId === currentUser.id) return;
+
+    // Respect the recipient's mute choice without exposing their preferences.
+    const {data:mutePreference,error:muteError} = await supabaseClient
+        .from("user_mutes")
+        .select("mute_notifications")
+        .eq("muter_id",recipientId)
+        .eq("muted_id",currentUser.id)
+        .maybeSingle();
+    if(muteError && !/user_mutes|relation .* does not exist|schema cache/i.test(muteError.message||"")){
+        console.error("Could not check notification mute preference:",muteError);
+        return;
+    }
+    if(mutePreference && mutePreference.mute_notifications) return;
+
     const {error} = await supabaseClient.from("notifications").insert({
         recipient_id:recipientId,
         actor_id:currentUser.id,
