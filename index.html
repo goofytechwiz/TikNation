@@ -2332,6 +2332,12 @@ textarea.form-control{
         <div class="settings-panel-content">
         <p class="muted">Blocked creators are hidden from your Watch feed and their profiles cannot be opened while the block is active. Blocking also prevents follows, likes, comments, and direct messages between the two accounts.</p>
         <div id="blockedCreatorsList" aria-live="polite" style="margin-top:16px;">Sign in to manage blocked creators.</div>
+        <div style="border-top:1px solid var(--border-color,rgba(255,255,255,.12));margin-top:22px;padding-top:18px;">
+            <h3>🔕 Muted creators</h3>
+            <p class="muted">Manage creators whose posts or notifications you have muted. Unmuting one setting does not change the other.</p>
+            <div id="mutedCreatorsList" aria-live="polite" style="margin-top:16px;">Sign in to manage muted creators.</div>
+            <button type="button" class="small-button" style="margin-top:12px;" onclick="loadMuteSettings()">↻ REFRESH MUTED CREATORS</button>
+        </div>
         </div>
     </details>
 
@@ -2566,6 +2572,10 @@ function openSettingsPanel(panelId){
     if(!panel) return;
     panel.open = true;
     panel.scrollIntoView({behavior:"smooth",block:"start"});
+    if(panelId === "privacySettings"){
+        loadBlockSettings();
+        loadMuteSettings();
+    }
 }
 
 function toggleHeaderMenu(forceOpen){
@@ -4028,6 +4038,15 @@ async function loadWatchFeed(){
     if(currentUser){
         const blockedIds = await getBlockRelatedCreatorIds();
         visiblePosts = visiblePosts.filter(post => !blockedIds.has(post.user_id));
+        // Mutes are additive: if the migration is not installed yet, keep the feed working.
+        const {data:muteRows,error:muteError} = await supabaseClient.from("user_mutes")
+            .select("muted_id").eq("muter_id",currentUser.id).eq("mute_posts",true);
+        if(muteError){
+            console.warn("Creator post mutes are not active yet; apply the reviewed community-controls migration first.",muteError);
+        }else if(muteRows?.length){
+            const mutedIds = new Set(muteRows.map(row => row.muted_id));
+            visiblePosts = visiblePosts.filter(post => !mutedIds.has(post.user_id));
+        }
     }
 
     if(!visiblePosts.length){
@@ -4158,6 +4177,34 @@ async function getBlockRelatedCreatorIds(){
     return ids;
 }
 
+async function loadMuteSettings(){
+    const list = document.getElementById("mutedCreatorsList");
+    if(!list) return;
+    if(!currentUser){ list.textContent = "Sign in to manage muted creators."; return; }
+    list.textContent = "Loading muted creators…";
+    const {data,error} = await supabaseClient.from("user_mutes")
+        .select("muted_id,mute_posts,mute_notifications,created_at")
+        .eq("muter_id",currentUser.id).order("created_at",{ascending:false});
+    if(error){
+        list.textContent = "Muted creators are unavailable. If this is a new feature, the community-controls database migration must be installed first.";
+        console.error("Muted creator settings could not be loaded:",error);
+        return;
+    }
+    if(!data || !data.length){ list.textContent = "You have not muted any creators."; return; }
+    const ids = data.map(row => row.muted_id);
+    const profileResult = await supabaseClient.from("profiles").select("id,username,display_name").in("id",ids);
+    const profiles = new Map((profileResult.data || []).map(profile => [profile.id,profile]));
+    list.innerHTML = data.map(function(row){
+        const profile = profiles.get(row.muted_id) || {};
+        const name = profile.display_name || profile.username || "TikNation creator";
+        const username = profile.username ? "@" + profile.username : "";
+        const actions = [];
+        if(row.mute_posts) actions.push("<button type=\"button\" class=\"small-button\" onclick=\"toggleCreatorMute('"+escapeJs(row.muted_id)+"','posts','"+escapeJs(name)+"').then(loadMuteSettings)\">UNMUTE POSTS</button>");
+        if(row.mute_notifications) actions.push("<button type=\"button\" class=\"small-button\" onclick=\"toggleCreatorMute('"+escapeJs(row.muted_id)+"','notifications','"+escapeJs(name)+"').then(loadMuteSettings)\">UNMUTE NOTIFICATIONS</button>");
+        return "<div class=\"preference-row\" style=\"gap:12px;align-items:center;flex-wrap:wrap;\"><div style=\"flex:1;min-width:130px;\"><strong>"+escapeHtml(name)+"</strong><p class=\"muted\" style=\"margin:3px 0 0;\">"+escapeHtml(username)+"</p></div><div style=\"display:flex;gap:8px;flex-wrap:wrap;\">"+actions.join("")+"</div></div>";
+    }).join("");
+}
+
 async function loadBlockSettings(){
     const list = document.getElementById("blockedCreatorsList");
     if(!list) return;
@@ -4200,7 +4247,59 @@ async function unblockCreator(userId){
 }
 
 function renderCreatorActionMenu(userId,displayName){
-    return "<details class=\"creator-actions-menu\" style=\"margin-left:8px;vertical-align:middle;\"><summary aria-label=\"Creator actions\" title=\"Creator actions\">⋯</summary><div class=\"creator-actions-popover\"><button type=\"button\" onclick=\"this.closest('details').open=false;reportContent('profile','"+escapeJs(userId)+"','"+escapeJs(userId)+"')\">🚩 Report creator</button><button type=\"button\" onclick=\"this.closest('details').open=false;blockCreator('"+escapeJs(userId)+"')\">🚫 Block creator</button></div></details>";
+    const safeId = escapeJs(userId);
+    const safeName = escapeJs(displayName || "this creator");
+    return "<details class=\"creator-actions-menu\" style=\"margin-left:8px;vertical-align:middle;\"><summary aria-label=\"Creator actions\" title=\"Creator actions\">⋯</summary><div class=\"creator-actions-popover\"><button type=\"button\" onclick=\"this.closest('details').open=false;reportContent('profile','"+safeId+"','"+safeId+"')\">🚩 Report creator</button><button type=\"button\" onclick=\"this.closest('details').open=false;toggleCreatorMute('"+safeId+"','posts','"+safeName+"')\">🔕 Mute posts</button><button type=\"button\" onclick=\"this.closest('details').open=false;toggleCreatorMute('"+safeId+"','notifications','"+safeName+"')\">🔕 Mute notifications</button><button type=\"button\" onclick=\"this.closest('details').open=false;toggleCreatorAlert('"+safeId+"','live','"+safeName+"')\">🔔 Live alerts</button><button type=\"button\" onclick=\"this.closest('details').open=false;toggleCreatorAlert('"+safeId+"','posts','"+safeName+"')\">📝 Post alerts</button><button type=\"button\" onclick=\"this.closest('details').open=false;blockCreator('"+safeId+"','"+safeName+"')\">🚫 Block creator</button></div></details>";
+}
+
+async function toggleCreatorAlert(creatorId,kind,displayName){
+    if(!currentUser){openAuthModal("signin");return;}
+    if(!creatorId || creatorId===currentUser.id || !["live","posts"].includes(kind)) return;
+    const column = kind==="live" ? "live_alerts" : "post_alerts";
+    const {data:existing,error:readError} = await supabaseClient.from("creator_notification_preferences")
+        .select("live_alerts,post_alerts").eq("user_id",currentUser.id).eq("creator_id",creatorId).maybeSingle();
+    if(readError){alert("Creator alerts require the community-controls database update first.");console.error(readError);return;}
+    const nextValue = !(existing && existing[column]);
+    const values = {user_id:currentUser.id,creator_id:creatorId,
+        live_alerts:column==="live_alerts"?nextValue:Boolean(existing?.live_alerts),
+        post_alerts:column==="post_alerts"?nextValue:Boolean(existing?.post_alerts),
+        updated_at:new Date().toISOString()};
+    const result = values.live_alerts || values.post_alerts
+        ? await supabaseClient.from("creator_notification_preferences").upsert(values,{onConflict:"user_id,creator_id"})
+        : await supabaseClient.from("creator_notification_preferences").delete().eq("user_id",currentUser.id).eq("creator_id",creatorId);
+    if(result.error){alert("Could not save the alert preference. Please try again.");console.error(result.error);return;}
+    alert((nextValue?"Enabled ":"Disabled ")+(kind==="live"?"Live alerts":"post alerts")+" for "+(displayName||"this creator")+".");
+}
+
+async function toggleCreatorMute(userId,kind,displayName){
+    if(!currentUser){openAuthModal("signin");return;}
+    if(!userId || userId===currentUser.id || !["posts","notifications"].includes(kind)) return;
+    const column = kind === "posts" ? "mute_posts" : "mute_notifications";
+    const {data:existing,error:readError} = await supabaseClient.from("user_mutes")
+        .select("mute_posts,mute_notifications").eq("muter_id",currentUser.id).eq("muted_id",userId).maybeSingle();
+    if(readError){
+        alert("Mute controls are not available until the community-controls database update is installed. Your account was not changed.");
+        console.error("Mute preference lookup failed:",readError);
+        return;
+    }
+    const nextValue = !(existing && existing[column]);
+    const values = {
+        muter_id:currentUser.id,
+        muted_id:userId,
+        mute_posts:column==="mute_posts" ? nextValue : Boolean(existing?.mute_posts),
+        mute_notifications:column==="mute_notifications" ? nextValue : Boolean(existing?.mute_notifications),
+        updated_at:new Date().toISOString()
+    };
+    const {error:writeError} = values.mute_posts || values.mute_notifications
+        ? await supabaseClient.from("user_mutes").upsert(values,{onConflict:"muter_id,muted_id"})
+        : await supabaseClient.from("user_mutes").delete().eq("muter_id",currentUser.id).eq("muted_id",userId);
+    if(writeError){
+        alert("We couldn't save that mute setting. Please try again.");
+        console.error("Mute preference save failed:",writeError);
+        return;
+    }
+    alert((nextValue ? "Muted " : "Unmuted ") + (displayName || "this creator") + (kind==="posts" ? " posts." : " notifications."));
+    if(kind==="posts" && typeof loadWatchFeed==="function") await loadWatchFeed();
 }
 
 function renderPostActionMenu(postId,userId){
@@ -5917,6 +6016,20 @@ async function publishCreation(){
             throw postError;
         }
 
+        // Deliver opted-in follower alerts through the trusted Edge Function.
+        // A notification failure must never undo a successfully published post.
+        if(postData?.id){
+            try{
+                const {error:alertError} = await supabaseClient.functions.invoke(
+                    "tiknation-community-notifications",
+                    {body:{action:"post_published",post_id:postData.id}}
+                );
+                if(alertError) console.warn("Post published; follower alerts were unavailable:",alertError);
+            }catch(alertError){
+                console.warn("Post published; follower alerts could not be requested:",alertError);
+            }
+        }
+
         progressBar.style.width =
             "100%";
 
@@ -6807,6 +6920,20 @@ async function markTikNationNotificationRead(id,remote){
 
 async function createTikNationNotification(recipientId,type,message){
     if(!currentUser || !recipientId || recipientId === currentUser.id) return;
+
+    // Respect the recipient's mute choice without exposing their preferences.
+    const {data:mutePreference,error:muteError} = await supabaseClient
+        .from("user_mutes")
+        .select("mute_notifications")
+        .eq("muter_id",recipientId)
+        .eq("muted_id",currentUser.id)
+        .maybeSingle();
+    if(muteError && !/user_mutes|relation .* does not exist|schema cache/i.test(muteError.message||"")){
+        console.error("Could not check notification mute preference:",muteError);
+        return;
+    }
+    if(mutePreference && mutePreference.mute_notifications) return;
+
     const {error} = await supabaseClient.from("notifications").insert({
         recipient_id:recipientId,
         actor_id:currentUser.id,

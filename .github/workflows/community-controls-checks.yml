@@ -1,0 +1,53 @@
+name: TikNation community controls checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [feature/community-controls-magic-layout]
+
+permissions:
+  contents: read
+
+jobs:
+  edge-function-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Type-check Live Edge Function
+        run: deno check supabase/functions/tiknation-live/index.ts
+      - name: Type-check community notification Edge Function
+        run: deno check supabase/functions/tiknation-community-notifications/index.ts
+  browser-script-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check inline JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+          pages = [Path("index.html"), Path("live.html")]
+          out = Path("/tmp/tiknation-inline-scripts")
+          out.mkdir(exist_ok=True)
+          count = 0
+          for page in pages:
+              text = page.read_text(encoding="utf-8")
+              for index, match in enumerate(re.finditer(r"<script\b[^>]*>(.*?)</script\s*>", text, re.I | re.S)):
+                  source = match.group(1).strip()
+                  if not source:
+                      continue
+                  path = out / f"{page.stem}-{index}.js"
+                  path.write_text(source, encoding="utf-8")
+                  count += 1
+          print(f"Extracted {count} inline script blocks.")
+          if count == 0:
+              raise SystemExit("No inline script blocks found; check extraction pattern.")
+          PY
+          find /tmp/tiknation-inline-scripts -name '*.js' -print0 | xargs -0 -n1 node --check
