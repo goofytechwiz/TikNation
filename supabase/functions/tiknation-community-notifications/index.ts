@@ -90,11 +90,27 @@ Deno.serve(async (req: Request) => {
   const recipients = followerIds.filter((id) => optedIn.has(id) && !muted.has(id) && !blocked.has(id));
   if (!recipients.length) return json({ sent: 0 });
 
+  const receiptRows = recipients.map((recipient_id) => ({
+    post_id: postId, recipient_id, notification_type: "creator_post",
+  }));
+  const { data: newReceipts, error: receiptError } = await admin
+    .from("creator_notification_deliveries")
+    .upsert(receiptRows, { onConflict: "post_id,recipient_id,notification_type", ignoreDuplicates: true })
+    .select("recipient_id");
+  if (receiptError) return json({ error: "Could not safely prepare post alerts." }, 500);
+  const newRecipientIds = (newReceipts ?? []).map((row: { recipient_id: string }) => row.recipient_id);
+  if (!newRecipientIds.length) return json({ sent: 0, alreadyDelivered: true });
+
   const title = String(post.title ?? "").trim().slice(0, 100) || "a new creation";
-  const rows = recipients.map((recipient_id) => ({
+  const rows = newRecipientIds.map((recipient_id: string) => ({
     recipient_id, actor_id: actor.id, type: "creator_post", message: "Posted a new creation: " + title,
   }));
   const { error: insertError } = await admin.from("notifications").insert(rows);
-  if (insertError) return json({ error: "The post was published, but alerts could not be delivered." }, 500);
-  return json({ sent: recipients.length });
+  if (insertError) {
+    // Permit a safe retry if the notification write failed after reserving receipts.
+    await admin.from("creator_notification_deliveries")
+      .delete().eq("post_id", postId).eq("notification_type", "creator_post").in("recipient_id", newRecipientIds);
+    return json({ error: "The post was published, but alerts could not be delivered." }, 500);
+  }
+  return json({ sent: newRecipientIds.length });
 });
