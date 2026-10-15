@@ -50,21 +50,20 @@ Create a distinct TikNation magical interface: midnight-indigo surfaces, cyan en
 
 ## Implementation status — 2026-10-15
 
-- [x] Added a visual-only magical community-controls preview at `community-controls.html`.
-- [x] Added a draft additive SQL migration for creator post/notification mutes, per-creator alert preferences, and durable Live moderation actions with RLS and no direct client access to moderation records.
-- [x] Added separate Mute posts and Mute notifications actions to creator menus. Watch filters muted creators when the migration exists and gracefully continues if the new table is not yet available.
-- [x] Added server-side mutual-block checks for Live join and chat.
-- [x] Added a creator-owned Live moderation endpoint and backend enforcement for active chat mutes, timeouts, removals, and current-Live blocks.
-- [x] Added broadcaster-only controls in the Live studio to select a viewer from chat and apply the supported moderation actions.
-- [x] Wire per-creator Live/post alert preference toggles into the creator menu; preference storage is ready once the migration is installed.
-- [x] Suppress new in-app notifications from creators the recipient has muted for notifications (when the community-controls table is installed).
-- [x] Add trusted server-side delivery code for opted-in followers when a creator starts Live and publishes a post; both paths respect notification mutes and blocks. Post alerts use server-side idempotency receipts.
-- [ ] Verify the new notification event types against the production notifications schema and test delivery after migration/function deployment.
-- [x] Add a muted-creators manager under Privacy Settings with separate Unmute posts and Unmute notifications controls.
-- [x] Add a non-destructive migration preflight that stops with a clear error if duplicate follow pairs exist.
-- [ ] Validate migration against actual production data and resolve any duplicate follow pairs manually if the preflight finds them.
-- [x] Add a GitHub Actions workflow for Deno Edge Function type checks and inline browser-script syntax checks.
-- [ ] Confirm the workflow passes, run SQL security advisors, and complete two-account end-to-end tests. These checks have not yet passed and are a release blocker.
-- [ ] Apply migration and deploy Edge Function only after review and tests. Nothing in this draft has been merged to `main` or deployed.
+- [x] Added the magical community-controls preview at `community-controls.html`.
+- [x] Merged community controls to `main` in PR #2.
+- [x] Applied the additive community-controls migration to the TikNation Supabase project. The live schema now includes `user_mutes`, `creator_notification_preferences`, `live_moderation_actions`, and `creator_notification_deliveries`.
+- [x] Production migration preflight: the current `public.follows` table had zero duplicate follower/following pairs.
+- [x] Added separate Mute posts and Mute notifications actions, Watch-feed filtering, and a muted-creators manager with independent unmute controls.
+- [x] Added per-creator Live and post alert preferences.
+- [x] Deployed `tiknation-community-notifications` Edge Function for authenticated, server-side post-alert delivery with mute/block checks and duplicate-delivery protection.
+- [x] Deployed `tiknation-live` version 8, preserving the deployed environment-key fallback and LiveKit error handling while adding mutual-block checks on join/chat/refresh, streamer moderation, timeout enforcement, and opted-in Live-start alerts.
+- [x] GitHub Actions passed Deno type checks for both Edge Functions and browser inline JavaScript syntax checks before merge.
+- [ ] Complete real two-account end-to-end tests for follow/unfollow, mute/unmute, alert opt-in/out, timeout expiry, Live removal/rejoin, and mobile behavior.
+- [ ] Verify GitHub Pages has finished publishing the merged `main` branch and check the live site on phone and desktop.
+- [ ] Confirm actual notification delivery in the app. CI validates syntax/types; it does not simulate signed-in accounts or a real broadcast.
+- [ ] Review Supabase security-advisor findings. The current project has pre-existing RLS warnings for several service-only tables and a disabled leaked-password protection setting; these are documented for follow-up rather than changed as part of this release.
 
-Draft review: https://github.com/goofytechwiz/TikNation/pull/2
+**Deployment note:** The migration and two Edge Functions are deployed. The website code is merged to `main`; public GitHub Pages publication and signed-in end-to-end behavior still need a final smoke test.
+
+PR: https://github.com/goofytechwiz/TikNation/pull/2
