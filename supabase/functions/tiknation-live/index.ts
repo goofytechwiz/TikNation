@@ -152,6 +152,15 @@ Deno.serve(async (req: Request) => {
       .select("id,title,room_name,status,started_at,creator_id").eq("id", sessionId).eq("status", "live").maybeSingle();
     if (error) return json({ error: "Could not load the live broadcast." }, 500);
     if (!session) return json({ error: "This broadcast has ended or is unavailable." }, 404);
+    // Enforce blocks on the trusted server path, not only in the public feed UI.
+    if (session.creator_id !== user.id) {
+      const { data: blockRows, error: blockError } = await admin.from("user_blocks")
+        .select("blocker_id")
+        .or("and(blocker_id.eq." + user.id + ",blocked_id.eq." + session.creator_id + "),and(blocker_id.eq." + session.creator_id + ",blocked_id.eq." + user.id + ")")
+        .limit(1);
+      if (blockError) return json({ error: "Could not verify access to this broadcast. Please try again." }, 500);
+      if (blockRows?.length) return json({ error: "This broadcast is unavailable because of a block between these accounts." }, 403);
+    }
     const credentials = await issueToken(session.room_name, false, true);
     return json({ session: { id: session.id, title: session.title, status: session.status, started_at: session.started_at, creator_id: session.creator_id }, ...credentials });
   }
@@ -188,8 +197,18 @@ Deno.serve(async (req: Request) => {
     const message = String(body.message ?? "").trim();
     if (!/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Invalid live session." }, 400);
     if (message.length < 1 || message.length > 500) return json({ error: "Chat messages must be 1–500 characters." }, 400);
-    const { data: session } = await admin.from("live_sessions").select("id").eq("id", sessionId).eq("status", "live").maybeSingle();
+    const { data: session, error: sessionError } = await admin.from("live_sessions")
+      .select("id,creator_id").eq("id", sessionId).eq("status", "live").maybeSingle();
+    if (sessionError) return json({ error: "Could not verify this broadcast. Please try again." }, 500);
     if (!session) return json({ error: "This broadcast has ended." }, 404);
+    if (session.creator_id !== user.id) {
+      const { data: blockRows, error: blockError } = await admin.from("user_blocks")
+        .select("blocker_id")
+        .or("and(blocker_id.eq." + user.id + ",blocked_id.eq." + session.creator_id + "),and(blocker_id.eq." + session.creator_id + ",blocked_id.eq." + user.id + ")")
+        .limit(1);
+      if (blockError) return json({ error: "Could not verify chat access. Please try again." }, 500);
+      if (blockRows?.length) return json({ error: "Chat is unavailable because of a block between these accounts." }, 403);
+    }
     if (await isRateLimited("chat", 8, 60_000)) {
       return json({ error: "You're sending messages too quickly. Please wait a minute and try again." }, 429);
     }
