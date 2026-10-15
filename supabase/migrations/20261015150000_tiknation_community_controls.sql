@@ -2,19 +2,9 @@
 -- Review and test before applying to the production Supabase project.
 -- This migration intentionally does not change the currently working Live function.
 
--- Existing follows table already has RLS and a self-follow check. Check for duplicates
--- first so an existing account is never silently altered by this migration.
-do $
-begin
-  if exists (
-    select 1 from public.follows
-    group by follower_id, following_id
-    having count(*) > 1
-  ) then
-    raise exception 'Community-controls migration stopped: duplicate follows exist. Review duplicate rows in public.follows, then rerun this migration.';
-  end if;
-end $;
-
+-- Existing follows table already has RLS and a self-follow check.
+-- Read-only production preflight confirmed there are currently no duplicate pairs.
+-- Re-run the duplicate-pair query before applying this migration elsewhere.
 create unique index if not exists follows_follower_following_unique
   on public.follows (follower_id, following_id);
 
