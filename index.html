@@ -2332,6 +2332,12 @@ textarea.form-control{
         <div class="settings-panel-content">
         <p class="muted">Blocked creators are hidden from your Watch feed and their profiles cannot be opened while the block is active. Blocking also prevents follows, likes, comments, and direct messages between the two accounts.</p>
         <div id="blockedCreatorsList" aria-live="polite" style="margin-top:16px;">Sign in to manage blocked creators.</div>
+        <div style="border-top:1px solid var(--border-color,rgba(255,255,255,.12));margin-top:22px;padding-top:18px;">
+            <h3>🔕 Muted creators</h3>
+            <p class="muted">Manage creators whose posts or notifications you have muted. Unmuting one setting does not change the other.</p>
+            <div id="mutedCreatorsList" aria-live="polite" style="margin-top:16px;">Sign in to manage muted creators.</div>
+            <button type="button" class="small-button" style="margin-top:12px;" onclick="loadMuteSettings()">↻ REFRESH MUTED CREATORS</button>
+        </div>
         </div>
     </details>
 
@@ -2566,6 +2572,10 @@ function openSettingsPanel(panelId){
     if(!panel) return;
     panel.open = true;
     panel.scrollIntoView({behavior:"smooth",block:"start"});
+    if(panelId === "privacySettings"){
+        loadBlockSettings();
+        loadMuteSettings();
+    }
 }
 
 function toggleHeaderMenu(forceOpen){
@@ -4165,6 +4175,34 @@ async function getBlockRelatedCreatorIds(){
         else if(row.blocked_id === currentUser.id) ids.add(row.blocker_id);
     });
     return ids;
+}
+
+async function loadMuteSettings(){
+    const list = document.getElementById("mutedCreatorsList");
+    if(!list) return;
+    if(!currentUser){ list.textContent = "Sign in to manage muted creators."; return; }
+    list.textContent = "Loading muted creators…";
+    const {data,error} = await supabaseClient.from("user_mutes")
+        .select("muted_id,mute_posts,mute_notifications,created_at")
+        .eq("muter_id",currentUser.id).order("created_at",{ascending:false});
+    if(error){
+        list.textContent = "Muted creators are unavailable. If this is a new feature, the community-controls database migration must be installed first.";
+        console.error("Muted creator settings could not be loaded:",error);
+        return;
+    }
+    if(!data || !data.length){ list.textContent = "You have not muted any creators."; return; }
+    const ids = data.map(row => row.muted_id);
+    const profileResult = await supabaseClient.from("profiles").select("id,username,display_name").in("id",ids);
+    const profiles = new Map((profileResult.data || []).map(profile => [profile.id,profile]));
+    list.innerHTML = data.map(function(row){
+        const profile = profiles.get(row.muted_id) || {};
+        const name = profile.display_name || profile.username || "TikNation creator";
+        const username = profile.username ? "@" + profile.username : "";
+        const actions = [];
+        if(row.mute_posts) actions.push("<button type=\"button\" class=\"small-button\" onclick=\"toggleCreatorMute('"+escapeJs(row.muted_id)+"','posts','"+escapeJs(name)+"').then(loadMuteSettings)\">UNMUTE POSTS</button>");
+        if(row.mute_notifications) actions.push("<button type=\"button\" class=\"small-button\" onclick=\"toggleCreatorMute('"+escapeJs(row.muted_id)+"','notifications','"+escapeJs(name)+"').then(loadMuteSettings)\">UNMUTE NOTIFICATIONS</button>");
+        return "<div class=\"preference-row\" style=\"gap:12px;align-items:center;flex-wrap:wrap;\"><div style=\"flex:1;min-width:130px;\"><strong>"+escapeHtml(name)+"</strong><p class=\"muted\" style=\"margin:3px 0 0;\">"+escapeHtml(username)+"</p></div><div style=\"display:flex;gap:8px;flex-wrap:wrap;\">"+actions.join("")+"</div></div>";
+    }).join("");
 }
 
 async function loadBlockSettings(){
