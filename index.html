@@ -447,8 +447,8 @@ body.tn-compact-feed .video-info p{
 .boo-effect-shadow span{font-size:clamp(110px,30vw,260px);color:#05050a;text-shadow:0 0 8px #fff,0 0 30px #a900ff;}
 .boo-effect-glitch span{font-family:monospace;color:#ff276b;text-shadow:8px 0 #00eaff,-8px 0 #b000ff;}
 .boo-effect-creepy_eyes span{color:#ff174d;text-shadow:0 0 18px #ff003c,0 0 55px #ff003c;}
-.boo-media-stage.boo-effect-armed .boo-playback-effect{animation:booFlash 1.35s 3s ease-out both;}
-.boo-media-stage.boo-effect-armed .boo-playback-effect span{animation:booReveal 1.35s 3s cubic-bezier(.15,.8,.25,1) both;}
+.boo-media-stage.boo-effect-armed .boo-playback-effect{animation:booFlash 1.35s 0s ease-out both;}
+.boo-media-stage.boo-effect-armed .boo-playback-effect span{animation:booReveal 1.35s 0s cubic-bezier(.15,.8,.25,1) both;}
 @keyframes booFlash{0%,100%{opacity:0;background:transparent}12%,62%{opacity:1;background:rgba(0,0,0,.86)}}
 @keyframes booReveal{0%,100%{opacity:0;transform:scale(.1) rotate(-8deg)}14%{opacity:1;transform:scale(1.12) rotate(2deg)}25%,62%{opacity:1;transform:scale(1) rotate(0)}}
 .boo-creator-preview{display:grid;place-items:center;gap:9px;min-height:150px;margin-top:12px;padding:20px;border:1px solid rgba(190,80,255,.3);border-radius:16px;background:radial-gradient(circle at center,rgba(125,25,180,.22),rgba(6,6,16,.98));text-align:center;overflow:hidden;}
@@ -5735,28 +5735,41 @@ function playBooEffectSound(effect){
 }
 function handleBooPlayback(video){
     const stage = video && video.closest(".boo-media-stage");
-    if(!stage) return;
-    stage.classList.add("boo-effect-armed");
-    if(!stage.classList.contains("boo-has-effect")) return;
+    if(!stage || !stage.classList.contains("boo-has-effect")) return;
     if(stage._booSoundTimer) window.clearTimeout(stage._booSoundTimer);
-    if(stage.dataset.booSoundPlayed === "true") return;
-    stage._booSoundTimer = window.setTimeout(() => {
-        if(video && !video.paused && !video.ended){
-            const effect = ["shadow","glitch","creepy_eyes"].find(name => stage.classList.contains("boo-effect-" + name));
-            if(effect){
-                stage.dataset.booSoundPlayed = "true";
-                playBooEffectSound(effect);
-            }
+    if(stage._booEffectTimer) window.clearTimeout(stage._booEffectTimer);
+    if(stage.dataset.booSoundPlayed === "true" || stage.dataset.booEffectScheduled === "true") return;
+
+    /* Pick a surprise moment based on this video's length, so short clips can scare too. */
+    const duration = Number(video.duration);
+    const usableDuration = Number.isFinite(duration) && duration > 0 ? duration : 20;
+    const minDelay = Math.min(1.5, Math.max(0.35, usableDuration * 0.12));
+    const maxDelay = Math.max(minDelay, Math.min(usableDuration * 0.78, 18));
+    const surpriseDelay = minDelay + Math.random() * (maxDelay - minDelay);
+    stage.dataset.booEffectScheduled = "true";
+
+    stage._booEffectTimer = window.setTimeout(() => {
+        if(!video || video.paused || video.ended){
+            stage.dataset.booEffectScheduled = "false";
+            return;
         }
-    }, 3000);
+        const effect = ["shadow","glitch","creepy_eyes"].find(name => stage.classList.contains("boo-effect-" + name));
+        if(!effect) return;
+        stage.classList.add("boo-effect-armed");
+        stage.dataset.booSoundPlayed = "true";
+        playBooEffectSound(effect);
+    }, surpriseDelay * 1000);
 }
 function handleBooPlaybackEnded(video){
     const stage = video && video.closest(".boo-media-stage");
     if(!stage) return;
     stage.classList.remove("boo-effect-armed");
     if(stage._booSoundTimer) window.clearTimeout(stage._booSoundTimer);
+    if(stage._booEffectTimer) window.clearTimeout(stage._booEffectTimer);
     stage._booSoundTimer = null;
+    stage._booEffectTimer = null;
     stage.dataset.booSoundPlayed = "false";
+    stage.dataset.booEffectScheduled = "false";
 }
 
 function renderMediaElement(post,className){
