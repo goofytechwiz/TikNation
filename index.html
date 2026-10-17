@@ -5682,6 +5682,83 @@ function updateBooCreatorPreview(){
     if(name) name.textContent = choice.name;
 }
 
+/* BOO! playback audio: short synthesized stings, with no external audio files. */
+function playBooEffectSound(effect){
+    try{
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if(!AudioContextClass) return;
+        const context = new AudioContextClass();
+        const play = async () => {
+            try{
+                await context.resume();
+                const now = context.currentTime;
+                const master = context.createGain();
+                master.gain.setValueAtTime(0.0001, now);
+                master.gain.exponentialRampToValueAtTime(0.22, now + 0.04);
+                master.gain.exponentialRampToValueAtTime(0.0001, now + 1.05);
+                master.connect(context.destination);
+                const tone = (type, startHz, endHz, start, duration, volume) => {
+                    const osc = context.createOscillator();
+                    const gain = context.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(Math.max(20,startHz), now + start);
+                    osc.frequency.exponentialRampToValueAtTime(Math.max(20,endHz), now + start + duration);
+                    gain.gain.setValueAtTime(0.0001, now + start);
+                    gain.gain.exponentialRampToValueAtTime(volume, now + start + 0.025);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + start + duration);
+                    osc.connect(gain);
+                    gain.connect(master);
+                    osc.start(now + start);
+                    osc.stop(now + start + duration + 0.03);
+                };
+                if(effect === "shadow"){
+                    tone("sawtooth", 105, 38, 0, 0.9, 0.55);
+                    tone("sine", 62, 35, 0.04, 0.85, 0.55);
+                }else if(effect === "glitch"){
+                    tone("square", 760, 115, 0, 0.18, 0.35);
+                    tone("square", 210, 980, 0.2, 0.16, 0.28);
+                    tone("sawtooth", 540, 75, 0.42, 0.34, 0.3);
+                }else{
+                    tone("sawtooth", 880, 170, 0, 0.48, 0.42);
+                    tone("sine", 130, 48, 0.08, 0.78, 0.5);
+                    tone("triangle", 520, 260, 0.12, 0.55, 0.22);
+                }
+                window.setTimeout(() => { try{ context.close(); }catch(e){} }, 1500);
+            }catch(error){
+                try{ context.close(); }catch(e){}
+            }
+        };
+        play();
+    }catch(error){
+        /* Audio is best-effort; visual playback remains available. */
+    }
+}
+function handleBooPlayback(video){
+    const stage = video && video.closest(".boo-media-stage");
+    if(!stage) return;
+    stage.classList.add("boo-effect-armed");
+    if(!stage.classList.contains("boo-has-effect")) return;
+    if(stage._booSoundTimer) window.clearTimeout(stage._booSoundTimer);
+    if(stage.dataset.booSoundPlayed === "true") return;
+    stage._booSoundTimer = window.setTimeout(() => {
+        if(video && !video.paused && !video.ended){
+            const effect = ["shadow","glitch","creepy_eyes"].find(name => stage.classList.contains("boo-effect-" + name));
+            if(effect){
+                stage.dataset.booSoundPlayed = "true";
+                playBooEffectSound(effect);
+            }
+        }
+    }, 3000);
+}
+function handleBooPlaybackEnded(video){
+    const stage = video && video.closest(".boo-media-stage");
+    if(!stage) return;
+    stage.classList.remove("boo-effect-armed");
+    if(stage._booSoundTimer) window.clearTimeout(stage._booSoundTimer);
+    stage._booSoundTimer = null;
+    stage.dataset.booSoundPlayed = "false";
+}
+
 function renderMediaElement(post,className){
 
     const mediaType =
@@ -5721,8 +5798,8 @@ function renderMediaElement(post,className){
                     playsinline
                     preload="metadata"
                     ${autoplayAttributes}
-                    onplay="this.closest('.boo-media-stage')?.classList.add('boo-effect-armed')"
-                    onended="this.closest('.boo-media-stage')?.classList.remove('boo-effect-armed')"
+                    onplay="handleBooPlayback(this)"
+                    onended="handleBooPlaybackEnded(this)"
                 >
                     <source
                         src="${url}"
