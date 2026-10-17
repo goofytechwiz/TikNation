@@ -152,25 +152,56 @@ function playLiveGiftSound(event, gift) {
     unlockLiveGiftAudio();
     const ctx = liveGiftAudioContext;
     if (!ctx || ctx.state !== "running") return;
-    const melodies = {
-      heart_pulse:[523,659,784,659], melody_note:[659,784,988,784,659], heartbeat_beat:[392,392,523,392], symphony:[523,659,784,1047,784,659,784,1047],
-      magic_spark:[784,988,1175], mystic_portal:[392,523,659,784], dragon_spirit:[196,247,294,392], galaxy_gift:[392,523,659,784,1047],
-      creator_crown:[523,659,784,1047,1319], infinity_crystal:[523,659,784,1047,1319,1568]
+    const now = ctx.currentTime + 0.035;
+    const code = event.gift_code;
+    // Rounded, low-frequency heart sounds instead of generic musical beeps.
+    const thump = (start, frequency, volume, duration, endFrequency) => {
+      const osc = ctx.createOscillator();
+      const filter = ctx.createBiquadFilter();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(frequency, start);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(28, endFrequency || frequency * 0.62), start + duration * 0.72);
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(180, start);
+      filter.Q.setValueAtTime(0.7, start);
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(volume, start + 0.018);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+      osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+      osc.start(start); osc.stop(start + duration + 0.015);
     };
-    const notes = melodies[event.gift_code] || [523,659,784];
-    const now = ctx.currentTime;
-    notes.forEach((frequency, index) => {
-      const start = now + index * (gift.category === "Musical" ? 0.16 : 0.11);
+    const softTone = (start, frequency, duration, volume, type = "sine") => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = gift.category === "Musical" ? "triangle" : "sine";
+      osc.type = type;
       osc.frequency.setValueAtTime(frequency, start);
       gain.gain.setValueAtTime(0.0001, start);
-      gain.gain.exponentialRampToValueAtTime(gift.category === "Musical" ? 0.085 : 0.06, start + 0.025);
-      gain.gain.exponentialRampToValueAtTime(0.0001, start + (gift.category === "Musical" ? 0.22 : 0.17));
+      gain.gain.exponentialRampToValueAtTime(volume, start + 0.035);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
       osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(start); osc.stop(start + (gift.category === "Musical" ? 0.24 : 0.19));
-    });
+      osc.start(start); osc.stop(start + duration + 0.02);
+    };
+    if (code === "heart_pulse") {
+      // Soft, warm pulse with a subtle magical shimmer at the end.
+      [0, 0.24, 0.68, 0.92].forEach((offset, i) =>
+        thump(now + offset, i % 2 ? 72 : 92, i % 2 ? 0.11 : 0.14, 0.25, i % 2 ? 48 : 58));
+      softTone(now + 1.22, 659, 0.32, 0.025);
+      softTone(now + 1.36, 784, 0.42, 0.022);
+    } else if (code === "heartbeat_beat") {
+      // Deeper, more organic lub-dub rhythm with a pause between each beat.
+      [0, 0.17, 0.62, 0.79, 1.24, 1.41].forEach((offset, i) =>
+        thump(now + offset, i % 2 ? 61 : 82, i % 2 ? 0.13 : 0.17, i % 2 ? 0.23 : 0.31, i % 2 ? 38 : 46));
+    } else {
+      const melodies = {
+        melody_note:[659,784,988,784,659], symphony:[523,659,784,1047,784,659,784,1047],
+        magic_spark:[784,988,1175], mystic_portal:[392,523,659,784], dragon_spirit:[196,247,294,392],
+        galaxy_gift:[392,523,659,784,1047], creator_crown:[523,659,784,1047,1319],
+        infinity_crystal:[523,659,784,1047,1319,1568]
+      };
+      (melodies[code] || [523,659,784]).forEach((frequency, index) =>
+        softTone(now + index * (gift.category === "Musical" ? 0.17 : 0.12), frequency, gift.category === "Musical" ? 0.24 : 0.19, gift.category === "Musical" ? 0.055 : 0.04, gift.category === "Musical" ? "triangle" : "sine"));
+    }
   } catch (error) { console.warn("TikNation gift sound could not play:", error); }
 }
 function showLiveGiftCelebration(event) {
