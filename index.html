@@ -2536,6 +2536,16 @@ textarea.form-control{
             SIGN IN
         </button>
 
+        <button
+            type="button"
+            id="resendConfirmationButton"
+            class="secondary-button"
+            style="display:none;width:100%;margin-top:10px;"
+            onclick="resendSignupConfirmation()"
+        >
+            RESEND CONFIRMATION EMAIL
+        </button>
+
     </div>
 
 </div>
@@ -2858,6 +2868,9 @@ function switchAuthMode(mode){
     message.textContent = "";
     message.className = "auth-message";
 
+    const resendButton = document.getElementById("resendConfirmationButton");
+    if(resendButton) resendButton.style.display = mode === "signin" ? "block" : "none";
+
     if(mode === "signup"){
 
         title.textContent =
@@ -2885,6 +2898,41 @@ function switchAuthMode(mode){
 
         signupFields.style.display =
             "none";
+    }
+}
+
+async function resendSignupConfirmation(){
+    const message = document.getElementById("authMessage");
+    const email = document.getElementById("authEmail").value.trim();
+    const button = document.getElementById("resendConfirmationButton");
+
+    message.className = "auth-message";
+    if(!email){
+        message.className = "auth-message error";
+        message.textContent = "Enter your email address first, then tap resend.";
+        document.getElementById("authEmail").focus();
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = "SENDING...";
+    try{
+        const { error } = await supabaseClient.auth.resend({
+            type: "signup",
+            email,
+            options: {
+                emailRedirectTo: window.location.origin + window.location.pathname
+            }
+        });
+        if(error) throw error;
+        message.className = "auth-message success";
+        message.textContent = "If this account still needs confirmation, a fresh email has been requested. Check your inbox and spam folder.";
+    }catch(error){
+        message.className = "auth-message error";
+        message.textContent = error.message || "We couldn't request a new confirmation email. Please wait a moment and try again.";
+    }finally{
+        button.disabled = false;
+        button.textContent = "RESEND CONFIRMATION EMAIL";
     }
 }
 
