@@ -2951,6 +2951,9 @@ async function submitAuth(){
                     password:password,
 
                     options:{
+                        // Always return confirmation links to the TikNation GitHub Pages app,
+                        // not the account owner's root GitHub Pages domain.
+                        emailRedirectTo: window.location.origin + window.location.pathname,
                         data:{
                             username:username,
                             display_name:username
