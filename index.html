@@ -40,6 +40,23 @@ button,input,textarea,select{
     font:inherit;
 }
 
+/* Keep native dropdown menus readable in TikNation's dark Creator Studio UI. */
+select{
+    color-scheme:dark;
+    color:#fff;
+    background-color:#11111c;
+    border-color:rgba(255,255,255,.22);
+}
+select option,
+select optgroup{
+    color:#fff;
+    background-color:#11111c;
+}
+select:focus-visible{
+    outline:2px solid #70e8ff;
+    outline-offset:2px;
+}
+
 button{
     cursor:pointer;
 }
