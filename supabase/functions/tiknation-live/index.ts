@@ -435,7 +435,8 @@ Deno.serve(async (req: Request) => {
     if (error) return json({ error: "Could not load live broadcasts." }, 500);
 
     // Opportunistic stale-session recovery: only mark rooms missing from a
-    // successful LiveKit room listing as ended. Never infer this from API failure.
+    // successful LiveKit room listing as ended. Allow a short startup grace
+    // period so a newly-created room is not killed by an immediate list refresh.
     let liveRooms;
     try {
       liveRooms = await rooms.listRooms();
@@ -444,7 +445,13 @@ Deno.serve(async (req: Request) => {
       return json({ error: liveKitFailure(recoveryError, "live list") }, 503);
     }
     const roomNames = new Set(liveRooms.map((r) => r.name));
-    const stale = (data ?? []).filter((s) => !roomNames.has(s.room_name));
+    const now = Date.now();
+    const startupGraceMs = 30_000;
+    const isInStartupGrace = (s: { started_at: string; room_name: string }) =>
+      now - Date.parse(s.started_at) < startupGraceMs;
+    const stale = (data ?? []).filter((s) =>
+      !roomNames.has(s.room_name) && !isInStartupGrace(s)
+    );
     if (stale.length) {
       const staleIds = stale.map((s) => s.id);
       const { error: cleanupError } = await admin.from("live_sessions")
@@ -452,7 +459,13 @@ Deno.serve(async (req: Request) => {
         .in("id", staleIds).eq("status", "live");
       if (cleanupError) console.error("Stale Live session database cleanup failed:", cleanupError);
     }
-    return json({ sessions: (data ?? []).filter((s) => roomNames.has(s.room_name)).map(({ room_name, ...s }) => s) });
+    // A fresh session remains discoverable during startup, but missing rooms
+    // are still cleaned up after the grace period if LiveKit never exposes them.
+    return json({
+      sessions: (data ?? [])
+        .filter((s) => roomNames.has(s.room_name) || isInStartupGrace(s))
+        .map(({ room_name, ...s }) => s),
+    });
   }
 
   return json({ error: "Unknown action." }, 400);
