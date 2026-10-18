@@ -140,6 +140,7 @@ Deno.serve(async (req: Request) => {
 
   if (action === "start") {
     const title = String(body.title ?? "").trim();
+    const followerOnlyChat = body.follower_only_chat === true;
     if (title.length < 1 || title.length > 100) return json({ error: "Stream title must be 1–100 characters." }, 400);
 
     const { data: access, error: accessError } = await admin
@@ -155,8 +156,8 @@ Deno.serve(async (req: Request) => {
     try {
       await rooms.createRoom({ name: roomName, emptyTimeout: 60, maxParticipants: 100 });
       const { data: session, error: insertError } = await admin.from("live_sessions")
-        .insert({ id: sessionId, creator_id: user.id, room_name: roomName, title, status: "live" })
-        .select("id,title,status,started_at").single();
+        .insert({ id: sessionId, creator_id: user.id, room_name: roomName, title, status: "live", follower_only_chat: followerOnlyChat })
+        .select("id,title,status,started_at,follower_only_chat").single();
       if (insertError || !session) {
         await rooms.deleteRoom(roomName).catch(() => {});
         if (insertError?.code === "23505") return json({ error: "A live broadcast is already active for this creator." }, 409);
@@ -247,7 +248,7 @@ Deno.serve(async (req: Request) => {
     const sessionId = String(body.session_id ?? "");
     if (!/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Invalid live session." }, 400);
     const { data: session, error } = await admin.from("live_sessions")
-      .select("id,title,room_name,status,started_at,creator_id").eq("id", sessionId).eq("status", "live").maybeSingle();
+      .select("id,title,room_name,status,started_at,creator_id,follower_only_chat").eq("id", sessionId).eq("status", "live").maybeSingle();
     if (error) return json({ error: "Could not load the live broadcast." }, 500);
     if (!session) return json({ error: "This broadcast has ended or is unavailable." }, 404);
     if (session.creator_id !== user.id) {
@@ -264,8 +265,15 @@ Deno.serve(async (req: Request) => {
       if (restrictionError) return json({ error: "Could not verify Live access. Please try again." }, 500);
       if (restrictions?.length) return json({ error: "The creator has restricted your access to this Live." }, 403);
     }
+    let canChat = true;
+    if (session.creator_id !== user.id && session.follower_only_chat) {
+      const { data: follow, error: followError } = await admin.from("follows").select("follower_id")
+        .eq("follower_id", user.id).eq("following_id", session.creator_id).maybeSingle();
+      if (followError) return json({ error: "Could not verify whether you follow this creator." }, 500);
+      canChat = !!follow;
+    }
     const credentials = await issueToken(session.room_name, session.creator_id === user.id, true);
-    return json({ session: { id: session.id, title: session.title, status: session.status, started_at: session.started_at, creator_id: session.creator_id }, ...credentials });
+    return json({ session: { id: session.id, title: session.title, status: session.status, started_at: session.started_at, creator_id: session.creator_id, follower_only_chat: !!session.follower_only_chat, can_chat: canChat }, ...credentials });
   }
 
   if (action === "end") {
@@ -301,9 +309,15 @@ Deno.serve(async (req: Request) => {
     if (!/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Invalid live session." }, 400);
     if (message.length < 1 || message.length > 500) return json({ error: "Chat messages must be 1–500 characters." }, 400);
     const { data: session, error: sessionError } = await admin.from("live_sessions")
-      .select("id,creator_id").eq("id", sessionId).eq("status", "live").maybeSingle();
+      .select("id,creator_id,follower_only_chat").eq("id", sessionId).eq("status", "live").maybeSingle();
     if (sessionError) return json({ error: "Could not verify this broadcast. Please try again." }, 500);
     if (!session) return json({ error: "This broadcast has ended." }, 404);
+    if (session.creator_id !== user.id && session.follower_only_chat) {
+      const { data: follow, error: followError } = await admin.from("follows").select("follower_id")
+        .eq("follower_id", user.id).eq("following_id", session.creator_id).maybeSingle();
+      if (followError) return json({ error: "Could not verify whether you follow this creator." }, 500);
+      if (!follow) return json({ error: "This creator has follower-only chat enabled. You can keep watching, but you must follow the creator before chatting." }, 403);
+    }
     if (session.creator_id !== user.id) {
       const { data: blockRows, error: blockError } = await admin.from("user_blocks")
         .select("blocker_id")
@@ -416,7 +430,7 @@ Deno.serve(async (req: Request) => {
 
   if (action === "list") {
     const { data, error } = await admin.from("live_sessions")
-      .select("id,creator_id,title,status,started_at,room_name")
+      .select("id,creator_id,title,status,started_at,room_name,follower_only_chat")
       .eq("status", "live").order("started_at", { ascending: false }).limit(50);
     if (error) return json({ error: "Could not load live broadcasts." }, 500);
 
