@@ -7,6 +7,9 @@ const TIKNATION_GIFT_CATALOG = {
   mystic_portal: { name: "Mystic Portal", emoji: "🌀", category: "Magical", cost: 25, sound: [392, 587, 784], style: "portal", message: "Open a doorway to wonder." },
   dragon_spirit: { name: "Dragon Spirit", emoji: "🐉", category: "Magical", cost: 75, sound: [196, 293, 392, 587], style: "dragon", message: "Unleash a legendary spirit." },
   galaxy_gift: { name: "Galaxy Gift", emoji: "🌌", category: "Magical", cost: 100, sound: [220, 330, 440, 660, 880], style: "galaxy", message: "A whole galaxy, just for you." },
+  thunder_clap: { name: "Thunder Clap", emoji: "⚡", category: "Special Effects", cost: 25, sound: [196, 392, 587, 784], style: "burst", message: "A lightning-charged moment!" },
+  prism_wave: { name: "Prism Wave", emoji: "🌈", category: "Visual Effects", cost: 50, sound: [523, 659, 880, 1047, 1319], style: "prism", message: "A wave of color across your world." },
+  mystery_reveal: { name: "Mystery Reveal", emoji: "🎁", category: "Surprises", cost: 25, sound: [392, 523, 784, 1047], style: "surprise", message: "Surprise! What wonder will appear next." },
   creator_crown: { name: "Creator’s Crown", emoji: "👑", category: "Legendary", cost: 50, sound: [523, 659, 784], style: "crown", message: "Celebrate the creator." },
   infinity_crystal: { name: "Infinity Crystal", emoji: "💎", category: "Legendary", cost: 150, sound: [392, 523, 659, 784, 1047], style: "infinity", message: "A gift beyond the ordinary." }
 };
@@ -77,7 +80,7 @@ function showTikNationGiftEffect(gift) {
   if (old) old.remove();
   const overlay = document.createElement("div");
   overlay.id = "tikNationGiftCelebration";
-  overlay.className = "gift-celebration gift-celebration-" + gift.category.toLowerCase() + " gift-celebration-" + gift.style + (reduced ? " gift-celebration-reduced" : "");
+  overlay.className = "gift-celebration gift-celebration-" + gift.category.toLowerCase().replace(/\s+/g, "-") + " gift-celebration-" + gift.style + (reduced ? " gift-celebration-reduced" : "");
   overlay.setAttribute("role", "status");
   overlay.setAttribute("aria-live", "polite");
   const safeName = escapeHtml(gift.name);
