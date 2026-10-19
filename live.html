@@ -26,7 +26,7 @@
 .live-gift-feed{display:grid;gap:7px;margin-top:10px}.live-gift-feed-item{padding:9px 10px;border-radius:10px;background:#0a0a14;border:1px solid #29243d;font-size:.83rem;overflow-wrap:anywhere}.live-gift-feed-item strong{color:#d9c9ff}
 .live-gift-celebration{position:fixed;z-index:9999;inset:0;display:grid;place-items:center;pointer-events:none;background:radial-gradient(ellipse at center,rgba(70,38,120,.42),rgba(3,3,10,.08) 65%,transparent)}
 .live-gift-celebration-card{padding:25px 30px;border:1px solid rgba(146,110,255,.7);border-radius:24px;background:rgba(12,9,26,.94);box-shadow:0 0 70px #805bff66;text-align:center;animation:liveGiftPop .55s cubic-bezier(.2,1.6,.4,1) both;max-width:min(88vw,360px)}
-.live-gift-celebration-card span{display:block;font-size:4rem;line-height:1.3}.live-gift-celebration-card strong{display:block;font-size:1.35rem}.live-gift-celebration-card small{display:block;color:#8ceaff;margin-top:8px}
+.live-gift-celebration-card span{display:block;font-size:4rem;line-height:1.3}.live-gift-celebration-card strong{display:block;font-size:1.35rem}.live-gift-celebration-card small{display:block;color:#8ceaff;margin-top:8px}.live-gift-celebration-special-effects .live-gift-celebration-card{border-color:#ffca66;box-shadow:0 0 85px #ff9f4388;animation:liveGiftBurst .65s cubic-bezier(.2,1.7,.4,1) both}.live-gift-celebration-visual-effects .live-gift-celebration-card{border-color:#65f4ff;box-shadow:0 0 90px #45dfff99;animation:liveGiftPrism 1.2s ease-in-out both}.live-gift-celebration-surprises .live-gift-celebration-card{border-color:#ff83d8;box-shadow:0 0 85px #d65bff99;animation:liveGiftMystery .7s cubic-bezier(.2,1.5,.4,1) both}@keyframes liveGiftBurst{0%{opacity:0;transform:scale(.25) rotate(-12deg)}65%{transform:scale(1.12) rotate(3deg)}100%{opacity:1;transform:scale(1) rotate(0)}}@keyframes liveGiftPrism{0%,100%{filter:hue-rotate(0);transform:scale(.9)}50%{filter:hue-rotate(110deg);transform:scale(1.05)}}@keyframes liveGiftMystery{0%{opacity:0;transform:scale(.3) rotate(10deg)}70%{transform:scale(1.1) rotate(-3deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
 @keyframes liveGiftPop{from{opacity:0;transform:scale(.45) translateY(25px)}to{opacity:1;transform:scale(1) translateY(0)}}
 @media(prefers-reduced-motion:reduce){.live-gift-celebration-card{animation:none}}
 </style>
@@ -77,7 +77,7 @@
   </section>
   <section id="liveGiftPanel" class="live-gifts hide" aria-label="Live gifts">
     <h3>🎁 Live Gifts</h3>
-    <div class="live-gift-note">Send a Musical, Magical, or Legendary gift without leaving the livestream. Free test coins only; no cash value or payouts.</div>
+    <div class="live-gift-note">Send Musical, Magical, Special Effects, Visual Effects, Legendary, and Surprise gifts without leaving the livestream. Free test coins only; no cash value or payouts.</div>
     <div id="liveGiftBalance" class="live-gift-balance">Loading test coin balance…</div>
     <div id="liveGiftCategories" class="live-gift-categories"></div>
     <div id="liveGiftStatus" class="live-gift-status" role="status" aria-live="polite"></div>
@@ -106,6 +106,7 @@ let user = null, activeSession = null, room = null, localTracks = [], isHost = f
 const LIVE_GIFT_CATALOG = {
   heart_pulse:{name:"Heart Pulse",emoji:"💗",category:"Musical",cost:5}, melody_note:{name:"Melody Note",emoji:"🎵",category:"Musical",cost:5}, heartbeat_beat:{name:"Heartbeat Beat",emoji:"🥁",category:"Musical",cost:10}, symphony:{name:"Symphony",emoji:"🎼",category:"Musical",cost:50},
   magic_spark:{name:"Magic Spark",emoji:"✨",category:"Magical",cost:10}, mystic_portal:{name:"Mystic Portal",emoji:"🌀",category:"Magical",cost:25}, dragon_spirit:{name:"Dragon Spirit",emoji:"🐉",category:"Magical",cost:75}, galaxy_gift:{name:"Galaxy Gift",emoji:"🌌",category:"Magical",cost:100},
+  thunder_clap:{name:"Thunder Clap",emoji:"⚡",category:"Special Effects",cost:25}, prism_wave:{name:"Prism Wave",emoji:"🌈",category:"Visual Effects",cost:50}, mystery_reveal:{name:"Mystery Reveal",emoji:"🎁",category:"Surprises",cost:25},
   creator_crown:{name:"Creator’s Crown",emoji:"👑",category:"Legendary",cost:50}, infinity_crystal:{name:"Infinity Crystal",emoji:"💎",category:"Legendary",cost:150}
 };
 let liveGiftTimer = null, liveGiftCursor = null, seenLiveGiftIds = new Set(), liveGiftRequestBusy = false;
@@ -128,7 +129,7 @@ function setLiveGiftStatus(message, type="") { const node=$("liveGiftStatus");if
 function renderLiveGiftCatalog() {
   const root=$("liveGiftCategories");if(!root)return;
   if(isHost){root.innerHTML='<p class="small">You are hosting this live. Viewers can send you gifts, and their celebrations will appear below.</p>';return;}
-  const groups=["Musical","Magical","Legendary"];
+  const groups=["Musical","Magical","Special Effects","Visual Effects","Legendary","Surprises"];
   root.innerHTML=groups.map(category=>'<div class="live-gift-category"><h4>'+category+' Gifts</h4><div class="live-gift-grid">'+Object.entries(LIVE_GIFT_CATALOG).filter(([,gift])=>gift.category===category).map(([code,gift])=>'<button type="button" class="live-gift-choice" data-gift-code="'+code+'"><span class="live-gift-emoji">'+gift.emoji+'</span><span class="live-gift-name">'+gift.name+'</span><span class="live-gift-cost">🪙 '+gift.cost+' test coins</span></button>').join("")+'</div></div>').join("");
   root.querySelectorAll("[data-gift-code]").forEach(button=>button.addEventListener("click",()=>void sendLiveGift(button.dataset.giftCode,button)));
 }
@@ -194,7 +195,7 @@ function playLiveGiftSound(event, gift) {
       [0, 0.17, 0.62, 0.79, 1.24, 1.41].forEach((offset, i) =>
         thump(now + offset, i % 2 ? 61 : 82, i % 2 ? 0.13 : 0.17, i % 2 ? 0.23 : 0.31, i % 2 ? 38 : 46));
     } else {
-      const melodies = {
+      const melodies = { thunder_clap:[196,392,587,784], prism_wave:[523,659,880,1047,1319], mystery_reveal:[392,523,784,1047],
         melody_note:[659,784,988,784,659], symphony:[523,659,784,1047,784,659,784,1047],
         magic_spark:[784,988,1175], mystic_portal:[392,523,659,784], dragon_spirit:[196,247,294,392],
         galaxy_gift:[392,523,659,784,1047], creator_crown:[523,659,784,1047,1319],
@@ -208,7 +209,7 @@ function playLiveGiftSound(event, gift) {
 function showLiveGiftCelebration(event) {
   const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
   const old=$("liveGiftCelebration");if(old)old.remove();
-  const overlay=document.createElement("div");overlay.id="liveGiftCelebration";overlay.className="live-gift-celebration";overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");
+  const overlay=document.createElement("div");overlay.id="liveGiftCelebration";overlay.className="live-gift-celebration live-gift-celebration-"+gift.category.toLowerCase().replace(/\s+/g,"-");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");
   const card=document.createElement("div");card.className="live-gift-celebration-card";
   const emoji=document.createElement("span");emoji.textContent=gift.emoji;
   const title=document.createElement("strong");title.textContent=(event.sender_name||"TikNation member")+" sent "+gift.name+"!";
