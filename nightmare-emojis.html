@@ -59,21 +59,42 @@ teddy:{icon:'🧸',home:'Would you like a hug? ...Sure?',play:[['scare','🧸','
 zappy:{icon:'⚡',home:'Fully charged. Mostly focused.',play:[['legendary','⚡','Charging up… 100 percent!'],['glitch','💥','ZAP! That was faster than expected.'],['chase','⚡','Lightning lap around the room!'],['happy','😵','Static hair. Victory achieved.']],form:['🌩️','legendary','THUNDER form! Zappy summons a tiny, dramatic thunderstorm.']}
 };
 const discovered = new Set();
+const animationTimers = new WeakMap();
 function updateProgress(key){
+  const firstDiscovery = !discovered.has(key);
   discovered.add(key);
+  try { localStorage.setItem('tiknation-nightmare-discoveries', JSON.stringify([...discovered])); } catch (_) {}
   const count=discovered.size, label=document.getElementById('progressLabel'),fill=document.getElementById('progressFill'),bar=document.getElementById('progressBar'),note=document.getElementById('progressNote');
   label.textContent=count+' of 12 forms discovered';
   fill.style.width=(count/12*100)+'%';
   bar.setAttribute('aria-valuenow',String(count));
-  note.textContent=count===12?'COLLECTION COMPLETE! You discovered every transformation. The Nightmare Crew salutes you. 👻':'You discovered '+data[key].name+'’s special form! '+(12-count)+' '+((12-count)===1?'form remains':'forms remain')+'.';
+  document.querySelectorAll('.card').forEach(card=>{
+    const key=card.dataset.key;
+    let badge=card.querySelector('.discovered-badge');
+    if(discovered.has(key) && !badge){
+      badge=document.createElement('span'); badge.className='discovered-badge';
+      badge.textContent='✓ FORM FOUND'; badge.setAttribute('aria-label','Secret form discovered');
+      badge.style.cssText='display:inline-block;margin-top:9px;padding:3px 8px;border-radius:99px;background:#173c35;border:1px solid #55d9b0;color:#aaffdf;font-size:11px;font-weight:850;letter-spacing:.06em';
+      card.querySelector('.tag').insertAdjacentElement('afterend',badge);
+    }
+  });
+  note.textContent=count===12?'COLLECTION COMPLETE! You discovered every transformation. The Nightmare Crew salutes you. 👻':(firstDiscovery?'You discovered '+data[key].name+'’s special form! ':'Collection saved on this device. ')+(12-count)+' '+((12-count)===1?'form remains':'forms remain')+'.';
 }
+try {
+  const saved = JSON.parse(localStorage.getItem('tiknation-nightmare-discoveries') || '[]');
+  if (Array.isArray(saved)) saved.filter(key => Object.prototype.hasOwnProperty.call(data,key)).forEach(key=>discovered.add(key));
+} catch (_) {}
+
 Object.keys(data).forEach(key=>{data[key].name=({ghost:'Ghosty McBoo',pumpkin:'Pumpkin Panic',shadow:'Shadow Sneak',bat:'Batty.exe',moonie:'Moonie',cinder:'Cinder',frosty:'Frosty',turic:'Turic',pixel:'Pixel Pup',witchy:'Witchy',teddy:'Terror Teddy',zappy:'Zappy'})[key]});
 function labelFor(key){return ({ghost:'Surprise me!',pumpkin:'Cause chaos!',shadow:'Reveal shadow!',bat:'Run the glitch!',moonie:'Dream sequence',cinder:'Ignite the giggles',frosty:'Freeze-frame fun',turic:'Mix something weird',pixel:'Pixel zoomies',witchy:'Cast a silly spell',teddy:'Unleash the snuggle',zappy:'Power up!'})[key]}
-function reset(card){const key=card.dataset.key,d=data[key],char=card.querySelector('.character');char.className='character idle';char.textContent=d.icon;card.querySelector('.status').textContent=d.home;card.querySelectorAll('button').forEach(b=>b.disabled=false);card.querySelector('[data-play]').textContent=labelFor(key)}
-function animate(card,items,finish){const char=card.querySelector('.character'),status=card.querySelector('.status'),play=card.querySelector('[data-play]');card.querySelectorAll('button').forEach(b=>b.disabled=true);let i=0;function frame(){const step=items[i];char.className='character '+step[0];char.textContent=step[1];status.textContent=step[2];i++;if(i<items.length){window.setTimeout(frame,760)}else{card.querySelectorAll('button').forEach(b=>b.disabled=false);play.textContent=labelFor(card.dataset.key);if(finish)finish()}}frame()}
+function cancelAnimation(card){const timer=animationTimers.get(card);if(timer){window.clearTimeout(timer);animationTimers.delete(card)}}
+function reset(card){cancelAnimation(card);const key=card.dataset.key,d=data[key],char=card.querySelector('.character');char.className='character idle';char.textContent=d.icon;card.querySelector('.status').textContent=d.home;card.querySelectorAll('button').forEach(b=>b.disabled=false);card.querySelector('[data-play]').textContent=labelFor(key)}
+function animate(card,items,finish){cancelAnimation(card);const char=card.querySelector('.character'),status=card.querySelector('.status'),play=card.querySelector('[data-play]');card.querySelectorAll('button').forEach(b=>b.disabled=true);let i=0;function frame(){animationTimers.delete(card);const step=items[i];char.className='character '+step[0];char.textContent=step[1];status.textContent=step[2];i++;if(i<items.length){animationTimers.set(card,window.setTimeout(frame,760))}else{card.querySelectorAll('button').forEach(b=>b.disabled=false);play.textContent=labelFor(card.dataset.key);if(finish)finish()}}frame()}
 document.querySelectorAll('.card').forEach(card=>{const key=card.dataset.key;card.querySelector('[data-play]').addEventListener('click',()=>animate(card,data[key].play));card.querySelector('[data-transform]').addEventListener('click',()=>{const f=data[key].form;animate(card,[[ 'transform','✨','Secret transformation loading…'],[f[1],f[0],f[2]]],()=>updateProgress(key))});card.querySelector('[data-reset]').addEventListener('click',()=>reset(card))});
 document.getElementById('surpriseAll').addEventListener('click',()=>{const cards=[...document.querySelectorAll('.card')],card=cards[Math.floor(Math.random()*cards.length)];card.scrollIntoView({behavior:'smooth',block:'center'});animate(card,data[card.dataset.key].play)});
 document.getElementById('resetAll').addEventListener('click',()=>document.querySelectorAll('.card').forEach(reset));
+discovered.forEach(key=>{const card=document.querySelector('.card[data-key="'+key+'"]');if(card)updateProgress(key)});
+if(discovered.size===0){document.getElementById('progressLabel').textContent='0 of 12 forms discovered';}
 </script>
 </body>
 </html>
