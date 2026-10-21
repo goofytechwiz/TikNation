@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090716">
+<title>TikNation Emoji Forge</title>
+<style>
+:root{color-scheme:dark;--bg:#080713;--panel:#121126;--line:#2b2450;--purple:#a66bff;--cyan:#52e7ff;--pink:#ff66d8;--muted:#b4afca}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% 0%,#29104b 0,transparent 36%),radial-gradient(ellipse at 100% 20%,#062e49 0,transparent 30%),var(--bg);color:#fff;font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+header{padding:24px clamp(16px,4vw,48px);border-bottom:1px solid #ffffff18;background:#080713d9;position:sticky;top:0;backdrop-filter:blur(16px);z-index:3}
+.brand{font-weight:900;letter-spacing:.12em;font-size:clamp(18px,3vw,26px)}.brand span{color:var(--cyan)}.sub{color:var(--muted);font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+main{max-width:1150px;margin:auto;padding:28px 18px 60px}.hero{padding:26px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(130deg,#26134bdb,#0d2033c9);box-shadow:0 20px 60px #0005}.hero h1{font-size:clamp(32px,6vw,56px);line-height:1.05;margin:5px 0 12px}.gradient{background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));background-clip:text;color:transparent}.hero p{max-width:680px;color:#d2cde4;margin:0}
+.layout{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:20px}.panel{border:1px solid var(--line);background:#111022eF;border-radius:20px;padding:20px;min-width:0}.panel h2{font-size:20px;margin:0 0 5px}.hint{color:var(--muted);font-size:13px;margin:0 0 15px}.search{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #453b70;background:#090817;color:white;outline-color:var(--cyan)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:13px 0}.tab,button{border:1px solid #4a3d72;background:#1a1731;color:white;border-radius:11px;padding:9px 12px;cursor:pointer}.tab.active,button.primary{background:linear-gradient(100deg,#7045dc,#9c45d4);border-color:#bda2ff}.emoji-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.emoji{font-size:clamp(24px,4vw,32px);padding:7px 0;border:1px solid transparent;background:#ffffff08;border-radius:12px}.emoji:hover,.emoji:focus-visible{border-color:var(--cyan);background:#52e7ff16;transform:translateY(-1px)}.status{min-height:22px;color:var(--cyan);font-size:13px;margin-top:10px}
+.preview{display:grid;place-items:center;min-height:170px;border-radius:18px;border:1px dashed #66539c;background:radial-gradient(circle,#302052,#0b0a18 70%);margin:12px 0}.preview-emoji{font-size:76px;filter:drop-shadow(0 0 18px #b35cff99)}.fields{display:grid;gap:12px}.fields label{display:grid;gap:6px;color:#d5d0e8;font-size:13px}.fields select,.fields input{width:100%;padding:10px;border:1px solid #453b70;background:#090817;color:white;border-radius:10px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.saved{display:flex;gap:8px;flex-wrap:wrap}.saved-item{font-size:27px;padding:6px 10px;border-radius:10px;background:#ffffff0d;border:1px solid #ffffff1a;cursor:pointer}.foot{color:#8f89a8;text-align:center;font-size:12px;margin-top:20px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.emoji-grid{grid-template-columns:repeat(7,minmax(0,1fr))}.panel{padding:15px}.hero{padding:21px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="brand">TIK<span>NATION</span> <span style="color:#fff">✦</span> EMOJI FORGE</div><div class="sub">The Connection · Make it yours</div></header>
+<main>
+<section class="hero"><div class="sub">Creator tools · Beta workshop</div><h1>Say it with <span class="gradient">more feeling.</span></h1><p>Explore emojis, build your own playful emoji combinations, and keep your favorites in this browser. This is the first workshop version of TikNation's Emoji Forge.</p></section>
+<div class="layout">
+<section class="panel"><h2>🌌 Emoji Galaxy</h2><p class="hint">Tap any emoji to copy it. Search or choose a collection.</p><input id="search" class="search" type="search" placeholder="Search emojis or feelings…" aria-label="Search emojis">
+<div class="tabs" id="tabs" aria-label="Emoji categories"></div><div id="grid" class="emoji-grid"></div><div id="status" class="status" role="status" aria-live="polite"></div></section>
+<section class="panel"><h2>✨ Emoji Forge Creator</h2><p class="hint">Mix a face, an accessory, and a sparkle to make a personal combo.</p>
+<div class="preview"><div id="preview" class="preview-emoji" aria-label="Emoji preview">😍✨</div></div>
+<div class="fields">
+<label>Face<select id="face"><option>😀</option><option>🥹</option><option>😍</option><option>😎</option><option>😂</option><option>🥳</option><option>😈</option><option>👻</option><option>🤖</option><option>🐸</option><option>🐱</option><option>🦄</option><option>💀</option><option>🥰</option><option>🤩</option><option>😭</option></select></label>
+<label>Accessory<select id="accessory"><option value="">No accessory</option><option>👑</option><option>🕶️</option><option>🎀</option><option>🪽</option><option>💎</option><option>🎧</option><option>🔥</option><option>💜</option><option>🦋</option><option>🌈</option></select></label>
+<label>Effect<select id="effect"><option>✨</option><option>💫</option><option>💖</option><option>⚡</option><option>🌟</option><option>🎉</option><option>🪄</option><option>🌙</option><option>💥</option><option value="">No effect</option></select></label>
+<label>Give your creation a name<input id="name" maxlength="28" placeholder="e.g. Cosmic Bestie"></label>
+</div><div class="actions"><button class="primary" id="save">♡ Save to My Vault</button><button id="copyCreation">Copy emoji</button><button id="reset">Reset</button></div><div id="creatorStatus" class="status" role="status" aria-live="polite"></div>
+<div class="section-title" style="margin-top:18px;font-weight:750">💜 My Emoji Vault <span class="hint">(saved on this device)</span></div><div id="vault" class="saved"></div><div class="actions"><button id="export">Export my vault</button><button id="clear">Clear vault</button></div>
+</section></div><p class="foot">TikNation Emoji Forge · Early prototype. Saved creations stay in this browser and are not yet synced to an account.</p>
+</main>
+<script>
+const groups={
+'All':[['😀','grinning'],['😃','happy'],['😄','smile'],['😁','grin'],['😆','laugh'],['😅','sweat smile'],['🤣','rofl'],['😂','tears joy'],['🙂','slight smile'],['🙃','upside down'],['😉','wink'],['😊','blush'],['🥰','love'],['😍','heart eyes'],['🤩','star eyes'],['😘','kiss'],['😎','cool'],['🥳','party'],['😭','cry'],['🥹','touched'],['😈','mischief'],['👻','ghost'],['🤖','robot'],['💀','skull'],['🐸','frog'],['🐱','cat'],['🦄','unicorn'],['👑','crown'],['💜','purple heart'],['💖','sparkling heart'],['✨','sparkles'],['🔥','fire'],['🌈','rainbow'],['🦋','butterfly'],['⚡','lightning'],['🎉','party popper'],['🎧','headphones'],['💎','gem'],['🪄','magic wand'],['🌙','moon']],
+'Feelings':[['😀','happy'],['😊','blush'],['🥰','love'],['😍','adore'],['😘','kiss'],['😂','laugh'],['🤣','rofl'],['🥹','touched'],['😭','cry'],['😢','sad'],['😤','frustrated'],['😱','shocked'],['🤔','thinking'],['😴','sleepy'],['😎','cool'],['🤩','excited'],['🥳','celebrate'],['😇','angel'],['😬','awkward'],['🤗','hug']],
+'Hearts':[['❤️','red heart'],['🧡','orange heart'],['💛','yellow heart'],['💚','green heart'],['💙','blue heart'],['💜','purple heart'],['🖤','black heart'],['🤍','white heart'],['🩷','pink heart'],['🩵','light blue heart'],['💖','sparkling heart'],['💗','growing heart'],['💓','beating heart'],['💕','two hearts'],['💞','revolving hearts'],['💘','arrow heart'],['💝','gift heart'],['❤️‍🔥','heart on fire']],
+'Magic & Glow':[['✨','sparkles'],['🌟','glowing star'],['⭐','star'],['💫','dizzy'],['🌙','moon'],['☄️','comet'],['🪄','magic wand'],['🔮','crystal ball'],['🦄','unicorn'],['🪽','wings'],['🦋','butterfly'],['🌈','rainbow'],['⚡','lightning'],['💎','gem'],['🪐','planet'],['🌌','galaxy'],['💜','purple heart'],['🩵','blue heart']],
+'Party & Creator':[['🎉','party'],['🎊','confetti'],['🎂','birthday'],['🎁','gift'],['🎈','balloon'],['🎤','microphone'],['🎧','headphones'],['📸','camera'],['🎬','clapper'],['🎨','art'],['👑','crown'],['🏆','trophy'],['💯','hundred'],['🚀','rocket'],['🔥','fire'],['💥','boom'],['🪩','disco'],['🎵','music']]
+};
+let category='All';const $=id=>document.getElementById(id);const vaultKey='tn-emoji-forge-v1';
+function safeVault(){try{return JSON.parse(localStorage.getItem(vaultKey)||'[]')}catch{return []}}
+function renderTabs(){ $('tabs').innerHTML=Object.keys(groups).map(g=>'<button class="tab '+(g===category?'active':'')+'" data-cat="'+g+'">'+g+'</button>').join('');}
+function renderGrid(){const q=$('search').value.trim().toLowerCase();let items=(category==='All'?groups.All:groups[category]).filter(([e,n])=>!q||(e+' '+n).toLowerCase().includes(q));$('grid').innerHTML=items.map(([e,n])=>'<button class="emoji" title="'+n+'" aria-label="'+n+'" data-emoji="'+e+'">'+e+'</button>').join('')||'<p class="hint">No matches. Try another search.</p>';}
+function creation(){return $('face').value+$('accessory').value+$('effect').value}
+function updatePreview(){$('preview').textContent=creation()}
+function renderVault(){const v=safeVault();$('vault').innerHTML=v.length?v.map((x,i)=>'<button class="saved-item" title="'+escapeHtml(x.name||'Saved emoji')+'" aria-label="Copy '+escapeHtml(x.name||'saved emoji')+'" data-vault="'+i+'">'+escapeHtml(x.emoji)+'</button>').join(''):'<span class="hint">Your saved creations will appear here.</span>'}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();const ok=document.execCommand('copy');a.remove();return ok}}
+$('tabs').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;category=b.dataset.cat;renderTabs();renderGrid()});
+$('grid').addEventListener('click',async e=>{const b=e.target.closest('[data-emoji]');if(!b)return;const ok=await copyText(b.dataset.emoji);$('status').textContent=ok?'Copied '+b.dataset.emoji+' — ready to paste!':'Select and copy: '+b.dataset.emoji});
+$('search').addEventListener('input',renderGrid);['face','accessory','effect'].forEach(id=>$(id).addEventListener('change',updatePreview));
+$('save').addEventListener('click',()=>{const v=safeVault(),emoji=creation(),name=$('name').value.trim()||'My TikNation emoji';if(v.length>=100){$('creatorStatus').textContent='Your local vault holds 100 creations. Export it before adding more.';return}v.unshift({emoji,name,createdAt:new Date().toISOString()});localStorage.setItem(vaultKey,JSON.stringify(v));renderVault();$('creatorStatus').textContent='Saved “'+name+'” to this device!';});
+$('copyCreation').addEventListener('click',async()=>{$('creatorStatus').textContent=(await copyText(creation()))?'Creation copied!':'Copy this: '+creation()});
+$('reset').addEventListener('click',()=>{$('face').value='😀';$('accessory').value='';$('effect').value='✨';$('name').value='';updatePreview();$('creatorStatus').textContent='Ready for a new creation.'});
+$('vault').addEventListener('click',async e=>{const b=e.target.closest('[data-vault]');if(!b)return;const item=safeVault()[Number(b.dataset.vault)];if(item)$('creatorStatus').textContent=(await copyText(item.emoji))?'Copied '+item.name+'!':'Your emoji: '+item.emoji});
+$('export').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(safeVault(),null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='tiknation-emoji-vault.json';a.click();URL.revokeObjectURL(url);$('creatorStatus').textContent='Vault export prepared.'});
+$('clear').addEventListener('click',()=>{if(confirm('Clear all saved emojis from this browser? Export first if you want a backup.')){localStorage.removeItem(vaultKey);renderVault();$('creatorStatus').textContent='Local vault cleared.'}});
+renderTabs();renderGrid();renderVault();updatePreview();
+</script>
+</body>
+</html>
