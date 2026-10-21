@@ -1717,6 +1717,31 @@ textarea.form-control{
         width:100%;
     }
 }
+
+/* TIKNATION HOST — friendly site guide and show presenter */
+.tn-host-feature{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:22px;margin-top:22px;padding:24px;border:1px solid rgba(141,99,255,.32);border-radius:24px;background:linear-gradient(120deg,rgba(141,99,255,.15),rgba(0,210,255,.07),rgba(15,15,27,.92));}
+.tn-host-feature-copy .eyebrow{margin-bottom:8px;}
+.tn-host-feature h2{font-size:clamp(22px,3vw,30px);margin-bottom:8px;}
+.tn-host-feature p{color:#aaaabd;line-height:1.6;max-width:650px;}
+.tn-host-avatar{display:grid;place-items:center;width:112px;height:112px;border-radius:28px;background:radial-gradient(circle at 35% 25%,#d4c2ff,#8d63ff 48%,#28165c);box-shadow:0 0 35px rgba(141,99,255,.3);font-size:58px;animation:tnHostFloat 3s ease-in-out infinite;}
+.tn-host-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.tn-host-button{border:1px solid rgba(141,99,255,.4);border-radius:999px;padding:10px 15px;background:rgba(141,99,255,.16);color:#fff;font-weight:700;}
+.tn-host-button:hover,.tn-host-button:focus-visible{background:rgba(141,99,255,.3);outline:2px solid #70e8ff;outline-offset:2px;}
+.tn-host-launcher{position:fixed;right:18px;bottom:22px;z-index:1500;display:flex;align-items:center;gap:10px;padding:10px 15px 10px 10px;border:1px solid rgba(141,99,255,.55);border-radius:999px;background:rgba(12,10,25,.96);color:#fff;box-shadow:0 12px 40px rgba(0,0,0,.4);font-weight:800;}
+.tn-host-launcher-avatar{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#9c7cff,#00c8ff);font-size:24px;}
+.tn-host-panel{position:fixed;right:18px;bottom:84px;z-index:1501;width:min(350px,calc(100vw - 28px));padding:18px;border:1px solid rgba(141,99,255,.45);border-radius:22px;background:rgba(12,12,25,.98);box-shadow:0 20px 65px rgba(0,0,0,.55);backdrop-filter:blur(18px);}
+.tn-host-panel[hidden]{display:none;}
+.tn-host-panel-head{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.tn-host-panel-head .tn-host-avatar{width:60px;height:60px;border-radius:18px;font-size:32px;animation:none;flex-shrink:0;}
+.tn-host-panel h3{margin-bottom:4px;}
+.tn-host-panel p{color:#c3c0d7;line-height:1.55;font-size:14px;}
+.tn-host-panel-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.tn-host-panel-actions button{flex:1;min-width:100px;border:1px solid rgba(255,255,255,.13);border-radius:12px;padding:10px;background:rgba(255,255,255,.06);color:#fff;font-weight:700;}
+.tn-host-close{position:absolute;right:12px;top:12px;border:0;background:transparent;color:#aaa;font-size:22px;cursor:pointer;}
+@keyframes tnHostFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}
+@media(max-width:600px){.tn-host-feature{grid-template-columns:1fr;padding:18px}.tn-host-avatar{width:86px;height:86px;font-size:45px;grid-row:1}.tn-host-launcher{right:10px;bottom:84px;padding:8px 12px 8px 8px}.tn-host-panel{right:10px;bottom:140px}}
+@media(prefers-reduced-motion:reduce){.tn-host-avatar{animation:none}}
+
 </style>
 </head>
 
@@ -1896,6 +1921,19 @@ textarea.form-control{
 
 
     </div>
+
+    <section class="tn-host-feature" aria-labelledby="tnHostFeatureTitle">
+        <div class="tn-host-feature-copy">
+            <div class="eyebrow">YOUR TIKNATION GUIDE</div>
+            <h2 id="tnHostFeatureTitle">Meet your host, <span class="gradient-text">Giggles!</span> 🎤</h2>
+            <p>Website guide by day, show presenter by night. Giggles welcomes visitors, introduces new corners of TikNation, and is always one surprise away from total emoji chaos.</p>
+            <div class="tn-host-actions">
+                <button type="button" class="tn-host-button" onclick="openTikNationHost('welcome')">👋 Meet Giggles</button>
+                <button type="button" class="tn-host-button" onclick="openTikNationHost('show')">🎬 Start the show</button>
+            </div>
+        </div>
+        <div class="tn-host-avatar" aria-label="Giggles the purple host mascot" role="img">🎤😄</div>
+    </section>
 
     <div class="section-head">
         <h2>Explore TikNation</h2>
@@ -7528,6 +7566,58 @@ if ("serviceWorker" in navigator) {
 
 
 
+<!-- TikNation Host: a site guide and interactive show presenter -->
+<button type="button" class="tn-host-launcher" id="tnHostLauncher" aria-controls="tnHostPanel" aria-expanded="false" onclick="toggleTikNationHost()">
+    <span class="tn-host-launcher-avatar" aria-hidden="true">🎤😄</span><span>Ask Giggles</span>
+</button>
+<aside class="tn-host-panel" id="tnHostPanel" aria-label="TikNation host" hidden>
+    <button type="button" class="tn-host-close" aria-label="Close host panel" onclick="closeTikNationHost()">×</button>
+    <div class="tn-host-panel-head">
+        <div class="tn-host-avatar" aria-hidden="true">🎤😄</div>
+        <div><h3>Giggles 🎤</h3><div class="muted" style="font-size:12px">TikNation's host & guide</div></div>
+    </div>
+    <p id="tnHostLine" aria-live="polite">Heyyy, Nation! I'm Giggles — your guide around TikNation. Need a tour, or should we start the show? 😄</p>
+    <div class="tn-host-panel-actions">
+        <button type="button" onclick="tikNationHostSay('tour')">🧭 Tour the site</button>
+        <button type="button" onclick="tikNationHostSay('show')">🎬 Host a show</button>
+        <button type="button" onclick="tikNationHostSay('surprise')">🎁 Surprise me</button>
+    </div>
+</aside>
+<script>
+(function(){
+    const lines = {
+        welcome: "Heyyy, Nation! 💜 I'm Giggles — your guide around TikNation. I'll show visitors around and bring a little comedy to the experience!",
+        tour: "Site tour time! 👀 Try Watch for videos, Discover to find creators, and Creator Studio to make something of your own. More emoji worlds and surprises are on the way!",
+        show: "🎬 LADIES, GENTLEMEN, AND EMOJIS OF EVERY EXPRESSION... welcome to the TikNation Show! Please keep your glitter inside the ride. Sparklewing has already ignored that instruction. 🐉✨",
+        surprise: "🚨 BREAKING NEWS: a rare emoji has been spotted doing absolutely nothing suspicious. 👀 Wait—IT'S TAP-DANCING ON THE CEILING! 😂💎"
+    };
+    window.openTikNationHost = function(mode){
+        const panel=document.getElementById("tnHostPanel");
+        const launcher=document.getElementById("tnHostLauncher");
+        if(!panel||!launcher)return;
+        panel.hidden=false; launcher.setAttribute("aria-expanded","true");
+        window.tikNationHostSay(mode==="show"?"show":"welcome");
+    };
+    window.toggleTikNationHost = function(){
+        const panel=document.getElementById("tnHostPanel");
+        const launcher=document.getElementById("tnHostLauncher");
+        if(!panel||!launcher)return;
+        if(panel.hidden){panel.hidden=false;launcher.setAttribute("aria-expanded","true");window.tikNationHostSay("welcome");}
+        else{panel.hidden=true;launcher.setAttribute("aria-expanded","false");}
+    };
+    window.closeTikNationHost = function(){
+        const panel=document.getElementById("tnHostPanel");
+        const launcher=document.getElementById("tnHostLauncher");
+        if(panel)panel.hidden=true;
+        if(launcher)launcher.setAttribute("aria-expanded","false");
+    };
+    window.tikNationHostSay = function(kind){
+        const line=document.getElementById("tnHostLine");
+        if(line)line.textContent=lines[kind]||lines.welcome;
+    };
+    document.addEventListener("keydown",function(event){if(event.key==="Escape")window.closeTikNationHost();});
+})();
+</script>
 <script src="gifts.js"></script>
 </body>
 </html>
