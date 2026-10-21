@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10091c">
+<title>TikNation Nightmare Emojis</title>
+<meta name="description" content="Meet the living Nightmare Emojis of TikNation. Tap a character for a spooky surprise.">
+<style>
+:root{color-scheme:dark;--bg:#090711;--panel:#171126;--line:#392653;--purple:#b47aff;--pink:#ff72d2;--cyan:#77f1ff;--muted:#c5b8d8}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 15% 0%,#351354 0,transparent 38%),radial-gradient(ellipse at 90% 20%,#082d3c 0,transparent 32%),var(--bg);color:#fff;font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:20px clamp(16px,4vw,48px);border-bottom:1px solid #ffffff1c;background:#090711e8;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}.brand{font-weight:900;letter-spacing:.14em}.brand span{color:var(--cyan)}.sub{font-size:12px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase}
+main{max-width:1100px;margin:auto;padding:28px 18px 60px}.hero{border:1px solid var(--line);border-radius:24px;padding:clamp(20px,4vw,38px);background:linear-gradient(135deg,#2b1645e8,#0c1d2ae8);box-shadow:0 20px 70px #0006}.eyebrow{color:var(--cyan);font-weight:800;letter-spacing:.15em;font-size:12px}.hero h1{font-size:clamp(34px,7vw,64px);line-height:1.03;margin:8px 0 12px}.gradient{background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));background-clip:text;color:transparent}.hero p{max-width:700px;color:#ded4ec;margin:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}.card{min-width:0;border:1px solid var(--line);border-radius:20px;padding:18px;background:#151020eF}.card h2{margin:0;font-size:21px}.tag{color:var(--cyan);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em}.preview{height:180px;border-radius:16px;margin:13px 0;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(circle,#392451,#100b1b 70%);border:1px solid #ffffff10}.character{font-size:88px;filter:drop-shadow(0 0 18px #bb70ff99);display:inline-block;user-select:none}.character.idle{animation:float 2.4s ease-in-out infinite}.character.scare{animation:scare .55s cubic-bezier(.2,1.5,.5,1)}.character.transform{animation:poof .8s ease-in-out}.character.happy{animation:wiggle .7s ease-in-out}.character.glitch{animation:glitch .5s steps(2,end)}.card p{color:var(--muted);margin:8px 0 14px}.status{min-height:25px;color:#e6d2ff;font-size:14px}.actions{display:flex;gap:8px;flex-wrap:wrap}button{border:1px solid #614482;background:#251839;color:white;padding:10px 14px;border-radius:12px;font:inherit;font-weight:750;cursor:pointer}button.primary{background:linear-gradient(100deg,#7045dc,#b448d7);border-color:#c6a1ff}button:hover{filter:brightness(1.15)}button:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}.note{margin-top:18px;border:1px solid #ffffff1b;border-radius:16px;padding:15px;color:var(--muted);background:#ffffff06}.footer{text-align:center;color:#8f84a7;font-size:12px;margin-top:24px}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(4deg)}}
+@keyframes scare{0%{transform:scale(.5) translateY(18px)}65%{transform:scale(1.35) rotate(-8deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes poof{0%{transform:scale(1);opacity:1;filter:blur(0)}45%{transform:scale(1.35);opacity:.7;filter:blur(4px)}100%{transform:scale(.75);opacity:1;filter:blur(0)}}
+@keyframes wiggle{0%,100%{transform:rotate(0) scale(1)}25%{transform:rotate(-12deg) scale(1.08)}50%{transform:rotate(10deg) scale(1.12)}75%{transform:rotate(-6deg) scale(1.04)}}
+@keyframes glitch{0%,100%{transform:translateX(0) skew(0);filter:hue-rotate(0)}25%{transform:translateX(-8px) skew(-8deg);filter:hue-rotate(80deg)}50%{transform:translateX(7px) skew(8deg);filter:hue-rotate(180deg)}75%{transform:translateX(-3px);filter:hue-rotate(260deg)}}
+@media(max-width:650px){.grid{grid-template-columns:1fr}.preview{height:160px}.character{font-size:78px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><div class="brand">TIK<span>NATION</span></div><div class="sub">The spooky side · living emoji experiments</div></header>
+<main>
+<section class="hero"><div class="eyebrow">THE NIGHTMARE CREW</div><h1>They're cute.<br><span class="gradient">They're creepy.</span><br>They come alive.</h1><p>Meet TikNation's first Nightmare Emojis. Tap any character to trigger its animation and reveal a spooky surprise. Turn your sound up only if you want to—this demo stays silent.</p></section>
+<section class="grid" aria-label="Nightmare Emoji characters">
+<article class="card" data-character="ghost"><div class="tag">01 · Jump-scare prankster</div><h2>Ghosty McBoo</h2><div class="preview"><span class="character idle" aria-hidden="true">👻</span></div><div class="status" aria-live="polite">Ghosty is hiding in the mist…</div><p>Floats in quietly, lunges with a silly scare, then turns sweet and giggles.</p><div class="actions"><button class="primary" data-play="ghost">Surprise me!</button><button data-reset="ghost">Reset</button></div></article>
+<article class="card" data-character="pumpkin"><div class="tag">02 · Chaos machine</div><h2>Pumpkin Panic</h2><div class="preview"><span class="character idle" aria-hidden="true">🎃</span></div><div class="status" aria-live="polite">Everything is totally under control…</div><p>The grin grows, bats burst out, and the pumpkin discovers its very questionable magic.</p><div class="actions"><button class="primary" data-play="pumpkin">Cause chaos!</button><button data-reset="pumpkin">Reset</button></div></article>
+<article class="card" data-character="shadow"><div class="tag">03 · Master of mischief</div><h2>Shadow Sneak</h2><div class="preview"><span class="character idle" aria-hidden="true">🌑</span></div><div class="status" aria-live="polite">You saw nothing. Absolutely nothing.</div><p>A lurking shadow splits into three tiny copies, then merges and vanishes.</p><div class="actions"><button class="primary" data-play="shadow">Reveal shadow!</button><button data-reset="shadow">Reset</button></div></article>
+<article class="card" data-character="bat"><div class="tag">04 · Glitchy surprise</div><h2>Batty.exe</h2><div class="preview"><span class="character idle" aria-hidden="true">🦇</span></div><div class="status" aria-live="polite">Loading spooky personality…</div><p>Glitches through ridiculous expressions, then reboots with a tiny heart.</p><div class="actions"><button class="primary" data-play="bat">Run the glitch!</button><button data-reset="bat">Reset</button></div></article>
+</section>
+<div class="note"><strong>Early demo:</strong> these are lightweight emoji-based animation prototypes, not final custom character artwork. The next stage is replacing the placeholders with original character assets and then checking how TikNation's chat can display animated emoji.</div>
+<div class="footer">TikNation · Made for spooky laughs 💜 · Motion respects your device's reduced-motion setting</div>
+</main>
+<script>
+const stories={
+ ghost:[['scare','😱','BOO! Ghosty scared itself!'],['transform','💨','P O O F — ghost to smoke!'],['happy','🥹','It was me! 😂']],
+ pumpkin:[['scare','🎃','That grin is getting suspicious…'],['transform','🦇','BAT ATTACK! The spell backfired!'],['happy','😵‍💫','Pumpkin Panic regrets everything.']],
+ shadow:[['scare','👀','The shadow is watching…'],['transform','👥','Three shadows?! Pick a favourite.'],['happy','🌑','They merged. You saw nothing.']],
+ bat:[['glitch','🤖','ERROR 404: personality missing'],['transform','✨','Rebooting spooky mode…'],['happy','🦇','System restored. Mostly.']]
+};
+document.querySelectorAll('[data-play]').forEach(button=>button.addEventListener('click',()=>{
+ const card=button.closest('.card'), key=button.dataset.play, character=card.querySelector('.character'), status=card.querySelector('.status'), story=stories[key];
+ let step=0;button.disabled=true;button.textContent='Surprise in progress…';
+ function frame(){const item=story[step];character.className='character '+item[0];character.textContent=item[1];status.textContent=item[2];step++;if(step<story.length){setTimeout(frame,850)}else{button.disabled=false;button.textContent=key==='pumpkin'?'Cause chaos!':key==='shadow'?'Reveal shadow!':key==='bat'?'Run the glitch!':'Surprise me!';}}
+ frame();
+}));
+document.querySelectorAll('[data-reset]').forEach(button=>button.addEventListener('click',()=>{
+ const card=button.closest('.card'),key=button.dataset.reset,character=card.querySelector('.character'),status=card.querySelector('.status');
+ const originals={ghost:['👻','Ghosty is hiding in the mist…'],pumpkin:['🎃','Everything is totally under control…'],shadow:['🌑','You saw nothing. Absolutely nothing.'],bat:['🦇','Loading spooky personality…']};
+ character.className='character idle';character.textContent=originals[key][0];status.textContent=originals[key][1];
+ const play=card.querySelector('[data-play]');play.disabled=false;play.textContent=key==='pumpkin'?'Cause chaos!':key==='shadow'?'Reveal shadow!':key==='bat'?'Run the glitch!':'Surprise me!';
+}));
+</script>
+</body>
+</html>
