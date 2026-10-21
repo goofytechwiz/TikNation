@@ -7566,6 +7566,69 @@ if ("serviceWorker" in navigator) {
 
 
 
+<!-- TikNation founder character: an original magical emoji avatar -->
+<style>
+.tn-magic-maker{max-width:980px;margin:32px auto;padding:clamp(20px,4vw,34px);border:1px solid rgba(186,132,255,.5);border-radius:26px;background:radial-gradient(circle at 15% 15%,rgba(174,112,255,.24),transparent 38%),linear-gradient(135deg,#17112d,#241442 58%,#101b35);color:#fff;box-shadow:0 14px 40px rgba(43,18,79,.22);overflow:hidden;position:relative}
+.tn-magic-maker:after{content:"✦  ·  ✧   ·  ✦";position:absolute;right:18px;top:14px;color:#f5d8ff;letter-spacing:8px;opacity:.7;pointer-events:none}
+.tn-magic-maker-inner{display:grid;grid-template-columns:minmax(130px,190px) 1fr;gap:24px;align-items:center}
+.tn-magic-orb{width:min(100%,180px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;margin:auto;background:radial-gradient(circle at 35% 25%,#fff4ff 0 4%,#d9a8ff 5% 12%,#8e55e9 32%,#39206f 68%,#15102d 100%);border:2px solid rgba(255,255,255,.7);box-shadow:0 0 24px #a967ff, inset 0 0 25px rgba(255,255,255,.35);font-size:clamp(48px,8vw,76px);animation:tnMagicFloat 3s ease-in-out infinite;position:relative}
+.tn-magic-orb:after{content:"✨";position:absolute;right:3px;top:4px;font-size:29px;animation:tnMagicTwinkle 1.6s ease-in-out infinite}
+.tn-magic-maker h2{margin:0 0 8px;color:#f4d5ff;font-size:clamp(24px,4vw,34px)}
+.tn-magic-maker p{line-height:1.6;margin:8px 0 14px}
+.tn-magic-tag{display:inline-block;padding:5px 10px;margin:0 5px 6px 0;border-radius:999px;background:rgba(206,165,255,.15);border:1px solid rgba(220,190,255,.3);font-size:12px}
+.tn-magic-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.tn-magic-actions button{border:1px solid #d7b0ff;border-radius:999px;padding:10px 15px;background:#8b4bd4;color:white;font-weight:700;cursor:pointer}
+.tn-magic-actions button:hover{filter:brightness(1.15);transform:translateY(-1px)}
+#tnMagicStatus{min-height:25px;color:#f5d8ff;font-weight:600}
+.tn-magic-maker.legendary .tn-magic-orb{background:radial-gradient(circle at 35% 25%,#fff 0 5%,#fff1a8 7% 15%,#ff9de4 34%,#8a5aff 62%,#261044 100%);box-shadow:0 0 38px #ffd66b,0 0 70px #b65cff,inset 0 0 25px white}
+.tn-magic-maker.chaos .tn-magic-orb{animation:tnMagicChaos .65s ease-in-out infinite alternate}
+@keyframes tnMagicFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-9px) rotate(3deg)}}
+@keyframes tnMagicTwinkle{0%,100%{transform:scale(.75) rotate(0deg);opacity:.65}50%{transform:scale(1.25) rotate(25deg);opacity:1}}
+@keyframes tnMagicChaos{from{transform:rotate(-10deg) scale(.96)}to{transform:rotate(10deg) scale(1.06)}}
+@media(max-width:600px){.tn-magic-maker-inner{grid-template-columns:1fr;text-align:center}.tn-magic-orb{width:145px}.tn-magic-actions{justify-content:center}}
+@media(prefers-reduced-motion:reduce){.tn-magic-orb,.tn-magic-orb:after{animation:none!important}.tn-magic-actions button{transition:none}}
+</style>
+<section class="tn-magic-maker" id="tnMagicMaker" aria-labelledby="tnMagicTitle">
+  <div class="tn-magic-maker-inner">
+    <div class="tn-magic-orb" id="tnMagicOrb" role="img" aria-label="A magical cartoon emoji avatar wearing a wizard hat">🧙✨</div>
+    <div>
+      <span class="tn-magic-tag">🌟 FOUNDER'S LEGEND</span><span class="tn-magic-tag">🔮 ORIGINAL TIKNATION CHARACTER</span>
+      <h2 id="tnMagicTitle">Meet the Magic Maker!</h2>
+      <p>This is your magical cartoon alter ego in TikNation: the creator behind the chaos, keeper of the sparkle, and discoverer of brand-new emoji worlds. Their signature power turns ordinary emojis into extraordinary characters! 💜</p>
+      <div><span class="tn-magic-tag">💜 Purple Spell Sparks</span><span class="tn-magic-tag">✨ Surprise Transformations</span><span class="tn-magic-tag">💎 Rare Legendary Form</span></div>
+      <p id="tnMagicStatus" aria-live="polite">Your magic is ready. Pick a power to see what happens!</p>
+      <div class="tn-magic-actions">
+        <button type="button" onclick="tikNationMagicPower('spell')">✨ Cast a spell</button>
+        <button type="button" onclick="tikNationMagicPower('chaos')">🌀 Magical chaos</button>
+        <button type="button" onclick="tikNationMagicPower('legendary')">💎 Reveal rare form</button>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  const section=document.getElementById("tnMagicMaker");
+  const orb=document.getElementById("tnMagicOrb");
+  const status=document.getElementById("tnMagicStatus");
+  window.tikNationMagicPower=function(power){
+    if(!section||!orb||!status)return;
+    section.classList.remove("legendary","chaos");
+    if(power==="legendary"){
+      section.classList.add("legendary");
+      orb.textContent="🧙‍♂️💎";
+      status.textContent="LEGENDARY FORM UNLOCKED! The crown of stardust appears, and every sparkle becomes a rare emoji. You found the founder's secret power!";
+    }else if(power==="chaos"){
+      section.classList.add("chaos");
+      orb.textContent="🤯✨";
+      status.textContent="MAGICAL CHAOS! Oops—your spell turned the sparkle into a tiny glitter tornado. Nobody panic. (Giggles is absolutely panicking.)";
+    }else{
+      orb.textContent="🧙✨";
+      status.textContent="SPELL CAST! A purple starburst transforms a regular emoji into a brand-new TikNation character. Magic Maker power: activated!";
+    }
+  };
+})();
+</script>
+
 <!-- TikNation Host: a site guide and interactive show presenter -->
 <button type="button" class="tn-host-launcher" id="tnHostLauncher" aria-controls="tnHostPanel" aria-expanded="false" onclick="toggleTikNationHost()">
     <span class="tn-host-launcher-avatar" aria-hidden="true">🎤😄</span><span>Ask Giggles</span>
