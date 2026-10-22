@@ -54,7 +54,11 @@ body.living-mode .hero:after{animation:livingBob 1.2s ease-in-out infinite,livin
 <section class="encounter-log" aria-labelledby="encounterTitle"><div class="log-heading"><div><h2 id="encounterTitle">📜 Nightmare Encounter Log</h2><p class="muted">Your latest encounters appear here while this page is open.</p></div><button id="clearEncounterLog" type="button">Clear log</button></div><p class="log-empty" id="encounterEmpty">No encounters yet. Wake up a Nightmare Emoji to begin!</p><ol class="log-list" id="encounterEntries" aria-live="polite"></ol></section>
 <section class="combo-lab" aria-labelledby="rareTitle"><h2 id="rareTitle">👑 Rare Encounter Portal</h2><p>Open a portal for a chance to meet a rare or legendary visitor. Discoveries are saved on this device.</p><div class="combo-stage" aria-live="polite"><span class="combo-emoji" id="rareFace">🌀</span></div><div class="combo-result" id="rareResult">The portal is quiet… for now.</div><button class="primary" id="openPortal" type="button">🌀 Open the portal</button><div class="progress-note" id="rareProgress">Rare visitors discovered: 0 of 5</div><div class="found-forms" id="rareCollection"><span class="found-empty">🔒 Your rare visitors will appear here.</span></div></section><section class="combo-lab" aria-labelledby="comboLabTitle">
 <style>
-.combo-lab{margin:24px 0;padding:20px;border:1px solid #6c4c91;border-radius:22px;background:linear-gradient(135deg,#21132f,#101a29)}.combo-lab h2{margin:0 0 6px}.combo-lab>p{color:var(--muted);margin:0 0 14px}.combo-pickers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.combo-pickers label{display:grid;gap:6px;font-weight:800;font-size:13px;color:#e7d5ff}.combo-pickers select{width:100%;min-width:0;border:1px solid #614482;background:#120d20;color:white;padding:11px;border-radius:10px;font:inherit}.combo-stage{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin:18px 0;padding:16px;border-radius:16px;background:#09071199;border:1px solid #ffffff18}.combo-emoji{font-size:clamp(2.7rem,8vw,4.2rem);display:inline-block}.combo-emoji.pop{animation:legendary .65s ease-in-out}.combo-result{min-height:48px;color:#f0dcff;text-align:center}.combo-result strong{color:var(--cyan)}.combo-lab button{margin-top:6px}.combo-lab .hint{font-size:12px;color:#bdaed0;margin-top:10px}@media(max-width:480px){.combo-pickers{grid-template-columns:1fr}}
+.combo-lab{margin:24px 0;padding:20px;border:1px solid #6c4c91;border-radius:22px;background:linear-gradient(135deg,#21132f,#101a29)}.combo-lab h2{margin:0 0 6px}.combo-lab>p{color:var(--muted);margin:0 0 14px}.combo-pickers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.combo-pickers label{display:grid;gap:6px;font-weight:800;font-size:13px;color:#e7d5ff}.combo-pickers select{width:100%;min-width:0;border:1px solid #614482;background:#120d20;color:white;padding:11px;border-radius:10px;font:inherit}.combo-stage{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin:18px 0;padding:16px;border-radius:16px;background:#09071199;border:1px solid #ffffff18}.combo-emoji{font-size:clamp(2.7rem,8vw,4.2rem);display:inline-block}.combo-emoji.pop{animation:legendary .65s ease-in-out}.combo-result{min-height:48px;color:#f0dcff;text-align:center}.combo-result strong{color:var(--cyan)}
+@keyframes bondBurst{0%,100%{transform:scale(1) rotate(0deg)}20%{transform:scale(1.3) rotate(-12deg)}45%{transform:scale(.82) rotate(12deg)}70%{transform:scale(1.16) rotate(-5deg)}}
+.character.bond-reaction{animation:bondBurst .9s ease-in-out, livingGlow 1.2s ease-in-out!important;filter:drop-shadow(0 0 16px #77f1ff)}
+@keyframes fusionPulse{0%{transform:scale(.7) rotate(-8deg);opacity:.4}55%{transform:scale(1.25) rotate(8deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+.combo-emoji.fusion{animation:fusionPulse .75s ease-in-out}.combo-lab button{margin-top:6px}.combo-lab .hint{font-size:12px;color:#bdaed0;margin-top:10px}@media(max-width:480px){.combo-pickers{grid-template-columns:1fr}}
 </style>
 <h2 id="comboLabTitle">🧪 Nightmare Mix Lab</h2>
 <p>Pick any two characters and discover what happens when their powers collide. Some pairs have special secret reactions!</p>
@@ -136,6 +140,27 @@ const mixSecrets={
 'teddy|turic':{face:'🧸',title:'MUTANT HUG MACHINE!',text:'Turic’s potion gives Teddy six extra arms. The hug is now impossible to escape… in the nicest way!'}
 };
 const mixFound=new Set();
+const bondTimers=new WeakMap();
+function showBondReaction(one,two,secret){
+ [one,two].forEach((key,index)=>{
+  const card=document.querySelector('.card[data-key="'+key+'"]');
+  if(!card)return;
+  const character=card.querySelector('.character'),status=card.querySelector('.status');
+  const originalFace=data[key].icon;
+  const oldTimer=bondTimers.get(card);if(oldTimer)window.clearTimeout(oldTimer);
+  character.textContent=index===0?secret.face:data[key].icon;
+  character.className='character bond-reaction';
+  status.textContent=index===0?'✨ '+secret.title+' ✨':secret.text;
+  const timer=window.setTimeout(()=>{
+   character.textContent=originalFace;character.className='character idle pokeable';
+   status.textContent=data[key].home;
+   bondTimers.delete(card);
+  },1550);
+  bondTimers.set(card,timer);
+ });
+ const result=document.getElementById('mixFaceResult');
+ result.classList.remove('fusion');void result.offsetWidth;result.classList.add('fusion');
+}
 try{const savedMix=JSON.parse(localStorage.getItem('tiknation-nightmare-mixes')||'[]');if(Array.isArray(savedMix))savedMix.filter(k=>Object.prototype.hasOwnProperty.call(mixSecrets,k)).forEach(k=>mixFound.add(k));}catch(_){}
 function runMix(){
  const one=document.getElementById('mixOne').value,two=document.getElementById('mixTwo').value;
@@ -146,7 +171,7 @@ function runMix(){
  result.classList.remove('pop');void result.offsetWidth;result.classList.add('pop');
  const secret=mixSecrets[pair];
  if(one===two){result.textContent='🌀';box.innerHTML='<strong>DOUBLE TROUBLE!</strong> '+first.name+' meets a copy of itself. They argue over who is the original, then both run off giggling.';}
- else if(secret){result.textContent=secret.face;box.innerHTML='<strong>'+secret.title+'</strong> '+secret.text; if(!mixFound.has(pair)){mixFound.add(pair);try{localStorage.setItem('tiknation-nightmare-mixes',JSON.stringify([...mixFound]));}catch(_){}logEncounter('Secret mix discovered: '+secret.title,secret.face);} }
+ else if(secret){result.textContent=secret.face;box.innerHTML='<strong>'+secret.title+'</strong> '+secret.text; showBondReaction(one,two,secret);if(!mixFound.has(pair)){mixFound.add(pair);try{localStorage.setItem('tiknation-nightmare-mixes',JSON.stringify([...mixFound]));}catch(_){}logEncounter('Secret mix discovered: '+secret.title,secret.face);}else{logEncounter('Secret mix reaction: '+secret.title,secret.face);} }
  else{const faces=['✨','👀','💥','🌪️','🎭','💫'];result.textContent=faces[(one.length+two.length+one.charCodeAt(0))%faces.length];box.textContent=first.name+' + '+second.name+' make a weird magical fizz! Something almost happened… try another pair to discover a secret mix.';}
  document.getElementById('mixCollection').textContent='Secret mixes found: '+mixFound.size+' of 6'+(mixFound.size===6?' — MIX MASTER! 🏆':'');
 }
