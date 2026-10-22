@@ -72,7 +72,7 @@ function updateProgress(key){
   const found=document.getElementById('foundForms');
   found.replaceChildren();
   if(count===0){const empty=document.createElement('span');empty.className='found-empty';empty.textContent='🔒 Your discovered forms will appear here.';found.appendChild(empty)}
-  else [...discovered].forEach(foundKey=>{const chip=document.createElement('span');chip.className='found-form';const d=data[foundKey];chip.textContent=d.form[0]+' '+d.name+' · '+d.form[2].split(' form')[0].replace(/^SECRET UNLOCK: /,'').replace(/^CURSED PUMPKIN/,'Cursed Pumpkin').replace(/^NIGHTMARE/,'Nightmare').replace(/^ULTRA GLITCH/,'Ultra Glitch').replace(/^DREAM-GLOW/,'Dream-Glow').replace(/^SUPERNOVA/,'Supernova').replace(/^CRYSTAL/,'Crystal').replace(/^MUTANT/,'Mutant').replace(/^DIGITAL/,'Digital').replace(/^STAR WITCH/,'Star Witch').replace(/^THUNDER/,'Thunder'));found.appendChild(chip)});
+  else [...discovered].forEach(foundKey=>{const chip=document.createElement('span');chip.className='found-form';const d=data[foundKey];chip.textContent=d.form[0]+' '+d.name+' · '+d.form[2].split(' form')[0].replace(/^SECRET UNLOCK: /,'').replace(/^CURSED PUMPKIN/,'Cursed Pumpkin').replace(/^NIGHTMARE/,'Nightmare').replace(/^ULTRA GLITCH/,'Ultra Glitch').replace(/^DREAM-GLOW/,'Dream-Glow').replace(/^SUPERNOVA/,'Supernova').replace(/^CRYSTAL/,'Crystal').replace(/^MUTANT/,'Mutant').replace(/^DIGITAL/,'Digital').replace(/^STAR WITCH/,'Star Witch').replace(/^THUNDER/,'Thunder');found.appendChild(chip)});
   fill.style.width=(count/12*100)+'%';
   bar.setAttribute('aria-valuenow',String(count));
   document.querySelectorAll('.card').forEach(card=>{
