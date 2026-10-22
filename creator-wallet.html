@@ -27,6 +27,19 @@
     <div class="metric"><div class="label">Cash-out minimum</div><div class="amount">Not set</div><div class="muted">Will be published before launch</div></div>
   </div>
 </section>
+<section class="panel">
+  <h2>💸 Choose how you would prefer to cash out</h2>
+  <p>You should not be forced to connect a bank account if another supported option works better for you. These are planned options to evaluate—not active payout connections.</p>
+  <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px" id="payoutChoices">
+    <button class="btn payout-choice" type="button" data-method="PayPal">🅿️ PayPal</button>
+    <button class="btn payout-choice" type="button" data-method="Cash App">💚 Cash App</button>
+    <button class="btn payout-choice" type="button" data-method="Venmo">🔵 Venmo</button>
+    <button class="btn payout-choice" type="button" data-method="Bank transfer">🏦 Bank transfer</button>
+    <button class="btn payout-choice" type="button" data-method="Eligible debit card">💳 Eligible debit card</button>
+  </div>
+  <p id="payoutPreferenceStatus" class="status" role="status" aria-live="polite">Choose a preferred method to preview your selection. Nothing is connected or saved.</p>
+  <p class="note" style="margin-top:12px">Before real cash-outs launch, we must confirm which providers support creator payouts, verify fees and availability, and securely connect the chosen method. Cash App and other options will only be offered if an approved payout provider supports them. This preview does not ask for your account handle, password, or bank details.</p>
+</section>
 <div class="grid">
 <section class="panel">
   <h2>🧾 How a gift becomes earnings</h2>
@@ -57,4 +70,23 @@
   <p class="note safe" style="margin-top:14px">Our fairness promise: publish the rules first, show the math, and do not hide fees or invent a cash value for test coins.</p>
 </section>
 <footer>TikNation Creator Wallet · Prototype only · No real money is stored or transferred by this page.</footer>
+<script>
+(function(){
+  const buttons = document.querySelectorAll('.payout-choice');
+  const status = document.getElementById('payoutPreferenceStatus');
+  buttons.forEach(function(button){
+    button.addEventListener('click', function(){
+      buttons.forEach(function(item){
+        item.style.borderColor = '#63528b';
+        item.style.background = '#30204f';
+        item.setAttribute('aria-pressed', 'false');
+      });
+      button.style.borderColor = '#7ceeff';
+      button.style.background = 'linear-gradient(100deg,#254b64,#3c2860)';
+      button.setAttribute('aria-pressed', 'true');
+      status.textContent = 'Preview preference: ' + button.dataset.method + '. This choice is not saved, connected, or available for real payouts yet.';
+    });
+  });
+})();
+</script>
 </main></body></html>
