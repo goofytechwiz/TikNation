@@ -41,6 +41,22 @@ button{border:1px solid #614482;background:#251839;color:white;padding:10px 14px
 </section>
 <section class="boss-arena" id="bossArena" aria-labelledby="bossTitle"><div class="eyebrow">⚔️ RARE EVENT</div><h2 id="bossTitle">Nightmare Boss Encounter</h2><p>Face the Chaos King! Land three playful hits to break its curse and earn a special victory.</p><div class="boss-stage" id="bossEmoji" aria-hidden="true">😈</div><strong id="bossHealthLabel">Boss energy: 3 / 3</strong><div class="boss-meter" role="progressbar" aria-label="Boss energy" aria-valuemin="0" aria-valuemax="3" aria-valuenow="3" id="bossMeter"><div class="boss-meter-fill" id="bossMeterFill"></div></div><p class="boss-status" id="bossStatus" aria-live="polite">The Chaos King is waiting in the shadows…</p><div id="bossReward" class="boss-reward" hidden><div class="reward-crown" aria-hidden="true">👑</div><h3>SECRET VICTORY FORM UNLOCKED!</h3><p><strong>Chaos Crown King</strong> — a legendary form with a glowing crown and cosmic purple flames.</p><p class="reward-note">Defeat the boss again anytime to reveal this form.</p></div><button class="primary" id="bossStrike" type="button">✨ Start the boss battle</button></section>
 <section class="encounter-log" aria-labelledby="encounterTitle"><div class="log-heading"><div><h2 id="encounterTitle">📜 Nightmare Encounter Log</h2><p class="muted">Your latest encounters appear here while this page is open.</p></div><button id="clearEncounterLog" type="button">Clear log</button></div><p class="log-empty" id="encounterEmpty">No encounters yet. Wake up a Nightmare Emoji to begin!</p><ol class="log-list" id="encounterEntries" aria-live="polite"></ol></section>
+<section class="combo-lab" aria-labelledby="comboLabTitle">
+<style>
+.combo-lab{margin:24px 0;padding:20px;border:1px solid #6c4c91;border-radius:22px;background:linear-gradient(135deg,#21132f,#101a29)}.combo-lab h2{margin:0 0 6px}.combo-lab>p{color:var(--muted);margin:0 0 14px}.combo-pickers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.combo-pickers label{display:grid;gap:6px;font-weight:800;font-size:13px;color:#e7d5ff}.combo-pickers select{width:100%;min-width:0;border:1px solid #614482;background:#120d20;color:white;padding:11px;border-radius:10px;font:inherit}.combo-stage{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin:18px 0;padding:16px;border-radius:16px;background:#09071199;border:1px solid #ffffff18}.combo-emoji{font-size:clamp(2.7rem,8vw,4.2rem);display:inline-block}.combo-emoji.pop{animation:legendary .65s ease-in-out}.combo-result{min-height:48px;color:#f0dcff;text-align:center}.combo-result strong{color:var(--cyan)}.combo-lab button{margin-top:6px}.combo-lab .hint{font-size:12px;color:#bdaed0;margin-top:10px}@media(max-width:480px){.combo-pickers{grid-template-columns:1fr}}
+</style>
+<h2 id="comboLabTitle">🧪 Nightmare Mix Lab</h2>
+<p>Pick any two characters and discover what happens when their powers collide. Some pairs have special secret reactions!</p>
+<div class="combo-pickers">
+<label for="mixOne">First emoji<select id="mixOne"><option value="ghost">👻 Ghosty McBoo</option><option value="pumpkin">🎃 Pumpkin Panic</option><option value="shadow">🌑 Shadow Sneak</option><option value="bat">🦇 Batty.exe</option><option value="moonie">🌙 Moonie</option><option value="cinder">🔥 Cinder</option><option value="frosty">❄️ Frosty</option><option value="turic">🧪 Turic</option><option value="pixel">🐶 Pixel Pup</option><option value="witchy">🧙 Witchy</option><option value="teddy">🧸 Terror Teddy</option><option value="zappy">⚡ Zappy</option></select></label>
+<label for="mixTwo">Second emoji<select id="mixTwo"><option value="zappy">⚡ Zappy</option><option value="ghost">👻 Ghosty McBoo</option><option value="pumpkin">🎃 Pumpkin Panic</option><option value="shadow">🌑 Shadow Sneak</option><option value="bat">🦇 Batty.exe</option><option value="moonie">🌙 Moonie</option><option value="cinder">🔥 Cinder</option><option value="frosty">❄️ Frosty</option><option value="turic">🧪 Turic</option><option value="pixel">🐶 Pixel Pup</option><option value="witchy">🧙 Witchy</option><option value="teddy">🧸 Terror Teddy</option></select></label>
+</div>
+<div class="combo-stage" aria-live="polite"><span class="combo-emoji" id="mixFaceOne">👻</span><span aria-hidden="true">➕</span><span class="combo-emoji" id="mixFaceTwo">⚡</span><span aria-hidden="true">➡️</span><span class="combo-emoji" id="mixFaceResult">🌩️</span></div>
+<div class="combo-result" id="mixResult"><strong>GHOST LIGHTNING!</strong> Ghosty vanishes into a storm cloud while Zappy lights up the whole haunted house.</div>
+<button class="primary" id="mixButton" type="button">✨ Mix these emojis!</button>
+<div class="hint">There are 6 special pair reactions. Try different combinations to find them all!</div>
+<div class="progress-note" id="mixCollection" aria-live="polite">Secret mixes found: 0 of 6</div>
+</section>
 <div class="section-head"><div><h2>What makes them special?</h2><p>The collection is designed to grow as we add original art and deeper interactions.</p></div></div>
 <section class="features" aria-label="Collection features"><div class="feature"><strong>🎭 Different personalities</strong><p>Unique reactions, jokes, expressions, and signature moves for every character.</p></div><div class="feature"><strong>🌀 Secret transformations</strong><p>Tap the transformation button to reveal each character's special form.</p></div><div class="feature"><strong>👑 Rare & legendary crew</strong><p>Rarity labels set the stage for future collectibles and special animation variants.</p></div></section>
 <div class="note"><strong>Prototype note:</strong> this is a working, emoji-based animation demo. Character buttons, transformations, and reset controls work in the page; custom illustrated character assets and any integration into TikNation chat are separate next steps.</div>
@@ -100,6 +116,32 @@ function labelFor(key){return ({ghost:'Surprise me!',pumpkin:'Cause chaos!',shad
 function cancelAnimation(card){const timer=animationTimers.get(card);if(timer){window.clearTimeout(timer);animationTimers.delete(card)}}
 function reset(card){cancelAnimation(card);const key=card.dataset.key,d=data[key],char=card.querySelector('.character');char.className='character idle';char.textContent=d.icon;card.querySelector('.status').textContent=d.home;card.querySelectorAll('button').forEach(b=>b.disabled=false);card.querySelector('[data-play]').textContent=labelFor(key)}
 function animate(card,items,finish){cancelAnimation(card);const char=card.querySelector('.character'),status=card.querySelector('.status'),play=card.querySelector('[data-play]');card.querySelectorAll('button').forEach(b=>b.disabled=true);let i=0;function frame(){animationTimers.delete(card);const step=items[i];char.className='character '+step[0];char.textContent=step[1];status.textContent=step[2];i++;if(i<items.length){animationTimers.set(card,window.setTimeout(frame,760))}else{card.querySelectorAll('button').forEach(b=>b.disabled=false);play.textContent=labelFor(card.dataset.key);if(finish)finish()}}frame()}
+const mixSecrets={
+'ghost|zappy':{face:'🌩️',title:'GHOST LIGHTNING!',text:'Ghosty vanishes into a storm cloud while Zappy lights up the whole haunted house.'},
+'pumpkin|witchy':{face:'🎃',title:'PUMPKIN SPELL-AROO!',text:'Witchy enchants the pumpkin. It sprouts legs and runs away laughing.'},
+'bat|pixel':{face:'🦇',title:'PIXEL BAT GLITCH!',text:'Batty.exe and Pixel Pup merge into a flying pixel puppy. Bark.exe has wings!'},
+'cinder|frosty':{face:'🌈',title:'STEAM RAINBOW!',text:'Fire meets ice and creates a rainbow cloud. Cinder and Frosty take a very colorful bow.'},
+'moonie|shadow':{face:'🌌',title:'ECLIPSE BUDDIES!',text:'Moonie lights up Shadow Sneak from inside, revealing a constellation-shaped shadow.'},
+'teddy|turic':{face:'🧸',title:'MUTANT HUG MACHINE!',text:'Turic’s potion gives Teddy six extra arms. The hug is now impossible to escape… in the nicest way!'}
+};
+const mixFound=new Set();
+try{const savedMix=JSON.parse(localStorage.getItem('tiknation-nightmare-mixes')||'[]');if(Array.isArray(savedMix))savedMix.filter(k=>Object.prototype.hasOwnProperty.call(mixSecrets,k)).forEach(k=>mixFound.add(k));}catch(_){}
+function runMix(){
+ const one=document.getElementById('mixOne').value,two=document.getElementById('mixTwo').value;
+ const first=data[one],second=data[two],pair=[one,two].sort().join('|');
+ document.getElementById('mixFaceOne').textContent=first.icon;
+ document.getElementById('mixFaceTwo').textContent=second.icon;
+ const result=document.getElementById('mixFaceResult'),box=document.getElementById('mixResult');
+ result.classList.remove('pop');void result.offsetWidth;result.classList.add('pop');
+ const secret=mixSecrets[pair];
+ if(one===two){result.textContent='🌀';box.innerHTML='<strong>DOUBLE TROUBLE!</strong> '+first.name+' meets a copy of itself. They argue over who is the original, then both run off giggling.';}
+ else if(secret){result.textContent=secret.face;box.innerHTML='<strong>'+secret.title+'</strong> '+secret.text; if(!mixFound.has(pair)){mixFound.add(pair);try{localStorage.setItem('tiknation-nightmare-mixes',JSON.stringify([...mixFound]));}catch(_){}logEncounter('Secret mix discovered: '+secret.title,secret.face);} }
+ else{const faces=['✨','👀','💥','🌪️','🎭','💫'];result.textContent=faces[(one.length+two.length+one.charCodeAt(0))%faces.length];box.textContent=first.name+' + '+second.name+' make a weird magical fizz! Something almost happened… try another pair to discover a secret mix.';}
+ document.getElementById('mixCollection').textContent='Secret mixes found: '+mixFound.size+' of 6'+(mixFound.size===6?' — MIX MASTER! 🏆':'');
+}
+document.getElementById('mixButton').addEventListener('click',runMix);
+document.getElementById('mixOne').addEventListener('change',runMix);
+document.getElementById('mixTwo').addEventListener('change',runMix);
 const pokeCounts=new Map();
 const pokeLines={
 ghost:['👻 EEP! Don’t poke the ghost!','😱 BOO! You found Ghosty’s ticklish spot!','😈 Shadow Ghost says: poke the shadow next time!'],
