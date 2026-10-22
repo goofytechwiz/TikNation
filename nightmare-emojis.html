@@ -32,6 +32,23 @@ body.living-mode .hero:after{animation:livingBob 1.2s ease-in-out infinite,livin
 .character.chain-star{animation:chainEntrance .65s ease-out, livingGlow 1s ease-in-out!important}
 #chainShow[aria-busy="true"]{border-color:var(--cyan);box-shadow:0 0 16px #77f1ff44}
 .duo-panel{margin:26px 0;padding:clamp(18px,3vw,30px);border:1px solid #574077;border-radius:22px;background:linear-gradient(145deg,#211333,#0d202c);box-shadow:0 18px 55px #0004}
+
+.new-universe{margin:28px 0;padding:clamp(18px,3vw,30px);border:1px solid #654c89;border-radius:24px;background:linear-gradient(145deg,#21142f,#101a29 70%);box-shadow:0 18px 55px #0004}
+.world-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.world-tab{border:1px solid #5d4778;background:#130f20;color:#e9dcf8;border-radius:999px;padding:10px 14px;font:inherit;font-weight:800;cursor:pointer}
+.world-tab.active{background:linear-gradient(120deg,#583887,#176b77);border-color:#a98be0;box-shadow:0 0 15px #a98be033}
+.world-intro{padding:12px 14px;margin-bottom:14px;border-radius:12px;background:#ffffff09;color:#d9c9ee}
+.world-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.world-card{min-width:0;padding:16px 12px;border:1px solid #ffffff20;border-radius:16px;background:linear-gradient(160deg,#2b2040,#10131f);text-align:center}
+.world-face{display:block;font-size:clamp(2.5rem,6vw,4rem);margin:8px auto;filter:drop-shadow(0 0 10px #a77bff55)}
+.world-card h3{font-size:15px;margin:8px 0}
+.world-card p{font-size:13px;color:var(--muted);min-height:38px}
+.world-wake{padding:8px 12px;border-radius:10px;border:1px solid #6d548c;background:#21152f;color:#fff;font:inherit;font-weight:750;cursor:pointer}
+.world-reaction{font-size:12px;color:#c9f7ff;margin-top:10px;min-height:42px}
+.world-card.awake .world-face{animation:chainEntrance .6s ease-out,livingGlow 1.3s ease-in-out infinite}
+.world-progress{margin-top:16px;color:#d7c4f2;font-weight:800}
+@media(max-width:760px){.world-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:360px){.world-grid{grid-template-columns:1fr}}
 .trio-panel{margin:26px 0;padding:clamp(18px,3vw,30px);border:1px solid #684b8c;border-radius:22px;background:radial-gradient(ellipse at top,#35204d,#10121f 72%);box-shadow:0 18px 55px #0004}
 .trio-selects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}
 .trio-selects label{display:grid;gap:7px;color:var(--muted);font-size:13px;font-weight:750}
@@ -83,7 +100,18 @@ body.living-mode .hero:after{animation:livingBob 1.2s ease-in-out infinite,livin
 </section><div id="huntMessage" class="progress-note" aria-live="polite"></div><div id="comboMessage" class="progress-note" aria-live="polite">New: trigger a three-character Chaos Combo for a surprise mini-show.</div></section>
 <div class="section-head"><div><h2>Meet the Nightmare Emojis</h2><p>Every character has their own moves, personality, and surprise.</p></div></div>
 <section class="collection-progress" aria-label="Transformation collection progress"><div class="progress-top"><strong>✨ Transformation collection</strong><span id="progressLabel">0 of 12 forms discovered</span></div><div class="progress-track" role="progressbar" aria-label="Transformations discovered" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" id="progressBar"><div class="progress-fill" id="progressFill"></div></div><div class="progress-note" id="progressNote">Try a character’s Secret Form button to discover its special transformation.</div><div id="foundForms" class="found-forms" aria-live="polite"><span class="found-empty">🔒 Your discovered forms will appear here.</span></div></section>
-<section class="grid" id="crew" aria-label="Nightmare Emoji characters">
+<section class="new-universe" id="newUniverse" aria-labelledby="universeTitle">
+ <div class="section-head"><div><div class="eyebrow">✦ THE UNIVERSE IS EXPANDING ✦</div><h2 id="universeTitle">Meet the New TikNation Emoji Worlds</h2><p>Four brand-new collections. Sixteen original characters. Tap any character to wake up its personality!</p></div></div>
+ <div class="world-tabs" role="group" aria-label="Choose an emoji collection"><button class="world-tab active" data-world="magic" aria-pressed="true">🐲 Magic</button><button class="world-tab" data-world="nightmare2" aria-pressed="false">👹 Nightmare Season 2</button><button class="world-tab" data-world="food" aria-pressed="false">🍕 Crazy Food</button><button class="world-tab" data-world="space" aria-pressed="false">👽 Space & Robots</button></div>
+ <div class="world-intro" id="worldIntro" aria-live="polite">✨ Magic Emojis — enchanted creatures and spells that never go quite right.</div>
+ <div class="world-grid" id="worldGrid">
+ <article class="world-card" data-character="sparkle-drake"><span class="world-face">🐲</span><h3>Fizzle the Baby Dragon</h3><p>Every sneeze makes a tiny fireworks show.</p><button class="world-wake">✨ Wake up!</button><div class="world-reaction" aria-live="polite">A little puff of smoke curls into a heart.</div></article>
+ <article class="world-card" data-character="moss-mage"><span class="world-face">🧙</span><h3>Mossy the Garden Mage</h3><p>Can grow a forest in a teacup.</p><button class="world-wake">✨ Wake up!</button><div class="world-reaction" aria-live="polite">A daisy sprouts from the wizard hat!</div></article>
+ <article class="world-card" data-character="wish-wisp"><span class="world-face">🧚</span><h3>Wish Wisp</h3><p>Grants wishes, but takes everything literally.</p><button class="world-wake">✨ Wake up!</button><div class="world-reaction" aria-live="polite">You wished for a cool breeze. A tiny fan appears.</div></article>
+ <article class="world-card" data-character="crystal-crab"><span class="world-face">🦀</span><h3>Crystal Crab</h3><p>A shiny crab with a pocket full of spells.</p><button class="world-wake">✨ Wake up!</button><div class="world-reaction" aria-live="polite">Its claws sparkle and turn a pebble into candy.</div></article>
+ </div>
+ <div class="world-progress" id="worldProgress" aria-live="polite">New characters awakened: 0 of 16</div>
+</section><section class="grid" id="crew" aria-label="Nightmare Emoji characters">
 <article class="card" data-key="ghost" data-rarity="Fan Favorite"><span class="rarity">★ FAN FAVORITE</span><div class="tag">01 · Jump-scare prankster</div><h3>Ghosty McBoo 👻</h3><div class="preview"><span class="character idle pokeable" role="button" tabindex="0" aria-label="Tap this character for a reaction">👻</span></div><div class="status" aria-live="polite">Ghosty is hiding in the mist…</div><p>Acts innocent, springs a silly scare, dances like nobody's watching, then unlocks his secret Shadow Ghost form.</p><div class="actions"><button class="primary" data-play>Play animation</button><button data-transform>Secret form ✨</button><button data-reset>Reset</button></div></article>
 <article class="card" data-key="pumpkin" data-rarity="Rare"><span class="rarity">✦ RARE</span><div class="tag">02 · Magical chaos maker</div><h3>Pumpkin Panic 🎃</h3><div class="preview"><span class="character idle pokeable" role="button" tabindex="0" aria-label="Tap this character for a reaction">🎃</span></div><div class="status" aria-live="polite">Everything is totally under control…</div><p>Its grin glows, vines go wild, and a spell turns a tiny prank into a pumpkin-sized problem.</p><div class="actions"><button class="primary" data-play>Cause chaos!</button><button data-transform>Curse form ✨</button><button data-reset>Reset</button></div></article>
 <article class="card" data-key="shadow" data-rarity="Rare"><span class="rarity">✦ RARE</span><div class="tag">03 · Master of mischief</div><h3>Shadow Sneak 🌑</h3><div class="preview"><span class="character idle pokeable" role="button" tabindex="0" aria-label="Tap this character for a reaction">🌑</span></div><div class="status" aria-live="polite">You saw nothing. Absolutely nothing.</div><p>Peeks from the dark, splits into decoys, chases its own shadow, and vanishes with a tiny laugh.</p><div class="actions"><button class="primary" data-play>Reveal shadow!</button><button data-transform>Nightmare form ✨</button><button data-reset>Reset</button></div></article>
@@ -357,6 +385,34 @@ function fuseSelectedTrio(){const chosen=['trioOne','trioTwo','trioThree'].map(i
 document.getElementById('fuseTrio').addEventListener('click',fuseSelectedTrio);
 document.getElementById('trioButton').addEventListener('click',()=>{document.getElementById('trioPanel').scrollIntoView({behavior:'smooth',block:'start'});document.getElementById('trioButton').setAttribute('aria-pressed','true');});
 renderTrioCollection();
+const emojiWorlds={
+ magic:{title:'✨ Magic Emojis',intro:'Enchanted creatures and spells that never go quite right.',items:[
+ ['🐲','Fizzle the Baby Dragon','Every sneeze makes a tiny fireworks show.','Fizzle sneezes a glitter cloud. It spells “BURP” in the air!'],
+ ['🧙','Mossy the Garden Mage','Can grow a forest in a teacup.','Mossy grows a beanstalk. It immediately asks for rent.'],
+ ['🧚','Wish Wisp','Grants wishes, but takes everything literally.','You wished for a cool breeze. A tiny fan appears and salutes.'],
+ ['🦀','Crystal Crab','A shiny crab with a pocket full of spells.','Crystal Crab turns a pebble into candy, then tries to eat the pebble too.']]},
+ nightmare2:{title:'👹 Nightmare Emojis — Season 2',intro:'Four new troublemakers have escaped the spooky basement.',items:[
+ ['🫠','Melty the Moon Monster','A gooey moon-beast with terrible timing.','Melty melts into a puddle, then pops up wearing a tiny raincoat.'],
+ ['🪆','Doppel-Dot','A copycat gremlin who copies the wrong thing.','Doppel-Dot copies your shadow… then the shadow copies it back.'],
+ ['🪱','Wiggles the Crypt Worm','A tiny worm with enormous villain energy.','Wiggles unveils a master plan: steal every sock in the kingdom.'],
+ ['🧛','Count Chuckles','A vampire who can only make people giggle.','Count Chuckles says “boo!” and bursts into his own nervous laughter.']]},
+ food:{title:'🍕 Crazy Food Emojis',intro:'The snack cupboard has become completely unreasonable.',items:[
+ ['🍕','Pepperoni Pop','A pizza slice that moonwalks away from dinner.','Pepperoni Pop spins so fast it becomes a cheesy UFO.'],
+ ['🌮','Taco Tornado','A taco with a salsa-powered spin move.','Taco Tornado spins up a salsa storm. Extra guacamole warning!'],
+ ['🍔','Sir Buns-a-Lot','A royal burger who demands a tiny throne.','Sir Buns-a-Lot crowns a french fry as prime minister.'],
+ ['🍩','Dizzy Donut','A sprinkle-covered donut with a sugar turbo.','Dizzy Donut zooms away and leaves a perfect frosting loop.']]},
+ space:{title:'👽 Space & Robot Emojis',intro:'Intergalactic visitors with questionable navigation skills.',items:[
+ ['👽','Zorp the Snack Alien','Travelled light-years to find the perfect cookie.','Zorp scans a cookie. “Life-form detected. Deliciousness: maximum.”'],
+ ['🤖','Bleep-0','A robot whose buttons do completely different things.','Bleep-0 presses “dance” and accidentally launches disco satellites.'],
+ ['🛸','U.F.Oh-No','A flying saucer that keeps losing its parking spot.','U.F.Oh-No beams up a cow. The cow beams up the pilot.'],
+ ['🪐','Ring-a-Ding','A tiny planet with very loud rings.','Ring-a-Ding’s rings jingle like bells and summon space pigeons.']]}
+};
+const awakenedWorlds=new Set();
+try{const saved=JSON.parse(localStorage.getItem('tiknation-new-worlds-awakened')||'[]');if(Array.isArray(saved))saved.forEach(x=>{if(typeof x==='string')awakenedWorlds.add(x);});}catch(_){}
+let activeWorld='magic';
+function renderWorld(key){activeWorld=key;const world=emojiWorlds[key];document.getElementById('worldIntro').textContent=world.title+' — '+world.intro;const grid=document.getElementById('worldGrid');grid.replaceChildren();world.items.forEach((item,i)=>{const id=key+'-'+i,card=document.createElement('article');card.className='world-card'+(awakenedWorlds.has(id)?' awake':'');card.dataset.character=id;const face=document.createElement('span');face.className='world-face';face.textContent=item[0];const h=document.createElement('h3');h.textContent=item[1];const p=document.createElement('p');p.textContent=item[2];const btn=document.createElement('button');btn.className='world-wake';btn.textContent=awakenedWorlds.has(id)?'🔁 Play again!':'✨ Wake up!';btn.addEventListener('click',()=>{face.textContent=['💫','🤪','✨','😱','🥳'][Math.floor(Math.random()*5)];card.classList.remove('awake');void card.offsetWidth;card.classList.add('awake');reaction.textContent=item[3];btn.textContent='🔁 Play again!';face.setAttribute('aria-label',item[1]+' reaction');awakenedWorlds.add(id);try{localStorage.setItem('tiknation-new-worlds-awakened',JSON.stringify([...awakenedWorlds]));}catch(_){}document.getElementById('worldProgress').textContent='New characters awakened: '+awakenedWorlds.size+' of 16'+(awakenedWorlds.size===16?' — WORLD EXPLORER! 🌟':'');logEncounter('New emoji awakened: '+item[1],item[0]);window.setTimeout(()=>{face.textContent=item[0];},950);});const reaction=document.createElement('div');reaction.className='world-reaction';reaction.setAttribute('aria-live','polite');reaction.textContent=awakenedWorlds.has(id)?item[3]:'Tap to reveal this character’s reaction!';card.append(face,h,p,btn,reaction);grid.appendChild(card);});document.querySelectorAll('.world-tab').forEach(btn=>{const active=btn.dataset.world===key;btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',String(active));});document.getElementById('worldProgress').textContent='New characters awakened: '+awakenedWorlds.size+' of 16'+(awakenedWorlds.size===16?' — WORLD EXPLORER! 🌟':'');}
+document.querySelectorAll('.world-tab').forEach(btn=>btn.addEventListener('click',()=>renderWorld(btn.dataset.world)));
+renderWorld('magic');
 const pokeCounts=new Map();
 const pokeLines={
 ghost:['👻 EEP! Don’t poke the ghost!','😱 BOO! You found Ghosty’s ticklish spot!','😈 Shadow Ghost says: poke the shadow next time!'],
