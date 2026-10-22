@@ -42,6 +42,7 @@ $('signoutBtn').addEventListener('click',async()=>{await client.from('battle_que
 $('joinQueue').addEventListener('click',async()=>{if(!currentUser)return;const name=profile?.username||('player_'+currentUser.id.slice(0,8));const {error}=await client.from('battle_queue').upsert({user_id:currentUser.id,username:name,mode:$('queueMode').value,queued_at:new Date().toISOString()});status('queueStatus',error?'Could not join queue: '+error.message:'You are in the matchmaking queue. Waiting for another player…');await loadQueue();});
 $('leaveQueue').addEventListener('click',async()=>{if(!currentUser)return;const {error}=await client.from('battle_queue').delete().eq('user_id',currentUser.id);status('queueStatus',error?'Could not leave queue: '+error.message:'You left the queue.');await loadQueue();});
 $('refreshQueue').addEventListener('click',loadQueue);$('refreshBoard').addEventListener('click',loadBoard);
+client.channel('battle-queue-live').on('postgres_changes',{event:'*',schema:'public',table:'battle_queue'},()=>loadQueue()).subscribe();
 client.auth.getSession().then(({data})=>updateSession(data.session));client.auth.onAuthStateChange((_event,session)=>{if((session?.user?.id||null)!==(currentUser?.id||null))updateSession(session);});
 })();
 </script></body></html>
