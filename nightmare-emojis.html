@@ -31,12 +31,34 @@ body.living-mode .hero:after{animation:livingBob 1.2s ease-in-out infinite,livin
 @keyframes chainEntrance{0%{transform:scale(.55) rotate(-14deg);opacity:.3}65%{transform:scale(1.22) rotate(8deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
 .character.chain-star{animation:chainEntrance .65s ease-out, livingGlow 1s ease-in-out!important}
 #chainShow[aria-busy="true"]{border-color:var(--cyan);box-shadow:0 0 16px #77f1ff44}
+.duo-panel{margin:26px 0;padding:clamp(18px,3vw,30px);border:1px solid #574077;border-radius:22px;background:linear-gradient(145deg,#211333,#0d202c);box-shadow:0 18px 55px #0004}
+.duo-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}
+.duo-controls label{display:grid;gap:7px;color:var(--muted);font-size:13px;font-weight:750}
+.duo-controls select{width:100%;min-width:0;background:#0c0a16;color:white;border:1px solid #5a4374;border-radius:10px;padding:11px;font:inherit}
+.duo-stage{display:flex;justify-content:center;align-items:center;gap:clamp(14px,5vw,40px);padding:20px 8px;font-size:clamp(2.7rem,9vw,5rem)}
+.duo-stage span:not(.duo-heart){display:inline-block;filter:drop-shadow(0 0 10px #b47aff55)}
+.duo-stage .duo-heart{font-size:.55em;animation:livingGlow 1.5s ease-in-out infinite}
+.duo-stage.meeting span:not(.duo-heart){animation:chainEntrance .7s ease-out,livingGlow 1.1s ease-in-out infinite}
+.duo-result{min-height:64px;text-align:center;color:#e9dcf8;padding:12px;border:1px solid #ffffff18;border-radius:14px;background:#09071188;margin-bottom:12px}
+.duo-result strong{color:var(--cyan);display:block;margin-bottom:4px}
+#duoButton[aria-pressed="true"]{border-color:var(--pink);box-shadow:0 0 15px #ff72d244}
+@media(max-width:480px){.duo-controls{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){body.living-mode .card .character.idle,body.living-mode .hero:after{animation:none!important;filter:drop-shadow(0 0 8px #77f1ff)}}</style>
 </head>
 <body>
 <header><div><div class="brand">TIK<span>NATION</span></div><div class="sub">The spooky side · living emoji experiments</div></div><div class="sub">Cute · Creepy · Chaotic</div></header>
 <main>
-<section class="hero"><div class="eyebrow">✦ THE NIGHTMARE CREW ✦</div><h1>They're cute.<br><span class="gradient">They're creepy.</span><br>They come alive.</h1><p>Meet the Nightmare Emojis: pranksters, shadow-creatures, glitch gremlins, and magical oddballs. Tap a character to play a full mini-story, try a secret transformation, or let the crew surprise you.</p><div class="hero-actions"><button class="primary" id="surpriseAll">🎲 Surprise me with anyone!</button><button id="huntForm">🔎 Hunt for a secret form</button><button id="resetAll">↻ Reset the crew</button><button id="chaosCombo">👹 Start a Chaos Combo</button><button class="primary" id="livingMode" aria-pressed="false">✨ Wake the crew!</button><button id="chainShow">🎬 Spooky Comedy Chain</button></div><div id="livingMessage" class="progress-note" aria-live="polite">The crew is waiting… wake them up for a living, wiggling Nightmare surprise.</div><div id="chainMessage" class="progress-note" aria-live="polite">New mini-show: one character’s chaos sets off the next!</div><div id="huntMessage" class="progress-note" aria-live="polite"></div><div id="comboMessage" class="progress-note" aria-live="polite">New: trigger a three-character Chaos Combo for a surprise mini-show.</div></section>
+<section class="hero"><div class="eyebrow">✦ THE NIGHTMARE CREW ✦</div><h1>They're cute.<br><span class="gradient">They're creepy.</span><br>They come alive.</h1><p>Meet the Nightmare Emojis: pranksters, shadow-creatures, glitch gremlins, and magical oddballs. Tap a character to play a full mini-story, try a secret transformation, or let the crew surprise you.</p><div class="hero-actions"><button class="primary" id="surpriseAll">🎲 Surprise me with anyone!</button><button id="huntForm">🔎 Hunt for a secret form</button><button id="resetAll">↻ Reset the crew</button><button id="chaosCombo">👹 Start a Chaos Combo</button><button class="primary" id="livingMode" aria-pressed="false">✨ Wake the crew!</button><button id="chainShow">🎬 Spooky Comedy Chain</button><button id="duoButton">🤝 Friendships & Rivalries</button></div><div id="livingMessage" class="progress-note" aria-live="polite">The crew is waiting… wake them up for a living, wiggling Nightmare surprise.</div><div id="chainMessage" class="progress-note" aria-live="polite">New mini-show: one character’s chaos sets off the next!</div>
+<section class="duo-panel" id="duoPanel" aria-labelledby="duoTitle">
+ <div class="section-head"><div><h2 id="duoTitle">🤝 Nightmare Friendships & Rivalries</h2><p>Some emojis are best friends. Others are dramatic rivals. Discover their secret duo reactions!</p></div></div>
+ <div class="duo-controls"><label for="duoOne">Choose a character<select id="duoOne"><option value="ghost">👻 Ghosty McBoo</option><option value="pumpkin">🎃 Pumpkin Panic</option><option value="shadow">🌑 Shadow Sneak</option><option value="bat">🦇 Batty.exe</option><option value="moonie">🌙 Moonie</option><option value="cinder">🔥 Cinder</option><option value="frosty">❄️ Frosty</option><option value="turic">🧪 Turic</option><option value="pixel">🐶 Pixel Pup</option><option value="witchy">🧙 Witchy</option><option value="teddy">🧸 Terror Teddy</option><option value="zappy">⚡ Zappy</option></select></label>
+ <label for="duoTwo">Their partner or rival<select id="duoTwo"><option value="zappy">⚡ Zappy</option><option value="ghost">👻 Ghosty McBoo</option><option value="pumpkin">🎃 Pumpkin Panic</option><option value="shadow">🌑 Shadow Sneak</option><option value="bat">🦇 Batty.exe</option><option value="moonie">🌙 Moonie</option><option value="cinder">🔥 Cinder</option><option value="frosty">❄️ Frosty</option><option value="turic">🧪 Turic</option><option value="pixel">🐶 Pixel Pup</option><option value="witchy">🧙 Witchy</option><option value="teddy">🧸 Terror Teddy</option></select></label></div>
+ <div class="duo-stage" aria-live="polite"><span id="duoFaceOne">👻</span><span class="duo-heart">💫</span><span id="duoFaceTwo">⚡</span></div>
+ <div id="duoResult" class="duo-result"><strong>GHOST LIGHTNING — FRIENDSHIP!</strong> Ghosty and Zappy make a stormy mess together.</div>
+ <button class="primary" id="meetDuo">✨ Let them meet!</button>
+ <div id="duoProgress" class="progress-note" aria-live="polite">Secret duos discovered: 0 of 8</div>
+ <div id="duoCollection" class="found-forms" aria-label="Discovered secret duos"><span class="found-empty">🔒 Meet characters to discover their secret relationships.</span></div>
+</section><div id="huntMessage" class="progress-note" aria-live="polite"></div><div id="comboMessage" class="progress-note" aria-live="polite">New: trigger a three-character Chaos Combo for a surprise mini-show.</div></section>
 <div class="section-head"><div><h2>Meet the Nightmare Emojis</h2><p>Every character has their own moves, personality, and surprise.</p></div></div>
 <section class="collection-progress" aria-label="Transformation collection progress"><div class="progress-top"><strong>✨ Transformation collection</strong><span id="progressLabel">0 of 12 forms discovered</span></div><div class="progress-track" role="progressbar" aria-label="Transformations discovered" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" id="progressBar"><div class="progress-fill" id="progressFill"></div></div><div class="progress-note" id="progressNote">Try a character’s Secret Form button to discover its special transformation.</div><div id="foundForms" class="found-forms" aria-live="polite"><span class="found-empty">🔒 Your discovered forms will appear here.</span></div></section>
 <section class="grid" id="crew" aria-label="Nightmare Emoji characters">
@@ -259,6 +281,47 @@ livingButton.addEventListener('click',()=>{
   livingReactionTimer=window.setTimeout(()=>{if(livingModeOn&&!card.querySelector('[data-play]').disabled){character.textContent=data[key].icon;character.className='character idle pokeable';}livingReactionTimer=null;},850);
  },2600);
 });
+const duoSecrets={
+ 'ghost|zappy':{type:'FRIENDS',face:'🌩️',title:'GHOST LIGHTNING — BEST FRIENDS!',text:'Ghosty hides inside Zappy’s thundercloud, then pops out wearing a tiny lightning crown. Their secret handshake causes harmless indoor thunder!'},
+ 'pumpkin|witchy':{type:'PARTNERS IN CHAOS',face:'🎃',title:'THE SPELL-PUMPKIN PACT!',text:'Witchy enchants Pumpkin Panic with running legs. The pumpkin zooms off with the spellbook and leaves a trail of glittery vines.'},
+ 'bat|pixel':{type:'RIVALS',face:'🦇',title:'THE GREAT GLITCH RACE!',text:'Batty.exe challenges Pixel Pup to a race. Batty flies; Pixel teleports. They tie, argue about the scoreboard, then high-five.'},
+ 'cinder|frosty':{type:'FRIENDS',face:'🌈',title:'FIRE & ICE FOREVER!',text:'Cinder and Frosty combine powers to create a rainbow steam cloud. They make a pact: no more surprise sneezes near the snowflakes.'},
+ 'moonie|shadow':{type:'MYSTERY DUO',face:'🌌',title:'THE ECLIPSE SECRET!',text:'Moonie lights up Shadow Sneak from the inside. Together they reveal a constellation that looks suspiciously like a smiling potato.'},
+ 'teddy|turic':{type:'FRIENDS',face:'🧸',title:'THE MUTANT HUG CLUB!',text:'Turic’s potion gives Teddy extra arms for hugs. Teddy hugs Turic, the potion bottle, and a nearby chair. The chair is now an honorary member.'},
+ 'pumpkin|shadow':{type:'RIVALS',face:'👀',title:'PUMPKIN VS. SHADOW!',text:'Pumpkin Panic tries to scare Shadow Sneak. The shadow copies the pumpkin’s grin and wins the staring contest without moving once.'},
+ 'bat|witchy':{type:'UNLIKELY FRIENDS',face:'✨',title:'WITCHY.EXE HAS CRASHED!',text:'Witchy casts a spell on Batty.exe. The bat becomes a flying wand and accidentally turns every spooky sound into a kazoo solo.'}
+};
+const duoFound=new Set();
+try{const savedDuo=JSON.parse(localStorage.getItem('tiknation-nightmare-duos')||'[]');if(Array.isArray(savedDuo))savedDuo.filter(k=>Object.prototype.hasOwnProperty.call(duoSecrets,k)).forEach(k=>duoFound.add(k));}catch(_){}
+function renderDuoCollection(){
+ const progress=document.getElementById('duoProgress'),collection=document.getElementById('duoCollection');
+ progress.textContent='Secret duos discovered: '+duoFound.size+' of '+Object.keys(duoSecrets).length+(duoFound.size===Object.keys(duoSecrets).length?' — DUO MASTER! 🏆':'');
+ collection.replaceChildren();
+ if(!duoFound.size){const empty=document.createElement('span');empty.className='found-empty';empty.textContent='🔒 Meet characters to discover their secret relationships.';collection.appendChild(empty);return;}
+ Object.keys(duoSecrets).filter(k=>duoFound.has(k)).forEach(k=>{const chip=document.createElement('span');chip.className='found-form';chip.textContent=duoSecrets[k].face+' '+duoSecrets[k].title.replace(/ — .*/,'')+' · '+duoSecrets[k].type;collection.appendChild(chip);});
+}
+const duoButton=document.getElementById('meetDuo'),duoPanel=document.getElementById('duoPanel');
+document.getElementById('duoOne').addEventListener('change',()=>{});
+function meetSelectedDuo(){
+ const one=document.getElementById('duoOne').value,two=document.getElementById('duoTwo').value,pair=[one,two].sort().join('|');
+ const faceOne=document.getElementById('duoFaceOne'),faceTwo=document.getElementById('duoFaceTwo'),stage=duoPanel.querySelector('.duo-stage'),result=document.getElementById('duoResult');
+ faceOne.textContent=data[one].icon;faceTwo.textContent=data[two].icon;stage.classList.remove('meeting');void stage.offsetWidth;stage.classList.add('meeting');
+ if(one===two){result.innerHTML='<strong>SELF-FRIENDSHIP: DOUBLE TROUBLE!</strong>'+data[one].name+' meets a copy of itself. They argue over who is the original, then both declare themselves the winner.';logEncounter(data[one].name+' met a mirror rival','🪞');return;}
+ const secret=duoSecrets[pair];
+ if(secret){
+  result.innerHTML='<strong>'+secret.title+'</strong>'+secret.text;
+  const fresh=!duoFound.has(pair);duoFound.add(pair);
+  try{localStorage.setItem('tiknation-nightmare-duos',JSON.stringify([...duoFound]));}catch(_){}
+  renderDuoCollection();logEncounter((fresh?'Secret duo discovered: ':'Secret duo reunion: ')+secret.title,secret.face);
+  [one,two].forEach((key,index)=>{const card=document.querySelector('.card[data-key="'+key+'"]'),character=card.querySelector('.character');character.textContent=index===0?secret.face:data[key].icon;character.className='character chain-star';window.setTimeout(()=>{if(!card.querySelector('[data-play]').disabled){character.textContent=data[key].icon;character.className='character idle pokeable';card.querySelector('.status').textContent=data[key].home;}},1200);});
+ }else{
+  const faces=['💫','🌀','🎭','✨','👀'];result.innerHTML='<strong>UNEXPECTED CHEMISTRY!</strong>'+data[one].name+' and '+data[two].name+' make a strange little spark. This duo has no secret story yet — keep experimenting!';faceOne.textContent=faces[(one.length+two.length)%faces.length];logEncounter(data[one].name+' and '+data[two].name+' met','💫');
+ }
+}
+duoButton.addEventListener('click',()=>{duoPanel.scrollIntoView({behavior:'smooth',block:'start'});duoPanel.classList.add('duo-highlight');window.setTimeout(()=>duoPanel.classList.remove('duo-highlight'),1200);});
+duoButton.addEventListener('click',()=>{duoButton.setAttribute('aria-pressed','true');});
+document.getElementById('meetDuo').addEventListener('click',meetSelectedDuo);
+renderDuoCollection();
 const pokeCounts=new Map();
 const pokeLines={
 ghost:['👻 EEP! Don’t poke the ghost!','😱 BOO! You found Ghosty’s ticklish spot!','😈 Shadow Ghost says: poke the shadow next time!'],
