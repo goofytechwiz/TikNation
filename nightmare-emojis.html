@@ -28,12 +28,15 @@ body.living-mode .card:nth-child(3n+2) .character.idle{animation-delay:-1s,-1.3s
 body.living-mode .card:nth-child(4n) .character.idle{animation-name:livingWiggle,livingGlow;animation-duration:1.1s,2s}
 body.living-mode .hero:after{animation:livingBob 1.2s ease-in-out infinite,livingGlow 2s ease-in-out infinite}
 #livingMode[aria-pressed="true"]{background:linear-gradient(100deg,#087e83,#7045dc);border-color:var(--cyan);box-shadow:0 0 18px #77f1ff55}
+@keyframes chainEntrance{0%{transform:scale(.55) rotate(-14deg);opacity:.3}65%{transform:scale(1.22) rotate(8deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+.character.chain-star{animation:chainEntrance .65s ease-out, livingGlow 1s ease-in-out!important}
+#chainShow[aria-busy="true"]{border-color:var(--cyan);box-shadow:0 0 16px #77f1ff44}
 @media(prefers-reduced-motion:reduce){body.living-mode .card .character.idle,body.living-mode .hero:after{animation:none!important;filter:drop-shadow(0 0 8px #77f1ff)}}</style>
 </head>
 <body>
 <header><div><div class="brand">TIK<span>NATION</span></div><div class="sub">The spooky side · living emoji experiments</div></div><div class="sub">Cute · Creepy · Chaotic</div></header>
 <main>
-<section class="hero"><div class="eyebrow">✦ THE NIGHTMARE CREW ✦</div><h1>They're cute.<br><span class="gradient">They're creepy.</span><br>They come alive.</h1><p>Meet the Nightmare Emojis: pranksters, shadow-creatures, glitch gremlins, and magical oddballs. Tap a character to play a full mini-story, try a secret transformation, or let the crew surprise you.</p><div class="hero-actions"><button class="primary" id="surpriseAll">🎲 Surprise me with anyone!</button><button id="huntForm">🔎 Hunt for a secret form</button><button id="resetAll">↻ Reset the crew</button><button id="chaosCombo">👹 Start a Chaos Combo</button><button class="primary" id="livingMode" aria-pressed="false">✨ Wake the crew!</button></div><div id="livingMessage" class="progress-note" aria-live="polite">The crew is waiting… wake them up for a living, wiggling Nightmare surprise.</div><div id="huntMessage" class="progress-note" aria-live="polite"></div><div id="comboMessage" class="progress-note" aria-live="polite">New: trigger a three-character Chaos Combo for a surprise mini-show.</div></section>
+<section class="hero"><div class="eyebrow">✦ THE NIGHTMARE CREW ✦</div><h1>They're cute.<br><span class="gradient">They're creepy.</span><br>They come alive.</h1><p>Meet the Nightmare Emojis: pranksters, shadow-creatures, glitch gremlins, and magical oddballs. Tap a character to play a full mini-story, try a secret transformation, or let the crew surprise you.</p><div class="hero-actions"><button class="primary" id="surpriseAll">🎲 Surprise me with anyone!</button><button id="huntForm">🔎 Hunt for a secret form</button><button id="resetAll">↻ Reset the crew</button><button id="chaosCombo">👹 Start a Chaos Combo</button><button class="primary" id="livingMode" aria-pressed="false">✨ Wake the crew!</button><button id="chainShow">🎬 Spooky Comedy Chain</button></div><div id="livingMessage" class="progress-note" aria-live="polite">The crew is waiting… wake them up for a living, wiggling Nightmare surprise.</div><div id="chainMessage" class="progress-note" aria-live="polite">New mini-show: one character’s chaos sets off the next!</div><div id="huntMessage" class="progress-note" aria-live="polite"></div><div id="comboMessage" class="progress-note" aria-live="polite">New: trigger a three-character Chaos Combo for a surprise mini-show.</div></section>
 <div class="section-head"><div><h2>Meet the Nightmare Emojis</h2><p>Every character has their own moves, personality, and surprise.</p></div></div>
 <section class="collection-progress" aria-label="Transformation collection progress"><div class="progress-top"><strong>✨ Transformation collection</strong><span id="progressLabel">0 of 12 forms discovered</span></div><div class="progress-track" role="progressbar" aria-label="Transformations discovered" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" id="progressBar"><div class="progress-fill" id="progressFill"></div></div><div class="progress-note" id="progressNote">Try a character’s Secret Form button to discover its special transformation.</div><div id="foundForms" class="found-forms" aria-live="polite"><span class="found-empty">🔒 Your discovered forms will appear here.</span></div></section>
 <section class="grid" id="crew" aria-label="Nightmare Emoji characters">
@@ -295,6 +298,41 @@ document.getElementById('surpriseAll').addEventListener('click',()=>{const cards
 document.getElementById('huntForm').addEventListener('click',()=>{const cards=[...document.querySelectorAll('.card')];const missing=cards.filter(card=>!discovered.has(card.dataset.key));const message=document.getElementById('huntMessage');if(!missing.length){message.textContent='🏆 You found all 12 secret forms! The Nightmare Crew has no secrets left… for now.';return}const card=missing[Math.floor(Math.random()*missing.length)];message.textContent='🔎 Clue found! Your next secret-form hunt leads to '+data[card.dataset.key].name+'!';card.scrollIntoView({behavior:'smooth',block:'center'});window.setTimeout(()=>{const btn=card.querySelector('[data-transform]');if(btn&&!btn.disabled)btn.click()},350)});
 document.getElementById('resetAll').addEventListener('click',()=>document.querySelectorAll('.card').forEach(reset));
 let comboRunning=false;
+const chainButton=document.getElementById('chainShow'),chainMessage=document.getElementById('chainMessage');
+let chainRunning=false,chainTimers=[];
+const chainShows=[
+ [{key:'ghost',face:'😱',line:'Ghosty jumps out and screams… at its own reflection!'}, {key:'pumpkin',face:'🤪',line:'Pumpkin Panic laughs so hard its grin goes upside down!'}, {key:'bat',face:'💠',line:'Batty.exe tries to fix the grin and accidentally glitches the whole scene!'}, {key:'zappy',face:'⚡',line:'Zappy restores everything with a thunderclap… and gives everyone static hair!'}],
+ [{key:'witchy',face:'✨',line:'Witchy casts a tiny spell to make the crew behave.'}, {key:'teddy',face:'🧸',line:'Terror Teddy takes the spell literally and hugs everyone into a pile!'}, {key:'turic',face:'👀',line:'Turic adds a potion to help… the potion grows eyebrows.'}, {key:'pixel',face:'🐶',line:'Pixel Pup barks at the eyebrows until they turn into pixels!'}],
+ [{key:'moonie',face:'🌙',line:'Moonie sends a sleepy dream-star floating by.'}, {key:'shadow',face:'👥',line:'Shadow Sneak clones the star… three times!'}, {key:'cinder',face:'🎆',line:'Cinder sneezes a spark and lights up all three stars.'}, {key:'frosty',face:'🌈',line:'Frosty cools the sparks into a rainbow. Everyone takes a bow!'}]
+];
+chainButton.addEventListener('click',()=>{
+ if(chainRunning)return;
+ chainRunning=true;chainTimers.forEach(t=>window.clearTimeout(t));chainTimers=[];
+ chainButton.disabled=true;chainButton.setAttribute('aria-busy','true');chainButton.textContent='🎬 Comedy chain playing…';
+ const show=chainShows[Math.floor(Math.random()*chainShows.length)];
+ const saved=show.map(step=>{const card=document.querySelector('.card[data-key="'+step.key+'"]');return {card,key:step.key,face:card.querySelector('.character').textContent,status:card.querySelector('.status').textContent};});
+ let i=0;
+ function next(){
+  if(i>=show.length){
+   const finalLine='🎉 Chain reaction complete! '+show.map(step=>data[step.key].name).join(' → ')+' turned a tiny problem into a full Nightmare comedy show!';
+   chainMessage.textContent=finalLine;logEncounter('Spooky Comedy Chain completed', '🎬');
+   chainButton.disabled=false;chainButton.removeAttribute('aria-busy');chainButton.textContent='🎬 Play another Comedy Chain';chainRunning=false;
+   return;
+  }
+  const step=show[i],card=document.querySelector('.card[data-key="'+step.key+'"]'),character=card.querySelector('.character');
+  chainMessage.textContent='🎭 Scene '+(i+1)+' of '+show.length+': '+data[step.key].name+' — '+step.line;
+  character.textContent=step.face;character.className='character chain-star';
+  card.querySelector('.status').textContent=step.line;
+  logEncounter('Comedy Chain scene '+(i+1)+': '+data[step.key].name,step.face);
+  i++;
+  chainTimers.push(window.setTimeout(next,1050));
+ }
+ show.forEach(step=>{const card=document.querySelector('.card[data-key="'+step.key+'"]');card.scrollIntoView({behavior:'smooth',block:'nearest'});});
+ next();
+ chainTimers.push(window.setTimeout(()=>{
+  saved.forEach(item=>{if(item.card&&!item.card.querySelector('[data-play]').disabled){const character=item.card.querySelector('.character');character.textContent=data[item.key].icon;character.className='character idle pokeable';item.card.querySelector('.status').textContent=data[item.key].home;}});
+ },show.length*1050+500));
+});
 document.getElementById('chaosCombo').addEventListener('click',()=>{
   if(comboRunning)return;
   const button=document.getElementById('chaosCombo');
