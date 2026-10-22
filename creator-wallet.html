@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080813">
+<title>TikNation Creator Wallet</title>
+<meta name="description" content="A transparent preview of TikNation creator earnings and payout rules.">
+<style>
+:root{color-scheme:dark;--bg:#080813;--panel:#141326;--line:#332b50;--text:#f8f5ff;--muted:#b9b1d1;--cyan:#7ceeff;--purple:#ad8cff;--green:#8ef0bd;--gold:#ffd778}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#2b1851 0,transparent 42%),var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}main{width:min(100% - 28px,980px);margin:28px auto 60px}header,.panel{border:1px solid var(--line);border-radius:20px;background:#141326ed;padding:20px;margin-bottom:16px;box-shadow:0 12px 35px #0003}header{background:linear-gradient(125deg,#2a164b,#102c3c)}.eyebrow{font-size:.78rem;font-weight:850;letter-spacing:.14em;color:var(--cyan)}h1{font-size:clamp(1.9rem,5vw,3rem);line-height:1.1;margin:8px 0}h2{margin:0 0 12px;font-size:1.25rem}p{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.balance{font-size:clamp(2rem,7vw,3.2rem);font-weight:900;letter-spacing:-.04em}.label{font-size:.85rem;color:var(--muted)}.metric{border:1px solid #3d345c;background:#0c0b19;border-radius:14px;padding:15px}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.btn{display:inline-flex;justify-content:center;align-items:center;padding:11px 15px;border-radius:11px;border:1px solid #63528b;background:#30204f;color:white;text-decoration:none;font-weight:800;cursor:pointer}.btn.primary{background:linear-gradient(100deg,#7549c6,#176d8b)}.btn:disabled{opacity:.45;cursor:not-allowed}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.note{border-left:3px solid var(--gold);background:#ffd7780d;padding:12px;color:#e8dcbd;border-radius:0 10px 10px 0}.safe{border-left-color:var(--green);background:#8ef0bd0b;color:#ccebd9}.table{width:100%;border-collapse:collapse}.table td,.table th{text-align:left;padding:11px 7px;border-bottom:1px solid #ffffff18}.table th{font-size:.8rem;color:var(--muted);font-weight:700}.right{text-align:right!important}.status{min-height:24px;color:var(--cyan);margin-top:10px}.muted{font-size:.9rem;color:var(--muted)}.pill{display:inline-block;border:1px solid #625282;border-radius:999px;padding:4px 9px;font-size:.78rem;color:#e0d3ff}.mathline{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #ffffff15}.mathline:last-child{border-bottom:0}.amount{font-variant-numeric:tabular-nums;font-weight:800}footer{color:#8d86a7;font-size:.82rem;margin-top:22px}@media(max-width:680px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr}.panel,header{padding:16px}.table{font-size:.88rem}}
+</style>
+</head>
+<body><main>
+<header>
+  <div class="eyebrow">TIKNATION · CREATOR FIRST</div>
+  <h1>💚 Creator Wallet</h1>
+  <p>Understand what you earn, what fees apply, and what is actually available to withdraw. No mystery math.</p>
+  <div class="row"><a class="btn" href="./index.html">← Back to TikNation</a><a class="btn" href="./live.html">Open TikNation Live</a><span class="pill">Prototype preview</span></div>
+</header>
+<section class="panel">
+  <div class="row" style="justify-content:space-between"><div><div class="label">Available to withdraw</div><div class="balance">$0.00</div></div><span class="pill">Demo wallet · no real funds</span></div>
+  <p class="note" style="margin-top:14px">This page is a design prototype. It does not receive money, convert test coins to cash, connect a bank account, or make payouts. Real cash-outs will only be enabled after secure payment processing and creator verification are set up.</p>
+  <div class="metrics" style="margin-top:14px">
+    <div class="metric"><div class="label">Pending earnings</div><div class="amount">$0.00</div><div class="muted">Awaiting eligibility checks</div></div>
+    <div class="metric"><div class="label">Paid out</div><div class="amount">$0.00</div><div class="muted">Lifetime completed payouts</div></div>
+    <div class="metric"><div class="label">Cash-out minimum</div><div class="amount">Not set</div><div class="muted">Will be published before launch</div></div>
+  </div>
+</section>
+<div class="grid">
+<section class="panel">
+  <h2>🧾 How a gift becomes earnings</h2>
+  <div class="mathline"><span>Viewer gift purchase</span><span class="amount">Shown before checkout</span></div>
+  <div class="mathline"><span>Payment processing fees</span><span class="amount">Disclosed clearly</span></div>
+  <div class="mathline"><span>Creator share</span><span class="amount">Published rate</span></div>
+  <div class="mathline"><span>TikNation platform share</span><span class="amount">Published rate</span></div>
+  <p class="muted" style="margin-top:12px">Test coins are for testing only and have no cash value. A creator's eligible earnings will be calculated from the published policy—not by pretending every coin equals a dollar.</p>
+</section>
+<section class="panel">
+  <h2>🏦 Cash-out rules we intend to follow</h2>
+  <ul style="padding-left:20px;color:var(--muted);display:grid;gap:8px">
+    <li>Show the exact withdrawable amount before a payout request.</li>
+    <li>Explain verification, processing times, fees, and any minimum in plain language.</li>
+    <li>Never promise a payout before payment-provider confirmation.</li>
+    <li>Provide a transaction history and a way to question a payout.</li>
+    <li>Protect accounts against fraud and unauthorized transactions.</li>
+  </ul>
+</section>
+</div>
+<section class="panel">
+  <h2>📊 Example earnings breakdown</h2>
+  <p>This is an illustration of how a future dashboard could explain a payout. It is not TikNation's finalized revenue split or an offer of earnings.</p>
+  <div class="mathline"><span>Illustrative eligible revenue</span><span class="amount">$100.00</span></div>
+  <div class="mathline"><span>Platform share</span><span class="amount">Not decided</span></div>
+  <div class="mathline"><span>Payment fees / adjustments</span><span class="amount">Shown before payout</span></div>
+  <div class="mathline"><strong>Creator withdrawable total</strong><strong class="amount">Calculated transparently</strong></div>
+  <p class="note safe" style="margin-top:14px">Our fairness promise: publish the rules first, show the math, and do not hide fees or invent a cash value for test coins.</p>
+</section>
+<footer>TikNation Creator Wallet · Prototype only · No real money is stored or transferred by this page.</footer>
+</main></body></html>
