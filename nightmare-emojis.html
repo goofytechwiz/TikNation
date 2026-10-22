@@ -129,7 +129,7 @@ body.living-mode .hero:after{animation:livingBob 1.2s ease-in-out infinite,livin
 <section class="collection-progress" aria-label="Transformation collection progress"><div class="progress-top"><strong>✨ Transformation collection</strong><span id="progressLabel">0 of 12 forms discovered</span></div><div class="progress-track" role="progressbar" aria-label="Transformations discovered" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" id="progressBar"><div class="progress-fill" id="progressFill"></div></div><div class="progress-note" id="progressNote">Try a character’s Secret Form button to discover its special transformation.</div><div id="foundForms" class="found-forms" aria-live="polite"><span class="found-empty">🔒 Your discovered forms will appear here.</span></div></section>
 <section class="new-universe" id="newUniverse" aria-labelledby="universeTitle">
  <div class="section-head"><div><div class="eyebrow">✦ THE UNIVERSE IS EXPANDING ✦</div><h2 id="universeTitle">Meet the New TikNation Emoji Worlds</h2><p>Four brand-new collections. Sixteen original characters. Tap any character to wake up its personality!</p></div></div>
- <div class="world-actions"><button class="primary" id="worldSurprise">🎲 Surprise me with a new emoji!</button><button id="worldMashup">💥 Create a World Mash-Up</button></div><button id="worldBossButton">👑 Challenge the World Boss</button><div class="world-tabs" role="group" aria-label="Choose an emoji collection"><button class="world-tab active" data-world="magic" aria-pressed="true">🐲 Magic</button><button class="world-tab" data-world="nightmare2" aria-pressed="false">👹 Nightmare Season 2</button><button class="world-tab" data-world="food" aria-pressed="false">🍕 Crazy Food</button><button class="world-tab" data-world="space" aria-pressed="false">👽 Space & Robots</button></div>
+ <div class="world-actions"><button class="primary" id="worldSurprise">🎲 Surprise me with a new emoji!</button><button id="worldMashup">💥 Create a World Mash-Up</button></div><button id="worldBossButton">👑 Challenge the World Boss</button><div class="world-tabs" role="group" aria-label="Choose an emoji collection"><button class="world-tab active" data-world="magic" aria-pressed="true">🐲 Magic</button><button class="world-tab" data-world="nightmare2" aria-pressed="false">👹 Nightmare Season 2</button><button class="world-tab" data-world="food" aria-pressed="false">🍕 Crazy Food</button><button class="world-tab" data-world="space" aria-pressed="false">👽 Space & Robots</button><button class="world-tab" data-world="ocean" aria-pressed="false">🌊 Ocean</button><button class="world-tab" data-world="dino" aria-pressed="false">🦖 Dinosaurs</button><button class="world-tab" data-world="candy" aria-pressed="false">🍬 Candy</button><button class="world-tab" data-world="hero" aria-pressed="false">🦸 Heroes</button><button class="world-tab" data-world="forest" aria-pressed="false">🌳 Wild Forest</button><button class="world-tab" data-world="music" aria-pressed="false">🎵 Music</button></div>
  <div class="world-intro" id="worldIntro" aria-live="polite">✨ Magic Emojis — enchanted creatures and spells that never go quite right.</div>
  <div class="world-grid" id="worldGrid">
  <article class="world-card" data-character="sparkle-drake"><span class="world-face">🐲</span><h3>Fizzle the Baby Dragon</h3><p>Every sneeze makes a tiny fireworks show.</p><button class="world-wake">✨ Wake up!</button><div class="world-reaction" aria-live="polite">A little puff of smoke curls into a heart.</div></article>
@@ -137,7 +137,7 @@ body.living-mode .hero:after{animation:livingBob 1.2s ease-in-out infinite,livin
  <article class="world-card" data-character="wish-wisp"><span class="world-face">🧚</span><h3>Wish Wisp</h3><p>Grants wishes, but takes everything literally.</p><button class="world-wake">✨ Wake up!</button><div class="world-reaction" aria-live="polite">You wished for a cool breeze. A tiny fan appears.</div></article>
  <article class="world-card" data-character="crystal-crab"><span class="world-face">🦀</span><h3>Crystal Crab</h3><p>A shiny crab with a pocket full of spells.</p><button class="world-wake">✨ Wake up!</button><div class="world-reaction" aria-live="polite">Its claws sparkle and turn a pebble into candy.</div></article>
  </div>
- <div class="world-progress" id="worldProgress" aria-live="polite">New characters awakened: 0 of 16</div><div class="world-mashup" id="worldMashupResult" aria-live="polite">Mix characters from different worlds to discover a surprise mash-up!</div><div class="world-boss" id="worldBoss" hidden><div class="world-boss-face" id="worldBossFace">👑</div><h3 id="worldBossTitle">THE GLITCH EMPEROR</h3><p id="worldBossText">The four worlds have collided! Tap the boss three times to restore the emoji universe.</p><div class="world-boss-meter"><span id="worldBossMeter"></span></div><button class="primary" id="worldBossHit">⚡ Hit the Glitch Emperor!</button><p id="worldBossStatus" aria-live="polite">Boss energy: 3 hearts</p></div>
+ <div class="world-progress" id="worldProgress" aria-live="polite">New characters awakened: 0 of 88</div><div class="world-mashup" id="worldMashupResult" aria-live="polite">Mix characters from different worlds to discover a surprise mash-up!</div><div class="world-boss" id="worldBoss" hidden><div class="world-boss-face" id="worldBossFace">👑</div><h3 id="worldBossTitle">THE GLITCH EMPEROR</h3><p id="worldBossText">The four worlds have collided! Tap the boss three times to restore the emoji universe.</p><div class="world-boss-meter"><span id="worldBossMeter"></span></div><button class="primary" id="worldBossHit">⚡ Hit the Glitch Emperor!</button><p id="worldBossStatus" aria-live="polite">Boss energy: 3 hearts</p></div>
 </section><section class="grid" id="crew" aria-label="Nightmare Emoji characters">
 <article class="card" data-key="ghost" data-rarity="Fan Favorite"><span class="rarity">★ FAN FAVORITE</span><div class="tag">01 · Jump-scare prankster</div><h3>Ghosty McBoo 👻</h3><div class="preview"><span class="character idle pokeable" role="button" tabindex="0" aria-label="Tap this character for a reaction">👻</span></div><div class="status" aria-live="polite">Ghosty is hiding in the mist…</div><p>Acts innocent, springs a silly scare, dances like nobody's watching, then unlocks his secret Shadow Ghost form.</p><div class="actions"><button class="primary" data-play>Play animation</button><button data-transform>Secret form ✨</button><button data-reset>Reset</button></div></article>
 <article class="card" data-key="pumpkin" data-rarity="Rare"><span class="rarity">✦ RARE</span><div class="tag">02 · Magical chaos maker</div><h3>Pumpkin Panic 🎃</h3><div class="preview"><span class="character idle pokeable" role="button" tabindex="0" aria-label="Tap this character for a reaction">🎃</span></div><div class="status" aria-live="polite">Everything is totally under control…</div><p>Its grin glows, vines go wild, and a spell turns a tiny prank into a pumpkin-sized problem.</p><div class="actions"><button class="primary" data-play>Cause chaos!</button><button data-transform>Curse form ✨</button><button data-reset>Reset</button></div></article>
@@ -488,6 +488,84 @@ const emojiWorlds={
  ['🤖','Bleep-0','A robot whose buttons do completely different things.','Bleep-0 presses “dance” and accidentally launches disco satellites.'],
  ['🛸','U.F.Oh-No','A flying saucer that keeps losing its parking spot.','U.F.Oh-No beams up a cow. The cow beams up the pilot.'],
  ['🪐','Ring-a-Ding','A tiny planet with very loud rings.','Ring-a-Ding’s rings jingle like bells and summon space pigeons.']]}
+ ,ocean:{title:'🌊 Ocean Emojis',intro:'Deep-sea pals, splashy magic, and very confused fish.',items:[
+ ['🧜','Bubbles the Mermaid','Sings so loudly that clams open like curtains.','A school of fish forms a marching band.'],
+ ['🦈','Chompers the Shark','A big grin with a tiny appetite.','Chompers sneezes a heart-shaped bubble.'],
+ ['🐙','Octo-Boingo','Eight arms and no organization.','Juggles eight shells, then forgets the snack.'],
+ ['🪼','Jellybean Jellyfish','Glows in every color when excited.','Lights up the reef like a disco lamp.'],
+ ['🐬','Flip the Dolphin','Performs flips when nobody asked.','A seagull holds up a scorecard.'],
+ ['🦀','Captain Click-Clack','Sails in a teacup.','Declares the bathtub an ocean.'],
+ ['🐢','Turbo Turtle','Wears racing goggles and takes scenic routes.','Wins by accidentally taking a nap shortcut.'],
+ ['🐠','Confetti Fish','Sneezes rainbow bubbles.','Bubbles rain tiny party hats.'],
+ ['🦭','Sir Flops-a-Lot','A seal who bows too much.','Applauds itself with its flippers.'],
+ ['🦑','Squiggle Ink','Draws with ink and signs with a tentacle.','Its treasure map leads to its snack.'],
+ ['🐳','Whaley McWhaleFace','Laughs loud enough to make waves giggle.','A wave does a tiny shimmy.'],
+ ['🦐','Shrimpy the Brave','Smallest hero in the biggest ocean.','Pokes a giant bubble and wins.']]},
+ dino:{title:'🦖 Dinosaur Emojis',intro:'Prehistoric goofballs stomping into the present day.',items:[
+ ['🦖','Rexy Rumble','A mighty roar that sounds like a squeaky toy.','The ferns lean in to hear the tiny roar.'],
+ ['🦕','Longneck Lou','Can reach the moon but loses its glasses.','Finds glasses on its own nose.'],
+ ['🥚','Crackles the Hatchling','Hatches with dramatic timing.','Strikes a pose and asks for snacks.'],
+ ['🦴','Bonely Jones','A skeleton dino who tap-dances everywhere.','Its tail becomes a metronome.'],
+ ['🌋','Lava Lolly','A tiny volcano with a marshmallow heart.','Erupts harmless glitter.'],
+ ['🦤','Dodo Doodle','Paints with its beak.','Creates a masterpiece that looks like lunch.'],
+ ['🦎','Chompy the Gecko','Camouflages in polka dots.','Waves from the wrong dot.'],
+ ['🐊','Snapdragon Croc','A crocodile with a flower garden on its head.','Sneezes a daisy into its hat.'],
+ ['🦣','Mammoth Muffin','A fluffy mammoth who loves baking.','Bakes a boulder-sized cupcake.'],
+ ['🥚','Eggbert the Explorer','A brave egg who fears omelets.','Finds a fossil and names it Eggbert.'],
+ ['🦖','Tippy-Toe T-Rex','Tiny arms, enormous ballet ambitions.','Pirouettes and applauds itself.'],
+ ['🪨','Pebble the Pet Rock','Claims to be the oldest dino.','Rolls two inches and calls it a world tour.']]},
+ candy:{title:'🍬 Candy Emojis',intro:'Sweet oddballs from the land of sticky surprises.',items:[
+ ['🍭','Lolli Loop','A lollipop who spins like a helicopter.','Requests a landing pad three inches up.'],
+ ['🍫','Choco Chomp','A chocolate square with a dramatic bite.','Hides behind a wrapper saying “look here.”'],
+ ['🍬','Twizzle Twins','Two candies who finish each other’s sentences.','They argue over how to finish a sentence.'],
+ ['🧁','Cupcake Chaos','Frosting changes color with every giggle.','Grows a tiny unicorn horn.'],
+ ['🍪','Cookie Comet','Leaves a crumbly trail through space.','Every planet asks for a sample.'],
+ ['🍓','Berry Boop','A strawberry with a boop-powered bounce.','Bounces into a bowl of giggles.'],
+ ['🍦','Scoopy Stardust','Ice cream with a galaxy swirl.','Becomes a triple-scoop rocket.'],
+ ['🍿','Popcorn Popper','Pops whenever someone tells a joke.','A pun launches it with a tiny parachute.'],
+ ['🍯','Honey Hoot','A honey pot who thinks it is an owl.','Bees bring it a bedtime story.'],
+ ['🥨','Pretzel Pretender','Twists into anything but a straight line.','Crowns a raisin king.'],
+ ['🍡','Mochi Mallow','A squishy sweet with spring-loaded cheeks.','Bounces into its own tiny hat.'],
+ ['🍉','Melon Mambo','A watermelon who dances salsa.','Its seeds become a cheering crowd.']]},
+ hero:{title:'🦸 Hero Emojis',intro:'Tiny champions with enormous confidence and silly superpowers.',items:[
+ ['🦸','Captain Giggle','Defeats villains with uncontrollable laughter.','Makes a robot snort bubbles.'],
+ ['🦹','Oops-a-Villain','Forgets the punchline to every scheme.','Traps itself in a box labeled easy escape.'],
+ ['🛡️','Shieldy McShields','Protects everyone from awkward silences.','Blocks a sneeze and starts a conga line.'],
+ ['⚡','Zip Zap','Moves fast but arrives at yesterday.','Returns holding its own autograph.'],
+ ['🕶️','Mystery Shades','A secret agent with enormous glasses.','Whispers “classified” to a sandwich.'],
+ ['🧲','Magnet Max','Attracts everything except what it wants.','Collects spoons and a surprised robot.'],
+ ['🪄','Wonder Wand','Makes wishes come true in silly ways.','Turns a villain’s cape into a blanket fort.'],
+ ['🦾','Mega Mitt','Has a super-powered high-five.','High-fives a cloud into a thunderclap.'],
+ ['🪽','Flappy Fantastic','Flies in enthusiastic circles.','Lands exactly where it started.'],
+ ['💥','Boomerang Boom','Its power always comes back around.','Confetti returns as a party hat.'],
+ ['🧢','Cap-tain Cool','A hat-powered hero with a dramatic brim.','Every nearby hat tips back.'],
+ ['🌟','Starbeam','Shoots sparkles that make everyone dance.','Spotlights a shy potato.']]},
+ forest:{title:'🌳 Wild Forest Emojis',intro:'Woodland weirdos and creatures who love a silly mess.',items:[
+ ['🦊','Foxglove Fox','Grows flowers when fibbing.','A bouquet sprouts from its tail.'],
+ ['🦉','Professor Hoot','Gives advice to tree stumps.','Explains gravity to a sleepy apple.'],
+ ['🍄','Mister Mushzoom','Teleports three inches at a time.','Reappears inside its own shadow.'],
+ ['🐿️','Acorn Acrobat','Stores snacks in unlikely places.','Finds an acorn in its hat.'],
+ ['🦔','Prickles McSnuggle','Thinks every hug needs armor.','Builds a pillow cuddle shield.'],
+ ['🐝','Buzzby Bumble','Hums the wrong tune.','Flowers sing backup.'],
+ ['🦋','Flutterby','Leaves glowing confetti behind.','A leaf gets a standing ovation.'],
+ ['🌻','Sunny Sprout','Wakes up before the sun.','Asks sunrise to hit snooze.'],
+ ['🐸','Sir Ribbit','A frog with opera ambitions.','Every lily pad applauds.'],
+ ['🦝','Bandit Bandit','Steals only left socks.','Returns them as tiny puppets.'],
+ ['🦌','Twiglet the Deer','Grows antlers made of seasonal snacks.','A squirrel moves into its popcorn antlers.'],
+ ['🌱','Sprout Scout','Wants to become a mighty tree today.','Asks for a superhero cape.']]},
+ music:{title:'🎵 Music Emojis',intro:'Beat-dropping buddies who turn mistakes into concerts.',items:[
+ ['🎸','Riff Raff','A guitar hero who knows one power chord.','A thousand tiny air guitars appear.'],
+ ['🥁','Boom Boom Benny','A drummer with no quiet setting.','Furniture starts a conga line.'],
+ ['🎹','Key-Key','A keyboard with a mind of its own.','Plays a lullaby that makes the moon yawn.'],
+ ['🎤','Mic Drop Molly','Drops itself for dramatic effect.','Catches the mic and bows to an empty room.'],
+ ['🎻','Viola Swish','A violin that makes air sparkle.','Dust motes perform ballet.'],
+ ['🎺','Tooty Fruity','A trumpet with a silly fanfare.','Announces lunch like a royal parade.'],
+ ['🎧','DJ Dizzy','Mixes beats with accidental sound effects.','Summons a dancing rubber duck.'],
+ ['🪇','Shaky Shakira','Maracas that shake on their own.','The forest becomes a dance floor.'],
+ ['🪘','Bongo Bo','A bongo drum who tells jokes in rhythm.','Cymbals groan at a terrible pun.'],
+ ['🎼','Maestro Muddle','Reads every score upside down.','Conducts a symphony of sneezes.'],
+ ['🪈','Pip the Panflute','A panflute with a breathy giggle.','Clouds bounce to its tune.'],
+ ['🪩','Disco Ball Dot','Thinks every room is a dance floor.','Starts a disco for a shy moon.']]}
 };
 const awakenedWorlds=new Set();
 try{const saved=JSON.parse(localStorage.getItem('tiknation-new-worlds-awakened')||'[]');if(Array.isArray(saved))saved.forEach(x=>{if(typeof x==='string')awakenedWorlds.add(x);});}catch(_){}
@@ -498,7 +576,7 @@ const worldMashups=[
 {worlds:['magic','space'],emoji:'🧚🛸',title:'THE WISH-UFO!',story:'Wish Wisp wishes for a ride. U.F.Oh-No appears, immediately gets lost, and grants the wish to a confused space pigeon instead.'},
 {worlds:['nightmare2','food'],emoji:'🪱🌮',title:'THE TACO TUNNEL!',story:'Wiggles burrows through Taco Tornado and emerges as a salsa-powered wormhole. Every trip through it comes out wearing a tiny sombrero.'}
 ];
-function renderWorld(key){activeWorld=key;const world=emojiWorlds[key];document.getElementById('worldIntro').textContent=world.title+' — '+world.intro;const grid=document.getElementById('worldGrid');grid.replaceChildren();world.items.forEach((item,i)=>{const id=key+'-'+i,card=document.createElement('article');card.className='world-card'+(awakenedWorlds.has(id)?' awake':'');card.dataset.character=id;const face=document.createElement('span');face.className='world-face';face.textContent=item[0];const h=document.createElement('h3');h.textContent=item[1];const p=document.createElement('p');p.textContent=item[2];const btn=document.createElement('button');btn.className='world-wake';btn.textContent=awakenedWorlds.has(id)?'🔁 Play again!':'✨ Wake up!';btn.addEventListener('click',()=>{face.textContent=['💫','🤪','✨','😱','🥳'][Math.floor(Math.random()*5)];card.classList.remove('awake');void card.offsetWidth;card.classList.add('awake');reaction.textContent=item[3];btn.textContent='🔁 Play again!';face.setAttribute('aria-label',item[1]+' reaction');awakenedWorlds.add(id);awardQuest('wake');try{localStorage.setItem('tiknation-new-worlds-awakened',JSON.stringify([...awakenedWorlds]));}catch(_){}document.getElementById('worldProgress').textContent='New characters awakened: '+awakenedWorlds.size+' of 16'+(awakenedWorlds.size===16?' — WORLD EXPLORER! 🌟':'');logEncounter('New emoji awakened: '+item[1],item[0]);window.setTimeout(()=>{face.textContent=item[0];},950);});const reaction=document.createElement('div');reaction.className='world-reaction';reaction.setAttribute('aria-live','polite');reaction.textContent=awakenedWorlds.has(id)?item[3]:'Tap to reveal this character’s reaction!';card.append(face,h,p,btn,reaction);grid.appendChild(card);});document.querySelectorAll('.world-tab').forEach(btn=>{const active=btn.dataset.world===key;btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',String(active));});document.getElementById('worldProgress').textContent='New characters awakened: '+awakenedWorlds.size+' of 16'+(awakenedWorlds.size===16?' — WORLD EXPLORER! 🌟':'');}
+function renderWorld(key){activeWorld=key;const world=emojiWorlds[key];document.getElementById('worldIntro').textContent=world.title+' — '+world.intro;const grid=document.getElementById('worldGrid');grid.replaceChildren();world.items.forEach((item,i)=>{const id=key+'-'+i,card=document.createElement('article');card.className='world-card'+(awakenedWorlds.has(id)?' awake':'');card.dataset.character=id;const face=document.createElement('span');face.className='world-face';face.textContent=item[0];const h=document.createElement('h3');h.textContent=item[1];const p=document.createElement('p');p.textContent=item[2];const btn=document.createElement('button');btn.className='world-wake';btn.textContent=awakenedWorlds.has(id)?'🔁 Play again!':'✨ Wake up!';btn.addEventListener('click',()=>{face.textContent=['💫','🤪','✨','😱','🥳'][Math.floor(Math.random()*5)];card.classList.remove('awake');void card.offsetWidth;card.classList.add('awake');reaction.textContent=item[3];btn.textContent='🔁 Play again!';face.setAttribute('aria-label',item[1]+' reaction');awakenedWorlds.add(id);awardQuest('wake');try{localStorage.setItem('tiknation-new-worlds-awakened',JSON.stringify([...awakenedWorlds]));}catch(_){}document.getElementById('worldProgress').textContent='New characters awakened: '+awakenedWorlds.size+' of 88'+(awakenedWorlds.size>=88?' — WORLD EXPLORER! 🌟':'');logEncounter('New emoji awakened: '+item[1],item[0]);window.setTimeout(()=>{face.textContent=item[0];},950);});const reaction=document.createElement('div');reaction.className='world-reaction';reaction.setAttribute('aria-live','polite');reaction.textContent=awakenedWorlds.has(id)?item[3]:'Tap to reveal this character’s reaction!';card.append(face,h,p,btn,reaction);grid.appendChild(card);});document.querySelectorAll('.world-tab').forEach(btn=>{const active=btn.dataset.world===key;btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',String(active));});document.getElementById('worldProgress').textContent='New characters awakened: '+awakenedWorlds.size+' of 16'+(awakenedWorlds.size===16?' — WORLD EXPLORER! 🌟':'');}
 document.querySelectorAll('.world-tab').forEach(btn=>btn.addEventListener('click',()=>renderWorld(btn.dataset.world)));
 renderWorld('magic');
 let selectedCreatorFace='🐲';let customEmojiCrew=[];
