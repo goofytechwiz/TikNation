@@ -22,7 +22,7 @@ button{border:1px solid #614482;background:#251839;color:white;padding:10px 14px
 <body>
 <header><div><div class="brand">TIK<span>NATION</span></div><div class="sub">The spooky side · living emoji experiments</div></div><div class="sub">Cute · Creepy · Chaotic</div></header>
 <main>
-<section class="hero"><div class="eyebrow">✦ THE NIGHTMARE CREW ✦</div><h1>They're cute.<br><span class="gradient">They're creepy.</span><br>They come alive.</h1><p>Meet the Nightmare Emojis: pranksters, shadow-creatures, glitch gremlins, and magical oddballs. Tap a character to play a full mini-story, try a secret transformation, or let the crew surprise you.</p><div class="hero-actions"><button class="primary" id="surpriseAll">🎲 Surprise me with anyone!</button><button id="huntForm">🔎 Hunt for a secret form</button><button id="resetAll">↻ Reset the crew</button></div><div id="huntMessage" class="progress-note" aria-live="polite"></div></section>
+<section class="hero"><div class="eyebrow">✦ THE NIGHTMARE CREW ✦</div><h1>They're cute.<br><span class="gradient">They're creepy.</span><br>They come alive.</h1><p>Meet the Nightmare Emojis: pranksters, shadow-creatures, glitch gremlins, and magical oddballs. Tap a character to play a full mini-story, try a secret transformation, or let the crew surprise you.</p><div class="hero-actions"><button class="primary" id="surpriseAll">🎲 Surprise me with anyone!</button><button id="huntForm">🔎 Hunt for a secret form</button><button id="resetAll">↻ Reset the crew</button><button id="chaosCombo">👹 Start a Chaos Combo</button></div><div id="huntMessage" class="progress-note" aria-live="polite"></div><div id="comboMessage" class="progress-note" aria-live="polite">New: trigger a three-character Chaos Combo for a surprise mini-show.</div></section>
 <div class="section-head"><div><h2>Meet the Nightmare Emojis</h2><p>Every character has their own moves, personality, and surprise.</p></div></div>
 <section class="collection-progress" aria-label="Transformation collection progress"><div class="progress-top"><strong>✨ Transformation collection</strong><span id="progressLabel">0 of 12 forms discovered</span></div><div class="progress-track" role="progressbar" aria-label="Transformations discovered" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" id="progressBar"><div class="progress-fill" id="progressFill"></div></div><div class="progress-note" id="progressNote">Try a character’s Secret Form button to discover its special transformation.</div><div id="foundForms" class="found-forms" aria-live="polite"><span class="found-empty">🔒 Your discovered forms will appear here.</span></div></section>
 <section class="grid" id="crew" aria-label="Nightmare Emoji characters">
@@ -104,6 +104,37 @@ document.querySelectorAll('.card').forEach(card=>{const key=card.dataset.key;car
 document.getElementById('surpriseAll').addEventListener('click',()=>{const cards=[...document.querySelectorAll('.card')];const legendary=cards.filter(card=>card.dataset.rarity==='Legendary');const card=Math.random()<.28?legendary[Math.floor(Math.random()*legendary.length)]:cards[Math.floor(Math.random()*cards.length)];const status=card.querySelector('.status');status.textContent=card.dataset.rarity==='Legendary'?'👑 RARE EVENT! A LEGENDARY NIGHTMARE EMOJI HAS APPEARED!':'🎲 Surprise encounter! '+data[card.dataset.key].name+' is taking over!';card.scrollIntoView({behavior:'smooth',block:'center'});animate(card,data[card.dataset.key].play,()=>{if(card.dataset.rarity==='Legendary')status.textContent='👑 LEGENDARY ENCOUNTER COMPLETE! '+data[card.dataset.key].name+' says: you found me! ✨'})});
 document.getElementById('huntForm').addEventListener('click',()=>{const cards=[...document.querySelectorAll('.card')];const missing=cards.filter(card=>!discovered.has(card.dataset.key));const message=document.getElementById('huntMessage');if(!missing.length){message.textContent='🏆 You found all 12 secret forms! The Nightmare Crew has no secrets left… for now.';return}const card=missing[Math.floor(Math.random()*missing.length)];message.textContent='🔎 Clue found! Your next secret-form hunt leads to '+data[card.dataset.key].name+'!';card.scrollIntoView({behavior:'smooth',block:'center'});window.setTimeout(()=>{const btn=card.querySelector('[data-transform]');if(btn&&!btn.disabled)btn.click()},350)});
 document.getElementById('resetAll').addEventListener('click',()=>document.querySelectorAll('.card').forEach(reset));
+let comboRunning=false;
+document.getElementById('chaosCombo').addEventListener('click',()=>{
+  if(comboRunning)return;
+  const button=document.getElementById('chaosCombo');
+  const message=document.getElementById('comboMessage');
+  const cards=[...document.querySelectorAll('.card')];
+  for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}
+  const trio=cards.slice(0,3);
+  let index=0;
+  comboRunning=true;
+  button.disabled=true;
+  button.textContent='✨ Chaos Combo running…';
+  message.textContent='🎬 Mini-show starting! Get ready for three surprise characters.';
+  function next(){
+    if(index>=trio.length){
+      comboRunning=false;
+      button.disabled=false;
+      button.textContent='👹 Run another Chaos Combo';
+      message.textContent='🎉 Chaos Combo complete! '+trio.map(card=>data[card.dataset.key].name).join(' → ')+' brought the chaos.';
+      logEncounter('Chaos Combo complete: '+trio.map(card=>data[card.dataset.key].name).join(', '),'👹');
+      return;
+    }
+    const card=trio[index++];
+    const name=data[card.dataset.key].name;
+    message.textContent='🎭 Combo '+index+' of 3: '+name+' takes the stage!';
+    card.scrollIntoView({behavior:'smooth',block:'center'});
+    logEncounter('Chaos Combo: '+name+' takes the stage',data[card.dataset.key].icon);
+    animate(card,data[card.dataset.key].play,next);
+  }
+  next();
+});
 discovered.forEach(key=>{const card=document.querySelector('.card[data-key="'+key+'"]');if(card)updateProgress(key)});
 if(discovered.size===0){document.getElementById('progressLabel').textContent='0 of 12 forms discovered';}
 </script>
