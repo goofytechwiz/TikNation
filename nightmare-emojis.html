@@ -739,7 +739,29 @@ document.getElementById('chaosCombo').addEventListener('click',()=>{
   comboRunning=true;
   button.disabled=true;
   button.textContent='✨ Chaos Combo running…';
-  message.te// TikNation Battle Arena v1.1 — local prototype.
+  message.textContent='🎬 Mini-show starting! Get ready for three surprise characters.';
+  function next(){
+    if(index>=trio.length){
+      comboRunning=false;
+      button.disabled=false;
+      button.textContent='👹 Run another Chaos Combo';
+      message.textContent='🎉 Chaos Combo complete! '+trio.map(card=>data[card.dataset.key].name).join(' → ')+' brought the chaos.';
+      logEncounter('Chaos Combo complete: '+trio.map(card=>data[card.dataset.key].name).join(', '),'👹');
+      return;
+    }
+    const card=trio[index++];
+    const name=data[card.dataset.key].name;
+    message.textContent='🎭 Combo '+index+' of 3: '+name+' takes the stage!';
+    card.scrollIntoView({behavior:'smooth',block:'center'});
+    logEncounter('Chaos Combo: '+name+' takes the stage',data[card.dataset.key].icon);
+    animate(card,data[card.dataset.key].play,next);
+  }
+  next();
+});
+discovered.forEach(key=>{const card=document.querySelector('.card[data-key="'+key+'"]');if(card)updateProgress(key)});
+if(discovered.size===0){document.getElementById('progressLabel').textContent='0 of 12 forms discovered';}
+
+// TikNation Battle Arena v1.1 — local prototype.
 (()=> {
  const $=id=>document.getElementById(id);
  const fighters={dragon:{name:'Fizzle',icon:'🐉',hp:100,power:17,magic:22,speed:12,special:'Star-Sneeze'},ghost:{name:'Ghosty',icon:'👻',hp:88,power:16,magic:18,speed:21,special:'Phantom Pop'},maker:{name:'Matt the Magical Maker',icon:'🧙‍♂️',hp:96,power:17,magic:24,speed:15,special:'Creator Chaos'}};
