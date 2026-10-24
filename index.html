@@ -7731,6 +7731,23 @@ if ("serviceWorker" in navigator) {
 })();
 </script>
 
+<!-- Ask Giggles: expanded built-in interactive toolbox -->
+<style>
+.tn-host-panel{width:min(370px,calc(100vw - 28px));max-height:min(78vh,720px);overflow-y:auto}
+.tn-host-panel-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}
+.tn-host-panel-actions button,.tn-host-play-area form button,.tn-host-answer{min-width:0;padding:10px 11px;border:1px solid rgba(141,99,255,.34);border-radius:12px;background:rgba(141,99,255,.13);color:#fff;font-weight:700;text-align:left;cursor:pointer}
+.tn-host-panel-actions button:hover,.tn-host-play-area form button:hover,.tn-host-answer:hover{background:rgba(141,99,255,.25);border-color:#9c7cff}
+.tn-host-play-area{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1)}
+.tn-host-play-area label{display:block;margin-bottom:8px;color:#d8ccff;font-size:13px;font-weight:700}
+.tn-host-play-area form{display:flex;gap:7px}
+.tn-host-play-area input{width:100%;min-width:0;padding:11px 12px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:#10101c;color:#fff;outline:none}
+.tn-host-play-area input:focus{border-color:#9c7cff;box-shadow:0 0 0 2px rgba(156,124,255,.15)}
+.tn-host-play-area form button{flex:0 0 auto;text-align:center;background:#7045c7}
+.tn-host-small{margin-top:8px;color:#89899f;font-size:11px;line-height:1.5}
+.tn-host-answer{display:block;margin-top:10px;text-align:center}
+@media(max-width:420px){.tn-host-panel-actions{grid-template-columns:1fr}.tn-host-panel{right:10px;bottom:80px}}
+</style>
+
 <!-- TikNation Host: a site guide and interactive show presenter -->
 <button type="button" class="tn-host-launcher" id="tnHostLauncher" aria-controls="tnHostPanel" aria-expanded="false" onclick="toggleTikNationHost()">
     <span class="tn-host-launcher-avatar" aria-hidden="true">🎤😄</span><span>Ask Giggles</span>
@@ -7745,16 +7762,43 @@ if ("serviceWorker" in navigator) {
     <div class="tn-host-panel-actions">
         <button type="button" onclick="tikNationHostSay('tour')">🧭 Tour the site</button>
         <button type="button" onclick="tikNationHostSay('show')">🎬 Host a show</button>
+        <button type="button" onclick="tikNationHostSay('laugh')">😂 Make me laugh</button>
+        <button type="button" onclick="tikNationHostSay('magic')">🪄 Emoji magic</button>
+        <button type="button" onclick="tikNationHostSay('riddle')">🧩 Give me a riddle</button>
+        <button type="button" onclick="tikNationHostSay('challenge')">🎮 Daily challenge</button>
         <button type="button" onclick="tikNationHostSay('surprise')">🎁 Surprise me</button>
+    </div>
+    <div class="tn-host-play-area">
+        <label for="tnGigglesQuestion">💬 Ask Giggles a question</label>
+        <form id="tnGigglesForm">
+            <input id="tnGigglesQuestion" type="text" maxlength="180" placeholder="Try: how do I find creators?" autocomplete="off">
+            <button type="submit">Ask</button>
+        </form>
+        <p class="tn-host-small" id="tnGigglesHint">Giggles uses a built-in guide for now — no paid AI service required.</p>
     </div>
 </aside>
 <script>
 (function(){
     const lines = {
         welcome: "Heyyy, Nation! 💜 I'm Giggles — your guide around TikNation. I'll show visitors around and bring a little comedy to the experience!",
-        tour: "Site tour time! 👀 Try Watch for videos, Discover to find creators, and Creator Studio to make something of your own. More emoji worlds and surprises are on the way!",
+        tour: "🧭 QUICK TOUR! Watch is where you enjoy videos, Discover helps you find creators, and Creator Studio is where you make things. Explore at your own pace — your next favorite creator might be one tap away!",
         show: "🎬 LADIES, GENTLEMEN, AND EMOJIS OF EVERY EXPRESSION... welcome to the TikNation Show! Please keep your glitter inside the ride. Sparklewing has already ignored that instruction. 🐉✨",
-        surprise: "🚨 BREAKING NEWS: a rare emoji has been spotted doing absolutely nothing suspicious. 👀 Wait—IT'S TAP-DANCING ON THE CEILING! 😂💎"
+        laugh: "😂 BREAKING NEWS: local dragon applies for a job as a weather reporter. His forecast? 100% chance of snacks, with scattered fireballs. The weather service has asked him to stop warming the studio.",
+        magic: "🪄 EMOJI MAGIC! 🐸✨ The frog puts on a tiny crown and transforms into the Legendary Royal Ribbit! Its special power is turning awkward silences into synchronized croaking. RIBBIT ROYALTY!",
+        riddle: "🧩 GIGGLES' RIDDLE: I have a face and two hands, but no arms or legs. What am I? Think it over, then tap “Reveal the answer” below!",
+        challenge: "🎮 TODAY'S GIGGLES CHALLENGE: describe your mood using exactly three emojis. Bonus points if one of them makes absolutely no sense. Example: 😎🌮🛸",
+        surprise: "🎁 SURPRISE DROP! A rare emoji has been spotted doing absolutely nothing suspicious. 👀 WAIT—IT'S TAP-DANCING ON THE CEILING! 😂💎"
+    };
+    const extraTools = {
+        answer: "⏰ It's a clock! Congratulations, riddle champion. Giggles is now requesting a tiny trophy and a snack.",
+        help: "I can help you explore TikNation! Try Watch to view videos, Discover to find creators, Creator Studio to make posts, or your profile to manage your creator presence. I’m a built-in guide, so I can answer common site questions but I’m not a live AI chatbot yet.",
+        post: "✍️ Want to share something? Head to Creator Studio and look for the creation or publishing tools. Give your post a clear title, add your media, and check it before publishing.",
+        follow: "💜 Want to follow a creator? Visit Discover or open a creator's profile and look for the Follow button. Following is optional — watch first, follow if you want!",
+        video: "📺 Head to Watch to browse the video feed. You can scroll through available posts and use the creator profile to learn more about the person who made one.",
+        creator: "🌟 Try Discover to explore creators, then open a profile to see their public creations. You might find a whole new corner of TikNation!",
+        gift: "🎁 Gifts are a way to show creators appreciation where gifting is available. Check the displayed gift options before sending anything, and only spend coins if you choose to.",
+        joke: "😂 Why did the emoji bring a ladder to the party? It heard the vibes were on another level!",
+        default: "Hmm, my microphone picked up a mystery! 🎤 Try asking how to find creators, watch videos, post, follow someone, or explore TikNation. I'm still learning new tricks!"
     };
     window.openTikNationHost = function(mode){
         const panel=document.getElementById("tnHostPanel");
@@ -7778,8 +7822,49 @@ if ("serviceWorker" in navigator) {
     };
     window.tikNationHostSay = function(kind){
         const line=document.getElementById("tnHostLine");
-        if(line)line.textContent=lines[kind]||lines.welcome;
+        if(!line)return;
+        line.textContent=lines[kind]||lines.welcome;
+        const oldAnswer=document.getElementById("tnGigglesAnswer");
+        if(oldAnswer)oldAnswer.remove();
+        if(kind==="riddle"){
+            const answer=document.createElement("button");
+            answer.type="button";answer.id="tnGigglesAnswer";answer.className="tn-host-answer";
+            answer.textContent="🔎 Reveal the answer";
+            answer.addEventListener("click",function(){line.textContent=extraTools.answer;answer.remove();});
+            line.insertAdjacentElement("afterend",answer);
+        }
+        const input=document.getElementById("tnGigglesQuestion");
+        if(input&&["laugh","magic","riddle","challenge","surprise"].includes(kind))input.value="";
     };
+    function answerGiggles(question){
+        const q=question.toLowerCase();
+        if(/\b(hello|hi|hey|giggles)\b/.test(q))return "Heyyy! 💜 Giggles reporting for giggle duty. Want a joke, an emoji transformation, a riddle, or a tour?";
+        if(/\b(joke|funny|laugh|comedy)\b/.test(q))return extraTools.joke;
+        if(/\b(post|publish|upload|create)\b/.test(q))return extraTools.post;
+        if(/\b(follow|following)\b/.test(q))return extraTools.follow;
+        if(/\b(watch|video|videos)\b/.test(q))return extraTools.video;
+        if(/\b(discover|creator|creators|find people|find someone)\b/.test(q))return extraTools.creator;
+        if(/\b(gift|gifts|coins)\b/.test(q))return extraTools.gift;
+        if(/\b(help|how do i|how can i|where)\b/.test(q))return extraTools.help;
+        if(/\b(riddle|puzzle)\b/.test(q))return lines.riddle;
+        if(/\b(emoji|magic|transform)\b/.test(q))return lines.magic;
+        return extraTools.default;
+    }
+    const questionForm=document.getElementById("tnGigglesForm");
+    if(questionForm){
+        questionForm.addEventListener("submit",function(event){
+            event.preventDefault();
+            const input=document.getElementById("tnGigglesQuestion");
+            const line=document.getElementById("tnHostLine");
+            if(!input||!line)return;
+            const question=input.value.trim();
+            if(!question){line.textContent="Type a question for me first, Nation! 🎤💜";return;}
+            const answer=document.getElementById("tnGigglesAnswer");
+            if(answer)answer.remove();
+            line.textContent=answerGiggles(question);
+            input.value="";
+        });
+    }
     document.addEventListener("keydown",function(event){if(event.key==="Escape")window.closeTikNationHost();});
 })();
 </script>
