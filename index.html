@@ -4676,7 +4676,7 @@ async function loadPublicCreatorProfile(userId){
     const [followersResult,followingResult,postsResult,followResult] = await Promise.all([
         supabaseClient.from("follows").select("id",{count:"exact",head:true}).eq("following_id",userId),
         supabaseClient.from("follows").select("id",{count:"exact",head:true}).eq("follower_id",userId),
-        supabaseClient.from("creator_posts").select("id,created_at,username,title,description,media_url,media_type,status").eq("user_id",userId).eq("status","published").order("created_at",{ascending:false}),
+        supabaseClient.from("creator_posts").select("id,created_at,username,title,description,media_url,media_path,media_type,status,content_category,scare_effect,horror_warning").eq("user_id",userId).eq("status","published").order("created_at",{ascending:false}),
         currentUser ? supabaseClient.from("follows").select("id").eq("follower_id",currentUser.id).eq("following_id",userId).limit(1) : Promise.resolve({data:[],error:null})
     ]);
 
@@ -4741,8 +4741,9 @@ async function loadPublicCreatorProfile(userId){
         <div class="section-head"><h2>🎬 Published Creations</h2></div>
         <div class="card-grid">
             ${posts.length ? posts.map(function(post){
+                const media = renderMediaElement(post, "creation-media");
                 const safeMediaUrl = getSafeCreatorMediaUrl(post.media_url);
-                return '<article class="card"><h3>' + escapeHtml(post.title || "Untitled Creation") + '</h3><p>' + escapeHtml(post.description || "A TikNation creation.") + '</p>' + (safeMediaUrl ? '<p><a href="' + escapeHtml(safeMediaUrl) + '" target="_blank" rel="noopener noreferrer">View creation</a></p>' : '<p class="muted">Media unavailable.</p>') + '</article>';
+                return '<article class="card public-creation-card">' + media + '<h3>' + escapeHtml(post.title || "Untitled Creation") + '</h3><p>' + escapeHtml(post.description || "A TikNation creation.") + '</p>' + (safeMediaUrl ? '<p><a href="' + escapeHtml(safeMediaUrl) + '" target="_blank" rel="noopener noreferrer">Open original media</a></p>' : '') + '</article>';
             }).join('') : '<div class="card"><h3>No published creations yet</h3><p class="muted">This creator has not published anything yet.</p></div>'}
         </div>
     `;
