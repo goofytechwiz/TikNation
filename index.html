@@ -2001,6 +2001,14 @@ textarea.form-control{
     </div>
     <p class="muted" style="margin:-6px 0 18px;">Horror posts stay out of this feed unless you enable them in Settings. Visit the Horror Zone to explore labeled horror content.</p>
 
+    <div class="watch-collection-tools" style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px;">
+        <button type="button" class="small-button" data-watch-filter="all" aria-pressed="true" onclick="setWatchCollectionFilter('all',this)">🎬 For You</button>
+        <button type="button" class="small-button" data-watch-filter="favorites" aria-pressed="false" onclick="setWatchCollectionFilter('favorites',this)">❤️ Favorites</button>
+        <button type="button" class="small-button" data-watch-filter="saved" aria-pressed="false" onclick="setWatchCollectionFilter('saved',this)">🔖 Saved</button>
+        <button type="button" class="small-button" data-watch-filter="reposts" aria-pressed="false" onclick="setWatchCollectionFilter('reposts',this)">🔁 Reposts</button>
+    </div>
+    <p id="watchCollectionNotice" class="muted" style="font-size:.9rem;margin:-5px 0 14px;">Favorites, saves, and reposts are currently stored on this browser/device.</p>
+
     <div id="watchGrid" class="video-grid"></div>
 
 </section>
@@ -4217,6 +4225,70 @@ async function deleteCreatorPost(postId){
    WATCH FEED
 ========================= */
 
+/* Watch collections: browser-local prototype, until synced collections are added to Supabase. */
+let watchPostsCache = [];
+let watchCollectionFilter = "all";
+const WATCH_COLLECTION_KEYS = {
+    favorites: "tiknation_watch_favorites_v1",
+    saved: "tiknation_watch_saved_v1",
+    reposts: "tiknation_watch_reposts_v1"
+};
+function readWatchCollection(name){
+    try{
+        const value = JSON.parse(localStorage.getItem(WATCH_COLLECTION_KEYS[name]) || "[]");
+        return Array.isArray(value) ? value.map(String) : [];
+    }catch(error){ return []; }
+}
+function writeWatchCollection(name, ids){
+    try{ localStorage.setItem(WATCH_COLLECTION_KEYS[name], JSON.stringify([...new Set(ids.map(String))])); }
+    catch(error){ console.warn("Watch collection could not be saved on this device.",error); }
+}
+function setWatchCollectionFilter(filter, button){
+    watchCollectionFilter = ["all","favorites","saved","reposts"].includes(filter) ? filter : "all";
+    document.querySelectorAll("[data-watch-filter]").forEach(el => el.setAttribute("aria-pressed",String(el.dataset.watchFilter === watchCollectionFilter)));
+    const grid = document.getElementById("watchGrid");
+    if(!grid) return;
+    const ids = watchCollectionFilter === "all" ? null : new Set(readWatchCollection(watchCollectionFilter));
+    const posts = ids ? watchPostsCache.filter(post => ids.has(String(post.id))) : watchPostsCache;
+    grid.innerHTML = posts.length ? posts.map(renderWatchPost).join("") : `
+      <div class="card"><div class="card-icon">${watchCollectionFilter === "favorites" ? "❤️" : watchCollectionFilter === "saved" ? "🔖" : watchCollectionFilter === "reposts" ? "🔁" : "🎬"}</div>
+      <h3>${watchCollectionFilter === "all" ? "No videos yet" : "Nothing here yet"}</h3>
+      <p>${watchCollectionFilter === "favorites" ? "Favorite videos and they’ll appear here." : watchCollectionFilter === "saved" ? "Save videos to keep them handy for later." : watchCollectionFilter === "reposts" ? "Repost videos to collect them here on this device." : "Published creator videos will appear here."}</p>
+      ${watchCollectionFilter !== "all" ? '<button type="button" class="small-button" onclick="setWatchCollectionFilter(\'all\',document.querySelector(\'[data-watch-filter=all]\'))">Back to For You</button>' : ""}
+      </div>`;
+    if(posts.length){ hydrateWatchInteractions(posts); setupWatchVideoPlayback(); }
+}
+function syncWatchCollectionButtons(postId){
+    const config = [
+        ["favorites","favorite-button-","❤️ Favorited","♡ Favorite"],
+        ["saved","save-button-","✓ Saved","🔖 Save"],
+        ["reposts","repost-button-","✓ Reposted","🔁 Repost"]
+    ];
+    config.forEach(([name,prefix,onText,offText]) => {
+        const button = document.getElementById(prefix + postId);
+        if(!button) return;
+        const active = readWatchCollection(name).includes(String(postId));
+        button.setAttribute("aria-pressed",String(active));
+        button.textContent = active ? onText : offText;
+    });
+}
+function toggleWatchCollectionItem(name, postId){
+    if(!WATCH_COLLECTION_KEYS[name]) return;
+    const ids = readWatchCollection(name);
+    const key = String(postId);
+    const exists = ids.includes(key);
+    writeWatchCollection(name, exists ? ids.filter(id => id !== key) : [...ids,key]);
+    syncWatchCollectionButtons(key);
+    const notice = document.getElementById("watchCollectionNotice");
+    if(notice) notice.textContent = exists
+        ? (name === "favorites" ? "Removed from Favorites." : name === "saved" ? "Removed from Saved." : "Repost removed from your local collection.") + " Stored on this browser/device."
+        : (name === "favorites" ? "Added to Favorites." : name === "saved" ? "Saved to watch later." : "Added to your Reposts collection.") + " Stored on this browser/device; reposts are not yet broadcast to followers.";
+    if(watchCollectionFilter !== "all") setWatchCollectionFilter(watchCollectionFilter, document.querySelector('[data-watch-filter="' + watchCollectionFilter + '"]'));
+}
+function hydrateWatchCollectionButtons(){
+    watchPostsCache.forEach(post => syncWatchCollectionButtons(post.id));
+}
+
 async function loadWatchFeed(){
 
     const grid =
@@ -4291,6 +4363,7 @@ async function loadWatchFeed(){
     }
 
     let visiblePosts = data || [];
+    watchPostsCache = visiblePosts.slice();
     if(!getTikNationPreference("showHorrorInFeed")){
         visiblePosts = visiblePosts.filter(post => post.content_category !== "horror");
     }
@@ -4342,12 +4415,18 @@ async function loadWatchFeed(){
         return;
     }
 
+    watchPostsCache = visiblePosts.slice();
+    if(watchCollectionFilter !== "all"){
+        setWatchCollectionFilter(watchCollectionFilter, document.querySelector('[data-watch-filter="' + watchCollectionFilter + '"]'));
+        return;
+    }
     grid.innerHTML =
         visiblePosts.map(function(post){
             return renderWatchPost(post);
         }).join("");
 
     await hydrateWatchInteractions(visiblePosts);
+    hydrateWatchCollectionButtons();
     setupWatchVideoPlayback();
 }
 
@@ -4915,6 +4994,9 @@ function renderWatchPost(post){
                             0
                         </span>
                     </button>
+                    <button type="button" class="small-button" id="favorite-button-${escapeHtml(post.id)}" aria-pressed="false" onclick="toggleWatchCollectionItem('favorites','${escapeJs(post.id)}')">♡ Favorite</button>
+                    <button type="button" class="small-button" id="save-button-${escapeHtml(post.id)}" aria-pressed="false" onclick="toggleWatchCollectionItem('saved','${escapeJs(post.id)}')">🔖 Save</button>
+                    <button type="button" class="small-button" id="repost-button-${escapeHtml(post.id)}" aria-pressed="false" onclick="toggleWatchCollectionItem('reposts','${escapeJs(post.id)}')">🔁 Repost</button>
                     ${!isOwnPost ? renderPostActionMenu(post.id, post.user_id) : ""}
                 </div>
 
