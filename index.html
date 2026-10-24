@@ -7731,6 +7731,18 @@ if ("serviceWorker" in navigator) {
 })();
 </script>
 
+<!-- Giggles theatrical voice controls -->
+<style>
+.tn-giggles-voice{margin-top:14px;padding:13px;border:1px solid rgba(255,203,117,.25);border-radius:15px;background:linear-gradient(135deg,rgba(107,66,22,.17),rgba(141,99,255,.09))}
+.tn-giggles-voice-copy{display:flex;flex-direction:column;gap:5px}
+.tn-giggles-voice-copy strong{color:#ffdda0;font-size:14px}
+.tn-giggles-voice-copy span{color:#b9b6cc;font-size:12px;line-height:1.45}
+.tn-giggles-voice-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.tn-giggles-voice-buttons button{padding:9px 11px;border:1px solid rgba(255,203,117,.35);border-radius:999px;background:rgba(255,194,93,.1);color:#fff1d2;font-weight:700;cursor:pointer}
+.tn-giggles-voice-buttons button:hover{background:rgba(255,194,93,.2)}
+.tn-giggles-voice-buttons button[aria-pressed="true"]{border-color:#8ce8ff;background:rgba(0,200,255,.13)}
+</style>
+
 <!-- Ask Giggles: expanded built-in interactive toolbox -->
 <style>
 .tn-host-panel{width:min(370px,calc(100vw - 28px));max-height:min(78vh,720px);overflow-y:auto}
@@ -7767,6 +7779,14 @@ if ("serviceWorker" in navigator) {
         <button type="button" onclick="tikNationHostSay('riddle')">🧩 Give me a riddle</button>
         <button type="button" onclick="tikNationHostSay('challenge')">🎮 Daily challenge</button>
         <button type="button" onclick="tikNationHostSay('surprise')">🎁 Surprise me</button>
+    </div>
+    <div class="tn-giggles-voice">
+        <div class="tn-giggles-voice-copy"><strong>🎩 The Madcap Mic</strong><span>Let Giggles say it out loud in a playful, theatrical voice!</span></div>
+        <div class="tn-giggles-voice-buttons">
+            <button type="button" id="tnGigglesVoiceToggle" aria-pressed="false" onclick="toggleGigglesVoice()">🔊 Turn on funny voice</button>
+            <button type="button" id="tnGigglesVoiceTest" onclick="testGigglesVoice()">🎭 Hear Giggles</button>
+        </div>
+        <p class="tn-host-small" id="tnGigglesVoiceStatus" aria-live="polite">Voice is off until you turn it on. Voice availability depends on your browser and installed voices.</p>
     </div>
     <div class="tn-host-play-area">
         <label for="tnGigglesQuestion">💬 Ask Giggles a question</label>
@@ -7820,17 +7840,71 @@ if ("serviceWorker" in navigator) {
         if(panel)panel.hidden=true;
         if(launcher)launcher.setAttribute("aria-expanded","false");
     };
+    let gigglesVoiceEnabled=false;
+    let gigglesVoice=null;
+    function getGigglesVoice(){
+        if(!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window))return null;
+        if(!gigglesVoice){
+            const voices=window.speechSynthesis.getVoices();
+            // Prefer a clearly supported English voice; let the browser choose if none are loaded yet.
+            gigglesVoice=voices.find(v=>/^en(-|_)/i.test(v.lang)&&/female|samantha|victoria|karen|zira|aria|jenny/i.test(v.name))
+                ||voices.find(v=>/^en(-|_)/i.test(v.lang))||null;
+        }
+        return gigglesVoice;
+    }
+    function speakGiggles(text){
+        if(!gigglesVoiceEnabled||!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window))return;
+        window.speechSynthesis.cancel();
+        const utterance=new SpeechSynthesisUtterance(String(text||"Heyyy, Nation!"));
+        const voice=getGigglesVoice();
+        if(voice)utterance.voice=voice;
+        utterance.lang=voice?.lang||"en-US";
+        utterance.pitch=1.55;
+        utterance.rate=1.08;
+        utterance.volume=1;
+        window.speechSynthesis.speak(utterance);
+    }
+    window.toggleGigglesVoice=function(){
+        const toggle=document.getElementById("tnGigglesVoiceToggle");
+        const status=document.getElementById("tnGigglesVoiceStatus");
+        if(!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window)){
+            if(status)status.textContent="This browser does not provide built-in speech. Try a current version of Chrome or Edge.";
+            return;
+        }
+        gigglesVoiceEnabled=!gigglesVoiceEnabled;
+        if(toggle){toggle.setAttribute("aria-pressed",String(gigglesVoiceEnabled));toggle.textContent=gigglesVoiceEnabled?"🔇 Turn off funny voice":"🔊 Turn on funny voice";}
+        if(gigglesVoiceEnabled){
+            if(status)status.textContent="🎩 Funny voice is on! Giggles will speak when you choose a button or ask a question.";
+            speakGiggles("Testing, testing! 🎩 Ahem! Welcome to TikNation, where the emojis are questionable and the snacks are mysteriously missing!");
+        }else{
+            window.speechSynthesis.cancel();
+            if(status)status.textContent="Voice off. Giggles will keep his theatrical thoughts to himself.";
+        }
+    };
+    window.testGigglesVoice=function(){
+        const status=document.getElementById("tnGigglesVoiceStatus");
+        if(!("speechSynthesis" in window)){
+            if(status)status.textContent="Your browser does not support built-in speech synthesis.";
+            return;
+        }
+        if(!gigglesVoiceEnabled){
+            if(status)status.textContent="Turn on funny voice first, then tap Hear Giggles.";
+            return;
+        }
+        speakGiggles("Oh, splendidly suspicious! The tea is imaginary, the hat is enormous, and I have absolutely misplaced Tuesday!");
+    };
     window.tikNationHostSay = function(kind){
         const line=document.getElementById("tnHostLine");
         if(!line)return;
         line.textContent=lines[kind]||lines.welcome;
+        speakGiggles(line.textContent);
         const oldAnswer=document.getElementById("tnGigglesAnswer");
         if(oldAnswer)oldAnswer.remove();
         if(kind==="riddle"){
             const answer=document.createElement("button");
             answer.type="button";answer.id="tnGigglesAnswer";answer.className="tn-host-answer";
             answer.textContent="🔎 Reveal the answer";
-            answer.addEventListener("click",function(){line.textContent=extraTools.answer;answer.remove();});
+            answer.addEventListener("click",function(){line.textContent=extraTools.answer;speakGiggles(line.textContent);answer.remove();});
             line.insertAdjacentElement("afterend",answer);
         }
         const input=document.getElementById("tnGigglesQuestion");
@@ -7862,6 +7936,7 @@ if ("serviceWorker" in navigator) {
             const answer=document.getElementById("tnGigglesAnswer");
             if(answer)answer.remove();
             line.textContent=answerGiggles(question);
+            speakGiggles(line.textContent);
             input.value="";
         });
     }
