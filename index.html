@@ -4256,7 +4256,7 @@ function setWatchCollectionFilter(filter, button){
       <p>${watchCollectionFilter === "favorites" ? "Favorite videos and they’ll appear here." : watchCollectionFilter === "saved" ? "Save videos to keep them handy for later." : watchCollectionFilter === "reposts" ? "Repost videos to collect them here on this device." : "Published creator videos will appear here."}</p>
       ${watchCollectionFilter !== "all" ? '<button type="button" class="small-button" onclick="setWatchCollectionFilter(\'all\',document.querySelector(\'[data-watch-filter=all]\'))">Back to For You</button>' : ""}
       </div>`;
-    if(posts.length){ hydrateWatchInteractions(posts); setupWatchVideoPlayback(); }
+    if(posts.length){ hydrateWatchInteractions(posts); hydrateWatchCollectionButtons(); setupWatchVideoPlayback(); }
 }
 function syncWatchCollectionButtons(postId){
     const config = [
