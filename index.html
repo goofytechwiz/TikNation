@@ -7596,6 +7596,40 @@ if ("serviceWorker" in navigator) {
 
 
 
+<!-- TikNation creator profile layout polish -->
+<style>
+#publicCreatorProfile{max-width:1180px;margin:0 auto}
+#publicCreatorProfile>.section-head{display:flex;align-items:center;gap:14px;margin:0 0 22px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.09)}
+#publicCreatorProfile>.section-head h2{font-size:clamp(22px,3vw,29px)}
+#publicCreatorProfile>.section-head button{margin-left:auto;white-space:nowrap}
+#publicCreatorProfileContent{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+#publicCreatorProfileContent .profile-header{padding:clamp(18px,3vw,32px);border:1px solid rgba(150,115,255,.22);border-radius:24px;background:linear-gradient(145deg,rgba(35,25,67,.92),rgba(9,17,31,.96));box-shadow:0 18px 45px rgba(0,0,0,.18)}
+#publicCreatorProfileContent .creator-banner{height:clamp(105px,17vw,180px);margin-bottom:20px;border-radius:16px}
+#publicCreatorProfileContent .profile-avatar{width:clamp(76px,9vw,104px);height:clamp(76px,9vw,104px);margin-bottom:14px;border:3px solid rgba(255,255,255,.72);box-shadow:0 0 0 5px rgba(141,99,255,.13);object-fit:cover}
+#publicCreatorProfileContent .profile-header h1{font-size:clamp(28px,4vw,40px);line-height:1.1;overflow-wrap:anywhere}
+#publicCreatorProfileContent .profile-header p{max-width:720px;font-size:15px;line-height:1.7;overflow-wrap:anywhere}
+#publicCreatorProfileContent .stats{display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,42px);margin:24px 0 4px;padding:17px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)}
+#publicCreatorProfileContent .stat strong{font-size:23px;color:#fff}
+#publicCreatorProfileContent .gift-panel{margin:0;padding:clamp(17px,3vw,26px);border-color:rgba(0,200,255,.2);border-radius:22px}
+#publicCreatorProfileContent .gift-panel h2{font-size:clamp(20px,2.5vw,26px)}
+#publicCreatorProfileContent .gift-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#publicCreatorProfileContent .gift-category-label{margin-top:8px;padding:12px 10px 8px;border-bottom:1px solid rgba(255,255,255,.08);border-radius:8px 8px 0 0;background:rgba(255,255,255,.025);font-size:11px;letter-spacing:.13em}
+#publicCreatorProfileContent .gift-choice{min-width:0;min-height:68px;padding:12px;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(5,7,17,.45);text-align:left;display:flex;align-items:center;gap:11px}
+#publicCreatorProfileContent .gift-choice .gift-emoji{font-size:25px;flex:0 0 30px}
+#publicCreatorProfileContent .gift-choice-text strong{font-size:13px;line-height:1.3}
+#publicCreatorProfileContent .gift-choice-text small{font-size:11px;line-height:1.4;color:#9c9cb3}
+#publicCreatorProfileContent .section-head{margin:8px 0 0}
+#publicCreatorProfileContent .card-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:16px}
+#publicCreatorProfileContent .public-creation-card{padding:16px;border-radius:18px;background:linear-gradient(155deg,rgba(18,18,33,.96),rgba(9,9,18,.96))}
+#publicCreatorProfileContent .public-creation-card .creation-media,#publicCreatorProfileContent .public-creation-card video,#publicCreatorProfileContent .public-creation-card img{display:block;width:100%;max-height:440px;object-fit:contain;border-radius:13px;background:#05050b}
+#publicCreatorProfileContent .public-creation-card h3{margin:14px 0 7px;line-height:1.35;overflow-wrap:anywhere}
+#publicCreatorProfileContent .public-creation-card>p{line-height:1.6;overflow-wrap:anywhere}
+#publicCreatorProfileContent .public-creation-card .video-actions{gap:9px}
+#publicCreatorProfileContent .public-creation-card .small-button{padding:9px 13px}
+#publicCreatorProfileContent>.card{padding:25px;border-radius:18px}
+@media(max-width:650px){#publicCreatorProfile>.section-head{align-items:flex-start;flex-wrap:wrap;margin-bottom:16px}#publicCreatorProfile>.section-head button{margin-left:0}#publicCreatorProfileContent .profile-header{padding:15px;border-radius:18px}#publicCreatorProfileContent .profile-header .stats{gap:22px}#publicCreatorProfileContent .gift-grid{grid-template-columns:1fr}#publicCreatorProfileContent .gift-choice{min-height:62px}#publicCreatorProfileContent .public-creation-card{padding:12px}}
+</style>
+
 <!-- TikNation founder character: an original magical emoji avatar -->
 <style>
 .tn-magic-maker{max-width:980px;margin:32px auto;padding:clamp(20px,4vw,34px);border:1px solid rgba(186,132,255,.5);border-radius:26px;background:radial-gradient(circle at 15% 15%,rgba(174,112,255,.24),transparent 38%),linear-gradient(135deg,#17112d,#241442 58%,#101b35);color:#fff;box-shadow:0 14px 40px rgba(43,18,79,.22);overflow:hidden;position:relative}
