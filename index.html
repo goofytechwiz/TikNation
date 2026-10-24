@@ -4742,11 +4742,25 @@ async function loadPublicCreatorProfile(userId){
         <div class="card-grid">
             ${posts.length ? posts.map(function(post){
                 const media = renderMediaElement(post, "creation-media");
-                const safeMediaUrl = getSafeCreatorMediaUrl(post.media_url);
-                return '<article class="card public-creation-card">' + media + '<h3>' + escapeHtml(post.title || "Untitled Creation") + '</h3><p>' + escapeHtml(post.description || "A TikNation creation.") + '</p>' + '</article>';
+                const postId = escapeHtml(post.id);
+                return '<article class="card public-creation-card" data-post-id="' + postId + '">' +
+                    media +
+                    '<h3>' + escapeHtml(post.title || "Untitled Creation") + '</h3>' +
+                    '<p>' + escapeHtml(post.description || "A TikNation creation.") + '</p>' +
+                    '<div class="video-actions">' +
+                    '<button type="button" class="small-button" id="like-button-' + postId + '" onclick="toggleLike(\'' + escapeJs(post.id) + '\')">❤️ Like <span class="action-count" id="like-count-' + postId + '">0</span></button>' +
+                    '<button type="button" class="small-button" id="comment-button-' + postId + '" onclick="toggleComments(\'' + escapeJs(post.id) + '\')">💬 Comment <span class="action-count" id="comment-count-' + postId + '">0</span></button>' +
+                    '</div>' +
+                    '<div id="comments-panel-' + postId + '" class="comments-panel">' +
+                    '<div id="comment-list-' + postId + '" class="comment-list"><p class="muted">Open comments to load them.</p></div>' +
+                    (currentUser ? '<div class="comment-form"><input id="comment-input-' + postId + '" class="comment-input" type="text" maxlength="500" placeholder="Add a comment..." onkeydown="handleCommentKey(event,\'' + escapeJs(post.id) + '\')"><button type="button" class="comment-submit" onclick="submitComment(\'' + escapeJs(post.id) + '\')">SEND</button></div>' : '<p class="muted" style="margin-top:12px;">Sign in to join the conversation.</p>') +
+                    '</div></article>';
             }).join('') : '<div class="card"><h3>No published creations yet</h3><p class="muted">This creator has not published anything yet.</p></div>'}
         </div>
     `;
+    await Promise.all(posts.map(async function(post){
+        await Promise.all([loadLikeState(post.id), loadCommentCount(post.id)]);
+    }));
     await refreshPublicGiftBalance();
 }
 
