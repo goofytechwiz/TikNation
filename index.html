@@ -7858,17 +7858,57 @@ if ("serviceWorker" in navigator) {
         }
         return gigglesVoice;
     }
-    function speakGiggles(text){
+    function speakGiggles(text, style){
         if(!gigglesVoiceEnabled||!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window))return;
         window.speechSynthesis.cancel();
-        const utterance=new SpeechSynthesisUtterance(String(text||"Heyyy, Nation!"));
+        // Turn punctuation and theatrical cues into natural breathing room for the browser voice.
+        const clean=String(text||"Heyyy, Nation!")
+            .replace(/🎩|😂|💜|✨|🪄|🎬|🧭|🎁|👾|🐉|🐸|👽|👻|🌙|😱|🧩|🎮|⏰|✍️|📺|🌟|🎤|🛸|🌮|💎/gu,"")
+            .replace(/\bAHEM!\b/gi,"Ahem...")
+            .replace(/\bBREAKING NEWS:\b/gi,"Breaking news...")
+            .replace(/\bEMOJI MAGIC!\b/gi,"Emoji magic...")
+            .replace(/\bEMOJI VOICE PARADE!\b/gi,"The emoji voice parade...")
+            .replace(/\bWAIT—/gi,"Wait... ")
+            .replace(/\bWHAT IN THE WOBBLY WAFFLES\b/gi,"What in the wobbly waffles")
+            .replace(/\.\.\./g,"... ")
+            .replace(/!+/g,"!")
+            .replace(/\s+/g," ")
+            .trim();
+        const presets={
+            entrance:{pitch:1.72,rate:0.91},
+            reaction:{pitch:1.82,rate:1.16},
+            emojiVoice:{pitch:1.62,rate:1.04},
+            laugh:{pitch:1.7,rate:1.02},
+            show:{pitch:1.48,rate:0.94},
+            magic:{pitch:1.68,rate:0.98},
+            riddle:{pitch:1.42,rate:0.88},
+            challenge:{pitch:1.55,rate:1.02},
+            surprise:{pitch:1.76,rate:1.08},
+            default:{pitch:1.58,rate:0.98}
+        };
+        const preset=presets[style]||presets.default;
         const voice=getGigglesVoice();
-        if(voice)utterance.voice=voice;
-        utterance.lang=voice?.lang||"en-US";
-        utterance.pitch=1.55;
-        utterance.rate=1.08;
-        utterance.volume=1;
-        window.speechSynthesis.speak(utterance);
+        // Split at dramatic pauses so the browser has a chance to perform each phrase distinctly.
+        const phrases=clean.split(/(?<=[.!?])\s+/).filter(Boolean);
+        let index=0;
+        function speakNext(){
+            if(!gigglesVoiceEnabled||index>=phrases.length)return;
+            const phrase=phrases[index++];
+            const utterance=new SpeechSynthesisUtterance(phrase);
+            if(voice)utterance.voice=voice;
+            utterance.lang=voice?.lang||"en-US";
+            utterance.pitch=preset.pitch;
+            utterance.rate=preset.rate;
+            utterance.volume=1;
+            utterance.onend=function(){
+                if(gigglesVoiceEnabled&&index<phrases.length){
+                    // A short theatrical pause between sentences.
+                    window.setTimeout(speakNext, /[?!]$/.test(phrase)?210:130);
+                }
+            };
+            window.speechSynthesis.speak(utterance);
+        }
+        speakNext();
     }
     window.toggleGigglesVoice=function(){
         const toggle=document.getElementById("tnGigglesVoiceToggle");
@@ -7881,7 +7921,7 @@ if ("serviceWorker" in navigator) {
         if(toggle){toggle.setAttribute("aria-pressed",String(gigglesVoiceEnabled));toggle.textContent=gigglesVoiceEnabled?"🔇 Turn off funny voice":"🔊 Turn on funny voice";}
         if(gigglesVoiceEnabled){
             if(status)status.textContent="🎩 Funny voice is on! Giggles will speak when you choose a button or ask a question.";
-            speakGiggles("Testing, testing! 🎩 Ahem! Welcome to TikNation, where the emojis are questionable and the snacks are mysteriously missing!");
+            speakGiggles("Testing, testing! 🎩 Ahem! Welcome to TikNation, where the emojis are questionable and the snacks are mysteriously missing!","entrance");
         }else{
             window.speechSynthesis.cancel();
             if(status)status.textContent="Voice off. Giggles will keep his theatrical thoughts to himself.";
@@ -7897,13 +7937,13 @@ if ("serviceWorker" in navigator) {
             if(status)status.textContent="Turn on funny voice first, then tap Hear Giggles.";
             return;
         }
-        speakGiggles("Oh, splendidly suspicious! The tea is imaginary, the hat is enormous, and I have absolutely misplaced Tuesday!");
+        speakGiggles("Oh, splendidly suspicious! The tea is imaginary, the hat is enormous, and I have absolutely misplaced Tuesday!","entrance");
     };
     window.tikNationHostSay = function(kind){
         const line=document.getElementById("tnHostLine");
         if(!line)return;
         line.textContent=lines[kind]||lines.welcome;
-        speakGiggles(line.textContent);
+        speakGiggles(line.textContent,kind);
         const oldAnswer=document.getElementById("tnGigglesAnswer");
         if(oldAnswer)oldAnswer.remove();
         if(kind==="riddle"){
