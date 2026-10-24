@@ -7784,12 +7784,12 @@ if ("serviceWorker" in navigator) {
         <button type="button" onclick="tikNationHostSay('emojiVoice')">👾 Emoji voice parade</button>
     </div>
     <div class="tn-giggles-voice">
-        <div class="tn-giggles-voice-copy"><strong>🎩 The Madcap Mic</strong><span>Let Giggles say it out loud in a playful, theatrical voice!</span></div>
+        <div class="tn-giggles-voice-copy"><strong>🎩 The Madcap Mic — Taking a Break</strong><span>Giggles is staying text-only for now while we save his proper character voice for later.</span></div>
         <div class="tn-giggles-voice-buttons">
-            <button type="button" id="tnGigglesVoiceToggle" aria-pressed="false" onclick="toggleGigglesVoice()">🔊 Turn on funny voice</button>
-            <button type="button" id="tnGigglesVoiceTest" onclick="testGigglesVoice()">🎭 Hear Giggles</button>
+            <button type="button" id="tnGigglesVoiceToggle" aria-pressed="false" disabled>🔇 Voice temporarily disabled</button>
+            <button type="button" id="tnGigglesVoiceTest" disabled>🎭 Voice test paused</button>
         </div>
-        <p class="tn-host-small" id="tnGigglesVoiceStatus" aria-live="polite">Voice is off until you turn it on. Voice availability depends on your browser and installed voices.</p>
+        <p class="tn-host-small" id="tnGigglesVoiceStatus" aria-live="polite">Voice is disabled for now. Giggles's written jokes, reactions, and host features still work.</p>
     </div>
     <div class="tn-host-play-area">
         <label for="tnGigglesQuestion">💬 Ask Giggles a question</label>
@@ -7846,98 +7846,22 @@ if ("serviceWorker" in navigator) {
         if(panel)panel.hidden=true;
         if(launcher)launcher.setAttribute("aria-expanded","false");
     };
+    // Giggles voice is intentionally paused until a more natural, original character voice is ready.
     let gigglesVoiceEnabled=false;
-    let gigglesVoice=null;
-    function getGigglesVoice(){
-        if(!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window))return null;
-        if(!gigglesVoice){
-            const voices=window.speechSynthesis.getVoices();
-            // Prefer a clearly supported English voice; let the browser choose if none are loaded yet.
-            gigglesVoice=voices.find(v=>/^en(-|_)/i.test(v.lang)&&/female|samantha|victoria|karen|zira|aria|jenny/i.test(v.name))
-                ||voices.find(v=>/^en(-|_)/i.test(v.lang))||null;
-        }
-        return gigglesVoice;
-    }
-    function speakGiggles(text, style){
-        if(!gigglesVoiceEnabled||!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window))return;
-        window.speechSynthesis.cancel();
-        // Turn punctuation and theatrical cues into natural breathing room for the browser voice.
-        const clean=String(text||"Heyyy, Nation!")
-            .replace(/🎩|😂|💜|✨|🪄|🎬|🧭|🎁|👾|🐉|🐸|👽|👻|🌙|😱|🧩|🎮|⏰|✍️|📺|🌟|🎤|🛸|🌮|💎/gu,"")
-            .replace(/\bAHEM!\b/gi,"Ahem...")
-            .replace(/\bBREAKING NEWS:\b/gi,"Breaking news...")
-            .replace(/\bEMOJI MAGIC!\b/gi,"Emoji magic...")
-            .replace(/\bEMOJI VOICE PARADE!\b/gi,"The emoji voice parade...")
-            .replace(/\bWAIT—/gi,"Wait... ")
-            .replace(/\bWHAT IN THE WOBBLY WAFFLES\b/gi,"What in the wobbly waffles")
-            .replace(/\.\.\./g,"... ")
-            .replace(/!+/g,"!")
-            .replace(/\s+/g," ")
-            .trim();
-        const presets={
-            entrance:{pitch:1.72,rate:0.91},
-            reaction:{pitch:1.82,rate:1.16},
-            emojiVoice:{pitch:1.62,rate:1.04},
-            laugh:{pitch:1.7,rate:1.02},
-            show:{pitch:1.48,rate:0.94},
-            magic:{pitch:1.68,rate:0.98},
-            riddle:{pitch:1.42,rate:0.88},
-            challenge:{pitch:1.55,rate:1.02},
-            surprise:{pitch:1.76,rate:1.08},
-            default:{pitch:1.58,rate:0.98}
-        };
-        const preset=presets[style]||presets.default;
-        const voice=getGigglesVoice();
-        // Split at dramatic pauses so the browser has a chance to perform each phrase distinctly.
-        const phrases=clean.split(/(?<=[.!?])\s+/).filter(Boolean);
-        let index=0;
-        function speakNext(){
-            if(!gigglesVoiceEnabled||index>=phrases.length)return;
-            const phrase=phrases[index++];
-            const utterance=new SpeechSynthesisUtterance(phrase);
-            if(voice)utterance.voice=voice;
-            utterance.lang=voice?.lang||"en-US";
-            utterance.pitch=preset.pitch;
-            utterance.rate=preset.rate;
-            utterance.volume=1;
-            utterance.onend=function(){
-                if(gigglesVoiceEnabled&&index<phrases.length){
-                    // A short theatrical pause between sentences.
-                    window.setTimeout(speakNext, /[?!]$/.test(phrase)?210:130);
-                }
-            };
-            window.speechSynthesis.speak(utterance);
-        }
-        speakNext();
+    function speakGiggles(){ 
+        if("speechSynthesis" in window) window.speechSynthesis.cancel();
+        return;
     }
     window.toggleGigglesVoice=function(){
-        const toggle=document.getElementById("tnGigglesVoiceToggle");
+        gigglesVoiceEnabled=false;
+        if("speechSynthesis" in window) window.speechSynthesis.cancel();
         const status=document.getElementById("tnGigglesVoiceStatus");
-        if(!("speechSynthesis" in window)||!("SpeechSynthesisUtterance" in window)){
-            if(status)status.textContent="This browser does not provide built-in speech. Try a current version of Chrome or Edge.";
-            return;
-        }
-        gigglesVoiceEnabled=!gigglesVoiceEnabled;
-        if(toggle){toggle.setAttribute("aria-pressed",String(gigglesVoiceEnabled));toggle.textContent=gigglesVoiceEnabled?"🔇 Turn off funny voice":"🔊 Turn on funny voice";}
-        if(gigglesVoiceEnabled){
-            if(status)status.textContent="🎩 Funny voice is on! Giggles will speak when you choose a button or ask a question.";
-            speakGiggles("Testing, testing! 🎩 Ahem! Welcome to TikNation, where the emojis are questionable and the snacks are mysteriously missing!","entrance");
-        }else{
-            window.speechSynthesis.cancel();
-            if(status)status.textContent="Voice off. Giggles will keep his theatrical thoughts to himself.";
-        }
+        if(status)status.textContent="Voice is paused for now. Giggles is text-only while we plan his original character voice.";
     };
     window.testGigglesVoice=function(){
+        if("speechSynthesis" in window) window.speechSynthesis.cancel();
         const status=document.getElementById("tnGigglesVoiceStatus");
-        if(!("speechSynthesis" in window)){
-            if(status)status.textContent="Your browser does not support built-in speech synthesis.";
-            return;
-        }
-        if(!gigglesVoiceEnabled){
-            if(status)status.textContent="Turn on funny voice first, then tap Hear Giggles.";
-            return;
-        }
-        speakGiggles("Oh, splendidly suspicious! The tea is imaginary, the hat is enormous, and I have absolutely misplaced Tuesday!","entrance");
+        if(status)status.textContent="Voice testing is paused for now. Giggles's written reactions are still available.";
     };
     window.tikNationHostSay = function(kind){
         const line=document.getElementById("tnHostLine");
