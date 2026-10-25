@@ -2786,7 +2786,19 @@ textarea.form-control{
             class="auth-message"
         ></div>
 
-        <div id="signupFields">
+        <div id="signupAgeGate" style="display:none;">
+
+            <div class="form-group">
+                <label for="signupDateOfBirth">Date of birth</label>
+                <input id="signupDateOfBirth" class="form-control" type="date" autocomplete="bday" aria-describedby="signupAgeHelp">
+                <p id="signupAgeHelp" style="color:#b8b8d4;font-size:13px;line-height:1.5;margin-top:8px;">Enter your date of birth to continue. TikNation uses age information to apply age-appropriate safety protections.</p>
+            </div>
+
+            <button type="button" class="primary-button auth-submit" onclick="continueSignupAgeGate()">CONTINUE</button>
+
+        </div>
+
+        <div id="signupFields" style="display:none;">
 
             <div class="form-group">
 
@@ -2805,7 +2817,7 @@ textarea.form-control{
 
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="authEmailGroup">
 
             <label for="authEmail" id="authEmailLabel">
                 Email or username
@@ -2824,7 +2836,7 @@ textarea.form-control{
 
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="authPasswordGroup">
 
             <label for="authPassword">
                 Password
@@ -2884,6 +2896,7 @@ let currentUser = null;
 let currentProfile = null;
 let creatorProfileEditorOpen = false;
 let authMode = "signin";
+let pendingSignupDob = null;
 let mfaSignInPending = false;
 
 /* =========================
@@ -3176,9 +3189,44 @@ function closeAuthModal(){
         .getElementById("authModal")
         .classList.remove("active");
 
-    document.getElementById(
-        "authMessage"
-    ).textContent = "";
+    document.getElementById("authMessage").textContent = "";
+    pendingSignupDob = null;
+    const dobInput = document.getElementById("signupDateOfBirth");
+    if(dobInput) dobInput.value = "";
+}
+
+function continueSignupAgeGate(){
+    const dobInput = document.getElementById("signupDateOfBirth");
+    const message = document.getElementById("authMessage");
+    const value = dobInput ? dobInput.value : "";
+
+    message.className = "auth-message";
+    message.textContent = "";
+
+    if(!value){
+        message.className = "auth-message error";
+        message.textContent = "Please enter your date of birth to continue.";
+        return;
+    }
+
+    const dob = new Date(value + "T12:00:00");
+    const today = new Date();
+    const minimumEligibleDate = new Date(today.getFullYear() - 13, today.getMonth(), today.getDate(), 12);
+
+    if(Number.isNaN(dob.getTime()) || dob > new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59) || dob > minimumEligibleDate){
+        message.className = "auth-message error";
+        message.textContent = "We can’t complete registration with the information provided. If you believe this is an error, please contact TikNation support.";
+        return;
+    }
+
+    pendingSignupDob = value;
+    document.getElementById("signupAgeGate").style.display = "none";
+    document.getElementById("signupFields").style.display = "block";
+    document.getElementById("authEmailGroup").style.display = "block";
+    document.getElementById("authPasswordGroup").style.display = "block";
+    document.getElementById("authSubmit").style.display = "block";
+    const usernameInput = document.getElementById("authUsername");
+    if(usernameInput) usernameInput.focus();
 }
 
 function switchAuthMode(mode){
@@ -3199,6 +3247,10 @@ function switchAuthMode(mode){
 
     const signupFields =
         document.getElementById("signupFields");
+    const signupAgeGate = document.getElementById("signupAgeGate");
+    const emailGroup = document.getElementById("authEmailGroup");
+    const passwordGroup = document.getElementById("authPasswordGroup");
+    const dobInput = document.getElementById("signupDateOfBirth");
 
     const emailLabel = document.getElementById("authEmailLabel");
     const emailInput = document.getElementById("authEmail");
@@ -3230,10 +3282,20 @@ function switchAuthMode(mode){
         signinTab.classList.remove("active");
         signupTab.classList.add("active");
 
-        signupFields.style.display =
-            "block";
+        const ageGateNeeded = !pendingSignupDob;
+        if(signupAgeGate) signupAgeGate.style.display = ageGateNeeded ? "block" : "none";
+        signupFields.style.display = ageGateNeeded ? "none" : "block";
+        if(emailGroup) emailGroup.style.display = ageGateNeeded ? "none" : "block";
+        if(passwordGroup) passwordGroup.style.display = ageGateNeeded ? "none" : "block";
+        submit.style.display = ageGateNeeded ? "none" : "block";
 
     }else{
+        pendingSignupDob = null;
+        if(dobInput) dobInput.value = "";
+        if(signupAgeGate) signupAgeGate.style.display = "none";
+        if(emailGroup) emailGroup.style.display = "block";
+        if(passwordGroup) passwordGroup.style.display = "block";
+        submit.style.display = "block";
 
         if(emailLabel) emailLabel.textContent = "Email or username";
         if(emailInput){
@@ -3345,6 +3407,10 @@ async function submitAuth(){
                 );
             }
 
+            if(!pendingSignupDob){
+                throw new Error("Please complete the age check before creating an account.");
+            }
+
             const {
                 data,
                 error
@@ -3361,7 +3427,8 @@ async function submitAuth(){
                         emailRedirectTo: window.location.origin + window.location.pathname,
                         data:{
                             username:username,
-                            display_name:username
+                            display_name:username,
+                            date_of_birth:pendingSignupDob
                         }
                     }
 
