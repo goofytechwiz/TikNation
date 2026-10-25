@@ -2821,6 +2821,11 @@ textarea.form-control{
 
         </div>
 
+        <div id="signupMethodChoices" style="display:none;gap:8px;margin:0 0 14px;">
+            <button type="button" id="signupEmailMethod" class="secondary-button" style="flex:1;" onclick="setSignupMethod('email')">SIGN UP WITH EMAIL</button>
+            <button type="button" id="signupPhoneMethod" class="secondary-button" style="flex:1;" onclick="setSignupMethod('phone')">SIGN UP WITH PHONE</button>
+        </div>
+
         <div class="form-group" id="authEmailGroup">
 
             <label for="authEmail" id="authEmailLabel">
@@ -2902,6 +2907,8 @@ let creatorProfileEditorOpen = false;
 let authMode = "signin";
 let pendingSignupDob = null;
 let mfaSignInPending = false;
+let signupMethod = "email";
+let pendingPhoneConfirmation = null;
 
 /* =========================
    PAGE NAVIGATION
@@ -3242,6 +3249,27 @@ function continueSignupAgeGate(){
     if(usernameInput) usernameInput.focus();
 }
 
+function setSignupMethod(method){
+    signupMethod = method === "phone" ? "phone" : "email";
+    const label = document.getElementById("authEmailLabel");
+    const input = document.getElementById("authEmail");
+    const emailButton = document.getElementById("signupEmailMethod");
+    const phoneButton = document.getElementById("signupPhoneMethod");
+    const message = document.getElementById("authMessage");
+    if(pendingPhoneConfirmation) return;
+    if(label) label.textContent = signupMethod === "phone" ? "Phone number" : "Email";
+    if(input){
+        input.value = "";
+        input.type = signupMethod === "phone" ? "tel" : "email";
+        input.placeholder = signupMethod === "phone" ? "+1 555 123 4567" : "you@example.com";
+        input.setAttribute("autocomplete", signupMethod === "phone" ? "tel" : "email");
+        input.setAttribute("inputmode", signupMethod === "phone" ? "tel" : "email");
+    }
+    if(emailButton) emailButton.classList.toggle("active", signupMethod === "email");
+    if(phoneButton) phoneButton.classList.toggle("active", signupMethod === "phone");
+    if(message){ message.textContent = ""; message.className = "auth-message"; }
+}
+
 function switchAuthMode(mode){
 
     authMode = mode;
@@ -3267,6 +3295,7 @@ function switchAuthMode(mode){
 
     const emailLabel = document.getElementById("authEmailLabel");
     const emailInput = document.getElementById("authEmail");
+    const signupMethodChoices = document.getElementById("signupMethodChoices");
 
     const message =
         document.getElementById("authMessage");
@@ -3278,13 +3307,17 @@ function switchAuthMode(mode){
     if(resendButton) resendButton.style.display = mode === "signin" ? "block" : "none";
 
     if(mode === "signup"){
-
+        if(signupMethodChoices) signupMethodChoices.style.display = "flex";
+        signupMethod = "email";
+        pendingPhoneConfirmation = null;
+        if(emailInput) emailInput.type = "email";
         if(emailLabel) emailLabel.textContent = "Email";
         if(emailInput){
             emailInput.placeholder = "you@example.com";
             emailInput.setAttribute("autocomplete","email");
             emailInput.setAttribute("inputmode","email");
         }
+        setSignupMethod("email");
 
         title.textContent =
             "Create Your Account";
@@ -3303,6 +3336,9 @@ function switchAuthMode(mode){
         submit.style.display = ageGateNeeded ? "none" : "block";
 
     }else{
+        if(signupMethodChoices) signupMethodChoices.style.display = "none";
+        signupMethod = "email";
+        pendingPhoneConfirmation = null;
         pendingSignupDob = null;
         if(dobInput) dobInput.value = "";
         const ageAttestation = document.getElementById("signupAgeAttestation");
@@ -3384,6 +3420,38 @@ async function submitAuth(){
     message.className =
         "auth-message";
 
+    if(pendingPhoneConfirmation){
+        if(!/^\d{6}$/.test(email)){
+            message.className = "auth-message error";
+            message.textContent = "Enter the 6-digit code sent to your phone.";
+            return;
+        }
+        const submit = document.getElementById("authSubmit");
+        submit.disabled = true;
+        submit.textContent = "VERIFYING...";
+        try{
+            const {data,error} = await supabaseClient.auth.verifyOtp({
+                phone: pendingPhoneConfirmation,
+                token: email,
+                type: "sms"
+            });
+            if(error) throw error;
+            pendingPhoneConfirmation = null;
+            if(data.session && !(await ensureAgeAssurance(message))) return;
+            message.className = "auth-message success";
+            message.textContent = "Phone verified. Welcome to TikNation!";
+            closeAuthModal();
+            if(data.session) showPage("home");
+        }catch(error){
+            message.className = "auth-message error";
+            message.textContent = error.message || "We couldn't verify that code. Please try again.";
+        }finally{
+            submit.disabled = false;
+            submit.textContent = pendingPhoneConfirmation ? "VERIFY PHONE" : (authMode === "signup" ? "CREATE ACCOUNT" : "SIGN IN");
+        }
+        return;
+    }
+
     if(!email || !password){
 
         message.className =
@@ -3391,7 +3459,7 @@ async function submitAuth(){
 
         message.textContent =
             authMode === "signup"
-                ? "Please enter your email and password."
+                ? (signupMethod === "phone" ? "Please enter your phone number and password." : "Please enter your email and password.")
                 : "Please enter your email or username and password.";
 
         return;
@@ -3426,50 +3494,48 @@ async function submitAuth(){
                 throw new Error("Please complete the age check before creating an account.");
             }
 
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.auth.signUp({
-
-                    email:email,
-
-                    password:password,
-
-                    options:{
-                        // Always return confirmation links to the TikNation GitHub Pages app,
-                        // not the account owner's root GitHub Pages domain.
-                        emailRedirectTo: window.location.origin + window.location.pathname,
-                        data:{
-                            username:username,
-                            display_name:username,
-                            date_of_birth:pendingSignupDob
-                        }
+            const signupOptions = {
+                password: password,
+                options: {
+                    emailRedirectTo: window.location.origin + window.location.pathname,
+                    data: {
+                        username: username,
+                        display_name: username,
+                        date_of_birth: pendingSignupDob
                     }
-
-                });
+                }
+            };
+            if(signupMethod === "phone"){
+                signupOptions.phone = email.replace(/[\s().-]/g, "");
+            }else{
+                signupOptions.email = email;
+            }
+            const {data,error} = await supabaseClient.auth.signUp(signupOptions);
 
             if(error){
                 throw error;
             }
 
-            if(data.session){
-
-                message.className =
-                    "auth-message success";
-
-                message.textContent =
-                    "Account created. Welcome to TikNation!";
-
+            if(signupMethod === "phone"){
+                pendingPhoneConfirmation = signupOptions.phone;
+                document.getElementById("authEmailLabel").textContent = "SMS verification code";
+                const codeInput = document.getElementById("authEmail");
+                codeInput.type = "text";
+                codeInput.value = "";
+                codeInput.placeholder = "Enter 6-digit code";
+                codeInput.setAttribute("inputmode","numeric");
+                codeInput.setAttribute("autocomplete","one-time-code");
+                document.getElementById("signupMethodChoices").style.display = "none";
+                message.className = "auth-message success";
+                message.textContent = "We requested an SMS verification code. Enter the 6-digit code here. SMS delivery must be enabled for TikNation in Supabase.";
+                submit.textContent = "VERIFY PHONE";
+            }else if(data.session){
+                message.className = "auth-message success";
+                message.textContent = "Account created. Welcome to TikNation!";
                 closeAuthModal();
-
             }else{
-
-                message.className =
-                    "auth-message success";
-
-                message.textContent =
-                    "Account created! Check your email to confirm your account, then sign in.";
+                message.className = "auth-message success";
+                message.textContent = "Account created! Check your email to confirm your account, then sign in.";
             }
 
         }else{
