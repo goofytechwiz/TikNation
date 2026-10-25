@@ -4946,7 +4946,8 @@ function openMagicOrbitGifts(postId){
     const card = postId ? document.querySelector('#watchGrid [data-post-id="'+CSS.escape(String(postId))+'"]') : null;
     const creatorId = card ? card.dataset.creatorId : "";
     if(!currentUser){ openAuthModal("signin"); return; }
-    if(!creatorId){ showMagicOrbitMessage(postId || "", "Open a creator profile to send a gift."); return; }
+    if(!creatorId){ showMagicOrbitMessage(postId || "", "This creator could not be found. Please refresh and try again."); return; }
+    if(String(creatorId) === String(currentUser.id)){ showMagicOrbitMessage(postId, "✨ You cannot send a gift to your own creation."); return; }
     let modal = document.getElementById("tnMagicOrbitGiftModal");
     if(!modal){
         modal = document.createElement("div");
