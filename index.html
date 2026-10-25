@@ -5084,6 +5084,7 @@ function openMagicOrbitGifts(postId){
     }
     modal.dataset.creatorId = creatorId;
     modal.dataset.postId = String(postId || "");
+    modal._returnFocus = document.activeElement;
     modal.hidden = false;
     document.body.style.overflow = "hidden";
     const closeButton = modal.querySelector(".tn-orbit-gift-close");
@@ -5091,8 +5092,13 @@ function openMagicOrbitGifts(postId){
 }
 function closeMagicOrbitGifts(){
     const modal = document.getElementById("tnMagicOrbitGiftModal");
-    if(modal) modal.hidden = true;
+    if(!modal) return;
+    modal.hidden = true;
     document.body.style.overflow = "";
+    const returnFocus = modal._returnFocus;
+    if(returnFocus && typeof returnFocus.focus === "function" && document.contains(returnFocus)){
+        returnFocus.focus();
+    }
 }
 async function chooseMagicOrbitGift(giftId, button){
     const modal = document.getElementById("tnMagicOrbitGiftModal");
