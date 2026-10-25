@@ -5267,7 +5267,6 @@ async function loadLikeState(postId){
         return;
     }
 
-    const orbitButton = document.getElementById("orbit-like-" + postId);
     if(data && data.length > 0){
         if(orbitButton){orbitButton.classList.add("liked");orbitButton.innerHTML='♥<span>Pulse</span><small class="tn-orbit-count" id="orbit-like-count-'+escapeHtml(postId)+'">'+(count||0)+'</small>';}
         button.classList.add("liked");
