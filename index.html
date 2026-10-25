@@ -2851,12 +2851,16 @@ textarea.form-control{
                 Password
             </label>
 
-            <input
-                id="authPassword"
-                class="form-control"
-                type="password"
-                placeholder="Your password"
-            >
+            <div class="tn-password-row">
+                <input
+                    id="authPassword"
+                    class="form-control"
+                    type="password"
+                    placeholder="Your password"
+                    autocomplete="current-password"
+                >
+                <button type="button" class="tn-password-toggle" aria-controls="authPassword" aria-pressed="false" onclick="toggleTikNationPassword('authPassword', this)">Show</button>
+            </div>
 
         </div>
 
@@ -8524,6 +8528,14 @@ if ("serviceWorker" in navigator) {
 @media(max-width:650px){#publicCreatorProfile>.section-head{align-items:flex-start;flex-wrap:wrap;margin-bottom:16px}#publicCreatorProfile>.section-head button{margin-left:0}#publicCreatorProfileContent .profile-header{padding:15px;border-radius:18px}#publicCreatorProfileContent .profile-header .stats{gap:22px}#publicCreatorProfileContent .gift-grid{grid-template-columns:1fr}#publicCreatorProfileContent .gift-choice{min-height:62px}#publicCreatorProfileContent .public-creation-card{padding:12px}}
 </style>
 
+<style>
+/* Accessible show/hide control for the sign-in password */
+.tn-password-row{display:flex;align-items:stretch;gap:8px;width:100%}
+.tn-password-row .form-control{flex:1 1 auto;min-width:0}
+.tn-password-toggle{flex:0 0 auto;min-width:66px;padding:0 13px;border:1px solid rgba(126,234,255,.4);border-radius:10px;background:rgba(126,234,255,.09);color:#9ceeff;font-size:13px;font-weight:800;cursor:pointer}
+.tn-password-toggle:hover,.tn-password-toggle:focus-visible{background:rgba(126,234,255,.18);outline:2px solid #7eeaff;outline-offset:2px}
+</style>
+
 <!-- Giggles theatrical voice controls -->
 <style>
 .tn-giggles-voice{margin-top:14px;padding:13px;border:1px solid rgba(255,203,117,.25);border-radius:15px;background:linear-gradient(135deg,rgba(107,66,22,.17),rgba(141,99,255,.09))}
@@ -8729,6 +8741,17 @@ function closeTikNationWelcome(destination){
     const firstButton=overlay.querySelector("button");
     if(firstButton) firstButton.focus();
 })();
+</script>
+<script>
+function toggleTikNationPassword(inputId, button){
+    const input=document.getElementById(inputId);
+    if(!input||!button)return;
+    const showing=input.type==="password";
+    input.type=showing?"text":"password";
+    button.textContent=showing?"Hide":"Show";
+    button.setAttribute("aria-pressed",showing?"true":"false");
+    button.setAttribute("aria-label",showing?"Hide password":"Show password");
+}
 </script>
 <script src="gifts.js"></script>
 </body>
