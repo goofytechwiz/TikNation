@@ -2075,14 +2075,14 @@ textarea.form-control{
             <span class="tn-explore-card-link">Explore videos →</span>
         </button>
 
-        <button type="button" class="card tn-explore-card" onclick="showPage('live')">
+        <button type="button" class="card tn-explore-card" onclick="window.location.href='./live.html'">
             <span class="card-icon" aria-hidden="true">🔴</span>
             <span class="tn-explore-card-title">Live</span>
             <span class="tn-explore-card-copy">Find live creators and see what's happening now.</span>
             <span class="tn-explore-card-link">Explore live →</span>
         </button>
 
-        <button type="button" class="card tn-explore-card" onclick="showPage('horror')">
+        <button type="button" class="card tn-explore-card" onclick="window.location.href='./horror-zone.html'">
             <span class="card-icon" aria-hidden="true">👻</span>
             <span class="tn-explore-card-title">Horror Zone</span>
             <span class="tn-explore-card-copy">Step into original nightmares, spooky stories, and eerie creations.</span>
@@ -3798,8 +3798,15 @@ function updateAuthUI(){
     const authButton =
         document.getElementById("authButton");
 
+    const createAccountButton =
+        document.getElementById("headerCreateAccountButton");
+
     const profileMini =
         document.getElementById("profileMini");
+
+    if(createAccountButton){
+        createAccountButton.hidden = !!currentUser;
+    }
 
     if(currentUser){
 
