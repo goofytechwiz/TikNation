@@ -6728,7 +6728,9 @@ async function ensureAgeAssurance(message){
     if(statusResult.error){
         let detail = null;
         try{ if(statusResult.error.context && typeof statusResult.error.context.json === "function") detail = await statusResult.error.context.json(); }catch(_ignored){}
-        throw new Error(detail?.error || "We couldn't confirm your age status. Please try again.");
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        throw new Error(detail?.error || "We couldn't confirm your age status. Please sign in again later.");
     }
     if(statusResult.data?.age_check_complete === true) return true;
 
