@@ -4437,6 +4437,12 @@ async function loadWatchFeed(){
     }
 
     watchPostsCache = visiblePosts.slice();
+    const sharedPostId = new URLSearchParams(window.location.search).get("post");
+    if(sharedPostId && watchCollectionFilter !== "all"){
+        // A shared link should not be hidden by a previously selected local collection.
+        watchCollectionFilter = "all";
+        document.querySelectorAll("[data-watch-filter]").forEach(el => el.setAttribute("aria-pressed",String(el.dataset.watchFilter === "all")));
+    }
     if(watchCollectionFilter !== "all"){
         setWatchCollectionFilter(watchCollectionFilter, document.querySelector('[data-watch-filter="' + watchCollectionFilter + '"]'));
         return;
@@ -4451,7 +4457,6 @@ async function loadWatchFeed(){
     setupWatchVideoPlayback();
 
     // Dream Relay links open the Watch feed and bring the shared creation into view.
-    const sharedPostId = new URLSearchParams(window.location.search).get("post");
     if(sharedPostId){
         const sharedPost = visiblePosts.find(post => String(post.id) === String(sharedPostId));
         const sharedCard = sharedPost ? grid.querySelector('[data-post-id="' + CSS.escape(String(sharedPostId)) + '"]') : null;
@@ -4459,6 +4464,12 @@ async function loadWatchFeed(){
             sharedCard.classList.add("tn-orbit-shared-post");
             sharedCard.scrollIntoView({behavior:"smooth",block:"center"});
             window.setTimeout(() => sharedCard.classList.remove("tn-orbit-shared-post"), 3200);
+        }else{
+            const notice = document.createElement("div");
+            notice.className = "card tn-orbit-unavailable-notice";
+            notice.setAttribute("role","status");
+            notice.textContent = "That shared creation isn't available in your current feed. It may have been removed or may not be visible to this account.";
+            grid.prepend(notice);
         }
     }
 }
