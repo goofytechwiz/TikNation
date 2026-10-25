@@ -5087,6 +5087,9 @@ function openMagicOrbitGifts(postId){
     modal._returnFocus = document.activeElement;
     modal.hidden = false;
     document.body.style.overflow = "hidden";
+    const status = modal.querySelector(".tn-orbit-gift-status");
+    if(status) status.textContent = "";
+    modal.querySelectorAll(".tn-orbit-gift-grid button").forEach(button => { button.disabled = false; });
     const closeButton = modal.querySelector(".tn-orbit-gift-close");
     if(closeButton) closeButton.focus();
 }
