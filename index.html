@@ -3257,6 +3257,21 @@ async function updateTikNationNavBadges(){
 
 function showPage(pageId,button){
 
+    // Keep participation and account-management areas behind sign-in,
+    // even if a guest reaches them through a direct in-app navigation call.
+    const signedInOnlyPages = new Set([
+        "create",
+        "notifications",
+        "profile",
+        "settings",
+        "creatorGiftDashboard"
+    ]);
+
+    if(signedInOnlyPages.has(pageId) && !currentUser){
+        openAuthModal("signin");
+        return;
+    }
+
     document.body.classList.toggle("tn-watch-active",pageId === "watch");
 
     document.querySelectorAll(".page")
