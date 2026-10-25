@@ -2591,6 +2591,23 @@ textarea.form-control{
         </div>
     </details>
 
+    <details id="deleteAccountSettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;border:1px solid rgba(255,90,120,.4);">
+        <summary>⚠️ Delete Account <span class="muted" style="font-size:12px;font-weight:500;">Permanent account removal</span></summary>
+        <div class="settings-panel-content">
+            <p class="muted" style="margin-bottom:12px;">You can permanently delete your TikNation account. This removes your sign-in account and associated profile data, posts, uploaded files, and account-linked records where supported. Some safety or legal records may be retained or anonymized when required.</p>
+            <p style="color:#ffb6c5;font-weight:700;margin-bottom:10px;">This action cannot be undone. Your username may become available to others.</p>
+            <p id="deleteAccountSignedInAs" class="muted" aria-live="polite" style="margin-bottom:16px;">Checking sign-in status…</p>
+            <form id="deleteAccountForm" onsubmit="deleteTikNationAccount(event)">
+                <label for="deleteAccountPassword">Current password</label>
+                <input id="deleteAccountPassword" type="password" autocomplete="current-password" required maxlength="1024" placeholder="Enter your current password" style="display:block;width:100%;margin:8px 0 16px;padding:12px;border-radius:10px;background:#11111d;color:#fff;border:1px solid rgba(255,255,255,.18);">
+                <label for="deleteAccountConfirmation">Type DELETE to confirm</label>
+                <input id="deleteAccountConfirmation" type="text" autocomplete="off" autocapitalize="characters" required pattern="DELETE" placeholder="DELETE" style="display:block;width:100%;margin:8px 0 14px;padding:12px;border-radius:10px;background:#11111d;color:#fff;border:1px solid rgba(255,255,255,.18);">
+                <button id="deleteAccountButton" type="submit" class="primary-button" style="background:linear-gradient(90deg,#a91f48,#d43d59);">PERMANENTLY DELETE MY ACCOUNT</button>
+                <p id="deleteAccountMessage" class="auth-message" role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </details>
+
     <details id="twoFactorSettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;">
         <summary>🛡️ Two-Factor Authentication (2FA)</summary>
         <div class="settings-panel-content">
@@ -6620,6 +6637,66 @@ async function signOutUser(){
     showPage("home");
 }
 
+async function deleteTikNationAccount(event){
+    if(event) event.preventDefault();
+
+    const message = document.getElementById("deleteAccountMessage");
+    const passwordInput = document.getElementById("deleteAccountPassword");
+    const confirmationInput = document.getElementById("deleteAccountConfirmation");
+    const submit = document.getElementById("deleteAccountButton");
+    if(message){ message.className = "auth-message"; message.textContent = ""; }
+
+    if(!currentUser){
+        if(message){ message.className = "auth-message error"; message.textContent = "Please sign in before deleting your account."; }
+        return;
+    }
+
+    const password = passwordInput ? passwordInput.value : "";
+    const confirmation = confirmationInput ? confirmationInput.value.trim() : "";
+    if(!password || confirmation !== "DELETE"){
+        if(message){ message.className = "auth-message error"; message.textContent = "Enter your current password and type DELETE exactly to continue."; }
+        return;
+    }
+
+    const accepted = window.confirm("Permanently delete your TikNation account and associated account data? This cannot be undone.");
+    if(!accepted) return;
+
+    if(submit){ submit.disabled = true; submit.textContent = "DELETING ACCOUNT…"; }
+    if(message){ message.className = "auth-message"; message.textContent = "Securely processing your deletion request…"; }
+
+    try{
+        const {data,error} = await supabaseClient.functions.invoke("tiknation-delete-account",{
+            body:{password,confirmation}
+        });
+        if(error || !data || data.success !== true){
+            let detail = data && data.error ? data.error : (error && error.message ? error.message : "We couldn't complete account deletion.");
+            if(error && error.context && typeof error.context.json === "function"){
+                try{
+                    const body = await error.context.json();
+                    if(body && body.error) detail = body.error;
+                }catch(_ignored){}
+            }
+            throw new Error(detail);
+        }
+
+        if(passwordInput) passwordInput.value = "";
+        if(confirmationInput) confirmationInput.value = "";
+        currentUser = null;
+        currentProfile = null;
+        await supabaseClient.auth.signOut({scope:"local"});
+        updateAuthUI();
+        refreshSecuritySettings();
+        showPage("home");
+        alert("Your TikNation account has been deleted. We're sorry to see you go.");
+    }catch(error){
+        if(message){
+            message.className = "auth-message error";
+            message.textContent = error && error.message ? error.message : "We couldn't complete account deletion. Please try again.";
+        }
+        if(submit){ submit.disabled = false; submit.textContent = "PERMANENTLY DELETE MY ACCOUNT"; }
+    }
+}
+
 async function changeAccountPassword(event){
 
     if(event){
@@ -6900,11 +6977,15 @@ async function completeMfaSignIn(message){
 function refreshSecuritySettings(){
     const status = document.getElementById("securitySignedInAs");
     const passwordStatus = document.getElementById("passwordSettingsSignedInAs");
+    const deleteStatus = document.getElementById("deleteAccountSignedInAs");
     const statusText = currentUser
         ? "Signed in as " + (currentUser.email || "your TikNation account") + "."
         : "You are not signed in. Sign in to change your password.";
     if(status) status.textContent = statusText;
     if(passwordStatus) passwordStatus.textContent = statusText;
+    if(deleteStatus) deleteStatus.textContent = currentUser
+        ? "Signed in as " + (currentUser.email || "your TikNation account") + ". Re-enter your current password to verify ownership."
+        : "You are not signed in. Sign in before requesting account deletion.";
     refreshAccountOverview();
     refreshMfaSettings();
 }
