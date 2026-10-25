@@ -7383,6 +7383,13 @@ function closeReportModal(){
  pendingReportTarget=null;
 }
 
+document.addEventListener("keydown",function(event){
+ if(event.key==="Escape"){
+  const modal=document.getElementById("reportModal");
+  if(modal && modal.classList.contains("active"))closeReportModal();
+ }
+});
+
 async function submitContentReport(event){
  if(event)event.preventDefault();
  if(!currentUser){closeReportModal();openAuthModal('signin');return;}
