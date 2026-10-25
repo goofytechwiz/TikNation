@@ -2775,15 +2775,19 @@ textarea.form-control{
 
         <div class="form-group">
 
-            <label for="authEmail">
-                Email
+            <label for="authEmail" id="authEmailLabel">
+                Email or username
             </label>
 
             <input
                 id="authEmail"
                 class="form-control"
-                type="email"
-                placeholder="you@example.com"
+                type="text"
+                inputmode="email"
+                autocomplete="username"
+                placeholder="Email address or username"
+                autocapitalize="none"
+                spellcheck="false"
             >
 
         </div>
@@ -3163,6 +3167,9 @@ function switchAuthMode(mode){
     const signupFields =
         document.getElementById("signupFields");
 
+    const emailLabel = document.getElementById("authEmailLabel");
+    const emailInput = document.getElementById("authEmail");
+
     const message =
         document.getElementById("authMessage");
 
@@ -3173,6 +3180,13 @@ function switchAuthMode(mode){
     if(resendButton) resendButton.style.display = mode === "signin" ? "block" : "none";
 
     if(mode === "signup"){
+
+        if(emailLabel) emailLabel.textContent = "Email";
+        if(emailInput){
+            emailInput.placeholder = "you@example.com";
+            emailInput.setAttribute("autocomplete","email");
+            emailInput.setAttribute("inputmode","email");
+        }
 
         title.textContent =
             "Create Your Account";
@@ -3187,6 +3201,13 @@ function switchAuthMode(mode){
             "block";
 
     }else{
+
+        if(emailLabel) emailLabel.textContent = "Email or username";
+        if(emailInput){
+            emailInput.placeholder = "Email address or username";
+            emailInput.setAttribute("autocomplete","username");
+            emailInput.setAttribute("inputmode","text");
+        }
 
         title.textContent =
             "Sign In";
@@ -3259,7 +3280,9 @@ async function submitAuth(){
             "auth-message error";
 
         message.textContent =
-            "Please enter your email and password.";
+            authMode === "signup"
+                ? "Please enter your email and password."
+                : "Please enter your email or username and password.";
 
         return;
     }
@@ -3336,25 +3359,46 @@ async function submitAuth(){
 
         }else{
 
-            const {
-                data,
-                error
-            } =
-                await supabaseClient.auth
-                    .signInWithPassword({
+            if(email.includes("@")){
+                const {
+                    data,
+                    error
+                } = await supabaseClient.auth.signInWithPassword({
+                    email:email,
+                    password:password
+                });
 
-                        email:email,
-                        password:password
+                if(error) throw error;
 
-                    });
+                closeAuthModal();
+                if(data.session) showPage("home");
+            }else{
+                const {data,error} = await supabaseClient.functions.invoke(
+                    "tiknation-username-login",
+                    {body:{username:email,password:password}}
+                );
 
-            if(error){
-                throw error;
-            }
+                if(error){
+                    let detail = null;
+                    try{
+                        if(error.context && typeof error.context.json === "function"){
+                            detail = await error.context.json();
+                        }
+                    }catch(_ignored){}
+                    throw new Error(detail?.error || "Username sign-in failed. Please check your username and password, or sign in with your email.");
+                }
 
-            closeAuthModal();
+                if(!data?.session?.access_token || !data?.session?.refresh_token){
+                    throw new Error(data?.error || "Username sign-in failed. Please try your email instead.");
+                }
 
-            if(data.session){
+                const {error:sessionError} = await supabaseClient.auth.setSession({
+                    access_token:data.session.access_token,
+                    refresh_token:data.session.refresh_token
+                });
+                if(sessionError) throw sessionError;
+
+                closeAuthModal();
                 showPage("home");
             }
         }
