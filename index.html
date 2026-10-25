@@ -2591,6 +2591,18 @@ textarea.form-control{
         </div>
     </details>
 
+    <details id="deactivateAccountSettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;border:1px solid rgba(126,234,255,.28);">
+        <summary>⏸️ Deactivate Account <span class="muted" style="font-size:12px;font-weight:500;">Take a temporary break</span></summary>
+        <div class="settings-panel-content">
+            <p class="muted" style="margin-bottom:12px;">Deactivation is temporary. TikNation will hide your public profile, published posts, and verified-creator listing while keeping your account and data saved. You can reactivate from this panel after signing in again.</p>
+            <p id="accountStatusSignedInAs" class="muted" aria-live="polite" style="margin-bottom:14px;">Checking account status…</p>
+            <p id="accountStatusMessage" class="auth-message" role="status" aria-live="polite"></p>
+            <button type="button" id="deactivateAccountButton" class="primary-button" onclick="changeTikNationAccountStatus('deactivate')" style="background:linear-gradient(90deg,#146a83,#3575bf);">DEACTIVATE MY ACCOUNT</button>
+            <button type="button" id="reactivateAccountButton" class="primary-button" onclick="changeTikNationAccountStatus('reactivate')" style="display:none;background:linear-gradient(90deg,#16865e,#21a77c);">REACTIVATE MY ACCOUNT</button>
+            <p class="muted" style="font-size:12px;margin-top:12px;">This does not permanently delete your account. Choose Delete Account below only if you want permanent removal.</p>
+        </div>
+    </details>
+
     <details id="deleteAccountSettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;border:1px solid rgba(255,90,120,.4);">
         <summary>⚠️ Delete Account <span class="muted" style="font-size:12px;font-weight:500;">Permanent account removal</span></summary>
         <div class="settings-panel-content">
@@ -6697,6 +6709,84 @@ async function deleteTikNationAccount(event){
     }
 }
 
+async function refreshAccountStatusSettings(){
+    const status = document.getElementById("accountStatusSignedInAs");
+    const deactivateButton = document.getElementById("deactivateAccountButton");
+    const reactivateButton = document.getElementById("reactivateAccountButton");
+    const message = document.getElementById("accountStatusMessage");
+    if(message){ message.className = "auth-message"; message.textContent = ""; }
+    if(!currentUser){
+        if(status) status.textContent = "Sign in to view or change your account status.";
+        if(deactivateButton) deactivateButton.style.display = "none";
+        if(reactivateButton) reactivateButton.style.display = "none";
+        return;
+    }
+    if(status) status.textContent = "Checking your account status…";
+    try{
+        const {data,error} = await supabaseClient
+            .from("profiles")
+            .select("deactivated_at")
+            .eq("id",currentUser.id)
+            .maybeSingle();
+        if(error) throw error;
+        const deactivated = !!data?.deactivated_at;
+        if(status) status.textContent = deactivated
+            ? "Your account is currently deactivated. Your public profile and published posts are hidden."
+            : "Your account is active and visible according to your privacy settings.";
+        if(deactivateButton) deactivateButton.style.display = deactivated ? "none" : "inline-block";
+        if(reactivateButton) reactivateButton.style.display = deactivated ? "inline-block" : "none";
+    }catch(error){
+        if(status) status.textContent = "We couldn't load your account status. Please refresh and try again.";
+        console.warn("Could not refresh TikNation account status:",error);
+    }
+}
+
+async function changeTikNationAccountStatus(action){
+    const message = document.getElementById("accountStatusMessage");
+    const deactivateButton = document.getElementById("deactivateAccountButton");
+    const reactivateButton = document.getElementById("reactivateAccountButton");
+    if(message){ message.className = "auth-message"; message.textContent = ""; }
+    if(!currentUser){
+        if(message){ message.className = "auth-message error"; message.textContent = "Please sign in first."; }
+        return;
+    }
+    if(action !== "deactivate" && action !== "reactivate") return;
+    const deactivate = action === "deactivate";
+    const accepted = window.confirm(deactivate
+        ? "Temporarily deactivate your TikNation account? Your public profile and published posts will be hidden. Your data will be kept, and you can reactivate later."
+        : "Reactivate your TikNation account and make your profile and published posts visible again?");
+    if(!accepted) return;
+    const buttons = [deactivateButton,reactivateButton];
+    buttons.forEach(button => { if(button) button.disabled = true; });
+    if(message) message.textContent = deactivate ? "Deactivating your account…" : "Reactivating your account…";
+    try{
+        const {data,error} = await supabaseClient.functions.invoke("tiknation-account-status",{
+            body:{action}
+        });
+        if(error || !data || data.success !== true){
+            let detail = data?.error || error?.message || "TikNation couldn't update your account status.";
+            if(error?.context && typeof error.context.json === "function"){
+                try{ const body = await error.context.json(); if(body?.error) detail = body.error; }catch(_ignored){}
+            }
+            throw new Error(detail);
+        }
+        if(message){ message.className = "auth-message success"; message.textContent = data.message || "Your account status has been updated."; }
+        await refreshAccountStatusSettings();
+        if(deactivate){
+            await supabaseClient.auth.signOut({scope:"local"});
+            currentUser = null;
+            currentProfile = null;
+            updateAuthUI();
+            refreshSecuritySettings();
+            if(message){ message.className = "auth-message success"; message.textContent = "Your account is deactivated. You have been signed out. Sign in again and choose Reactivate My Account whenever you're ready to return."; }
+        }
+    }catch(error){
+        if(message){ message.className = "auth-message error"; message.textContent = error?.message || "We couldn't update your account status. Please try again."; }
+    }finally{
+        buttons.forEach(button => { if(button) button.disabled = false; });
+    }
+}
+
 async function changeAccountPassword(event){
 
     if(event){
@@ -6986,6 +7076,7 @@ function refreshSecuritySettings(){
     if(deleteStatus) deleteStatus.textContent = currentUser
         ? "Signed in as " + (currentUser.email || "your TikNation account") + ". Re-enter your current password to verify ownership."
         : "You are not signed in. Sign in before requesting account deletion.";
+    refreshAccountStatusSettings();
     refreshAccountOverview();
     refreshMfaSettings();
 }
