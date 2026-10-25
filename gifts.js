@@ -104,16 +104,16 @@ function showTikNationGiftEffect(gift) {
 async function sendTikNationGift(recipientId, giftCode) {
   const panel = document.getElementById("publicCreatorGiftPanel");
   const status = document.getElementById("publicCreatorGiftStatus");
-  if (!currentUser) { openAuthModal("signin"); return; }
-  if (recipientId === currentUser.id) return;
+  if (!currentUser) { openAuthModal("signin"); return false; }
+  if (recipientId === currentUser.id) { if (status) { status.className = "gift-status error"; status.textContent = "You cannot send a gift to yourself."; } return false; }
   const gift = TIKNATION_GIFT_CATALOG[giftCode];
   if (!gift) {
     if (status) { status.className = "gift-status error"; status.textContent = "That gift is not available yet."; }
-    return;
+    return false;
   }
   if (!window.crypto || !window.crypto.randomUUID) {
     if (status) status.textContent = "Please update your browser before sending gifts.";
-    return;
+    return false;
   }
   const buttons = panel ? Array.from(panel.querySelectorAll(".gift-choice")) : [];
   buttons.forEach(button => button.disabled = true);
@@ -133,8 +133,10 @@ async function sendTikNationGift(recipientId, giftCode) {
     }
     showTikNationGiftEffect(gift);
     if (status) { status.className = "gift-status success"; status.textContent = "✨ " + gift.name + " sent! Test gifts have no cash value."; }
+    return true;
   } catch (error) {
     if (status) { status.className = "gift-status error"; status.textContent = error.message || "Gift could not be sent."; }
+    return false;
   } finally {
     buttons.forEach(button => button.disabled = false);
   }
