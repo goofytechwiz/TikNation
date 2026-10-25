@@ -2823,7 +2823,7 @@ textarea.form-control{
 
         <div id="signupMethodChoices" style="display:none;gap:8px;margin:0 0 14px;">
             <button type="button" id="signupEmailMethod" class="secondary-button" style="flex:1;" onclick="setSignupMethod('email')">SIGN UP WITH EMAIL</button>
-            <button type="button" id="signupPhoneMethod" class="secondary-button" style="flex:1;" onclick="setSignupMethod('phone')">SIGN UP WITH PHONE</button>
+            <button type="button" id="signupPhoneMethod" class="secondary-button" style="flex:1;opacity:.62;cursor:not-allowed;" disabled aria-disabled="true" title="Phone signup is coming soon">PHONE SIGNUP — COMING SOON</button>
         </div>
 
         <div class="form-group" id="authEmailGroup">
@@ -3250,7 +3250,15 @@ function continueSignupAgeGate(){
 }
 
 function setSignupMethod(method){
-    signupMethod = method === "phone" ? "phone" : "email";
+    if(method === "phone"){
+        const message = document.getElementById("authMessage");
+        if(message){
+            message.className = "auth-message";
+            message.textContent = "Phone signup is coming soon. Email signup is available now.";
+        }
+        return;
+    }
+    signupMethod = "email";
     const label = document.getElementById("authEmailLabel");
     const input = document.getElementById("authEmail");
     const emailButton = document.getElementById("signupEmailMethod");
