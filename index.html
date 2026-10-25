@@ -3829,11 +3829,24 @@ function updateAuthUI(){
     const createAccountButton =
         document.getElementById("headerCreateAccountButton");
 
+    const landingSignupButton =
+        document.querySelector(".tn-landing-secondary");
+
     const profileMini =
         document.getElementById("profileMini");
 
     if(createAccountButton){
         createAccountButton.hidden = !!currentUser;
+    }
+
+    if(landingSignupButton){
+        if(currentUser){
+            landingSignupButton.textContent = "✨ OPEN CREATOR TOOLS";
+            landingSignupButton.onclick = function(){ showPage("create"); };
+        }else{
+            landingSignupButton.textContent = "✨ CREATE FREE ACCOUNT";
+            landingSignupButton.onclick = function(){ openAuthModal("signup"); };
+        }
     }
 
     if(currentUser){
