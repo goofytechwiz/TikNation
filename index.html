@@ -3197,6 +3197,8 @@ function closeAuthModal(){
     pendingSignupDob = null;
     const dobInput = document.getElementById("signupDateOfBirth");
     if(dobInput) dobInput.value = "";
+    const ageAttestation = document.getElementById("signupAgeAttestation");
+    if(ageAttestation) ageAttestation.checked = false;
 }
 
 function continueSignupAgeGate(){
@@ -3303,6 +3305,8 @@ function switchAuthMode(mode){
     }else{
         pendingSignupDob = null;
         if(dobInput) dobInput.value = "";
+        const ageAttestation = document.getElementById("signupAgeAttestation");
+        if(ageAttestation) ageAttestation.checked = false;
         if(signupAgeGate) signupAgeGate.style.display = "none";
         if(emailGroup) emailGroup.style.display = "block";
         if(passwordGroup) passwordGroup.style.display = "block";
