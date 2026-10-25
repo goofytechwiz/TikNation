@@ -2494,6 +2494,13 @@ textarea.form-control{
                 <button type="button" class="small-button" onclick="loadVerificationAdminApplications()">↻ Refresh feedback</button>
                 <div id="betaFeedbackAdminList" style="margin-top:14px;">Feedback will appear here.</div>
             </div>
+            <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:24px;padding-top:20px;">
+                <h3>🔐 Login Security Activity</h3>
+                <p class="muted">Private Founder-only view of username-login successes, failed attempts, and throttled attempts. Identifiers are hashed. This is an activity log, not email alerts.</p>
+                <button type="button" class="small-button" onclick="loadTikNationSecurityEvents()">↻ Refresh security activity</button>
+                <div id="tikNationSecurityEventsStatus" class="muted" role="status" aria-live="polite" style="margin:12px 0;">Security activity has not been loaded.</div>
+                <div id="tikNationSecurityEventsList" style="display:grid;gap:10px;"></div>
+            </div>
         </div>
             </div>
         </details>
@@ -7717,6 +7724,47 @@ function isTikNationTestReport(report){
  const details=String(report?.details||"").toUpperCase();
  return targetId.startsWith("ADMIN-TEST-") || reason.includes("TEST ONLY") || details.includes("TEST ONLY");
 }
+async function loadTikNationSecurityEvents(){
+ const status=document.getElementById("tikNationSecurityEventsStatus");
+ const list=document.getElementById("tikNationSecurityEventsList");
+ if(!status||!list||!isTikNationAdmin())return;
+ status.textContent="Loading private security activity…";
+ list.replaceChildren();
+ try{
+  const {data,error}=await supabaseClient.functions.invoke("tiknation-security-events",{body:{}});
+  if(error)throw error;
+  const events=Array.isArray(data?.events)?data.events:[];
+  if(!events.length){status.textContent="No username-login security events have been recorded yet.";return;}
+  status.textContent="Showing the latest "+events.length+" username-login events. Email-login activity is not included in this log.";
+  const labels={
+   username_login_succeeded:"Successful username login",
+   username_login_failed:"Failed username login",
+   username_login_throttled:"Login attempt blocked by rate limit"
+  };
+  for(const event of events){
+   const card=document.createElement("div");
+   card.className="card";
+   card.style.padding="14px";
+   const title=document.createElement("strong");
+   title.textContent=labels[event.event_type]||"Security event";
+   const time=document.createElement("p");
+   time.className="muted";
+   const parsedDate=new Date(event.created_at);
+   time.textContent=Number.isNaN(parsedDate.getTime())?"Time unavailable":parsedDate.toLocaleString();
+   const detail=document.createElement("p");
+   detail.className="muted";
+   const identifier=typeof event.identifier_hash==="string"?event.identifier_hash.slice(0,12):"unavailable";
+   const network=typeof event.network_hash==="string"?event.network_hash.slice(0,12):"unavailable";
+   detail.textContent="Identifier hash: "+identifier+"… · Network hash: "+network+"…";
+   card.append(title,time,detail);
+   list.append(card);
+  }
+ }catch(error){
+  console.error("Security activity load failed:",error);
+  status.textContent="Could not load security activity. Confirm that you are signed in, have completed authenticator verification, and are using the Founder account.";
+ }
+}
+
 async function loadContentReports(){
  const list=document.getElementById("contentReportsAdminList");
  if(!list||!isTikNationAdmin())return;
