@@ -5296,10 +5296,10 @@ async function toggleLike(postId){
         document.getElementById(
             "like-button-" + postId
         );
+    const orbitButton = document.getElementById("orbit-like-" + postId);
 
-    if(button){
-        button.disabled = true;
-    }
+    if(button) button.disabled = true;
+    if(orbitButton) orbitButton.disabled = true;
 
     try{
 
@@ -5374,9 +5374,8 @@ async function toggleLike(postId){
 
     }finally{
 
-        if(button){
-            button.disabled = false;
-        }
+        if(button) button.disabled = false;
+        if(orbitButton) orbitButton.disabled = false;
     }
 }
 
