@@ -1795,6 +1795,20 @@ textarea.form-control{
  .tn-public-explore-grid .tn-explore-card{transition:none;}
 }
 
+/* PUBLIC VISITOR JOURNEY GUIDE */
+.tn-join-guide{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;margin-top:24px;padding:26px;border:1px solid rgba(0,210,255,.22);border-radius:24px;background:linear-gradient(135deg,rgba(0,190,255,.08),rgba(141,99,255,.12),rgba(12,12,24,.94));}
+.tn-join-guide-copy h2{font-size:clamp(22px,3vw,30px);margin:0 0 10px;}
+.tn-join-guide-copy p{color:#aaaabd;line-height:1.7;font-size:14px;}
+.tn-join-guide-steps{display:grid;gap:12px;}
+.tn-join-guide-step{display:flex;align-items:flex-start;gap:12px;padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.025);}
+.tn-join-guide-step>span{font-size:23px;}
+.tn-join-guide-step strong,.tn-join-guide-step small{display:block;}
+.tn-join-guide-step small{margin-top:4px;color:#aaaabd;line-height:1.5;}
+.tn-join-guide-cta{grid-column:1/-1;justify-self:start;padding:12px 18px;border:1px solid rgba(0,210,255,.35);border-radius:999px;background:linear-gradient(100deg,rgba(141,99,255,.24),rgba(0,190,255,.15));color:#fff;font-weight:800;cursor:pointer;}
+.tn-join-guide-cta:hover,.tn-join-guide-cta:focus-visible{outline:2px solid #70e8ff;outline-offset:3px;}
+@media(max-width:700px){.tn-join-guide{grid-template-columns:1fr;padding:20px;}.tn-join-guide-cta{grid-column:auto;justify-self:stretch;}}
+@media(prefers-reduced-motion:reduce){.tn-join-guide *{scroll-behavior:auto!important;transition:none!important;}}
+
 /* TIKNATION HOST — friendly site guide and show presenter */
 .tn-host-feature{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:22px;margin-top:22px;padding:24px;border:1px solid rgba(141,99,255,.32);border-radius:24px;background:linear-gradient(120deg,rgba(141,99,255,.15),rgba(0,210,255,.07),rgba(15,15,27,.92));}
 .tn-host-feature-copy .eyebrow{margin-bottom:8px;}
@@ -2111,6 +2125,20 @@ textarea.form-control{
         </button>
 
     </div>
+
+    <section class="tn-join-guide" aria-labelledby="tnJoinGuideTitle">
+        <div class="tn-join-guide-copy">
+            <div class="eyebrow">BROWSE FIRST. JOIN WHEN YOU'RE READY.</div>
+            <h2 id="tnJoinGuideTitle">Your journey, your choice. 💜</h2>
+            <p>Explore public areas and get a feel for the community before creating an account. Some content may be limited by creator privacy, age settings, or community safety rules.</p>
+        </div>
+        <div class="tn-join-guide-steps">
+            <div class="tn-join-guide-step"><span>👀</span><div><strong>Explore</strong><small>Discover public videos, creators, and worlds.</small></div></div>
+            <div class="tn-join-guide-step"><span>🤝</span><div><strong>Take part</strong><small>Sign in to follow, message, comment, or interact where available.</small></div></div>
+            <div class="tn-join-guide-step"><span>🎨</span><div><strong>Create</strong><small>Join to build your profile and share your own work.</small></div></div>
+        </div>
+        <button type="button" class="tn-join-guide-cta" onclick="openAuthModal('signup')">✨ Join TikNation for free</button>
+    </section>
 
 </section>
 
