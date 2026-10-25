@@ -3487,6 +3487,7 @@ async function submitAuth(){
                 if(error) throw error;
 
                 if(data.session && !(await completeMfaSignIn(message))) return;
+                if(data.session && !(await ensureAgeAssurance(message))) return;
                 closeAuthModal();
                 if(data.session) showPage("home");
             }else{
@@ -3517,6 +3518,7 @@ async function submitAuth(){
                 if(sessionError) throw sessionError;
 
                 if(!(await completeMfaSignIn(message))) return;
+                if(!(await ensureAgeAssurance(message))) return;
                 closeAuthModal();
                 showPage("home");
             }
@@ -6721,6 +6723,52 @@ async function disableMfa(){
     }
 }
 
+async function ensureAgeAssurance(message){
+    const statusResult = await supabaseClient.functions.invoke("tiknation-age-assurance",{body:{action:"status"}});
+    if(statusResult.error){
+        let detail = null;
+        try{ if(statusResult.error.context && typeof statusResult.error.context.json === "function") detail = await statusResult.error.context.json(); }catch(_ignored){}
+        throw new Error(detail?.error || "We couldn't confirm your age status. Please try again.");
+    }
+    if(statusResult.data?.age_check_complete === true) return true;
+
+    if(!message){
+        openAuthModal("signin");
+        message = document.getElementById("authMessage");
+    }
+    message.className = "auth-message error";
+    message.textContent = "TikNation requires every account to confirm a date of birth. Your birthday is stored privately and is not shown on your profile.";
+
+    const dateOfBirth = window.prompt("Confirm your actual date of birth for TikNation (YYYY-MM-DD). You must be at least 13 years old to use TikNation.");
+    if(!dateOfBirth || !dateOfBirth.trim()){
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        message.textContent = "Age confirmation is required to continue. Sign in again when you're ready to complete the check.";
+        return false;
+    }
+
+    const submitResult = await supabaseClient.functions.invoke("tiknation-age-assurance",{
+        body:{action:"submit",date_of_birth:dateOfBirth.trim()}
+    });
+    if(submitResult.error || submitResult.data?.age_check_complete !== true){
+        let detail = submitResult.data || null;
+        try{
+            if(submitResult.error?.context && typeof submitResult.error.context.json === "function"){
+                detail = await submitResult.error.context.json();
+            }
+        }catch(_ignored){}
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        message.className = "auth-message error";
+        message.textContent = detail?.error || "Age confirmation couldn't be completed. Please sign in and try again.";
+        return false;
+    }
+
+    message.className = "auth-message success";
+    message.textContent = "Age confirmation complete. Your birthday is stored privately.";
+    return true;
+}
+
 async function completeMfaSignIn(message){
     try{
         const {data,error} = await supabaseClient.auth.mfa.listFactors();
@@ -6853,10 +6901,23 @@ async function loadSession(){
     }
 
     if(currentUser){
+        try{
+            if(!(await ensureAgeAssurance(null))) currentUser = null;
+        }catch(ageError){
+            console.warn("Age assurance could not be checked; signing out for safety:",ageError);
+            await supabaseClient.auth.signOut();
+            currentUser = null;
+            openAuthModal("signin");
+            const authMessage = document.getElementById("authMessage");
+            if(authMessage){
+                authMessage.className = "auth-message error";
+                authMessage.textContent = ageError?.message || "We couldn't verify your age status. Please sign in again.";
+            }
+        }
+    }
 
-        await ensureProfile(
-            currentUser
-        );
+    if(currentUser){
+        await ensureProfile(currentUser);
     }
 
     updateAuthUI();
