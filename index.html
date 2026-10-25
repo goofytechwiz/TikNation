@@ -2877,6 +2877,7 @@ let currentUser = null;
 let currentProfile = null;
 let creatorProfileEditorOpen = false;
 let authMode = "signin";
+let mfaSignInPending = false;
 
 /* =========================
    PAGE NAVIGATION
@@ -3385,6 +3386,7 @@ async function submitAuth(){
         }else{
 
             if(email.includes("@")){
+                mfaSignInPending = true;
                 const {
                     data,
                     error
@@ -3399,6 +3401,7 @@ async function submitAuth(){
                 closeAuthModal();
                 if(data.session) showPage("home");
             }else{
+                mfaSignInPending = true;
                 const {data,error} = await supabaseClient.functions.invoke(
                     "tiknation-username-login",
                     {body:{username:email,password:password}}
@@ -3431,6 +3434,12 @@ async function submitAuth(){
         }
 
     }catch(error){
+
+        if(mfaSignInPending){
+            mfaSignInPending = false;
+            currentUser = null;
+            await supabaseClient.auth.signOut();
+        }
 
         message.className =
             "auth-message error";
@@ -6624,32 +6633,47 @@ async function disableMfa(){
 }
 
 async function completeMfaSignIn(message){
-    const {data,error} = await supabaseClient.auth.mfa.listFactors();
-    if(error) throw error;
-    const factor = (data?.totp || []).find(item => item.status === "verified");
-    if(!factor) return true;
-    const {data:aalData,error:aalError} = await supabaseClient.auth.mfa.getAuthenticatorAssuranceLevel();
-    if(aalError) throw aalError;
-    if(aalData?.currentLevel === "aal2") return true;
-    const {data:challenge,error:challengeError} = await supabaseClient.auth.mfa.challenge({factorId:factor.id});
-    if(challengeError) throw challengeError;
-    const code = window.prompt("Two-factor authentication is enabled. Enter the six-digit code from your authenticator app to finish signing in:");
-    if(!code || !/^\s*\d{6}\s*$/.test(code)){
+    try{
+        const {data,error} = await supabaseClient.auth.mfa.listFactors();
+        if(error) throw error;
+        const factor = (data?.totp || []).find(item => item.status === "verified");
+        if(factor){
+            const {data:aalData,error:aalError} = await supabaseClient.auth.mfa.getAuthenticatorAssuranceLevel();
+            if(aalError) throw aalError;
+            if(aalData?.currentLevel !== "aal2"){
+                const {data:challenge,error:challengeError} = await supabaseClient.auth.mfa.challenge({factorId:factor.id});
+                if(challengeError) throw challengeError;
+                const code = window.prompt("Two-factor authentication is enabled. Enter the six-digit code from your authenticator app to finish signing in:");
+                if(!code || !/^\s*\d{6}\s*$/.test(code)){
+                    await supabaseClient.auth.signOut();
+                    mfaSignInPending = false;
+                    currentUser = null;
+                    message.className = "auth-message error";
+                    message.textContent = "Two-factor verification was cancelled. Sign in again and enter your authenticator code.";
+                    return false;
+                }
+                const {error:verifyError} = await supabaseClient.auth.mfa.verify({
+                    factorId:factor.id,
+                    challengeId:challenge.id,
+                    code:code.trim()
+                });
+                if(verifyError) throw new Error("Two-factor verification failed. Check your authenticator code and sign in again.");
+            }
+        }
+        mfaSignInPending = false;
+        const {data:userData,error:userError} = await supabaseClient.auth.getUser();
+        if(userError || !userData?.user) throw new Error("We couldn't confirm your signed-in account. Please sign in again.");
+        currentUser = userData.user;
+        updateAuthUI();
+        await ensureProfile(currentUser);
+        refreshSecuritySettings();
+        return true;
+    }catch(error){
+        mfaSignInPending = false;
+        currentUser = null;
         await supabaseClient.auth.signOut();
-        message.className = "auth-message error";
-        message.textContent = "Two-factor verification was cancelled. Sign in again and enter your authenticator code.";
-        return false;
+        throw error;
     }
-    const {error:verifyError} = await supabaseClient.auth.mfa.verify({
-        factorId:factor.id,
-        challengeId:challenge.id,
-        code:code.trim()
-    });
-    if(verifyError){
-        await supabaseClient.auth.signOut();
-        throw new Error("Two-factor verification failed. Check your authenticator code and sign in again.");
-    }
-    return true;
 }
 
 function refreshSecuritySettings(){
@@ -6672,7 +6696,7 @@ supabaseClient.auth.onAuthStateChange(
     function(event,session){
 
         currentUser =
-            session?.user || null;
+            mfaSignInPending ? null : (session?.user || null);
 
         updateAuthUI();
         refreshSecuritySettings();
@@ -6707,6 +6731,27 @@ async function loadSession(){
 
     currentUser =
         data.session?.user || null;
+
+    if(currentUser){
+        try{
+            const {data:factors,error:factorsError} = await supabaseClient.auth.mfa.listFactors();
+            if(!factorsError && (factors?.totp || []).some(factor => factor.status === "verified")){
+                const {data:aalData,error:aalError} = await supabaseClient.auth.mfa.getAuthenticatorAssuranceLevel();
+                if(!aalError && aalData?.currentLevel !== "aal2"){
+                    await supabaseClient.auth.signOut();
+                    currentUser = null;
+                    openAuthModal("signin");
+                    const authMessage = document.getElementById("authMessage");
+                    if(authMessage){
+                        authMessage.className = "auth-message error";
+                        authMessage.textContent = "This account requires two-factor verification. Please sign in again to complete it.";
+                    }
+                }
+            }
+        }catch(error){
+            console.warn("Could not confirm restored session's MFA status:",error);
+        }
+    }
 
     if(currentUser){
 
