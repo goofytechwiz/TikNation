@@ -4466,9 +4466,37 @@ async function loadWatchFeed(){
         }
     }
 
+    const sharedPostId = new URLSearchParams(window.location.search).get("post");
+
     if(!visiblePosts.length){
 
-        grid.innerHTML = `
+        grid.innerHTML = sharedPostId ? `
+
+            <div class="card tn-orbit-unavailable-notice" role="status">
+
+                <div class="card-icon">
+                    🔎
+                </div>
+
+                <h3>
+                    Shared creation unavailable
+                </h3>
+
+                <p>
+                    This creation isn't visible in the current feed. It may have been removed, unpublished, filtered by your preferences, or hidden from this account.
+                </p>
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="history.replaceState(null, '', window.location.pathname + window.location.hash); loadWatchFeed();"
+                >
+                    EXPLORE WATCH
+                </button>
+
+            </div>
+
+        ` : `
 
             <div class="card">
 
@@ -4501,7 +4529,6 @@ async function loadWatchFeed(){
     }
 
     watchPostsCache = visiblePosts.slice();
-    const sharedPostId = new URLSearchParams(window.location.search).get("post");
     if(sharedPostId && watchCollectionFilter !== "all"){
         // A shared link should not be hidden by a previously selected local collection.
         watchCollectionFilter = "all";
