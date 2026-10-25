@@ -4437,8 +4437,12 @@ async function loadWatchFeed(){
                 </h3>
 
                 <p>
-                    ${escapeHtml(error.message)}
+                    Watch couldn't load right now. Please try again.
                 </p>
+
+                <button type="button" class="primary-button" onclick="loadWatchFeed()">
+                    TRY AGAIN
+                </button>
 
             </div>
 
