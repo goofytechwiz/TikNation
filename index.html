@@ -5231,8 +5231,6 @@ async function loadLikeState(postId){
         countElement.textContent =
             count || 0;
     }
-    const orbitCount = document.getElementById("orbit-like-count-" + postId);
-    if(orbitCount) orbitCount.textContent = count || 0;
 
     if(!currentUser){
         return;
