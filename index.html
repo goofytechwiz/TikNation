@@ -3601,9 +3601,13 @@ async function submitAuth(){
         message.className =
             "auth-message error";
 
-        message.textContent =
-            error.message ||
-            "Something went wrong.";
+        const authError = String(error?.message || "");
+        if(authMode === "signup" && signupMethod === "phone" &&
+           /phone.*(disabled|not enabled|not configured)|sms.*(provider|required|configured)|provider.*phone/i.test(authError)){
+            message.textContent = "Phone signup is in the TikNation interface, but phone authentication is not enabled in the backend yet. Email signup still works. No paid SMS service has been configured.";
+        }else{
+            message.textContent = authError || "Something went wrong.";
+        }
 
     }finally{
 
