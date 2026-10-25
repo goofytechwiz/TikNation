@@ -2791,7 +2791,11 @@ textarea.form-control{
             <div class="form-group">
                 <label for="signupDateOfBirth">Date of birth</label>
                 <input id="signupDateOfBirth" class="form-control" type="date" autocomplete="bday" aria-describedby="signupAgeHelp">
-                <p id="signupAgeHelp" style="color:#b8b8d4;font-size:13px;line-height:1.5;margin-top:8px;">Enter your date of birth to continue. TikNation uses age information to apply age-appropriate safety protections.</p>
+                <p id="signupAgeHelp" style="color:#b8b8d4;font-size:13px;line-height:1.5;margin-top:8px;">Enter your actual date of birth. TikNation uses age information to apply age-appropriate safety protections. This is a self-reported age check, not government-ID verification.</p>
+                <label style="display:flex;align-items:flex-start;gap:10px;margin-top:12px;font-size:14px;line-height:1.5;">
+                    <input id="signupAgeAttestation" type="checkbox" style="margin-top:4px;flex-shrink:0;">
+                    <span>I confirm that the birthday above is my actual date of birth.</span>
+                </label>
             </div>
 
             <button type="button" class="primary-button auth-submit" onclick="continueSignupAgeGate()">CONTINUE</button>
@@ -3199,6 +3203,7 @@ function continueSignupAgeGate(){
     const dobInput = document.getElementById("signupDateOfBirth");
     const message = document.getElementById("authMessage");
     const value = dobInput ? dobInput.value : "";
+    const ageAttestation = document.getElementById("signupAgeAttestation");
 
     message.className = "auth-message";
     message.textContent = "";
@@ -3206,6 +3211,12 @@ function continueSignupAgeGate(){
     if(!value){
         message.className = "auth-message error";
         message.textContent = "Please enter your date of birth to continue.";
+        return;
+    }
+
+    if(!ageAttestation || !ageAttestation.checked){
+        message.className = "auth-message error";
+        message.textContent = "Please confirm that the birthday is your actual date of birth.";
         return;
     }
 
