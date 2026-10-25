@@ -593,6 +593,8 @@ body.tn-reduce-motion .boo-playback-effect,body.tn-reduce-motion .boo-playback-e
 @media(max-width:650px){
   #watch #watchGrid > .video-card{position:relative;isolation:isolate;}
   #watch #watchGrid > .video-card > .video-preview{position:relative;}
+  #watch .video-actions > [id^="like-button-"],
+  #watch .video-actions > [id^="comment-button-"]{display:none!important;}
   #watch .tn-magic-orbit{
     position:absolute;z-index:8;right:10px;top:50%;transform:translateY(-50%);
     display:flex;flex-direction:column;align-items:center;gap:11px;max-width:62px;
@@ -4895,8 +4897,9 @@ async function togglePublicCreatorFollow(){
 async function shareTikNationPost(postId){
     const post = watchPostsCache.find(item => String(item.id) === String(postId));
     const url = new URL(window.location.href);
+    url.searchParams.set("post",String(postId));
     url.hash = "watch";
-    const shareUrl = url.href + (url.href.includes("?") ? "&" : "?") + "post=" + encodeURIComponent(postId);
+    const shareUrl = url.href;
     const title = post && post.title ? post.title : "A TikNation creation";
     const shareData = {title:"TikNation · " + title,text:"Discover this creation on TikNation — Your voice. Your world.",url:shareUrl};
     try{
