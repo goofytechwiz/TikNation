@@ -6735,9 +6735,11 @@ async function loadSession(){
     if(currentUser){
         try{
             const {data:factors,error:factorsError} = await supabaseClient.auth.mfa.listFactors();
-            if(!factorsError && (factors?.totp || []).some(factor => factor.status === "verified")){
+            if(factorsError) throw factorsError;
+            if((factors?.totp || []).some(factor => factor.status === "verified")){
                 const {data:aalData,error:aalError} = await supabaseClient.auth.mfa.getAuthenticatorAssuranceLevel();
-                if(!aalError && aalData?.currentLevel !== "aal2"){
+                if(aalError) throw aalError;
+                if(aalData?.currentLevel !== "aal2"){
                     await supabaseClient.auth.signOut();
                     currentUser = null;
                     openAuthModal("signin");
@@ -6749,7 +6751,15 @@ async function loadSession(){
                 }
             }
         }catch(error){
-            console.warn("Could not confirm restored session's MFA status:",error);
+            console.warn("Could not confirm restored session's MFA status; signing out for safety:",error);
+            await supabaseClient.auth.signOut();
+            currentUser = null;
+            openAuthModal("signin");
+            const authMessage = document.getElementById("authMessage");
+            if(authMessage){
+                authMessage.className = "auth-message error";
+                authMessage.textContent = "We couldn't verify this session's security status. Please sign in again.";
+            }
         }
     }
 
