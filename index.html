@@ -2488,6 +2488,23 @@ textarea.form-control{
                     <button type="button" class="small-button" onclick="loadContentReports()">↻ Refresh reports</button>
                 </div><div id="contentReportsAdminList">Reports will appear here.</div>
             </div>
+            <div id="founderRecoveryCenter" style="border-top:1px solid rgba(126,234,255,.28);margin-top:24px;padding-top:20px;">
+                <h3>🛟 Founder Recovery Center</h3>
+                <p class="muted">Private account lookup and appeal review. Search only when helping a creator who contacted you. Account status checks do not automatically reverse a ban or restore a permanently deleted account.</p>
+                <form onsubmit="searchFounderRecoveryAccounts(event)" style="display:flex;flex-wrap:wrap;gap:10px;margin:14px 0;">
+                    <label for="founderRecoveryQuery" style="width:100%;">Username, email, or account ID</label>
+                    <input id="founderRecoveryQuery" type="search" minlength="2" maxlength="120" required autocomplete="off" placeholder="Search creator account…" style="flex:1;min-width:180px;padding:12px;border-radius:10px;background:#11111d;color:white;border:1px solid rgba(255,255,255,.18);">
+                    <button class="small-button" type="submit">🔎 Search accounts</button>
+                    <button class="small-button" type="button" onclick="loadFounderAccountAppeals()">↻ Refresh appeals</button>
+                </form>
+                <p id="founderRecoveryStatus" class="muted" role="status" aria-live="polite">Founder-only recovery tools are ready.</p>
+                <div id="founderRecoveryAccounts" style="display:grid;gap:10px;"></div>
+                <div style="border-top:1px solid rgba(255,255,255,.12);margin-top:18px;padding-top:16px;">
+                    <h4>📨 Account Appeals</h4>
+                    <p class="muted">Review each appeal carefully. An approval records the decision; it does not by itself lift a ban or recreate a deleted account.</p>
+                    <div id="founderRecoveryAppeals" style="display:grid;gap:10px;">Appeals have not been loaded.</div>
+                </div>
+            </div>
             <div style="border-top:1px solid rgba(255,255,255,.14);margin-top:24px;padding-top:20px;">
                 <h3>💡 Beta Feedback</h3>
                 <p class="muted">Suggestions and bug reports submitted by signed-in beta testers.</p>
@@ -8048,6 +8065,80 @@ async function loadVerificationAdminApplications(){
         const reports = document.getElementById("contentReportsAdminList");
         if(reports) reports.textContent = "Command Center data could not be loaded.";
     }
+}
+
+
+async function searchFounderRecoveryAccounts(event){
+    if(event) event.preventDefault();
+    const status=document.getElementById("founderRecoveryStatus");
+    const results=document.getElementById("founderRecoveryAccounts");
+    if(!isTikNationAdmin()){ if(status) status.textContent="Founder access required."; return; }
+    const query=(document.getElementById("founderRecoveryQuery")?.value||"").trim();
+    if(query.length<2){ if(status) status.textContent="Enter at least 2 characters."; return; }
+    if(status) status.textContent="Searching accounts securely…";
+    if(results) results.textContent="";
+    try{
+        const {data,error}=await supabaseClient.functions.invoke("tiknation-command-center",{body:{action:"recovery_search",query}});
+        if(error) throw error;
+        if(!data?.success) throw new Error(data?.error||"Account search failed.");
+        const accounts=Array.isArray(data.accounts)?data.accounts:[];
+        if(status) status.textContent=accounts.length ? accounts.length+" matching account(s) found.":"No matching accounts found.";
+        if(!results) return;
+        results.innerHTML=accounts.map(function(account){
+            const state=account.deactivated_at?"Deactivated":account.banned_until && new Date(account.banned_until)>new Date()?"Temporarily banned":"No active deactivation recorded";
+            return '<article class="card" style="padding:14px;overflow-wrap:anywhere;">'
+              +'<strong>'+(escapeHtml(account.username||"Unnamed creator"))+'</strong>'
+              +(account.display_name?'<div>'+escapeHtml(account.display_name)+'</div>':'')
+              +'<div class="muted" style="font-size:13px;margin-top:6px;">'+escapeHtml(account.email||"No email available")+'</div>'
+              +'<div class="muted" style="font-size:12px;margin-top:4px;">Status: '+escapeHtml(state)+'</div>'
+              +'<div class="muted" style="font-size:12px;">Account ID: '+escapeHtml(account.id)+'</div>'
+              +'<div class="muted" style="font-size:12px;">Last sign-in: '+escapeHtml(account.last_sign_in_at?new Date(account.last_sign_in_at).toLocaleString():"Not available")+'</div>'
+              +'</article>';
+        }).join("")||'<p class="muted">No matching accounts.</p>';
+    }catch(error){ if(status) status.textContent=error?.message||"Account search failed."; }
+}
+
+async function loadFounderAccountAppeals(){
+    const list=document.getElementById("founderRecoveryAppeals");
+    const status=document.getElementById("founderRecoveryStatus");
+    if(!isTikNationAdmin()){ if(status) status.textContent="Founder access required."; return; }
+    if(list) list.textContent="Loading appeals…";
+    try{
+        const {data,error}=await supabaseClient.functions.invoke("tiknation-command-center",{body:{action:"list_appeals"}});
+        if(error) throw error;
+        if(!data?.success) throw new Error(data?.error||"Appeals could not be loaded.");
+        const appeals=Array.isArray(data.appeals)?data.appeals:[];
+        if(list) list.innerHTML=appeals.map(function(appeal){
+            const pending=appeal.status==="pending";
+            return '<article class="card" style="padding:14px;overflow-wrap:anywhere;">'
+              +'<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;"><strong>'+escapeHtml(appeal.appeal_type||"Account appeal")+'</strong><span class="muted">'+escapeHtml(appeal.status||"pending")+'</span></div>'
+              +'<div class="muted" style="font-size:13px;margin-top:6px;">'+escapeHtml(appeal.username||appeal.contact_email||appeal.user_id||"Creator")+' · '+escapeHtml(appeal.created_at?new Date(appeal.created_at).toLocaleString():"Date unavailable")+'</div>'
+              +'<p style="white-space:pre-wrap;overflow-wrap:anywhere;">'+escapeHtml(appeal.reason||"No reason supplied.")+'</p>'
+              +(appeal.founder_notes?'<p class="muted">Founder notes: '+escapeHtml(appeal.founder_notes)+'</p>':'')
+              +(pending?'<label for="recoveryNotes_'+escapeHtml(appeal.id)+'">Private Founder notes</label><textarea id="recoveryNotes_'+escapeHtml(appeal.id)+'" maxlength="2000" rows="2" placeholder="Optional notes for this decision" style="width:100%;margin:6px 0 10px;padding:10px;border-radius:10px;"></textarea>'
+                +'<div style="display:flex;flex-wrap:wrap;gap:8px;">'
+                +'<button type="button" class="small-button" onclick="reviewFounderAccountAppeal(\''+escapeHtml(appeal.id)+'\',\'approved\')">Approve appeal</button>'
+                +'<button type="button" class="small-button" onclick="reviewFounderAccountAppeal(\''+escapeHtml(appeal.id)+'\',\'needs_information\')">Request information</button>'
+                +'<button type="button" class="small-button" onclick="reviewFounderAccountAppeal(\''+escapeHtml(appeal.id)+'\',\'denied\')">Deny appeal</button></div>':'')
+              +'</article>';
+        }).join("")||'<p class="muted">No appeals have been submitted yet.</p>';
+    }catch(error){ if(list) list.textContent=error?.message||"Appeals could not be loaded."; }
+}
+
+async function reviewFounderAccountAppeal(appealId,statusValue){
+    if(!isTikNationAdmin()){ alert("Founder access required."); return; }
+    const label=statusValue==="approved"?"approve":statusValue==="denied"?"deny":"request more information for";
+    if(!confirm("Are you sure you want to "+label+" this appeal?")) return;
+    const notes=(document.getElementById("recoveryNotes_"+appealId)?.value||"").trim();
+    const status=document.getElementById("founderRecoveryStatus");
+    if(status) status.textContent="Saving appeal decision…";
+    try{
+        const {data,error}=await supabaseClient.functions.invoke("tiknation-command-center",{body:{action:"review_appeal",appeal_id:appealId,status:statusValue,founder_notes:notes}});
+        if(error) throw error;
+        if(!data?.success) throw new Error(data?.error||"Appeal decision could not be saved.");
+        if(status) status.textContent="Appeal decision saved and audit logged.";
+        await loadFounderAccountAppeals();
+    }catch(error){ if(status) status.textContent=error?.message||"Appeal decision could not be saved."; }
 }
 
 let contentReportsCache = [];
