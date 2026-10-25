@@ -5606,9 +5606,10 @@ async function loadComments(postId){
 
         list.innerHTML = `
 
-            <p class="auth-message error">
-                ${escapeHtml(error.message)}
-            </p>
+            <div class="auth-message error" role="alert">
+                <p>Comments couldn't load right now.</p>
+                <button type="button" class="secondary-button" onclick="loadComments('${escapeJs(postId)}')">TRY AGAIN</button>
+            </div>
 
         `;
 
