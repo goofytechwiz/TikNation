@@ -589,6 +589,36 @@ body.tn-reduce-motion .boo-playback-effect,body.tn-reduce-motion .boo-playback-e
     #watch #watchGrid > .video-card .video-info{padding:10px 12px;}
 }
 
+/* TIKNATION MAGIC ORBIT — phone-first original interaction rail */
+@media(max-width:650px){
+  #watch #watchGrid > .video-card{position:relative;isolation:isolate;}
+  #watch #watchGrid > .video-card > .video-preview{position:relative;}
+  #watch .tn-magic-orbit{
+    position:absolute;z-index:8;right:10px;top:50%;transform:translateY(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:11px;max-width:62px;
+    padding:10px 7px;border:1px solid rgba(126,234,255,.28);border-radius:28px;
+    background:linear-gradient(180deg,rgba(15,19,39,.76),rgba(22,12,40,.82));
+    box-shadow:0 0 24px rgba(112,232,255,.12),inset 0 0 16px rgba(180,154,255,.08);
+    backdrop-filter:blur(12px);
+  }
+  #watch .tn-orbit-action{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    width:42px;min-height:44px;padding:4px 1px;border:0;border-radius:15px;
+    color:#f7f5ff;background:transparent;font-size:20px;line-height:1;cursor:pointer;
+    text-shadow:0 0 12px rgba(126,234,255,.35);transition:transform .18s ease,background .18s ease;
+  }
+  #watch .tn-orbit-action span{font-size:10px;font-weight:800;letter-spacing:.15px;}
+  #watch .tn-orbit-action:active{transform:scale(.9);}
+  #watch .tn-orbit-action:focus-visible{outline:2px solid #7eeaff;outline-offset:2px;}
+  #watch .tn-orbit-action.liked{color:#ff8bc4;background:rgba(255,107,186,.13);animation:tn-orbit-pulse .38s ease-out;}
+  #watch .tn-orbit-action .tn-orbit-count{font-size:10px;color:#d9d5ff;}
+  #watch .tn-orbit-action.tn-orbit-creator{border:1px solid rgba(180,154,255,.48);border-radius:50%;min-height:42px;background:rgba(141,99,255,.18);}
+  #watch .tn-orbit-action.tn-orbit-gift{color:#d7b4ff;}
+  #watch .tn-orbit-share-status{position:absolute;right:78px;bottom:12px;max-width:65%;padding:7px 10px;border-radius:12px;background:rgba(9,10,24,.92);border:1px solid rgba(126,234,255,.25);font-size:11px;color:#fff;}
+}
+@keyframes tn-orbit-pulse{50%{transform:scale(1.16);filter:drop-shadow(0 0 8px rgba(255,107,186,.8));}}
+@media(prefers-reduced-motion:reduce){#watch .tn-orbit-action{transition:none;}#watch .tn-orbit-action.liked{animation:none;}}
+
 /* VIDEO */
 
 .video-grid{
@@ -4860,6 +4890,43 @@ async function togglePublicCreatorFollow(){
     }
 }
 
+
+/* TikNation Magic Orbit actions */
+async function shareTikNationPost(postId){
+    const post = watchPostsCache.find(item => String(item.id) === String(postId));
+    const url = new URL(window.location.href);
+    url.hash = "watch";
+    const shareUrl = url.href + (url.href.includes("?") ? "&" : "?") + "post=" + encodeURIComponent(postId);
+    const title = post && post.title ? post.title : "A TikNation creation";
+    const shareData = {title:"TikNation · " + title,text:"Discover this creation on TikNation — Your voice. Your world.",url:shareUrl};
+    try{
+        if(navigator.share){
+            await navigator.share(shareData);
+        }else if(navigator.clipboard && navigator.clipboard.writeText){
+            await navigator.clipboard.writeText(shareUrl);
+            showMagicOrbitMessage(postId,"Dream Relay link copied!");
+        }else{
+            window.prompt("Copy this TikNation link:",shareUrl);
+        }
+    }catch(error){
+        if(error && error.name !== "AbortError"){
+            console.error("TikNation share failed:",error);
+            window.prompt("Copy this TikNation link:",shareUrl);
+        }
+    }
+}
+function showMagicOrbitMessage(postId,message){
+    const card=document.querySelector('#watchGrid [data-post-id="'+CSS.escape(String(postId))+'"]');
+    if(!card) return;
+    let status=card.querySelector(".tn-orbit-share-status");
+    if(!status){status=document.createElement("div");status.className="tn-orbit-share-status";status.setAttribute("role","status");card.appendChild(status);}
+    status.textContent=message;
+    window.setTimeout(()=>{if(status.isConnected)status.remove();},2600);
+}
+function openMagicOrbitGifts(){
+    window.location.href="./live.html";
+}
+
 function renderWatchPost(post){
 
     const media =
@@ -4881,6 +4948,14 @@ function renderWatchPost(post){
         >
 
             ${media}
+
+            <div class="tn-magic-orbit" aria-label="TikNation Magic Orbit actions">
+                <button type="button" class="tn-orbit-action" id="orbit-like-${escapeHtml(post.id)}" aria-label="Like this creation" onclick="toggleLike('${escapeJs(post.id)}')" title="Pulse of the Community">♡<span>Pulse</span><small class="tn-orbit-count" id="orbit-like-count-${escapeHtml(post.id)}">0</small></button>
+                <button type="button" class="tn-orbit-action" aria-label="Open conversation" onclick="toggleComments('${escapeJs(post.id)}')" title="Conversation Portal">☏<span>Talk</span><small class="tn-orbit-count" id="orbit-comment-count-${escapeHtml(post.id)}">0</small></button>
+                <button type="button" class="tn-orbit-action tn-orbit-gift" aria-label="Explore Magic Gifts" onclick="openMagicOrbitGifts()" title="Magic Gift Summoning">✧<span>Magic</span></button>
+                <button type="button" class="tn-orbit-action" aria-label="Share this creation" onclick="shareTikNationPost('${escapeJs(post.id)}')" title="Dream Relay">⤴<span>Relay</span></button>
+                <button type="button" class="tn-orbit-action tn-orbit-creator" aria-label="Open creator profile" onclick="openPublicCreatorProfile('${escapeJs(post.user_id)}')" title="Creator Identity">👑</button>
+            </div>
 
             <div class="video-info">
 
@@ -5079,6 +5154,10 @@ async function loadLikeState(postId){
         document.getElementById(
             "like-count-" + postId
         );
+
+    const orbitCount = document.getElementById("orbit-like-count-" + postId);
+    const orbitButton = document.getElementById("orbit-like-" + postId);
+    if(orbitCount) orbitCount.textContent = count || 0;
 
     if(countElement){
         countElement.textContent =
