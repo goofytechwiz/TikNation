@@ -8113,9 +8113,13 @@ function closeTikNationWelcome(destination){
     if(overlay) overlay.classList.remove("is-open");
     document.body.style.overflow="";
     try{localStorage.setItem("tiknationWelcomeSeen","1");}catch(error){}
-    if(destination==="watch" && typeof showPage==="function") showPage("watch");
+    const isSharedPost=!!new URLSearchParams(window.location.search).get("post");
+    if((destination==="watch" || isSharedPost) && typeof showPage==="function") showPage("watch");
 }
 (function initTikNationWelcome(){
+    const isSharedPost=!!new URLSearchParams(window.location.search).get("post");
+    // Dream Relay links must land on Watch even if the visitor hasn't seen the welcome yet.
+    if(isSharedPost && typeof showPage==="function") showPage("watch");
     const overlay=document.getElementById("tnWelcomeOverlay");
     if(!overlay) return;
     let seen=false;
