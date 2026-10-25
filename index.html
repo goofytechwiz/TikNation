@@ -2584,6 +2584,31 @@ textarea.form-control{
         </div>
     </details>
 
+    <details id="twoFactorSettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;">
+        <summary>🛡️ Two-Factor Authentication (2FA)</summary>
+        <div class="settings-panel-content">
+            <p class="muted">Add an authenticator app as a second layer of protection. You will need your password and a fresh six-digit authenticator code to sign in. Keep access to your authenticator app; recovery codes are not available in this setup yet.</p>
+            <p id="mfaStatus" class="muted" role="status" aria-live="polite">Checking two-factor status…</p>
+            <button type="button" id="mfaEnrollButton" class="primary-button" onclick="beginMfaEnrollment()">SET UP AUTHENTICATOR</button>
+            <div id="mfaEnrollmentBox" hidden style="margin-top:18px;">
+                <p>1. Scan this QR code with your authenticator app, or enter the setup key manually.</p>
+                <img id="mfaQrCode" alt="Authenticator setup QR code" style="display:block;width:min(260px,100%);background:#fff;padding:12px;border-radius:12px;margin:14px 0;">
+                <p class="muted">Manual setup key</p>
+                <code id="mfaSecret" style="display:block;overflow-wrap:anywhere;user-select:all;padding:12px;background:rgba(255,255,255,.06);border-radius:10px;"></code>
+                <label for="mfaEnrollCode" style="display:block;margin-top:16px;">2. Enter the six-digit code from your authenticator app</label>
+                <input id="mfaEnrollCode" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="000000" style="width:100%;margin:8px 0 12px;padding:12px;border-radius:10px;">
+                <button type="button" class="primary-button" onclick="verifyMfaEnrollment()">VERIFY AND ENABLE 2FA</button>
+            </div>
+            <div id="mfaDisableBox" hidden style="margin-top:18px;">
+                <p>To turn off 2FA, verify a current authenticator code first.</p>
+                <label for="mfaDisableCode" style="display:block;margin-top:12px;">Authenticator code</label>
+                <input id="mfaDisableCode" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="000000" style="width:100%;margin:8px 0 12px;padding:12px;border-radius:10px;">
+                <button type="button" class="secondary-button" onclick="disableMfa()">TURN OFF 2FA</button>
+            </div>
+            <p id="mfaActionMessage" class="auth-message" role="status" aria-live="polite"></p>
+        </div>
+    </details>
+
     <details id="privacySettings" class="settings-panel card" style="margin-top:24px;scroll-margin-top:90px;">
         <summary>🛡️ Privacy Settings</summary>
         <div class="settings-panel-content">
@@ -3370,6 +3395,7 @@ async function submitAuth(){
 
                 if(error) throw error;
 
+                if(data.session && !(await completeMfaSignIn(message))) return;
                 closeAuthModal();
                 if(data.session) showPage("home");
             }else{
@@ -3398,6 +3424,7 @@ async function submitAuth(){
                 });
                 if(sessionError) throw sessionError;
 
+                if(!(await completeMfaSignIn(message))) return;
                 closeAuthModal();
                 showPage("home");
             }
@@ -6478,6 +6505,153 @@ function refreshAccountOverview(){
     if(username) username.textContent = currentProfile?.username ? "@" + currentProfile.username : (currentUser ? "Profile loading or username not set" : "—");
 }
 
+let pendingMfaFactorId = null;
+
+function setMfaMessage(message, isError){
+    const node = document.getElementById("mfaActionMessage");
+    if(!node) return;
+    node.className = isError ? "auth-message error" : "auth-message";
+    node.textContent = message || "";
+}
+
+async function refreshMfaSettings(){
+    const status = document.getElementById("mfaStatus");
+    const enrollButton = document.getElementById("mfaEnrollButton");
+    const disableBox = document.getElementById("mfaDisableBox");
+    const enrollmentBox = document.getElementById("mfaEnrollmentBox");
+    if(!status) return;
+    if(!currentUser){
+        status.textContent = "Sign in to configure two-factor authentication.";
+        if(enrollButton) enrollButton.disabled = true;
+        if(disableBox) disableBox.hidden = true;
+        if(enrollmentBox) enrollmentBox.hidden = true;
+        return;
+    }
+    if(enrollButton) enrollButton.disabled = true;
+    status.textContent = "Checking authenticator status…";
+    try{
+        const {data,error} = await supabaseClient.auth.mfa.listFactors();
+        if(error) throw error;
+        const verified = (data?.totp || []).filter(factor => factor.status === "verified");
+        if(verified.length){
+            status.textContent = "2FA is enabled with an authenticator app.";
+            if(enrollButton){ enrollButton.textContent = "2FA ENABLED"; enrollButton.hidden = true; }
+            if(disableBox) disableBox.hidden = false;
+            if(enrollmentBox) enrollmentBox.hidden = true;
+        }else{
+            status.textContent = "2FA is not enabled on this account yet.";
+            if(enrollButton){ enrollButton.hidden = false; enrollButton.disabled = false; enrollButton.textContent = "SET UP AUTHENTICATOR"; }
+            if(disableBox) disableBox.hidden = true;
+        }
+    }catch(error){
+        status.textContent = "Could not check 2FA status. Please refresh and try again.";
+        setMfaMessage(error.message || "Unable to check two-factor status.",true);
+        if(enrollButton){ enrollButton.hidden = false; enrollButton.disabled = false; }
+    }
+}
+
+async function beginMfaEnrollment(){
+    if(!currentUser){ setMfaMessage("Please sign in first.",true); return; }
+    const button = document.getElementById("mfaEnrollButton");
+    if(button) button.disabled = true;
+    setMfaMessage("");
+    try{
+        const {data,error} = await supabaseClient.auth.mfa.enroll({
+            factorType:"totp",
+            friendlyName:"TikNation authenticator"
+        });
+        if(error) throw error;
+        pendingMfaFactorId = data.id;
+        const qr = document.getElementById("mfaQrCode");
+        const secret = document.getElementById("mfaSecret");
+        const box = document.getElementById("mfaEnrollmentBox");
+        if(!data.totp?.qr_code || !data.totp?.secret) throw new Error("The authenticator setup details were incomplete. Refresh and try again.");
+        qr.src = data.totp.qr_code;
+        secret.textContent = data.totp.secret;
+        if(box) box.hidden = false;
+        setMfaMessage("Scan the QR code, then verify a code before 2FA is enabled.");
+    }catch(error){
+        setMfaMessage(error.message || "Could not start authenticator setup.",true);
+    }finally{
+        if(button) button.disabled = false;
+    }
+}
+
+async function verifyMfaEnrollment(){
+    const codeInput = document.getElementById("mfaEnrollCode");
+    const code = (codeInput?.value || "").replace(/\s/g,"");
+    if(!pendingMfaFactorId){ setMfaMessage("Start authenticator setup first.",true); return; }
+    if(!/^\d{6}$/.test(code)){ setMfaMessage("Enter the six-digit code from your authenticator app.",true); return; }
+    try{
+        const {data:challenge,error:challengeError} = await supabaseClient.auth.mfa.challenge({factorId:pendingMfaFactorId});
+        if(challengeError) throw challengeError;
+        const {error} = await supabaseClient.auth.mfa.verify({
+            factorId:pendingMfaFactorId,
+            challengeId:challenge.id,
+            code
+        });
+        if(error) throw error;
+        pendingMfaFactorId = null;
+        if(codeInput) codeInput.value = "";
+        setMfaMessage("2FA is enabled. Your authenticator code will be required at sign-in.");
+        await refreshMfaSettings();
+    }catch(error){
+        setMfaMessage(error.message || "That code could not be verified. Check the time on your phone and try again.",true);
+    }
+}
+
+async function disableMfa(){
+    const {data,error:listError} = await supabaseClient.auth.mfa.listFactors();
+    if(listError){ setMfaMessage(listError.message || "Could not load your authenticator.",true); return; }
+    const factor = (data?.totp || []).find(item => item.status === "verified");
+    const codeInput = document.getElementById("mfaDisableCode");
+    const code = (codeInput?.value || "").replace(/\s/g,"");
+    if(!factor){ setMfaMessage("No verified authenticator was found.",true); await refreshMfaSettings(); return; }
+    if(!/^\d{6}$/.test(code)){ setMfaMessage("Enter the six-digit code from your authenticator app.",true); return; }
+    try{
+        const {data:challenge,error:challengeError} = await supabaseClient.auth.mfa.challenge({factorId:factor.id});
+        if(challengeError) throw challengeError;
+        const {error:verifyError} = await supabaseClient.auth.mfa.verify({factorId:factor.id,challengeId:challenge.id,code});
+        if(verifyError) throw verifyError;
+        const {error:removeError} = await supabaseClient.auth.mfa.unenroll({factorId:factor.id});
+        if(removeError) throw removeError;
+        if(codeInput) codeInput.value = "";
+        setMfaMessage("2FA has been turned off for this account.");
+        await refreshMfaSettings();
+    }catch(error){
+        setMfaMessage(error.message || "Could not turn off 2FA. Verify your current code and try again.",true);
+    }
+}
+
+async function completeMfaSignIn(message){
+    const {data,error} = await supabaseClient.auth.mfa.listFactors();
+    if(error) throw error;
+    const factor = (data?.totp || []).find(item => item.status === "verified");
+    if(!factor) return true;
+    const {data:aalData,error:aalError} = await supabaseClient.auth.mfa.getAuthenticatorAssuranceLevel();
+    if(aalError) throw aalError;
+    if(aalData?.currentLevel === "aal2") return true;
+    const {data:challenge,error:challengeError} = await supabaseClient.auth.mfa.challenge({factorId:factor.id});
+    if(challengeError) throw challengeError;
+    const code = window.prompt("Two-factor authentication is enabled. Enter the six-digit code from your authenticator app to finish signing in:");
+    if(!code || !/^\s*\d{6}\s*$/.test(code)){
+        await supabaseClient.auth.signOut();
+        message.className = "auth-message error";
+        message.textContent = "Two-factor verification was cancelled. Sign in again and enter your authenticator code.";
+        return false;
+    }
+    const {error:verifyError} = await supabaseClient.auth.mfa.verify({
+        factorId:factor.id,
+        challengeId:challenge.id,
+        code:code.trim()
+    });
+    if(verifyError){
+        await supabaseClient.auth.signOut();
+        throw new Error("Two-factor verification failed. Check your authenticator code and sign in again.");
+    }
+    return true;
+}
+
 function refreshSecuritySettings(){
     const status = document.getElementById("securitySignedInAs");
     const passwordStatus = document.getElementById("passwordSettingsSignedInAs");
@@ -6487,6 +6661,7 @@ function refreshSecuritySettings(){
     if(status) status.textContent = statusText;
     if(passwordStatus) passwordStatus.textContent = statusText;
     refreshAccountOverview();
+    refreshMfaSettings();
 }
 
 /* =========================
