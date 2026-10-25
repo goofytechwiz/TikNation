@@ -8093,6 +8093,7 @@ async function searchFounderRecoveryAccounts(event){
               +'<div class="muted" style="font-size:12px;margin-top:4px;">Status: '+escapeHtml(state)+'</div>'
               +'<div class="muted" style="font-size:12px;">Account ID: '+escapeHtml(account.id)+'</div>'
               +'<div class="muted" style="font-size:12px;">Last sign-in: '+escapeHtml(account.last_sign_in_at?new Date(account.last_sign_in_at).toLocaleString():"Not available")+'</div>'
+              +(account.deactivated_at?'<button type="button" class="small-button" style="margin-top:10px;" onclick="reactivateFounderAccount(\\''+escapeHtml(account.id)+'\\')">↻ Reactivate account</button>':'')
               +'</article>';
         }).join("")||'<p class="muted">No matching accounts.</p>';
     }catch(error){ if(status) status.textContent=error?.message||"Account search failed."; }
@@ -8123,6 +8124,20 @@ async function loadFounderAccountAppeals(){
               +'</article>';
         }).join("")||'<p class="muted">No appeals have been submitted yet.</p>';
     }catch(error){ if(list) list.textContent=error?.message||"Appeals could not be loaded."; }
+}
+
+async function reactivateFounderAccount(userId){
+    if(!isTikNationAdmin()){ alert("Founder access required."); return; }
+    if(!confirm("Reactivate this account? This clears its deactivation flag but does not lift a separate ban.")) return;
+    const status=document.getElementById("founderRecoveryStatus");
+    if(status) status.textContent="Reactivating account…";
+    try{
+        const {data,error}=await supabaseClient.functions.invoke("tiknation-command-center",{body:{action:"reactivate_account",user_id:userId}});
+        if(error) throw error;
+        if(!data?.success) throw new Error(data?.error||"Account could not be reactivated.");
+        if(status) status.textContent=data.message||"Account reactivated.";
+        await searchFounderRecoveryAccounts();
+    }catch(error){ if(status) status.textContent=error?.message||"Account could not be reactivated."; }
 }
 
 async function reviewFounderAccountAppeal(appealId,statusValue){
