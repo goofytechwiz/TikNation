@@ -2523,10 +2523,15 @@ textarea.form-control{
                     <option value="Bug report">Bug report</option>
                     <option value="Feature request">Feature request</option>
                     <option value="Design suggestion">Design suggestion</option>
+                    <option value="Accessibility issue">Accessibility issue</option>
                 </select>
                 <label for="betaFeedbackMessage">Your feedback</label>
                 <textarea id="betaFeedbackMessage" required maxlength="4000" rows="5" placeholder="Tell us what you noticed, what went wrong, or what would make TikNation better..." style="display:block;width:100%;margin:8px 0 12px;padding:12px;border-radius:12px;background:#11111d;color:white;border:1px solid rgba(255,255,255,.15);resize:vertical;"></textarea>
-                <p class="muted" style="font-size:12px;">Please don't include passwords or other sensitive information.</p>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin:0 0 12px;">
+                    <button type="button" class="secondary-button" onclick="addBetaDeviceDetails()" style="padding:10px 14px;">📱 ADD DEVICE DETAILS</button>
+                    <button type="button" class="secondary-button" onclick="addBetaBugTemplate()" style="padding:10px 14px;">🛠️ BUG REPORT TEMPLATE</button>
+                </div>
+                <p class="muted" style="font-size:12px;">Device details are added only when you tap the button. Review the message before sending. Never include passwords or other sensitive information.</p>
                 <button id="betaFeedbackSubmit" type="submit" class="primary-button">SEND FEEDBACK</button>
                 <p id="betaFeedbackStatus" class="muted" role="status" aria-live="polite"></p>
             </form>
@@ -2840,6 +2845,29 @@ function openBetaFeedback(){
         panel.open = true;
         panel.scrollIntoView({behavior:"smooth",block:"start"});
     }
+}
+
+function addBetaDeviceDetails(){
+    const message = document.getElementById("betaFeedbackMessage");
+    if(!message) return;
+    const device = navigator.userAgent || "Not available";
+    const viewport = window.innerWidth + " × " + window.innerHeight;
+    const details = "\n\n--- Optional device details ---\nBrowser/device: " + device + "\nViewport: " + viewport;
+    if(!message.value.includes("--- Optional device details ---")){
+        message.value = (message.value.trim() ? message.value.trim() + "\n" : "") + details.trim();
+    }
+    message.focus();
+}
+
+function addBetaBugTemplate(){
+    const type = document.getElementById("betaFeedbackType");
+    const message = document.getElementById("betaFeedbackMessage");
+    if(type) type.value = "Bug report";
+    if(!message) return;
+    const template = "What I was trying to do:\n\nWhat happened instead:\n\nSteps to reproduce (if known):\n1. \n2. \n3. \n\nExpected result:\n\n";
+    if(!message.value.trim()) message.value = template;
+    else if(!message.value.includes("What I was trying to do:")) message.value += "\n\n" + template;
+    message.focus();
 }
 
 async function submitBetaFeedback(event){
