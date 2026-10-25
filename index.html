@@ -5163,6 +5163,8 @@ async function loadLikeState(postId){
         countElement.textContent =
             count || 0;
     }
+    const orbitCount = document.getElementById("orbit-like-count-" + postId);
+    if(orbitCount) orbitCount.textContent = count || 0;
 
     if(!currentUser){
         return;
@@ -5198,8 +5200,9 @@ async function loadLikeState(postId){
         return;
     }
 
+    const orbitButton = document.getElementById("orbit-like-" + postId);
     if(data && data.length > 0){
-
+        if(orbitButton){orbitButton.classList.add("liked");orbitButton.innerHTML='♥<span>Pulse</span><small class="tn-orbit-count" id="orbit-like-count-'+escapeHtml(postId)+'">'+(count||0)+'</small>';}
         button.classList.add("liked");
 
         button.innerHTML =
@@ -5210,7 +5213,7 @@ async function loadLikeState(postId){
             "</span>";
 
     }else{
-
+        if(orbitButton){orbitButton.classList.remove("liked");orbitButton.innerHTML='♡<span>Pulse</span><small class="tn-orbit-count" id="orbit-like-count-'+escapeHtml(postId)+'">'+(count||0)+'</small>';}
         button.classList.remove("liked");
     }
 }
@@ -5345,6 +5348,8 @@ async function loadCommentCount(postId){
         element.textContent =
             count || 0;
     }
+    const orbitCount = document.getElementById("orbit-comment-count-" + postId);
+    if(orbitCount) orbitCount.textContent = count || 0;
 }
 
 async function toggleComments(postId){
