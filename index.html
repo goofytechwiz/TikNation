@@ -1791,6 +1791,23 @@ textarea.form-control{
 @media(max-width:600px){.tn-host-feature{grid-template-columns:1fr;padding:18px}.tn-host-avatar{width:86px;height:86px;font-size:45px;grid-row:1}.tn-host-launcher{right:10px;bottom:84px;padding:8px 12px 8px 8px}.tn-host-panel{right:10px;bottom:140px}}
 @media(prefers-reduced-motion:reduce){.tn-host-avatar{animation:none}}
 
+
+/* TIKNATION FIRST-VISIT WELCOME */
+.tn-welcome-overlay{position:fixed;inset:0;z-index:12000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(4,4,13,.82);backdrop-filter:blur(12px)}
+.tn-welcome-overlay.is-open{display:flex}
+.tn-welcome-card{position:relative;width:min(520px,100%);max-height:90vh;overflow:auto;padding:clamp(22px,5vw,36px);border:1px solid rgba(126,234,255,.35);border-radius:28px;background:radial-gradient(ellipse at top,rgba(112,70,210,.28),transparent 55%),linear-gradient(145deg,#17152b,#090911 72%);box-shadow:0 24px 90px rgba(0,0,0,.55),0 0 42px rgba(87,203,255,.12);text-align:center}
+.tn-welcome-orb{display:grid;place-items:center;width:76px;height:76px;margin:0 auto 18px;border-radius:50%;font-size:38px;background:radial-gradient(circle at 35% 25%,#fff,#7eeaff 18%,#7051d8 62%,#171329 100%);box-shadow:0 0 35px rgba(126,234,255,.3)}
+.tn-welcome-card .eyebrow{letter-spacing:.18em;font-size:.72rem;color:#9defff}
+.tn-welcome-card h2{margin:10px 0;font-size:clamp(1.7rem,6vw,2.35rem);line-height:1.08}
+.tn-welcome-card p{color:#c7c5d8;line-height:1.55;margin:12px 0}
+.tn-welcome-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:20px 0}
+.tn-welcome-step{padding:12px 8px;border:1px solid rgba(255,255,255,.1);border-radius:15px;background:rgba(255,255,255,.035);font-size:.85rem;color:#e8e6f7}
+.tn-welcome-step span{display:block;font-size:1.45rem;margin-bottom:5px}
+.tn-welcome-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}
+.tn-welcome-actions button{min-height:44px}
+.tn-welcome-dismiss{background:transparent!important;border:1px solid rgba(255,255,255,.18)!important;color:#d7d5e7!important}
+@media(max-width:390px){.tn-welcome-steps{grid-template-columns:1fr}.tn-welcome-step{display:flex;align-items:center;gap:10px;text-align:left}.tn-welcome-step span{margin:0}}
+@media(prefers-reduced-motion:reduce){.tn-welcome-overlay *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style>
 </head>
 
@@ -2638,6 +2655,25 @@ textarea.form-control{
     </button>
 
 </nav>
+
+<div id="tnWelcomeOverlay" class="tn-welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="tnWelcomeTitle" aria-describedby="tnWelcomeDescription">
+    <section class="tn-welcome-card">
+        <div class="tn-welcome-orb" aria-hidden="true">✨</div>
+        <div class="eyebrow">WELCOME, DREAMER</div>
+        <h2 id="tnWelcomeTitle">Your Voice.<br><span class="gradient-text">Your World.</span></h2>
+        <p id="tnWelcomeDescription">Welcome to TikNation — a growing world for creators, communities, and magical surprises. Take a quick look around, or skip straight to the videos.</p>
+        <div class="tn-welcome-steps">
+            <div class="tn-welcome-step"><span aria-hidden="true">▶️</span>Watch creations</div>
+            <div class="tn-welcome-step"><span aria-hidden="true">💬</span>Meet your community</div>
+            <div class="tn-welcome-step"><span aria-hidden="true">✨</span>Explore Magic Orbit</div>
+        </div>
+        <div class="tn-welcome-actions">
+            <button type="button" class="primary-button" onclick="closeTikNationWelcome('watch')">EXPLORE VIDEOS</button>
+            <button type="button" class="secondary-button tn-welcome-dismiss" onclick="closeTikNationWelcome('home')">SKIP WELCOME</button>
+        </div>
+        <p style="font-size:.78rem;margin-bottom:0;">You can explore without creating an account. Some interactive features require sign-in.</p>
+    </section>
+</div>
 
 <div id="reportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle" onclick="if(event.target===this)closeReportModal()">
     <div class="report-modal-card">
@@ -8069,6 +8105,26 @@ if ("serviceWorker" in navigator) {
         });
     }
     document.addEventListener("keydown",function(event){if(event.key==="Escape")window.closeTikNationHost();});
+})();
+</script>
+<script>
+function closeTikNationWelcome(destination){
+    const overlay=document.getElementById("tnWelcomeOverlay");
+    if(overlay) overlay.classList.remove("is-open");
+    document.body.style.overflow="";
+    try{localStorage.setItem("tiknationWelcomeSeen","1");}catch(error){}
+    if(destination==="watch" && typeof showPage==="function") showPage("watch");
+}
+(function initTikNationWelcome(){
+    const overlay=document.getElementById("tnWelcomeOverlay");
+    if(!overlay) return;
+    let seen=false;
+    try{seen=localStorage.getItem("tiknationWelcomeSeen")==="1";}catch(error){}
+    if(seen) return;
+    overlay.classList.add("is-open");
+    document.body.style.overflow="hidden";
+    const firstButton=overlay.querySelector("button");
+    if(firstButton) firstButton.focus();
 })();
 </script>
 <script src="gifts.js"></script>
