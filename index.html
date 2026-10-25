@@ -8093,7 +8093,7 @@ async function searchFounderRecoveryAccounts(event){
               +'<div class="muted" style="font-size:12px;margin-top:4px;">Status: '+escapeHtml(state)+'</div>'
               +'<div class="muted" style="font-size:12px;">Account ID: '+escapeHtml(account.id)+'</div>'
               +'<div class="muted" style="font-size:12px;">Last sign-in: '+escapeHtml(account.last_sign_in_at?new Date(account.last_sign_in_at).toLocaleString():"Not available")+'</div>'
-              +(account.deactivated_at?'<button type="button" class="small-button" style="margin-top:10px;" onclick="reactivateFounderAccount(\\''+escapeHtml(account.id)+'\\')">↻ Reactivate account</button>':'')
+              +(account.deactivated_at?'<button type="button" class="small-button" style="margin-top:10px;" onclick="reactivateFounderAccount(\''+escapeHtml(account.id)+'\')">↻ Reactivate account</button>':'')
               +'</article>';
         }).join("")||'<p class="muted">No matching accounts.</p>';
     }catch(error){ if(status) status.textContent=error?.message||"Account search failed."; }
