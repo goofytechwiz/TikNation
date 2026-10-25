@@ -91,7 +91,12 @@
         <div class="live-power-card"><h4>🎙️ Guest Stage</h4><p class="small">Manage guest invitations and keep control of your stage.</p><label for="guestInviteName" class="small">Creator username to invite</label><input id="guestInviteName" maxlength="40" placeholder="@creatorname"><div class="live-power-actions"><button type="button" class="primary" id="inviteGuestBtn">Invite guest</button><button type="button" class="ghost" id="endGuestStageBtn">Close stage</button></div><div class="live-power-status" id="hostGuestStatus" role="status" aria-live="polite">Stage is closed.</div><div id="incomingGuestRequests" class="small" aria-live="polite">Incoming guest requests appear here while you are live.</div></div>
         <div class="live-power-card"><h4>⚔️ Live Battles</h4><p class="small">Prepare a timed head-to-head battle.</p><label for="battleOpponentName" class="small">Opponent username</label><input id="battleOpponentName" maxlength="40" placeholder="@opponent"><div class="live-power-actions"><button type="button" class="primary" id="sendBattleInviteBtn">Send challenge</button><button type="button" class="ghost" id="battleRoundBtn">Start 3-min preview</button></div><div class="score-row"><span>Your score</span><span class="score" id="battleHostScore">0</span></div><div class="score-row"><span>Opponent</span><span class="score" id="battleOpponentScore">0</span></div><div class="live-power-status" id="hostBattleStatus" role="status" aria-live="polite">No active battle.</div><div id="incomingBattleInvites" class="small" aria-live="polite">Battle invitations appear here while you are live.</div></div>
       </div>
-      <p class="tiny-note">Guest and battle requests are now saved in the database. Guest audio/video joining, invitation accept/decline controls, and server-verified battle scoring are not connected yet. The preview timer remains local and awards no coins or earnings.</p>
+      <div class="live-power-card" style="margin-top:12px">
+        <h4>📡 Live session status</h4>
+        <div class="score-row"><span>Media room</span><span class="score" id="mediaRoomStatus">Not connected</span></div>
+        <div class="score-row"><span>Connected participants</span><span class="score" id="mediaParticipantStatus">0</span></div>
+        <p class="tiny-note" id="livePowerCapabilityNote">Guest requests and battle invitations are stored in TikNation. This page does not yet connect an accepted guest's camera/microphone or run server-verified battle scoring. No test action awards real coins or earnings.</p>
+      </div>
     </section>
     <p class="small" id="creatorHint" style="margin-top:10px">Broadcasting is invite-only during beta.</p>
   </section>
@@ -265,7 +270,7 @@ async function sendLiveGift(giftCode,button) {
   finally{liveGiftRequestBusy=false;buttons.forEach(b=>b.disabled=false);}
 }
 
-function updateLiveViewerCount(){const node=$("liveViewerCount");if(!node)return;if(!activeSession){node.textContent="";return;}const count=room?room.remoteParticipants.size+(isHost?0:1):0;node.textContent="👥 "+count+" participant"+(count===1?"":"s")+" connected";}
+function updateLiveViewerCount(){const node=$("liveViewerCount");const roomNode=$("mediaRoomStatus");const countNode=$("mediaParticipantStatus");if(!activeSession){if(node)node.textContent="";if(roomNode)roomNode.textContent="Not connected";if(countNode)countNode.textContent="0";return;}const count=room?room.remoteParticipants.size+(isHost?0:1):0;if(node)node.textContent="👥 "+count+" participant"+(count===1?"":"s")+" connected";if(roomNode)roomNode.textContent=room?"Connected":"Connecting…";if(countNode)countNode.textContent=String(count);}
 function resetVideo(id,text){const box=$(id);const overlayId=id==="creatorVideo"?"creatorChatOverlay":"viewerChatOverlay";box.innerHTML='<div class="placeholder">'+esc(text)+'</div><div class="live-chat-overlay" id="'+overlayId+'" aria-label="Live comments on video"></div>';}
 function attachTrack(track, elementId){const box=$(elementId);const placeholder=box.querySelector(".placeholder");if(placeholder)placeholder.remove();const el=track.attach();el.autoplay=true;el.playsInline=true;if(track.kind==="video")el.controls=false;box.appendChild(el);}
 function stopChat(){if(chatTimer)clearInterval(chatTimer);chatTimer=null;lastMessageAt=null;for(const id of ["viewerChatOverlay","creatorChatOverlay"]){const overlay=$(id);if(overlay)overlay.innerHTML="";}}
