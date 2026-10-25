@@ -1767,6 +1767,34 @@ textarea.form-control{
     }
 }
 
+/* PUBLIC WELCOME EXPERIENCE — explore first, join when ready */
+.tn-create-account-button{border-color:rgba(0,210,255,.42);background:linear-gradient(110deg,rgba(0,190,255,.16),rgba(141,99,255,.18));white-space:nowrap;}
+.tn-landing-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:relative;margin-top:2px;}
+.tn-landing-actions .primary-button{margin-top:25px;}
+.tn-landing-secondary{position:relative;margin-top:25px;padding:12px 20px;border:1px solid rgba(0,210,255,.42);border-radius:30px;background:rgba(0,210,255,.08);color:#fff;font-weight:800;}
+.tn-landing-secondary:hover,.tn-landing-secondary:focus-visible{background:rgba(0,210,255,.17);outline:2px solid #70e8ff;outline-offset:2px;}
+.tn-public-browse-note{margin-top:15px!important;font-size:13px!important;color:#b9b9d0!important;}
+.tn-explore-intro{max-width:760px;margin:-5px 0 20px;color:#aaaabd;line-height:1.7;}
+.tn-public-explore-grid .tn-explore-card{display:flex;flex-direction:column;align-items:flex-start;width:100%;min-height:215px;text-align:left;color:#fff;font-family:inherit;cursor:pointer;}
+.tn-explore-card .card-icon{display:block;margin-bottom:16px;}
+.tn-explore-card-title{display:block;margin-bottom:8px;font-size:19px;font-weight:800;}
+.tn-explore-card-copy{display:block;color:#aaaabd;font-size:14px;line-height:1.6;}
+.tn-explore-card-link{display:block;margin-top:auto;padding-top:18px;color:#70e8ff;font-size:13px;font-weight:800;}
+.tn-public-explore-grid .tn-explore-card:hover{border-color:rgba(0,210,255,.45);box-shadow:0 15px 40px rgba(0,0,0,.25),0 0 24px rgba(0,210,255,.07);}
+.tn-public-explore-grid .tn-create-card{background:linear-gradient(145deg,rgba(100,50,220,.2),rgba(0,150,220,.09),rgba(15,15,27,.9));border-color:rgba(141,99,255,.3);}
+#tnExploreSection{scroll-margin-top:90px;}
+@media(max-width:650px){
+ .tn-create-account-button{display:none;}
+ .hero-card{padding:30px 24px;}
+ .tn-landing-actions{align-items:stretch;flex-direction:column;gap:0;}
+ .tn-landing-actions button{width:100%;text-align:center;}
+ .tn-public-explore-grid{grid-template-columns:1fr;}
+ .tn-public-explore-grid .tn-explore-card{min-height:185px;}
+}
+@media(prefers-reduced-motion:reduce){
+ .tn-public-explore-grid .tn-explore-card{transition:none;}
+}
+
 /* TIKNATION HOST — friendly site guide and show presenter */
 .tn-host-feature{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:22px;margin-top:22px;padding:24px;border:1px solid rgba(141,99,255,.32);border-radius:24px;background:linear-gradient(120deg,rgba(141,99,255,.15),rgba(0,210,255,.07),rgba(15,15,27,.92));}
 .tn-host-feature-copy .eyebrow{margin-bottom:8px;}
@@ -1858,6 +1886,15 @@ textarea.form-control{
             aria-label="Messages"
         >
             💬<span id="headerMessagesBadge" class="nav-unread-badge" hidden></span>
+        </button>
+
+        <button
+            type="button"
+            id="headerCreateAccountButton"
+            class="auth-button tn-create-account-button"
+            onclick="openAuthModal('signup')"
+        >
+            CREATE ACCOUNT
         </button>
 
         <button
@@ -1987,13 +2024,23 @@ textarea.form-control{
             communities, entertainment, discovery, and connection.
         </p>
 
-        <button
-            type="button"
-            class="primary-button"
-            onclick="requireAuth('create')"
-        >
-            START CREATING
-        </button>
+        <div class="tn-landing-actions">
+            <button
+                type="button"
+                class="primary-button"
+                onclick="document.getElementById('tnExploreSection').scrollIntoView({behavior:'smooth',block:'start'})"
+            >
+                🌎 EXPLORE TIKNATION
+            </button>
+            <button
+                type="button"
+                class="tn-landing-secondary"
+                onclick="openAuthModal('signup')"
+            >
+                ✨ CREATE FREE ACCOUNT
+            </button>
+        </div>
+        <p class="tn-public-browse-note">👀 Take a look around first. Join when you're ready.</p>
 
 
 
@@ -2012,20 +2059,56 @@ textarea.form-control{
         <div class="tn-host-avatar" aria-label="Giggles the purple host mascot" role="img">🎤😄</div>
     </section>
 
-    <div class="section-head">
+    <div class="section-head" id="tnExploreSection">
         <h2>Explore TikNation</h2>
-        <span class="muted">What's happening</span>
+        <span class="muted">Your next discovery starts here</span>
     </div>
 
-    <div class="card-grid">
+    <p class="tn-explore-intro">Discover the worlds, creators, and entertainment waiting inside TikNation. You can explore public areas before deciding to join.</p>
 
-        <div class="card" onclick="openProfileOrAuth()">
-            <div class="card-icon">👤</div>
-            <h3>Your Profile</h3>
-            <p>
-                Build your identity and creator presence on TikNation.
-            </p>
-        </div>
+    <div class="card-grid tn-public-explore-grid">
+
+        <button type="button" class="card tn-explore-card" onclick="showPage('watch')">
+            <span class="card-icon" aria-hidden="true">▶️</span>
+            <span class="tn-explore-card-title">Watch</span>
+            <span class="tn-explore-card-copy">Discover videos and creative moments from the community.</span>
+            <span class="tn-explore-card-link">Explore videos →</span>
+        </button>
+
+        <button type="button" class="card tn-explore-card" onclick="showPage('live')">
+            <span class="card-icon" aria-hidden="true">🔴</span>
+            <span class="tn-explore-card-title">Live</span>
+            <span class="tn-explore-card-copy">Find live creators and see what's happening now.</span>
+            <span class="tn-explore-card-link">Explore live →</span>
+        </button>
+
+        <button type="button" class="card tn-explore-card" onclick="showPage('horror')">
+            <span class="card-icon" aria-hidden="true">👻</span>
+            <span class="tn-explore-card-title">Horror Zone</span>
+            <span class="tn-explore-card-copy">Step into original nightmares, spooky stories, and eerie creations.</span>
+            <span class="tn-explore-card-link">Enter the zone →</span>
+        </button>
+
+        <button type="button" class="card tn-explore-card" onclick="showPage('discover')">
+            <span class="card-icon" aria-hidden="true">🌎</span>
+            <span class="tn-explore-card-title">Discover</span>
+            <span class="tn-explore-card-copy">Find creators, fresh ideas, and new corners of TikNation.</span>
+            <span class="tn-explore-card-link">Start discovering →</span>
+        </button>
+
+        <button type="button" class="card tn-explore-card" onclick="openProfileOrAuth()">
+            <span class="card-icon" aria-hidden="true">👤</span>
+            <span class="tn-explore-card-title">Your Profile</span>
+            <span class="tn-explore-card-copy">Create your identity and build your own creator presence.</span>
+            <span class="tn-explore-card-link">Join TikNation →</span>
+        </button>
+
+        <button type="button" class="card tn-explore-card tn-create-card" onclick="openAuthModal('signup')">
+            <span class="card-icon" aria-hidden="true">✨</span>
+            <span class="tn-explore-card-title">Make It Yours</span>
+            <span class="tn-explore-card-copy">Create your free account when you're ready to follow, create, and participate.</span>
+            <span class="tn-explore-card-link">Create free account →</span>
+        </button>
 
     </div>
 
