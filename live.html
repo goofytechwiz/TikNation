@@ -63,6 +63,17 @@
   .footer { margin: 14px 0; }
 }
 
+
+@media(max-width:600px){
+  .phone-compact-details > summary{cursor:pointer;list-style:none;font-weight:800;font-size:1rem;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:3px 0}
+  .phone-compact-details > summary::-webkit-details-marker{display:none}
+  .phone-compact-details > summary::after{content:"＋";color:var(--cyan);font-size:1.2rem}
+  .phone-compact-details[open] > summary::after{content:"−"}
+  .phone-compact-hint{margin:7px 0 0}
+  .phone-compact-body{padding-top:10px}
+  .phone-compact-body > .tiny-note{display:none}
+}
+
 </style>
 </head>
 <body>
@@ -160,6 +171,35 @@ const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 const API = SUPABASE_URL + "/functions/v1/tiknation-live";
 const $ = id => document.getElementById(id);
+
+/* Keep secondary controls compact on phones; desktop markup stays unchanged. */
+function compactLivePanelsForPhone() {
+  if (!window.matchMedia("(max-width: 600px)").matches) return;
+  const configs = [
+    ["viewerLivePower", "🎤 Guest Stage & Live Battles", "Open viewer stage and battle tools"],
+    ["creatorLivePower", "🎤 Creator Power", "Manage guests, battles, and session status"]
+  ];
+  for (const [id, label, hint] of configs) {
+    const section = document.getElementById(id);
+    if (!section || section.dataset.phoneCompact === "true") continue;
+    const children = Array.from(section.children);
+    const details = document.createElement("details");
+    details.className = "phone-compact-details";
+    const summary = document.createElement("summary");
+    summary.textContent = label;
+    const description = document.createElement("p");
+    description.className = "small phone-compact-hint";
+    description.textContent = hint;
+    const body = document.createElement("div");
+    body.className = "phone-compact-body";
+    for (const child of children) body.appendChild(child);
+    details.append(summary, description, body);
+    section.appendChild(details);
+    section.dataset.phoneCompact = "true";
+  }
+}
+compactLivePanelsForPhone();
+
 let user = null, activeSession = null, room = null, localTracks = [], isHost = false, chatTimer = null, lastMessageAt = null, listedSessions = [];
 const LIVE_GIFT_CATALOG = {
   heart_pulse:{name:"Heart Pulse",emoji:"💗",category:"Musical",cost:5}, melody_note:{name:"Melody Note",emoji:"🎵",category:"Musical",cost:5}, heartbeat_beat:{name:"Heartbeat Beat",emoji:"🥁",category:"Musical",cost:10}, symphony:{name:"Symphony",emoji:"🎼",category:"Musical",cost:50},
