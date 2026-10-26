@@ -26,7 +26,7 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 .journal h2{color:var(--violet);margin-top:0}.journal textarea{display:block;width:100%;min-height:130px;resize:vertical;padding:14px;border-radius:12px;background:#111126;color:#fff;border:1px solid #70e8ff66;font:inherit;line-height:1.6}.journal .actions{justify-content:flex-start}
 .constellation{margin:28px 0;padding:22px 18px;border:1px solid #70e8ff35;border-radius:22px;background:linear-gradient(145deg,#70e8ff0b,#b49aff0b);text-align:left}
 .constellation h2{color:var(--cyan);margin-top:0}.sky{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;min-height:78px;padding:14px;border-radius:14px;background:#05050bcc;border:1px solid #ffffff18;margin:14px 0}
-.star{font-size:1.35rem;filter:drop-shadow(0 0 7px #70e8ff);animation:twinkle 2.5s ease-in-out infinite alternate}
+.star{font-size:1.35rem;filter:drop-shadow(0 0 7px #70e8ff)}
 @keyframes twinkle{from{opacity:.55;transform:scale(.9)}to{opacity:1;transform:scale(1.12)}}
 .constellation .count{color:var(--violet);font-weight:bold}
 .chatlab{margin:28px 0;padding:22px 18px;border:1px solid #b49aff42;border-radius:22px;background:linear-gradient(145deg,#b49aff0b,#70e8ff08);text-align:left}
@@ -50,7 +50,7 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 .questProgress{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#d8d4f5}.questProgress strong{color:var(--cyan)}
 .quest .actions{justify-content:flex-start}.quest button{margin:4px 6px 4px 0}
 
-@media(prefers-reduced-motion:no-preference){.orb{animation:float 5s ease-in-out infinite}@keyframes float{50%{transform:translateY(-7px)}}}
+@media(prefers-reduced-motion:no-preference){.orb{animation:float 5s ease-in-out infinite}.star{animation:twinkle 2.5s ease-in-out infinite alternate}@keyframes float{50%{transform:translateY(-7px)}}}
 </style>
 </head>
 <body>
