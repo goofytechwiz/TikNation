@@ -88,6 +88,7 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 <div class="actions">
 <button class="primary" id="saveJournal" type="button">Save notes</button>
 <button id="copyJournal" type="button">Copy notes</button>
+<button id="exportJournal" type="button">Export .txt</button>
 <button id="clearJournal" type="button">Clear journal</button>
 </div>
 </section>
@@ -168,6 +169,24 @@ document.getElementById('copyJournal').addEventListener('click',async()=>{
  try{await navigator.clipboard.writeText(journalText.value);journalStatus.textContent='Notes copied!';}
  catch(e){journalText.focus();journalText.select();journalStatus.textContent='Notes selected — use your device’s Copy command.';}
 });
+
+document.getElementById('exportJournal').addEventListener('click',()=>{
+ const content=journalText.value.trim();
+ if(!content){journalStatus.textContent='Write a few notes before exporting your journal.';return;}
+ try{
+  const blob=new Blob([content+'\\n'],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement('a');
+  link.href=url;
+  link.download='my-tiknation-dream-journal.txt';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  journalStatus.textContent='Journal export requested. Check your device downloads.';
+ }catch(e){journalStatus.textContent='Export is unavailable in this browser. Use Copy notes instead.';}
+});
+
 document.getElementById('clearJournal').addEventListener('click',()=>{
  journalText.value='';
  try{localStorage.removeItem('tnDreamJournal');journalStatus.textContent='Journal cleared from this device.';}
