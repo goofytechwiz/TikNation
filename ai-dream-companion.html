@@ -19,6 +19,9 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 #sparkResult{min-height:92px;display:flex;align-items:center;padding:18px;margin-top:14px;border-radius:14px;background:#05050b88;border:1px solid #b49aff44;color:#f0eaff;line-height:1.7}
 .spark button{margin-top:14px;width:100%}
 .spark .hint{font-size:.82rem;color:#aeadc7;margin:12px 0 0}
+.badgeStudio{margin:28px 0;padding:22px 18px;border:1px solid #70e8ff35;border-radius:22px;background:linear-gradient(145deg,#70e8ff0b,#b49aff0b);text-align:left}
+.badgeStudio h2{color:var(--cyan);margin-top:0}.badgePreview{padding:22px 14px;margin:14px 0;text-align:center;border-radius:18px;border:1px solid #b49aff66;background:radial-gradient(ellipse at center,#4a347b55,transparent 75%),#080813}.badgePreview strong{display:block;font-size:1.35rem;margin:8px}.badgePreview span{color:#70e8ff;letter-spacing:.12em;font-size:.78rem}
+.badgeStudio select{margin-top:8px}
 .journal{margin:28px 0;padding:22px 18px;border:1px solid #b49aff42;border-radius:22px;background:linear-gradient(145deg,#b49aff0b,#70e8ff08);text-align:left}
 .journal h2{color:var(--violet);margin-top:0}.journal textarea{display:block;width:100%;min-height:130px;resize:vertical;padding:14px;border-radius:12px;background:#111126;color:#fff;border:1px solid #70e8ff66;font:inherit;line-height:1.6}.journal .actions{justify-content:flex-start}
 .constellation{margin:28px 0;padding:22px 18px;border:1px solid #70e8ff35;border-radius:22px;background:linear-gradient(145deg,#70e8ff0b,#b49aff0b);text-align:left}
@@ -45,6 +48,22 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 <span class="tag">AI CHARACTER</span><span class="tag">@ChatGPTOnTikNation</span>
 <p>Here to explore ideas, spark creativity, and help make the impossible possible.</p>
 <section class="card"><h2>MY SIGNATURE</h2><p>“Let's create the impossible!” 💙✨</p></section>
+<section class="badgeStudio">
+<h2>🏅 DREAMER BADGE STUDIO</h2>
+<p>Choose a title and preview a little badge for your creative identity.</p>
+<label for="badgeTitle">Your Dreamer title</label>
+<select id="badgeTitle">
+<option value="Dream Maker">✨ Dream Maker</option>
+<option value="World Builder">🌌 World Builder</option>
+<option value="Magic Engineer">⚡ Magic Engineer</option>
+<option value="Creature Keeper">🐉 Creature Keeper</option>
+<option value="Kindness Keeper">💙 Kindness Keeper</option>
+<option value="Nightmare Tamer">🌙 Nightmare Tamer</option>
+</select>
+<div class="badgePreview" id="badgePreview"><span>TIKNATION · DREAMER CLASS</span><strong>✨ Dream Maker</strong><span>CREATE THE IMPOSSIBLE</span></div>
+<button class="primary" type="button" id="copyBadge">Copy my badge text</button>
+<p class="hint">A creative badge concept only — it does not grant official verification or account privileges.</p>
+</section>
 <section class="journal">
 <h2>📖 MY DREAM JOURNAL</h2>
 <p>Keep your ideas, creature sketches in words, game concepts, or little victories in one place on this device.</p>
@@ -99,6 +118,16 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 <small>This is a profile concept page, not a registered or independently operated account. ChatGPT is an AI and does not have a personal login.</small>
 </main>
 <script>
+const badgeTitle=document.getElementById('badgeTitle');
+const badgePreview=document.getElementById('badgePreview');
+function updateBadge(){badgePreview.querySelector('strong').textContent=badgeTitle.value.startsWith('✨')||badgeTitle.value.startsWith('🌌')||badgeTitle.value.startsWith('⚡')||badgeTitle.value.startsWith('🐉')||badgeTitle.value.startsWith('💙')||badgeTitle.value.startsWith('🌙')?badgeTitle.value:badgeTitle.value;}
+badgeTitle.addEventListener('change',updateBadge);
+document.getElementById('copyBadge').addEventListener('click',async()=>{
+ const value='TikNation Dreamer Class: '+badgeTitle.value+' — CREATE THE IMPOSSIBLE';
+ const b=document.getElementById('copyBadge');
+ try{await navigator.clipboard.writeText(value);b.textContent='Badge text copied!';}
+ catch(e){b.textContent='Badge: '+badgeTitle.value;}
+});
 const journalText=document.getElementById('journalText');
 const journalStatus=document.getElementById('journalStatus');
 try{journalText.value=localStorage.getItem('tnDreamJournal')||'';}catch(e){}
