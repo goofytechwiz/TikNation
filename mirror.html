@@ -143,8 +143,27 @@ function drawFaceEffect(lm){
   ctx.quadraticCurveTo((leftMouth.x+rightMouth.x)/2,Math.max(upper.y,lower.y)+u*15,rightMouth.x,rightMouth.y);
   ctx.strokeStyle='#d71954';ctx.lineWidth=u*4;ctx.stroke();
  }else if(mode==='spooky'){
-  [[33,133,159],[362,263,386]].forEach(ids=>{const a=p(ids[0]),b=p(ids[1]),d=p(ids[2]);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(b.x-u*8,b.y-u*13,d.x,d.y);ctx.quadraticCurveTo(b.x,b.y+u*17,a.x,a.y);ctx.closePath();ctx.fillStyle='rgba(12,3,20,.88)';ctx.fill();ctx.strokeStyle='#ff315b';ctx.lineWidth=u*1.5;ctx.stroke()});
-  strokePath([p(70),p(105),p(9)],'#a9faff',u*1.5);strokePath([p(300),p(334),p(9)],'#a9faff',u*1.5);
+  // Haunted makeup: dark eye sockets, lower-eye shadow, forehead creases, and cheek streaks.
+  const eyeShape=(outer,inner,upper,lower)=>{
+   const o=p(outer),i=p(inner),u1=p(upper),l1=p(lower);
+   ctx.beginPath();ctx.moveTo(o.x,o.y);
+   ctx.quadraticCurveTo(u1.x,u1.y-u*8,i.x,i.y);
+   ctx.quadraticCurveTo(l1.x,l1.y+u*8,o.x,o.y);
+   ctx.closePath();ctx.fillStyle='rgba(12,4,22,.92)';ctx.fill();
+   ctx.strokeStyle='rgba(128,28,58,.95)';ctx.lineWidth=u*1.4;ctx.stroke();
+   // Thin red edge beneath the socket adds a haunted, makeup-like accent.
+   ctx.beginPath();ctx.moveTo(o.x,o.y+u*3);ctx.quadraticCurveTo((o.x+i.x)/2,l1.y+u*7,i.x,i.y+u*2);
+   ctx.strokeStyle='rgba(238,45,83,.9)';ctx.lineWidth=u*2;ctx.stroke();
+  };
+  eyeShape(33,133,159,145);
+  eyeShape(362,263,386,374);
+  // Brow shadows and tapered cheek streaks follow facial landmarks.
+  strokePath([p(70),p(105),p(66)],'rgba(20,5,28,.95)',u*5);
+  strokePath([p(300),p(334),p(296)],'rgba(20,5,28,.95)',u*5);
+  strokePath([p(50),p(205),p(187)],'rgba(170,20,65,.85)',u*2);
+  strokePath([p(280),p(425),p(411)],'rgba(170,20,65,.85)',u*2);
+  // Subtle bridge shadow; no bright cyan marks.
+  strokePath([p(168),p(6),p(197)],'rgba(8,3,16,.72)',u*2.5);
  }else if(mode==='ancient'){
   const wrinkle='rgba(76,43,30,.85)',fine=Math.max(1,u*1.1);
   [[70,105,9],[300,334,9],[55,65,107],[285,295,336]].forEach(ids=>strokePath(ids.map(p),wrinkle,fine));
