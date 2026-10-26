@@ -108,26 +108,53 @@ async function loadFaceTracker(){
 function fp(lm,i){return {x:lm[i].x*faceCanvas.width,y:lm[i].y*faceCanvas.height}}
 function line(ctx,pts,color,width){ctx.beginPath();pts.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.stroke()}
 function drawFaceEffect(lm){
- const w=faceCanvas.width,h=faceCanvas.height;faceCtx.clearRect(0,0,w,h);if(!lm||!['silly','spooky','ancient','monster'].includes(mode))return;
- const p=i=>fp(lm,i),fw=Math.max(20,Math.abs(p(234).x-p(454).x)),u=fw/150;faceCtx.save();
+ const w=faceCanvas.width,h=faceCanvas.height;
+ faceCtx.clearRect(0,0,w,h);
+ if(!lm||!['silly','spooky','ancient','monster'].includes(mode))return;
+ const p=i=>fp(lm,i);
+ const fw=Math.max(20,Math.abs(p(234).x-p(454).x)),u=fw/150;
+ const ctx=faceCtx;
+ ctx.save();
+ ctx.lineCap='round';ctx.lineJoin='round';
+ function strokePath(points,color,width){line(ctx,points,color,Math.max(1,width))}
+ function fillCheek(index,color,rx,ry){const q=p(index);ctx.beginPath();ctx.ellipse(q.x,q.y,u*rx,u*ry,0,0,Math.PI*2);ctx.fillStyle=color;ctx.fill()}
  if(mode==='silly'){
-  [[50,'#ff4e9b'],[280,'#ff4e9b']].forEach(([i,col])=>{const q=p(i);faceCtx.beginPath();faceCtx.fillStyle=col;faceCtx.globalAlpha=.82;faceCtx.ellipse(q.x,q.y,u*15,u*12,-.15,0,Math.PI*2);faceCtx.fill()});
-  faceCtx.globalAlpha=1;const nose=p(1);faceCtx.beginPath();faceCtx.fillStyle='#ff2424';faceCtx.strokeStyle='#fff2a8';faceCtx.lineWidth=u*2;faceCtx.ellipse(nose.x,nose.y,u*10,u*9,0,0,Math.PI*2);faceCtx.fill();faceCtx.stroke();
-  line(faceCtx,[p(61),p(185),p(40)],'#fff',u*7);line(faceCtx,[p(61),p(185),p(40)],'#ff287c',u*4);
-  [[70,'#ffdf4d'],[300,'#72edff']].forEach(([i,col])=>{const q=p(i);faceCtx.beginPath();faceCtx.fillStyle=col;faceCtx.ellipse(q.x,q.y,u*15,u*5,0,0,Math.PI*2);faceCtx.fill()});
+  // Face-following classic clown: painted eye accents, round nose, cheek paint and a curved smile.
+  const nose=p(1),leftEye=p(33),rightEye=p(263),leftMouth=p(61),rightMouth=p(291),upper=p(13),lower=p(14);
+  // Soft white makeup halos around both eyes.
+  [leftEye,rightEye].forEach(q=>{ctx.beginPath();ctx.ellipse(q.x,q.y-u*1,u*19,u*12,0,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.82)';ctx.fill();});
+  // Colorful tapered eye accents instead of floating triangles.
+  [[leftEye,-1,'#ff287c'],[rightEye,1,'#ff287c']].forEach(([q,side,color])=>{
+   ctx.beginPath();ctx.moveTo(q.x-u*12,q.y-u*2);ctx.quadraticCurveTo(q.x,q.y-u*12,q.x+u*12,q.y-u*2);ctx.quadraticCurveTo(q.x+u*4,q.y+u*5,q.x,q.y+u*5);ctx.closePath();ctx.fillStyle=color;ctx.fill();
+   ctx.beginPath();ctx.moveTo(q.x,q.y-u*10);ctx.lineTo(q.x+u*2,q.y-u*19);ctx.strokeStyle='#fff4c7';ctx.lineWidth=u*2;ctx.stroke();
+  });
+  // Cheek circles sit beside the mouth, scaled to face width.
+  fillCheek(50,'rgba(255,55,132,.9)',12,9);
+  fillCheek(280,'rgba(255,55,132,.9)',12,9);
+  [p(50),p(280)].forEach(q=>{ctx.beginPath();ctx.arc(q.x-u*3,q.y-u*2,u*3,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.75)';ctx.fill()});
+  // Rounded red nose with a small highlight.
+  ctx.beginPath();ctx.ellipse(nose.x,nose.y,u*8,u*7,0,0,Math.PI*2);ctx.fillStyle='#f51d45';ctx.fill();ctx.strokeStyle='#ffd7df';ctx.lineWidth=u*1.5;ctx.stroke();
+  ctx.beginPath();ctx.ellipse(nose.x-u*2,nose.y-u*2,u*2,u*1.4,-.4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+  // Follow the actual mouth corners to create a painted smile outline.
+  ctx.beginPath();ctx.moveTo(leftMouth.x,leftMouth.y);
+  ctx.quadraticCurveTo((leftMouth.x+rightMouth.x)/2,Math.max(upper.y,lower.y)+u*15,rightMouth.x,rightMouth.y);
+  ctx.strokeStyle='#fff';ctx.lineWidth=u*8;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(leftMouth.x,leftMouth.y);
+  ctx.quadraticCurveTo((leftMouth.x+rightMouth.x)/2,Math.max(upper.y,lower.y)+u*15,rightMouth.x,rightMouth.y);
+  ctx.strokeStyle='#d71954';ctx.lineWidth=u*4;ctx.stroke();
  }else if(mode==='spooky'){
-  [[33,133,159],[362,263,386]].forEach(ids=>{const a=p(ids[0]),b=p(ids[1]),d=p(ids[2]);faceCtx.beginPath();faceCtx.moveTo(a.x,a.y);faceCtx.quadraticCurveTo(b.x-u*8,b.y-u*13,d.x,d.y);faceCtx.quadraticCurveTo(b.x,b.y+u*17,a.x,a.y);faceCtx.closePath();faceCtx.fillStyle='#100516';faceCtx.globalAlpha=.88;faceCtx.fill();faceCtx.globalAlpha=1;faceCtx.strokeStyle='#ff315b';faceCtx.lineWidth=u*2;faceCtx.stroke()});
-  line(faceCtx,[p(70),p(105),p(9)],'#a9faff',u*2);line(faceCtx,[p(300),p(334),p(9)],'#a9faff',u*2);
+  [[33,133,159],[362,263,386]].forEach(ids=>{const a=p(ids[0]),b=p(ids[1]),d=p(ids[2]);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(b.x-u*8,b.y-u*13,d.x,d.y);ctx.quadraticCurveTo(b.x,b.y+u*17,a.x,a.y);ctx.closePath();ctx.fillStyle='rgba(12,3,20,.88)';ctx.fill();ctx.strokeStyle='#ff315b';ctx.lineWidth=u*1.5;ctx.stroke()});
+  strokePath([p(70),p(105),p(9)],'#a9faff',u*1.5);strokePath([p(300),p(334),p(9)],'#a9faff',u*1.5);
  }else if(mode==='ancient'){
-  const wrinkle='#5d3827',fine=Math.max(1,u*1.3);
-  [[70,105,9],[300,334,9],[55,65,107],[285,295,336]].forEach(ids=>line(faceCtx,ids.map(p),wrinkle,fine));
-  line(faceCtx,[p(107),p(105),p(66)],'#80513a',fine);line(faceCtx,[p(336),p(334),p(296)],'#80513a',fine);
-  [p(70),p(300)].forEach(q=>{faceCtx.beginPath();faceCtx.strokeStyle=wrinkle;faceCtx.lineWidth=fine;faceCtx.ellipse(q.x,q.y,u*13,u*4,.1,0,Math.PI*2);faceCtx.stroke()});
+  const wrinkle='rgba(76,43,30,.85)',fine=Math.max(1,u*1.1);
+  [[70,105,9],[300,334,9],[55,65,107],[285,295,336]].forEach(ids=>strokePath(ids.map(p),wrinkle,fine));
+  strokePath([p(107),p(105),p(66)],'#80513a',fine);strokePath([p(336),p(334),p(296)],'#80513a',fine);
+  [p(70),p(300)].forEach(q=>{ctx.beginPath();ctx.strokeStyle=wrinkle;ctx.lineWidth=fine;ctx.ellipse(q.x,q.y,u*13,u*4,.1,0,Math.PI*2);ctx.stroke()});
  }else if(mode==='monster'){
-  [p(33),p(263)].forEach(q=>{faceCtx.beginPath();faceCtx.fillStyle='#ff182f';faceCtx.shadowColor='#ff182f';faceCtx.shadowBlur=u*10;faceCtx.ellipse(q.x,q.y,u*8,u*5,0,0,Math.PI*2);faceCtx.fill()});
-  faceCtx.shadowBlur=0;line(faceCtx,[p(10),p(151),p(9)],'#b9ff65',u*3);
+  [p(33),p(263)].forEach(q=>{ctx.beginPath();ctx.fillStyle='#ff182f';ctx.shadowColor='#ff182f';ctx.shadowBlur=u*7;ctx.ellipse(q.x,q.y,u*7,u*4,0,0,Math.PI*2);ctx.fill()});
+  ctx.shadowBlur=0;strokePath([p(10),p(151),p(9)],'#b9ff65',u*2);
  }
- faceCtx.restore();
+ ctx.restore();
 }
 function faceLoop(){
  if(faceReady&&stream&&video.readyState>=2&&video.currentTime!==lastVideoTime){lastVideoTime=video.currentTime;try{const canvasWidth=Math.max(1,Math.round(frame.clientWidth)),canvasHeight=Math.max(1,Math.round(frame.clientHeight));if(faceCanvas.width!==canvasWidth||faceCanvas.height!==canvasHeight){faceCanvas.width=canvasWidth;faceCanvas.height=canvasHeight}const result=faceLandmarker.detectForVideo(video,performance.now());drawFaceEffect(result.faceLandmarks&&result.faceLandmarks[0])}catch(e){}}
