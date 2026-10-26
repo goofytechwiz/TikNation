@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080813">
-<meta name="description" content="TikNation Mirror of Illusion — live camera effects and playful creator looks.">
-<title>Mirror of Illusion — TikNation</title>
+<meta name="description" content="TikNation HORROR MIRROR — enter the forbidden reflection. A cinematic supernatural camera experience.">
+<title>HORROR MIRROR — TikNation After Dark</title>
 <style>
 :root{color-scheme:dark;--cyan:#72edff;--pink:#ff79c6;--violet:#b49aff}
 *{box-sizing:border-box}
@@ -84,15 +84,67 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offse
 #nightmare{width:100%;margin-top:10px;border-color:#ff254f;color:#ffdce4;background:linear-gradient(100deg,#370714,#180b22);font-weight:900;letter-spacing:.04em}
 #nightmare:active{transform:scale(.98)}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* HORROR MIRROR — immersive attraction art direction */
+:root{--cyan:#a5efff;--pink:#ff254f;--violet:#a18bff}
+html{background:#030207;scroll-behavior:smooth}
+body{background:#030207;color:#f8f4ff;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.12;background:repeating-linear-gradient(0deg,transparent 0 3px,#fff 4px,transparent 5px);mix-blend-mode:soft-light}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:19;background:radial-gradient(ellipse at center,transparent 35%,#000 100%);box-shadow:inset 0 0 150px #000}
+.wrap{width:min(1160px,94%)}
+.top{position:relative;z-index:21;border-bottom:1px solid #ff244d35;padding:15px 0;text-transform:uppercase;font-size:.76rem;letter-spacing:.13em}
+.logo{font-size:.95rem;text-shadow:0 0 18px #ff174466}.logo span{color:#ff4267}
+.top a{color:#d7c8ff;text-decoration:none}
+.hero{position:relative;padding:clamp(35px,7vw,78px) 0 34px;isolation:isolate}
+.hero:before{content:"";position:absolute;z-index:-1;left:50%;top:0;transform:translateX(-50%);width:min(800px,100%);height:100%;background:radial-gradient(ellipse,#570c2b35 0,transparent 68%)}
+.eyebrow{color:#ff5576;font-size:.68rem;letter-spacing:.35em;text-shadow:0 0 16px #ff174455}
+h1{font-size:clamp(3rem,10vw,7.2rem);letter-spacing:.04em;line-height:.92;margin:18px 0 20px;background:linear-gradient(180deg,#fff 5%,#ffdce5 35%,#ff315b 78%,#7c102b);background-clip:text;color:transparent;filter:drop-shadow(0 0 22px #ff174433)}
+.hero p{max-width:660px;color:#c7b9d4;font-size:clamp(.95rem,2vw,1.1rem);letter-spacing:.025em}
+.grid{grid-template-columns:minmax(0,1.25fr) minmax(310px,.75fr);gap:22px;align-items:start}
+.panel{background:linear-gradient(145deg,#120a17ed,#07070df5 70%);border:1px solid #ff315b35;border-radius:5px;box-shadow:0 25px 90px #000b,0 0 35px #4e0b2720;position:relative}
+.panel:before{content:"";position:absolute;inset:7px;border:1px solid #ffffff09;pointer-events:none}
+.preview{padding:13px;min-height:unset;background:radial-gradient(ellipse at 50% 30%,#55132b50,transparent 65%),#050408}
+.camera-frame{min-height:clamp(400px,64vh,690px);border-radius:2px;background:radial-gradient(ellipse,#1c0b19,#030207 75%);border:1px solid #ff315b28;box-shadow:inset 0 0 80px #000}
+video{min-height:clamp(400px,64vh,690px);max-height:690px;object-position:center}
+#faceEffects{max-height:690px}
+#placeholder{max-width:340px;color:#d3c0d7}
+#placeholder div:first-child{font-size:5rem!important;filter:drop-shadow(0 0 25px #ff174466);animation:mirrorBreathe 4s ease-in-out infinite}
+#placeholder h2{font-size:1.5rem;letter-spacing:.1em;text-transform:uppercase}
+#placeholder .muted{color:#a89aaa}
+.grid>.panel:nth-child(2){padding:clamp(15px,2.5vw,26px)}
+.grid>.panel:nth-child(2)>h2{font-size:1.3rem;letter-spacing:.1em;text-transform:uppercase;color:#fff;margin-top:3px}
+.muted{color:#a99ab4}
+.choices{gap:8px}
+button{border-radius:3px!important;border:1px solid #c5a6ff45!important;background:linear-gradient(135deg,#21132a,#0b0912)!important;color:#e8dff7!important;transition:transform .18s,border-color .18s,box-shadow .18s!important}
+button:hover:not(:disabled){transform:translateY(-1px);border-color:#ff416a!important;box-shadow:0 0 18px #ff174426!important}
+button:focus-visible{outline:2px solid #ff7190;outline-offset:3px}
+button.primary,#sequence{background:linear-gradient(110deg,#8d1234,#3c103d)!important;border-color:#ff426a88!important;color:#fff!important}
+.choice[aria-pressed="true"]{background:linear-gradient(120deg,#4b102c,#24113d)!important;border-color:#ff5077!important;box-shadow:inset 0 0 22px #ff174420,0 0 12px #ff174422}
+#nightmare{background:linear-gradient(100deg,#680d25,#180611)!important;border:1px solid #ff315b!important;color:#fff!important;letter-spacing:.12em;text-shadow:0 0 10px #ff1744}
+#soundToggle{border-color:#8e7acb66!important}
+.grid .panel .panel{background:linear-gradient(140deg,#180b18,#08060d)!important;border-color:#a82c554d!important}
+#storyStatus{color:#e4d8e9!important}
+#mirrorCaption{color:#ff7895!important;text-shadow:0 0 12px #ff174433}
+.status{border-color:#ff315b33!important;background:#160811!important;color:#f0d9e3!important}
+.note{color:#a99caf;border-color:#ffffff14!important}
+.foot{position:relative;z-index:21;color:#7e7089;letter-spacing:.2em;text-transform:uppercase;font-size:.67rem;text-align:center;padding:30px 0}
+.camera-frame.awake{animation:hauntedPulse 3s ease-in-out infinite}
+.camera-frame.possessed{filter:contrast(1.14) saturate(.85)}
+.camera-frame.nightmare{animation:hauntGlitch .12s steps(2,end) 5,hauntedPulse .6s ease-in-out 3}
+.camera-frame.nightmare:before{opacity:1;background:linear-gradient(90deg,#ff003b38,transparent 24%,#6e20ff25 74%,#ff003b38),radial-gradient(ellipse at center,transparent 10%,#000 100%)}
+@keyframes mirrorBreathe{0%,100%{transform:scale(1);opacity:.72}50%{transform:scale(1.035);opacity:1}}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.hero{padding:38px 0 25px}.camera-frame,video{min-height:min(62vh,540px)}.panel{padding:14px}.top{padding:12px 0}.foot{letter-spacing:.12em}}
+@media(prefers-reduced-motion:reduce){body:before{display:none}}
+
 </style>
 </head>
 <body>
 <header class="top wrap"><div class="logo">Tik<span>Nation</span> ✨</div><a href="./index.html">← Back to TikNation</a></header>
 <main class="wrap">
-<section class="hero"><div class="eyebrow">TIKNATION ORIGINAL HORROR ATTRACTION</div><h1>HORROR MIRROR</h1><p>It starts by copying you. Then the mirror begins to change the rules. Enter if you dare.</p></section>
+<section class="hero"><div class="eyebrow">TIKNATION AFTER DARK · INTERACTIVE HORROR</div><h1>HORROR MIRROR</h1><p>It knows your face. It learned your movements. Now something on the other side is ready to stop pretending.</p></section>
 <section class="grid">
-<div class="panel preview"><div class="camera-frame glow" id="cameraFrame"><video id="camera" autoplay playsinline muted></video><canvas id="faceEffects" aria-hidden="true"></canvas><div id="hauntOverlay" aria-hidden="true"><span id="hauntTitle">PRESENCE DETECTED</span><span id="hauntSub">THE MIRROR IS WATCHING</span></div><div id="placeholder"><div style="font-size:4rem">🪞✨</div><h2>Your reflection awaits</h2><p class="muted">Start the camera to see yourself live.</p></div></div></div>
-<div class="panel"><h2>Choose your illusion</h2><p class="muted">Your live preview stays in this browser tab. Choose a style, then start the camera. Clown, Spooky, and Ancient include experimental face-tracked details when the tracker loads.</p>
+<div class="panel preview"><div class="camera-frame glow" id="cameraFrame"><video id="camera" autoplay playsinline muted></video><canvas id="faceEffects" aria-hidden="true"></canvas><div id="hauntOverlay" aria-hidden="true"><span id="hauntTitle">PRESENCE DETECTED</span><span id="hauntSub">THE MIRROR IS WATCHING</span></div><div id="placeholder"><div style="font-size:4rem">🪞✨</div><h2>The other side is waiting</h2><p class="muted">Allow the camera when you are ready to face the mirror.</p></div></div></div>
+<div class="panel"><h2>Enter the reflection</h2><p class="muted">First, awaken the live mirror. Then choose what kind of presence you dare to invite in.</p>
 <div class="choices" role="group" aria-label="Illusion styles">
 <button class="choice" data-mode="glow" aria-pressed="true">✨ Glow-up</button>
 <button class="choice" data-mode="spooky" aria-pressed="false">👻 Spooky</button>
