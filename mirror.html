@@ -82,9 +82,13 @@ async function startCamera(){
  }catch(e){stopTracks();status.textContent=e.name==='NotAllowedError'?'Camera permission was denied. Allow camera access for this site in Chrome settings, then try again.':e.name==='NotFoundError'?'No available camera was found on this device.':'Could not start the camera: '+(e.message||'Please check browser permission and try again.');}
  finally{busy=false;startBtn.disabled=!!stream;}
 }
-window.startIllusionCamera=startCamera;\nwindow.stopIllusionCamera=()=>{stopTracks();status.textContent='Camera stopped.'};\nwindow.switchIllusionCamera=async()=>{facing=facing==='user'?'environment':'user';await startCamera()};\nstartBtn.addEventListener('click',startCamera);
+window.startIllusionCamera=startCamera;
+window.stopIllusionCamera=()=>{stopTracks();status.textContent='Camera stopped.'};
+window.switchIllusionCamera=async()=>{facing=facing==='user'?'environment':'user';await startCamera()};
+startBtn.addEventListener('click',startCamera);
 stopBtn.addEventListener('click',window.stopIllusionCamera);
 switchBtn.addEventListener('click',window.switchIllusionCamera);
-window.addEventListener('pagehide',stopTracks);\nstatus.textContent='Mirror controls loaded. Tap Start live camera to begin.';
+window.addEventListener('pagehide',stopTracks);
+status.textContent='Mirror controls loaded. Tap Start live camera to begin.';
 </script>
 </body></html>
