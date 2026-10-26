@@ -215,6 +215,18 @@ function drawFaceEffect(lm){
  faceCtx.clearRect(0,0,w,h);
  if(!lm||!['silly','spooky','ancient','monster'].includes(mode))return;
  const p=i=>fp(lm,i);
+ // Haunted reflection: a second, slightly delayed contour drifts away from the live face.
+ // This is an intentional visual illusion; it never alters or uploads the camera image.
+ if(mode==='spooky'||mode==='monster'){
+  const t=performance.now()/1000, driftX=Math.sin(t*1.8)*w*.012, driftY=Math.cos(t*1.25)*h*.008;
+  const contour=[10,338,297,332,284,251,389,356,454,323,361,288,397,365,379,378,400,377,152,148,176,149,150,136,172,58,132,93,234,127,162,21,54,103,67,109];
+  ctx.save();ctx.translate(driftX,driftY);ctx.beginPath();
+  contour.forEach((idx,n)=>{const q=p(idx);n?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});
+  ctx.closePath();ctx.strokeStyle=mode==='monster'?'rgba(174,255,101,.55)':'rgba(255,25,69,.65)';ctx.lineWidth=Math.max(1.2,fw*.008);ctx.shadowColor=mode==='monster'?'#b9ff65':'#ff1744';ctx.shadowBlur=fw*.13;ctx.stroke();
+  // The reflection's eyes burn through the drifting outline.
+  [p(33),p(263)].forEach((q,index)=>{const wobble=Math.sin(t*3+index)*fw*.006;ctx.beginPath();ctx.ellipse(q.x+driftX,q.y+driftY+wobble,fw*.035,fw*.018,0,0,Math.PI*2);ctx.fillStyle=mode==='monster'?'rgba(255,20,47,.86)':'rgba(255,12,54,.72)';ctx.shadowColor='#ff1744';ctx.shadowBlur=fw*.12;ctx.fill()});
+  ctx.restore();
+ }
  const fw=Math.max(20,Math.abs(p(234).x-p(454).x)),u=fw/150;
  const ctx=faceCtx;
  ctx.save();
