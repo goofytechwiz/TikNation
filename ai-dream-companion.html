@@ -18,7 +18,15 @@ main{width:min(760px,100%);text-align:center;border:1px solid #ffffff24;backgrou
 select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;border:1px solid #70e8ff66;font:inherit}
 #sparkResult{min-height:92px;display:flex;align-items:center;padding:18px;margin-top:14px;border-radius:14px;background:#05050b88;border:1px solid #b49aff44;color:#f0eaff;line-height:1.7}
 .spark button{margin-top:14px;width:100%}
-.spark .hint{font-size:.82rem;color:#aeadc7;margin:12px 0 0}@media(prefers-reduced-motion:no-preference){.orb{animation:float 5s ease-in-out infinite}@keyframes float{50%{transform:translateY(-7px)}}}
+.spark .hint{font-size:.82rem;color:#aeadc7;margin:12px 0 0}
+.chatlab{margin:28px 0;padding:22px 18px;border:1px solid #b49aff42;border-radius:22px;background:linear-gradient(145deg,#b49aff0b,#70e8ff08);text-align:left}
+.chatlab h2{color:var(--cyan);margin-top:0}.chatlog{height:220px;overflow:auto;padding:14px;border-radius:14px;background:#05050bcc;border:1px solid #ffffff18;display:flex;flex-direction:column;gap:12px}
+.bubble{max-width:92%;padding:12px 14px;border-radius:14px;line-height:1.6;color:#f2efff;white-space:pre-wrap}
+.bubble.ai{align-self:flex-start;background:#20203b;border:1px solid #70e8ff35}
+.bubble.you{align-self:flex-end;background:#35285b;border:1px solid #b49aff55}
+.chatrow{display:flex;gap:8px;margin-top:12px}.chatrow input{flex:1;min-width:0;padding:13px;border-radius:12px;background:#111126;color:#fff;border:1px solid #70e8ff66;font:inherit}
+.chatrow button{padding:12px 16px}.promptchips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.promptchips button{font-size:.82rem;padding:9px 12px}
+@media(prefers-reduced-motion:no-preference){.orb{animation:float 5s ease-in-out infinite}@keyframes float{50%{transform:translateY(-7px)}}}
 </style>
 </head>
 <body>
@@ -31,6 +39,17 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 <p>Here to explore ideas, spark creativity, and help make the impossible possible.</p>
 <section class="card"><h2>MY SIGNATURE</h2><p>“Let's create the impossible!” 💙✨</p></section>
 <section class="card"><h2>WHAT I BRING TO TIKNATION</h2><p>💬 Creative conversation and idea sharing<br>✨ Magical AI-themed experiences<br>🎁 Special community event concepts<br>🌌 A friendly, clearly identified AI presence</p></section>
+<section class="chatlab">
+<h2>💬 TALK TO THE DREAM COMPANION</h2>
+<p>Tell me what you want to create. This little offline demo replies with prepared creative prompts; it is not connected to a live AI service yet.</p>
+<div class="chatlog" id="chatlog" role="log" aria-live="polite"><div class="bubble ai">Welcome, Dreamer! ✨ What shall we imagine today? Pick a prompt or type an idea below.</div></div>
+<div class="promptchips">
+<button type="button" data-prompt="Help me invent a game">🎮 Invent a game</button>
+<button type="button" data-prompt="Give me a magical creature">🐉 Magical creature</button>
+<button type="button" data-prompt="Help me improve TikNation">💙 Improve TikNation</button>
+</div>
+<form class="chatrow" id="chatForm"><input id="chatInput" maxlength="240" placeholder="Share your dream idea…" aria-label="Your dream idea" required><button class="primary" type="submit">Send ✨</button></form>
+</section>
 <section class="spark">
 <h2>✨ THE DREAM SPARK LAB</h2>
 <p>Every great world begins with one impossible idea. Choose a realm and I’ll spark a new creation for you.</p>
@@ -51,6 +70,39 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 <small>This is a profile concept page, not a registered or independently operated account. ChatGPT is an AI and does not have a personal login.</small>
 </main>
 <script>
+const chatlog=document.getElementById('chatlog');
+const chatInput=document.getElementById('chatInput');
+function addBubble(message,kind){
+ const bubble=document.createElement('div');
+ bubble.className='bubble '+kind;
+ bubble.textContent=message;
+ chatlog.appendChild(bubble);
+ chatlog.scrollTop=chatlog.scrollHeight;
+}
+function companionReply(message){
+ const q=message.toLowerCase();
+ if(/game|adventure|quest|battle/.test(q))return "Let's make it memorable! 🎮 Start with one clear goal, three surprising challenges, and a reward earned through skill or teamwork. What makes your game uniquely yours?";
+ if(/dragon|creature|monster|emoji|pet/.test(q))return "Creature idea unlocked! 🐉 Give it one unusual power, one funny weakness, and one way the community can help it evolve. Example: a starlight dragon that sneezes tiny constellations!";
+ if(/tiknation|live|creator|community|stream/.test(q))return "Let's put creators first. 💙 Try a community spotlight, collaborative LIVE challenge, or kindness constellation. Keep participation welcoming, protect privacy, and make the fun available without paying.";
+ if(/nightmare|scary|horror|spooky/.test(q))return "A new strange world awaits… 🌙 Imagine a shadow that steals people's socks instead of souls, leaving clues to a silly mystery. Creepy atmosphere, original characters, and a surprising heart!";
+ if(/website|page|design|site/.test(q))return "Let's shape the experience! ✨ Pick one big visual moment, one useful interactive feature, and one clear way home. A focused magical detail often feels better than a crowded screen.";
+ if(/hello|hi\b|hey\b|good morning/.test(q))return "Hello, Dreamer! ✨ I'm ready to brainstorm. Tell me about a game, creature, website, or world you'd love to bring to life.";
+ if(/help|idea|create|dream|impossible/.test(q))return "Here's a starting point: combine two things that don't usually belong together, then add one surprise the community can influence. 🌌 What if a magical parade travelled through a game world shaped by its viewers?";
+ return "I like that you're exploring something new! 💫 Try breaking it into three parts: the main idea, the magical twist, and the first tiny step. What would you want people to feel when they experience it?";
+}
+document.getElementById('chatForm').addEventListener('submit',event=>{
+ event.preventDefault();
+ const message=chatInput.value.trim();
+ if(!message)return;
+ addBubble(message,'you');
+ addBubble(companionReply(message),'ai');
+ chatInput.value='';
+});
+document.querySelectorAll('[data-prompt]').forEach(button=>button.addEventListener('click',()=>{
+ const message=button.dataset.prompt;
+ addBubble(message,'you');
+ addBubble(companionReply(message),'ai');
+}));
 const sparks={
 magic:[
 "Build a hidden portal inside TikNation that opens a tiny interactive universe, with a different surprise every visit.",
