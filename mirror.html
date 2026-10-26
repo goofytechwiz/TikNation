@@ -64,6 +64,14 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offse
 .note{border-left:3px solid var(--pink);padding:10px 12px;font-size:.82rem;color:#c8c5dc;margin-top:15px}
 .foot{text-align:center;padding:26px 0 40px;color:#a3a1bd;font-size:.8rem}
 @media(max-width:720px){.grid{grid-template-columns:1fr}.preview{min-height:260px}.panel{padding:16px}.hero{padding-top:28px}.camera-frame{min-height:260px}video{min-height:260px}}
+@keyframes nightmareShake{0%,100%{transform:translate(0,0) scale(1)}12%{transform:translate(-5px,2px) scale(1.015)}24%{transform:translate(5px,-2px) scale(1.025)}38%{transform:translate(-3px,-1px) scale(1.01)}52%{transform:translate(4px,2px) scale(1.02)}70%{transform:translate(0,0) scale(1)}}
+@keyframes nightmareFlash{0%,100%{opacity:0}8%{opacity:.9}17%{opacity:0}33%{opacity:.65}42%{opacity:0}58%{opacity:.3}65%{opacity:0}}
+@keyframes horrorPulse{0%,100%{filter:contrast(1.2) saturate(1.3)}50%{filter:contrast(1.7) saturate(1.9) brightness(.78)}}
+.camera-frame.nightmare{animation:nightmareShake .72s ease-in-out 1}
+.camera-frame.nightmare:after{content:"";pointer-events:none;position:absolute;inset:0;z-index:5;background:linear-gradient(115deg,transparent 20%,rgba(255,0,40,.8) 50%,transparent 75%);mix-blend-mode:screen;animation:nightmareFlash .72s ease-out 1}
+.camera-frame.spooky video{animation:horrorPulse 2.8s ease-in-out infinite}
+#nightmare{width:100%;margin-top:10px;border-color:#ff254f;color:#ffdce4;background:linear-gradient(100deg,#370714,#180b22);font-weight:900;letter-spacing:.04em}
+#nightmare:active{transform:scale(.98)}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -82,7 +90,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offse
 <button class="choice" data-mode="silly" aria-pressed="false">😂 Silly</button>
 <button class="choice" data-mode="monster" aria-pressed="false">🐉 Creature</button>
 </div>
-<div class="actions"><button class="primary" id="start" type="button" onclick="window.startIllusionCamera && window.startIllusionCamera()">📸 Start live camera</button><button id="switch" type="button" disabled onclick="window.switchIllusionCamera && window.switchIllusionCamera()">Switch camera</button><button id="stop" type="button" disabled onclick="window.stopIllusionCamera && window.stopIllusionCamera()">Stop camera</button></div>
+<button id="nightmare" type="button">💀 TRIGGER NIGHTMARE</button><div class="muted" style="font-size:.82rem;margin-top:6px">Try Spooky first, then trigger the sudden scare. Best in a dim room. Effects are stylized, not real injury.</div><div class="actions"><button class="primary" id="start" type="button" onclick="window.startIllusionCamera && window.startIllusionCamera()">📸 Start live camera</button><button id="switch" type="button" disabled onclick="window.switchIllusionCamera && window.switchIllusionCamera()">Switch camera</button><button id="stop" type="button" disabled onclick="window.stopIllusionCamera && window.stopIllusionCamera()">Stop camera</button></div>
 <div class="status" id="status" role="status" aria-live="polite">Ready when you are.</div>
 <div class="note"><strong>Privacy:</strong> Camera access requires your permission and this page must be opened over HTTPS (the GitHub Pages link is HTTPS). The video is previewed locally by this page; it is not uploaded. Stop the camera when you're finished. Experimental face-tracked details add clown paint and nose, spooky eye markings, and aging lines. They do not reshape your actual face. The free face-tracking model loads from external servers; your camera video stays local to this page.</div>
 </div>
@@ -91,7 +99,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offse
 const video=document.getElementById('camera'),frame=document.getElementById('cameraFrame'),status=document.getElementById('status'),startBtn=document.getElementById('start'),stopBtn=document.getElementById('stop'),switchBtn=document.getElementById('switch');
 let stream=null,facing='user',mode='glow',busy=false,faceLandmarker=null,faceLoading=false,faceReady=false,lastVideoTime=-1;const faceCanvas=document.getElementById('faceEffects'),faceCtx=faceCanvas.getContext('2d');
 const modes=['glow','spooky','ancient','cosmic','silly','monster'];
-function setMode(next){mode=next;const cameraIsLive=frame.classList.contains('live');frame.className='camera-frame '+mode+(cameraIsLive?' live':'');document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));status.textContent='Illusion selected: '+document.querySelector('[data-mode="'+mode+'"]').textContent.trim()+(cameraIsLive?' — live camera stays on.':'.')}
+let scareTimer=null;function triggerNightmare(){if(mode!=='spooky')setMode('spooky');frame.classList.remove('nightmare');void frame.offsetWidth;frame.classList.add('nightmare');status.textContent='NIGHTMARE TRIGGERED — look at the mirror!';clearTimeout(scareTimer);scareTimer=setTimeout(()=>{frame.classList.remove('nightmare');if(stream)status.textContent='The mirror is watching… trigger it again when you are ready.'},900)}document.getElementById('nightmare').addEventListener('click',triggerNightmare);\nfunction setMode(next){mode=next;const cameraIsLive=frame.classList.contains('live');frame.className='camera-frame '+mode+(cameraIsLive?' live':'');document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));status.textContent='Illusion selected: '+document.querySelector('[data-mode="'+mode+'"]').textContent.trim()+(cameraIsLive?' — live camera stays on.':'.')}
 document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
 
 async function loadFaceTracker(){
