@@ -74,6 +74,18 @@
   .phone-compact-body > .tiny-note{display:none}
 }
 
+
+/* Integrated viewer action rail */
+.live-action-rail{display:flex;justify-content:space-around;align-items:center;gap:8px;margin:12px 0;padding:10px;border:1px solid #34294f;border-radius:16px;background:linear-gradient(110deg,#171126,#0c1423)}
+.live-action-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:52px;padding:8px 10px;background:transparent;border:1px solid transparent;border-radius:12px;color:#fff}
+.live-action-btn:hover,.live-action-btn:focus-visible{border-color:#5e4a8e;background:#211837;outline:none}
+.live-action-icon{font-size:1.35rem;line-height:1.2}.live-action-label{font-size:.72rem;color:#c9c4dc}
+.live-action-feedback{min-height:1.2em;text-align:center;color:#8ceaff;font-size:.82rem;margin:0 0 8px}
+.live-like-float{position:absolute;z-index:5;right:18px;bottom:24px;font-size:2.2rem;pointer-events:none;animation:liveLikeRise 1.2s ease-out forwards;filter:drop-shadow(0 0 10px #ff5caa)}
+@keyframes liveLikeRise{0%{opacity:0;transform:translateY(10px) scale(.65)}20%{opacity:1}100%{opacity:0;transform:translateY(-150px) translateX(-24px) scale(1.45)}}
+.live-more-menu{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px;padding:10px;border:1px solid #393052;border-radius:12px;background:#0c0b17}
+@media(prefers-reduced-motion:reduce){.live-like-float{animation:none;opacity:.8}}
+
 </style>
 </head>
 <body>
@@ -92,6 +104,18 @@
   <section id="viewer" class="hide">
     <div class="stream-head"><div><h2 id="viewerTitle">Watching live</h2><div class="small" id="viewerMeta"></div><div class="small" id="liveViewerCount" aria-live="polite">Connecting viewer count…</div></div><button class="danger" id="leaveBtn" type="button">Leave</button></div>
     <div id="viewerVideo" class="video"><div class="placeholder">Connecting to broadcast…</div><div class="live-chat-overlay" id="viewerChatOverlay" aria-label="Live comments on video"></div></div>
+    <div class="live-action-rail" aria-label="Live viewer actions">
+      <button type="button" class="live-action-btn" id="liveLikeBtn" aria-label="Like this live"><span class="live-action-icon">❤️</span><span class="live-action-label">Like</span></button>
+      <button type="button" class="live-action-btn" id="liveGiftToggleBtn" aria-label="Open live gifts"><span class="live-action-icon">🎁</span><span class="live-action-label">Gifts</span></button>
+      <button type="button" class="live-action-btn" id="liveChatJumpBtn" aria-label="Go to live chat"><span class="live-action-icon">💬</span><span class="live-action-label">Chat</span></button>
+      <button type="button" class="live-action-btn" id="liveShareBtn" aria-label="Share this live"><span class="live-action-icon">↗️</span><span class="live-action-label">Share</span></button>
+      <button type="button" class="live-action-btn" id="liveMoreBtn" aria-expanded="false" aria-controls="liveMoreMenu" aria-label="More live actions"><span class="live-action-icon">⋯</span><span class="live-action-label">More</span></button>
+    </div>
+    <p id="liveActionFeedback" class="live-action-feedback" role="status" aria-live="polite"></p>
+    <div id="liveMoreMenu" class="live-more-menu hide">
+      <button type="button" class="ghost" id="liveMoreReportBtn">Report stream</button>
+      <button type="button" class="ghost" id="liveMoreCopyBtn">Copy LIVE link</button>
+    </div>
     <div class="controls" style="margin-top:12px"><button class="ghost" id="reportToggle" type="button">Report stream</button></div>
     <form id="reportForm" class="hide">
       <div class="field"><label for="reportReason">Why are you reporting this stream?</label><select id="reportReason" required><option value="">Choose a reason</option><option>Harassment or bullying</option><option>Hateful content</option><option>Sexual content</option><option>Violence or dangerous activity</option><option>Spam or scam</option><option>Other safety concern</option></select></div>
@@ -431,6 +455,36 @@ $("inviteGuestBtn").addEventListener("click",async()=>{const name=$("guestInvite
 $("endGuestStageBtn").addEventListener("click",async()=>{if(!isHost||!activeSession){$("hostGuestStatus").textContent="Start your broadcast first.";return;}const {error}=await supabase.from("live_guest_requests").update({status:"ended",decided_at:new Date().toISOString()}).eq("session_id",activeSession.id).eq("status","approved");if(error){$("hostGuestStatus").textContent=error.message||"Could not close guest stage.";return;}guestStagePreviewOpen=false;$("hostGuestStatus").textContent="Approved guest requests marked ended. Audio/video tracks are not automatically removed.";await refreshLivePowerRequests();});
 $("sendBattleInviteBtn").addEventListener("click",async()=>{const name=$("battleOpponentName").value.trim().replace(/^@/,"");if(!isHost||!activeSession){$("hostBattleStatus").textContent="Start your live broadcast before challenging another creator.";return;}if(!name){$("hostBattleStatus").textContent="Enter an opponent username first.";return;}const b=$("sendBattleInviteBtn");b.disabled=true;try{const {data:profiles,error:pe}=await supabase.from("profiles").select("id,username").ilike("username",name).limit(1);if(pe)throw pe;const target=profiles?.[0];if(!target)throw new Error("No TikNation account found for @"+name+".");if(target.id===user.id)throw new Error("You cannot challenge yourself.");const {error}=await supabase.from("live_battle_invites").insert({session_id:activeSession.id,host_id:user.id,opponent_id:target.id,inviter_id:user.id,status:"pending",round_seconds:180});if(error)throw error;$("hostBattleStatus").textContent="Three-minute battle invitation saved for @"+(target.username||name)+". Their acceptance and battle connection are still pending.";notice("Battle invitation saved.","ok");}catch(e){$("hostBattleStatus").textContent=e.message||"Could not send battle invitation.";}finally{b.disabled=false;}});
 $("battleRoundBtn").addEventListener("click",()=>{if(!isHost||!activeSession){$("hostBattleStatus").textContent="Start your live broadcast before starting a battle preview.";return;}if(battlePreviewTimer){stopBattlePreview("Battle preview stopped. No real score or rewards were recorded.");return;}battlePreviewRemaining=180;$("battleHostScore").textContent="0";$("battleOpponentScore").textContent="0";$("battleRoundBtn").textContent="Stop preview";$("hostBattleStatus").textContent="LOCAL PREVIEW · "+fmtBattleTime(battlePreviewRemaining)+" remaining. Scores are demonstrations only.";battlePreviewTimer=window.setInterval(()=>{battlePreviewRemaining--;if(battlePreviewRemaining<=0){stopBattlePreview("Preview finished. No winner, coins, or rewards were recorded.");return;}$("hostBattleStatus").textContent="LOCAL PREVIEW · "+fmtBattleTime(battlePreviewRemaining)+" remaining. Scores are demonstrations only.";},1000);});
+
+
+function liveActionFeedback(message){const node=$("liveActionFeedback");if(node)node.textContent=message;}
+$("liveLikeBtn")?.addEventListener("click",()=>{
+  if(!activeSession){liveActionFeedback("Join a live broadcast first to send likes.");return;}
+  const box=$("viewerVideo");if(!box)return;
+  const heart=document.createElement("span");heart.className="live-like-float";heart.textContent=["❤️","💖","💗","💕"][Math.floor(Math.random()*4)];heart.setAttribute("aria-hidden","true");box.appendChild(heart);window.setTimeout(()=>heart.remove(),1250);liveActionFeedback("Like sent ✨");
+});
+$("liveGiftToggleBtn")?.addEventListener("click",()=>{
+  if(!activeSession){liveActionFeedback("Join a live broadcast first to open gifts.");return;}
+  const panel=$("liveGiftPanel");if(!panel)return;
+  panel.classList.remove("hide");panel.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"nearest"});
+  liveActionFeedback("Choose a gift below. Test coins only.");
+});
+$("liveChatJumpBtn")?.addEventListener("click",()=>{
+  $("chatPanel")?.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+  $("chatInput")?.focus({preventScroll:true});liveActionFeedback("Live chat is ready below.");
+});
+async function shareTikNationLive(){
+  const url=window.location.href;
+  try{
+    if(navigator.share){await navigator.share({title:"TikNation LIVE",text:"Watch this TikNation LIVE",url});liveActionFeedback("Thanks for sharing TikNation LIVE!");return;}
+    if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(url);liveActionFeedback("LIVE link copied. Share it with your friends!");return;}
+    const field=document.createElement("textarea");field.value=url;field.setAttribute("readonly","");field.style.position="fixed";field.style.opacity="0";document.body.appendChild(field);field.select();const copied=document.execCommand("copy");field.remove();liveActionFeedback(copied?"LIVE link copied. Share it with your friends!":"Copy this page's URL from your browser to share the LIVE.");
+  }catch(error){if(error?.name==="AbortError")liveActionFeedback("Share cancelled.");else liveActionFeedback("Use your browser's address bar to copy the LIVE link.");}
+}
+$("liveShareBtn")?.addEventListener("click",()=>void shareTikNationLive());
+$("liveMoreBtn")?.addEventListener("click",()=>{const menu=$("liveMoreMenu");const opening=menu.classList.contains("hide");menu.classList.toggle("hide",!opening);$("liveMoreBtn").setAttribute("aria-expanded",String(opening));});
+$("liveMoreReportBtn")?.addEventListener("click",()=>{$("liveMoreMenu").classList.add("hide");$("reportToggle")?.click();$("reportForm")?.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"nearest"});});
+$("liveMoreCopyBtn")?.addEventListener("click",()=>void shareTikNationLive());
 
 async function boot(){const {data:{session}}=await supabase.auth.getSession();user=session?.user||null;$("authBadge").textContent=user?"Signed in":"Viewer mode";if(user){$("creator").classList.remove("hide");$("chatInput").placeholder="Write a message…";}else{$("creatorHint").textContent="Sign in to TikNation, then return here to use Live. Broadcasting is invite-only.";notice("Sign in to view streams, join, chat, report, or broadcast.");}await loadStreams();if(user){$("creatorHint").textContent="Creator access is verified securely when you start a broadcast. Live access is invite-only during beta.";}}
 supabase.auth.onAuthStateChange((_event,session)=>{user=session?.user||null;$("authBadge").textContent=user?"Signed in":"Viewer mode";if(user){$("creator").classList.remove("hide");$("chatInput").placeholder="Write a message…";$("creatorHint").textContent="Creator access is verified securely when you start a broadcast. Live access is invite-only during beta.";setTimeout(()=>{void loadStreams();},0);}else{if(!isHost)$("creator").classList.add("hide");$("chatInput").placeholder="Sign in and join a stream to chat…";$("chatInput").disabled=true;$("sendChat").disabled=true;if(!activeSession)notice("Sign in to view streams, join, chat, report, or broadcast.");}});
