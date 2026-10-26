@@ -136,6 +136,20 @@ button.primary,#sequence{background:linear-gradient(110deg,#8d1234,#3c103d)!impo
 @media(max-width:760px){.grid{grid-template-columns:1fr}.hero{padding:38px 0 25px}.camera-frame,video{min-height:min(62vh,540px)}.panel{padding:14px}.top{padding:12px 0}.foot{letter-spacing:.12em}}
 @media(prefers-reduced-motion:reduce){body:before{display:none}}
 
+
+/* The mirror is presented as an object in the room, not a generic webcam box. */
+.mirror-console{position:relative;z-index:4;width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 5px 12px;color:#bba9c8;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase}
+.mirror-console .signal{display:inline-flex;align-items:center;gap:7px;color:#ff829a}
+.mirror-console .dot{width:6px;height:6px;border-radius:50%;background:#ff315b;box-shadow:0 0 12px #ff1744;animation:signalPulse 1.8s ease-in-out infinite}
+.mirror-console .right-label{color:#76677e;text-align:right}
+@keyframes signalPulse{0%,100%{opacity:.45;box-shadow:0 0 4px #ff1744}50%{opacity:1;box-shadow:0 0 14px #ff1744}}
+.camera-frame #placeholder{position:relative;z-index:4}
+.camera-frame #placeholder:after{content:"";display:block;width:72px;height:1px;margin:22px auto 0;background:linear-gradient(90deg,transparent,#ff426a,transparent);box-shadow:0 0 15px #ff1744;animation:mirrorBreathe 3s infinite}
+.camera-frame.live:before{z-index:2}
+.camera-frame.live #hauntOverlay{z-index:5}
+.camera-frame.live #faceEffects{z-index:4}
+@media(max-width:420px){.mirror-console{font-size:.54rem;letter-spacing:.1em}.mirror-console .right-label{max-width:42%}}
+
 </style>
 </head>
 <body>
@@ -143,7 +157,7 @@ button.primary,#sequence{background:linear-gradient(110deg,#8d1234,#3c103d)!impo
 <main class="wrap">
 <section class="hero"><div class="eyebrow">TIKNATION AFTER DARK · INTERACTIVE HORROR</div><h1>HORROR MIRROR</h1><p>It knows your face. It learned your movements. Now something on the other side is ready to stop pretending.</p></section>
 <section class="grid">
-<div class="panel preview"><div class="camera-frame glow" id="cameraFrame"><video id="camera" autoplay playsinline muted></video><canvas id="faceEffects" aria-hidden="true"></canvas><div id="hauntOverlay" aria-hidden="true"><span id="hauntTitle">PRESENCE DETECTED</span><span id="hauntSub">THE MIRROR IS WATCHING</span></div><div id="placeholder"><div style="font-size:4rem">🪞✨</div><h2>The other side is waiting</h2><p class="muted">Allow the camera when you are ready to face the mirror.</p></div></div></div>
+<div class="panel preview"><div class="mirror-console"><span class="signal"><i class="dot"></i> LIVE REFLECTION SYSTEM</span><span class="right-label">DO NOT TRUST THE GLASS</span></div><div class="camera-frame glow" id="cameraFrame"><video id="camera" autoplay playsinline muted></video><canvas id="faceEffects" aria-hidden="true"></canvas><div id="hauntOverlay" aria-hidden="true"><span id="hauntTitle">PRESENCE DETECTED</span><span id="hauntSub">THE MIRROR IS WATCHING</span></div><div id="placeholder"><div style="font-size:4rem">🪞✨</div><h2>The other side is waiting</h2><p class="muted">Allow the camera when you are ready to face the mirror.</p></div></div></div>
 <div class="panel"><h2>Enter the reflection</h2><p class="muted">First, awaken the live mirror. Then choose what kind of presence you dare to invite in.</p>
 <div class="choices" role="group" aria-label="Illusion styles">
 <button class="choice" data-mode="glow" aria-pressed="true">✨ Glow-up</button>
@@ -155,7 +169,7 @@ button.primary,#sequence{background:linear-gradient(110deg,#8d1234,#3c103d)!impo
 </div>
 <div class="panel" style="margin:14px 0;padding:14px;background:rgba(10,8,22,.82);border:1px solid rgba(180,154,255,.35);border-radius:14px"><h3 style="margin:0 0 6px">🪞 The Living Reflection</h3><p class="muted" style="margin:0 0 10px">Awaken the mirror, play the full five-act nightmare, or calm the reflection.</p><div class="actions"><button id="awaken" type="button">👁️ Awaken mirror</button><button class="primary" id="sequence" type="button">🎬 Play full horror sequence</button><button id="calm" type="button">✨ Calm the mirror</button><button id="soundToggle" type="button" aria-pressed="true">🔊 Sound on</button></div><p id="storyStatus" class="muted" aria-live="polite" style="margin:10px 0 4px">The mirror is dormant.</p><p id="mirrorCaption" style="letter-spacing:.12em;font-size:.78rem;color:#b49aff;margin:0">PRESENCE NOT DETECTED</p></div>
 <button id="nightmare" type="button">💀 TRIGGER NIGHTMARE</button><div class="muted" style="font-size:.82rem;margin-top:6px">Try Spooky first, then trigger the sudden scare. Best in a dim room. Effects are stylized, not real injury.</div><div class="actions"><button class="primary" id="start" type="button" onclick="var mirrorStatus=document.getElementById('status');if(mirrorStatus)mirrorStatus.textContent='Start button tapped. Checking camera controls…';if(typeof window.startIllusionCamera==='function'){window.startIllusionCamera()}else if(mirrorStatus){mirrorStatus.textContent='The mirror controls did not initialize. Reload this page in Chrome; if it repeats, the page script failed to start.'}">📸 Start live camera</button><button id="switch" type="button" disabled onclick="window.switchIllusionCamera && window.switchIllusionCamera()">Switch camera</button><button id="stop" type="button" disabled onclick="window.stopIllusionCamera && window.stopIllusionCamera()">Stop camera</button></div>
-<div class="status" id="status" role="status" aria-live="polite">Ready when you are.</div>
+<div class="status" id="status" role="status" aria-live="polite">Mirror signal stable. Awaiting a presence.</div>
 <div class="note"><strong>Privacy:</strong> Camera access requires your permission and this page must be opened over HTTPS (the GitHub Pages link is HTTPS). The video is previewed locally by this page; it is not uploaded. Stop the camera when you're finished. Experimental face-tracked details add clown paint and nose, spooky eye markings, and aging lines. They do not reshape your actual face. The free face-tracking model loads from external servers; your camera video stays local to this page.</div>
 </div>
 </section></main><footer class="foot wrap">TikNation · YOUR VOICE. YOUR WORLD.</footer>
