@@ -58,7 +58,38 @@ section{margin-top:20px}
 <article class="social"><div class="symbol" aria-hidden="true">f</div><h3>Facebook</h3><p>Community updates and shared milestones.</p><span class="status">Official profile link to be added</span></article>
 <article class="social"><div class="symbol" aria-hidden="true">◉</div><h3>More platforms</h3><p>Snapchat, Threads, Discord, and any other channels you choose to share.</p><span class="status">Add only accounts you confirm</span></article>
 </div>
-<p class="note">This is the starter social hub. No account handles or external destinations are published until they are confirmed by the creator.</p>
+
+<div class="editor" style="margin-top:22px;padding:20px;border:1px solid #70e8ff44;border-radius:18px;background:#070a16">
+<div class="eyebrow">CREATOR EDITOR</div><h2 style="margin-top:10px">Add your social accounts</h2>
+<p>Enter a platform, username, and public profile link. Your entries are saved in this browser on this device.</p>
+<form id="socialEditor">
+<label for="socialPlatform">Platform</label><br>
+<select id="socialPlatform" required style="width:100%;padding:12px;margin:6px 0 12px;background:#0b0b19;color:white;border:1px solid #ffffff33;border-radius:10px">
+<option value="Instagram">Instagram</option><option value="TikTok">TikTok</option><option value="YouTube">YouTube</option><option value="Facebook">Facebook</option><option value="X">X</option><option value="Snapchat">Snapchat</option><option value="Threads">Threads</option><option value="Discord">Discord</option><option value="Bluesky">Bluesky</option><option value="Kick">Kick</option><option value="Other">Other</option></select><br>
+<label for="socialHandle">Username / display name</label><br><input id="socialHandle" required maxlength="80" placeholder="@yourusername" style="width:100%;padding:12px;margin:6px 0 12px;background:#0b0b19;color:white;border:1px solid #ffffff33;border-radius:10px"><br>
+<label for="socialUrl">Public profile URL</label><br><input id="socialUrl" required type="url" placeholder="https://..." style="width:100%;padding:12px;margin:6px 0 12px;background:#0b0b19;color:white;border:1px solid #ffffff33;border-radius:10px"><br>
+<button type="submit" class="btn" style="cursor:pointer">＋ Add account</button><p id="socialStatus" role="status" aria-live="polite"></p>
+</form><div id="socialEntries"></div>
+</div>
+<script>
+(function(){
+var key='tiknation_creator_social_accounts_v1';
+var form=document.getElementById('socialEditor'), entries=document.getElementById('socialEntries'), status=document.getElementById('socialStatus');
+function read(){try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e){return []}}
+function draw(){entries.replaceChildren();read().forEach(function(item,i){
+var row=document.createElement('div');row.style.cssText='padding:12px;margin-top:10px;border:1px solid #ffffff22;border-radius:12px;overflow-wrap:anywhere';
+var title=document.createElement('strong');title.textContent=item.platform+' · '+item.handle;
+var link=document.createElement('a');link.href=item.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=item.url;link.style.cssText='display:block;color:#70e8ff;margin:8px 0';
+var remove=document.createElement('button');remove.type='button';remove.textContent='Remove';remove.className='btn';remove.addEventListener('click',function(){var all=read();all.splice(i,1);localStorage.setItem(key,JSON.stringify(all));status.textContent='Account removed.';draw()});
+row.append(title,link,remove);entries.append(row)
+})}
+form.addEventListener('submit',function(e){e.preventDefault();var url=document.getElementById('socialUrl').value.trim();if(!/^https?:\/\//i.test(url)){status.textContent='Use a public link beginning with https://';return}
+var all=read();all.push({platform:document.getElementById('socialPlatform').value,handle:document.getElementById('socialHandle').value.trim(),url:url});localStorage.setItem(key,JSON.stringify(all));form.reset();status.textContent='Account saved in this browser.';draw()
+});draw()
+})();
+</script>
+
+<p class="note">Only add links you intend to share publicly. Never enter passwords or private account details.</p>
 </section>
 <section class="panel">
 <div class="eyebrow">MADE WITH IMAGINATION</div>
