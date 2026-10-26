@@ -221,8 +221,13 @@ function drawFaceEffect(lm){
   strokePath([p(107),p(105),p(66)],'#80513a',fine);strokePath([p(336),p(334),p(296)],'#80513a',fine);
   [p(70),p(300)].forEach(q=>{ctx.beginPath();ctx.strokeStyle=wrinkle;ctx.lineWidth=fine;ctx.ellipse(q.x,q.y,u*13,u*4,.1,0,Math.PI*2);ctx.stroke()});
  }else if(mode==='monster'){
-  [p(33),p(263)].forEach(q=>{ctx.beginPath();ctx.fillStyle='#ff182f';ctx.shadowColor='#ff182f';ctx.shadowBlur=u*7;ctx.ellipse(q.x,q.y,u*7,u*4,0,0,Math.PI*2);ctx.fill()});
-  ctx.shadowBlur=0;strokePath([p(10),p(151),p(9)],'#b9ff65',u*2);
+  // Glowing eyes anchored to tracked eye landmarks.
+  [p(33),p(263)].forEach(q=>{ctx.beginPath();ctx.fillStyle='#ff182f';ctx.shadowColor='#ff182f';ctx.shadowBlur=u*10;ctx.ellipse(q.x,q.y,u*8,u*4.5,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.fillStyle='#fff4d6';ctx.ellipse(q.x,q.y,u*1.3,u*3.4,0,0,Math.PI*2);ctx.fill()});ctx.shadowBlur=0;
+  // Bone-colored horns and jagged fangs follow the face landmarks.
+  [[p(70),p(105),-1],[p(300),p(334),1]].forEach(([base,mid,side])=>{ctx.beginPath();ctx.moveTo(base.x-u*5,base.y);ctx.quadraticCurveTo(mid.x+side*u*5,mid.y-u*19,mid.x+side*u*13,mid.y-u*27);ctx.quadraticCurveTo(mid.x+side*u*11,mid.y-u*10,base.x+u*5,base.y+u*2);ctx.closePath();ctx.fillStyle='#211323';ctx.fill();ctx.strokeStyle='#b9ff65';ctx.lineWidth=u*1.3;ctx.stroke()});
+  const ml=p(61),mr=p(291),mouth=p(14);ctx.beginPath();ctx.moveTo(ml.x,ml.y);ctx.quadraticCurveTo(mouth.x,mouth.y+u*13,mr.x,mr.y);ctx.strokeStyle='#170713';ctx.lineWidth=u*5;ctx.stroke();
+  [ml,mr].forEach((q,i)=>{ctx.beginPath();ctx.moveTo(q.x,q.y);ctx.lineTo(q.x+(i?-1:1)*u*5,q.y+u*12);ctx.lineTo(q.x+(i?-1:1)*u*10,q.y+u*2);ctx.closePath();ctx.fillStyle='#f3f0d4';ctx.fill()});
+  strokePath([p(10),p(151),p(9)],'#b9ff65',u*2);
  }
  ctx.restore();
 }
