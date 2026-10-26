@@ -227,6 +227,31 @@ function drawFaceEffect(lm,delayedLm){
   ctx.translate(w+ghostX,ghostY);ctx.scale(-1,1);
   ctx.drawImage(video,0,0,w,h);
   ctx.restore();
+  // Broken-glass signal tear: moving horizontal slices make the ghost image visibly
+  // disagree with the live reflection instead of reading as a simple color filter.
+  ctx.save();
+  ctx.globalCompositeOperation='screen';
+  const bandCount=mode==='monster'?8:6;
+  for(let n=0;n<bandCount;n++){
+   const phase=t*1.7+n*2.37;
+   const y=((Math.sin(phase)*.5+.5)*h)|0;
+   const bh=Math.max(2,h*(mode==='monster'?.018:.012));
+   const shift=(Math.sin(phase*1.9)*.055*w)+(mode==='monster'?.025*w:0);
+   ctx.globalAlpha=.18+(.16*(Math.sin(phase*2.3)*.5+.5));
+   ctx.fillStyle=mode==='monster'?'#b9ff65':'#ff1744';
+   ctx.fillRect(shift,y,w*.82,bh);
+   ctx.globalAlpha=.28;
+   ctx.fillStyle='#05020b';
+   ctx.fillRect(0,y+bh,w,bh*.45);
+  }
+  // Brief double exposure pulses like the glass is slipping out of sync.
+  const pulse=Math.max(0,Math.sin(t*2.8))*(mode==='monster'?.17:.13);
+  if(pulse>.04){
+   ctx.globalAlpha=pulse;ctx.globalCompositeOperation='lighter';
+   ctx.filter='grayscale(1) contrast(2)';
+   ctx.drawImage(video,-w*.035,0,w,h);
+  }
+  ctx.restore();
  }
  if(mode==='spooky'||mode==='monster'){
   const t=performance.now()/1000, driftX=Math.sin(t*1.8)*w*.012, driftY=Math.cos(t*1.25)*h*.008;
