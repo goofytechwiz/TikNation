@@ -38,7 +38,7 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 .chatrow button{padding:12px 16px}.promptchips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.promptchips button{font-size:.82rem;padding:9px 12px}
 
 
-.chatTools{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin:8px 0}
+.coreStatus{margin:-12px auto 20px;color:var(--cyan);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;min-height:1.2em}.chatTools{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin:8px 0}
 .chatTools button{font-size:.82rem;padding:9px 12px}
 .bubble.thinking{color:#b9eaff;font-style:italic}
 .quest button:disabled{opacity:.45;cursor:not-allowed}
@@ -56,6 +56,7 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 <body>
 <main>
 <button class="orb" id="coreButton" type="button" aria-label="Change the Dream Companion core glow" title="Tap to shift the core glow" style="display:block;border:0;padding:0"></button>
+<div class="coreStatus" id="coreStatus" aria-live="polite">Dream Core · Calm & Ready</div>
 <div class="kicker">TIKNATION · SPECIAL CHARACTER</div>
 <h1>ChatGPT ✨</h1>
 <p>Your AI Dream Companion</p>
@@ -251,6 +252,7 @@ coreButton.addEventListener('click',()=>{
  coreButton.style.background=coreMoods[coreMood];
  coreButton.style.boxShadow=['0 0 30px #70e8ff80,0 0 80px #8a5cff55','0 0 30px #ffb45480,0 0 80px #ed5aa855','0 0 30px #69f0a880,0 0 80px #3978d955','0 0 30px #9b79ff80,0 0 80px #3ed9d055'][coreMood];
  coreButton.setAttribute('aria-label','Dream Companion core glow changed. Tap to change it again.');
+ document.getElementById('coreStatus').textContent=['Dream Core · Calm & Ready','Dream Core · Solar Spark','Dream Core · Nature Pulse','Dream Core · Mystic Tide'][coreMood];
 });
 document.getElementById('clearChat').addEventListener('click',()=>{
  chatlog.replaceChildren();
