@@ -24,11 +24,11 @@ video{display:none;width:100%;height:100%;max-height:560px;min-height:300px;obje
 .camera-frame.live video{display:block}
 .camera-frame.live #placeholder{display:none}
 #placeholder{padding:24px;color:#d1cee8}
-.camera-frame.spooky video{filter:contrast(1.3) saturate(.65) hue-rotate(315deg)}
+.camera-frame.spooky video{filter:grayscale(.8) contrast(1.65) brightness(.72) sepia(.25) hue-rotate(305deg)}
 .camera-frame.ancient video{filter:sepia(.7) saturate(.8)}
 .camera-frame.cosmic video{filter:hue-rotate(35deg) saturate(1.4)}
 .camera-frame.silly video{filter:hue-rotate(100deg) saturate(1.7) contrast(1.1)}
-.camera-frame.monster video{filter:contrast(1.4) saturate(1.6) hue-rotate(285deg)}
+.camera-frame.monster video{filter:contrast(1.7) saturate(1.8) brightness(.78) hue-rotate(285deg)}
 .camera-frame.glow video{filter:brightness(1.08) saturate(1.2)}
 /* Animated illusion layers: effects stay over the live camera without interrupting it. */
 .camera-frame::before,.camera-frame::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .35s}
@@ -220,10 +220,10 @@ function drawFaceEffect(lm,delayedLm){
  if((mode==='spooky'||mode==='monster')&&video.readyState>=2){
   const t=performance.now()/1000;
   ctx.save();
-  ctx.globalAlpha=mode==='monster'?.22:.28;
+  ctx.globalAlpha=mode==='monster'?.58:.62;
   ctx.globalCompositeOperation='screen';
-  ctx.filter=mode==='monster'?'hue-rotate(95deg) contrast(1.5)':'grayscale(.75) contrast(1.55) sepia(.35)';
-  const ghostX=Math.sin(t*1.8)*w*.025,ghostY=Math.cos(t*1.25)*h*.012;
+  ctx.filter=mode==='monster'?'hue-rotate(95deg) contrast(1.8) brightness(.75)':'grayscale(1) contrast(2) brightness(.58) sepia(1) saturate(3)';
+  const ghostX=(Math.sin(t*1.8)*.025+.055)*w,ghostY=(Math.cos(t*1.25)*.012)*h;
   ctx.translate(w+ghostX,ghostY);ctx.scale(-1,1);
   ctx.drawImage(video,0,0,w,h);
   ctx.restore();
