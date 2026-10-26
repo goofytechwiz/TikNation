@@ -1713,8 +1713,8 @@ textarea.form-control{
         bottom:0;
         left:0;
         width:100%;
-        height:68px;
-        padding:0 3px;
+        height:calc(68px + env(safe-area-inset-bottom));
+        padding:0 3px env(safe-area-inset-bottom);
         overflow-x:auto;
         overflow-y:hidden;
         background:rgba(5,5,11,.97);
