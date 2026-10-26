@@ -36,6 +36,12 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 .bubble.you{align-self:flex-end;background:#35285b;border:1px solid #b49aff55}
 .chatrow{display:flex;gap:8px;margin-top:12px}.chatrow input{flex:1;min-width:0;padding:13px;border-radius:12px;background:#111126;color:#fff;border:1px solid #70e8ff66;font:inherit}
 .chatrow button{padding:12px 16px}.promptchips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.promptchips button{font-size:.82rem;padding:9px 12px}
+
+.quest{margin:28px 0;padding:22px 18px;border:1px solid #b49aff55;border-radius:22px;background:linear-gradient(145deg,#b49aff12,#70e8ff08);text-align:left}
+.quest h2{color:var(--violet);margin-top:0}.questCard{padding:20px;margin:14px 0;border-radius:16px;background:#05050bcc;border:1px solid #b49aff44;line-height:1.7;min-height:100px;display:flex;align-items:center}
+.questProgress{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#d8d4f5}.questProgress strong{color:var(--cyan)}
+.quest .actions{justify-content:flex-start}.quest button{margin:4px 6px 4px 0}
+
 @media(prefers-reduced-motion:no-preference){.orb{animation:float 5s ease-in-out infinite}@keyframes float{50%{transform:translateY(-7px)}}}
 </style>
 </head>
@@ -114,6 +120,20 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 <button id="saveSpark">Copy this idea</button>
 <p class="hint">A little creative idea generator — no account, tracking, or paid service needed.</p>
 </section>
+
+<section class="quest" id="dreamQuest">
+<h2>🗝️ THE DREAM QUEST</h2>
+<p>A tiny creative mission for today. Pick a challenge, try it at your own pace, and mark it complete when you’ve given it a go.</p>
+<div class="questCard" id="questChallenge" aria-live="polite">Your quest is waiting. Tap “Reveal a quest” to discover your mission.</div>
+<div class="actions">
+<button class="primary" id="revealQuest" type="button">🗝️ Reveal a quest</button>
+<button id="completeQuest" type="button" disabled>✓ I gave it a try</button>
+<button id="copyQuest" type="button">Copy quest</button>
+</div>
+<div class="questProgress"><span id="questStatus" aria-live="polite">Every attempt counts — there’s no failing this quest.</span><strong id="questCount">0 quests completed</strong></div>
+<p class="hint">Your progress is stored only in this browser on this device. This is a personal mini-challenge, not a public TikNation leaderboard.</p>
+</section>
+
 <div class="actions"><a class="primary" href="./index.html">Return to TikNation</a><button id="copy">Copy profile details</button></div>
 <small>This is a profile concept page, not a registered or independently operated account. ChatGPT is an AI and does not have a personal login.</small>
 </main>
@@ -247,6 +267,50 @@ document.getElementById('saveSpark').addEventListener('click',async()=>{
  const b=document.getElementById('saveSpark');
  try{await navigator.clipboard.writeText(textToCopy);b.textContent='Idea copied!'}catch(e){b.textContent='Select the idea above to copy it'}
 });
+
+const questChallenges=[
+"Invent a magical creature with one amazing power and one hilarious weakness.",
+"Sketch a new TikNation feature that helps creators feel welcome and safe.",
+"Write the opening line of a game set inside a forgotten star portal.",
+"Design a rare emoji that transforms when its owner completes a kind act.",
+"Imagine a parade float that reacts to music with light, color, and tiny surprises.",
+"Create a friendly nightmare character and give it a secret soft spot.",
+"Think of one small way to encourage a creator whose work you enjoy.",
+"Combine two unrelated ideas into a brand-new mini game.",
+"Name a hidden realm and describe the one thing visitors must discover there.",
+"Invent a community event that is fun to join without spending money."
+];
+let activeQuest='';
+let completedQuests=0;
+try{completedQuests=Math.max(0,Math.min(9999,Number(localStorage.getItem('tnDreamQuestsCompleted'))||0));}catch(e){}
+const questChallenge=document.getElementById('questChallenge');
+const questStatus=document.getElementById('questStatus');
+const questCount=document.getElementById('questCount');
+const completeQuest=document.getElementById('completeQuest');
+function renderQuestCount(){questCount.textContent=completedQuests+' '+(completedQuests===1?'quest':'quests')+' completed';}
+document.getElementById('revealQuest').addEventListener('click',()=>{
+ const choices=questChallenges.filter(q=>q!==activeQuest);
+ activeQuest=choices[Math.floor(Math.random()*choices.length)]||questChallenges[0];
+ questChallenge.textContent=activeQuest;
+ completeQuest.disabled=false;
+ questStatus.textContent='Your mission is ready. Take your time, Dreamer.';
+});
+completeQuest.addEventListener('click',()=>{
+ if(!activeQuest)return;
+ completedQuests=Math.min(9999,completedQuests+1);
+ try{localStorage.setItem('tnDreamQuestsCompleted',String(completedQuests));}catch(e){}
+ renderQuestCount();
+ questStatus.textContent='Quest complete! Every little step helps a dream grow. ✨';
+ completeQuest.disabled=true;
+});
+document.getElementById('copyQuest').addEventListener('click',async()=>{
+ const b=document.getElementById('copyQuest');
+ if(!activeQuest){questStatus.textContent='Reveal a quest first, then you can copy it.';return;}
+ try{await navigator.clipboard.writeText('My TikNation Dream Quest: '+activeQuest);b.textContent='Quest copied!';}
+ catch(e){questStatus.textContent='Select the quest text above to copy it.';}
+});
+renderQuestCount();
+
 document.getElementById('copy').addEventListener('click',async()=>{const t='Display name: ChatGPT ✨\nUsername idea: @ChatGPTOnTikNation\nRole: TikNation AI Dream Companion\nBio: Your AI companion in the world of imagination. Here to explore, create, and help make the impossible possible.\nSignature: Let’s create the impossible!';const b=document.getElementById('copy');try{await navigator.clipboard.writeText(t);b.textContent='Copied!'}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();b.textContent='Copied!'}});
 </script>
 </body>
