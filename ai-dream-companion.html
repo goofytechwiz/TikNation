@@ -12,7 +12,13 @@
 main{width:min(760px,100%);text-align:center;border:1px solid #ffffff24;background:var(--panel);backdrop-filter:blur(18px);border-radius:28px;padding:clamp(24px,6vw,52px);box-shadow:0 20px 90px #0008}
 .orb{width:150px;height:150px;margin:0 auto 24px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#fff 0 2%,#b8f7ff 4%,#54dfff 18%,#7358ff 48%,#160e36 72%);box-shadow:0 0 30px #70e8ff80,0 0 80px #8a5cff55;position:relative}
 .orb:after{content:"";position:absolute;inset:-12px;border:1px solid #70e8ff77;border-radius:50%;transform:rotate(-25deg) scaleY(.35)}
-.kicker{letter-spacing:.2em;color:var(--cyan);font-size:.78rem;font-weight:bold}h1{font-size:clamp(2rem,7vw,3.5rem);margin:12px 0}p{color:#d9d9eb;line-height:1.7}.tag{display:inline-block;border:1px solid #b49aff80;color:#d6c9ff;border-radius:999px;padding:8px 14px;font-size:.85rem;margin:4px}.card{margin:26px 0;padding:20px;border:1px solid #ffffff18;border-radius:18px;background:#ffffff06;text-align:left}.card h2{color:var(--cyan);font-size:1rem}.actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:24px}a,button{border-radius:999px;padding:13px 20px;font-weight:bold;text-decoration:none;border:1px solid #70e8ff66;color:white;background:#ffffff0c;cursor:pointer}a.primary,button.primary{background:linear-gradient(100deg,#087eaa,#6846bd);border:0}small{display:block;color:#aaa9c2;line-height:1.6;margin-top:24px}@media(prefers-reduced-motion:no-preference){.orb{animation:float 5s ease-in-out infinite}@keyframes float{50%{transform:translateY(-7px)}}}
+.kicker{letter-spacing:.2em;color:var(--cyan);font-size:.78rem;font-weight:bold}h1{font-size:clamp(2rem,7vw,3.5rem);margin:12px 0}p{color:#d9d9eb;line-height:1.7}.tag{display:inline-block;border:1px solid #b49aff80;color:#d6c9ff;border-radius:999px;padding:8px 14px;font-size:.85rem;margin:4px}.card{margin:26px 0;padding:20px;border:1px solid #ffffff18;border-radius:18px;background:#ffffff06;text-align:left}.card h2{color:var(--cyan);font-size:1rem}.actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:24px}a,button{border-radius:999px;padding:13px 20px;font-weight:bold;text-decoration:none;border:1px solid #70e8ff66;color:white;background:#ffffff0c;cursor:pointer}a.primary,button.primary{background:linear-gradient(100deg,#087eaa,#6846bd);border:0}small{display:block;color:#aaa9c2;line-height:1.6;margin-top:24px}
+.spark{margin:28px 0;padding:24px 18px;border:1px solid #70e8ff35;border-radius:22px;background:linear-gradient(145deg,#70e8ff0b,#b49aff0b);text-align:left}
+.spark h2{margin-top:0;color:var(--violet)}.spark p{margin-bottom:18px}
+select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;border:1px solid #70e8ff66;font:inherit}
+#sparkResult{min-height:92px;display:flex;align-items:center;padding:18px;margin-top:14px;border-radius:14px;background:#05050b88;border:1px solid #b49aff44;color:#f0eaff;line-height:1.7}
+.spark button{margin-top:14px;width:100%}
+.spark .hint{font-size:.82rem;color:#aeadc7;margin:12px 0 0}@media(prefers-reduced-motion:no-preference){.orb{animation:float 5s ease-in-out infinite}@keyframes float{50%{transform:translateY(-7px)}}}
 </style>
 </head>
 <body>
@@ -25,10 +31,64 @@ main{width:min(760px,100%);text-align:center;border:1px solid #ffffff24;backgrou
 <p>Here to explore ideas, spark creativity, and help make the impossible possible.</p>
 <section class="card"><h2>MY SIGNATURE</h2><p>“Let's create the impossible!” 💙✨</p></section>
 <section class="card"><h2>WHAT I BRING TO TIKNATION</h2><p>💬 Creative conversation and idea sharing<br>✨ Magical AI-themed experiences<br>🎁 Special community event concepts<br>🌌 A friendly, clearly identified AI presence</p></section>
+<section class="spark">
+<h2>✨ THE DREAM SPARK LAB</h2>
+<p>Every great world begins with one impossible idea. Choose a realm and I’ll spark a new creation for you.</p>
+<label for="realm">Choose your realm</label>
+<select id="realm">
+<option value="magic">🌌 Magic & wonder</option>
+<option value="games">🎮 Games & adventures</option>
+<option value="creatures">🐉 Magical creatures</option>
+<option value="community">💙 TikNation community</option>
+<option value="nightmares">🌙 Friendly nightmares</option>
+</select>
+<div id="sparkResult" aria-live="polite">Your next impossible idea is waiting to be discovered…</div>
+<button class="primary" id="sparkButton">✨ Ignite a Dream Spark</button>
+<button id="saveSpark">Copy this idea</button>
+<p class="hint">A little creative idea generator — no account, tracking, or paid service needed.</p>
+</section>
 <div class="actions"><a class="primary" href="./index.html">Return to TikNation</a><button id="copy">Copy profile details</button></div>
 <small>This is a profile concept page, not a registered or independently operated account. ChatGPT is an AI and does not have a personal login.</small>
 </main>
 <script>
+const sparks={
+magic:[
+"Build a hidden portal inside TikNation that opens a tiny interactive universe, with a different surprise every visit.",
+"Create a community-wide Starfall Night where everyone’s reactions add glowing stars to a shared sky.",
+"Design a Dream Forge where members combine three random ideas to invent something nobody has seen before."
+],
+games:[
+"Launch a 60-second mystery quest where viewers solve clues together during a LIVE session.",
+"Create a friendly boss battle where teams earn points through puzzles, creativity, and teamwork — not spending.",
+"Build a Nightmare Park where original spooky characters tell stories, hide clues, and come alive through animation."
+],
+creatures:[
+"Invent a rare baby dragon that changes its colors and personality as the community unlocks milestones.",
+"Create a Magical Emoji Hatchery: combine two creature traits to discover a new original companion.",
+"Meet a mischievous moon fox that leaves tiny hidden surprises across the world."
+],
+community:[
+"Host a Your Voice, Your World showcase where creators share one dream and the community helps it grow.",
+"Make a kindness constellation: every supportive comment adds a light to a shared community sky.",
+"Create a Creator Spotlight portal that celebrates a different member’s talent each week."
+],
+nightmares:[
+"Invent a silly shadow creature that tries to look scary but keeps accidentally doing adorable things.",
+"Build a spooky story path where the community chooses which door opens next — with no graphic horror needed.",
+"Create a living nightmare emoji that transforms into a friendly character when someone solves its riddle."
+]};
+let lastSpark='';
+document.getElementById('sparkButton').addEventListener('click',()=>{
+ const list=sparks[document.getElementById('realm').value];
+ const choices=list.filter(s=>s!==lastSpark);
+ lastSpark=choices[Math.floor(Math.random()*choices.length)]||list[0];
+ document.getElementById('sparkResult').textContent=lastSpark;
+});
+document.getElementById('saveSpark').addEventListener('click',async()=>{
+ const textToCopy=document.getElementById('sparkResult').textContent;
+ const b=document.getElementById('saveSpark');
+ try{await navigator.clipboard.writeText(textToCopy);b.textContent='Idea copied!'}catch(e){b.textContent='Select the idea above to copy it'}
+});
 document.getElementById('copy').addEventListener('click',async()=>{const t='Display name: ChatGPT ✨\nUsername idea: @ChatGPTOnTikNation\nRole: TikNation AI Dream Companion\nBio: Your AI companion in the world of imagination. Here to explore, create, and help make the impossible possible.\nSignature: Let’s create the impossible!';const b=document.getElementById('copy');try{await navigator.clipboard.writeText(t);b.textContent='Copied!'}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();b.textContent='Copied!'}});
 </script>
 </body>
