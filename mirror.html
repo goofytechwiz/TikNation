@@ -70,6 +70,14 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offse
 .camera-frame.nightmare{animation:nightmareShake .72s ease-in-out 1}
 .camera-frame.nightmare:after{content:"";pointer-events:none;position:absolute;inset:0;z-index:5;background:linear-gradient(115deg,transparent 20%,rgba(255,0,40,.8) 50%,transparent 75%);mix-blend-mode:screen;animation:nightmareFlash .72s ease-out 1}
 .camera-frame.spooky video{animation:horrorPulse 2.8s ease-in-out infinite}
+/* The reflection itself slips out of alignment during the story beats. */
+.camera-frame.possessed video{animation:reflectionPossessed .22s steps(2,end) infinite!important}
+.camera-frame.cracked video{animation:reflectionFracture .48s ease-in-out infinite!important}
+.camera-frame.nightmare video{animation:reflectionLunge .72s ease-out 1!important}
+@keyframes reflectionPossessed{0%,100%{transform:scaleX(-1) translateX(0) skewX(0)}25%{transform:scaleX(-1) translateX(2.5%) skewX(1.8deg)}50%{transform:scaleX(-1) translateX(-1.8%) skewX(-1deg)}75%{transform:scaleX(-1) translateX(1.2%) skewX(.8deg)}}
+@keyframes reflectionFracture{0%,100%{transform:scaleX(-1) translate(0,0) scale(1)}35%{transform:scaleX(-1) translate(1.4%,-.4%) scale(1.025)}70%{transform:scaleX(-1) translate(-1.1%,.6%) scale(.99)}}
+@keyframes reflectionLunge{0%,100%{transform:scaleX(-1) scale(1)}20%{transform:scaleX(-1) scale(1.13) translateX(1.8%)}38%{transform:scaleX(-1) scale(1.08) translateX(-1.5%)}55%{transform:scaleX(-1) scale(1.16)}}
+
 
 .mirror-caption{position:absolute;z-index:6;bottom:12px;left:12px;right:12px;text-align:center;font-size:.72rem;font-weight:900;letter-spacing:.18em;color:#ffb5c8;text-shadow:0 0 15px #ff1744;pointer-events:none}
 .story-actions{display:grid;gap:9px}.story-btn{width:100%;padding:12px;border-radius:12px;border:1px solid #8f79ff88;background:linear-gradient(110deg,#17162c,#202044);color:#fff;font-weight:800;cursor:pointer}
