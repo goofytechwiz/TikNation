@@ -60,7 +60,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offse
 <button class="choice" data-mode="silly" aria-pressed="false">😂 Silly</button>
 <button class="choice" data-mode="monster" aria-pressed="false">🐉 Creature</button>
 </div>
-<div class="actions"><button class="primary" id="start">📸 Start live camera</button><button id="switch" disabled>Switch camera</button><button id="stop" disabled>Stop camera</button></div>
+<div class="actions"><button class="primary" id="start" type="button" onclick="window.startIllusionCamera && window.startIllusionCamera()">📸 Start live camera</button><button id="switch" type="button" disabled onclick="window.switchIllusionCamera && window.switchIllusionCamera()">Switch camera</button><button id="stop" type="button" disabled onclick="window.stopIllusionCamera && window.stopIllusionCamera()">Stop camera</button></div>
 <div class="status" id="status" role="status" aria-live="polite">Ready when you are.</div>
 <div class="note"><strong>Privacy:</strong> Camera access requires your permission and this page must be opened over HTTPS (the GitHub Pages link is HTTPS). The video is previewed locally by this page; it is not uploaded. Stop the camera when you're finished. Live filters change colors and appearance, but they are not AI face transformations.</div>
 </div>
@@ -82,9 +82,9 @@ async function startCamera(){
  }catch(e){stopTracks();status.textContent=e.name==='NotAllowedError'?'Camera permission was denied. Allow camera access for this site in Chrome settings, then try again.':e.name==='NotFoundError'?'No available camera was found on this device.':'Could not start the camera: '+(e.message||'Please check browser permission and try again.');}
  finally{busy=false;startBtn.disabled=!!stream;}
 }
-startBtn.addEventListener('click',startCamera);
-stopBtn.addEventListener('click',()=>{stopTracks();status.textContent='Camera stopped.'});
-switchBtn.addEventListener('click',async()=>{facing=facing==='user'?'environment':'user';await startCamera()});
-window.addEventListener('pagehide',stopTracks);
+window.startIllusionCamera=startCamera;\nwindow.stopIllusionCamera=()=>{stopTracks();status.textContent='Camera stopped.'};\nwindow.switchIllusionCamera=async()=>{facing=facing==='user'?'environment':'user';await startCamera()};\nstartBtn.addEventListener('click',startCamera);
+stopBtn.addEventListener('click',window.stopIllusionCamera);
+switchBtn.addEventListener('click',window.switchIllusionCamera);
+window.addEventListener('pagehide',stopTracks);\nstatus.textContent='Mirror controls loaded. Tap Start live camera to begin.';
 </script>
 </body></html>
