@@ -143,27 +143,43 @@ function drawFaceEffect(lm){
   ctx.quadraticCurveTo((leftMouth.x+rightMouth.x)/2,Math.max(upper.y,lower.y)+u*15,rightMouth.x,rightMouth.y);
   ctx.strokeStyle='#d71954';ctx.lineWidth=u*4;ctx.stroke();
  }else if(mode==='spooky'){
-  // Haunted makeup: dark eye sockets, lower-eye shadow, forehead creases, and cheek streaks.
-  const eyeShape=(outer,inner,upper,lower)=>{
-   const o=p(outer),i=p(inner),u1=p(upper),l1=p(lower);
+  // More intense haunted makeup: deep black sockets, red tears, cracked brow marks and a shadowed mouth.
+  const socket=(outer,inner,top,bottom)=>{
+   const o=p(outer),i=p(inner),t=p(top),d=p(bottom);
    ctx.beginPath();ctx.moveTo(o.x,o.y);
-   ctx.quadraticCurveTo(u1.x,u1.y-u*8,i.x,i.y);
-   ctx.quadraticCurveTo(l1.x,l1.y+u*8,o.x,o.y);
-   ctx.closePath();ctx.fillStyle='rgba(12,4,22,.92)';ctx.fill();
-   ctx.strokeStyle='rgba(128,28,58,.95)';ctx.lineWidth=u*1.4;ctx.stroke();
-   // Thin red edge beneath the socket adds a haunted, makeup-like accent.
-   ctx.beginPath();ctx.moveTo(o.x,o.y+u*3);ctx.quadraticCurveTo((o.x+i.x)/2,l1.y+u*7,i.x,i.y+u*2);
-   ctx.strokeStyle='rgba(238,45,83,.9)';ctx.lineWidth=u*2;ctx.stroke();
+   ctx.quadraticCurveTo(t.x,t.y-u*15,i.x,i.y);
+   ctx.quadraticCurveTo(d.x,d.y+u*15,o.x,o.y);
+   ctx.closePath();ctx.fillStyle='rgba(5,2,12,.96)';ctx.fill();
+   ctx.strokeStyle='rgba(145,12,43,.95)';ctx.lineWidth=u*2;ctx.stroke();
+   ctx.beginPath();ctx.moveTo(o.x,o.y+u*2);
+   ctx.quadraticCurveTo((o.x+i.x)/2,d.y+u*9,i.x,i.y+u*2);
+   ctx.strokeStyle='rgba(235,24,61,.95)';ctx.lineWidth=u*2.5;ctx.stroke();
   };
-  eyeShape(33,133,159,145);
-  eyeShape(362,263,386,374);
-  // Brow shadows and tapered cheek streaks follow facial landmarks.
-  strokePath([p(70),p(105),p(66)],'rgba(20,5,28,.95)',u*5);
-  strokePath([p(300),p(334),p(296)],'rgba(20,5,28,.95)',u*5);
-  strokePath([p(50),p(205),p(187)],'rgba(170,20,65,.85)',u*2);
-  strokePath([p(280),p(425),p(411)],'rgba(170,20,65,.85)',u*2);
-  // Subtle bridge shadow; no bright cyan marks.
-  strokePath([p(168),p(6),p(197)],'rgba(8,3,16,.72)',u*2.5);
+  socket(33,133,159,145);
+  socket(362,263,386,374);
+  // Heavy, angled brows make the expression look more menacing.
+  strokePath([p(70),p(105),p(66)],'rgba(5,1,9,.98)',u*7);
+  strokePath([p(300),p(334),p(296)],'rgba(5,1,9,.98)',u*7);
+  // Long blood-red tear trails beneath each eye, tapering toward the cheeks.
+  [[p(111),p(117),p(205)],[p(340),p(346),p(425)]].forEach(([a,b,c])=>{
+   ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(b.x+u*4,b.y+u*8,c.x,c.y);
+   ctx.strokeStyle='rgba(105,0,25,.9)';ctx.lineWidth=u*5;ctx.stroke();
+   ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(b.x+u*2,b.y+u*7,c.x,c.y);
+   ctx.strokeStyle='rgba(245,18,53,.94)';ctx.lineWidth=u*2.2;ctx.stroke();
+   ctx.beginPath();ctx.arc(c.x,c.y,u*2.3,0,Math.PI*2);ctx.fillStyle='#c6002e';ctx.fill();
+  });
+  // Cracked, dark forehead marks.
+  strokePath([p(107),p(105),p(66)],'rgba(7,1,12,.95)',u*3);
+  strokePath([p(336),p(334),p(296)],'rgba(7,1,12,.95)',u*3);
+  strokePath([p(10),p(151),p(9)],'rgba(12,2,16,.85)',u*2);
+  // Shadow around the mouth with short jagged accent lines at the corners.
+  const ml=p(61),mr=p(291),mc=p(13);
+  ctx.beginPath();ctx.moveTo(ml.x,ml.y);ctx.quadraticCurveTo(mc.x,mc.y+u*12,mr.x,mr.y);
+  ctx.strokeStyle='rgba(5,1,10,.92)';ctx.lineWidth=u*4;ctx.stroke();
+  strokePath([p(61),p(78),p(191)],'rgba(165,0,36,.9)',u*2.5);
+  strokePath([p(291),p(308),p(415)],'rgba(165,0,36,.9)',u*2.5);
+  // Dark nose-bridge shading replaces the previous pale accent.
+  strokePath([p(168),p(6),p(197)],'rgba(4,1,8,.85)',u*3.5);
  }else if(mode==='ancient'){
   const wrinkle='rgba(76,43,30,.85)',fine=Math.max(1,u*1.1);
   [[70,105,9],[300,334,9],[55,65,107],[285,295,336]].forEach(ids=>strokePath(ids.map(p),wrinkle,fine));
