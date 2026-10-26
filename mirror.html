@@ -127,6 +127,7 @@ storyTimers.push(setTimeout(()=>{frame.classList.remove('possessed');storyMessag
 function calmMirror(){clearStory();frame.classList.remove('awake','possessed','cracked','nightmare');setMode('glow');storyMessage('The mirror settles. For now.','THE MIRROR IS DORMANT')}
 const awakenBtn=document.getElementById('awaken'),sequenceBtn=document.getElementById('sequence'),calmBtn=document.getElementById('calm'),soundToggle=document.getElementById('soundToggle');if(awakenBtn)awakenBtn.addEventListener('click',awakenMirror);if(sequenceBtn)sequenceBtn.addEventListener('click',startSequence);if(calmBtn)calmBtn.addEventListener('click',calmMirror);if(soundToggle)soundToggle.addEventListener('click',()=>{soundEnabled=!soundEnabled;soundToggle.textContent=soundEnabled?'🔊 Sound on':'🔇 Sound off';soundToggle.setAttribute('aria-pressed',String(soundEnabled));if(soundEnabled)mirrorTone(120,.12,'sine',.025)});
 function triggerNightmare(){if(mode!=='spooky')setMode('spooky');frame.classList.remove('nightmare');void frame.offsetWidth;frame.classList.add('nightmare');status.textContent='NIGHTMARE TRIGGERED — look at the mirror!';clearTimeout(scareTimer);scareTimer=setTimeout(()=>{frame.classList.remove('nightmare');if(stream)status.textContent='The mirror is watching… trigger it again when you are ready.'},900)}document.getElementById('nightmare').addEventListener('click',triggerNightmare);
+document.addEventListener('keydown',event=>{if(event.key==='Escape')calmMirror()});
 function setMode(next){mode=next;const cameraIsLive=frame.classList.contains('live');frame.className='camera-frame '+mode+(cameraIsLive?' live':'');document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));status.textContent='Illusion selected: '+document.querySelector('[data-mode="'+mode+'"]').textContent.trim()+(cameraIsLive?' — live camera stays on.':'.')}
 document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
 
@@ -238,7 +239,7 @@ function faceLoop(){
 }
 requestAnimationFrame(faceLoop);
 
-function stopTracks(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}video.srcObject=null;frame.classList.remove('live');startBtn.disabled=false;stopBtn.disabled=true;switchBtn.disabled=true;}
+function stopTracks(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}video.srcObject=null;frame.classList.remove('live');faceCtx.clearRect(0,0,faceCanvas.width,faceCanvas.height);startBtn.disabled=false;stopBtn.disabled=true;switchBtn.disabled=true;}
 async function startCamera(){
  if(busy)return;
  busy=true;startBtn.disabled=true;status.textContent='Requesting camera permission…';
