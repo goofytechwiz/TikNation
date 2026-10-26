@@ -69,7 +69,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offse
 const video=document.getElementById('camera'),frame=document.getElementById('cameraFrame'),status=document.getElementById('status'),startBtn=document.getElementById('start'),stopBtn=document.getElementById('stop'),switchBtn=document.getElementById('switch');
 let stream=null,facing='user',mode='glow',busy=false;
 const modes=['glow','spooky','ancient','cosmic','silly','monster'];
-function setMode(next){mode=next;frame.className='camera-frame '+mode;document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));status.textContent='Illusion selected: '+document.querySelector('[data-mode="'+mode+'"]').textContent.trim()+'.'}
+function setMode(next){mode=next;const cameraIsLive=frame.classList.contains('live');frame.className='camera-frame '+mode+(cameraIsLive?' live':'');document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));status.textContent='Illusion selected: '+document.querySelector('[data-mode="'+mode+'"]').textContent.trim()+(cameraIsLive?' — live camera stays on.':'.')}
 document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
 function stopTracks(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}video.srcObject=null;frame.classList.remove('live');startBtn.disabled=false;stopBtn.disabled=true;switchBtn.disabled=true;}
 async function startCamera(){
