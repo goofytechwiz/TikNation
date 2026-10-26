@@ -75,16 +75,21 @@
 }
 
 
-/* Integrated viewer action rail */
-.live-action-rail{display:flex;justify-content:space-around;align-items:center;gap:8px;margin:12px 0;padding:10px;border:1px solid #34294f;border-radius:16px;background:linear-gradient(110deg,#171126,#0c1423)}
-.live-action-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:52px;padding:8px 10px;background:transparent;border:1px solid transparent;border-radius:12px;color:#fff}
-.live-action-btn:hover,.live-action-btn:focus-visible{border-color:#5e4a8e;background:#211837;outline:none}
-.live-action-icon{font-size:1.35rem;line-height:1.2}.live-action-label{font-size:.72rem;color:#c9c4dc}
+
+/* Refined TikNation LIVE controls */
+.live-action-rail{display:flex;justify-content:space-around;align-items:center;gap:6px;margin:12px 0;padding:9px 6px;border:1px solid #34294f;border-radius:17px;background:linear-gradient(110deg,#171126,#0c1423)}
+.live-action-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;flex:1;min-width:0;min-height:64px;padding:7px 3px;background:#171426;border:1px solid #38304f;border-radius:13px;color:#fff;transition:transform .15s,border-color .15s}
+.live-action-btn:hover,.live-action-btn:focus-visible{border-color:#8d63ff;background:#211837;outline:none}
+.live-action-icon{font-size:1.45rem;line-height:1.15}.live-action-label{font-size:.72rem;color:#d7d2e7}
 .live-action-feedback{min-height:1.2em;text-align:center;color:#8ceaff;font-size:.82rem;margin:0 0 8px}
 .live-like-float{position:absolute;z-index:5;right:18px;bottom:24px;font-size:2.2rem;pointer-events:none;animation:liveLikeRise 1.2s ease-out forwards;filter:drop-shadow(0 0 10px #ff5caa)}
 @keyframes liveLikeRise{0%{opacity:0;transform:translateY(10px) scale(.65)}20%{opacity:1}100%{opacity:0;transform:translateY(-150px) translateX(-24px) scale(1.45)}}
 .live-more-menu{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px;padding:10px;border:1px solid #393052;border-radius:12px;background:#0c0b17}
-@media(prefers-reduced-motion:reduce){.live-like-float{animation:none;opacity:.8}}
+#liveGiftPanel.live-gifts{margin-top:10px}
+#liveGiftPanel.live-gifts.is-open{position:relative;display:block!important;max-height:min(58vh,520px);overflow:auto;overscroll-behavior:contain;box-shadow:0 12px 38px #0008}
+#liveGiftPanel .live-gift-grid{grid-template-columns:repeat(auto-fit,minmax(125px,1fr))}
+@media(max-width:600px){.live-action-btn{min-height:58px}.live-action-icon{font-size:1.3rem}.live-action-label{font-size:.68rem}.live-action-rail{gap:4px;padding:7px 4px}.live-gift-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){.live-like-float{animation:none;opacity:.8}.live-action-btn{transition:none}}
 
 </style>
 </head>
@@ -116,7 +121,7 @@
       <button type="button" class="ghost" id="liveMoreReportBtn">Report stream</button>
       <button type="button" class="ghost" id="liveMoreCopyBtn">Copy LIVE link</button>
     </div>
-    <div class="controls" style="margin-top:12px"><button class="ghost" id="reportToggle" type="button">Report stream</button></div>
+    
     <form id="reportForm" class="hide">
       <div class="field"><label for="reportReason">Why are you reporting this stream?</label><select id="reportReason" required><option value="">Choose a reason</option><option>Harassment or bullying</option><option>Hateful content</option><option>Sexual content</option><option>Violence or dangerous activity</option><option>Spam or scam</option><option>Other safety concern</option></select></div>
       <div class="field"><label for="reportDetails">Details (optional)</label><textarea id="reportDetails" rows="3" maxlength="1000" placeholder="Share details to help the moderation team."></textarea></div>
@@ -352,11 +357,11 @@ async function pollLiveGiftEvents() {
   catch(error){if(!/ended or is unavailable/i.test(error.message))console.warn("Live gift feed:",error.message);}
 }
 function startLiveGiftPolling() {
-  stopLiveGiftPolling();$("liveGiftPanel").classList.remove("hide");liveGiftCursor=new Date().toISOString();seenLiveGiftIds=new Set();
+  stopLiveGiftPolling();const giftPanel=$("liveGiftPanel");if(giftPanel){giftPanel.classList.add("hide");giftPanel.classList.remove("is-open");}liveGiftCursor=new Date().toISOString();seenLiveGiftIds=new Set();
   $("liveGiftFeed").innerHTML='<div class="small">Gifts sent during this live will appear here.</div>';renderLiveGiftCatalog();void refreshLiveGiftBalance();void pollLiveGiftEvents();liveGiftTimer=window.setInterval(()=>void pollLiveGiftEvents(),3000);
 }
 function stopLiveGiftPolling() {
-  if(liveGiftTimer)window.clearInterval(liveGiftTimer);liveGiftTimer=null;liveGiftCursor=null;seenLiveGiftIds=new Set();const panel=$("liveGiftPanel");if(panel)panel.classList.add("hide");
+  if(liveGiftTimer)window.clearInterval(liveGiftTimer);liveGiftTimer=null;liveGiftCursor=null;seenLiveGiftIds=new Set();const panel=$("liveGiftPanel");if(panel){panel.classList.add("hide");panel.classList.remove("is-open");}
 }
 async function sendLiveGift(giftCode,button) {
   if(liveGiftRequestBusy||!activeSession||isHost)return;const gift=LIVE_GIFT_CATALOG[giftCode];if(!gift)return;
@@ -466,8 +471,10 @@ $("liveLikeBtn")?.addEventListener("click",()=>{
 $("liveGiftToggleBtn")?.addEventListener("click",()=>{
   if(!activeSession){liveActionFeedback("Join a live broadcast first to open gifts.");return;}
   const panel=$("liveGiftPanel");if(!panel)return;
-  panel.classList.remove("hide");panel.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"nearest"});
-  liveActionFeedback("Choose a gift below. Test coins only.");
+  const opening=panel.classList.contains("hide");
+  panel.classList.toggle("hide",!opening);panel.classList.toggle("is-open",opening);
+  if(opening){panel.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"nearest"});liveActionFeedback("Choose a gift below. Test coins only.");}
+  else{liveActionFeedback("Gift panel closed.");}
 });
 $("liveChatJumpBtn")?.addEventListener("click",()=>{
   $("chatPanel")?.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
