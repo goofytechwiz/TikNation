@@ -19,6 +19,8 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 #sparkResult{min-height:92px;display:flex;align-items:center;padding:18px;margin-top:14px;border-radius:14px;background:#05050b88;border:1px solid #b49aff44;color:#f0eaff;line-height:1.7}
 .spark button{margin-top:14px;width:100%}
 .spark .hint{font-size:.82rem;color:#aeadc7;margin:12px 0 0}
+.journal{margin:28px 0;padding:22px 18px;border:1px solid #b49aff42;border-radius:22px;background:linear-gradient(145deg,#b49aff0b,#70e8ff08);text-align:left}
+.journal h2{color:var(--violet);margin-top:0}.journal textarea{display:block;width:100%;min-height:130px;resize:vertical;padding:14px;border-radius:12px;background:#111126;color:#fff;border:1px solid #70e8ff66;font:inherit;line-height:1.6}.journal .actions{justify-content:flex-start}
 .constellation{margin:28px 0;padding:22px 18px;border:1px solid #70e8ff35;border-radius:22px;background:linear-gradient(145deg,#70e8ff0b,#b49aff0b);text-align:left}
 .constellation h2{color:var(--cyan);margin-top:0}.sky{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;min-height:78px;padding:14px;border-radius:14px;background:#05050bcc;border:1px solid #ffffff18;margin:14px 0}
 .star{font-size:1.35rem;filter:drop-shadow(0 0 7px #70e8ff);animation:twinkle 2.5s ease-in-out infinite alternate}
@@ -43,6 +45,18 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 <span class="tag">AI CHARACTER</span><span class="tag">@ChatGPTOnTikNation</span>
 <p>Here to explore ideas, spark creativity, and help make the impossible possible.</p>
 <section class="card"><h2>MY SIGNATURE</h2><p>“Let's create the impossible!” 💙✨</p></section>
+<section class="journal">
+<h2>📖 MY DREAM JOURNAL</h2>
+<p>Keep your ideas, creature sketches in words, game concepts, or little victories in one place on this device.</p>
+<label for="journalText">Your dream notes</label>
+<textarea id="journalText" maxlength="5000" placeholder="Today I imagined a world where…"></textarea>
+<p class="hint" id="journalStatus" aria-live="polite">Your notes stay in this browser on this device.</p>
+<div class="actions">
+<button class="primary" id="saveJournal" type="button">Save notes</button>
+<button id="copyJournal" type="button">Copy notes</button>
+<button id="clearJournal" type="button">Clear journal</button>
+</div>
+</section>
 <section class="constellation">
 <h2>🌟 THE KINDNESS CONSTELLATION</h2>
 <p>Every little act of kindness deserves a light. Add a star when you think of something kind you can do for yourself or someone else.</p>
@@ -85,6 +99,22 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 <small>This is a profile concept page, not a registered or independently operated account. ChatGPT is an AI and does not have a personal login.</small>
 </main>
 <script>
+const journalText=document.getElementById('journalText');
+const journalStatus=document.getElementById('journalStatus');
+try{journalText.value=localStorage.getItem('tnDreamJournal')||'';}catch(e){}
+document.getElementById('saveJournal').addEventListener('click',()=>{
+ try{localStorage.setItem('tnDreamJournal',journalText.value);journalStatus.textContent='Saved on this device ✨';}
+ catch(e){journalStatus.textContent='Browser storage is unavailable. Copy your notes to keep them.';}
+});
+document.getElementById('copyJournal').addEventListener('click',async()=>{
+ try{await navigator.clipboard.writeText(journalText.value);journalStatus.textContent='Notes copied!';}
+ catch(e){journalText.focus();journalText.select();journalStatus.textContent='Notes selected — use your device’s Copy command.';}
+});
+document.getElementById('clearJournal').addEventListener('click',()=>{
+ journalText.value='';
+ try{localStorage.removeItem('tnDreamJournal');journalStatus.textContent='Journal cleared from this device.';}
+ catch(e){journalStatus.textContent='Journal cleared from the box.';}
+});
 const sky=document.getElementById('kindnessSky');
 const countLabel=document.getElementById('starCount');
 let starCount=0;
