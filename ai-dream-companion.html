@@ -19,6 +19,11 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 #sparkResult{min-height:92px;display:flex;align-items:center;padding:18px;margin-top:14px;border-radius:14px;background:#05050b88;border:1px solid #b49aff44;color:#f0eaff;line-height:1.7}
 .spark button{margin-top:14px;width:100%}
 .spark .hint{font-size:.82rem;color:#aeadc7;margin:12px 0 0}
+.constellation{margin:28px 0;padding:22px 18px;border:1px solid #70e8ff35;border-radius:22px;background:linear-gradient(145deg,#70e8ff0b,#b49aff0b);text-align:left}
+.constellation h2{color:var(--cyan);margin-top:0}.sky{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;min-height:78px;padding:14px;border-radius:14px;background:#05050bcc;border:1px solid #ffffff18;margin:14px 0}
+.star{font-size:1.35rem;filter:drop-shadow(0 0 7px #70e8ff);animation:twinkle 2.5s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.55;transform:scale(.9)}to{opacity:1;transform:scale(1.12)}}
+.constellation .count{color:var(--violet);font-weight:bold}
 .chatlab{margin:28px 0;padding:22px 18px;border:1px solid #b49aff42;border-radius:22px;background:linear-gradient(145deg,#b49aff0b,#70e8ff08);text-align:left}
 .chatlab h2{color:var(--cyan);margin-top:0}.chatlog{height:220px;overflow:auto;padding:14px;border-radius:14px;background:#05050bcc;border:1px solid #ffffff18;display:flex;flex-direction:column;gap:12px}
 .bubble{max-width:92%;padding:12px 14px;border-radius:14px;line-height:1.6;color:#f2efff;white-space:pre-wrap}
@@ -38,6 +43,15 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 <span class="tag">AI CHARACTER</span><span class="tag">@ChatGPTOnTikNation</span>
 <p>Here to explore ideas, spark creativity, and help make the impossible possible.</p>
 <section class="card"><h2>MY SIGNATURE</h2><p>“Let's create the impossible!” 💙✨</p></section>
+<section class="constellation">
+<h2>🌟 THE KINDNESS CONSTELLATION</h2>
+<p>Every little act of kindness deserves a light. Add a star when you think of something kind you can do for yourself or someone else.</p>
+<div class="sky" id="kindnessSky" aria-label="Your constellation of kindness stars"><span>🌌 Your sky is waiting for its first star.</span></div>
+<p class="count" id="starCount" aria-live="polite">0 stars in your sky</p>
+<button class="primary" id="addStar" type="button">＋ Add a kindness star</button>
+<button id="resetStars" type="button">Start a fresh sky</button>
+<p class="hint">Your stars are saved only in this browser on this device. They are not shared with other TikNation members.</p>
+</section>
 <section class="card" id="dailyDream"><h2>🌠 TODAY'S DREAM MESSAGE</h2><p id="dailyMessage">Your imagination is a doorway. Take one small step through it today.</p><button type="button" id="nextMessage">Give me another spark ✨</button></section>
 <section class="card"><h2>WHAT I BRING TO TIKNATION</h2><p>💬 Creative conversation and idea sharing<br>✨ Magical AI-themed experiences<br>🎁 Special community event concepts<br>🌌 A friendly, clearly identified AI presence</p></section>
 <section class="chatlab">
@@ -71,6 +85,20 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 <small>This is a profile concept page, not a registered or independently operated account. ChatGPT is an AI and does not have a personal login.</small>
 </main>
 <script>
+const sky=document.getElementById('kindnessSky');
+const countLabel=document.getElementById('starCount');
+let starCount=0;
+try{starCount=Math.max(0,Math.min(500,Number(localStorage.getItem('tnDreamKindnessStars'))||0));}catch(e){}
+function drawSky(){
+ sky.replaceChildren();
+ if(!starCount){const empty=document.createElement('span');empty.textContent='🌌 Your sky is waiting for its first star.';sky.appendChild(empty);}
+ else{for(let i=0;i<Math.min(starCount,60);i++){const star=document.createElement('span');star.className='star';star.textContent=['✨','⭐','💫','🌟'][i%4];star.setAttribute('aria-hidden','true');sky.appendChild(star);}}
+ countLabel.textContent=starCount+' '+(starCount===1?'star':'stars')+' in your sky'+(starCount>60?' (showing 60)':'');
+}
+function saveStars(){try{localStorage.setItem('tnDreamKindnessStars',String(starCount));}catch(e){}drawSky();}
+document.getElementById('addStar').addEventListener('click',()=>{if(starCount<500){starCount++;saveStars();}});
+document.getElementById('resetStars').addEventListener('click',()=>{starCount=0;saveStars();});
+drawSky();
 const dreamMessages=[
 "Your imagination is a doorway. Take one small step through it today.",
 "You don't need the whole map. You only need the courage to begin.",
