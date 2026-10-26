@@ -3070,6 +3070,31 @@ textarea.form-control{
             RESEND CONFIRMATION EMAIL
         </button>
 
+        <button
+            type="button"
+            id="forgotPasswordButton"
+            class="secondary-button"
+            style="display:none;width:100%;margin-top:10px;"
+            onclick="requestPasswordReset()"
+        >
+            FORGOT PASSWORD?
+        </button>
+
+        <form id="passwordRecoveryPanel" onsubmit="submitPasswordRecovery(event)" style="display:none;margin-top:16px;">
+            <p class="muted" style="margin:0 0 12px;">Choose a new password for your TikNation account. Use at least 8 characters.</p>
+            <label for="recoveryNewPassword">New password</label>
+            <div class="tn-password-row">
+                <input id="recoveryNewPassword" class="form-control" type="password" minlength="8" maxlength="1024" autocomplete="new-password" required placeholder="At least 8 characters">
+                <button type="button" class="tn-password-toggle" aria-controls="recoveryNewPassword" aria-pressed="false" onclick="toggleTikNationPassword('recoveryNewPassword', this)">Show</button>
+            </div>
+            <label for="recoveryConfirmPassword" style="display:block;margin-top:12px;">Confirm new password</label>
+            <div class="tn-password-row">
+                <input id="recoveryConfirmPassword" class="form-control" type="password" minlength="8" maxlength="1024" autocomplete="new-password" required placeholder="Enter it again">
+                <button type="button" class="tn-password-toggle" aria-controls="recoveryConfirmPassword" aria-pressed="false" onclick="toggleTikNationPassword('recoveryConfirmPassword', this)">Show</button>
+            </div>
+            <button id="recoverySubmitButton" type="submit" class="primary-button auth-submit" style="margin-top:14px;">UPDATE PASSWORD</button>
+        </form>
+
     </div>
 
 </div>
@@ -3096,6 +3121,7 @@ let currentUser = null;
 let currentProfile = null;
 let creatorProfileEditorOpen = false;
 let authMode = "signin";
+let passwordRecoveryMode = false;
 let pendingSignupDob = null;
 let mfaSignInPending = false;
 let signupMethod = "email";
@@ -3406,6 +3432,11 @@ function closeAuthModal(){
         .getElementById("authModal")
         .classList.remove("active");
 
+    passwordRecoveryMode = false;
+    const recoveryPanel = document.getElementById("passwordRecoveryPanel");
+    const authTabs = document.querySelector("#authModal .auth-tabs");
+    if(recoveryPanel) recoveryPanel.style.display = "none";
+    if(authTabs) authTabs.style.display = "";
     document.getElementById("authMessage").textContent = "";
     pendingSignupDob = null;
     const dobInput = document.getElementById("signupDateOfBirth");
@@ -3517,6 +3548,14 @@ function switchAuthMode(mode){
     message.textContent = "";
     message.className = "auth-message";
 
+    passwordRecoveryMode = false;
+    const authTabs = document.querySelector("#authModal .auth-tabs");
+    const recoveryPanel = document.getElementById("passwordRecoveryPanel");
+    const forgotPasswordButton = document.getElementById("forgotPasswordButton");
+    if(authTabs) authTabs.style.display = "";
+    if(recoveryPanel) recoveryPanel.style.display = "none";
+    if(forgotPasswordButton) forgotPasswordButton.style.display = mode === "signin" ? "block" : "none";
+
     const resendButton = document.getElementById("resendConfirmationButton");
     if(resendButton) resendButton.style.display = mode === "signin" ? "block" : "none";
 
@@ -3580,6 +3619,106 @@ function switchAuthMode(mode){
 
         signupFields.style.display =
             "none";
+    }
+}
+
+async function requestPasswordReset(){
+    const message = document.getElementById("authMessage");
+    const emailInput = document.getElementById("authEmail");
+    const button = document.getElementById("forgotPasswordButton");
+    const email = emailInput ? emailInput.value.trim() : "";
+
+    message.className = "auth-message";
+    if(!email || !email.includes("@")){
+        message.className = "auth-message error";
+        message.textContent = "Enter the email address associated with your TikNation account. Password reset uses email, not username.";
+        if(emailInput) emailInput.focus();
+        return;
+    }
+
+    if(button){ button.disabled = true; button.textContent = "SENDING…"; }
+    try{
+        const {error} = await supabaseClient.auth.resetPasswordForEmail(email,{
+            redirectTo: window.location.origin + window.location.pathname
+        });
+        if(error) throw error;
+        message.className = "auth-message success";
+        message.textContent = "If an account exists for that email, password-reset instructions have been requested. Check your inbox and spam folder.";
+    }catch(error){
+        message.className = "auth-message error";
+        message.textContent = error.message || "We couldn't request a password reset. Please wait a moment and try again.";
+    }finally{
+        if(button){ button.disabled = false; button.textContent = "FORGOT PASSWORD?"; }
+    }
+}
+
+function openPasswordRecovery(){
+    passwordRecoveryMode = true;
+    const modal = document.getElementById("authModal");
+    const title = document.getElementById("authTitle");
+    const tabs = document.querySelector("#authModal .auth-tabs");
+    const message = document.getElementById("authMessage");
+    const recoveryPanel = document.getElementById("passwordRecoveryPanel");
+    if(!modal || !recoveryPanel) return;
+
+    modal.classList.add("active");
+    if(title) title.textContent = "Choose a New Password";
+    if(tabs) tabs.style.display = "none";
+    ["signupAgeGate","signupFields","signupMethodChoices","authEmailGroup","authPasswordGroup","authSubmit","resendConfirmationButton","forgotPasswordButton"].forEach(function(id){
+        const node = document.getElementById(id);
+        if(node) node.style.display = "none";
+    });
+    recoveryPanel.style.display = "block";
+    if(message){
+        message.className = "auth-message";
+        message.textContent = "Password reset link verified. Choose a new password below.";
+    }
+    setTimeout(function(){
+        const input = document.getElementById("recoveryNewPassword");
+        if(input) input.focus();
+    },100);
+}
+
+async function submitPasswordRecovery(event){
+    event.preventDefault();
+    const message = document.getElementById("authMessage");
+    const passwordInput = document.getElementById("recoveryNewPassword");
+    const confirmInput = document.getElementById("recoveryConfirmPassword");
+    const button = document.getElementById("recoverySubmitButton");
+    const password = passwordInput ? passwordInput.value : "";
+    const confirmation = confirmInput ? confirmInput.value : "";
+
+    message.className = "auth-message";
+    if(password.length < 8){
+        message.className = "auth-message error";
+        message.textContent = "Use at least 8 characters for your new password.";
+        return;
+    }
+    if(password !== confirmation){
+        message.className = "auth-message error";
+        message.textContent = "The passwords do not match. Please try again.";
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = "UPDATING…";
+    try{
+        const {error} = await supabaseClient.auth.updateUser({password:password});
+        if(error) throw error;
+
+        passwordInput.value = "";
+        confirmInput.value = "";
+        try{ await supabaseClient.auth.signOut(); }catch(_ignored){}
+        closeAuthModal();
+        openAuthModal("signin");
+        message.className = "auth-message success";
+        message.textContent = "Your password has been reset. Sign in with your new password.";
+    }catch(error){
+        message.className = "auth-message error";
+        message.textContent = error.message || "We couldn't update your password. Please open the latest reset email and try again.";
+    }finally{
+        button.disabled = false;
+        button.textContent = "UPDATE PASSWORD";
     }
 }
 
@@ -3702,6 +3841,23 @@ async function submitAuth(){
                 throw new Error(
                     "Please choose a username."
                 );
+            }
+
+            if(!/^[A-Za-z0-9_.]{3,24}$/.test(username)){
+                throw new Error("Username must be 3–24 characters and use only letters, numbers, periods, or underscores.");
+            }
+
+            const exactUsernamePattern = username.replace(/([\\%_])/g, "\\$1");
+            const {data:existingUsernames,error:usernameLookupError} = await supabaseClient
+                .from("profiles")
+                .select("id")
+                .ilike("username", exactUsernamePattern)
+                .limit(1);
+            if(usernameLookupError){
+                throw new Error("We couldn't verify username availability. Please try again.");
+            }
+            if(existingUsernames && existingUsernames.length){
+                throw new Error("That username is already taken. Please choose another.");
             }
 
             if(!pendingSignupDob){
@@ -7280,6 +7436,10 @@ function refreshSecuritySettings(){
 
 supabaseClient.auth.onAuthStateChange(
     function(event,session){
+
+        if(event === "PASSWORD_RECOVERY"){
+            setTimeout(openPasswordRecovery,0);
+        }
 
         currentUser =
             mfaSignInPending ? null : (session?.user || null);
