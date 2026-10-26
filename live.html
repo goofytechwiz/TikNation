@@ -91,6 +91,76 @@
 @media(max-width:600px){.live-action-btn{min-height:58px}.live-action-icon{font-size:1.3rem}.live-action-label{font-size:.68rem}.live-action-rail{gap:4px;padding:7px 4px}.live-gift-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){.live-like-float{animation:none;opacity:.8}.live-action-btn{transition:none}}
 
+
+/* TikNation LIVE immersive broadcast redesign */
+:root{--tn-live-pink:#ff3e83;--tn-live-glass:rgba(10,10,18,.72)}
+body{background:#05050a}
+body:has(#viewer:not(.hide)) .wrap{max-width:1500px;padding:0 18px}
+body:has(#viewer:not(.hide)) .top{border:0;padding:14px 4px 10px}
+body:has(#viewer:not(.hide)) .top .controls{gap:7px}
+body:has(#viewer:not(.hide)) .top .controls a[href="#creator"],
+body:has(#viewer:not(.hide)) .top .controls a[href="#viewerLivePower"],
+body:has(#viewer:not(.hide)) .top .controls a[href="#liveGiftPanel"],
+body:has(#viewer:not(.hide)) .top .controls a[href="#chatPanel"],
+body:has(#viewer:not(.hide)) .top .controls a[href="#streamerModeration"],
+body:has(#viewer:not(.hide)) .top .controls a[href="./creator-wallet.html"]{display:none}
+body:has(#viewer:not(.hide)) .layout{grid-template-columns:minmax(0,1fr) 340px;gap:14px;margin-top:10px;align-items:start}
+body:has(#viewer:not(.hide)) .layout>main.panel{background:transparent;border:0;padding:0;overflow:visible}
+body:has(#viewer:not(.hide)) #viewer{display:block!important}
+body:has(#viewer:not(.hide)) #viewer>.stream-head{position:absolute;z-index:8;top:94px;left:30px;right:390px;align-items:center;padding:12px 14px;border:1px solid #ffffff24;border-radius:16px;background:var(--tn-live-glass);backdrop-filter:blur(12px)}
+body:has(#viewer:not(.hide)) #viewerTitle{font-size:1.05rem;margin:0}
+body:has(#viewer:not(.hide)) #viewerMeta,body:has(#viewer:not(.hide)) #liveViewerCount{color:#e3e0ee}
+body:has(#viewer:not(.hide)) #viewerVideo{width:min(100%,560px);height:min(78vh,900px);aspect-ratio:9/16;min-height:500px;margin:0 auto;border:1px solid #ffffff20;border-radius:24px;background:radial-gradient(ellipse at 50% 35%,#28204c,#090911 65%);box-shadow:0 22px 70px #0009;overflow:hidden}
+body:has(#viewer:not(.hide)) #viewerVideo video{object-fit:cover}
+body:has(#viewer:not(.hide)) #viewerVideo .placeholder{z-index:2;color:#eee;text-shadow:0 2px 12px #000}
+body:has(#viewer:not(.hide)) #viewerChatOverlay{left:14px;right:70px;bottom:18px;max-height:52%;align-items:flex-start}
+body:has(#viewer:not(.hide)) .live-chat-bubble{background:rgba(12,12,20,.72);border-radius:18px;border-color:#ffffff24;backdrop-filter:blur(8px)}
+body:has(#viewer:not(.hide)) .live-action-rail{position:absolute;z-index:9;right:max(calc((100% - 560px)/2 - 64px),12px);bottom:95px;width:58px;flex-direction:column;gap:12px;padding:10px 5px;border:0;background:transparent}
+body:has(#viewer:not(.hide)) .live-action-btn{flex:none;min-height:56px;width:54px;padding:6px 2px;border:0;border-radius:15px;background:rgba(20,18,32,.76);backdrop-filter:blur(8px);box-shadow:0 4px 18px #0005}
+body:has(#viewer:not(.hide)) .live-action-icon{font-size:1.5rem}
+body:has(#viewer:not(.hide)) .live-action-label{font-size:.68rem;color:#fff}
+body:has(#viewer:not(.hide)) .live-action-btn:first-child .live-action-icon{filter:drop-shadow(0 0 7px #ff3e83)}
+body:has(#viewer:not(.hide)) #chatPanel{position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto;border-radius:22px;background:linear-gradient(160deg,#141222,#090910);border-color:#ffffff18}
+body:has(#viewer:not(.hide)) #chatPanel h2{font-size:1.05rem}
+body:has(#viewer:not(.hide)) #chatPanel .messages{height:min(42vh,430px);background:#090910;border-color:#ffffff16}
+body:has(#viewer:not(.hide)) #chatPanel .chat-form input{border-radius:999px;background:#1a1826;border-color:#39344b}
+body:has(#viewer:not(.hide)) #chatPanel .chat-form button{border-radius:999px;background:linear-gradient(120deg,#ff3e83,#8d63ff)}
+body:has(#viewer:not(.hide)) #chatPanel>.divider,body:has(#viewer:not(.hide)) #chatPanel>h3,body:has(#viewer:not(.hide)) #chatPanel>p,body:has(#viewer:not(.hide)) #chatPanel>.footer{display:none}
+body:has(#viewer:not(.hide)) #viewerLivePower,body:has(#viewer:not(.hide)) #liveGiftPanel{margin-top:14px}
+body:has(#viewer:not(.hide)) #viewerLivePower{max-width:900px;margin-left:auto;margin-right:auto}
+body:has(#viewer:not(.hide)) #liveActionFeedback{color:#ffb6d2}
+body:has(#viewer:not(.hide)) #notice{border:1px solid #ffffff17;background:#11101b}
+@media(min-width:1100px){
+ body:has(#viewer:not(.hide)) #viewerVideo{margin-left:auto;margin-right:auto}
+ body:has(#viewer:not(.hide)) .layout>main.panel{position:relative}
+}
+@media(max-width:780px){
+ body:has(#viewer:not(.hide)) .wrap{padding:0;max-width:none}
+ body:has(#viewer:not(.hide)) .top{position:absolute;z-index:20;top:0;left:0;right:0;padding:12px 14px;background:linear-gradient(#05050bd9,transparent);align-items:center}
+ body:has(#viewer:not(.hide)) .brand{font-size:1.05rem}
+ body:has(#viewer:not(.hide)) .top .sub,body:has(#viewer:not(.hide)) .top .controls .pill,body:has(#viewer:not(.hide)) #authBadge{display:none}
+ body:has(#viewer:not(.hide)) .top .controls{margin-left:auto}
+ body:has(#viewer:not(.hide)) #backBtn{padding:7px 10px;font-size:.78rem;background:#141320cc;border:1px solid #ffffff20}
+ body:has(#viewer:not(.hide)) #notice,body:has(#viewer:not(.hide)) #liveRequestAlerts{display:none}
+ body:has(#viewer:not(.hide)) .layout{display:block;margin:0}
+ body:has(#viewer:not(.hide)) .layout>main.panel{padding:0;margin:0}
+ body:has(#viewer:not(.hide)) #viewer>.stream-head{top:62px;left:12px;right:12px;padding:9px 11px;border-radius:14px}
+ body:has(#viewer:not(.hide)) #viewerVideo{width:100%;height:100dvh;max-height:none;min-height:100dvh;aspect-ratio:auto;border:0;border-radius:0;margin:0;background:#080810}
+ body:has(#viewer:not(.hide)) #viewerVideo video{object-fit:cover}
+ body:has(#viewer:not(.hide)) #viewerChatOverlay{left:12px;right:70px;bottom:105px;max-height:42%}
+ body:has(#viewer:not(.hide)) .live-action-rail{position:absolute;right:9px;bottom:135px;width:56px;margin:0;gap:11px}
+ body:has(#viewer:not(.hide)) .live-action-btn{width:52px;min-height:53px;background:#15131dcc}
+ body:has(#viewer:not(.hide)) #chatPanel{position:fixed;z-index:15;left:0;right:0;bottom:0;top:auto;max-height:100px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-radius:18px 18px 0 0;border:0;border-top:1px solid #ffffff22;background:linear-gradient(0deg,rgba(5,5,10,.98),rgba(5,5,10,.82));backdrop-filter:blur(14px);overflow:visible}
+ body:has(#viewer:not(.hide)) #chatPanel h2,body:has(#viewer:not(.hide)) #chatPanel .sub,body:has(#viewer:not(.hide)) #chatPanel .messages{display:none}
+ body:has(#viewer:not(.hide)) #chatPanel .chat{min-height:0;margin:0!important}
+ body:has(#viewer:not(.hide)) #chatPanel .chat-form{margin:0;gap:8px}
+ body:has(#viewer:not(.hide)) #chatPanel .chat-form input{height:44px}
+ body:has(#viewer:not(.hide)) #chatPanel .chat-form button{height:44px;padding:0 18px}
+ body:has(#viewer:not(.hide)) #viewerLivePower{margin:0 12px 16px}
+ body:has(#viewer:not(.hide)) #liveGiftPanel{margin:0 12px 16px}
+}
+@media(prefers-reduced-motion:reduce){body:has(#viewer:not(.hide)) *{scroll-behavior:auto}}
+
 </style>
 </head>
 <body>
