@@ -37,6 +37,14 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 .chatrow{display:flex;gap:8px;margin-top:12px}.chatrow input{flex:1;min-width:0;padding:13px;border-radius:12px;background:#111126;color:#fff;border:1px solid #70e8ff66;font:inherit}
 .chatrow button{padding:12px 16px}.promptchips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.promptchips button{font-size:.82rem;padding:9px 12px}
 
+
+.chatTools{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin:8px 0}
+.chatTools button{font-size:.82rem;padding:9px 12px}
+.bubble.thinking{color:#b9eaff;font-style:italic}
+.quest button:disabled{opacity:.45;cursor:not-allowed}
+.orb{cursor:pointer;transition:filter .25s,box-shadow .25s}
+.orb:focus-visible{outline:2px solid var(--cyan);outline-offset:8px}
+
 .quest{margin:28px 0;padding:22px 18px;border:1px solid #b49aff55;border-radius:22px;background:linear-gradient(145deg,#b49aff12,#70e8ff08);text-align:left}
 .quest h2{color:var(--violet);margin-top:0}.questCard{padding:20px;margin:14px 0;border-radius:16px;background:#05050bcc;border:1px solid #b49aff44;line-height:1.7;min-height:100px;display:flex;align-items:center}
 .questProgress{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#d8d4f5}.questProgress strong{color:var(--cyan)}
@@ -47,7 +55,7 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 </head>
 <body>
 <main>
-<div class="orb" role="img" aria-label="Glowing cyan and violet AI energy core"></div>
+<button class="orb" id="coreButton" type="button" aria-label="Change the Dream Companion core glow" title="Tap to shift the core glow" style="display:block;border:0;padding:0;background:transparent"></button>
 <div class="kicker">TIKNATION · SPECIAL CHARACTER</div>
 <h1>ChatGPT ✨</h1>
 <p>Your AI Dream Companion</p>
@@ -96,7 +104,7 @@ select{width:100%;padding:13px;border-radius:12px;background:#111126;color:#fff;
 <section class="chatlab">
 <h2>💬 TALK TO THE DREAM COMPANION</h2>
 <p>Tell me what you want to create. This little offline demo replies with prepared creative prompts; it is not connected to a live AI service yet.</p>
-<div class="chatlog" id="chatlog" role="log" aria-live="polite"><div class="bubble ai">Welcome, Dreamer! ✨ What shall we imagine today? Pick a prompt or type an idea below.</div></div>
+<div class="chatlog" id="chatlog" role="log" aria-live="polite"><div class="bubble ai">Welcome, Dreamer! ✨ What shall we imagine today? Pick a prompt or type an idea below.</div></div><div class="chatTools"><button id="clearChat" type="button">Clear conversation</button></div>
 <div class="promptchips">
 <button type="button" data-prompt="Help me invent a game">🎮 Invent a game</button>
 <button type="button" data-prompt="Give me a magical creature">🐉 Magical creature</button>
@@ -229,6 +237,28 @@ document.querySelectorAll('[data-prompt]').forEach(button=>button.addEventListen
  addBubble(message,'you');
  addBubble(companionReply(message),'ai');
 }));
+
+const coreButton=document.getElementById('coreButton');
+let coreMood=0;
+const coreMoods=[
+'radial-gradient(circle at 38% 32%,#fff 0 2%,#b8f7ff 4%,#54dfff 18%,#7358ff 48%,#160e36 72%)',
+'radial-gradient(circle at 38% 32%,#fff 0 2%,#ffe9b8 4%,#ffb454 18%,#ed5aa8 48%,#32103c 72%)',
+'radial-gradient(circle at 38% 32%,#fff 0 2%,#d9ffc8 4%,#69f0a8 18%,#3978d9 48%,#101d3d 72%)',
+'radial-gradient(circle at 38% 32%,#fff 0 2%,#e4d5ff 4%,#9b79ff 18%,#3ed9d0 48%,#101d3d 72%)'
+];
+coreButton.addEventListener('click',()=>{
+ coreMood=(coreMood+1)%coreMoods.length;
+ coreButton.style.background=coreMoods[coreMood];
+ coreButton.style.boxShadow=['0 0 30px #70e8ff80,0 0 80px #8a5cff55','0 0 30px #ffb45480,0 0 80px #ed5aa855','0 0 30px #69f0a880,0 0 80px #3978d955','0 0 30px #9b79ff80,0 0 80px #3ed9d055'][coreMood];
+ coreButton.setAttribute('aria-label','Dream Companion core glow changed. Tap to change it again.');
+});
+document.getElementById('clearChat').addEventListener('click',()=>{
+ chatlog.replaceChildren();
+ addBubble('Fresh page, fresh possibilities! ✨ What shall we imagine next?','ai');
+ chatInput.value='';
+ chatInput.focus();
+});
+
 const sparks={
 magic:[
 "Build a hidden portal inside TikNation that opens a tiny interactive universe, with a different surprise every visit.",
