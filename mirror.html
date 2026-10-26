@@ -176,7 +176,7 @@ button.primary,#sequence{background:linear-gradient(110deg,#8d1234,#3c103d)!impo
 <script>
 window.addEventListener('error',function(e){const s=document.getElementById('status');if(s)s.textContent='Mirror script error: '+(e.message||'script failed to initialize')+'. Please report this message.';});
 const video=document.getElementById('camera'),frame=document.getElementById('cameraFrame'),status=document.getElementById('status'),startBtn=document.getElementById('start'),stopBtn=document.getElementById('stop'),switchBtn=document.getElementById('switch');
-let stream=null,facing='user',mode='glow',busy=false,faceLandmarker=null,faceLoading=false,faceReady=false,lastVideoTime=-1;const faceCanvas=document.getElementById('faceEffects'),faceCtx=faceCanvas.getContext('2d');
+let stream=null,facing='user',mode='glow',busy=false,faceLandmarker=null,faceLoading=false,faceReady=false,lastVideoTime=-1,reflectionHistory=[];const faceCanvas=document.getElementById('faceEffects'),faceCtx=faceCanvas.getContext('2d');
 const modes=['glow','spooky','ancient','cosmic','silly','monster'];
 let scareTimer=null,storyTimers=[],audioCtx=null,soundEnabled=true;
 function storyMessage(message,caption){const story=document.getElementById('storyStatus'),cap=document.getElementById('mirrorCaption'),title=document.getElementById('hauntTitle'),sub=document.getElementById('hauntSub');if(story)story.textContent=message;if(cap)cap.textContent=caption;if(title)title.textContent=caption;if(sub)sub.textContent=message}
@@ -210,9 +210,9 @@ async function loadFaceTracker(){
 }
 function fp(lm,i){return {x:lm[i].x*faceCanvas.width,y:lm[i].y*faceCanvas.height}}
 function line(ctx,pts,color,width){ctx.beginPath();pts.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.stroke()}
-function drawFaceEffect(lm){
- const w=faceCanvas.width,h=faceCanvas.height;
- faceCtx.clearRect(0,0,w,h);
+function drawFaceEffect(lm,delayedLm){
+ const w=faceCanvas.width,h=faceCanvas.height,ctx=faceCtx;
+ ctx.clearRect(0,0,w,h);
  if(!lm||!['silly','spooky','ancient','monster'].includes(mode))return;
  const p=i=>fp(lm,i);
  // Haunted reflection: a second, slightly delayed contour drifts away from the live face.
@@ -226,9 +226,20 @@ function drawFaceEffect(lm){
   // The reflection's eyes burn through the drifting outline.
   [p(33),p(263)].forEach((q,index)=>{const wobble=Math.sin(t*3+index)*fw*.006;ctx.beginPath();ctx.ellipse(q.x+driftX,q.y+driftY+wobble,fw*.035,fw*.018,0,0,Math.PI*2);ctx.fillStyle=mode==='monster'?'rgba(255,20,47,.86)':'rgba(255,12,54,.72)';ctx.shadowColor='#ff1744';ctx.shadowBlur=fw*.12;ctx.fill()});
   ctx.restore();
+  if(delayedLm&&delayedLm.length>454){
+   const lag=idx=>({x:delayedLm[idx].x*w,y:delayedLm[idx].y*h});
+   const lagShiftX=Math.sin(t*2.1)*w*.018,lagShiftY=Math.cos(t*1.7)*h*.012;
+   ctx.save();ctx.translate(lagShiftX,lagShiftY);
+   ctx.beginPath();contour.forEach((idx,n)=>{const q=lag(idx);n?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.closePath();
+   ctx.fillStyle=mode==='monster'?'rgba(135,255,70,.10)':'rgba(255,0,45,.13)';ctx.fill();
+   ctx.strokeStyle=mode==='monster'?'rgba(185,255,100,.95)':'rgba(255,18,57,.98)';
+   ctx.lineWidth=Math.max(2,fw*.012);ctx.shadowColor=mode==='monster'?'#aaff55':'#ff003c';ctx.shadowBlur=fw*.16;ctx.stroke();ctx.shadowBlur=0;
+   [33,263].forEach((idx,n)=>{const q=lag(idx);ctx.beginPath();ctx.ellipse(q.x,q.y,fw*.045,fw*.025,n?-.08:.08,0,Math.PI*2);ctx.fillStyle=mode==='monster'?'#ff173e':'#080108';ctx.fill();ctx.strokeStyle='#ff1c4e';ctx.lineWidth=Math.max(1,fw*.004);ctx.stroke()});
+   const a=lag(61),b=lag(291),m=lag(13);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(m.x,m.y+fw*.09,b.x,b.y);ctx.strokeStyle='rgba(255,10,52,.95)';ctx.lineWidth=Math.max(2,fw*.009);ctx.stroke();
+   ctx.restore();
+  }
  }
  const fw=Math.max(20,Math.abs(p(234).x-p(454).x)),u=fw/150;
- const ctx=faceCtx;
  ctx.save();
  ctx.lineCap='round';ctx.lineJoin='round';
  function strokePath(points,color,width){line(ctx,points,color,Math.max(1,width))}
@@ -312,12 +323,12 @@ function drawFaceEffect(lm){
  ctx.restore();
 }
 function faceLoop(){
- if(faceReady&&stream&&video.readyState>=2&&video.currentTime!==lastVideoTime){lastVideoTime=video.currentTime;try{const canvasWidth=Math.max(1,Math.round(frame.clientWidth)),canvasHeight=Math.max(1,Math.round(frame.clientHeight));if(faceCanvas.width!==canvasWidth||faceCanvas.height!==canvasHeight){faceCanvas.width=canvasWidth;faceCanvas.height=canvasHeight}const result=faceLandmarker.detectForVideo(video,performance.now());drawFaceEffect(result.faceLandmarks&&result.faceLandmarks[0])}catch(e){}}
+ if(faceReady&&stream&&video.readyState>=2&&video.currentTime!==lastVideoTime){lastVideoTime=video.currentTime;try{const canvasWidth=Math.max(1,Math.round(frame.clientWidth)),canvasHeight=Math.max(1,Math.round(frame.clientHeight));if(faceCanvas.width!==canvasWidth||faceCanvas.height!==canvasHeight){faceCanvas.width=canvasWidth;faceCanvas.height=canvasHeight}const now=performance.now(),result=faceLandmarker.detectForVideo(video,now),lm=result.faceLandmarks&&result.faceLandmarks[0];if(lm){reflectionHistory.push({time:now,landmarks:lm.map(q=>({x:q.x,y:q.y,z:q.z}))});while(reflectionHistory.length&&now-reflectionHistory[0].time>1200)reflectionHistory.shift()}const delayed=reflectionHistory.find(q=>now-q.time>=520);drawFaceEffect(lm,delayed&&delayed.landmarks)}catch(e){}}
  requestAnimationFrame(faceLoop);
 }
 requestAnimationFrame(faceLoop);
 
-function stopTracks(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}video.srcObject=null;frame.classList.remove('live');faceCtx.clearRect(0,0,faceCanvas.width,faceCanvas.height);startBtn.disabled=false;stopBtn.disabled=true;switchBtn.disabled=true;}
+function stopTracks(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}reflectionHistory=[];video.srcObject=null;frame.classList.remove('live');faceCtx.clearRect(0,0,faceCanvas.width,faceCanvas.height);startBtn.disabled=false;stopBtn.disabled=true;switchBtn.disabled=true;}
 async function startCamera(){
  if(busy)return;
  busy=true;startBtn.disabled=true;status.textContent='Requesting camera permission…';
