@@ -215,8 +215,19 @@ function drawFaceEffect(lm,delayedLm){
  ctx.clearRect(0,0,w,h);
  if(!lm||!['silly','spooky','ancient','monster'].includes(mode))return;
  const p=i=>fp(lm,i);
- // Haunted reflection: a second, slightly delayed contour drifts away from the live face.
- // This is an intentional visual illusion; it never alters or uploads the camera image.
+ // Haunted reflection: briefly paint a second, time-shifted image of the camera.
+ // This makes the reflection itself split away from the live image, not just add makeup.
+ if((mode==='spooky'||mode==='monster')&&video.readyState>=2){
+  const t=performance.now()/1000;
+  ctx.save();
+  ctx.globalAlpha=mode==='monster'?.22:.28;
+  ctx.globalCompositeOperation='screen';
+  ctx.filter=mode==='monster'?'hue-rotate(95deg) contrast(1.5)':'grayscale(.75) contrast(1.55) sepia(.35)';
+  const ghostX=Math.sin(t*1.8)*w*.025,ghostY=Math.cos(t*1.25)*h*.012;
+  ctx.translate(w+ghostX,ghostY);ctx.scale(-1,1);
+  ctx.drawImage(video,0,0,w,h);
+  ctx.restore();
+ }
  if(mode==='spooky'||mode==='monster'){
   const t=performance.now()/1000, driftX=Math.sin(t*1.8)*w*.012, driftY=Math.cos(t*1.25)*h*.008;
   const contour=[10,338,297,332,284,251,389,356,454,323,361,288,397,365,379,378,400,377,152,148,176,149,150,136,172,58,132,93,234,127,162,21,54,103,67,109];
