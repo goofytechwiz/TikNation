@@ -62,6 +62,16 @@ button:disabled{opacity:.4;cursor:default}
 /* Real candle silhouettes: wax columns, rounded rims, drips and warm flame glow */
 .candle-pair{position:absolute;z-index:8;left:50%;bottom:0;transform:translateX(-50%);width:88%;height:132px;display:flex;align-items:flex-end;justify-content:space-around;pointer-events:none;padding:0 3%}
 .candle-pair:before{content:"";position:absolute;z-index:-1;left:0;right:0;bottom:0;height:13px;background:linear-gradient(#514653,#18131d 55%,#070609);border-radius:3px;box-shadow:0 0 13px #ff8b3522}
+/* Warm candlelight reflected across the lower glass */
+.candle-reflection{position:absolute;z-index:4;left:8%;right:8%;bottom:5px;height:31%;pointer-events:none;opacity:.88;mix-blend-mode:screen;background:
+radial-gradient(ellipse at 18% 100%,#ff7b2c55 0,transparent 36%),
+radial-gradient(ellipse at 43% 100%,#ffc15c44 0,transparent 39%),
+radial-gradient(ellipse at 67% 100%,#ff762b44 0,transparent 37%),
+radial-gradient(ellipse at 86% 100%,#ff9a3a44 0,transparent 35%);
+filter:blur(8px);animation:candleReflect 1.8s ease-in-out infinite alternate}
+.candle-reflection:after{content:"";position:absolute;left:4%;right:4%;bottom:0;height:70%;background:repeating-linear-gradient(178deg,transparent 0 8px,#ffb05b12 9px 11px,transparent 12px 17px);filter:blur(4px);mask:linear-gradient(transparent,#000)}
+@keyframes candleReflect{0%{opacity:.45;transform:scaleY(.86)}38%{opacity:.9}65%{opacity:.58}100%{opacity:1;transform:scaleY(1.04)}}
+
 .candle{position:relative;flex:0 0 27px;height:78px;border-radius:5px 5px 2px 2px;background:linear-gradient(90deg,#030304 0%,#100f13 16%,#24202a 38%,#08080b 64%,#1a1720 82%,#030304 100%);box-shadow:inset 2px 0 3px #c5b4d322,inset -3px 0 5px #000,0 5px 8px #000;clip-path:none}
 .candle:nth-child(2){height:104px;flex-basis:30px}
 .candle:nth-child(3){height:91px;flex-basis:28px}
@@ -84,6 +94,7 @@ button:disabled{opacity:.4;cursor:default}
 <p class="sub">Step into the full-length mirror. Look closely… the reflection may not be alone.</p>
 <section class="stage" id="stage" aria-label="Horror mirror camera view">
 <div class="mirror-lights" aria-hidden="true"></div>
+<div class="candle-reflection" aria-hidden="true"></div>
 <div class="candle-pair" aria-hidden="true">
  <div class="candle"><span class="wick"></span><span class="flame"></span></div>
  <div class="candle"><span class="wick"></span><span class="flame"></span></div>
