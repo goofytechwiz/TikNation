@@ -86,7 +86,15 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offse
 .camera-frame.awake{box-shadow:inset 0 0 50px #7c124e,0 0 28px #ff174455}
 .camera-frame.possessed{animation:horrorPulse .7s ease-in-out infinite}
 .camera-frame.possessed:before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:radial-gradient(ellipse at 50% 48%,transparent 20%,rgba(0,0,0,.86) 100%);box-shadow:inset 0 0 50px #f0003a}
-.camera-frame.cracked:before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(117deg,transparent 47%,#fff9 48%,transparent 49%),linear-gradient(63deg,transparent 57%,#ff315d99 58%,transparent 59%),linear-gradient(155deg,transparent 30%,#fff8 31%,transparent 32%);mix-blend-mode:screen}
+.camera-frame.cracked:before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:
+linear-gradient(117deg,transparent 46.8%,#fff 47.1%,#ff315d 47.35%,transparent 47.7%),
+linear-gradient(63deg,transparent 56.5%,#fff 56.8%,#ff315d 57.1%,transparent 57.5%),
+linear-gradient(155deg,transparent 29.5%,#fff 29.8%,#ff315d 30.1%,transparent 30.5%),
+linear-gradient(12deg,transparent 67%,#ff315d 67.2%,transparent 67.6%),
+linear-gradient(88deg,transparent 21%,#fff9 21.2%,transparent 21.5%),
+radial-gradient(circle at 47% 47%,transparent 0 10%,#ff174422 10.3%,transparent 10.8%);mix-blend-mode:screen;animation:crackFlicker .16s steps(2,end) infinite}
+.camera-frame.cracked:after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;border-radius:0;background:linear-gradient(25deg,transparent 48%,#fff9 48.2%,transparent 48.6%),linear-gradient(142deg,transparent 72%,#ff315d99 72.2%,transparent 72.6%);mix-blend-mode:screen;animation:crackFlicker .23s steps(2,end) infinite}
+@keyframes crackFlicker{0%,100%{opacity:.42;transform:translate(0,0)}50%{opacity:1;transform:translate(.35%,-.2%)}}
 .camera-frame.calm{animation:none;filter:none}
 #hauntOverlay{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:7px;padding:18px 12px;pointer-events:none;text-align:center;opacity:0;transition:opacity .25s;background:linear-gradient(180deg,transparent 45%,rgba(4,0,12,.68))}#hauntTitle{font-weight:1000;letter-spacing:.18em;font-size:clamp(.78rem,2.8vw,1.05rem);color:#ffb1c4;text-shadow:0 0 8px #ff1744,0 0 22px #ff1744}#hauntSub{font-size:.68rem;letter-spacing:.16em;color:#e2d6ff;text-shadow:0 0 12px #9e4dff}.camera-frame.awake #hauntOverlay,.camera-frame.possessed #hauntOverlay,.camera-frame.cracked #hauntOverlay,.camera-frame.nightmare #hauntOverlay{opacity:1}.camera-frame.possessed #hauntTitle{animation:hauntGlitch .18s steps(2,end) infinite}@keyframes hauntGlitch{50%{transform:translateX(3px);color:#fff}}
 #nightmare{width:100%;margin-top:10px;border-color:#ff254f;color:#ffdce4;background:linear-gradient(100deg,#370714,#180b22);font-weight:900;letter-spacing:.04em}
