@@ -91,6 +91,14 @@ radial-gradient(ellipse at 22% 0%,#302a35 0 5px,transparent 6px),radial-gradient
 radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient(ellipse at 72% 22px,#141218 0 2.8px,transparent 4px)}
 .candle:nth-child(3) .wax-drips{height:46px}
 .candle:nth-child(4) .wax-drips{height:34px}
+/* Gentle heat shimmer: tiny, slow movement in the hanging wax */
+.candle .wax-drips:after{content:"";position:absolute;top:4px;left:12%;width:5px;height:24px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,#070609,#26212b 48%,#0a090c);box-shadow:inset 1px 0 1px #b7a7c51a;transform-origin:top center;animation:waxMelt 5.8s ease-in-out infinite alternate}
+.candle:nth-child(2) .wax-drips:after{left:67%;height:29px;animation-delay:-2.2s;animation-duration:6.7s}
+.candle:nth-child(3) .wax-drips:after{left:26%;height:21px;animation-delay:-3.6s;animation-duration:6.2s}
+.candle:nth-child(4) .wax-drips:after{left:71%;height:18px;animation-delay:-1.4s;animation-duration:5.3s}
+@keyframes waxMelt{0%{transform:translateY(0) scaleY(.94) rotate(-1deg)}48%{transform:translateY(1px) scaleY(1.02) rotate(1deg)}100%{transform:translateY(2px) scaleY(1.06) rotate(-.5deg)}}
+@media(prefers-reduced-motion:reduce){.candle .wax-drips:after{animation:none}}
+
 .wick{position:absolute;z-index:2;top:-10px;left:calc(50% - 1px);width:2px;height:9px;background:#050405;border-radius:2px}
 .flame{position:absolute;z-index:3;top:-39px;left:50%;width:17px;height:31px;transform:translateX(-50%);transform-origin:50% 100%;border-radius:50% 50% 45% 45% / 65% 65% 35% 35%;background:radial-gradient(ellipse at 50% 75%,#fffde0 0 12%,#ffe28b 24%,#ffad35 47%,#ff6725 68%,#b92f13aa 78%,transparent 80%);filter:drop-shadow(0 0 5px #ff8b35) drop-shadow(0 0 13px #ff4a1caa);animation:flameDance .19s infinite alternate ease-in-out}
 .candle:nth-child(2) .flame{animation-delay:-.11s;transform:translateX(-50%) scale(.84);animation-duration:.25s}
