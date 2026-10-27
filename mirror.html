@@ -240,8 +240,9 @@ function drawFaceEffect(lm,delayedLm){
   ctx.globalCompositeOperation='screen';
   ctx.filter=mode==='monster'?'hue-rotate(95deg) contrast(1.8) brightness(.75)':'grayscale(1) contrast(2) brightness(.58) sepia(1) saturate(3)';
   const ghostX=(Math.sin(t*1.8)*.025+.055)*w,ghostY=(Math.cos(t*1.25)*.012)*h;
-  ctx.translate(w+ghostX,ghostY);ctx.scale(-1,1);
-  ctx.drawImage(video,0,0,w,h);
+  // The canvas is already mirrored by CSS to match the live video.
+  // Do not mirror the source a second time here, or the ghost faces the wrong way.
+  ctx.drawImage(video,ghostX,ghostY,w,h);
   ctx.restore();
   // Broken-glass signal tear: moving horizontal slices make the ghost image visibly
   // disagree with the live reflection instead of reading as a simple color filter.
