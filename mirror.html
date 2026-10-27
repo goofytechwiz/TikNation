@@ -2,550 +2,79 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080813">
-<meta name="description" content="TikNation HORROR MIRROR — enter the forbidden reflection. A cinematic supernatural camera experience.">
-<title>HORROR MIRROR — TikNation After Dark</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07070d">
+<meta name="description" content="TikNation Horror Mirror — a cinematic supernatural camera experience.">
+<title>Horror Mirror | TikNation After Dark</title>
 <style>
-:root{color-scheme:dark;--cyan:#72edff;--pink:#ff79c6;--violet:#b49aff}
+:root{color-scheme:dark;--cyan:#8cefff;--violet:#a994ff}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 0,#272050 0,transparent 34%),radial-gradient(circle at 95% 45%,#123b4b 0,transparent 34%),#080813;color:#fff;font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
-a{color:var(--cyan)}button,input{font:inherit}.wrap{width:min(1000px,92%);margin:auto}
-.top{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid #ffffff20;gap:12px}
-.logo{font-weight:900;letter-spacing:.09em}.logo span{color:var(--cyan)}
-.hero{text-align:center;padding:36px 0 22px}.eyebrow{font-size:.72rem;letter-spacing:.2em;font-weight:800;color:var(--pink)}
-h1{font-size:clamp(2.1rem,7vw,4rem);line-height:1.06;margin:10px 0;background:linear-gradient(90deg,#fff,var(--cyan),var(--pink));background-clip:text;color:transparent}
-.hero p{color:#c7c5de;max-width:650px;margin:auto}
-.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
-.panel{background:#111225e8;border:1px solid #aaa0ff40;border-radius:22px;padding:20px;box-shadow:0 20px 65px #0005;min-width:0}
-.preview{min-height:340px;display:grid;place-items:center;text-align:center;background:radial-gradient(circle,#40306e88,transparent 65%);overflow:hidden;position:relative}
-.camera-frame{width:100%;min-height:300px;display:grid;place-items:center;position:relative;overflow:hidden;border-radius:15px;background:#080b1c}
-video{display:none;width:100%;height:100%;max-height:560px;min-height:300px;object-fit:cover;transform:scaleX(-1);transition:filter .2s}#faceEffects{display:none;position:absolute;inset:0;width:100%;height:100%;max-height:560px;z-index:3;pointer-events:none;transform:scaleX(-1)}.camera-frame.live #faceEffects{display:block}
-.camera-frame.live video{display:block}
-.camera-frame.live #placeholder{display:none}
-#placeholder{padding:24px;color:#d1cee8}
-.camera-frame.spooky video{filter:grayscale(.8) contrast(1.65) brightness(.72) sepia(.25) hue-rotate(305deg)}
-.camera-frame.ancient video{filter:sepia(.7) saturate(.8)}
-.camera-frame.cosmic video{filter:hue-rotate(35deg) saturate(1.4)}
-.camera-frame.silly video{filter:hue-rotate(100deg) saturate(1.7) contrast(1.1)}
-.camera-frame.monster video{filter:contrast(1.7) saturate(1.8) brightness(.78) hue-rotate(285deg)}
-.camera-frame.glow video{filter:brightness(1.08) saturate(1.2)}
-/* Animated illusion layers: effects stay over the live camera without interrupting it. */
-.camera-frame::before,.camera-frame::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .35s}
-.camera-frame::before{background-size:cover;mix-blend-mode:screen}
-.camera-frame::after{inset:8%;border:1px solid transparent;border-radius:18px}
-.camera-frame.glow::before{opacity:.8;background:radial-gradient(ellipse at 50% 45%,#fff4 0,transparent 42%),radial-gradient(circle at 15% 18%,#ff9ee755 0,transparent 24%),radial-gradient(circle at 85% 75%,#71efff55 0,transparent 27%);animation:mirrorBreathe 3s ease-in-out infinite}
-.camera-frame.spooky::before{opacity:.9;background:radial-gradient(ellipse at center,transparent 25%,#08000bcc 100%),radial-gradient(ellipse at 50% 100%,#9d174d66,transparent 50%);animation:hauntedPulse 4s ease-in-out infinite}
-.camera-frame.spooky::after{opacity:.8;border-color:#ff4b7b66;box-shadow:inset 0 0 45px #ff174433}
-.camera-frame.ancient::before{opacity:.85;background:repeating-conic-gradient(from 0deg at 50% 50%,#ffd27b20 0deg 2deg,transparent 2deg 20deg),radial-gradient(circle,#ffcf6b22,transparent 65%);animation:runeTurn 28s linear infinite}
-.camera-frame.ancient::after{inset:12%;opacity:.8;border:2px dashed #ffd27b99;border-radius:50%;box-shadow:0 0 25px #ffd27b33;animation:runeTurn 35s linear infinite}
-.camera-frame.cosmic::before{opacity:.95;background-image:radial-gradient(circle,#fff 1px,transparent 2px),radial-gradient(circle,#8cf8ff 1.5px,transparent 3px),radial-gradient(circle,#e7a5ff 1px,transparent 2px),linear-gradient(125deg,transparent 30%,#8c5cff33 48%,transparent 65%);background-size:53px 57px,83px 91px,117px 103px,100% 100%;animation:starDrift 12s linear infinite}
-.camera-frame.cosmic::after{opacity:.7;border-color:#8cf8ff88;box-shadow:0 0 25px #8cf8ff55,inset 0 0 25px #b49aff44}
-.camera-frame.silly::before{opacity:.9;background-image:radial-gradient(circle at 15% 25%,#ffdc6b 0 5px,transparent 6px),radial-gradient(circle at 80% 20%,#ff79c6 0 6px,transparent 7px),radial-gradient(circle at 70% 75%,#72edff 0 5px,transparent 6px),radial-gradient(circle at 25% 80%,#b49aff 0 7px,transparent 8px);animation:partyFloat 3s ease-in-out infinite}
-.camera-frame.silly::after{opacity:.85;border:3px dotted #ff79c6aa;animation:partyFloat 2s ease-in-out infinite alternate}
-.camera-frame.monster::before{opacity:.9;background:radial-gradient(ellipse at 30% 23%,#ff244a55,transparent 20%),radial-gradient(ellipse at 70% 23%,#ff244a55,transparent 20%),radial-gradient(ellipse at 50% 100%,#9b2cff55,transparent 55%);animation:monsterPulse 2.5s ease-in-out infinite}
-.camera-frame.monster::after{opacity:.85;border:2px solid #d04dff99;box-shadow:inset 0 0 35px #a000ff33,0 0 25px #d04dff55}
-@keyframes mirrorBreathe{50%{opacity:.45;transform:scale(1.04)}}
-@keyframes hauntedPulse{50%{opacity:.45}}
-@keyframes runeTurn{to{transform:rotate(360deg)}}
-@keyframes starDrift{from{background-position:0 0,20px 15px,50px 35px,0 0}to{background-position:53px 114px,-63px 197px,167px -68px,0 0}}
-@keyframes partyFloat{50%{transform:translateY(-8px) rotate(2deg)}}
-@keyframes monsterPulse{50%{opacity:.45;filter:hue-rotate(35deg)}}
-
-.status{color:var(--cyan);font-size:.9rem;min-height:1.5em;margin-top:12px;overflow-wrap:anywhere}
-.muted{color:#bdbbd5;font-size:.9rem}
-.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:16px 0}
-button{cursor:pointer;border:1px solid #a7a0ff55;background:#1b1c36;color:white;padding:11px;border-radius:12px;transition:.2s}
-button:hover,.choice[aria-pressed=true]{border-color:var(--cyan);background:#24264b}
-.choice[aria-pressed=true]{box-shadow:inset 0 0 0 1px var(--cyan)}
-button:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
-.primary{background:linear-gradient(100deg,#126b83,#6a3c9f);border:0;font-weight:800}
-.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
-.note{border-left:3px solid var(--pink);padding:10px 12px;font-size:.82rem;color:#c8c5dc;margin-top:15px}
-.foot{text-align:center;padding:26px 0 40px;color:#a3a1bd;font-size:.8rem}
-@media(max-width:720px){.grid{grid-template-columns:1fr}.preview{min-height:260px}.panel{padding:16px}.hero{padding-top:28px}.camera-frame{min-height:260px}video{min-height:260px}}
-@keyframes nightmareShake{0%,100%{transform:translate(0,0) scale(1)}12%{transform:translate(-5px,2px) scale(1.015)}24%{transform:translate(5px,-2px) scale(1.025)}38%{transform:translate(-3px,-1px) scale(1.01)}52%{transform:translate(4px,2px) scale(1.02)}70%{transform:translate(0,0) scale(1)}}
-@keyframes nightmareFlash{0%,100%{opacity:0}8%{opacity:.9}17%{opacity:0}33%{opacity:.65}42%{opacity:0}58%{opacity:.3}65%{opacity:0}}
-@keyframes horrorPulse{0%,100%{filter:contrast(1.2) saturate(1.3)}50%{filter:contrast(1.7) saturate(1.9) brightness(.78)}}
-.camera-frame.nightmare{animation:nightmareShake 1.35s ease-in-out 1}
-.camera-frame.nightmare:after{content:"";pointer-events:none;position:absolute;inset:0;z-index:5;background:linear-gradient(115deg,transparent 20%,rgba(255,0,40,.9) 50%,transparent 75%);mix-blend-mode:screen;animation:nightmareFlash 1.35s ease-out 1}
-.camera-frame.spooky video{animation:horrorPulse 2.8s ease-in-out infinite}
-/* The reflection itself slips out of alignment during the story beats. */
-.camera-frame.possessed video{animation:reflectionPossessed .22s steps(2,end) infinite!important}
-.camera-frame.cracked video{animation:reflectionFracture .48s ease-in-out infinite!important}
-.camera-frame.nightmare video{animation:reflectionLunge 1.35s cubic-bezier(.2,.8,.2,1) 1!important;transform-origin:50% 42%}
-@keyframes reflectionPossessed{0%,100%{transform:scaleX(-1) translateX(0) skewX(0)}25%{transform:scaleX(-1) translateX(2.5%) skewX(1.8deg)}50%{transform:scaleX(-1) translateX(-1.8%) skewX(-1deg)}75%{transform:scaleX(-1) translateX(1.2%) skewX(.8deg)}}
-@keyframes reflectionFracture{0%,100%{transform:scaleX(-1) translate(0,0) scale(1)}35%{transform:scaleX(-1) translate(1.4%,-.4%) scale(1.025)}70%{transform:scaleX(-1) translate(-1.1%,.6%) scale(.99)}}
-@keyframes reflectionLunge{
-  0%{transform:scaleX(-1) scale(1) translate(0,0)}
-  12%{transform:scaleX(-1) scale(1.04) translate(0,0)}
-  24%{transform:scaleX(-1) scale(1.32) translate(-2.5%,1%)}
-  34%{transform:scaleX(-1) scale(1.23) translate(2%, -1%)}
-  46%{transform:scaleX(-1) scale(1.42) translate(-1%,0);filter:contrast(2.2) brightness(.62) saturate(1.8)}
-  58%{transform:scaleX(-1) scale(1.34) translate(1.5%,1%)}
-  72%{transform:scaleX(-1) scale(1.16) translate(-1%,0)}
-  86%{transform:scaleX(-1) scale(1.06) translate(.5%,0)}
-  100%{transform:scaleX(-1) scale(1) translate(0,0)}
-}
-
-
-.mirror-caption{position:absolute;z-index:6;bottom:12px;left:12px;right:12px;text-align:center;font-size:.72rem;font-weight:900;letter-spacing:.18em;color:#ffb5c8;text-shadow:0 0 15px #ff1744;pointer-events:none}
-.story-actions{display:grid;gap:9px}.story-btn{width:100%;padding:12px;border-radius:12px;border:1px solid #8f79ff88;background:linear-gradient(110deg,#17162c,#202044);color:#fff;font-weight:800;cursor:pointer}
-.story-btn.danger{border-color:#ff315d;background:linear-gradient(100deg,#4b0719,#200c2a);box-shadow:0 0 24px #ff174422}
-.story-status{min-height:48px;margin-top:12px;padding:12px;border-radius:12px;background:#080813;border:1px solid #ffffff18;color:#ffbed0}
-.camera-frame.awake{box-shadow:inset 0 0 50px #7c124e,0 0 28px #ff174455}
-.camera-frame.possessed{animation:horrorPulse .7s ease-in-out infinite}
-.camera-frame.possessed:before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:radial-gradient(ellipse at 50% 48%,transparent 20%,rgba(0,0,0,.86) 100%);box-shadow:inset 0 0 50px #f0003a}
-.camera-frame.cracked:before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:
-linear-gradient(117deg,transparent 46.8%,#fff 47.1%,#ff315d 47.35%,transparent 47.7%),
-linear-gradient(63deg,transparent 56.5%,#fff 56.8%,#ff315d 57.1%,transparent 57.5%),
-linear-gradient(155deg,transparent 29.5%,#fff 29.8%,#ff315d 30.1%,transparent 30.5%),
-linear-gradient(12deg,transparent 67%,#ff315d 67.2%,transparent 67.6%),
-linear-gradient(88deg,transparent 21%,#fff9 21.2%,transparent 21.5%),
-radial-gradient(circle at 47% 47%,transparent 0 10%,#ff174422 10.3%,transparent 10.8%);mix-blend-mode:screen;animation:crackFlicker .16s steps(2,end) infinite}
-.camera-frame.cracked:after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;border-radius:0;background:linear-gradient(25deg,transparent 48%,#fff9 48.2%,transparent 48.6%),linear-gradient(142deg,transparent 72%,#ff315d99 72.2%,transparent 72.6%);mix-blend-mode:screen;animation:crackFlicker .23s steps(2,end) infinite}
-@keyframes crackFlicker{0%,100%{opacity:.42;transform:translate(0,0)}50%{opacity:1;transform:translate(.35%,-.2%)}}
-/* Stronger glass break: a central impact point, branching cracks, and displaced glass panes. */
-.camera-frame.cracked{filter:contrast(1.25) saturate(.75)}
-.camera-frame.cracked video{clip-path:polygon(0 0,49% 0,47% 22%,53% 34%,46% 48%,51% 61%,45% 78%,49% 100%,0 100%,0 0);animation:reflectionFracture .28s steps(2,end) infinite!important}
-.camera-frame.cracked:before{background:
-linear-gradient(168deg,transparent 48.8%,#fff 49%,#ff315d 49.2%,transparent 49.55%),
-linear-gradient(28deg,transparent 52.4%,#fff 52.6%,#ff315d 52.85%,transparent 53.15%),
-linear-gradient(112deg,transparent 39.7%,#fff 39.9%,#ff315d 40.15%,transparent 40.45%),
-linear-gradient(76deg,transparent 63.2%,#fff 63.4%,#ff315d 63.65%,transparent 63.95%),
-linear-gradient(143deg,transparent 23.8%,#fff 24%,#ff315d 24.25%,transparent 24.55%),
-linear-gradient(8deg,transparent 73.4%,#fff 73.6%,#ff315d 73.85%,transparent 74.15%),
-radial-gradient(circle at 50% 48%,#fff 0 1px,#ff315d 2px,transparent 8px),
-radial-gradient(ellipse at center,transparent 30%,#000b 100%)!important;opacity:1!important;mix-blend-mode:screen;animation:crackFlicker .12s steps(2,end) infinite!important}
-.camera-frame.cracked:after{clip-path:polygon(0 0,49% 0,47% 22%,53% 34%,46% 48%,51% 61%,45% 78%,49% 100%,0 100%);transform:translateX(-2.5%);border:0!important;background:linear-gradient(90deg,#ff315d15,#fff3,transparent 30%);box-shadow:inset -12px 0 28px #ff174455!important}
-.camera-frame.nightmare #hauntTitle{font-size:clamp(1.1rem,5vw,2.1rem);letter-spacing:.2em;animation:hauntGlitch .12s steps(2,end) infinite;text-shadow:0 0 8px #ff1744,0 0 35px #ff1744}
-@keyframes intruderGlassLunge{0%,100%{transform:scale(1);filter:none}20%{transform:scale(1.06) translateX(-1%)}35%{transform:scale(1.22) translateX(2%);filter:contrast(2) brightness(.55)}50%{transform:scale(1.4) translateX(-2%);filter:contrast(2.4) brightness(.4) saturate(2)}72%{transform:scale(1.18) translateX(1%)}}
-.camera-frame.nightmare video{animation:intruderGlassLunge 1.35s cubic-bezier(.2,.8,.2,1) 1!important}
-.camera-frame.calm{animation:none;filter:none}
-#hauntOverlay{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:7px;padding:18px 12px;pointer-events:none;text-align:center;opacity:0;transition:opacity .25s;background:linear-gradient(180deg,transparent 45%,rgba(4,0,12,.68))}#hauntTitle{font-weight:1000;letter-spacing:.18em;font-size:clamp(.78rem,2.8vw,1.05rem);color:#ffb1c4;text-shadow:0 0 8px #ff1744,0 0 22px #ff1744}#hauntSub{font-size:.68rem;letter-spacing:.16em;color:#e2d6ff;text-shadow:0 0 12px #9e4dff}.camera-frame.awake #hauntOverlay,.camera-frame.possessed #hauntOverlay,.camera-frame.cracked #hauntOverlay,.camera-frame.nightmare #hauntOverlay{opacity:1}.camera-frame.possessed #hauntTitle{animation:hauntGlitch .18s steps(2,end) infinite}@keyframes hauntGlitch{50%{transform:translateX(3px);color:#fff}}
-#nightmare{width:100%;margin-top:10px;border-color:#ff254f;color:#ffdce4;background:linear-gradient(100deg,#370714,#180b22);font-weight:900;letter-spacing:.04em}
-#nightmare:active{transform:scale(.98)}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
-
-/* HORROR MIRROR — immersive attraction art direction */
-:root{--cyan:#a5efff;--pink:#ff254f;--violet:#a18bff}
-html{background:#030207;scroll-behavior:smooth}
-body{background:#030207;color:#f8f4ff;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.12;background:repeating-linear-gradient(0deg,transparent 0 3px,#fff 4px,transparent 5px);mix-blend-mode:soft-light}
-body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:19;background:radial-gradient(ellipse at center,transparent 35%,#000 100%);box-shadow:inset 0 0 150px #000}
-.wrap{width:min(1160px,94%)}
-.top{position:relative;z-index:21;border-bottom:1px solid #ff244d35;padding:15px 0;text-transform:uppercase;font-size:.76rem;letter-spacing:.13em}
-.logo{font-size:.95rem;text-shadow:0 0 18px #ff174466}.logo span{color:#ff4267}
-.top a{color:#d7c8ff;text-decoration:none}
-.hero{position:relative;padding:clamp(35px,7vw,78px) 0 34px;isolation:isolate}
-.hero:before{content:"";position:absolute;z-index:-1;left:50%;top:0;transform:translateX(-50%);width:min(800px,100%);height:100%;background:radial-gradient(ellipse,#570c2b35 0,transparent 68%)}
-.eyebrow{color:#ff5576;font-size:.68rem;letter-spacing:.35em;text-shadow:0 0 16px #ff174455}
-h1{font-size:clamp(3rem,10vw,7.2rem);letter-spacing:.04em;line-height:.92;margin:18px 0 20px;background:linear-gradient(180deg,#fff 5%,#ffdce5 35%,#ff315b 78%,#7c102b);background-clip:text;color:transparent;filter:drop-shadow(0 0 22px #ff174433)}
-.hero p{max-width:660px;color:#c7b9d4;font-size:clamp(.95rem,2vw,1.1rem);letter-spacing:.025em}
-.grid{grid-template-columns:minmax(0,1.25fr) minmax(310px,.75fr);gap:22px;align-items:start}
-.panel{background:linear-gradient(145deg,#120a17ed,#07070df5 70%);border:1px solid #ff315b35;border-radius:5px;box-shadow:0 25px 90px #000b,0 0 35px #4e0b2720;position:relative}
-.panel:before{content:"";position:absolute;inset:7px;border:1px solid #ffffff09;pointer-events:none}
-.preview{padding:13px;min-height:unset;background:radial-gradient(ellipse at 50% 30%,#55132b50,transparent 65%),#050408}
-.camera-frame{min-height:clamp(400px,64vh,690px);border-radius:2px;background:radial-gradient(ellipse,#1c0b19,#030207 75%);border:1px solid #ff315b28;box-shadow:inset 0 0 80px #000}
-video{min-height:clamp(400px,64vh,690px);max-height:690px;object-position:center}
-#faceEffects{max-height:690px}
-#placeholder{max-width:340px;color:#d3c0d7}
-#placeholder div:first-child{font-size:5rem!important;filter:drop-shadow(0 0 25px #ff174466);animation:mirrorBreathe 4s ease-in-out infinite}
-#placeholder h2{font-size:1.5rem;letter-spacing:.1em;text-transform:uppercase}
-#placeholder .muted{color:#a89aaa}
-.grid>.panel:nth-child(2){padding:clamp(15px,2.5vw,26px)}
-.grid>.panel:nth-child(2)>h2{font-size:1.3rem;letter-spacing:.1em;text-transform:uppercase;color:#fff;margin-top:3px}
-.muted{color:#a99ab4}
-.choices{gap:8px}
-button{border-radius:3px!important;border:1px solid #c5a6ff45!important;background:linear-gradient(135deg,#21132a,#0b0912)!important;color:#e8dff7!important;transition:transform .18s,border-color .18s,box-shadow .18s!important}
-button:hover:not(:disabled){transform:translateY(-1px);border-color:#ff416a!important;box-shadow:0 0 18px #ff174426!important}
-button:focus-visible{outline:2px solid #ff7190;outline-offset:3px}
-button.primary,#sequence{background:linear-gradient(110deg,#8d1234,#3c103d)!important;border-color:#ff426a88!important;color:#fff!important}
-.choice[aria-pressed="true"]{background:linear-gradient(120deg,#4b102c,#24113d)!important;border-color:#ff5077!important;box-shadow:inset 0 0 22px #ff174420,0 0 12px #ff174422}
-#nightmare{background:linear-gradient(100deg,#680d25,#180611)!important;border:1px solid #ff315b!important;color:#fff!important;letter-spacing:.12em;text-shadow:0 0 10px #ff1744}
-#soundToggle{border-color:#8e7acb66!important}
-.grid .panel .panel{background:linear-gradient(140deg,#180b18,#08060d)!important;border-color:#a82c554d!important}
-#storyStatus{color:#e4d8e9!important}
-#mirrorCaption{color:#ff7895!important;text-shadow:0 0 12px #ff174433}
-.status{border-color:#ff315b33!important;background:#160811!important;color:#f0d9e3!important}
-.note{color:#a99caf;border-color:#ffffff14!important}
-.foot{position:relative;z-index:21;color:#7e7089;letter-spacing:.2em;text-transform:uppercase;font-size:.67rem;text-align:center;padding:30px 0}
-.camera-frame.awake{animation:hauntedPulse 3s ease-in-out infinite}
-.camera-frame.possessed{filter:contrast(1.14) saturate(.85)}
-.camera-frame.nightmare{animation:hauntGlitch .12s steps(2,end) 5,hauntedPulse .6s ease-in-out 3}
-.camera-frame.nightmare:before{opacity:1;background:linear-gradient(90deg,#ff003b38,transparent 24%,#6e20ff25 74%,#ff003b38),radial-gradient(ellipse at center,transparent 10%,#000 100%)}
-@keyframes mirrorBreathe{0%,100%{transform:scale(1);opacity:.72}50%{transform:scale(1.035);opacity:1}}
-@media(max-width:760px){.grid{grid-template-columns:1fr}.hero{padding:38px 0 25px}.camera-frame,video{min-height:min(62vh,540px)}.panel{padding:14px}.top{padding:12px 0}.foot{letter-spacing:.12em}}
-@media(prefers-reduced-motion:reduce){body:before{display:none}}
-
-
-/* The mirror is presented as an object in the room, not a generic webcam box. */
-.mirror-console{position:relative;z-index:4;width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 5px 12px;color:#bba9c8;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase}
-.mirror-console .signal{display:inline-flex;align-items:center;gap:7px;color:#ff829a}
-.mirror-console .dot{width:6px;height:6px;border-radius:50%;background:#ff315b;box-shadow:0 0 12px #ff1744;animation:signalPulse 1.8s ease-in-out infinite}
-.mirror-console .right-label{color:#76677e;text-align:right}
-@keyframes signalPulse{0%,100%{opacity:.45;box-shadow:0 0 4px #ff1744}50%{opacity:1;box-shadow:0 0 14px #ff1744}}
-.camera-frame #placeholder{position:relative;z-index:4}
-.camera-frame #placeholder:after{content:"";display:block;width:72px;height:1px;margin:22px auto 0;background:linear-gradient(90deg,transparent,#ff426a,transparent);box-shadow:0 0 15px #ff1744;animation:mirrorBreathe 3s infinite}
-.camera-frame.live:before{z-index:2}
-.camera-frame.live #hauntOverlay{z-index:5}
-.camera-frame.live #faceEffects{z-index:4}
-@media(max-width:420px){.mirror-console{font-size:.54rem;letter-spacing:.1em}.mirror-console .right-label{max-width:42%}}
-
-
-.camera-frame.intruder #intruderStage .intruder-art,.camera-frame.nightmare #intruderStage .intruder-art{animation:intruderRise 1.7s cubic-bezier(.1,.8,.15,1) forwards!important}
-#intruderStage{transition:opacity .08s linear,visibility .08s linear!important}
-
-/* CINEMATIC MIRROR BREACH — layered glass fracture, shadow depth and spectral light */
-#intruderStage{isolation:isolate;background:radial-gradient(ellipse at 50% 42%,#170b25 0%,#05030a 48%,#000 100%)!important}
-#intruderStage:before{content:"";position:absolute;inset:-20%;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 50% 48%,transparent 12%,rgba(0,0,0,.18) 34%,rgba(0,0,0,.94) 76%),linear-gradient(112deg,transparent 0 43%,rgba(187,210,255,.0) 43.1%,rgba(187,210,255,.42) 43.25%,transparent 43.55%),linear-gradient(24deg,transparent 0 58%,rgba(208,221,255,.38) 58.12%,transparent 58.38%),linear-gradient(151deg,transparent 0 67%,rgba(208,221,255,.32) 67.12%,transparent 67.35%),linear-gradient(77deg,transparent 0 28%,rgba(208,221,255,.28) 28.1%,transparent 28.3%);clip-path:polygon(0 0,100% 0,100% 100%,0 100%);mix-blend-mode:screen}
-#intruderStage:after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0;background:linear-gradient(105deg,transparent 0 47%,rgba(209,224,255,.72) 47.12%,rgba(255,255,255,.08) 47.35%,transparent 47.65%),linear-gradient(20deg,transparent 0 61%,rgba(209,224,255,.58) 61.12%,transparent 61.38%),linear-gradient(154deg,transparent 0 69%,rgba(209,224,255,.52) 69.12%,transparent 69.36%),linear-gradient(79deg,transparent 0 31%,rgba(209,224,255,.42) 31.1%,transparent 31.32%);filter:drop-shadow(0 0 5px #a8baff)}
-#intruderStage .intruder-art{filter:brightness(.56) saturate(.58) hue-rotate(218deg) contrast(1.38) drop-shadow(0 0 18px #a58aff) drop-shadow(0 0 56px #4326a8)!important;transform-origin:50% 58%}
-.camera-frame.intruder #intruderStage,.camera-frame.nightmare #intruderStage{animation:breachRoom 3s ease-out both}
-.camera-frame.intruder #intruderStage:before,.camera-frame.nightmare #intruderStage:before{animation:glassWeb 3s ease-out both}
-.camera-frame.intruder #intruderStage:after,.camera-frame.nightmare #intruderStage:after{animation:glassFlash 3s ease-out both}
-.camera-frame.intruder #intruderStage .intruder-art,.camera-frame.nightmare #intruderStage .intruder-art{animation:breachRise 3s cubic-bezier(.12,.75,.15,1) both!important}
-.camera-frame.intruder #hauntTitle,.camera-frame.nightmare #hauntTitle{color:#d7d0ff!important;text-shadow:0 0 10px #a18bff,0 0 28px #754cff!important;letter-spacing:.2em}
-@keyframes breachRoom{0%{filter:brightness(1)}8%{filter:brightness(2.1)}16%{filter:brightness(.24)}28%{filter:brightness(.8)}48%{filter:brightness(.55)}100%{filter:brightness(.82)}}
-@keyframes glassWeb{0%,12%{opacity:0;transform:scale(1.12)}18%{opacity:.95;transform:scale(1)}28%{opacity:.55}100%{opacity:.72}}
-@keyframes glassFlash{0%,15%{opacity:0}19%{opacity:1}23%{opacity:.15}34%{opacity:.78}39%{opacity:.08}100%{opacity:.38}}
-@keyframes breachRise{0%{opacity:0;transform:translateY(35%) scale(.38) rotate(-4deg);filter:brightness(0) blur(12px)}12%{opacity:.18}22%{opacity:1;transform:translateY(-2%) scale(1.08) rotate(1deg);filter:brightness(.7) blur(0)}32%{transform:translateY(0) scale(.98);filter:brightness(.45) blur(1px)}43%{transform:translateY(-1%) scale(1.025);filter:brightness(.68) blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:brightness(.56) saturate(.58) hue-rotate(218deg) contrast(1.38) drop-shadow(0 0 18px #a58aff) drop-shadow(0 0 56px #4326a8)}}
-@media(prefers-reduced-motion:reduce){.camera-frame.intruder #intruderStage,.camera-frame.nightmare #intruderStage,.camera-frame.intruder #intruderStage:before,.camera-frame.nightmare #intruderStage:before,.camera-frame.intruder #intruderStage:after,.camera-frame.nightmare #intruderStage:after,.camera-frame.intruder #intruderStage .intruder-art,.camera-frame.nightmare #intruderStage .intruder-art{animation:none!important;opacity:1}}
-
-
-/* SECOND PASS: make the breach feel like a whole mirror event, not a sticker */
-.camera-frame.intruder,.camera-frame.nightmare{animation:mirrorImpact 3s cubic-bezier(.2,.75,.2,1) both!important;transform-origin:center}
-.camera-frame.intruder #intruderStage,.camera-frame.nightmare #intruderStage{overflow:hidden}
-#intruderStage .intruder-vignette{z-index:3!important;background:radial-gradient(ellipse at 50% 42%,transparent 0 18%,rgba(0,0,0,.22) 42%,rgba(0,0,0,.95) 100%),repeating-linear-gradient(0deg,transparent 0 3px,rgba(189,177,255,.045) 4px,transparent 5px)!important}
-.camera-frame.intruder #intruderStage .intruder-art,.camera-frame.nightmare #intruderStage .intruder-art{width:min(112%,510px)!important;height:100%!important;max-height:none!important}
-.camera-frame.intruder #intruderStage .intruder-art path,.camera-frame.nightmare #intruderStage .intruder-art path{stroke-linejoin:round}
-.camera-frame.intruder #intruderStage .intruder-label,.camera-frame.nightmare #intruderStage .intruder-label{z-index:5;color:#e3ddff;text-shadow:0 0 8px #a18bff,0 0 25px #6d43ff;animation:signalBreak 3s steps(1,end) both}
-.camera-frame.intruder #hauntSub,.camera-frame.nightmare #hauntSub{color:#d9d1ff!important;text-shadow:0 0 14px #6d43ff!important}
-@keyframes mirrorImpact{0%{transform:translate(0,0) scale(1);filter:brightness(1)}7%{transform:translate(-3px,2px) scale(1.01);filter:brightness(2.3)}11%{transform:translate(4px,-2px) scale(1.015);filter:brightness(.2)}16%{transform:translate(-2px,1px) scale(1.005);filter:brightness(1.6)}22%{transform:translate(0,0) scale(1);filter:brightness(.7)}30%{transform:translate(1px,0) scale(1.008);filter:brightness(.9)}38%{transform:translate(-1px,0) scale(1);filter:brightness(.62)}100%{transform:translate(0,0) scale(1);filter:brightness(.85)}}
-@keyframes signalBreak{0%,17%{opacity:0;transform:translateY(8px);letter-spacing:.6em}21%{opacity:1;transform:translateY(0);letter-spacing:.22em}23%{opacity:.1;transform:translateX(5px)}26%,100%{opacity:1;transform:translateX(0)}}
-
-
-/* Hide all mirror controls at the user's request. */
-button,.button,.choice,[role="button"]{display:none!important;visibility:hidden!important;}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -15%,#252044 0,transparent 55%),#07070d;color:#f7f5ff;font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}
+main{width:min(760px,100%);margin:auto;padding:18px 16px 30px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0 16px;border-bottom:1px solid #ffffff1c}
+.brand{font-weight:900;letter-spacing:.14em;font-size:.82rem}.brand span{color:var(--cyan)}
+.tag{font-size:.72rem;color:#c7bfdc;letter-spacing:.12em}
+h1{font-size:clamp(1.8rem,7vw,3rem);line-height:1.04;letter-spacing:-.04em;margin:22px 0 8px}
+.sub{color:#aaa6bc;margin:0 0 18px;font-size:.95rem}
+.stage{position:relative;overflow:hidden;border:1px solid #8cefff45;border-radius:18px;background:linear-gradient(145deg,#151321,#030308);box-shadow:0 0 45px #5d45a01c;aspect-ratio:3/4;max-height:70vh;min-height:360px}
+video{position:absolute;width:100%;height:100%;inset:0;object-fit:cover;transform:scaleX(-1);display:none;background:#08080d}
+.stage.active video{display:block}
+.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 42%,#0202089c 100%),linear-gradient(0deg,#05050dcc,transparent 30%,#05050d22 70%,#05050d88)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.12;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
+.presence{position:absolute;right:7%;top:15%;height:66%;width:36%;opacity:0;pointer-events:none;filter:blur(.45px);transform:translateY(8px);transition:opacity 1.8s ease,transform 2.4s ease}
+.stage.awake .presence{opacity:.88;transform:translateY(0)}
+.figure{position:absolute;inset:0;filter:drop-shadow(0 0 12px #000)}
+.head{position:absolute;top:0;left:22%;width:57%;height:28%;border-radius:48% 48% 43% 43%;background:radial-gradient(ellipse at 38% 30%,#34303b 0,#17151d 40%,#050508 78%);box-shadow:inset -12px 0 20px #000,0 0 22px #000}
+.hair{position:absolute;top:-3%;left:14%;width:72%;height:40%;border-radius:48% 48% 25% 25%;background:linear-gradient(90deg,#030305,#111016 38%,#020204 82%);clip-path:polygon(12% 0,86% 0,100% 38%,92% 70%,82% 100%,73% 66%,64% 96%,55% 65%,43% 100%,31% 65%,20% 92%,10% 62%,0 35%)}
+.body{position:absolute;top:25%;left:0;width:100%;height:75%;background:linear-gradient(90deg,#020204 0,#111018 36%,#08070d 60%,#010102 100%);clip-path:polygon(34% 0,67% 0,81% 12%,100% 32%,92% 100%,7% 100%,0 33%,19% 12%);border-radius:28% 28% 0 0}
+.shoulderlight{position:absolute;top:31%;left:14%;width:35%;height:42%;background:linear-gradient(90deg,transparent,#3d374a55,transparent);filter:blur(9px);transform:rotate(8deg)}
+.stage:not(.active){display:grid;place-items:center}
+.idle{text-align:center;padding:28px;max-width:340px;position:relative;z-index:2}
+.orb{width:76px;height:76px;margin:0 auto 18px;border-radius:50%;border:1px solid #8cefff88;box-shadow:0 0 35px #7664d733,inset 0 0 22px #8cefff1c;display:grid;place-items:center;color:var(--cyan);font-size:1.8rem}
+.idle h2{font-size:1.15rem;margin:0 0 6px}.idle p{color:#a9a5b8;font-size:.9rem;margin:0}
+.stage.active .idle{display:none}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+button{border:1px solid #8cefff65;background:#10151d;color:#effcff;border-radius:12px;padding:12px 16px;font-weight:750;cursor:pointer}
+button.primary{background:linear-gradient(110deg,#8cefff,#a994ff);color:#080811;border:0;flex:1}
+button:disabled{opacity:.4;cursor:default}
+.status{min-height:24px;color:#c4bfd4;font-size:.86rem;margin:4px 2px}
+.note{font-size:.78rem;color:#817c93;border-top:1px solid #ffffff17;padding-top:14px}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
 </style>
 </head>
 <body>
-<header class="top wrap"><div class="logo">Tik<span>Nation</span> ✨</div><a href="./index.html">← Back to TikNation</a></header>
-<main class="wrap">
-<section class="hero"><div class="eyebrow">TIKNATION AFTER DARK · INTERACTIVE HORROR</div><h1>HORROR MIRROR</h1><p>It knows your face. It learned your movements. Now something on the other side is ready to stop pretending.</p></section>
-<section class="grid">
-<div class="panel preview"><div class="mirror-console"><span class="signal"><i class="dot"></i> LIVE REFLECTION SYSTEM</span><span class="right-label">DO NOT TRUST THE GLASS</span></div><div class="camera-frame glow" id="cameraFrame"><video id="camera" autoplay playsinline muted></video><canvas id="faceEffects" aria-hidden="true"></canvas><div id="hauntOverlay" aria-hidden="true"><span id="hauntTitle">PRESENCE DETECTED</span><span id="hauntSub">THE MIRROR IS WATCHING</span></div><div id="placeholder"><div style="font-size:4rem">🪞✨</div><h2>The other side is waiting</h2><p class="muted">Allow the camera when you are ready to face the mirror.</p></div></div></div>
-<div class="panel"><h2>Enter the reflection</h2><p class="muted">First, awaken the live mirror. Then choose what kind of presence you dare to invite in.</p>
-<div class="choices" role="group" aria-label="Illusion styles">
-<button class="choice" data-mode="glow" aria-pressed="true">✨ Glow-up</button>
-<button class="choice" data-mode="spooky" aria-pressed="false">👻 Spooky</button>
-<button class="choice" data-mode="ancient" aria-pressed="false">⏳ Ancient</button>
-<button class="choice" data-mode="cosmic" aria-pressed="false">🌌 Cosmic</button>
-<button class="choice" data-mode="silly" aria-pressed="false">😂 Silly</button>
-<button class="choice" data-mode="monster" aria-pressed="false">🐉 Creature</button>
-</div>
-<div class="panel" style="margin:14px 0;padding:14px;background:rgba(10,8,22,.82);border:1px solid rgba(180,154,255,.35);border-radius:14px"><h3 style="margin:0 0 6px">🪞 The Living Reflection</h3><p class="muted" style="margin:0 0 10px">Awaken the mirror, play the full five-act nightmare, or calm the reflection.</p><div class="actions"><button id="awaken" type="button">👁️ Awaken mirror</button><button class="primary" id="sequence" type="button">🎬 Play full horror sequence</button><button id="calm" type="button">✨ Calm the mirror</button><button id="soundToggle" type="button" aria-pressed="true">🔊 Sound on</button></div><p id="storyStatus" class="muted" aria-live="polite" style="margin:10px 0 4px">The mirror is dormant.</p><p id="mirrorCaption" style="letter-spacing:.12em;font-size:.78rem;color:#b49aff;margin:0">PRESENCE NOT DETECTED</p></div>
-<button id="nightmare" type="button">💀 TRIGGER NIGHTMARE</button><div class="muted" style="font-size:.82rem;margin-top:6px">Try Spooky first, then trigger the sudden scare. Best in a dim room. Effects are stylized, not real injury.</div><div class="actions"><button class="primary" id="start" type="button" onclick="var mirrorStatus=document.getElementById('status');if(mirrorStatus)mirrorStatus.textContent='Start button tapped. Checking camera controls…';if(typeof window.startIllusionCamera==='function'){window.startIllusionCamera()}else if(mirrorStatus){mirrorStatus.textContent='The mirror controls did not initialize. Reload this page in Chrome; if it repeats, the page script failed to start.'}">📸 Start live camera</button><button id="switch" type="button" disabled onclick="window.switchIllusionCamera && window.switchIllusionCamera()">Switch camera</button><button id="stop" type="button" disabled onclick="window.stopIllusionCamera && window.stopIllusionCamera()">Stop camera</button></div>
-<div class="status" id="status" role="status" aria-live="polite">Mirror signal stable. Awaiting a presence.</div>
-<div class="note"><strong>Privacy:</strong> Camera access requires your permission and this page must be opened over HTTPS (the GitHub Pages link is HTTPS). The video is previewed locally by this page; it is not uploaded. Stop the camera when you're finished. Experimental face-tracked details add clown paint and nose, spooky eye markings, and aging lines. They do not reshape your actual face. The free face-tracking model loads from external servers; your camera video stays local to this page.</div>
-</div>
-</section></main><footer class="foot wrap">TikNation · YOUR VOICE. YOUR WORLD.</footer>
+<main>
+<header><div class="brand">TIKNATION <span>AFTER DARK</span></div><div class="tag">CAMERA EXPERIENCE</div></header>
+<h1>Horror Mirror</h1>
+<p class="sub">Look closely. The reflection may not be alone.</p>
+<section class="stage" id="stage" aria-label="Horror mirror camera view">
+<video id="video" autoplay playsinline muted></video>
+<div class="presence" aria-hidden="true"><div class="figure"><div class="body"></div><div class="shoulderlight"></div><div class="head"></div><div class="hair"></div></div></div>
+<div class="vignette"></div><div class="grain"></div>
+<div class="idle"><div class="orb">◉</div><h2>The mirror is waiting</h2><p>Start the camera, then look over your shoulder… if you dare.</p></div>
+</section>
+<div class="controls"><button class="primary" id="start">Enter the mirror</button><button id="reveal" disabled>Reveal presence</button><button id="stop" disabled>Close camera</button></div>
+<div class="status" id="status" role="status" aria-live="polite">Camera is off. Your browser will ask for permission when you begin.</div>
+<p class="note">Camera video stays in this browser and is not uploaded by this page. The supernatural figure is a visual effect, not a real person in the camera feed.</p>
+</main>
 <script>
-window.addEventListener('error',function(e){const s=document.getElementById('status');if(s)s.textContent='Mirror script error: '+(e.message||'script failed to initialize')+'. Please report this message.';});
-const video=document.getElementById('camera'),frame=document.getElementById('cameraFrame'),status=document.getElementById('status'),startBtn=document.getElementById('start'),stopBtn=document.getElementById('stop'),switchBtn=document.getElementById('switch');
-let stream=null,facing='user',mode='glow',busy=false,faceLandmarker=null,faceLoading=false,faceReady=false,lastVideoTime=-1,reflectionHistory=[];const faceCanvas=document.getElementById('faceEffects'),faceCtx=faceCanvas.getContext('2d');
-const modes=['glow','spooky','ancient','cosmic','silly','monster'];
-let scareTimer=null,storyTimers=[],audioCtx=null,soundEnabled=true;
-function storyMessage(message,caption){const story=document.getElementById('storyStatus'),cap=document.getElementById('mirrorCaption'),title=document.getElementById('hauntTitle'),sub=document.getElementById('hauntSub');if(story)story.textContent=message;if(cap)cap.textContent=caption;if(title)title.textContent=caption;if(sub)sub.textContent=message}
-function clearStory(){storyTimers.forEach(clearTimeout);storyTimers=[];frame.classList.remove('awake','possessed','cracked','nightmare');clearTimeout(scareTimer)}
-function mirrorTone(freq=90,duration=.22,type='sine',gain=.035){if(!soundEnabled)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(20,freq*.55),audioCtx.currentTime+duration);g.gain.setValueAtTime(gain,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+duration)}catch(e){}}
-function awakenMirror(){clearStory();setMode('spooky');frame.classList.add('awake');storyMessage('A faint pulse travels through the glass. Your reflection is watching.','PRESENCE DETECTED');mirrorTone(68,.65,'sine',.045);storyTimers.push(setTimeout(()=>{frame.classList.add('cracked');storyMessage('A crack appears… but the glass is still intact.','THE GLASS REMEMBERS');mirrorTone(190,.2,'triangle',.025)},2200));storyTimers.push(setTimeout(()=>{frame.classList.remove('cracked');storyMessage('The reflection copies you a fraction too late.','REFLECTION DELAY DETECTED');mirrorTone(55,.75,'sawtooth',.018)},4400))}
-function startSequence(){clearStory();setMode('spooky');frame.classList.add('awake');storyMessage('Stay with the mirror. Watch closely.','ACT I · THE AWAKENING');mirrorTone(55,.8,'sine',.045);
-storyTimers.push(setTimeout(()=>{frame.classList.add('possessed');storyMessage('Something behind your reflection is waking up…','ACT II · SOMETHING IS WRONG');mirrorTone(110,.45,'sawtooth',.025)},2200));
-storyTimers.push(setTimeout(()=>{frame.classList.add('cracked');storyMessage('The reflection fractures. Do not look away.','ACT III · THE FRACTURE');mirrorTone(240,.18,'triangle',.04)},4300));
-storyTimers.push(setTimeout(()=>{frame.classList.remove('cracked');frame.classList.add('intruder','nightmare');storyMessage('IT SAW YOU. NOW IT KNOWS YOU.','ACT IV · THE INTRUDER');mirrorTone(170,.65,'sawtooth',.05)},5900));
-storyTimers.push(setTimeout(()=>{frame.classList.remove('nightmare','possessed','intruder');storyMessage('The mirror is quiet again. That does not mean it is empty.','ACT V · FALSE CALM');mirrorTone(45,.8,'sine',.035)},8000));
-storyTimers.push(setTimeout(()=>{frame.classList.add('possessed','intruder','nightmare');storyMessage('…DID YOU SEE THAT?','FINAL · ONE LAST LOOK');mirrorTone(330,.15,'square',.045);mirrorTone(72,.65,'sawtooth',.035);storyTimers.push(setTimeout(()=>frame.classList.remove('nightmare'),2100))},9000));
-storyTimers.push(setTimeout(()=>{frame.classList.remove('possessed','intruder');storyMessage('The sequence has ended. Trigger it again when you dare.','THE MIRROR IS STILL HERE');},11200))}
-function calmMirror(){clearStory();frame.classList.remove('awake','possessed','cracked','nightmare','intruder');setMode('glow');storyMessage('The mirror settles. For now.','THE MIRROR IS DORMANT')}
-const awakenBtn=document.getElementById('awaken'),sequenceBtn=document.getElementById('sequence'),calmBtn=document.getElementById('calm'),soundToggle=document.getElementById('soundToggle');if(awakenBtn)awakenBtn.addEventListener('click',awakenMirror);if(sequenceBtn)sequenceBtn.addEventListener('click',startSequence);if(calmBtn)calmBtn.addEventListener('click',calmMirror);if(soundToggle)soundToggle.addEventListener('click',()=>{soundEnabled=!soundEnabled;soundToggle.textContent=soundEnabled?'🔊 Sound on':'🔇 Sound off';soundToggle.setAttribute('aria-pressed',String(soundEnabled));if(soundEnabled)mirrorTone(120,.12,'sine',.025)});
-document.getElementById('nightmare').addEventListener('click',()=>{status.textContent='Nightmare overlay removed.';});
-document.addEventListener('keydown',event=>{if(event.key==='Escape')calmMirror()});
-function setMode(next){mode=next;const cameraIsLive=frame.classList.contains('live');frame.className='camera-frame '+mode+(cameraIsLive?' live':'');document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));status.textContent='Illusion selected: '+document.querySelector('[data-mode="'+mode+'"]').textContent.trim()+(cameraIsLive?' — live camera stays on.':'.')}
-document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
-
-async function loadFaceTracker(){
- if(faceReady||faceLoading)return;faceLoading=true;
- try{
-  status.textContent='Loading face-tracking effects…';
-  const vision=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs');
-  const files=await vision.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
-  faceLandmarker=await vision.FaceLandmarker.createFromOptions(files,{baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',delegate:'CPU'},runningMode:'VIDEO',numFaces:1});
-  faceReady=true;status.textContent='Face effects ready! Try Silly, Spooky, or Ancient.';
- }catch(e){console.error('TikNation Mirror face tracker failed to load:',e);status.textContent='Face effects could not load. Please check your connection, then reload the page. Camera remains available.';}
- finally{faceLoading=false}
-}
-function fp(lm,i){return {x:lm[i].x*faceCanvas.width,y:lm[i].y*faceCanvas.height}}
-function line(ctx,pts,color,width){ctx.beginPath();pts.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.stroke()}
-function drawFaceEffect(lm,delayedLm){
- const w=faceCanvas.width,h=faceCanvas.height,ctx=faceCtx;
- ctx.clearRect(0,0,w,h);
- if(!lm||!['silly','spooky','ancient','monster'].includes(mode))return;
- const p=i=>fp(lm,i);
- // Calculate face width before any effects use it; previously this was declared
- // after the spooky/monster branch, which could throw and stop every overlay.
- const fw=Math.max(20,Math.abs(p(234).x-p(454).x)),u=fw/150;
- // Haunted reflection: briefly paint a second, time-shifted image of the camera.
- // This makes the reflection itself split away from the live image, not just add makeup.
- if((mode==='spooky'||mode==='monster')&&video.readyState>=2){
-  const t=performance.now()/1000;
-  // A separate, face-shaped reflection: the face pixels move independently
-  // inside a tracked silhouette, so this reads as a detached, possessed mask.
-  const faceShape=[10,338,297,332,284,251,389,356,454,323,361,288,397,365,379,378,400,377,152,148,176,149,150,136,172,58,132,93,234,127,162,21,54,103,67,109];
-  const driftX=(Math.sin(t*1.8)*.025+.055)*w;
-  const driftY=Math.cos(t*1.25)*.012*h;
-  ctx.save();
-  ctx.beginPath();
-  faceShape.forEach((idx,n)=>{const q=p(idx);n?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});
-  ctx.closePath();
-  ctx.shadowColor=mode==='monster'?'#b9ff65':'#ff1744';
-  ctx.shadowBlur=Math.max(12,w*.055);
-  ctx.fillStyle=mode==='monster'?'rgba(185,255,101,.22)':'rgba(255,15,55,.25)';
-  ctx.fill();
-  ctx.shadowBlur=0;
-  ctx.clip();
-  ctx.globalAlpha=mode==='monster'?.94:.9;
-  ctx.globalCompositeOperation='source-over';
-  ctx.filter=mode==='monster'?'hue-rotate(115deg) contrast(2.1) saturate(1.8) brightness(.68)':'grayscale(.9) contrast(2.1) brightness(.58) sepia(1) saturate(4)';
-  ctx.drawImage(video,driftX+w*.025,driftY-h*.012,w,h);
-  ctx.restore();
-  // The wider ghost now drifts farther from the face-mask copy.
-  ctx.save();
-  ctx.globalAlpha=mode==='monster'?.58:.62;
-  ctx.globalCompositeOperation='screen';
-  ctx.filter=mode==='monster'?'hue-rotate(95deg) contrast(1.8) brightness(.75)':'grayscale(1) contrast(2) brightness(.58) sepia(1) saturate(3)';
-  const ghostX=(Math.sin(t*1.8)*.025+.055)*w,ghostY=(Math.cos(t*1.25)*.012)*h;
-  // The canvas is already mirrored by CSS to match the live video.
-  // Do not mirror the source a second time here, or the ghost faces the wrong way.
-  ctx.drawImage(video,ghostX,ghostY,w,h);
-  ctx.restore();
-  // Broken-glass signal tear: moving horizontal slices make the ghost image visibly
-  // disagree with the live reflection instead of reading as a simple color filter.
-  ctx.save();
-  ctx.globalCompositeOperation='screen';
-  const bandCount=mode==='monster'?8:6;
-  for(let n=0;n<bandCount;n++){
-   const phase=t*1.7+n*2.37;
-   const y=((Math.sin(phase)*.5+.5)*h)|0;
-   const bh=Math.max(2,h*(mode==='monster'?.018:.012));
-   const shift=(Math.sin(phase*1.9)*.055*w)+(mode==='monster'?.025*w:0);
-   ctx.globalAlpha=.18+(.16*(Math.sin(phase*2.3)*.5+.5));
-   ctx.fillStyle=mode==='monster'?'#b9ff65':'#ff1744';
-   ctx.fillRect(shift,y,w*.82,bh);
-   ctx.globalAlpha=.28;
-   ctx.fillStyle='#05020b';
-   ctx.fillRect(0,y+bh,w,bh*.45);
-  }
-  // Actual camera-image slices jump sideways: the reflection's face and room
-  // briefly shear apart, rather than showing only decorative glitch bars.
-  ctx.globalCompositeOperation='source-over';
-  const sliceCount=mode==='monster'?5:4;
-  for(let n=0;n<sliceCount;n++){
-   const phase=t*2.4+n*1.91;
-   const sy=Math.floor(((Math.sin(phase)*.5+.5)*.82)*h);
-   const sh=Math.max(3,Math.floor(h*(mode==='monster'?.055:.04)));
-   const dx=Math.sin(phase*2.1)*w*(mode==='monster'?.075:.055);
-   ctx.globalAlpha=.42+Math.sin(phase*1.3)*.12;
-   ctx.filter=mode==='monster'?'hue-rotate(80deg) contrast(1.9) saturate(1.7)':'grayscale(.8) contrast(1.8) sepia(.45)';
-   ctx.drawImage(video,0,sy,w,sh,dx,sy,w,sh);
-  }
-  // Brief double exposure pulses like the glass is slipping out of sync.
-  const pulse=Math.max(0,Math.sin(t*2.8))*(mode==='monster'?.17:.13);
-  if(pulse>.04){
-   ctx.globalAlpha=pulse;ctx.globalCompositeOperation='lighter';
-   ctx.filter='grayscale(1) contrast(2)';
-   ctx.drawImage(video,-w*.035,0,w,h);
-  }
-  ctx.restore();
+(()=> {
+ const video=document.getElementById('video'), stage=document.getElementById('stage');
+ const start=document.getElementById('start'), reveal=document.getElementById('reveal'), stop=document.getElementById('stop'), status=document.getElementById('status');
+ let stream=null, facing='user', awake=false;
+ async function startCamera(){
+   try{
+     if(stream) stream.getTracks().forEach(t=>t.stop());
+     stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false});
+     video.srcObject=stream; await video.play(); stage.classList.add('active');
+     start.textContent='Switch camera'; reveal.disabled=false; stop.disabled=false;
+     status.textContent='The mirror is active. Take a breath… then reveal the presence.';
+   }catch(e){status.textContent=e.name==='NotAllowedError'?'Camera permission was denied. Allow camera access in your browser settings, then try again.':'Could not open the camera. Make sure no other app is using it and try again.';}
  }
- if(mode==='spooky'||mode==='monster'){
-  const t=performance.now()/1000, driftX=Math.sin(t*1.8)*w*.012, driftY=Math.cos(t*1.25)*h*.008;
-  const contour=[10,338,297,332,284,251,389,356,454,323,361,288,397,365,379,378,400,377,152,148,176,149,150,136,172,58,132,93,234,127,162,21,54,103,67,109];
-  ctx.save();ctx.translate(driftX,driftY);ctx.beginPath();
-  contour.forEach((idx,n)=>{const q=p(idx);n?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});
-  ctx.closePath();ctx.strokeStyle=mode==='monster'?'rgba(174,255,101,.55)':'rgba(255,25,69,.65)';ctx.lineWidth=Math.max(1.2,fw*.008);ctx.shadowColor=mode==='monster'?'#b9ff65':'#ff1744';ctx.shadowBlur=fw*.13;ctx.stroke();
-  // The reflection's eyes burn through the drifting outline.
-  [p(33),p(263)].forEach((q,index)=>{const wobble=Math.sin(t*3+index)*fw*.006;ctx.beginPath();ctx.ellipse(q.x+driftX,q.y+driftY+wobble,fw*.035,fw*.018,0,0,Math.PI*2);ctx.fillStyle=mode==='monster'?'rgba(255,20,47,.86)':'rgba(255,12,54,.72)';ctx.shadowColor='#ff1744';ctx.shadowBlur=fw*.12;ctx.fill()});
-  ctx.restore();
-  if(delayedLm&&delayedLm.length>454){
-   const lag=idx=>({x:delayedLm[idx].x*w,y:delayedLm[idx].y*h});
-   // A second, time-lagged silhouette pulls away from the current face.
-   // The dark cavity and bright rim create a stronger "face leaving the mirror" read.
-   // Larger lateral separation makes the second face read as an intruder,
-   // while a slow counter-drift makes it feel less mechanically attached.
-   const separationX=(Math.sin(t*1.15)*.035+.145)*w;
-   const separationY=(Math.cos(t*1.3)*.022-.018)*h;
-   // The reflection has its own movement: during the nightmare it lunges
-   // toward the glass, grows beyond the wearer's face, and twists independently.
-   const faceCenterX=(lag(234).x+lag(454).x)/2;
-   const faceCenterY=(lag(10).y+lag(152).y)/2;
-   const isLunging=frame.classList.contains('nightmare');
-   const isPossessed=frame.classList.contains('possessed');
-   const lungeScale=isLunging?1.48:isPossessed?1.12:1;
-   const lungeShiftX=isLunging?-w*.025:0;
-   const lungeShiftY=isLunging?-h*.028:0;
-   ctx.save();
-   ctx.translate(faceCenterX+separationX+lungeShiftX,faceCenterY+separationY+lungeShiftY);
-   ctx.rotate(isLunging?Math.sin(t*8)*.045:isPossessed?Math.sin(t*2.7)*.025:Math.sin(t*1.2)*.018);
-   ctx.scale(lungeScale,lungeScale);
-   ctx.translate(-faceCenterX,-faceCenterY);
-   ctx.beginPath();contour.forEach((idx,n)=>{const q=lag(idx);n?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.closePath();
-   ctx.fillStyle='rgba(2,0,8,.82)';ctx.shadowColor=mode==='monster'?'#b9ff65':'#ff1744';ctx.shadowBlur=Math.max(10,w*.045);ctx.fill();ctx.shadowBlur=0;
-   // Hollow eyes and a split, unnaturally wide mouth belong to the displaced face.
-   [33,263].forEach((idx,n)=>{const q=lag(idx),eyeW=fw*.052,eyeH=fw*.034;ctx.beginPath();ctx.ellipse(q.x,q.y,eyeW,eyeH,n?-.12:.12,0,Math.PI*2);ctx.fillStyle='#020006';ctx.fill();ctx.strokeStyle=mode==='monster'?'#b9ff65':'#ff1744';ctx.lineWidth=Math.max(2,fw*.006);ctx.stroke();
-    // The intruder's gaze wanders on its own, away from the wearer's gaze.
-    const gazeX=Math.sin(t*1.7+n*2.4)*eyeW*.48,gazeY=Math.cos(t*1.25+n*1.8)*eyeH*.38;
-    ctx.beginPath();ctx.ellipse(q.x-gazeX,q.y+gazeY,eyeW*.23,eyeH*.48,0,0,Math.PI*2);ctx.fillStyle=mode==='monster'?'#caff82':'#ff315a';ctx.shadowColor=mode==='monster'?'#b9ff65':'#ff1744';ctx.shadowBlur=fw*.018;ctx.fill();ctx.shadowBlur=0;
-   });
-   const eyeL=lag(33),eyeR=lag(263),mouthL=lag(61),mouthR=lag(291),mouthC=lag(13);
-   ctx.beginPath();ctx.moveTo(mouthL.x-fw*.035,mouthL.y);ctx.quadraticCurveTo(mouthC.x,mouthC.y+fw*.12,mouthR.x+fw*.035,mouthR.y);ctx.lineTo(mouthR.x,mouthR.y+fw*.025);ctx.quadraticCurveTo(mouthC.x,mouthC.y+fw*.15,mouthL.x,mouthL.y+fw*.025);ctx.closePath();ctx.fillStyle='#030006';ctx.fill();ctx.strokeStyle=mode==='monster'?'#b9ff65':'#ff1744';ctx.lineWidth=Math.max(2,fw*.005);ctx.stroke();
-   ctx.restore();
-   const lagShiftX=Math.sin(t*2.1)*w*.018,lagShiftY=Math.cos(t*1.7)*h*.012;
-   ctx.save();ctx.translate(lagShiftX,lagShiftY);
-   ctx.beginPath();contour.forEach((idx,n)=>{const q=lag(idx);n?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.closePath();
-   ctx.fillStyle=mode==='monster'?'rgba(135,255,70,.10)':'rgba(255,0,45,.13)';ctx.fill();
-   ctx.strokeStyle=mode==='monster'?'rgba(185,255,100,.95)':'rgba(255,18,57,.98)';
-   ctx.lineWidth=Math.max(2,fw*.012);ctx.shadowColor=mode==='monster'?'#aaff55':'#ff003c';ctx.shadowBlur=fw*.16;ctx.stroke();ctx.shadowBlur=0;
-   [33,263].forEach((idx,n)=>{const q=lag(idx);ctx.beginPath();ctx.ellipse(q.x,q.y,fw*.045,fw*.025,n?-.08:.08,0,Math.PI*2);ctx.fillStyle=mode==='monster'?'#ff173e':'#080108';ctx.fill();ctx.strokeStyle='#ff1c4e';ctx.lineWidth=Math.max(1,fw*.004);ctx.stroke()});
-   const a=lag(61),b=lag(291),m=lag(13);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(m.x,m.y+fw*.09,b.x,b.y);ctx.strokeStyle='rgba(255,10,52,.95)';ctx.lineWidth=Math.max(2,fw*.009);ctx.stroke();
-   ctx.restore();
-  }
- }
- ctx.save();
- ctx.lineCap='round';ctx.lineJoin='round';
- function strokePath(points,color,width){line(ctx,points,color,Math.max(1,width))}
- function fillCheek(index,color,rx,ry){const q=p(index);ctx.beginPath();ctx.ellipse(q.x,q.y,u*rx,u*ry,0,0,Math.PI*2);ctx.fillStyle=color;ctx.fill()}
- if(mode==='silly'){
-  // Face-following classic clown: painted eye accents, round nose, cheek paint and a curved smile.
-  const nose=p(1),leftEye=p(33),rightEye=p(263),leftMouth=p(61),rightMouth=p(291),upper=p(13),lower=p(14);
-  // Soft white makeup halos around both eyes.
-  [leftEye,rightEye].forEach(q=>{ctx.beginPath();ctx.ellipse(q.x,q.y-u*1,u*19,u*12,0,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.82)';ctx.fill();});
-  // Colorful tapered eye accents instead of floating triangles.
-  [[leftEye,-1,'#ff287c'],[rightEye,1,'#ff287c']].forEach(([q,side,color])=>{
-   ctx.beginPath();ctx.moveTo(q.x-u*12,q.y-u*2);ctx.quadraticCurveTo(q.x,q.y-u*12,q.x+u*12,q.y-u*2);ctx.quadraticCurveTo(q.x+u*4,q.y+u*5,q.x,q.y+u*5);ctx.closePath();ctx.fillStyle=color;ctx.fill();
-   ctx.beginPath();ctx.moveTo(q.x,q.y-u*10);ctx.lineTo(q.x+u*2,q.y-u*19);ctx.strokeStyle='#fff4c7';ctx.lineWidth=u*2;ctx.stroke();
-  });
-  // Cheek circles sit beside the mouth, scaled to face width.
-  fillCheek(50,'rgba(255,55,132,.9)',12,9);
-  fillCheek(280,'rgba(255,55,132,.9)',12,9);
-  [p(50),p(280)].forEach(q=>{ctx.beginPath();ctx.arc(q.x-u*3,q.y-u*2,u*3,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.75)';ctx.fill()});
-  // Rounded red nose with a small highlight.
-  ctx.beginPath();ctx.ellipse(nose.x,nose.y,u*8,u*7,0,0,Math.PI*2);ctx.fillStyle='#f51d45';ctx.fill();ctx.strokeStyle='#ffd7df';ctx.lineWidth=u*1.5;ctx.stroke();
-  ctx.beginPath();ctx.ellipse(nose.x-u*2,nose.y-u*2,u*2,u*1.4,-.4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
-  // Follow the actual mouth corners to create a painted smile outline.
-  ctx.beginPath();ctx.moveTo(leftMouth.x,leftMouth.y);
-  ctx.quadraticCurveTo((leftMouth.x+rightMouth.x)/2,Math.max(upper.y,lower.y)+u*15,rightMouth.x,rightMouth.y);
-  ctx.strokeStyle='#fff';ctx.lineWidth=u*8;ctx.stroke();
-  ctx.beginPath();ctx.moveTo(leftMouth.x,leftMouth.y);
-  ctx.quadraticCurveTo((leftMouth.x+rightMouth.x)/2,Math.max(upper.y,lower.y)+u*15,rightMouth.x,rightMouth.y);
-  ctx.strokeStyle='#d71954';ctx.lineWidth=u*4;ctx.stroke();
- }else if(mode==='spooky'){
-  // More intense haunted makeup: deep black sockets, red tears, cracked brow marks and a shadowed mouth.
-  const socket=(outer,inner,top,bottom)=>{
-   const o=p(outer),i=p(inner),t=p(top),d=p(bottom);
-   ctx.beginPath();ctx.moveTo(o.x,o.y);
-   ctx.quadraticCurveTo(t.x,t.y-u*15,i.x,i.y);
-   ctx.quadraticCurveTo(d.x,d.y+u*15,o.x,o.y);
-   ctx.closePath();ctx.fillStyle='rgba(5,2,12,.96)';ctx.fill();
-   ctx.strokeStyle='rgba(145,12,43,.95)';ctx.lineWidth=u*2;ctx.stroke();
-   ctx.beginPath();ctx.moveTo(o.x,o.y+u*2);
-   ctx.quadraticCurveTo((o.x+i.x)/2,d.y+u*9,i.x,i.y+u*2);
-   ctx.strokeStyle='rgba(235,24,61,.95)';ctx.lineWidth=u*2.5;ctx.stroke();
-  };
-  socket(33,133,159,145);
-  socket(362,263,386,374);
-  // Heavy, angled brows make the expression look more menacing.
-  strokePath([p(70),p(105),p(66)],'rgba(5,1,9,.98)',u*7);
-  strokePath([p(300),p(334),p(296)],'rgba(5,1,9,.98)',u*7);
-  // Long blood-red tear trails beneath each eye, tapering toward the cheeks.
-  [[p(111),p(117),p(205)],[p(340),p(346),p(425)]].forEach(([a,b,c])=>{
-   ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(b.x+u*4,b.y+u*8,c.x,c.y);
-   ctx.strokeStyle='rgba(105,0,25,.9)';ctx.lineWidth=u*5;ctx.stroke();
-   ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.quadraticCurveTo(b.x+u*2,b.y+u*7,c.x,c.y);
-   ctx.strokeStyle='rgba(245,18,53,.94)';ctx.lineWidth=u*2.2;ctx.stroke();
-   ctx.beginPath();ctx.arc(c.x,c.y,u*2.3,0,Math.PI*2);ctx.fillStyle='#c6002e';ctx.fill();
-  });
-  // Cracked, dark forehead marks.
-  strokePath([p(107),p(105),p(66)],'rgba(7,1,12,.95)',u*3);
-  strokePath([p(336),p(334),p(296)],'rgba(7,1,12,.95)',u*3);
-  strokePath([p(10),p(151),p(9)],'rgba(12,2,16,.85)',u*2);
-  // Shadow around the mouth with short jagged accent lines at the corners.
-  const ml=p(61),mr=p(291),mc=p(13);
-  ctx.beginPath();ctx.moveTo(ml.x,ml.y);ctx.quadraticCurveTo(mc.x,mc.y+u*12,mr.x,mr.y);
-  ctx.strokeStyle='rgba(5,1,10,.92)';ctx.lineWidth=u*4;ctx.stroke();
-  strokePath([p(61),p(78),p(191)],'rgba(165,0,36,.9)',u*2.5);
-  strokePath([p(291),p(308),p(415)],'rgba(165,0,36,.9)',u*2.5);
-  // Dark nose-bridge shading replaces the previous pale accent.
-  strokePath([p(168),p(6),p(197)],'rgba(4,1,8,.85)',u*3.5);
- }else if(mode==='ancient'){
-  const wrinkle='rgba(76,43,30,.85)',fine=Math.max(1,u*1.1);
-  [[70,105,9],[300,334,9],[55,65,107],[285,295,336]].forEach(ids=>strokePath(ids.map(p),wrinkle,fine));
-  strokePath([p(107),p(105),p(66)],'#80513a',fine);strokePath([p(336),p(334),p(296)],'#80513a',fine);
-  [p(70),p(300)].forEach(q=>{ctx.beginPath();ctx.strokeStyle=wrinkle;ctx.lineWidth=fine;ctx.ellipse(q.x,q.y,u*13,u*4,.1,0,Math.PI*2);ctx.stroke()});
- }else if(mode==='monster'){
-  // Glowing eyes anchored to tracked eye landmarks.
-  [p(33),p(263)].forEach(q=>{ctx.beginPath();ctx.fillStyle='#ff182f';ctx.shadowColor='#ff182f';ctx.shadowBlur=u*10;ctx.ellipse(q.x,q.y,u*8,u*4.5,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.fillStyle='#fff4d6';ctx.ellipse(q.x,q.y,u*1.3,u*3.4,0,0,Math.PI*2);ctx.fill()});ctx.shadowBlur=0;
-  // Bone-colored horns and jagged fangs follow the face landmarks.
-  [[p(70),p(105),-1],[p(300),p(334),1]].forEach(([base,mid,side])=>{ctx.beginPath();ctx.moveTo(base.x-u*5,base.y);ctx.quadraticCurveTo(mid.x+side*u*5,mid.y-u*19,mid.x+side*u*13,mid.y-u*27);ctx.quadraticCurveTo(mid.x+side*u*11,mid.y-u*10,base.x+u*5,base.y+u*2);ctx.closePath();ctx.fillStyle='#211323';ctx.fill();ctx.strokeStyle='#b9ff65';ctx.lineWidth=u*1.3;ctx.stroke()});
-  const ml=p(61),mr=p(291),mouth=p(14);ctx.beginPath();ctx.moveTo(ml.x,ml.y);ctx.quadraticCurveTo(mouth.x,mouth.y+u*13,mr.x,mr.y);ctx.strokeStyle='#170713';ctx.lineWidth=u*5;ctx.stroke();
-  [ml,mr].forEach((q,i)=>{ctx.beginPath();ctx.moveTo(q.x,q.y);ctx.lineTo(q.x+(i?-1:1)*u*5,q.y+u*12);ctx.lineTo(q.x+(i?-1:1)*u*10,q.y+u*2);ctx.closePath();ctx.fillStyle='#f3f0d4';ctx.fill()});
-  strokePath([p(10),p(151),p(9)],'#b9ff65',u*2);
- }
- ctx.restore();
-}
-function faceLoop(){
- if(faceReady&&stream&&video.readyState>=2&&video.currentTime!==lastVideoTime){lastVideoTime=video.currentTime;try{const canvasWidth=Math.max(1,Math.round(frame.clientWidth)),canvasHeight=Math.max(1,Math.round(frame.clientHeight));if(faceCanvas.width!==canvasWidth||faceCanvas.height!==canvasHeight){faceCanvas.width=canvasWidth;faceCanvas.height=canvasHeight}const now=performance.now(),result=faceLandmarker.detectForVideo(video,now),lm=result.faceLandmarks&&result.faceLandmarks[0];if(lm){reflectionHistory.push({time:now,landmarks:lm.map(q=>({x:q.x,y:q.y,z:q.z}))});while(reflectionHistory.length&&now-reflectionHistory[0].time>1200)reflectionHistory.shift()}const delayed=reflectionHistory.find(q=>now-q.time>=520);drawFaceEffect(lm,delayed&&delayed.landmarks)}catch(e){}}
- requestAnimationFrame(faceLoop);
-}
-requestAnimationFrame(faceLoop);
-
-function stopTracks(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}reflectionHistory=[];video.srcObject=null;frame.classList.remove('live');faceCtx.clearRect(0,0,faceCanvas.width,faceCanvas.height);startBtn.disabled=false;stopBtn.disabled=true;switchBtn.disabled=true;}
-async function startCamera(){
- if(busy)return;
- busy=true;startBtn.disabled=true;status.textContent='Requesting camera permission…';
- try{
-  if(!window.isSecureContext)throw new Error('Open the GitHub Pages link directly over HTTPS.');
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('Camera access is unavailable in this browser view. Open this link directly in Chrome.');
-  if(stream)stopTracks();
-  try{
-   stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:facing},width:{ideal:1280},height:{ideal:720}}});
-  }catch(firstError){
-   if(['NotAllowedError','NotFoundError','NotReadableError'].includes(firstError.name))throw firstError;
-   status.textContent='Trying basic camera settings…';
-   stream=await navigator.mediaDevices.getUserMedia({audio:false,video:true});
-  }
-  video.srcObject=stream;video.muted=true;video.playsInline=true;
-  await new Promise((resolve,reject)=>{
-   if(video.readyState>=2){resolve();return}
-   const timer=setTimeout(()=>reject(new Error('Camera opened but video did not arrive. Close other camera apps and try again.')),8000);
-   video.onloadedmetadata=()=>{clearTimeout(timer);resolve()};
-   video.onerror=()=>{clearTimeout(timer);reject(new Error('Camera video could not be displayed. Reload the page and try again.'))};
-  });
-  await video.play();
-  frame.classList.add('live');loadFaceTracker();stopBtn.disabled=false;switchBtn.disabled=false;
-  status.textContent='Live mirror is on. Your camera preview stays in this browser tab.';
- }catch(e){
-  stopTracks();
-  status.textContent=e.name==='NotAllowedError'?'Camera permission is blocked. In Chrome, open the site controls beside the address, allow Camera, then reload.':e.name==='NotFoundError'?'No camera was found. Check that your phone camera works in the Camera app.':e.name==='NotReadableError'?'The camera may be busy in another app. Close other apps using the camera and try again.':'Could not start the camera: '+(e.message||'Open this HTTPS page directly in Chrome and allow camera access.');
- }finally{busy=false;startBtn.disabled=!!stream;}
-}
-window.startIllusionCamera=startCamera;
-window.stopIllusionCamera=()=>{stopTracks();status.textContent='Camera stopped.'};
-window.switchIllusionCamera=async()=>{facing=facing==='user'?'environment':'user';await startCamera()};
-startBtn.addEventListener('click',startCamera);
-stopBtn.addEventListener('click',window.stopIllusionCamera);
-switchBtn.addEventListener('click',window.switchIllusionCamera);
-window.addEventListener('pagehide',stopTracks);
-status.textContent='Mirror controls loaded. Tap Start live camera to begin.';
+ start.addEventListener('click',()=>{if(stream){facing=facing==='user'?'environment':'user';startCamera()}else startCamera()});
+ reveal.addEventListener('click',()=>{awake=!awake;stage.classList.toggle('awake',awake);reveal.textContent=awake?'Hide presence':'Reveal presence';status.textContent=awake?'Something is standing in the shadows behind you.':'The shadows settle. For now.';});
+ stop.addEventListener('click',()=>{if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;stage.classList.remove('active','awake');awake=false;start.textContent='Enter the mirror';reveal.textContent='Reveal presence';reveal.disabled=true;stop.disabled=true;status.textContent='Camera closed.';});
+})();
 </script>
-</body></html>
+</body>
+</html>
