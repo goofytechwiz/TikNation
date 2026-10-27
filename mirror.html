@@ -78,6 +78,19 @@ filter:blur(8px);animation:candleReflect 1.8s ease-in-out infinite alternate}
 .candle:nth-child(4){height:70px;flex-basis:25px}
 .candle:before{content:"";position:absolute;top:-2px;left:1px;right:1px;height:8px;border-radius:50%;background:radial-gradient(ellipse at 50% 40%,#050407 0 28%,#39313c 42%,#100e14 72%,#020203 100%);box-shadow:0 1px 2px #000}
 .candle:after{content:"";position:absolute;top:8px;left:5px;width:7px;height:22px;background:linear-gradient(#17131c,#08070a);border-radius:0 0 5px 5px;box-shadow:13px 8px 0 -2px #0b090d;pointer-events:none}
+/* Sculpted black-wax drips running down the candle sides */
+.candle .wax-drips{position:absolute;z-index:1;top:5px;left:0;right:0;height:42px;pointer-events:none;background:
+radial-gradient(ellipse at 17% 0%,#302a35 0 5px,transparent 5.8px),
+radial-gradient(ellipse at 17% 8px,#17141b 0 3.5px,transparent 4.5px),
+radial-gradient(ellipse at 78% 0%,#29242f 0 4px,transparent 5px),
+radial-gradient(ellipse at 78% 13px,#141218 0 2.8px,transparent 4px),
+radial-gradient(ellipse at 48% 0%,#302a35 0 3px,transparent 4px),
+radial-gradient(ellipse at 48% 19px,#17141b 0 2px,transparent 3px)}
+.candle:nth-child(2) .wax-drips{height:51px;background:
+radial-gradient(ellipse at 22% 0%,#302a35 0 5px,transparent 6px),radial-gradient(ellipse at 22% 12px,#17141b 0 3.5px,transparent 4.5px),
+radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient(ellipse at 72% 22px,#141218 0 2.8px,transparent 4px)}
+.candle:nth-child(3) .wax-drips{height:46px}
+.candle:nth-child(4) .wax-drips{height:34px}
 .wick{position:absolute;z-index:2;top:-10px;left:calc(50% - 1px);width:2px;height:9px;background:#050405;border-radius:2px}
 .flame{position:absolute;z-index:3;top:-39px;left:50%;width:17px;height:31px;transform:translateX(-50%);transform-origin:50% 100%;border-radius:50% 50% 45% 45% / 65% 65% 35% 35%;background:radial-gradient(ellipse at 50% 75%,#fffde0 0 12%,#ffe28b 24%,#ffad35 47%,#ff6725 68%,#b92f13aa 78%,transparent 80%);filter:drop-shadow(0 0 5px #ff8b35) drop-shadow(0 0 13px #ff4a1caa);animation:flameDance .19s infinite alternate ease-in-out}
 .candle:nth-child(2) .flame{animation-delay:-.11s;transform:translateX(-50%) scale(.84);animation-duration:.25s}
@@ -96,10 +109,10 @@ filter:blur(8px);animation:candleReflect 1.8s ease-in-out infinite alternate}
 <div class="mirror-lights" aria-hidden="true"></div>
 <div class="candle-reflection" aria-hidden="true"></div>
 <div class="candle-pair" aria-hidden="true">
- <div class="candle"><span class="wick"></span><span class="flame"></span></div>
- <div class="candle"><span class="wick"></span><span class="flame"></span></div>
- <div class="candle"><span class="wick"></span><span class="flame"></span></div>
- <div class="candle"><span class="wick"></span><span class="flame"></span></div>
+ <div class="candle"><span class="wax-drips"></span><span class="wick"></span><span class="flame"></span></div>
+ <div class="candle"><span class="wax-drips"></span><span class="wick"></span><span class="flame"></span></div>
+ <div class="candle"><span class="wax-drips"></span><span class="wick"></span><span class="flame"></span></div>
+ <div class="candle"><span class="wax-drips"></span><span class="wick"></span><span class="flame"></span></div>
 </div>
 <video id="video" autoplay playsinline muted></video>
 <div class="presence" aria-hidden="true"><div class="figure"><div class="body"></div><div class="shoulderlight"></div><div class="head"></div><div class="hair"></div></div></div>
