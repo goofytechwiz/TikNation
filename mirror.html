@@ -59,6 +59,18 @@ button:disabled{opacity:.4;cursor:default}
 .status{min-height:24px;color:#c4bfd4;font-size:.86rem;margin:4px 2px}
 .note{font-size:.78rem;color:#817c93;border-top:1px solid #ffffff17;padding-top:14px}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
+/* Dark ritual candles at the mirror's base */
+.candle-pair{position:absolute;z-index:8;left:50%;bottom:-1px;transform:translateX(-50%);width:74%;display:flex;align-items:flex-end;justify-content:space-between;pointer-events:none;padding:0 5%}
+.candle{position:relative;width:clamp(24px,7%,42px);height:clamp(66px,12vw,105px);border-radius:7px 7px 3px 3px;background:linear-gradient(90deg,#030304 0%,#17141d 22%,#050506 48%,#25202b 70%,#030304 100%);box-shadow:inset 2px 0 4px #6f647422,0 0 9px #000;clip-path:polygon(12% 0,88% 0,100% 100%,0 100%)}
+.candle:before{content:"";position:absolute;top:-7px;left:30%;width:40%;height:10px;border-radius:50%;background:#08070a;box-shadow:inset 0 2px 4px #8a7b8a44}
+.wick{position:absolute;top:-11px;left:49%;width:2px;height:7px;background:#050505}
+.flame{position:absolute;top:-35px;left:50%;width:17px;height:29px;transform:translateX(-50%);transform-origin:50% 100%;border-radius:55% 45% 55% 45%;background:radial-gradient(ellipse at 50% 75%,#fff8c6 0 9%,#ffc45d 24%,#ff742e 48%,#a82716aa 68%,transparent 75%);filter:drop-shadow(0 0 7px #ff8b35) drop-shadow(0 0 17px #ff4a1c88);animation:flameDance .22s infinite alternate ease-in-out}
+.candle:nth-child(2) .flame{animation-delay:-.11s;transform:translateX(-50%) scale(.84);animation-duration:.3s}
+.candle:nth-child(3) .flame{animation-delay:-.07s;transform:translateX(-50%) scale(1.12);animation-duration:.26s}
+.candle:nth-child(4) .flame{animation-delay:-.16s;transform:translateX(-50%) scale(.92);animation-duration:.34s}
+.candle:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0000 0%,#0000 55%,#0008 100%);pointer-events:none}
+@keyframes flameDance{0%{transform:translateX(-50%) rotate(-5deg) scaleX(.82) scaleY(.9);filter:brightness(.8) drop-shadow(0 0 5px #ff792e)}100%{transform:translateX(-50%) rotate(5deg) scaleX(1.08) scaleY(1.12);filter:brightness(1.35) drop-shadow(0 0 11px #ffad48) drop-shadow(0 0 19px #ff4a1c99)}}
+@media(prefers-reduced-motion:reduce){.flame{animation:none}}
 </style>
 </head>
 <body>
@@ -68,6 +80,12 @@ button:disabled{opacity:.4;cursor:default}
 <p class="sub">Step into the full-length mirror. Look closely… the reflection may not be alone.</p>
 <section class="stage" id="stage" aria-label="Horror mirror camera view">
 <div class="mirror-lights" aria-hidden="true"></div>
+<div class="candle-pair" aria-hidden="true">
+ <div class="candle"><span class="wick"></span><span class="flame"></span></div>
+ <div class="candle"><span class="wick"></span><span class="flame"></span></div>
+ <div class="candle"><span class="wick"></span><span class="flame"></span></div>
+ <div class="candle"><span class="wick"></span><span class="flame"></span></div>
+</div>
 <video id="video" autoplay playsinline muted></video>
 <div class="presence" aria-hidden="true"><div class="figure"><div class="body"></div><div class="shoulderlight"></div><div class="head"></div><div class="hair"></div></div></div>
 <div class="vignette"></div><div class="grain"></div>
