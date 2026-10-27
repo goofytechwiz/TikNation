@@ -315,6 +315,19 @@ function drawFaceEffect(lm,delayedLm){
   ctx.restore();
   if(delayedLm&&delayedLm.length>454){
    const lag=idx=>({x:delayedLm[idx].x*w,y:delayedLm[idx].y*h});
+   // A second, time-lagged silhouette pulls away from the current face.
+   // The dark cavity and bright rim create a stronger "face leaving the mirror" read.
+   const separationX=(Math.sin(t*2.1)*.018+.075)*w;
+   const separationY=(Math.cos(t*1.7)*.012-.012)*h;
+   ctx.save();
+   ctx.translate(separationX,separationY);
+   ctx.beginPath();contour.forEach((idx,n)=>{const q=lag(idx);n?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.closePath();
+   ctx.fillStyle='rgba(2,0,8,.82)';ctx.shadowColor=mode==='monster'?'#b9ff65':'#ff1744';ctx.shadowBlur=Math.max(10,w*.045);ctx.fill();ctx.shadowBlur=0;
+   // Hollow eyes and a split, unnaturally wide mouth belong to the displaced face.
+   [33,263].forEach((idx,n)=>{const q=lag(idx);ctx.beginPath();ctx.ellipse(q.x,q.y,fw*.052,fw*.034,n?-.12:.12,0,Math.PI*2);ctx.fillStyle='#020006';ctx.fill();ctx.strokeStyle=mode==='monster'?'#b9ff65':'#ff1744';ctx.lineWidth=Math.max(2,fw*.006);ctx.stroke()});
+   const eyeL=lag(33),eyeR=lag(263),mouthL=lag(61),mouthR=lag(291),mouthC=lag(13);
+   ctx.beginPath();ctx.moveTo(mouthL.x-fw*.035,mouthL.y);ctx.quadraticCurveTo(mouthC.x,mouthC.y+fw*.12,mouthR.x+fw*.035,mouthR.y);ctx.lineTo(mouthR.x,mouthR.y+fw*.025);ctx.quadraticCurveTo(mouthC.x,mouthC.y+fw*.15,mouthL.x,mouthL.y+fw*.025);ctx.closePath();ctx.fillStyle='#030006';ctx.fill();ctx.strokeStyle=mode==='monster'?'#b9ff65':'#ff1744';ctx.lineWidth=Math.max(2,fw*.005);ctx.stroke();
+   ctx.restore();
    const lagShiftX=Math.sin(t*2.1)*w*.018,lagShiftY=Math.cos(t*1.7)*h*.012;
    ctx.save();ctx.translate(lagShiftX,lagShiftY);
    ctx.beginPath();contour.forEach((idx,n)=>{const q=lag(idx);n?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.closePath();
