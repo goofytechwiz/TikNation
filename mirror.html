@@ -39,20 +39,20 @@ video{position:absolute;width:100%;height:100%;inset:0;object-fit:cover;transfor
 .stage.active video{display:block}
 .vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 42%,#0202089c 100%),linear-gradient(0deg,#05050dcc,transparent 30%,#05050d22 70%,#05050d88)}
 .grain{position:absolute;inset:0;pointer-events:none;opacity:.12;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
-.presence{position:absolute;right:6%;top:13%;height:70%;width:39%;opacity:0;pointer-events:none;filter:blur(.7px) contrast(1.12);transform:translate(5px,10px) scale(.985);transform-origin:50% 100%;transition:opacity 2.2s ease,transform 3s ease}
-.stage.awake .presence{opacity:.94;transform:translate(0,0) scale(1);animation:presenceBreath 5.2s ease-in-out infinite}
+.presence{position:absolute;right:4%;top:13%;height:66%;width:31%;opacity:0;pointer-events:none;filter:blur(1px) contrast(1.08);transform:translate(8px,12px) scale(.97);transform-origin:50% 100%;transition:opacity 2.8s ease,transform 3.4s ease}
+.stage.awake .presence{opacity:.68;transform:translate(0,0) scale(1);animation:presenceBreath 6s ease-in-out infinite}
 .stage.awake .figure{animation:presenceDrift 7.5s ease-in-out infinite;transform-origin:50% 100%}
 .stage.awake .head{box-shadow:inset 8px 2px 16px #77708020,inset -13px -4px 22px #000,0 0 28px #000b;animation:headFade 6s ease-in-out infinite}
 .stage.awake .shoulderlight{opacity:.65;animation:shoulderFade 4.6s ease-in-out infinite alternate}
-@keyframes presenceBreath{0%,100%{filter:blur(.7px) contrast(1.12);opacity:.76}50%{filter:blur(.15px) contrast(1.2);opacity:.98}}
+@keyframes presenceBreath{0%,100%{filter:blur(1px) contrast(1.08);opacity:.56}50%{filter:blur(.45px) contrast(1.16);opacity:.76}}
 @keyframes presenceDrift{0%,100%{transform:translateX(0) scale(1)}35%{transform:translateX(-3px) scale(1.008)}72%{transform:translateX(2px) scale(.997)}}
 @keyframes headFade{0%,100%{filter:brightness(.88)}48%{filter:brightness(1.08)}}
 @keyframes shoulderFade{0%{opacity:.25;transform:translateX(-3px) rotate(8deg)}100%{opacity:.75;transform:translateX(3px) rotate(8deg)}}
 @media(prefers-reduced-motion:reduce){.stage.awake .presence,.stage.awake .figure,.stage.awake .head,.stage.awake .shoulderlight{animation:none}}
 .figure{position:absolute;inset:0;filter:drop-shadow(0 8px 18px #000);isolation:isolate}
-.head{position:absolute;z-index:2;top:3%;left:25%;width:52%;height:27%;border-radius:48% 48% 45% 45%;background:radial-gradient(ellipse at 34% 25%,#403b48 0,#28232e 20%,#15131b 48%,#050508 78%);box-shadow:inset 8px 2px 16px #77708020,inset -13px -4px 22px #000,0 0 24px #0008}
+.head{position:absolute;z-index:2;top:3%;left:25%;width:52%;height:27%;border-radius:48% 48% 45% 45%;background:radial-gradient(ellipse at 34% 25%,#403b48cc 0,#28232ecc 20%,#15131bd9 48%,#050508e8 78%);box-shadow:inset 8px 2px 16px #77708020,inset -13px -4px 22px #000,0 0 24px #0008}
 .hair{position:absolute;z-index:3;top:-2%;left:14%;width:73%;height:43%;border-radius:48% 48% 25% 25%;background:repeating-linear-gradient(82deg,#020204 0 5px,#100e15 6px 9px,#030305 10px 14px);clip-path:polygon(12% 0,86% 0,100% 38%,94% 66%,84% 100%,76% 69%,66% 96%,57% 65%,45% 100%,34% 68%,22% 95%,11% 63%,0 35%);filter:drop-shadow(0 3px 4px #000)}
-.body{position:absolute;z-index:1;top:25%;left:-3%;width:106%;height:75%;background:radial-gradient(ellipse at 48% 8%,#292530 0,#15131a 24%,#09080d 57%,#010102 83%);clip-path:polygon(34% 0,66% 0,79% 9%,100% 31%,94% 100%,5% 100%,0 32%,20% 10%);border-radius:28% 28% 0 0;box-shadow:inset 0 12px 22px #8b82901c}
+.body{position:absolute;z-index:1;top:25%;left:0;width:100%;height:75%;background:radial-gradient(ellipse at 48% 8%,#292530d9 0,#15131acb 24%,#09080dbd 57%,#010102d9 83%);clip-path:polygon(34% 0,66% 0,79% 9%,100% 31%,94% 100%,5% 100%,0 32%,20% 10%);border-radius:28% 28% 0 0;box-shadow:inset 0 12px 22px #8b82901c}
 .shoulderlight{position:absolute;z-index:2;top:31%;left:13%;width:40%;height:39%;background:linear-gradient(100deg,transparent,#62596b30 45%,transparent);filter:blur(11px);transform:rotate(8deg)}
 
 .stage:not(.active){display:grid;place-items:center}
