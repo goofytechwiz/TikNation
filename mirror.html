@@ -24,10 +24,10 @@ h1{font-size:clamp(1.8rem,7vw,3rem);line-height:1.04;letter-spacing:-.04em;margi
 /* Cinematic bulbs around the mirror frame */
 .mirror-lights{position:absolute;z-index:7;inset:10px;pointer-events:none;border-radius:inherit}
 .mirror-lights:before{content:"";position:absolute;inset:5px;border-radius:inherit;opacity:1;background:
-radial-gradient(circle,#ffffff 0 3px,#c8faff 4px,#39dcff 7px,#39dcff99 11px,transparent 18px) 0 0/38px 38px,
-radial-gradient(circle,#ffffff 0 3px,#e4d8ff 4px,#9c62ff 7px,#a779ff99 11px,transparent 18px) 19px 19px/38px 38px;
+radial-gradient(circle,#fff 0 2.5px,#c8faff 3px 4px,#39dcff 4.5px 6px,#39dcff66 7px,transparent 9px) 0 0/38px 38px,
+radial-gradient(circle,#fff 0 2.5px,#e4d8ff 3px 4px,#9c62ff 4.5px 6px,#a779ff66 7px,transparent 9px) 19px 19px/38px 38px;
 mask:linear-gradient(#000 0 0) top/100% 22px no-repeat,linear-gradient(#000 0 0) bottom/100% 22px no-repeat,linear-gradient(#000 0 0) left/22px 100% no-repeat,linear-gradient(#000 0 0) right/22px 100% no-repeat;filter:brightness(1.5);animation:bulbFlicker .9s steps(2,end) infinite}
-.mirror-lights:after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 24px #4fe8ffbb,0 0 48px #8d62ff88,inset 0 0 18px #b69aff77;animation:frameFlicker 1.4s steps(2,end) infinite}
+.mirror-lights:after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:0 0 12px #4fe8ff88,0 0 24px #8d62ff55,inset 0 0 10px #b69aff55;animation:frameFlicker 1.4s steps(2,end) infinite}
 @keyframes bulbFlicker{0%,18%,21%,52%,55%,100%{filter:brightness(1.65);opacity:1}19%,53%{filter:brightness(.55);opacity:.65}72%{filter:brightness(2.15);opacity:1}}
 @keyframes frameFlicker{0%,30%,34%,65%,100%{box-shadow:0 0 26px #4fe8ffcc,0 0 52px #8d62ff99,inset 0 0 20px #b69aff88}32%,66%{box-shadow:0 0 7px #4fe8ff55,0 0 12px #8d62ff44,inset 0 0 6px #b69aff33}}
 @media(prefers-reduced-motion:reduce){.mirror-lights:before,.mirror-lights:after{animation:none}}
