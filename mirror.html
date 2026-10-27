@@ -241,6 +241,9 @@ function drawFaceEffect(lm,delayedLm){
  ctx.clearRect(0,0,w,h);
  if(!lm||!['silly','spooky','ancient','monster'].includes(mode))return;
  const p=i=>fp(lm,i);
+ // Calculate face width before any effects use it; previously this was declared
+ // after the spooky/monster branch, which could throw and stop every overlay.
+ const fw=Math.max(20,Math.abs(p(234).x-p(454).x)),u=fw/150;
  // Haunted reflection: briefly paint a second, time-shifted image of the camera.
  // This makes the reflection itself split away from the live image, not just add makeup.
  if((mode==='spooky'||mode==='monster')&&video.readyState>=2){
@@ -367,7 +370,6 @@ function drawFaceEffect(lm,delayedLm){
    ctx.restore();
   }
  }
- const fw=Math.max(20,Math.abs(p(234).x-p(454).x)),u=fw/150;
  ctx.save();
  ctx.lineCap='round';ctx.lineJoin='round';
  function strokePath(points,color,width){line(ctx,points,color,Math.max(1,width))}
