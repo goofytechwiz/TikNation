@@ -235,6 +235,27 @@ function drawFaceEffect(lm,delayedLm){
  // This makes the reflection itself split away from the live image, not just add makeup.
  if((mode==='spooky'||mode==='monster')&&video.readyState>=2){
   const t=performance.now()/1000;
+  // A separate, face-shaped reflection: the face pixels move independently
+  // inside a tracked silhouette, so this reads as a detached, possessed mask.
+  const faceShape=[10,338,297,332,284,251,389,356,454,323,361,288,397,365,379,378,400,377,152,148,176,149,150,136,172,58,132,93,234,127,162,21,54,103,67,109];
+  const driftX=(Math.sin(t*1.8)*.025+.055)*w;
+  const driftY=Math.cos(t*1.25)*.012*h;
+  ctx.save();
+  ctx.beginPath();
+  faceShape.forEach((idx,n)=>{const q=p(idx);n?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});
+  ctx.closePath();
+  ctx.shadowColor=mode==='monster'?'#b9ff65':'#ff1744';
+  ctx.shadowBlur=Math.max(12,w*.055);
+  ctx.fillStyle=mode==='monster'?'rgba(185,255,101,.22)':'rgba(255,15,55,.25)';
+  ctx.fill();
+  ctx.shadowBlur=0;
+  ctx.clip();
+  ctx.globalAlpha=mode==='monster'?.94:.9;
+  ctx.globalCompositeOperation='source-over';
+  ctx.filter=mode==='monster'?'hue-rotate(115deg) contrast(2.1) saturate(1.8) brightness(.68)':'grayscale(.9) contrast(2.1) brightness(.58) sepia(1) saturate(4)';
+  ctx.drawImage(video,driftX+w*.025,driftY-h*.012,w,h);
+  ctx.restore();
+  // The wider ghost now drifts farther from the face-mask copy.
   ctx.save();
   ctx.globalAlpha=mode==='monster'?.58:.62;
   ctx.globalCompositeOperation='screen';
