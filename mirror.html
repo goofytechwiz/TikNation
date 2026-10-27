@@ -204,6 +204,14 @@ button.primary,#sequence{background:linear-gradient(110deg,#8d1234,#3c103d)!impo
 .camera-frame.intruder #hauntOverlay,.camera-frame.nightmare #hauntOverlay{z-index:8}
 @keyframes intruderRise{0%{opacity:0;transform:translateY(28%) scale(.55) rotate(-3deg)}25%{opacity:1}55%{opacity:1;transform:translateY(-2%) scale(1.08) rotate(1deg)}72%{transform:translateY(1%) scale(.98)}100%{opacity:1;transform:translateY(0) scale(1)}}
 @media(prefers-reduced-motion:reduce){#intruderStage .intruder-art{animation:none!important;opacity:1;transform:none}}
+
+/* Make the intruder a hard scene change, not a creature layered over a face. */
+.camera-frame.intruder,.camera-frame.nightmare{background:#020104!important}
+.camera-frame.intruder video,.camera-frame.nightmare video{opacity:0!important;visibility:hidden!important}
+.camera-frame.intruder #faceEffects,.camera-frame.nightmare #faceEffects{opacity:0!important;visibility:hidden!important}
+.camera-frame.intruder #intruderStage,.camera-frame.nightmare #intruderStage{background:radial-gradient(ellipse at 50% 38%,#2a0618 0,#09030d 42%,#010103 82%)!important;z-index:9!important}
+.camera-frame.intruder #hauntOverlay,.camera-frame.nightmare #hauntOverlay{z-index:10!important}
+.camera-frame.intruder #intruderStage .intruder-art,.camera-frame.nightmare #intruderStage .intruder-art{filter:drop-shadow(0 0 22px #ff1744) drop-shadow(0 0 55px #a000ff)!important}
 </style>
 </head>
 <body>
