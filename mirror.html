@@ -232,6 +232,18 @@ button.primary,#sequence{background:linear-gradient(110deg,#8d1234,#3c103d)!impo
 @keyframes breachRise{0%{opacity:0;transform:translateY(35%) scale(.38) rotate(-4deg);filter:brightness(0) blur(12px)}12%{opacity:.18}22%{opacity:1;transform:translateY(-2%) scale(1.08) rotate(1deg);filter:brightness(.7) blur(0)}32%{transform:translateY(0) scale(.98);filter:brightness(.45) blur(1px)}43%{transform:translateY(-1%) scale(1.025);filter:brightness(.68) blur(0)}100%{opacity:1;transform:translateY(0) scale(1);filter:brightness(.56) saturate(.58) hue-rotate(218deg) contrast(1.38) drop-shadow(0 0 18px #a58aff) drop-shadow(0 0 56px #4326a8)}}
 @media(prefers-reduced-motion:reduce){.camera-frame.intruder #intruderStage,.camera-frame.nightmare #intruderStage,.camera-frame.intruder #intruderStage:before,.camera-frame.nightmare #intruderStage:before,.camera-frame.intruder #intruderStage:after,.camera-frame.nightmare #intruderStage:after,.camera-frame.intruder #intruderStage .intruder-art,.camera-frame.nightmare #intruderStage .intruder-art{animation:none!important;opacity:1}}
 
+
+/* SECOND PASS: make the breach feel like a whole mirror event, not a sticker */
+.camera-frame.intruder,.camera-frame.nightmare{animation:mirrorImpact 3s cubic-bezier(.2,.75,.2,1) both!important;transform-origin:center}
+.camera-frame.intruder #intruderStage,.camera-frame.nightmare #intruderStage{overflow:hidden}
+#intruderStage .intruder-vignette{z-index:3!important;background:radial-gradient(ellipse at 50% 42%,transparent 0 18%,rgba(0,0,0,.22) 42%,rgba(0,0,0,.95) 100%),repeating-linear-gradient(0deg,transparent 0 3px,rgba(189,177,255,.045) 4px,transparent 5px)!important}
+.camera-frame.intruder #intruderStage .intruder-art,.camera-frame.nightmare #intruderStage .intruder-art{width:min(112%,510px)!important;height:100%!important;max-height:none!important}
+.camera-frame.intruder #intruderStage .intruder-art path,.camera-frame.nightmare #intruderStage .intruder-art path{stroke-linejoin:round}
+.camera-frame.intruder #intruderStage .intruder-label,.camera-frame.nightmare #intruderStage .intruder-label{z-index:5;color:#e3ddff;text-shadow:0 0 8px #a18bff,0 0 25px #6d43ff;animation:signalBreak 3s steps(1,end) both}
+.camera-frame.intruder #hauntSub,.camera-frame.nightmare #hauntSub{color:#d9d1ff!important;text-shadow:0 0 14px #6d43ff!important}
+@keyframes mirrorImpact{0%{transform:translate(0,0) scale(1);filter:brightness(1)}7%{transform:translate(-3px,2px) scale(1.01);filter:brightness(2.3)}11%{transform:translate(4px,-2px) scale(1.015);filter:brightness(.2)}16%{transform:translate(-2px,1px) scale(1.005);filter:brightness(1.6)}22%{transform:translate(0,0) scale(1);filter:brightness(.7)}30%{transform:translate(1px,0) scale(1.008);filter:brightness(.9)}38%{transform:translate(-1px,0) scale(1);filter:brightness(.62)}100%{transform:translate(0,0) scale(1);filter:brightness(.85)}}
+@keyframes signalBreak{0%,17%{opacity:0;transform:translateY(8px);letter-spacing:.6em}21%{opacity:1;transform:translateY(0);letter-spacing:.22em}23%{opacity:.1;transform:translateX(5px)}26%,100%{opacity:1;transform:translateX(0)}}
+
 </style>
 </head>
 <body>
