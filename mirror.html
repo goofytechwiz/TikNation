@@ -224,6 +224,9 @@ button.primary,#sequence{background:linear-gradient(110deg,#8d1234,#3c103d)!impo
 @keyframes mirrorImpact{0%{transform:translate(0,0) scale(1);filter:brightness(1)}7%{transform:translate(-3px,2px) scale(1.01);filter:brightness(2.3)}11%{transform:translate(4px,-2px) scale(1.015);filter:brightness(.2)}16%{transform:translate(-2px,1px) scale(1.005);filter:brightness(1.6)}22%{transform:translate(0,0) scale(1);filter:brightness(.7)}30%{transform:translate(1px,0) scale(1.008);filter:brightness(.9)}38%{transform:translate(-1px,0) scale(1);filter:brightness(.62)}100%{transform:translate(0,0) scale(1);filter:brightness(.85)}}
 @keyframes signalBreak{0%,17%{opacity:0;transform:translateY(8px);letter-spacing:.6em}21%{opacity:1;transform:translateY(0);letter-spacing:.22em}23%{opacity:.1;transform:translateX(5px)}26%,100%{opacity:1;transform:translateX(0)}}
 
+
+/* Hide all mirror controls at the user's request. */
+button,.button,.choice,[role="button"]{display:none!important;visibility:hidden!important;}
 </style>
 </head>
 <body>
