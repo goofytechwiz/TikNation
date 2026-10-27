@@ -321,8 +321,20 @@ function drawFaceEffect(lm,delayedLm){
    // while a slow counter-drift makes it feel less mechanically attached.
    const separationX=(Math.sin(t*1.15)*.035+.145)*w;
    const separationY=(Math.cos(t*1.3)*.022-.018)*h;
+   // The reflection has its own movement: during the nightmare it lunges
+   // toward the glass, grows beyond the wearer's face, and twists independently.
+   const faceCenterX=(lag(234).x+lag(454).x)/2;
+   const faceCenterY=(lag(10).y+lag(152).y)/2;
+   const isLunging=frame.classList.contains('nightmare');
+   const isPossessed=frame.classList.contains('possessed');
+   const lungeScale=isLunging?1.48:isPossessed?1.12:1;
+   const lungeShiftX=isLunging?-w*.025:0;
+   const lungeShiftY=isLunging?-h*.028:0;
    ctx.save();
-   ctx.translate(separationX,separationY);
+   ctx.translate(faceCenterX+separationX+lungeShiftX,faceCenterY+separationY+lungeShiftY);
+   ctx.rotate(isLunging?Math.sin(t*8)*.045:isPossessed?Math.sin(t*2.7)*.025:Math.sin(t*1.2)*.018);
+   ctx.scale(lungeScale,lungeScale);
+   ctx.translate(-faceCenterX,-faceCenterY);
    ctx.beginPath();contour.forEach((idx,n)=>{const q=lag(idx);n?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.closePath();
    ctx.fillStyle='rgba(2,0,8,.82)';ctx.shadowColor=mode==='monster'?'#b9ff65':'#ff1744';ctx.shadowBlur=Math.max(10,w*.045);ctx.fill();ctx.shadowBlur=0;
    // Hollow eyes and a split, unnaturally wide mouth belong to the displaced face.
