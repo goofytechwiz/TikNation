@@ -386,7 +386,6 @@
   dustButton.addEventListener('click', event => {
     event.preventDefault();
     event.stopPropagation();
-    if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
     try { if (audioContext && audioContext.state !== 'closed') audioContext.suspend(); } catch (_) {}
     try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (_) {}
     document.querySelectorAll('audio, video').forEach(media => {
