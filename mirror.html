@@ -55,6 +55,12 @@ radial-gradient(ellipse at 25% 92%,#8d83a51a 0,transparent 43%),
 radial-gradient(ellipse at 80% 87%,#9d8bbd18 0,transparent 46%);
 filter:blur(8px);opacity:0;transition:opacity 2s ease}
 .stage.awake .presence:before{opacity:1;animation:presenceMist 8s ease-in-out infinite alternate}
+/* Cinematic reveal: atmosphere first, silhouette second, face glint last */
+.stage.awake .presence:before{animation-delay:.25s}
+.stage.awake .figure{animation-delay:1.15s}
+.stage.awake .head:after{animation-delay:2.4s}
+.stage.awake .shoulderlight{animation-delay:.8s}
+
 @keyframes presenceMist{0%{transform:translateX(-3px) scaleY(.92);opacity:.45}100%{transform:translateX(4px) scaleY(1.04);opacity:.9}}
 
 .stage.awake .figure{animation:presenceDrift 7.5s ease-in-out infinite;transform-origin:50% 100%}
