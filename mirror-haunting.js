@@ -34,6 +34,12 @@
     '.haunt-reaching-hands{position:absolute;z-index:14;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;opacity:0;transform:translateY(22%) scale(.72);transform-origin:50% 65%;filter:drop-shadow(0 0 9px #000) drop-shadow(0 0 5px #6d001b);transition:opacity .3s ease,transform .65s cubic-bezier(.12,.78,.18,1)}' +
     '.haunt-reflection-echo{z-index:13!important;opacity:0!important;filter:blur(3px) drop-shadow(0 0 12px #5c1439)!important;transform:translate(0,10%) scale(.96)!important;transition:opacity 1.1s ease,transform 1.35s cubic-bezier(.2,.7,.2,1)!important;mix-blend-mode:screen}' +
     '.stage.haunt-hands-reach .haunt-reflection-echo{opacity:.2!important;transform:translate(-4px,5%) scale(1.015)!important}' +
+    '.stage.awake .haunt-reflection-echo{opacity:.075!important;transform:translate(0,4%) scale(.985)!important;animation:livingReflection 7s ease-in-out infinite alternate;transition:opacity 1.8s ease,transform 2.4s ease!important}' +
+    '.stage.awake .haunt-reflection-echo .haunt-face{opacity:.32;animation:reflectionWatch 6s ease-in-out infinite alternate}' +
+    '.stage.haunt-warning .haunt-reflection-echo{opacity:.22!important;transform:translate(0,1%) scale(1.04)!important}' +
+    '@keyframes livingReflection{0%{translate:-1px 1px;scale:.985}45%{translate:2px -1px;scale:1.005}100%{translate:-2px -2px;scale:1.015}}' +
+    '@keyframes reflectionWatch{0%,100%{filter:drop-shadow(0 0 4px #5b1638);opacity:.2}50%{filter:drop-shadow(0 0 12px #a00035) brightness(1.35);opacity:.48}}' +
+    '@media(prefers-reduced-motion:reduce){.stage.awake .haunt-reflection-echo,.stage.awake .haunt-reflection-echo .haunt-face{animation:none!important}}' +
     '.stage.haunt-hands-grab .haunt-reflection-echo{opacity:.34!important;transform:translate(8px,-1%) scale(1.24)!important;filter:blur(4px) drop-shadow(0 0 18px #a00035)!important}' +
     '.stage.haunt-lunge .haunt-reflection-echo{opacity:.08!important;transform:translate(-10px,2%) scale(1.32)!important;transition-duration:.12s!important}' +
     '.haunt-reflection-echo .haunt-face{transition-delay:.28s!important}' +
