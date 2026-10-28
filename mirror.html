@@ -202,7 +202,7 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
        }
        const movement=difference/(pixels.length/4);
        const now=Date.now();
-       if(awake && weightTotal>0 && movement>10){
+       if(stage.classList.contains('awake') && weightTotal>0 && movement>10){
          const cx=1-(weightedX/weightTotal)/(sampleCanvas.width-1);
          const cy=(weightedY/weightTotal)/(sampleCanvas.height-1);
          const followX=Math.max(-34,Math.min(34,(0.5-cx)*68));
@@ -210,7 +210,7 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
          stage.style.setProperty('--stalk-x',followX.toFixed(1)+'px');
          stage.style.setProperty('--stalk-y',followY.toFixed(1)+'px');
        }
-       if(awake && movement>24 && now>rippleCooldown){
+       if(stage.classList.contains('awake') && movement>24 && now>rippleCooldown){
          stage.classList.remove('motion-ripple'); void stage.offsetWidth; stage.classList.add('motion-ripple');
          rippleCooldown=now+2400;
          setTimeout(()=>stage.classList.remove('motion-ripple'),1200);
