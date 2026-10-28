@@ -199,6 +199,13 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
 
 
 /* Real Living Shadow artwork layer; SVG silhouette remains as a safe fallback */
+
+/* Tie the new artwork to the existing scare timeline */
+.stage.haunt-lunge .living-shadow-art{opacity:1!important;transform:translateX(-50%) translateY(8%) scale(1.42)!important;filter:drop-shadow(0 0 30px rgba(255,0,42,.95)) brightness(1.35)!important;transition:transform .65s cubic-bezier(.1,.8,.2,1),filter .2s,opacity .15s}
+.stage.haunt-blackout .living-shadow-art{opacity:0!important;transform:translateX(-50%) scale(.72)!important;transition:opacity .35s ease,transform .35s ease}
+.stage.haunt-hand .living-shadow-art{opacity:1!important;transform:translateX(-50%) scale(1.12)!important;filter:drop-shadow(0 0 20px rgba(255,0,42,.7))}
+.stage.haunt-warning .living-shadow-art{filter:drop-shadow(0 0 18px rgba(255,0,42,.7))}
+
 .living-shadow-art{position:absolute;z-index:8;left:50%;top:0;width:118%;height:100%;object-fit:contain;object-position:center bottom;transform:translateX(-50%) scale(.92);opacity:0;filter:drop-shadow(0 0 12px rgba(130,0,25,.4));pointer-events:none;transition:opacity .6s ease,transform .45s ease}
 .stage.awake .living-shadow-art{opacity:1;animation:livingShadowBreath 4.8s ease-in-out infinite}
 .stage.awake .shadow-creature{opacity:0}
