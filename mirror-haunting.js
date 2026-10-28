@@ -59,6 +59,18 @@
     '@keyframes hauntGlassCrack{0%{opacity:0;stroke-dasharray:0 120}40%{opacity:1}100%{opacity:.55;stroke-dasharray:120 0}}' +
     '@media(prefers-reduced-motion:reduce){.haunt-reaching-hands{transition:none}.stage.haunt-hands-reach .haunt-reaching-hands .crack{animation:none;opacity:.7}.stage.haunt-hands-reach .haunt-ripple,.stage.haunt-hands-grab .haunt-ripple{animation:none;opacity:.18}.stage.haunt-hands-reach .haunt-edge-grip,.stage.haunt-hands-grab .haunt-edge-grip{animation:none;opacity:1}.stage.haunt-hands-reach .haunt-shatter-lines,.stage.haunt-hands-grab .haunt-shatter-lines{animation:none}.stage.haunt-hands-grab{animation:none}}' +
     '.stage.haunt-blackout .haunt-scare-overlay{opacity:0!important}' +
+    '.haunt-aura{position:absolute;z-index:7;inset:0;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 1.4s ease;background:radial-gradient(ellipse at 50% 50%,transparent 40%,#10001455 72%,#020106cc 100%)}' +
+    '.stage.awake .haunt-aura{opacity:1}' +
+    '.haunt-aura:before{content:"";position:absolute;inset:5% 7%;border:1px solid #8c72b833;border-radius:48% 48% 3px 3px;box-shadow:inset 0 0 34px #5e214022,0 0 28px #a6003822;animation:hauntAuraPulse 5s ease-in-out infinite}' +
+    '.haunt-aura:after{content:"ᚱ   ✦   ᛟ   ✧   ᚷ   ✦   ᛉ";position:absolute;left:0;right:0;top:9%;text-align:center;letter-spacing:.65em;font-size:clamp(10px,2.3vw,17px);color:#c6a4ed66;text-shadow:0 0 12px #9d4dff;opacity:0;transition:opacity 2s ease}' +
+    '.stage.awake .haunt-aura:after{opacity:.8;animation:hauntRunes 8s linear infinite}' +
+    '@keyframes hauntAuraPulse{0%,100%{opacity:.28;transform:scale(.99)}50%{opacity:.8;transform:scale(1.015)}}' +
+    '@keyframes hauntRunes{0%,100%{letter-spacing:.65em;filter:hue-rotate(0deg)}50%{letter-spacing:.9em;filter:hue-rotate(45deg)}}' +
+    '.haunt-ember{position:absolute;bottom:-12px;width:3px;height:3px;border-radius:50%;background:#ff5369;box-shadow:0 0 5px 2px #ff163c99,0 0 14px #ff163c66;opacity:0;animation:hauntEmberRise var(--duration,7s) linear var(--delay,0s) infinite;animation-play-state:paused}' +
+    '.stage.awake .haunt-ember{animation-play-state:running}' +
+    '@keyframes hauntEmberRise{0%{transform:translate3d(0,0,0) scale(.4);opacity:0}15%{opacity:.8}75%{opacity:.55}100%{transform:translate3d(var(--drift,18px),-110%,0) scale(1.4);opacity:0}}' +
+    '.stage.haunt-redflash .haunt-aura{background:radial-gradient(ellipse at 50% 50%,#ff002f28,transparent 62%)}' +
+    '@media(prefers-reduced-motion:reduce){.haunt-aura:before,.stage.awake .haunt-aura:after,.haunt-ember{animation:none!important}.haunt-aura,.haunt-aura:after{transition:none}}' +
     '@keyframes scareEyes{0%,38%,44%,100%{opacity:.85}40%,42%{opacity:.12}70%{opacity:.55}}' +
 
     '.stage.fx-haunted:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:7;background:radial-gradient(ellipse at 50% 40%,transparent 25%,#10001599 100%);box-shadow:inset 0 0 45px #5d003c55;animation:fxHaunted 5s ease-in-out infinite}' +
@@ -84,6 +96,20 @@
     '<g class="claw"><path d="M89 425 Q73 407 61 382 L39 344 Q31 329 40 321 Q49 315 58 332 L81 359 70 319 Q66 300 78 297 Q91 296 95 316 L108 356 102 311 Q101 292 114 291 Q127 292 127 312 L132 354 137 325 Q141 308 153 313 Q164 318 157 337 L146 385 Q139 414 120 436Z"/><path d="M271 425 Q287 407 299 382 L321 344 Q329 329 320 321 Q311 315 302 332 L279 359 290 319 Q294 300 282 297 Q269 296 265 316 L252 356 258 311 Q259 292 246 291 Q233 292 233 312 L228 354 223 325 Q219 308 207 313 Q196 318 203 337 L214 385 Q221 414 240 436Z"/></g>' +
     '<g fill="#d5c6cf" opacity=".72"><path d="M42 325 L49 330 43 334Z"/><path d="M79 301 L85 309 79 312Z"/><path d="M115 295 L120 304 114 307Z"/><path d="M318 325 L311 330 317 334Z"/><path d="M281 301 L275 309 281 312Z"/><path d="M245 295 L240 304 246 307Z"/></g>';
   stage.appendChild(reachingHands);
+
+  const aura = document.createElement('div');
+  aura.className = 'haunt-aura';
+  aura.setAttribute('aria-hidden', 'true');
+  for (let i = 0; i < 24; i++) {
+    const ember = document.createElement('i');
+    ember.className = 'haunt-ember';
+    ember.style.left = (4 + Math.random() * 92) + '%';
+    ember.style.setProperty('--duration', (5 + Math.random() * 7) + 's');
+    ember.style.setProperty('--delay', (-Math.random() * 12) + 's');
+    ember.style.setProperty('--drift', (-28 + Math.random() * 56) + 'px');
+    aura.appendChild(ember);
+  }
+  stage.appendChild(aura);
 
   const scareOverlay = document.createElement('div');
   scareOverlay.className = 'haunt-scare-overlay';
