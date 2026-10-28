@@ -304,13 +304,23 @@
     source.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
     source.start(now); source.stop(now + length);
   }
-  // Never use device text-to-speech for the apparition: it sounds robotic on
-  // some phones. Keep the whisper ambience until a licensed prerecorded voice
-  // clip is wired in; do not pretend synthetic noise is spoken dialogue.
+  // Temporary spoken fallback so the apparition is not silent while the
+  // prerecorded voice clips are being added. This uses the device voice.
   function speakEvil(text, pitch = 0.76, rate = 0.82) {
-    if (!soundEnabled) return;
-    const duration = Math.max(1.2, text.length / Math.max(.55, rate) * .075);
-    whisperBed(duration, /GET OUT/i.test(text) ? .09 : .16);
+    if (!soundEnabled || !('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const line = new SpeechSynthesisUtterance(text);
+      line.lang = 'en-US'; line.pitch = pitch; line.rate = rate; line.volume = 0.86;
+      const voices = window.speechSynthesis.getVoices().filter(v => /^en(-|_)/i.test(v.lang));
+      const voice = voices.find(v => /google.*(us|united states).*english|english.*(us|united states)|natural|enhanced/i.test(v.name + ' ' + v.voiceURI))
+        || voices.find(v => /en-US/i.test(v.lang))
+        || voices[0];
+      if (voice) line.voice = voice;
+      const duration = Math.max(1.2, text.length / Math.max(.55, rate) * .075);
+      whisperBed(duration, /GET OUT/i.test(text) ? .07 : .13);
+      window.speechSynthesis.speak(line);
+    } catch (_) {}
   }
   function getAudio() {
     const AC = window.AudioContext || window.webkitAudioContext;
