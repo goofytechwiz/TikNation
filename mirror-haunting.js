@@ -40,6 +40,9 @@
     '.stage.haunt-hands-reach .haunt-reflection-echo{opacity:.2!important;transform:translate(-4px,5%) scale(1.015)!important}' +
     '.stage.awake .haunt-reflection-echo{opacity:.075!important;transform:translate(0,4%) scale(.985)!important;animation:livingReflection 7s ease-in-out infinite alternate;transition:opacity 1.8s ease,transform 2.4s ease!important}' +
     '.stage.awake .haunt-reflection-echo .haunt-face{opacity:.32;animation:reflectionWatch 6s ease-in-out infinite alternate}' +
+    '.stage.awake.haunt-staring .haunt-reflection-echo{opacity:.14!important;filter:blur(1.6px) drop-shadow(0 0 17px #a00035)!important;transform:translate(0,2%) scale(1.012)!important;transition:opacity 1.4s ease,filter 1.4s ease,transform 1.4s ease!important}' +
+    '.stage.awake.haunt-staring .haunt-reflection-echo .haunt-face{opacity:.68;filter:drop-shadow(0 0 16px #d0003c) brightness(1.35);animation:reflectionStare 2.8s ease-in-out infinite alternate}' +
+    '@keyframes reflectionStare{0%{opacity:.45;filter:drop-shadow(0 0 7px #8b0030)}100%{opacity:.9;filter:drop-shadow(0 0 19px #ff174c) brightness(1.45)}}' +
     '.stage.haunt-warning .haunt-reflection-echo{opacity:.22!important;transform:translate(0,1%) scale(1.04)!important}' +
     '@keyframes livingReflection{0%{translate:-1px 1px;scale:.985}45%{translate:2px -1px;scale:1.005}100%{translate:-2px -2px;scale:1.015}}' +
     '@keyframes reflectionWatch{0%,100%{filter:drop-shadow(0 0 4px #5b1638);opacity:.2}50%{filter:drop-shadow(0 0 12px #a00035) brightness(1.35);opacity:.48}}' +
@@ -156,8 +159,20 @@
   omen.className = 'haunt-omen';
   omen.setAttribute('aria-hidden', 'true');
   stage.appendChild(omen);
-  let hauntPointerFrame = 0;
+  let hauntPointerFrame = 0, stareTimer = null;
+  function disturbTheStare() {
+    stage.classList.remove('haunt-staring');
+    if (stareTimer) clearTimeout(stareTimer);
+    if (!reduceMotion && stage.classList.contains('awake')) {
+      stareTimer = setTimeout(() => {
+        if (stage.classList.contains('awake') && !stage.classList.contains('haunt-blackout') && !stage.classList.contains('haunt-lunge')) {
+          stage.classList.add('haunt-staring');
+        }
+      }, 1800);
+    }
+  }
   stage.addEventListener('pointermove', e => {
+    disturbTheStare();
     if (hauntPointerFrame) return;
     hauntPointerFrame = requestAnimationFrame(() => {
       const rect = stage.getBoundingClientRect();
@@ -474,8 +489,9 @@
 
   document.getElementById('hauntAwaken').addEventListener('click', async () => {
     if (sequenceRunning) return;
+    disturbTheStare();
     sequenceRunning = true;
-    stage.classList.remove('haunt-flicker','haunt-creak','haunt-warning','haunt-lunge','haunt-blackout','haunt-hands-reach','haunt-hands-grab','haunt-redflash');
+    stage.classList.remove('haunt-flicker','haunt-creak','haunt-warning','haunt-lunge','haunt-blackout','haunt-hands-reach','haunt-hands-grab','haunt-redflash','haunt-staring');
     stage.classList.add('awake','haunt-dirty'); stage.classList.remove('haunt-hand');
     stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
     dirty = true; wiped = 0; lastPoint = null; stage.style.touchAction = 'none'; paintDust();
