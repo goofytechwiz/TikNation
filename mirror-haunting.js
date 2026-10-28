@@ -36,6 +36,10 @@
     '.stage.haunt-hands-reach .haunt-reflection-echo{opacity:.2!important;transform:translate(-4px,5%) scale(1.015)!important}' +
     '.stage.haunt-hands-grab .haunt-reflection-echo{opacity:.34!important;transform:translate(8px,-1%) scale(1.24)!important;filter:blur(4px) drop-shadow(0 0 18px #a00035)!important}' +
     '.stage.haunt-lunge .haunt-reflection-echo{opacity:.08!important;transform:translate(-10px,2%) scale(1.32)!important;transition-duration:.12s!important}' +
+    '.haunt-reflection-echo .haunt-face{transition-delay:.28s!important}' +
+    '.stage.haunt-warning .haunt-reflection-echo{animation:hauntEchoGlitch .22s steps(2,end) 4}' +
+    '.stage.haunt-hands-grab .haunt-reflection-echo .haunt-face{transition-delay:.08s!important}' +
+    '@keyframes hauntEchoGlitch{0%,100%{filter:blur(3px) drop-shadow(0 0 12px #5c1439)}50%{filter:blur(1px) drop-shadow(0 0 20px #c10038) brightness(1.8)}}' +
     '.stage.haunt-blackout .haunt-reflection-echo{opacity:0!important}' +
     '.stage.haunt-hands-reach .haunt-reaching-hands{opacity:1;transform:translateY(3%) scale(1)}' +
     '.stage.haunt-hands-grab .haunt-reaching-hands{opacity:1;transform:translateY(-2%) scale(1.28);filter:drop-shadow(0 0 20px #ff002f) brightness(1.25)}' +
@@ -62,7 +66,7 @@
     '.haunt-reaching-hands .crack{fill:none;stroke:#d7d0e8;stroke-width:1.4;stroke-linecap:round;opacity:0;filter:drop-shadow(0 0 3px #b5aaff)}' +
     '.stage.haunt-hands-reach .haunt-reaching-hands .crack{opacity:.8;animation:hauntGlassCrack .8s ease-out both}' +
     '@keyframes hauntGlassCrack{0%{opacity:0;stroke-dasharray:0 120}40%{opacity:1}100%{opacity:.55;stroke-dasharray:120 0}}' +
-    '@media(prefers-reduced-motion:reduce){.haunt-reaching-hands,.haunt-reflection-echo{transition:none!important}.haunt-reflection-echo{filter:none!important}.stage.haunt-hands-reach .haunt-reaching-hands .crack{animation:none;opacity:.7}.stage.haunt-hands-reach .haunt-ripple,.stage.haunt-hands-grab .haunt-ripple{animation:none;opacity:.18}.stage.haunt-hands-reach .haunt-edge-grip,.stage.haunt-hands-grab .haunt-edge-grip{animation:none;opacity:1}.stage.haunt-hands-reach .haunt-shatter-lines,.stage.haunt-hands-grab .haunt-shatter-lines{animation:none}.stage.haunt-hands-grab{animation:none}}' +
+    '@media(prefers-reduced-motion:reduce){.haunt-reaching-hands,.haunt-reflection-echo,.haunt-reflection-echo .haunt-face{transition:none!important;animation:none!important}.haunt-reflection-echo{filter:none!important}.stage.haunt-hands-reach .haunt-reaching-hands .crack{animation:none;opacity:.7}.stage.haunt-hands-reach .haunt-ripple,.stage.haunt-hands-grab .haunt-ripple{animation:none;opacity:.18}.stage.haunt-hands-reach .haunt-edge-grip,.stage.haunt-hands-grab .haunt-edge-grip{animation:none;opacity:1}.stage.haunt-hands-reach .haunt-shatter-lines,.stage.haunt-hands-grab .haunt-shatter-lines{animation:none}.stage.haunt-hands-grab{animation:none}}' +
     '.stage.haunt-blackout .haunt-scare-overlay{opacity:0!important}' +
     '.haunt-mist{position:absolute;z-index:5;inset:0;overflow:hidden;pointer-events:none;opacity:0;transition:opacity 1.8s ease;mix-blend-mode:screen;background:linear-gradient(180deg,transparent 35%,#9aa0c00b 58%,#a9a0c01c 75%,transparent 100%)}' +
     '.stage.awake .haunt-mist{opacity:1}' +
