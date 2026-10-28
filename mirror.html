@@ -164,6 +164,27 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
 .candle:nth-child(4) .flame{animation-delay:-.16s;transform:translateX(-50%) scale(.92);animation-duration:.29s}
 @keyframes flameDance{0%{transform:translateX(-50%) rotate(-7deg) scaleX(.82) scaleY(.9);filter:brightness(.82) drop-shadow(0 0 4px #ff792e)}100%{transform:translateX(-50%) rotate(7deg) scaleX(1.08) scaleY(1.12);filter:brightness(1.4) drop-shadow(0 0 9px #ffad48) drop-shadow(0 0 16px #ff4a1cbb)}}
 @media(prefers-reduced-motion:reduce){.flame{animation:none}}
+
+/* Predatory mirror attack: rush at the glass, vanish, then return closer */
+.stage.awake .presence{animation:nightmareStalk 13s ease-in-out infinite!important;transform-origin:50% 92%;will-change:transform,opacity}
+.stage.awake{animation:mirrorAttackGlow 13s ease-in-out infinite}
+@keyframes nightmareStalk{
+  0%,28%,34%{opacity:.94;transform:translate(var(--stalk-x,0px),var(--stalk-y,0px)) scale(1)}
+  37%{opacity:1;transform:translate(calc(var(--stalk-x,0px) - 8px),var(--stalk-y,0px)) scale(1.08)}
+  40%{opacity:1;transform:translate(calc(var(--stalk-x,0px) - 18px),calc(var(--stalk-y,0px) + 4px)) scale(1.48)}
+  43%{opacity:1;transform:translate(calc(var(--stalk-x,0px) - 26px),calc(var(--stalk-y,0px) + 8px)) scale(2.05)}
+  46%,53%{opacity:0;transform:translate(18px,12px) scale(.18)}
+  57%{opacity:0;transform:translate(-12px,0) scale(.2)}
+  61%{opacity:1;transform:translate(var(--stalk-x,0px),var(--stalk-y,0px)) scale(1.55)}
+  66%{opacity:.98;transform:translate(var(--stalk-x,0px),var(--stalk-y,0px)) scale(1.24)}
+  73%,100%{opacity:.9;transform:translate(var(--stalk-x,0px),var(--stalk-y,0px)) scale(1)}
+}
+@keyframes mirrorAttackGlow{
+  0%,35%,70%,100%{box-shadow:0 0 0 2px #09070d,0 0 0 5px #64556f,0 0 0 8px #17131f,0 0 38px #8d6bd155,inset 0 0 0 3px #d5c5e21c}
+  42%,46%{box-shadow:0 0 0 2px #25000a,0 0 0 5px #9b001e,0 0 0 8px #25000a,0 0 52px #ff002f88,inset 0 0 25px #ff002f33}
+}
+@media(prefers-reduced-motion:reduce){.stage.awake .presence,.stage.awake{animation:none!important;will-change:auto}}
+
 </style>
 </head>
 <body>
@@ -252,6 +273,6 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
  stop.addEventListener('click',()=>{stopMotionWatch();if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;stage.classList.remove('active','awake','motion-ripple');awake=false;start.textContent='Enter the mirror';reveal.textContent='Reveal presence';reveal.disabled=true;stop.disabled=true;status.textContent='Camera closed.';});
 })();
 </script>
-<script src="./mirror-haunting.js?v=18" defer></script>
+<script src="./mirror-haunting.js?v=19" defer></script>
 </body>
 </html>
