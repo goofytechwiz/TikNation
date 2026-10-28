@@ -76,7 +76,7 @@
     dustCtx.setTransform(dpr,0,0,dpr,0,0);
     dustCtx.globalCompositeOperation='destination-out';
     dustCtx.beginPath();
-    dustCtx.arc(x-rect.left,y-rect.top,31,0,Math.PI*2);
+    dustCtx.arc(x-rect.left,y-rect.top,38,0,Math.PI*2);
     dustCtx.fill();
     dustCtx.restore();
   }
@@ -164,7 +164,7 @@
       for(let i=1;i<=steps;i++) eraseDust(lastPoint.x+dx*i/steps,lastPoint.y+dy*i/steps);
     } else eraseDust(x,y);
     lastPoint={x,y};
-    if (wiped > 1200) {
+    if (wiped > 520) {
       dirty=false; wiped=0; lastPoint=null;
       dustCtx.clearRect(0,0,dustCanvas.width,dustCanvas.height);
       stage.classList.remove('haunt-dirty'); stage.style.touchAction = ''; stage.classList.add('haunt-hand');
