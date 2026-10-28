@@ -106,7 +106,16 @@
   document.getElementById('hauntDust').addEventListener('click', () => {
     const button = document.getElementById('hauntDust');
     if (dirty) {
-      say('Wiping mode is ready — drag your finger across the mirror. You only need to tap this button once.');
+      // The button itself completes the wipe in one tap; dragging is optional.
+      dirty = false;
+      wiped = 0;
+      lastPoint = null;
+      stage.classList.remove('haunt-dirty');
+      stage.classList.add('haunt-hand');
+      stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
+      button.textContent = 'Gather the dust';
+      say('The dust clears in one sweep. A handprint appears from the other side of the glass…');
+      creak();
       return;
     }
     dirty = true;
@@ -116,7 +125,7 @@
     stage.classList.add('haunt-dirty');
     stage.classList.remove('haunt-hand');
     button.textContent = 'Wipe the glass';
-    say('Dust gathers across the glass. Now drag your finger across the mirror to wipe it away.');
+    say('Dust gathers across the glass. Tap “Wipe the glass” once to clear it, or swipe the mirror yourself.');
     creak();
   });
 
