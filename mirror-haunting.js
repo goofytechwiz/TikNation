@@ -263,6 +263,18 @@
   let audioContext = null, sequenceRunning = false, wiped = 0, dirty = false, wipeStartedAt = 0, revealTimer = null;
   const WIPE_MIN_DURATION_MS = 20000;
   function say(text) { if (status) status.textContent = text; }
+  function speakEvil(text, pitch = 0.58, rate = 0.78) {
+    if (!soundEnabled || !('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const line = new SpeechSynthesisUtterance(text);
+      line.lang = 'en-US'; line.pitch = pitch; line.rate = rate; line.volume = 0.9;
+      const voices = window.speechSynthesis.getVoices();
+      const voice = voices.find(v => /^en(-|_)/i.test(v.lang) && /deep|male|daniel|david|mark|guy/i.test(v.name)) || voices.find(v => /^en(-|_)/i.test(v.lang));
+      if (voice) line.voice = voice;
+      window.speechSynthesis.speak(line);
+    } catch (_) {}
+  }
   function getAudio() {
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return null;
@@ -470,24 +482,24 @@
     document.getElementById('hauntAwaken').disabled = true;
     document.getElementById('hauntAwaken').textContent = 'The mirror is awake…';
     document.getElementById('hauntDust').textContent = 'Wipe the glass';
-    say('The glass is clouding over. Listen carefully…'); creak();
+    say('The glass is clouding over. Listen carefully…'); speakEvil('Can you hear me?', 0.52, 0.72); creak();
     await wait(reduceMotion ? 600 : 2600); if (!sequenceRunning) return;
-    say('Something is moving behind the dust… footsteps are getting closer.'); stage.classList.add('haunt-creak'); footsteps(); creak();
+    say('Something is moving behind the dust… footsteps are getting closer.'); speakEvil('You should never have opened the mirror.', 0.48, 0.72); stage.classList.add('haunt-creak'); footsteps(); creak();
     await wait(reduceMotion ? 400 : 1800); if (!sequenceRunning) return;
     stage.classList.add('haunt-flicker'); say('The mirror is flickering…');
     await wait(reduceMotion ? 500 : 1400); if (!sequenceRunning) return;
-    stage.classList.add('haunt-warning'); say("Don't look behind you."); whisper();
+    stage.classList.add('haunt-warning'); say("Don't look behind you."); speakEvil("Don't turn around.", 0.42, 0.7); whisper();
     await wait(reduceMotion ? 500 : 2100); if (!sequenceRunning) return;
-    stage.classList.add('haunt-hands-reach'); say('Something is reaching through the glass…'); creak(); breath();
+    stage.classList.add('haunt-hands-reach'); say('Something is reaching through the glass…'); speakEvil('Let me out.', 0.5, 0.68); creak(); breath();
     await wait(reduceMotion ? 350 : 1250); if (!sequenceRunning) return;
-    stage.classList.remove('haunt-warning'); stage.classList.add('haunt-hands-grab','haunt-lunge','haunt-redflash'); hit(); say('IT IS REACHING FOR YOU. IT GOT OUT.');
+    stage.classList.remove('haunt-warning'); stage.classList.add('haunt-hands-grab','haunt-lunge','haunt-redflash'); hit(); say('IT IS REACHING FOR YOU. IT GOT OUT.'); speakEvil('GET OUT!', 0.35, 0.92);
     await wait(reduceMotion ? 600 : 1100); if (!sequenceRunning) return;
     stage.classList.add('haunt-blackout');
     await wait(reduceMotion ? 700 : 1800); if (!sequenceRunning) return;
     stage.classList.remove('haunt-blackout','haunt-lunge','haunt-redflash','haunt-flicker','haunt-creak','haunt-hands-reach','haunt-hands-grab');
     stage.classList.add('haunt-hand'); stage.classList.remove('haunt-dirty');
     message.textContent = 'IT’S STILL IN THERE'; stage.classList.add('haunt-warning');
-    say('A final creak echoes from the darkness. IT’S STILL IN THERE.'); creak();
+    say('A final creak echoes from the darkness. IT’S STILL IN THERE.'); speakEvil('I am still here.', 0.38, 0.62); creak();
     await wait(3000);
     stage.classList.remove('haunt-warning'); sequenceRunning = false;
     document.getElementById('hauntAwaken').disabled = false;
