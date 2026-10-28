@@ -148,7 +148,24 @@
   }
   wipe.addEventListener('pointerdown', e => { lastPoint = null; if (wipe.setPointerCapture) wipe.setPointerCapture(e.pointerId); wipeAt(e.clientX,e.clientY); });
   wipe.addEventListener('pointermove', e => { if (e.buttons || e.pointerType === 'touch') wipeAt(e.clientX,e.clientY); });
-  wipe.addEventListener('pointerup', () => { lastPoint = null; });
+  function finishWipe() {
+    if (!dirty) return;
+    dirty = false;
+    wiped = 0;
+    lastPoint = null;
+    stage.classList.remove('haunt-dirty');
+    stage.classList.add('haunt-hand');
+    stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
+    document.getElementById('hauntDust').textContent = 'Gather the dust';
+    say('The dust clears in one sweep. A handprint appears from the other side of the glass…');
+    creak();
+    setTimeout(() => { if (!sequenceRunning) say('Something is standing on the other side.'); }, 2300);
+  }
+  wipe.addEventListener('pointerup', () => {
+    // A single completed swipe/touch is enough; no repeated rubbing required.
+    if (dirty) finishWipe();
+    lastPoint = null;
+  });
   wipe.addEventListener('pointercancel', () => { lastPoint = null; });
 
   document.getElementById('hauntAwaken').addEventListener('click', async () => {
