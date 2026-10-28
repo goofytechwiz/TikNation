@@ -286,6 +286,11 @@ button.primary{border-color:#79f0ff99;background:linear-gradient(115deg,#133543,
 #start:hover{background:linear-gradient(110deg,#b9f7ff,#d5c8ff 58%,#ffe0ff);box-shadow:0 0 0 4px #78eaff33,0 0 38px #61eaffb8,0 8px 24px #0009}
 #start:focus-visible{outline:3px solid #fff;outline-offset:4px}
 @media(max-width:520px){#start{min-height:64px;padding:18px 14px;font-size:1.05rem;grid-column:1/-1}}
+.controls{position:relative;z-index:10;max-width:780px;margin:24px auto 18px;gap:14px}
+.controls #start{display:block!important;width:100%;min-height:82px;padding:22px 18px;font-size:1.3rem;letter-spacing:.06em;border:3px solid #ffffff;background:#aef6ff;color:#080510;box-shadow:0 0 0 5px #aef6ff35,0 0 45px #55eaff,0 0 90px #a64dff66,0 8px 25px #000!important;opacity:1!important;filter:none!important;text-shadow:none}
+.controls #start:before{content:"✦  ";font-size:1.1em}
+.controls #start:after{content:"  ✦";font-size:1.1em}
+@media(max-width:520px){.controls{margin:22px 4px 18px;gap:12px}.controls #start{min-height:86px;font-size:1.25rem;padding:22px 10px;border-radius:16px}}
 .status{max-width:780px;margin:15px auto 0;padding:12px 15px;border:1px solid #8d7ca82b;border-radius:10px;background:#0b0a13c9;color:#bfb8d2;font-size:.85rem;text-align:center}
 .note{max-width:780px;margin:12px auto 0;color:#88839c;font-size:.76rem;text-align:center}
 .stage.awake{box-shadow:0 0 0 2px #20040d,0 0 0 5px #a0002a,0 0 0 8px #1c0712,0 0 55px #ff002f88,0 0 110px #ff002f28,inset 0 0 38px #000}
@@ -403,6 +408,6 @@ button.primary{border-color:#79f0ff99;background:linear-gradient(115deg,#133543,
  stop.addEventListener('click',()=>{stopMotionWatch();if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;stage.classList.remove('active','awake','motion-ripple');awake=false;start.textContent='Enter the mirror';reveal.textContent='Reveal presence';reveal.disabled=true;stop.disabled=true;status.textContent='Camera closed.';});
 })();
 </script>
-<script src="./mirror-haunting.js?v=23" defer></script>
+<script src="./mirror-haunting.js?v=24" defer></script>
 </body>
 </html>
