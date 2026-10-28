@@ -398,7 +398,7 @@
     stage.classList.remove('haunt-hand');
     button.textContent = 'Keep wiping…';
     say('Rub the mirror with your finger. Lift and start another stroke whenever you need — progress will stay.');
-    creak();
+    // Keep the Gather the dust button silent; horror audio starts only at the reveal.
   });
 
   let lastPoint = null;
