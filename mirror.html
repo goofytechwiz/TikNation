@@ -241,6 +241,14 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
 @media(prefers-reduced-motion:reduce){.stage.awake .presence,.stage.awake{animation:none!important;will-change:auto}}
 
 
+/* Haunted light in the background — CSS only */
+html:before{content:"";position:fixed;inset:-15%;z-index:-2;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,#ff18351c 0,transparent 24%),radial-gradient(ellipse at 18% 58%,#a400ff20 0,transparent 30%),radial-gradient(ellipse at 82% 35%,#12dfff18 0,transparent 28%);filter:blur(24px);animation:hauntedAura 9s ease-in-out infinite alternate}
+@keyframes hauntedAura{0%{transform:translate(-1%,1%) scale(.98);opacity:.65}100%{transform:translate(1%,-1%) scale(1.05);opacity:1}}
+.stage:after{animation:omenPulse 5s ease-in-out infinite}
+@keyframes omenPulse{0%,100%{opacity:.55}50%{opacity:1;box-shadow:inset 0 0 28px #ff214b25,0 0 18px #a994ff22}}
+.stage.awake:after{box-shadow:inset 0 0 36px #ff214b55,0 0 36px #ff214b66;animation:omenPulse 1.5s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){html:before,.stage:after{animation:none!important}}
+
 /* AFTER DARK cinematic polish pass */
 :root{color-scheme:dark;--cyan:#77f3ff;--violet:#b49aff;--blood:#ff3154}
 html{background:#030309;scroll-behavior:smooth}
