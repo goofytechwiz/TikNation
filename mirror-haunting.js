@@ -381,8 +381,18 @@
   function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
   const dustButton = document.getElementById('hauntDust');
-  // Keep this control isolated from any parent click-to-sound handlers.
-  dustButton.addEventListener('click', event => { event.stopPropagation(); }, true);
+  // Gather the dust is a silent interaction: stop any audio that may have been
+  // started by another mirror/page handler, and block click handlers on this control.
+  dustButton.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (typeof event.stopImmediatePropagation === 'function') event.stopImmediatePropagation();
+    try { if (audioContext && audioContext.state !== 'closed') audioContext.suspend(); } catch (_) {}
+    try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (_) {}
+    document.querySelectorAll('audio, video').forEach(media => {
+      try { media.pause(); media.muted = true; media.currentTime = 0; } catch (_) {}
+    });
+  }, true);
   dustButton.addEventListener('click', () => {
     const button = dustButton;
     if (dirty) {
