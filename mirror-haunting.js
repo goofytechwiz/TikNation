@@ -39,6 +39,10 @@
     '.haunt-reflection-echo .haunt-face{transition-delay:.28s!important}' +
     '.stage.haunt-warning .haunt-reflection-echo{animation:hauntEchoGlitch .22s steps(2,end) 4}' +
     '.stage.haunt-hands-grab .haunt-reflection-echo .haunt-face{transition-delay:.08s!important}' +
+    '.stage.haunt-hands-reach .haunt-reflection-echo .haunt-face{animation:hauntEchoBreath 2.4s ease-in-out .45s infinite alternate}' +
+    '.stage.haunt-hands-grab .haunt-reflection-echo .haunt-face{animation:hauntEchoFlare .28s ease-out both}' +
+    '@keyframes hauntEchoBreath{0%{filter:drop-shadow(0 0 3px #5b1638);opacity:.45}100%{filter:drop-shadow(0 0 16px #c0003a) brightness(1.25);opacity:1}}' +
+    '@keyframes hauntEchoFlare{0%{filter:drop-shadow(0 0 5px #5b1638)}55%{filter:drop-shadow(0 0 24px #ff1744) brightness(1.8)}100%{filter:drop-shadow(0 0 10px #a00035) brightness(1.1)}}' +
     '@keyframes hauntEchoGlitch{0%,100%{filter:blur(3px) drop-shadow(0 0 12px #5c1439)}50%{filter:blur(1px) drop-shadow(0 0 20px #c10038) brightness(1.8)}}' +
     '.stage.haunt-blackout .haunt-reflection-echo{opacity:0!important}' +
     '.stage.haunt-hands-reach .haunt-reaching-hands{opacity:1;transform:translateY(3%) scale(1)}' +
