@@ -59,6 +59,18 @@
     '@keyframes hauntGlassCrack{0%{opacity:0;stroke-dasharray:0 120}40%{opacity:1}100%{opacity:.55;stroke-dasharray:120 0}}' +
     '@media(prefers-reduced-motion:reduce){.haunt-reaching-hands{transition:none}.stage.haunt-hands-reach .haunt-reaching-hands .crack{animation:none;opacity:.7}.stage.haunt-hands-reach .haunt-ripple,.stage.haunt-hands-grab .haunt-ripple{animation:none;opacity:.18}.stage.haunt-hands-reach .haunt-edge-grip,.stage.haunt-hands-grab .haunt-edge-grip{animation:none;opacity:1}.stage.haunt-hands-reach .haunt-shatter-lines,.stage.haunt-hands-grab .haunt-shatter-lines{animation:none}.stage.haunt-hands-grab{animation:none}}' +
     '.stage.haunt-blackout .haunt-scare-overlay{opacity:0!important}' +
+    '.haunt-presence-light{position:absolute;z-index:6;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle 110px at var(--haunt-x,50%) var(--haunt-y,48%),#9b6dff22,transparent 72%);mix-blend-mode:screen;transition:opacity .5s ease}' +
+    '.stage.awake .haunt-presence-light{opacity:1}' +
+    '.haunt-presence-light:after{content:"";position:absolute;left:var(--haunt-x,50%);top:var(--haunt-y,48%);width:18px;height:18px;transform:translate(-50%,-50%);border-radius:50%;background:#e7d7ff;opacity:0;box-shadow:0 0 16px 7px #a56aff66;transition:opacity .25s ease}' +
+    '.stage.awake .haunt-presence-light:after{opacity:.38}' +
+    '.haunt-omen{position:absolute;z-index:8;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse 14% 30% at 50% 47%,#030207e8 0 35%,transparent 78%);filter:blur(5px);transform:scale(.7);transition:opacity .25s ease,transform .6s ease}' +
+    '.stage.haunt-warning .haunt-omen{opacity:.85;transform:scale(1)}' +
+    '.stage.haunt-lunge .haunt-omen{opacity:0;transform:scale(1.8)}' +
+    '.haunt-omen:before,.haunt-omen:after{content:"";position:absolute;top:40%;width:9px;height:4px;border-radius:50%;background:#ff123d;box-shadow:0 0 10px 3px #ff003b;opacity:0}' +
+    '.haunt-omen:before{left:47%;transform:rotate(-8deg)}.haunt-omen:after{right:47%;transform:rotate(8deg)}' +
+    '.stage.haunt-warning .haunt-omen:before,.stage.haunt-warning .haunt-omen:after{opacity:.95;animation:omenBlink 3.2s steps(2,end) infinite}' +
+    '@keyframes omenBlink{0%,42%,48%,100%{opacity:.95}44%,46%{opacity:0}}' +
+    '@media(prefers-reduced-motion:reduce){.haunt-presence-light,.haunt-omen{transition:none}.stage.haunt-warning .haunt-omen:before,.stage.haunt-warning .haunt-omen:after{animation:none}}' +
     '.haunt-aura{position:absolute;z-index:7;inset:0;pointer-events:none;overflow:hidden;opacity:0;transition:opacity 1.4s ease;background:radial-gradient(ellipse at 50% 50%,transparent 40%,#10001455 72%,#020106cc 100%)}' +
     '.stage.awake .haunt-aura{opacity:1}' +
     '.haunt-aura:before{content:"";position:absolute;inset:5% 7%;border:1px solid #8c72b833;border-radius:48% 48% 3px 3px;box-shadow:inset 0 0 34px #5e214022,0 0 28px #a6003822;animation:hauntAuraPulse 5s ease-in-out infinite}' +
@@ -97,6 +109,26 @@
     '<g fill="#d5c6cf" opacity=".72"><path d="M42 325 L49 330 43 334Z"/><path d="M79 301 L85 309 79 312Z"/><path d="M115 295 L120 304 114 307Z"/><path d="M318 325 L311 330 317 334Z"/><path d="M281 301 L275 309 281 312Z"/><path d="M245 295 L240 304 246 307Z"/></g>';
   stage.appendChild(reachingHands);
 
+  const presenceLight = document.createElement('div');
+  presenceLight.className = 'haunt-presence-light';
+  presenceLight.setAttribute('aria-hidden', 'true');
+  stage.appendChild(presenceLight);
+  const omen = document.createElement('div');
+  omen.className = 'haunt-omen';
+  omen.setAttribute('aria-hidden', 'true');
+  stage.appendChild(omen);
+  let hauntPointerFrame = 0;
+  stage.addEventListener('pointermove', e => {
+    if (hauntPointerFrame) return;
+    hauntPointerFrame = requestAnimationFrame(() => {
+      const rect = stage.getBoundingClientRect();
+      const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+      const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+      stage.style.setProperty('--haunt-x', x.toFixed(1) + '%');
+      stage.style.setProperty('--haunt-y', y.toFixed(1) + '%');
+      hauntPointerFrame = 0;
+    });
+  }, {passive:true});
   const aura = document.createElement('div');
   aura.className = 'haunt-aura';
   aura.setAttribute('aria-hidden', 'true');
