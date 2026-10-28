@@ -106,16 +106,8 @@
   document.getElementById('hauntDust').addEventListener('click', () => {
     const button = document.getElementById('hauntDust');
     if (dirty) {
-      // The button itself completes the wipe in one tap; dragging is optional.
-      dirty = false;
-      wiped = 0;
-      lastPoint = null;
-      stage.classList.remove('haunt-dirty');
-      stage.classList.add('haunt-hand');
-      stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
-      button.textContent = 'Gather the dust';
-      say('The dust clears in one sweep. A handprint appears from the other side of the glass…');
-      creak();
+      // This button must never erase progress. Keep rubbing the glass to finish.
+      say('Keep rubbing the mirror with your finger. Your wiping marks will stay until the glass is clean.');
       return;
     }
     dirty = true;
@@ -124,8 +116,8 @@
     stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
     stage.classList.add('haunt-dirty');
     stage.classList.remove('haunt-hand');
-    button.textContent = 'Wipe the glass';
-    say('Dust gathers across the glass. Tap “Wipe the glass” once to clear it, or swipe the mirror yourself.');
+    button.textContent = 'Keep wiping…';
+    say('Rub the mirror with your finger. Lift and start another stroke whenever you need — progress will stay.');
     creak();
   });
 
@@ -138,7 +130,7 @@
     mark.dataset.hauntWipeMark = '1';
     mark.style.cssText = 'position:absolute;z-index:10;pointer-events:none;left:'+(x-rect.left)+'px;top:'+(y-rect.top)+'px;width:62px;height:62px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#111018aa 0,#11101855 38%,transparent 72%);';
     stage.appendChild(mark);
-    if (wiped > 1800) {
+    if (wiped > 4200) {
       stage.classList.remove('haunt-dirty'); stage.classList.add('haunt-hand'); dirty = false;
       stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(wipeMark => wipeMark.remove());
       document.getElementById('hauntDust').textContent = 'Gather the dust';
