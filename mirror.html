@@ -165,6 +165,37 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
 @keyframes flameDance{0%{transform:translateX(-50%) rotate(-7deg) scaleX(.82) scaleY(.9);filter:brightness(.82) drop-shadow(0 0 4px #ff792e)}100%{transform:translateX(-50%) rotate(7deg) scaleX(1.08) scaleY(1.12);filter:brightness(1.4) drop-shadow(0 0 9px #ffad48) drop-shadow(0 0 16px #ff4a1cbb)}}
 @media(prefers-reduced-motion:reduce){.flame{animation:none}}
 
+/* Rework the face toward the original Living Shadow creature: black eyes, bleeding red trails, cracked shadow markings */
+.stage.awake .head{
+ background:radial-gradient(ellipse at 29% 22%,#403843 0,#211a27 26%,#0a080f 64%,#010102 100%);
+ box-shadow:inset 8px 3px 20px #c3b2d01a,inset -13px -4px 24px #000,0 0 24px #070008,0 0 18px #6b001866;
+}
+.stage.awake .head:before{
+ inset:5% 5% 3%;
+ background:
+ linear-gradient(118deg,transparent 0 32%,#09040a 32.5% 34%,transparent 34.5% 100%),
+ linear-gradient(72deg,transparent 0 62%,#16030b 62.5% 64%,transparent 64.5% 100%),
+ linear-gradient(164deg,transparent 0 48%,#320511 48.5% 49.5%,transparent 50% 100%),
+ linear-gradient(98deg,transparent 0 20%,#0b060d 20.5% 22%,transparent 22.5% 100%),
+ radial-gradient(ellipse at 50% 62%,#000 0 14%,transparent 35%),
+ linear-gradient(105deg,#b8a9c017 0%,transparent 28%,#000a 63%,#000 100%);
+ clip-path:polygon(0 0,100% 0,91% 35%,79% 44%,87% 57%,70% 65%,63% 100%,51% 82%,40% 100%,31% 68%,12% 59%,21% 43%,8% 34%);
+}
+.stage.awake .head:after{
+ left:4%;top:31%;width:92%;height:55%;border-radius:0;
+ background:
+ radial-gradient(ellipse 17% 12% at 27% 22%,#ff162c 0 20%,#080107 52%,transparent 74%),
+ radial-gradient(ellipse 17% 12% at 74% 22%,#ff162c 0 20%,#080107 52%,transparent 74%),
+ radial-gradient(ellipse 8% 7% at 27% 22%,#050207 0 60%,transparent 75%),
+ radial-gradient(ellipse 8% 7% at 74% 22%,#050207 0 60%,transparent 75%),
+ linear-gradient(100deg,transparent 0 21%,#a0001d 22% 23%,#ff1832 23.5% 24%,#23030b 25% 27%,transparent 28%),
+ linear-gradient(80deg,transparent 0 72%,#8e001b 73% 74%,#ff1832 74.5% 75%,#23030b 76% 78%,transparent 79%),
+ radial-gradient(ellipse 29% 20% at 51% 71%,#010103 0 65%,#26000b 68%,transparent 80%),
+ linear-gradient(90deg,transparent 0 48%,#010102 49% 51%,transparent 52% 100%);
+ filter:drop-shadow(0 0 7px #ff002f);opacity:.98;transform:scaleX(1);animation:nightmareFace 3.1s steps(1,end) infinite;
+}
+.stage.awake .hair{background:repeating-linear-gradient(82deg,#010102 0 3px,#17111d 4px 6px,#020204 7px 11px);filter:drop-shadow(0 0 7px #17000a) drop-shadow(0 5px 8px #000)}
+
 /* Predatory mirror attack: rush at the glass, vanish, then return closer */
 .stage.awake .presence{animation:nightmareStalk 13s ease-in-out infinite!important;transform-origin:50% 92%;will-change:transform,opacity}
 .stage.awake{animation:mirrorAttackGlow 13s ease-in-out infinite}
