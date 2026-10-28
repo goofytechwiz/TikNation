@@ -102,7 +102,7 @@
   const status = document.getElementById('status');
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let audioContext = null, sequenceRunning = false, wiped = 0, dirty = false, wipeStartedAt = 0, revealTimer = null;
-  const WIPE_MIN_DURATION_MS = 12000;
+  const WIPE_MIN_DURATION_MS = 20000;
   function say(text) { if (status) status.textContent = text; }
   function getAudio() {
     const AC = window.AudioContext || window.webkitAudioContext;
@@ -170,7 +170,7 @@
     if (wiped > 520 && !revealTimer) {
       const remaining = Math.max(0, WIPE_MIN_DURATION_MS - (Date.now() - wipeStartedAt));
       say(remaining > 0
-        ? 'Keep wiping… the glass is slowly clearing. You have time.'
+        ? 'Keep wiping… the glass is slowly clearing. You have at least 20 seconds to wipe.'
         : 'The dust clears away. A handprint appears from the other side of the glass…');
       revealTimer = setTimeout(() => {
         revealTimer = null;
