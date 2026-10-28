@@ -22,6 +22,10 @@
     '.stage.haunt-creak:before{animation:frameCreak .16s steps(2,end) 8}@keyframes frameCreak{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}' +
     '.haunt-message{position:absolute;z-index:12;left:8%;right:8%;top:43%;text-align:center;font-weight:900;letter-spacing:.12em;font-size:clamp(1rem,4vw,1.6rem);color:#e8e1f5;text-shadow:0 0 10px #c1aaff,0 2px 6px #000;opacity:0;transform:scale(.96);pointer-events:none}' +
     '.stage.haunt-warning .haunt-message{opacity:1;animation:hauntText 2.8s ease both}@keyframes hauntText{0%,100%{opacity:0}15%,78%{opacity:1}50%{letter-spacing:.17em;transform:scale(1.03)}}' +
+    '.stage.haunt-warning .haunt-message{color:#fff4f7;text-shadow:0 0 5px #fff,0 0 16px #ff174c,0 0 34px #d00032,0 3px 8px #000;animation:hauntText 2.8s ease both,warningPulse 1.1s ease-in-out infinite}' +
+    '@keyframes warningPulse{0%,100%{filter:brightness(.9);text-shadow:0 0 5px #fff,0 0 14px #ff174c,0 0 28px #d00032,0 3px 8px #000}50%{filter:brightness(1.35);text-shadow:0 0 8px #fff,0 0 22px #ff174c,0 0 44px #d00032,0 3px 8px #000}}' +
+    '.stage.haunt-redflash:before{animation:redWarningFlash .22s ease-out 1;background:radial-gradient(ellipse at 50% 50%,#ff174c66 0, #a0002430 38%,transparent 75%)}' +
+    '@keyframes redWarningFlash{0%{opacity:0}35%{opacity:1}100%{opacity:0}}' +
     '.stage.haunt-lunge{animation:hauntLunge .85s cubic-bezier(.2,.8,.2,1) both}.stage.haunt-lunge .presence{opacity:1!important;transform:translateY(8%) scale(1.85)!important;filter:contrast(1.5) brightness(1.45)!important;transition:transform .65s cubic-bezier(.1,.8,.2,1),filter .2s}.stage.haunt-lunge .head:after{opacity:1;filter:brightness(2)}' +
     '@keyframes hauntLunge{0%{transform:translate(0,0) scale(1);filter:brightness(1)}18%{transform:translate(-2px,1px) scale(1.015);filter:brightness(.2)}38%{transform:translate(2px,-1px) scale(1.025);filter:brightness(1.8)}62%{transform:translate(0,0) scale(1.12);filter:brightness(1.4)}100%{transform:translate(0,0) scale(1);filter:brightness(.05)}}' +
     '.stage.haunt-blackout:after{background:#020106;inset:0;border:0;border-radius:0;box-shadow:none;animation:hauntBlackout 3.6s ease both}@keyframes hauntBlackout{0%,15%{opacity:1}35%,70%{opacity:.92}100%{opacity:1}}' +
@@ -473,9 +477,9 @@
     stage.classList.add('haunt-flicker'); say('The mirror is flickering…');
     await wait(reduceMotion ? 500 : 1400); if (!sequenceRunning) return;
     stage.classList.add('haunt-warning'); say("Don't look behind you."); whisper();
-    await wait(reduceMotion ? 500 : 1800); if (!sequenceRunning) return;
+    await wait(reduceMotion ? 500 : 2100); if (!sequenceRunning) return;
     stage.classList.add('haunt-hands-reach'); say('Something is reaching through the glass…'); creak(); breath();
-    await wait(reduceMotion ? 350 : 1000); if (!sequenceRunning) return;
+    await wait(reduceMotion ? 350 : 1250); if (!sequenceRunning) return;
     stage.classList.remove('haunt-warning'); stage.classList.add('haunt-hands-grab','haunt-lunge','haunt-redflash'); hit(); say('IT IS REACHING FOR YOU. IT GOT OUT.');
     await wait(reduceMotion ? 600 : 1100); if (!sequenceRunning) return;
     stage.classList.add('haunt-blackout');
