@@ -138,7 +138,7 @@
     mark.dataset.hauntWipeMark = '1';
     mark.style.cssText = 'position:absolute;z-index:10;pointer-events:none;left:'+(x-rect.left)+'px;top:'+(y-rect.top)+'px;width:62px;height:62px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#111018aa 0,#11101855 38%,transparent 72%);';
     stage.appendChild(mark);
-    if (wiped > 360) {
+    if (wiped > 1800) {
       stage.classList.remove('haunt-dirty'); stage.classList.add('haunt-hand'); dirty = false;
       stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(wipeMark => wipeMark.remove());
       document.getElementById('hauntDust').textContent = 'Gather the dust';
@@ -162,8 +162,7 @@
     setTimeout(() => { if (!sequenceRunning) say('Something is standing on the other side.'); }, 2300);
   }
   wipe.addEventListener('pointerup', () => {
-    // A single completed swipe/touch is enough; no repeated rubbing required.
-    if (dirty) finishWipe();
+    // Keep all progress between strokes. Only finish after enough wiping has accumulated.
     lastPoint = null;
   });
   wipe.addEventListener('pointercancel', () => { lastPoint = null; });
