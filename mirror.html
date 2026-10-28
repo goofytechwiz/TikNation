@@ -282,6 +282,10 @@ button:hover:not(:disabled){transform:translateY(-2px);border-color:#7ceeff;box-
 button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
 button:disabled{opacity:.4;filter:saturate(.45)}
 button.primary{border-color:#79f0ff99;background:linear-gradient(115deg,#133543,#302044 72%,#180f24);box-shadow:0 0 22px #5ce9ff16,inset 0 1px #ffffff14}
+#start{min-height:58px;padding:16px 22px;border:2px solid #b7f8ff;background:linear-gradient(110deg,#7ceeff,#b8a4ff 58%,#f2c7ff);color:#090713;font-size:1rem;font-weight:900;letter-spacing:.035em;text-shadow:0 1px #ffffff80;box-shadow:0 0 0 3px #78eaff22,0 0 28px #61eaff8c,0 8px 24px #0009;position:relative;z-index:2}
+#start:hover{background:linear-gradient(110deg,#b9f7ff,#d5c8ff 58%,#ffe0ff);box-shadow:0 0 0 4px #78eaff33,0 0 38px #61eaffb8,0 8px 24px #0009}
+#start:focus-visible{outline:3px solid #fff;outline-offset:4px}
+@media(max-width:520px){#start{min-height:64px;padding:18px 14px;font-size:1.05rem;grid-column:1/-1}}
 .status{max-width:780px;margin:15px auto 0;padding:12px 15px;border:1px solid #8d7ca82b;border-radius:10px;background:#0b0a13c9;color:#bfb8d2;font-size:.85rem;text-align:center}
 .note{max-width:780px;margin:12px auto 0;color:#88839c;font-size:.76rem;text-align:center}
 .stage.awake{box-shadow:0 0 0 2px #20040d,0 0 0 5px #a0002a,0 0 0 8px #1c0712,0 0 55px #ff002f88,0 0 110px #ff002f28,inset 0 0 38px #000}
@@ -399,6 +403,6 @@ button.primary{border-color:#79f0ff99;background:linear-gradient(115deg,#133543,
  stop.addEventListener('click',()=>{stopMotionWatch();if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;stage.classList.remove('active','awake','motion-ripple');awake=false;start.textContent='Enter the mirror';reveal.textContent='Reveal presence';reveal.disabled=true;stop.disabled=true;status.textContent='Camera closed.';});
 })();
 </script>
-<script src="./mirror-haunting.js?v=22" defer></script>
+<script src="./mirror-haunting.js?v=23" defer></script>
 </body>
 </html>
