@@ -131,6 +131,7 @@
     return audioContext;
   }
   function creak() {
+    if (!soundEnabled) return;
     const ctx = getAudio(); if (!ctx) return;
     const now = ctx.currentTime, length = 1.55;
     const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * length), ctx.sampleRate);
@@ -146,11 +147,56 @@
     noise.start(now); noise.stop(now + length); osc.start(now); osc.stop(now + 1.4);
   }
   function hit() {
+    if (!soundEnabled) return;
     const ctx = getAudio(); if (!ctx) return;
     const now = ctx.currentTime, osc = ctx.createOscillator(), gain = ctx.createGain();
     osc.type = 'sawtooth'; osc.frequency.setValueAtTime(115, now); osc.frequency.exponentialRampToValueAtTime(38, now + .42);
     gain.gain.setValueAtTime(.001, now); gain.gain.exponentialRampToValueAtTime(.36, now + .025); gain.gain.exponentialRampToValueAtTime(.001, now + .62);
     osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + .65);
+  }
+
+  function whisper() {
+    if (!soundEnabled) return;
+    const ctx = getAudio(); if (!ctx) return;
+    const now = ctx.currentTime, length = 2.1;
+    const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * length), ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      const fadeIn = Math.min(1, i / (ctx.sampleRate * .25));
+      const fadeOut = Math.min(1, (data.length - i) / (ctx.sampleRate * .35));
+      data[i] = (Math.random() * 2 - 1) * fadeIn * fadeOut * .22;
+    }
+    const source = ctx.createBufferSource(); source.buffer = buffer;
+    const filter = ctx.createBiquadFilter(); filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(900, now);
+    filter.frequency.linearRampToValueAtTime(1450, now + .7);
+    filter.frequency.linearRampToValueAtTime(620, now + length);
+    filter.Q.value = 1.4;
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(.001, now);
+    gain.gain.linearRampToValueAtTime(.12, now + .35);
+    gain.gain.setValueAtTime(.09, now + 1.1);
+    gain.gain.exponentialRampToValueAtTime(.001, now + length);
+    source.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+    source.start(now); source.stop(now + length);
+  }
+
+  function footsteps() {
+    if (!soundEnabled) return;
+    const ctx = getAudio(); if (!ctx) return;
+    [0, .48, .96, 1.44].forEach((offset, index) => {
+      const now = ctx.currentTime + offset;
+      const osc = ctx.createOscillator(), gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 190;
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(index % 2 ? 68 : 82, now);
+      osc.frequency.exponentialRampToValueAtTime(34, now + .19);
+      gain.gain.setValueAtTime(.001, now);
+      gain.gain.exponentialRampToValueAtTime(index === 3 ? .17 : .11, now + .025);
+      gain.gain.exponentialRampToValueAtTime(.001, now + .24);
+      osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+      osc.start(now); osc.stop(now + .26);
+    });
   }
 
   let soundEnabled = true, fxMode = 0;
@@ -250,17 +296,17 @@
     document.getElementById('hauntDust').textContent = 'Wipe the glass';
     say('The glass is clouding over. Listen carefully…'); creak();
     await wait(reduceMotion ? 600 : 2600); if (!sequenceRunning) return;
-    say('Something is moving behind the dust.'); stage.classList.add('haunt-creak'); creak();
+    say('Something is moving behind the dust… footsteps are getting closer.'); stage.classList.add('haunt-creak'); footsteps(); creak();
     await wait(reduceMotion ? 400 : 1800); if (!sequenceRunning) return;
     stage.classList.add('haunt-flicker'); say('The mirror is flickering…');
     await wait(reduceMotion ? 500 : 1400); if (!sequenceRunning) return;
-    stage.classList.add('haunt-warning'); say("Don't look behind you.");
+    stage.classList.add('haunt-warning'); say("Don't look behind you."); whisper();
     await wait(reduceMotion ? 700 : 2600); if (!sequenceRunning) return;
-    stage.classList.remove('haunt-warning'); stage.classList.add('haunt-lunge'); hit(); say('IT GOT OUT.');
+    stage.classList.remove('haunt-warning'); stage.classList.add('haunt-lunge','haunt-redflash'); hit(); say('IT GOT OUT.');
     await wait(reduceMotion ? 600 : 1100); if (!sequenceRunning) return;
     stage.classList.add('haunt-blackout');
     await wait(reduceMotion ? 700 : 1800); if (!sequenceRunning) return;
-    stage.classList.remove('haunt-blackout','haunt-lunge','haunt-flicker','haunt-creak');
+    stage.classList.remove('haunt-blackout','haunt-lunge','haunt-redflash','haunt-flicker','haunt-creak');
     stage.classList.add('haunt-hand'); stage.classList.remove('haunt-dirty');
     message.textContent = 'IT’S STILL IN THERE'; stage.classList.add('haunt-warning');
     say('A final creak echoes from the darkness. IT’S STILL IN THERE.'); creak();
