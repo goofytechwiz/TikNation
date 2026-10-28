@@ -41,6 +41,13 @@ video{position:absolute;width:100%;height:100%;inset:0;object-fit:cover;transfor
 .grain{position:absolute;inset:0;pointer-events:none;opacity:.12;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E")}
 .presence{position:absolute;right:4%;top:13%;height:66%;width:31%;opacity:0;pointer-events:none;filter:blur(1px) contrast(1.08);transform:translate(8px,12px) scale(.97);transform-origin:50% 100%;transition:opacity 2.8s ease,transform 3.4s ease}
 .stage.awake .presence{opacity:.68;transform:translate(0,0) scale(1);animation:presenceBreath 6s ease-in-out infinite}
+/* A brief mirror shiver can be triggered by movement detected in the camera */
+.stage.motion-ripple:after{content:"";position:absolute;z-index:9;inset:0;pointer-events:none;background:radial-gradient(ellipse at 78% 48%,#b9a6ff18 0,transparent 36%),linear-gradient(90deg,transparent 44%,#c6b8ff12 50%,transparent 56%);mix-blend-mode:screen;animation:mirrorRipple 1.1s ease-out both}
+@keyframes mirrorRipple{0%{opacity:0;transform:scaleX(.96)}24%{opacity:1}100%{opacity:0;transform:scaleX(1.04)}}
+.stage.awake .vignette{animation:hauntedVignette 8s ease-in-out infinite}
+@keyframes hauntedVignette{0%,100%{opacity:.72}48%{opacity:.86}52%{opacity:.62}56%{opacity:.8}}
+@media(prefers-reduced-motion:reduce){.stage.motion-ripple:after,.stage.awake .vignette{animation:none!important}}
+
 /* Thin supernatural haze gathers around the silhouette, not over the camera */
 .presence:before{content:"";position:absolute;z-index:0;left:-20%;right:-18%;bottom:0;height:72%;pointer-events:none;background:
 radial-gradient(ellipse at 52% 78%,#b5a4d51c 0,transparent 48%),
@@ -160,19 +167,46 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
 (()=> {
  const video=document.getElementById('video'), stage=document.getElementById('stage');
  const start=document.getElementById('start'), reveal=document.getElementById('reveal'), stop=document.getElementById('stop'), status=document.getElementById('status');
- let stream=null, facing='user', awake=false;
+ let stream=null, facing='user', awake=false, motionTimer=null, previousFrame=null, sampleCanvas=document.createElement('canvas'), sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true}), rippleCooldown=0;
+ sampleCanvas.width=24; sampleCanvas.height=18;
+ function stopMotionWatch(){if(motionTimer)cancelAnimationFrame(motionTimer);motionTimer=null;previousFrame=null}
+ function watchMotion(){
+   if(!stream || video.readyState<2){motionTimer=requestAnimationFrame(watchMotion);return}
+   try{
+     sampleContext.drawImage(video,0,0,sampleCanvas.width,sampleCanvas.height);
+     const pixels=sampleContext.getImageData(0,0,sampleCanvas.width,sampleCanvas.height).data;
+     if(previousFrame){
+       let difference=0;
+       for(let i=0;i<pixels.length;i+=16) difference+=Math.abs(pixels[i]-previousFrame[i])+Math.abs(pixels[i+1]-previousFrame[i+1])+Math.abs(pixels[i+2]-previousFrame[i+2]);
+       const movement=difference/(pixels.length/16);
+       const now=Date.now();
+       if(awake && movement>24 && now>rippleCooldown){
+         stage.classList.remove('motion-ripple'); void stage.offsetWidth; stage.classList.add('motion-ripple');
+         rippleCooldown=now+2400;
+         setTimeout(()=>stage.classList.remove('motion-ripple'),1200);
+       }
+     }
+     previousFrame=pixels;
+   }catch(e){/* Camera processing is optional; the mirror still works without it. */}
+   motionTimer=requestAnimationFrame(watchMotion);
+ }
  async function startCamera(){
    try{
+     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){status.textContent='Camera access is unavailable in this browser. Open this page in an updated browser over HTTPS.';return}
      if(stream) stream.getTracks().forEach(t=>t.stop());
-     stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:facing},audio:false});
+     stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:facing},width:{ideal:1280},height:{ideal:720}},audio:false});
      video.srcObject=stream; await video.play(); stage.classList.add('active');
      start.textContent='Switch camera'; reveal.disabled=false; stop.disabled=false;
-     status.textContent='The mirror is active. Take a breath… then reveal the presence.';
-   }catch(e){status.textContent=e.name==='NotAllowedError'?'Camera permission was denied. Allow camera access in your browser settings, then try again.':'Could not open the camera. Make sure no other app is using it and try again.';}
+     status.textContent='The mirror is active. Move gently, then reveal the presence.';
+     stopMotionWatch(); watchMotion();
+   }catch(e){
+     const messages={NotAllowedError:'Camera permission was denied. Allow camera access in your browser settings, then try again.',NotFoundError:'No camera was found on this device.',NotReadableError:'The camera is busy. Close other camera apps and try again.',SecurityError:'Camera access is blocked here. Open the page over HTTPS.'};
+     status.textContent=messages[e.name]||'Could not open the camera. Check browser permission and try again.';
+   }
  }
  start.addEventListener('click',()=>{if(stream){facing=facing==='user'?'environment':'user';startCamera()}else startCamera()});
- reveal.addEventListener('click',()=>{awake=!awake;stage.classList.toggle('awake',awake);reveal.textContent=awake?'Hide presence':'Reveal presence';status.textContent=awake?'Something is standing in the shadows behind you.':'The shadows settle. For now.';});
- stop.addEventListener('click',()=>{if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;stage.classList.remove('active','awake');awake=false;start.textContent='Enter the mirror';reveal.textContent='Reveal presence';reveal.disabled=true;stop.disabled=true;status.textContent='Camera closed.';});
+ reveal.addEventListener('click',()=>{awake=!awake;stage.classList.toggle('awake',awake);reveal.textContent=awake?'Hide presence':'Reveal presence';status.textContent=awake?'The presence is watching. Movement may disturb the mirror.':'The shadows settle. For now.';});
+ stop.addEventListener('click',()=>{stopMotionWatch();if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;stage.classList.remove('active','awake','motion-ripple');awake=false;start.textContent='Enter the mirror';reveal.textContent='Reveal presence';reveal.disabled=true;stop.disabled=true;status.textContent='Camera closed.';});
 })();
 </script>
 </body>
