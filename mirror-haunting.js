@@ -34,6 +34,20 @@
     '.haunt-reaching-hands{position:absolute;z-index:14;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;opacity:0;transform:translateY(22%) scale(.72);transform-origin:50% 65%;filter:drop-shadow(0 0 9px #000) drop-shadow(0 0 5px #6d001b);transition:opacity .3s ease,transform .65s cubic-bezier(.12,.78,.18,1)}' +
     '.stage.haunt-hands-reach .haunt-reaching-hands{opacity:1;transform:translateY(3%) scale(1)}' +
     '.stage.haunt-hands-grab .haunt-reaching-hands{opacity:1;transform:translateY(-2%) scale(1.28);filter:drop-shadow(0 0 20px #ff002f) brightness(1.25)}' +
+    '.haunt-ripple{opacity:0;transform-origin:180px 180px;pointer-events:none}' +
+    '.stage.haunt-hands-reach .haunt-ripple,.stage.haunt-hands-grab .haunt-ripple{opacity:1;animation:hauntRipple 1.5s ease-out infinite}' +
+    '.stage.haunt-hands-grab .haunt-ripple{animation-duration:.7s;stroke:#ff173f}' +
+    '@keyframes hauntRipple{0%{transform:scale(.72);opacity:0;stroke-width:5}24%{opacity:.72}100%{transform:scale(1.32);opacity:0;stroke-width:1}}' +
+    '.haunt-edge-grip{opacity:0;stroke:#a99aa8;stroke-width:3;stroke-linecap:round;fill:none;filter:drop-shadow(0 0 3px #ff1744)}' +
+    '.stage.haunt-hands-reach .haunt-edge-grip,.stage.haunt-hands-grab .haunt-edge-grip{opacity:1;animation:hauntGrip .55s ease-out both}' +
+    '.stage.haunt-hands-grab .haunt-edge-grip{stroke:#ff2548;stroke-width:4;filter:drop-shadow(0 0 8px #ff003c)}' +
+    '@keyframes hauntGrip{0%{opacity:0;stroke-dasharray:0 70}100%{opacity:1;stroke-dasharray:70 0}}' +
+    '.haunt-shatter-lines{opacity:0;pointer-events:none;stroke:#e4e0ec;stroke-width:1.3;fill:none;filter:drop-shadow(0 0 2px #b8d9ff)}' +
+    '.stage.haunt-hands-reach .haunt-shatter-lines{opacity:.42;animation:hauntShiver .18s steps(2,end) infinite}' +
+    '.stage.haunt-hands-grab .haunt-shatter-lines{opacity:.9;stroke:#ff6177;stroke-width:1.8}' +
+    '@keyframes hauntShiver{0%,100%{transform:translate(0,0)}50%{transform:translate(1px,-1px)}}' +
+    '.stage.haunt-hands-grab{animation:hauntMirrorShake .09s steps(2,end) 7}' +
+    '@keyframes hauntMirrorShake{0%,100%{translate:0 0}25%{translate:-3px 1px}75%{translate:3px -1px}}' +
     '.haunt-reaching-hands .haunt-face{opacity:0;transform:translateY(22px) scale(.88);transform-origin:180px 190px;transition:opacity .5s ease,transform .7s ease;filter:drop-shadow(0 0 9px #b9002c)}' +
     '.stage.haunt-hands-reach .haunt-reaching-hands .haunt-face,.stage.haunt-hands-grab .haunt-reaching-hands .haunt-face{opacity:1;transform:translateY(0) scale(1)}' +
     '.stage.haunt-hands-grab .haunt-reaching-hands .haunt-face{animation:hauntFaceLunge .35s ease-out both}' +
@@ -62,6 +76,9 @@
   reachingHands.setAttribute('aria-hidden', 'true');
   reachingHands.innerHTML = '<defs><linearGradient id="hauntArm" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#403541"/><stop offset=".38" stop-color="#17121b"/><stop offset=".76" stop-color="#050407"/><stop offset="1" stop-color="#000"/></linearGradient><linearGradient id="hauntClaw" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#574957"/><stop offset=".45" stop-color="#17111a"/><stop offset="1" stop-color="#020103"/></linearGradient></defs>' +
     '<g class="crack"><path d="M180 215 L160 185 166 157 145 130 M160 185 L130 190 111 173 M166 157 L190 143 204 115 M190 143 L222 150 239 135 M180 215 L198 238 193 263 M160 185 L143 214 121 226"/></g>' +
+    '<g class="haunt-ripple" fill="none" stroke="#b9eaff" stroke-width="2"><ellipse cx="180" cy="180" rx="48" ry="62"/><ellipse cx="180" cy="180" rx="70" ry="88"/><ellipse cx="180" cy="180" rx="90" ry="112"/></g>' +
+    '<g class="haunt-edge-grip"><path d="M28 105 Q39 95 48 109 L57 125 M32 118 Q44 108 53 124 L61 139 M330 105 Q321 95 312 109 L303 125 M326 118 Q314 108 305 124 L297 139"/></g>' +
+    '<g class="haunt-shatter-lines"><path d="M180 180 L154 151 L163 127 M180 180 L211 151 L202 124 M180 180 L155 207 L129 215 M180 180 L207 208 L229 235 M154 151 L131 145 L119 127 M211 151 L236 144 L246 126 M155 207 L147 236 L128 249 M207 208 L214 239 L234 252"/></g>' +
     '<g class="haunt-face"><path d="M139 193 Q130 148 153 122 Q180 96 207 122 Q230 148 221 193 L209 224 Q180 251 151 224Z" fill="#09070c" stroke="#493541" stroke-width="2"/><path d="M148 168 Q163 151 174 169 Q161 179 148 168Z M186 169 Q198 151 212 168 Q199 179 186 169Z" fill="#ff173d"/><ellipse cx="161" cy="167" rx="3" ry="5" fill="#fff0e8"/><ellipse cx="199" cy="167" rx="3" ry="5" fill="#fff0e8"/><path d="M151 207 Q180 192 209 207 L202 225 Q180 237 158 225Z" fill="#020103" stroke="#6d2638" stroke-width="2"/><path d="M160 208 L166 220 172 207 178 222 185 207 192 220 200 208" fill="none" stroke="#d9c8d0" stroke-width="3"/></g>' +
     '<g class="arm"><path d="M40 650 Q35 560 47 488 Q54 435 73 388 L105 329 Q116 309 133 323 Q145 335 132 355 L111 401 105 451 118 492 131 650Z"/><path d="M320 650 Q325 560 313 488 Q306 435 287 388 L255 329 Q244 309 227 323 Q215 335 228 355 L249 401 255 451 242 492 229 650Z"/></g>' +
     '<g class="claw"><path d="M89 425 Q73 407 61 382 L39 344 Q31 329 40 321 Q49 315 58 332 L81 359 70 319 Q66 300 78 297 Q91 296 95 316 L108 356 102 311 Q101 292 114 291 Q127 292 127 312 L132 354 137 325 Q141 308 153 313 Q164 318 157 337 L146 385 Q139 414 120 436Z"/><path d="M271 425 Q287 407 299 382 L321 344 Q329 329 320 321 Q311 315 302 332 L279 359 290 319 Q294 300 282 297 Q269 296 265 316 L252 356 258 311 Q259 292 246 291 Q233 292 233 312 L228 354 223 325 Q219 308 207 313 Q196 318 203 337 L214 385 Q221 414 240 436Z"/></g>' +
