@@ -245,7 +245,7 @@
 
   const controls = document.createElement('div');
   controls.className = 'haunt-controls';
-  controls.innerHTML = '<button type="button" class="haunt-start" id="hauntAwaken">Awaken the mirror</button><button type="button" id="hauntDust">Gather the dust</button><button type="button" id="hauntSound">Sound: On</button><button type="button" id="hauntFX">Effects: Cycle</button>';
+  controls.innerHTML = '<button type="button" class="haunt-start" id="hauntAwaken">Awaken the mirror</button><button type="button" id="hauntDust">Gather the dust</button><button type="button" id="hauntSound">Sound: Off</button><button type="button" id="hauntFX">Effects: Cycle</button>';
   stage.insertAdjacentElement('afterend', controls);
 
   const status = document.getElementById('status');
@@ -352,7 +352,8 @@
     });
   }
 
-  let soundEnabled = true, fxMode = 0;
+  // Start fully muted; sounds only play after the Sound button is enabled.
+  let soundEnabled = false, fxMode = 0;
   const soundButton = document.getElementById('hauntSound');
   const fxButton = document.getElementById('hauntFX');
   const fxModes = [
