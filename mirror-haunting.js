@@ -128,9 +128,9 @@
     lastPoint = {x:x,y:y};
     const rect = stage.getBoundingClientRect(), mark = document.createElement('i');
     mark.dataset.hauntWipeMark = '1';
-    mark.style.cssText = 'position:absolute;z-index:10;pointer-events:none;left:'+(x-rect.left)+'px;top:'+(y-rect.top)+'px;width:62px;height:62px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#111018aa 0,#11101855 38%,transparent 72%);';
+    mark.style.cssText = 'position:absolute;z-index:12;pointer-events:none;left:'+(x-rect.left)+'px;top:'+(y-rect.top)+'px;width:62px;height:62px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#111018aa 0,#11101855 38%,transparent 72%);';
     stage.appendChild(mark);
-    if (wiped > 4200) {
+    if (wiped > 1600) {
       stage.classList.remove('haunt-dirty'); stage.classList.add('haunt-hand'); dirty = false;
       stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(wipeMark => wipeMark.remove());
       document.getElementById('hauntDust').textContent = 'Gather the dust';
@@ -139,7 +139,7 @@
     }
   }
   wipe.addEventListener('pointerdown', e => { lastPoint = null; if (wipe.setPointerCapture) wipe.setPointerCapture(e.pointerId); wipeAt(e.clientX,e.clientY); });
-  wipe.addEventListener('pointermove', e => { if (e.buttons || e.pointerType === 'touch') wipeAt(e.clientX,e.clientY); });
+  wipe.addEventListener('pointermove', e => { if (e.buttons || e.pointerType === 'touch') { if (e.cancelable) e.preventDefault(); wipeAt(e.clientX,e.clientY); } });
   function finishWipe() {
     if (!dirty) return;
     dirty = false;
