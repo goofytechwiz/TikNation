@@ -49,7 +49,7 @@
   film.setAttribute('aria-hidden', 'true');
   stage.appendChild(film);
   const dustCanvas = document.createElement('canvas');
-  dustCanvas.style.cssText = 'position:absolute;z-index:12;inset:18px 14px 14px;width:calc(100% - 28px);height:calc(100% - 32px);pointer-events:none;touch-action:none;cursor:crosshair;border-radius:18% 18% 2px 2px/3% 3% 2px 2px;';
+  dustCanvas.style.cssText = 'position:absolute;z-index:12;inset:18px 14px 14px;width:calc(100% - 28px);height:calc(100% - 32px);pointer-events:auto;touch-action:none;cursor:crosshair;border-radius:18% 18% 2px 2px/3% 3% 2px 2px;';
   dustCanvas.setAttribute('aria-hidden','true');
   stage.appendChild(dustCanvas);
   const dustCtx = dustCanvas.getContext('2d');
@@ -146,6 +146,7 @@
     lastPoint = null;
     stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
     stage.classList.add('haunt-dirty');
+    stage.style.touchAction = 'none';
     paintDust();
     stage.classList.remove('haunt-hand');
     button.textContent = 'Keep wiping…';
@@ -166,7 +167,7 @@
     if (wiped > 1200) {
       dirty=false; wiped=0; lastPoint=null;
       dustCtx.clearRect(0,0,dustCanvas.width,dustCanvas.height);
-      stage.classList.remove('haunt-dirty'); stage.classList.add('haunt-hand');
+      stage.classList.remove('haunt-dirty'); stage.style.touchAction = ''; stage.classList.add('haunt-hand');
       document.getElementById('hauntDust').textContent='Gather the dust';
       say('The dust clears away. A handprint appears from the other side of the glass…'); creak();
       setTimeout(()=>{if(!sequenceRunning)say('Something is standing on the other side.');},2300);
@@ -187,7 +188,7 @@
     stage.classList.remove('haunt-flicker','haunt-creak','haunt-warning','haunt-lunge','haunt-blackout');
     stage.classList.add('awake','haunt-dirty'); stage.classList.remove('haunt-hand');
     stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
-    dirty = true; wiped = 0; lastPoint = null; paintDust();
+    dirty = true; wiped = 0; lastPoint = null; stage.style.touchAction = 'none'; paintDust();
     document.getElementById('hauntAwaken').disabled = true;
     document.getElementById('hauntAwaken').textContent = 'The mirror is awake…';
     document.getElementById('hauntDust').textContent = 'Wipe the glass';
