@@ -156,9 +156,13 @@
   let lastPoint = null;
   function wipeAt(x, y) {
     if (!dirty) return;
-    if (lastPoint) wiped += Math.hypot(x-lastPoint.x,y-lastPoint.y);
+    if (lastPoint) {
+      const dx=x-lastPoint.x, dy=y-lastPoint.y, distance=Math.hypot(dx,dy);
+      wiped += distance;
+      const steps=Math.max(1,Math.ceil(distance/12));
+      for(let i=1;i<=steps;i++) eraseDust(lastPoint.x+dx*i/steps,lastPoint.y+dy*i/steps);
+    } else eraseDust(x,y);
     lastPoint={x,y};
-    eraseDust(x,y);
     if (wiped > 1200) {
       dirty=false; wiped=0; lastPoint=null;
       dustCtx.clearRect(0,0,dustCanvas.width,dustCanvas.height);
@@ -168,10 +172,14 @@
       setTimeout(()=>{if(!sequenceRunning)say('Something is standing on the other side.');},2300);
     }
   }
-  stage.addEventListener('pointerdown',e=>{if(!dirty)return;const r=dustCanvas.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)return;if(e.cancelable)e.preventDefault();lastPoint=null;if(stage.setPointerCapture)stage.setPointerCapture(e.pointerId);wipeAt(e.clientX,e.clientY);});
-  stage.addEventListener('pointermove',e=>{if(!dirty||!(e.buttons||e.pointerType==='touch'))return;if(e.cancelable)e.preventDefault();wipeAt(e.clientX,e.clientY);});
+  stage.addEventListener('pointerdown',e=>{if(!dirty||e.pointerType==='touch')return;const r=dustCanvas.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)return;if(e.cancelable)e.preventDefault();lastPoint=null;if(stage.setPointerCapture)stage.setPointerCapture(e.pointerId);wipeAt(e.clientX,e.clientY);});
+  stage.addEventListener('pointermove',e=>{if(!dirty||e.pointerType==='touch'||!e.buttons)return;if(e.cancelable)e.preventDefault();wipeAt(e.clientX,e.clientY);});
   stage.addEventListener('pointerup',()=>{lastPoint=null;});
   stage.addEventListener('pointercancel',()=>{lastPoint=null;});
+  stage.addEventListener('touchstart',e=>{if(!dirty||!e.touches.length)return;const t=e.touches[0],r=dustCanvas.getBoundingClientRect();if(t.clientX<r.left||t.clientX>r.right||t.clientY<r.top||t.clientY>r.bottom)return;if(e.cancelable)e.preventDefault();lastPoint=null;wipeAt(t.clientX,t.clientY);},{passive:false});
+  stage.addEventListener('touchmove',e=>{if(!dirty||!e.touches.length)return;if(e.cancelable)e.preventDefault();const t=e.touches[0];wipeAt(t.clientX,t.clientY);},{passive:false});
+  stage.addEventListener('touchend',()=>{lastPoint=null;},{passive:true});
+  stage.addEventListener('touchcancel',()=>{lastPoint=null;},{passive:true});
 
   document.getElementById('hauntAwaken').addEventListener('click', async () => {
     if (sequenceRunning) return;
