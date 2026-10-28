@@ -182,9 +182,9 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
 (()=> {
  const video=document.getElementById('video'), stage=document.getElementById('stage');
  const start=document.getElementById('start'), reveal=document.getElementById('reveal'), stop=document.getElementById('stop'), status=document.getElementById('status');
- let stream=null, facing='user', awake=false, motionTimer=null, previousFrame=null, sampleCanvas=document.createElement('canvas'), sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true}), rippleCooldown=0;
- sampleCanvas.width=24; sampleCanvas.height=18;
- function stopMotionWatch(){if(motionTimer)cancelAnimationFrame(motionTimer);motionTimer=null;previousFrame=null}
+ let stream=null, facing='user', awake=false, motionTimer=null, previousFrame=null, sampleCanvas=document.createElement('canvas'), sampleContext=sampleCanvas.getContext('2d',{willReadFrequently:true}), rippleCooldown=0, stalkX=0, stalkY=0;
+ sampleCanvas.width=32; sampleCanvas.height=24;
+ function stopMotionWatch(){if(motionTimer)cancelAnimationFrame(motionTimer);motionTimer=null;previousFrame=null;stalkX=0;stalkY=0;stage.style.setProperty('--stalk-x','0px');stage.style.setProperty('--stalk-y','0px')}
  function watchMotion(){
    if(!stream || video.readyState<2){motionTimer=requestAnimationFrame(watchMotion);return}
    try{
@@ -195,28 +195,30 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
        for(let i=0;i<pixels.length;i+=4){
          const delta=Math.abs(pixels[i]-previousFrame[i])+Math.abs(pixels[i+1]-previousFrame[i+1])+Math.abs(pixels[i+2]-previousFrame[i+2]);
          difference+=delta;
-         if(delta>24){
+         if(delta>15){
            const pixel=i/4, x=pixel%sampleCanvas.width, y=Math.floor(pixel/sampleCanvas.width);
            weightedX+=x*delta; weightedY+=y*delta; weightTotal+=delta;
          }
        }
        const movement=difference/(pixels.length/4);
        const now=Date.now();
-       if(stage.classList.contains('awake') && weightTotal>0 && movement>10){
-         const cx=1-(weightedX/weightTotal)/(sampleCanvas.width-1);
-         const cy=(weightedY/weightTotal)/(sampleCanvas.height-1);
-         const followX=Math.max(-34,Math.min(34,(0.5-cx)*68));
-         const followY=Math.max(-26,Math.min(26,(0.5-cy)*52));
-         stage.style.setProperty('--stalk-x',followX.toFixed(1)+'px');
-         stage.style.setProperty('--stalk-y',followY.toFixed(1)+'px');
+       if(stage.classList.contains('awake') && weightTotal>0 && movement>2.2){
+         const motionX=(weightedX/weightTotal)/(sampleCanvas.width-1);
+         const motionY=(weightedY/weightTotal)/(sampleCanvas.height-1);
+         const targetX=Math.max(-52,Math.min(52,(0.5-motionX)*104));
+         const targetY=Math.max(-36,Math.min(36,(0.5-motionY)*72));
+         stalkX+=(targetX-stalkX)*0.22;
+         stalkY+=(targetY-stalkY)*0.22;
+         stage.style.setProperty('--stalk-x',stalkX.toFixed(1)+'px');
+         stage.style.setProperty('--stalk-y',stalkY.toFixed(1)+'px');
        }
-       if(stage.classList.contains('awake') && movement>24 && now>rippleCooldown){
+       if(stage.classList.contains('awake') && movement>13 && now>rippleCooldown){
          stage.classList.remove('motion-ripple'); void stage.offsetWidth; stage.classList.add('motion-ripple');
-         rippleCooldown=now+2400;
+         rippleCooldown=now+1800;
          setTimeout(()=>stage.classList.remove('motion-ripple'),1200);
        }
      }
-     previousFrame=pixels;
+     previousFrame=new Uint8ClampedArray(pixels);
    }catch(e){/* Camera processing is optional; the mirror still works without it. */}
    motionTimer=requestAnimationFrame(watchMotion);
  }
@@ -239,6 +241,6 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
  stop.addEventListener('click',()=>{stopMotionWatch();if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;stage.classList.remove('active','awake','motion-ripple');awake=false;start.textContent='Enter the mirror';reveal.textContent='Reveal presence';reveal.disabled=true;stop.disabled=true;status.textContent='Camera closed.';});
 })();
 </script>
-<script src="./mirror-haunting.js?v=17" defer></script>
+<script src="./mirror-haunting.js?v=18" defer></script>
 </body>
 </html>
