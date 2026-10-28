@@ -101,7 +101,8 @@
 
   const status = document.getElementById('status');
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let audioContext = null, sequenceRunning = false, wiped = 0, dirty = false;
+  let audioContext = null, sequenceRunning = false, wiped = 0, dirty = false, wipeStartedAt = 0, revealTimer = null;
+  const WIPE_MIN_DURATION_MS = 12000;
   function say(text) { if (status) status.textContent = text; }
   function getAudio() {
     const AC = window.AudioContext || window.webkitAudioContext;
@@ -143,6 +144,8 @@
     }
     dirty = true;
     wiped = 0;
+    wipeStartedAt = Date.now();
+    if (revealTimer) { clearTimeout(revealTimer); revealTimer = null; }
     lastPoint = null;
     stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
     stage.classList.add('haunt-dirty');
@@ -164,13 +167,21 @@
       for(let i=1;i<=steps;i++) eraseDust(lastPoint.x+dx*i/steps,lastPoint.y+dy*i/steps);
     } else eraseDust(x,y);
     lastPoint={x,y};
-    if (wiped > 520) {
-      dirty=false; wiped=0; lastPoint=null;
-      dustCtx.clearRect(0,0,dustCanvas.width,dustCanvas.height);
-      stage.classList.remove('haunt-dirty'); stage.style.touchAction = ''; stage.classList.add('haunt-hand');
-      document.getElementById('hauntDust').textContent='Gather the dust';
-      say('The dust clears away. A handprint appears from the other side of the glass…'); creak();
-      setTimeout(()=>{if(!sequenceRunning)say('Something is standing on the other side.');},2300);
+    if (wiped > 520 && !revealTimer) {
+      const remaining = Math.max(0, WIPE_MIN_DURATION_MS - (Date.now() - wipeStartedAt));
+      say(remaining > 0
+        ? 'Keep wiping… the glass is slowly clearing. You have time.'
+        : 'The dust clears away. A handprint appears from the other side of the glass…');
+      revealTimer = setTimeout(() => {
+        revealTimer = null;
+        if (!dirty || wiped <= 520) return;
+        dirty = false; wiped = 0; lastPoint = null; wipeStartedAt = 0;
+        dustCtx.clearRect(0,0,dustCanvas.width,dustCanvas.height);
+        stage.classList.remove('haunt-dirty'); stage.style.touchAction = ''; stage.classList.add('haunt-hand');
+        document.getElementById('hauntDust').textContent='Gather the dust';
+        say('The dust clears away. A handprint appears from the other side of the glass…'); creak();
+        setTimeout(()=>{if(!sequenceRunning)say('Something is standing on the other side.');},2300);
+      }, remaining);
     }
   }
   stage.addEventListener('pointerdown',e=>{if(!dirty||e.pointerType==='touch')return;const r=dustCanvas.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)return;if(e.cancelable)e.preventDefault();lastPoint=null;if(stage.setPointerCapture)stage.setPointerCapture(e.pointerId);wipeAt(e.clientX,e.clientY);});
