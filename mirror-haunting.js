@@ -11,7 +11,7 @@
     '.haunt-speck{position:absolute;top:-12px;border-radius:50%;background:#e1d8c6;box-shadow:0 0 5px #e8ddca88;opacity:0;animation:dustFall var(--duration,12s) linear var(--delay,0s) infinite}' +
     '@keyframes dustFall{0%{transform:translate3d(0,-2vh,0);opacity:0}12%{opacity:var(--alpha,.5)}80%{opacity:var(--alpha,.5)}100%{transform:translate3d(var(--drift,18px),112vh,0);opacity:0}}' +
     '.haunt-film{position:absolute;z-index:8;inset:18px 14px 14px;border-radius:18% 18% 2px 2px/3% 3% 2px 2px;pointer-events:none;opacity:0;background:linear-gradient(115deg,#d8d0c21a,#766b5b0d 30%,#e4d9c61c 60%,#08070c20);transition:opacity 1.8s ease;mix-blend-mode:screen}' +
-    '.stage.haunt-dirty .haunt-film{opacity:.74}.haunt-film:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 28% 36%,#d8d0c2a8 0 1px,transparent 2px),radial-gradient(ellipse at 72% 59%,#d8d0c288 0 1px,transparent 2px),radial-gradient(ellipse at 52% 19%,#d8d0c288 0 1px,transparent 2px);background-size:47px 51px,61px 57px,73px 63px;opacity:.48}' +
+    '.stage.haunt-dirty .haunt-film{opacity:0}.haunt-film:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 28% 36%,#d8d0c2a8 0 1px,transparent 2px),radial-gradient(ellipse at 72% 59%,#d8d0c288 0 1px,transparent 2px),radial-gradient(ellipse at 52% 19%,#d8d0c288 0 1px,transparent 2px);background-size:47px 51px,61px 57px,73px 63px;opacity:.48}' +
     '.haunt-wipe{position:absolute;z-index:11;inset:18px 14px 14px;border-radius:18% 18% 2px 2px/3% 3% 2px 2px;pointer-events:auto;touch-action:none;cursor:crosshair}' +
     '.haunt-handprint{position:absolute;left:50%;top:47%;width:104px;height:126px;transform:translate(-50%,-50%) scale(.72) rotate(-9deg);opacity:0;transition:opacity .8s ease,transform .8s ease;filter:drop-shadow(0 0 8px #b5a6d433)}' +
     '.haunt-handprint:before{content:"";position:absolute;left:25px;top:38px;width:58px;height:73px;border-radius:45% 45% 38% 38%;background:#d7d0bf18;border:2px solid #d7d0bf44;box-shadow:inset 0 0 13px #d7d0bf12}' +
@@ -48,6 +48,39 @@
   film.className = 'haunt-film';
   film.setAttribute('aria-hidden', 'true');
   stage.appendChild(film);
+  const dustCanvas = document.createElement('canvas');
+  dustCanvas.style.cssText = 'position:absolute;z-index:12;inset:18px 14px 14px;width:calc(100% - 28px);height:calc(100% - 32px);pointer-events:none;border-radius:18% 18% 2px 2px/3% 3% 2px 2px;';
+  dustCanvas.setAttribute('aria-hidden','true');
+  stage.appendChild(dustCanvas);
+  const dustCtx = dustCanvas.getContext('2d');
+  function paintDust() {
+    const rect = dustCanvas.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dustCanvas.width = Math.max(1, Math.round(rect.width*dpr));
+    dustCanvas.height = Math.max(1, Math.round(rect.height*dpr));
+    dustCtx.setTransform(dpr,0,0,dpr,0,0);
+    dustCtx.clearRect(0,0,rect.width,rect.height);
+    if (!dirty) return;
+    dustCtx.fillStyle = 'rgba(175,160,139,.38)';
+    dustCtx.fillRect(0,0,rect.width,rect.height);
+    for (let i=0;i<260;i++) {
+      dustCtx.fillStyle = 'rgba(225,216,198,'+(0.08+Math.random()*.28)+')';
+      dustCtx.beginPath();
+      dustCtx.arc(Math.random()*rect.width,Math.random()*rect.height,Math.random()*1.8+.35,0,Math.PI*2);
+      dustCtx.fill();
+    }
+  }
+  function eraseDust(x,y) {
+    const rect=dustCanvas.getBoundingClientRect();
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    dustCtx.save();
+    dustCtx.setTransform(dpr,0,0,dpr,0,0);
+    dustCtx.globalCompositeOperation='destination-out';
+    dustCtx.beginPath();
+    dustCtx.arc(x-rect.left,y-rect.top,31,0,Math.PI*2);
+    dustCtx.fill();
+    dustCtx.restore();
+  }
+  window.addEventListener('resize',()=>{if(dirty)paintDust()});
   const hand = document.createElement('div');
   hand.className = 'haunt-handprint';
   hand.setAttribute('aria-hidden', 'true');
@@ -115,6 +148,7 @@
     lastPoint = null;
     stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
     stage.classList.add('haunt-dirty');
+    paintDust();
     stage.classList.remove('haunt-hand');
     button.textContent = 'Keep wiping…';
     say('Rub the mirror with your finger. Lift and start another stroke whenever you need — progress will stay.');
@@ -124,40 +158,22 @@
   let lastPoint = null;
   function wipeAt(x, y) {
     if (!dirty) return;
-    if (lastPoint) wiped += Math.hypot(x - lastPoint.x, y - lastPoint.y);
-    lastPoint = {x:x,y:y};
-    const rect = stage.getBoundingClientRect(), mark = document.createElement('i');
-    mark.dataset.hauntWipeMark = '1';
-    mark.style.cssText = 'position:absolute;z-index:12;pointer-events:none;left:'+(x-rect.left)+'px;top:'+(y-rect.top)+'px;width:62px;height:62px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#111018aa 0,#11101855 38%,transparent 72%);';
-    stage.appendChild(mark);
-    if (wiped > 1600) {
-      stage.classList.remove('haunt-dirty'); stage.classList.add('haunt-hand'); dirty = false;
-      stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(wipeMark => wipeMark.remove());
-      document.getElementById('hauntDust').textContent = 'Gather the dust';
-      say('You wiped away the dust. A handprint is appearing from the other side of the glass…'); creak();
-      setTimeout(() => { if (!sequenceRunning) say('Something is standing on the other side.'); }, 2300);
+    if (lastPoint) wiped += Math.hypot(x-lastPoint.x,y-lastPoint.y);
+    lastPoint={x,y};
+    eraseDust(x,y);
+    if (wiped > 3600) {
+      dirty=false; wiped=0; lastPoint=null;
+      dustCtx.clearRect(0,0,dustCanvas.width,dustCanvas.height);
+      stage.classList.remove('haunt-dirty'); stage.classList.add('haunt-hand');
+      document.getElementById('hauntDust').textContent='Gather the dust';
+      say('The dust clears away. A handprint appears from the other side of the glass…'); creak();
+      setTimeout(()=>{if(!sequenceRunning)say('Something is standing on the other side.');},2300);
     }
   }
-  wipe.addEventListener('pointerdown', e => { lastPoint = null; if (wipe.setPointerCapture) wipe.setPointerCapture(e.pointerId); wipeAt(e.clientX,e.clientY); });
-  wipe.addEventListener('pointermove', e => { if (e.buttons || e.pointerType === 'touch') { if (e.cancelable) e.preventDefault(); wipeAt(e.clientX,e.clientY); } });
-  function finishWipe() {
-    if (!dirty) return;
-    dirty = false;
-    wiped = 0;
-    lastPoint = null;
-    stage.classList.remove('haunt-dirty');
-    stage.classList.add('haunt-hand');
-    stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
-    document.getElementById('hauntDust').textContent = 'Gather the dust';
-    say('The dust clears in one sweep. A handprint appears from the other side of the glass…');
-    creak();
-    setTimeout(() => { if (!sequenceRunning) say('Something is standing on the other side.'); }, 2300);
-  }
-  wipe.addEventListener('pointerup', () => {
-    // Keep all progress between strokes. Only finish after enough wiping has accumulated.
-    lastPoint = null;
-  });
-  wipe.addEventListener('pointercancel', () => { lastPoint = null; });
+  wipe.addEventListener('pointerdown',e=>{lastPoint=null;if(wipe.setPointerCapture)wipe.setPointerCapture(e.pointerId);wipeAt(e.clientX,e.clientY);});
+  wipe.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType==='touch'){if(e.cancelable)e.preventDefault();wipeAt(e.clientX,e.clientY);}});
+  wipe.addEventListener('pointerup',()=>{lastPoint=null;});
+  wipe.addEventListener('pointercancel',()=>{lastPoint=null;});
 
   document.getElementById('hauntAwaken').addEventListener('click', async () => {
     if (sequenceRunning) return;
@@ -165,7 +181,7 @@
     stage.classList.remove('haunt-flicker','haunt-creak','haunt-warning','haunt-lunge','haunt-blackout');
     stage.classList.add('awake','haunt-dirty'); stage.classList.remove('haunt-hand');
     stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
-    dirty = true; wiped = 0; lastPoint = null;
+    dirty = true; wiped = 0; lastPoint = null; paintDust();
     document.getElementById('hauntAwaken').disabled = true;
     document.getElementById('hauntAwaken').textContent = 'The mirror is awake…';
     document.getElementById('hauntDust').textContent = 'Wipe the glass';
