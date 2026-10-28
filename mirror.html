@@ -197,6 +197,15 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
 .stage.awake .hair{background:repeating-linear-gradient(82deg,#010102 0 3px,#17111d 4px 6px,#020204 7px 11px);filter:drop-shadow(0 0 7px #17000a) drop-shadow(0 5px 8px #000)}
 
 
+
+/* Real Living Shadow artwork layer; SVG silhouette remains as a safe fallback */
+.living-shadow-art{position:absolute;z-index:8;left:50%;top:0;width:118%;height:100%;object-fit:contain;object-position:center bottom;transform:translateX(-50%) scale(.92);opacity:0;filter:drop-shadow(0 0 12px rgba(130,0,25,.4));pointer-events:none;transition:opacity .6s ease,transform .45s ease}
+.stage.awake .living-shadow-art{opacity:1;animation:livingShadowBreath 4.8s ease-in-out infinite}
+.stage.awake .shadow-creature{opacity:0}
+.stage.awake .presence.attacking .living-shadow-art{transform:translateX(-50%) scale(1.25);filter:drop-shadow(0 0 28px rgba(255,0,42,.85))}
+@keyframes livingShadowBreath{0%,100%{transform:translateX(-50%) scale(.92)}50%{transform:translateX(-50%) scale(.96) translateY(-2px)}}
+@media(prefers-reduced-motion:reduce){.stage.awake .living-shadow-art{animation:none}}
+
 /* Dedicated creature illustration layered over the old silhouette */
 .shadow-creature{position:absolute;z-index:5;inset:-1% -7% 0;width:114%;height:100%;overflow:visible;opacity:0;filter:drop-shadow(0 0 10px #24000b);pointer-events:none;transition:opacity .7s ease}
 .stage.awake .shadow-creature{opacity:1;animation:creatureBreath 4.8s ease-in-out infinite}
@@ -241,7 +250,7 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
  <div class="candle"><span class="wax-drips"></span><span class="wick"></span><span class="flame"></span></div>
 </div>
 <video id="video" autoplay playsinline muted></video>
-<div class="presence" aria-hidden="true"><div class="figure"><div class="body"></div><div class="shoulderlight"></div><div class="head"></div><div class="hair"></div>
+<div class="presence" aria-hidden="true"><img class="living-shadow-art" src="./living-shadow.png" alt="" aria-hidden="true" onerror="this.remove()"/><div class="figure"><div class="body"></div><div class="shoulderlight"></div><div class="head"></div><div class="hair"></div>
 <svg class="shadow-creature" viewBox="0 0 240 520" aria-hidden="true">
 <defs>
  <linearGradient id="creatureSkin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4a414c"/><stop offset=".38" stop-color="#17131d"/><stop offset=".72" stop-color="#050407"/><stop offset="1" stop-color="#000"/></linearGradient>
