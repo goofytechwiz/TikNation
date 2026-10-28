@@ -49,7 +49,7 @@
   film.setAttribute('aria-hidden', 'true');
   stage.appendChild(film);
   const dustCanvas = document.createElement('canvas');
-  dustCanvas.style.cssText = 'position:absolute;z-index:12;inset:18px 14px 14px;width:calc(100% - 28px);height:calc(100% - 32px);pointer-events:none;border-radius:18% 18% 2px 2px/3% 3% 2px 2px;';
+  dustCanvas.style.cssText = 'position:absolute;z-index:12;inset:18px 14px 14px;width:calc(100% - 28px);height:calc(100% - 32px);pointer-events:auto;touch-action:none;cursor:crosshair;border-radius:18% 18% 2px 2px/3% 3% 2px 2px;';
   dustCanvas.setAttribute('aria-hidden','true');
   stage.appendChild(dustCanvas);
   const dustCtx = dustCanvas.getContext('2d');
@@ -85,11 +85,9 @@
   hand.className = 'haunt-handprint';
   hand.setAttribute('aria-hidden', 'true');
   stage.appendChild(hand);
-  const wipe = document.createElement('div');
-  wipe.className = 'haunt-wipe';
+  const wipe = dustCanvas;
   wipe.setAttribute('aria-label', 'Swipe or rub the mirror to wipe away dust');
   wipe.title = 'Swipe to wipe away the dust';
-  stage.appendChild(wipe);
   const message = document.createElement('div');
   message.className = 'haunt-message';
   message.textContent = "DON'T LOOK BEHIND YOU";
@@ -170,8 +168,8 @@
       setTimeout(()=>{if(!sequenceRunning)say('Something is standing on the other side.');},2300);
     }
   }
-  wipe.addEventListener('pointerdown',e=>{lastPoint=null;if(wipe.setPointerCapture)wipe.setPointerCapture(e.pointerId);wipeAt(e.clientX,e.clientY);});
-  wipe.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType==='touch'){if(e.cancelable)e.preventDefault();wipeAt(e.clientX,e.clientY);}});
+  wipe.addEventListener('pointerdown',e=>{if(!dirty)return;if(e.cancelable)e.preventDefault();lastPoint=null;if(wipe.setPointerCapture)wipe.setPointerCapture(e.pointerId);wipeAt(e.clientX,e.clientY);});
+  wipe.addEventListener('pointermove',e=>{if(dirty&&(e.buttons||e.pointerType==='touch')){if(e.cancelable)e.preventDefault();wipeAt(e.clientX,e.clientY);}});
   wipe.addEventListener('pointerup',()=>{lastPoint=null;});
   wipe.addEventListener('pointercancel',()=>{lastPoint=null;});
 
