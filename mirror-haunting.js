@@ -379,8 +379,11 @@
 
   function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-  document.getElementById('hauntDust').addEventListener('click', () => {
-    const button = document.getElementById('hauntDust');
+  const dustButton = document.getElementById('hauntDust');
+  // Keep this control isolated from any parent click-to-sound handlers.
+  dustButton.addEventListener('click', event => { event.stopPropagation(); }, true);
+  dustButton.addEventListener('click', () => {
+    const button = dustButton;
     if (dirty) {
       // This button must never erase progress. Keep rubbing the glass to finish.
       say('Keep rubbing the mirror with your finger. Your wiping marks will stay until the glass is clean.');
@@ -423,7 +426,7 @@
         dustCtx.clearRect(0,0,dustCanvas.width,dustCanvas.height);
         stage.classList.remove('haunt-dirty'); stage.style.touchAction = ''; stage.classList.add('haunt-hand');
         document.getElementById('hauntDust').textContent='Gather the dust';
-        say('The dust clears away. A handprint appears from the other side of the glass…'); creak();
+        say('The dust clears away. A handprint appears from the other side of the glass…');
         setTimeout(()=>{if(!sequenceRunning)say('Something is standing on the other side.');},2300);
       }, remaining);
     }
