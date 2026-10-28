@@ -31,6 +31,15 @@
     '.stage.awake .haunt-scare-overlay{opacity:.85}' +
     '.stage.awake .haunt-scare-overlay:before{opacity:.9}' +
     '.stage.haunt-lunge .haunt-scare-overlay{opacity:1;filter:contrast(1.6) brightness(1.5)}.stage.haunt-lunge .haunt-scare-overlay:before{opacity:1;animation-duration:.35s}' +
+    '.haunt-reaching-hands{position:absolute;z-index:14;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;opacity:0;transform:translateY(22%) scale(.72);transform-origin:50% 65%;filter:drop-shadow(0 0 9px #000) drop-shadow(0 0 5px #6d001b);transition:opacity .3s ease,transform .65s cubic-bezier(.12,.78,.18,1)}' +
+    '.stage.haunt-hands-reach .haunt-reaching-hands{opacity:1;transform:translateY(3%) scale(1)}' +
+    '.stage.haunt-hands-grab .haunt-reaching-hands{opacity:1;transform:translateY(-2%) scale(1.28);filter:drop-shadow(0 0 20px #ff002f) brightness(1.25)}' +
+    '.haunt-reaching-hands .arm{fill:url(#hauntArm);stroke:#514454;stroke-width:1.5;stroke-linejoin:round}' +
+    '.haunt-reaching-hands .claw{fill:url(#hauntClaw);stroke:#776478;stroke-width:1.2;stroke-linejoin:round}' +
+    '.haunt-reaching-hands .crack{fill:none;stroke:#d7d0e8;stroke-width:1.4;stroke-linecap:round;opacity:0;filter:drop-shadow(0 0 3px #b5aaff)}' +
+    '.stage.haunt-hands-reach .haunt-reaching-hands .crack{opacity:.8;animation:hauntGlassCrack .8s ease-out both}' +
+    '@keyframes hauntGlassCrack{0%{opacity:0;stroke-dasharray:0 120}40%{opacity:1}100%{opacity:.55;stroke-dasharray:120 0}}' +
+    '@media(prefers-reduced-motion:reduce){.haunt-reaching-hands{transition:none}.stage.haunt-hands-reach .haunt-reaching-hands .crack{animation:none;opacity:.7}}' +
     '.stage.haunt-blackout .haunt-scare-overlay{opacity:0!important}' +
     '@keyframes scareEyes{0%,38%,44%,100%{opacity:.85}40%,42%{opacity:.12}70%{opacity:.55}}' +
 
@@ -41,6 +50,18 @@
     '@keyframes fxStatic{0%{transform:translateY(-2px)}100%{transform:translateY(2px)}}' +
     '@media(prefers-reduced-motion:reduce){.stage.fx-haunted:after,.stage.fx-static:after{animation:none}}' +
   document.head.appendChild(style);
+
+  const reachingHands = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  reachingHands.setAttribute('viewBox', '0 0 360 640');
+  reachingHands.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  reachingHands.setAttribute('class', 'haunt-reaching-hands');
+  reachingHands.setAttribute('aria-hidden', 'true');
+  reachingHands.innerHTML = '<defs><linearGradient id="hauntArm" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#403541"/><stop offset=".38" stop-color="#17121b"/><stop offset=".76" stop-color="#050407"/><stop offset="1" stop-color="#000"/></linearGradient><linearGradient id="hauntClaw" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#574957"/><stop offset=".45" stop-color="#17111a"/><stop offset="1" stop-color="#020103"/></linearGradient></defs>' +
+    '<g class="crack"><path d="M180 215 L160 185 166 157 145 130 M160 185 L130 190 111 173 M166 157 L190 143 204 115 M190 143 L222 150 239 135 M180 215 L198 238 193 263 M160 185 L143 214 121 226"/></g>' +
+    '<g class="arm"><path d="M40 650 Q35 560 47 488 Q54 435 73 388 L105 329 Q116 309 133 323 Q145 335 132 355 L111 401 105 451 118 492 131 650Z"/><path d="M320 650 Q325 560 313 488 Q306 435 287 388 L255 329 Q244 309 227 323 Q215 335 228 355 L249 401 255 451 242 492 229 650Z"/></g>' +
+    '<g class="claw"><path d="M89 425 Q73 407 61 382 L39 344 Q31 329 40 321 Q49 315 58 332 L81 359 70 319 Q66 300 78 297 Q91 296 95 316 L108 356 102 311 Q101 292 114 291 Q127 292 127 312 L132 354 137 325 Q141 308 153 313 Q164 318 157 337 L146 385 Q139 414 120 436Z"/><path d="M271 425 Q287 407 299 382 L321 344 Q329 329 320 321 Q311 315 302 332 L279 359 290 319 Q294 300 282 297 Q269 296 265 316 L252 356 258 311 Q259 292 246 291 Q233 292 233 312 L228 354 223 325 Q219 308 207 313 Q196 318 203 337 L214 385 Q221 414 240 436Z"/></g>' +
+    '<g fill="#d5c6cf" opacity=".72"><path d="M42 325 L49 330 43 334Z"/><path d="M79 301 L85 309 79 312Z"/><path d="M115 295 L120 304 114 307Z"/><path d="M318 325 L311 330 317 334Z"/><path d="M281 301 L275 309 281 312Z"/><path d="M245 295 L240 304 246 307Z"/></g>';
+  stage.appendChild(reachingHands);
 
   const scareOverlay = document.createElement('div');
   scareOverlay.className = 'haunt-scare-overlay';
@@ -287,7 +308,7 @@
   document.getElementById('hauntAwaken').addEventListener('click', async () => {
     if (sequenceRunning) return;
     sequenceRunning = true;
-    stage.classList.remove('haunt-flicker','haunt-creak','haunt-warning','haunt-lunge','haunt-blackout');
+    stage.classList.remove('haunt-flicker','haunt-creak','haunt-warning','haunt-lunge','haunt-blackout','haunt-hands-reach','haunt-hands-grab','haunt-redflash');
     stage.classList.add('awake','haunt-dirty'); stage.classList.remove('haunt-hand');
     stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
     dirty = true; wiped = 0; lastPoint = null; stage.style.touchAction = 'none'; paintDust();
@@ -301,12 +322,14 @@
     stage.classList.add('haunt-flicker'); say('The mirror is flickering…');
     await wait(reduceMotion ? 500 : 1400); if (!sequenceRunning) return;
     stage.classList.add('haunt-warning'); say("Don't look behind you."); whisper();
-    await wait(reduceMotion ? 700 : 2600); if (!sequenceRunning) return;
-    stage.classList.remove('haunt-warning'); stage.classList.add('haunt-lunge','haunt-redflash'); hit(); say('IT GOT OUT.');
+    await wait(reduceMotion ? 500 : 1800); if (!sequenceRunning) return;
+    stage.classList.add('haunt-hands-reach'); say('Something is reaching through the glass…'); creak();
+    await wait(reduceMotion ? 350 : 1000); if (!sequenceRunning) return;
+    stage.classList.remove('haunt-warning'); stage.classList.add('haunt-hands-grab','haunt-lunge','haunt-redflash'); hit(); say('IT IS REACHING FOR YOU. IT GOT OUT.');
     await wait(reduceMotion ? 600 : 1100); if (!sequenceRunning) return;
     stage.classList.add('haunt-blackout');
     await wait(reduceMotion ? 700 : 1800); if (!sequenceRunning) return;
-    stage.classList.remove('haunt-blackout','haunt-lunge','haunt-redflash','haunt-flicker','haunt-creak');
+    stage.classList.remove('haunt-blackout','haunt-lunge','haunt-redflash','haunt-flicker','haunt-creak','haunt-hands-reach','haunt-hands-grab');
     stage.classList.add('haunt-hand'); stage.classList.remove('haunt-dirty');
     message.textContent = 'IT’S STILL IN THERE'; stage.classList.add('haunt-warning');
     say('A final creak echoes from the darkness. IT’S STILL IN THERE.'); creak();
