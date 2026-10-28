@@ -59,6 +59,14 @@
     '@keyframes hauntGlassCrack{0%{opacity:0;stroke-dasharray:0 120}40%{opacity:1}100%{opacity:.55;stroke-dasharray:120 0}}' +
     '@media(prefers-reduced-motion:reduce){.haunt-reaching-hands{transition:none}.stage.haunt-hands-reach .haunt-reaching-hands .crack{animation:none;opacity:.7}.stage.haunt-hands-reach .haunt-ripple,.stage.haunt-hands-grab .haunt-ripple{animation:none;opacity:.18}.stage.haunt-hands-reach .haunt-edge-grip,.stage.haunt-hands-grab .haunt-edge-grip{animation:none;opacity:1}.stage.haunt-hands-reach .haunt-shatter-lines,.stage.haunt-hands-grab .haunt-shatter-lines{animation:none}.stage.haunt-hands-grab{animation:none}}' +
     '.stage.haunt-blackout .haunt-scare-overlay{opacity:0!important}' +
+    '.haunt-mist{position:absolute;z-index:5;inset:0;overflow:hidden;pointer-events:none;opacity:0;transition:opacity 1.8s ease;mix-blend-mode:screen;background:linear-gradient(180deg,transparent 35%,#9aa0c00b 58%,#a9a0c01c 75%,transparent 100%)}' +
+    '.stage.awake .haunt-mist{opacity:1}' +
+    '.haunt-mist:before,.haunt-mist:after{content:"";position:absolute;left:-30%;width:160%;height:42%;border-radius:50%;filter:blur(18px);background:linear-gradient(90deg,transparent,#a8a2c018 28%,#d4d0e51c 50%,#8b789f18 72%,transparent);animation:hauntMistDrift 13s ease-in-out infinite alternate}' +
+    '.haunt-mist:before{top:47%;transform:rotate(-7deg)}.haunt-mist:after{top:63%;opacity:.7;animation-duration:19s;animation-direction:alternate-reverse}' +
+    '@keyframes hauntMistDrift{0%{translate:-5% 0;scale:.92 1;opacity:.35}100%{translate:8% -9%;scale:1.08 1.15;opacity:.9}}' +
+    '.stage.haunt-warning .haunt-mist{opacity:.35;filter:hue-rotate(105deg)}.stage.haunt-lunge .haunt-mist{opacity:.08;transition:opacity .12s ease}' +
+    '.stage.haunt-blackout .haunt-mist{opacity:0!important}' +
+    '@media(prefers-reduced-motion:reduce){.haunt-mist:before,.haunt-mist:after{animation:none}.haunt-mist{transition:none}}' +
     '.haunt-presence-light{position:absolute;z-index:6;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle 110px at var(--haunt-x,50%) var(--haunt-y,48%),#9b6dff22,transparent 72%);mix-blend-mode:screen;transition:opacity .5s ease}' +
     '.stage.awake .haunt-presence-light{opacity:1}' +
     '.haunt-presence-light:after{content:"";position:absolute;left:var(--haunt-x,50%);top:var(--haunt-y,48%);width:18px;height:18px;transform:translate(-50%,-50%);border-radius:50%;background:#e7d7ff;opacity:0;box-shadow:0 0 16px 7px #a56aff66;transition:opacity .25s ease}' +
@@ -109,6 +117,10 @@
     '<g fill="#d5c6cf" opacity=".72"><path d="M42 325 L49 330 43 334Z"/><path d="M79 301 L85 309 79 312Z"/><path d="M115 295 L120 304 114 307Z"/><path d="M318 325 L311 330 317 334Z"/><path d="M281 301 L275 309 281 312Z"/><path d="M245 295 L240 304 246 307Z"/></g>';
   stage.appendChild(reachingHands);
 
+  const mist = document.createElement('div');
+  mist.className = 'haunt-mist';
+  mist.setAttribute('aria-hidden', 'true');
+  stage.appendChild(mist);
   const presenceLight = document.createElement('div');
   presenceLight.className = 'haunt-presence-light';
   presenceLight.setAttribute('aria-hidden', 'true');
