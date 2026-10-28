@@ -32,6 +32,11 @@
     '.stage.awake .haunt-scare-overlay:before{opacity:.9}' +
     '.stage.haunt-lunge .haunt-scare-overlay{opacity:1;filter:contrast(1.6) brightness(1.5)}.stage.haunt-lunge .haunt-scare-overlay:before{opacity:1;animation-duration:.35s}' +
     '.haunt-reaching-hands{position:absolute;z-index:14;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;opacity:0;transform:translateY(22%) scale(.72);transform-origin:50% 65%;filter:drop-shadow(0 0 9px #000) drop-shadow(0 0 5px #6d001b);transition:opacity .3s ease,transform .65s cubic-bezier(.12,.78,.18,1)}' +
+    '.haunt-reflection-echo{z-index:13!important;opacity:0!important;filter:blur(3px) drop-shadow(0 0 12px #5c1439)!important;transform:translate(0,10%) scale(.96)!important;transition:opacity 1.1s ease,transform 1.35s cubic-bezier(.2,.7,.2,1)!important;mix-blend-mode:screen}' +
+    '.stage.haunt-hands-reach .haunt-reflection-echo{opacity:.2!important;transform:translate(-4px,5%) scale(1.015)!important}' +
+    '.stage.haunt-hands-grab .haunt-reflection-echo{opacity:.34!important;transform:translate(8px,-1%) scale(1.24)!important;filter:blur(4px) drop-shadow(0 0 18px #a00035)!important}' +
+    '.stage.haunt-lunge .haunt-reflection-echo{opacity:.08!important;transform:translate(-10px,2%) scale(1.32)!important;transition-duration:.12s!important}' +
+    '.stage.haunt-blackout .haunt-reflection-echo{opacity:0!important}' +
     '.stage.haunt-hands-reach .haunt-reaching-hands{opacity:1;transform:translateY(3%) scale(1)}' +
     '.stage.haunt-hands-grab .haunt-reaching-hands{opacity:1;transform:translateY(-2%) scale(1.28);filter:drop-shadow(0 0 20px #ff002f) brightness(1.25)}' +
     '.haunt-ripple{opacity:0;transform-origin:180px 180px;pointer-events:none}' +
@@ -57,7 +62,7 @@
     '.haunt-reaching-hands .crack{fill:none;stroke:#d7d0e8;stroke-width:1.4;stroke-linecap:round;opacity:0;filter:drop-shadow(0 0 3px #b5aaff)}' +
     '.stage.haunt-hands-reach .haunt-reaching-hands .crack{opacity:.8;animation:hauntGlassCrack .8s ease-out both}' +
     '@keyframes hauntGlassCrack{0%{opacity:0;stroke-dasharray:0 120}40%{opacity:1}100%{opacity:.55;stroke-dasharray:120 0}}' +
-    '@media(prefers-reduced-motion:reduce){.haunt-reaching-hands{transition:none}.stage.haunt-hands-reach .haunt-reaching-hands .crack{animation:none;opacity:.7}.stage.haunt-hands-reach .haunt-ripple,.stage.haunt-hands-grab .haunt-ripple{animation:none;opacity:.18}.stage.haunt-hands-reach .haunt-edge-grip,.stage.haunt-hands-grab .haunt-edge-grip{animation:none;opacity:1}.stage.haunt-hands-reach .haunt-shatter-lines,.stage.haunt-hands-grab .haunt-shatter-lines{animation:none}.stage.haunt-hands-grab{animation:none}}' +
+    '@media(prefers-reduced-motion:reduce){.haunt-reaching-hands,.haunt-reflection-echo{transition:none!important}.haunt-reflection-echo{filter:none!important}.stage.haunt-hands-reach .haunt-reaching-hands .crack{animation:none;opacity:.7}.stage.haunt-hands-reach .haunt-ripple,.stage.haunt-hands-grab .haunt-ripple{animation:none;opacity:.18}.stage.haunt-hands-reach .haunt-edge-grip,.stage.haunt-hands-grab .haunt-edge-grip{animation:none;opacity:1}.stage.haunt-hands-reach .haunt-shatter-lines,.stage.haunt-hands-grab .haunt-shatter-lines{animation:none}.stage.haunt-hands-grab{animation:none}}' +
     '.stage.haunt-blackout .haunt-scare-overlay{opacity:0!important}' +
     '.haunt-mist{position:absolute;z-index:5;inset:0;overflow:hidden;pointer-events:none;opacity:0;transition:opacity 1.8s ease;mix-blend-mode:screen;background:linear-gradient(180deg,transparent 35%,#9aa0c00b 58%,#a9a0c01c 75%,transparent 100%)}' +
     '.stage.awake .haunt-mist{opacity:1}' +
@@ -115,6 +120,10 @@
     '<g class="arm"><path d="M40 650 Q35 560 47 488 Q54 435 73 388 L105 329 Q116 309 133 323 Q145 335 132 355 L111 401 105 451 118 492 131 650Z"/><path d="M320 650 Q325 560 313 488 Q306 435 287 388 L255 329 Q244 309 227 323 Q215 335 228 355 L249 401 255 451 242 492 229 650Z"/></g>' +
     '<g class="claw"><path d="M89 425 Q73 407 61 382 L39 344 Q31 329 40 321 Q49 315 58 332 L81 359 70 319 Q66 300 78 297 Q91 296 95 316 L108 356 102 311 Q101 292 114 291 Q127 292 127 312 L132 354 137 325 Q141 308 153 313 Q164 318 157 337 L146 385 Q139 414 120 436Z"/><path d="M271 425 Q287 407 299 382 L321 344 Q329 329 320 321 Q311 315 302 332 L279 359 290 319 Q294 300 282 297 Q269 296 265 316 L252 356 258 311 Q259 292 246 291 Q233 292 233 312 L228 354 223 325 Q219 308 207 313 Q196 318 203 337 L214 385 Q221 414 240 436Z"/></g>' +
     '<g fill="#d5c6cf" opacity=".72"><path d="M42 325 L49 330 43 334Z"/><path d="M79 301 L85 309 79 312Z"/><path d="M115 295 L120 304 114 307Z"/><path d="M318 325 L311 330 317 334Z"/><path d="M281 301 L275 309 281 312Z"/><path d="M245 295 L240 304 246 307Z"/></g>';
+  const reflectionEcho = reachingHands.cloneNode(true);
+  reflectionEcho.setAttribute('class', 'haunt-reaching-hands haunt-reflection-echo');
+  reflectionEcho.setAttribute('aria-hidden', 'true');
+  stage.appendChild(reflectionEcho);
   stage.appendChild(reachingHands);
 
   const mist = document.createElement('div');
