@@ -49,7 +49,7 @@
   film.setAttribute('aria-hidden', 'true');
   stage.appendChild(film);
   const dustCanvas = document.createElement('canvas');
-  dustCanvas.style.cssText = 'position:absolute;z-index:12;inset:18px 14px 14px;width:calc(100% - 28px);height:calc(100% - 32px);pointer-events:auto;touch-action:none;cursor:crosshair;border-radius:18% 18% 2px 2px/3% 3% 2px 2px;';
+  dustCanvas.style.cssText = 'position:absolute;z-index:12;inset:18px 14px 14px;width:calc(100% - 28px);height:calc(100% - 32px);pointer-events:none;touch-action:none;cursor:crosshair;border-radius:18% 18% 2px 2px/3% 3% 2px 2px;';
   dustCanvas.setAttribute('aria-hidden','true');
   stage.appendChild(dustCanvas);
   const dustCtx = dustCanvas.getContext('2d');
@@ -159,7 +159,7 @@
     if (lastPoint) wiped += Math.hypot(x-lastPoint.x,y-lastPoint.y);
     lastPoint={x,y};
     eraseDust(x,y);
-    if (wiped > 3600) {
+    if (wiped > 1200) {
       dirty=false; wiped=0; lastPoint=null;
       dustCtx.clearRect(0,0,dustCanvas.width,dustCanvas.height);
       stage.classList.remove('haunt-dirty'); stage.classList.add('haunt-hand');
@@ -168,10 +168,10 @@
       setTimeout(()=>{if(!sequenceRunning)say('Something is standing on the other side.');},2300);
     }
   }
-  wipe.addEventListener('pointerdown',e=>{if(!dirty)return;if(e.cancelable)e.preventDefault();lastPoint=null;if(wipe.setPointerCapture)wipe.setPointerCapture(e.pointerId);wipeAt(e.clientX,e.clientY);});
-  wipe.addEventListener('pointermove',e=>{if(dirty&&(e.buttons||e.pointerType==='touch')){if(e.cancelable)e.preventDefault();wipeAt(e.clientX,e.clientY);}});
-  wipe.addEventListener('pointerup',()=>{lastPoint=null;});
-  wipe.addEventListener('pointercancel',()=>{lastPoint=null;});
+  stage.addEventListener('pointerdown',e=>{if(!dirty)return;const r=dustCanvas.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)return;if(e.cancelable)e.preventDefault();lastPoint=null;if(stage.setPointerCapture)stage.setPointerCapture(e.pointerId);wipeAt(e.clientX,e.clientY);});
+  stage.addEventListener('pointermove',e=>{if(!dirty||!(e.buttons||e.pointerType==='touch'))return;if(e.cancelable)e.preventDefault();wipeAt(e.clientX,e.clientY);});
+  stage.addEventListener('pointerup',()=>{lastPoint=null;});
+  stage.addEventListener('pointercancel',()=>{lastPoint=null;});
 
   document.getElementById('hauntAwaken').addEventListener('click', async () => {
     if (sequenceRunning) return;
