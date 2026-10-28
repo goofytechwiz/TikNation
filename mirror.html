@@ -196,6 +196,14 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
 }
 .stage.awake .hair{background:repeating-linear-gradient(82deg,#010102 0 3px,#17111d 4px 6px,#020204 7px 11px);filter:drop-shadow(0 0 7px #17000a) drop-shadow(0 5px 8px #000)}
 
+
+/* Dedicated creature illustration layered over the old silhouette */
+.shadow-creature{position:absolute;z-index:5;inset:-1% -7% 0;width:114%;height:100%;overflow:visible;opacity:0;filter:drop-shadow(0 0 10px #24000b);pointer-events:none;transition:opacity .7s ease}
+.stage.awake .shadow-creature{opacity:1;animation:creatureBreath 4.8s ease-in-out infinite}
+.stage.awake .head,.stage.awake .hair,.stage.awake .body,.stage.awake .shoulderlight{opacity:.22}
+@keyframes creatureBreath{0%,100%{filter:drop-shadow(0 0 7px #21000a);transform:translateY(0)}48%{filter:drop-shadow(0 0 15px #700018);transform:translateY(2px)}53%{filter:drop-shadow(0 0 20px #b00027);transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){.stage.awake .shadow-creature{animation:none}}
+
 /* Predatory mirror attack: rush at the glass, vanish, then return closer */
 .stage.awake .presence{animation:nightmareStalk 13s ease-in-out infinite!important;transform-origin:50% 92%;will-change:transform,opacity}
 .stage.awake{animation:mirrorAttackGlow 13s ease-in-out infinite}
@@ -233,7 +241,29 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
  <div class="candle"><span class="wax-drips"></span><span class="wick"></span><span class="flame"></span></div>
 </div>
 <video id="video" autoplay playsinline muted></video>
-<div class="presence" aria-hidden="true"><div class="figure"><div class="body"></div><div class="shoulderlight"></div><div class="head"></div><div class="hair"></div></div></div>
+<div class="presence" aria-hidden="true"><div class="figure"><div class="body"></div><div class="shoulderlight"></div><div class="head"></div><div class="hair"></div>
+<svg class="shadow-creature" viewBox="0 0 240 520" aria-hidden="true">
+<defs>
+ <linearGradient id="creatureSkin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4a414c"/><stop offset=".38" stop-color="#17131d"/><stop offset=".72" stop-color="#050407"/><stop offset="1" stop-color="#000"/></linearGradient>
+ <linearGradient id="creatureHair" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#010103"/><stop offset=".48" stop-color="#17111d"/><stop offset=".7" stop-color="#030205"/><stop offset="1" stop-color="#000"/></linearGradient>
+ <filter id="creatureGlow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<!-- Ragged, elongated silhouette -->
+<path fill="url(#creatureHair)" d="M83 65 Q48 25 75 5 L62 66 35 25 52 100 20 73 42 145 12 170 39 201 24 270 48 247 42 330 64 286 71 390 91 310 108 438 123 319 145 440 154 308 180 380 177 282 208 326 193 243 222 268 201 196 228 166 199 132 212 84 185 102 190 41 165 71 151 15 130 63 112 4 105 63Z"/>
+<path fill="url(#creatureSkin)" stroke="#302332" stroke-width="1.5" d="M75 110 Q63 76 91 61 Q119 45 148 66 Q171 88 160 121 L151 161 166 198 190 235 174 267 153 224 139 203 133 268 108 269 101 206 82 234 59 272 42 254 64 207 77 166Z"/>
+<!-- Hair falling across the face -->
+<g fill="url(#creatureHair)" stroke="#28202d" stroke-width="2"><path d="M70 88 Q53 40 79 15 L89 99 83 139 70 163 73 116Z"/><path d="M91 78 Q82 28 107 3 L111 87 102 135 94 148Z"/><path d="M126 71 Q144 23 160 15 L150 95 143 130 132 146Z"/><path d="M148 85 Q183 53 185 29 L177 112 160 153 151 135Z"/></g>
+<!-- Hollow face, burning eyes, cracked red trails -->
+<path d="M84 94 Q112 72 145 94 L139 145 120 168 96 146Z" fill="#09070c" stroke="#5b2433" stroke-width="2"/>
+<path d="M89 112 L111 106 105 117 91 120Z M127 106 L145 112 141 120 127 117Z" fill="#ff1437" filter="url(#creatureGlow)"/>
+<path d="M100 116 L93 145 88 166 M137 116 L145 143 151 163" fill="none" stroke="#a00027" stroke-width="3" stroke-linecap="round"/>
+<path d="M99 141 Q119 153 139 140 L135 157 120 168 105 157Z" fill="#020103" stroke="#6c1129" stroke-width="2"/>
+<path d="M104 145 L109 153 114 146 119 155 124 145 130 152 135 143" fill="none" stroke="#d4c4bf" stroke-width="3"/>
+<!-- Long, skeletal hands reaching toward the viewer -->
+<path d="M54 244 Q35 267 26 302 L16 342 28 348 43 310 49 287 60 314 69 309 62 275 82 250Z" fill="url(#creatureSkin)" stroke="#302332" stroke-width="2"/>
+<path d="M176 239 Q199 260 211 293 L226 327 216 335 198 303 184 282 180 314 170 312 167 273 151 251Z" fill="url(#creatureSkin)" stroke="#302332" stroke-width="2"/>
+<g fill="#050407" stroke="#5b465d" stroke-width="1.5"><path d="M20 338 Q12 355 8 375 L14 379 29 350Z"/><path d="M28 340 Q27 365 31 385 L37 385 38 349Z"/><path d="M216 326 Q226 345 233 363 L228 369 211 340Z"/><path d="M208 329 Q210 354 204 376 L198 375 199 340Z"/></g>
+</svg></div></div>
 <div class="vignette"></div><div class="grain"></div>
 <div class="idle"><div class="orb">◉</div><h2>The full-length mirror is waiting</h2><p>Start the camera, then look over your shoulder… if you dare.</p></div>
 </section>
@@ -304,6 +334,6 @@ radial-gradient(ellipse at 72% 0%,#29242f 0 4px,transparent 5px),radial-gradient
  stop.addEventListener('click',()=>{stopMotionWatch();if(stream)stream.getTracks().forEach(t=>t.stop());stream=null;video.srcObject=null;stage.classList.remove('active','awake','motion-ripple');awake=false;start.textContent='Enter the mirror';reveal.textContent='Reveal presence';reveal.disabled=true;stop.disabled=true;status.textContent='Camera closed.';});
 })();
 </script>
-<script src="./mirror-haunting.js?v=19" defer></script>
+<script src="./mirror-haunting.js?v=20" defer></script>
 </body>
 </html>
