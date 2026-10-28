@@ -26,7 +26,19 @@
     '@keyframes hauntLunge{0%{transform:translate(0,0) scale(1);filter:brightness(1)}18%{transform:translate(-2px,1px) scale(1.015);filter:brightness(.2)}38%{transform:translate(2px,-1px) scale(1.025);filter:brightness(1.8)}62%{transform:translate(0,0) scale(1.12);filter:brightness(1.4)}100%{transform:translate(0,0) scale(1);filter:brightness(.05)}}' +
     '.stage.haunt-blackout:after{background:#020106;inset:0;border:0;border-radius:0;box-shadow:none;animation:hauntBlackout 3.6s ease both}@keyframes hauntBlackout{0%,15%{opacity:1}35%,70%{opacity:.92}100%{opacity:1}}' +
     '@media(prefers-reduced-motion:reduce){.haunt-speck,.stage.haunt-flicker,.stage.haunt-lunge,.stage.haunt-warning .haunt-message{animation:none!important}.haunt-film,.haunt-handprint{transition:none}}';
+    '.haunt-scare-overlay{position:absolute;z-index:9;inset:0;pointer-events:none;opacity:0;transition:opacity 1.8s ease;mix-blend-mode:screen;background:radial-gradient(ellipse at 69% 36%,#b0002024 0,transparent 23%),radial-gradient(ellipse at 72% 53%,#6b001a20 0,transparent 31%),linear-gradient(132deg,transparent 0 39%,#d7d0df18 39.2%,transparent 39.7% 100%),linear-gradient(48deg,transparent 0 61%,#d7d0df14 61.2%,transparent 61.6% 100%)}' +
+    '.haunt-scare-overlay:before{content:"";position:absolute;inset:0;opacity:0;background:radial-gradient(ellipse 9px 4px at 69% 34%,#ff2638 0 28%,#a00020 58%,transparent 100%),radial-gradient(ellipse 9px 4px at 77% 34%,#ff2638 0 28%,#a00020 58%,transparent 100%),radial-gradient(ellipse at 73% 35%,#d0002b22 0,transparent 12%);filter:drop-shadow(0 0 7px #ff002f);transition:opacity .8s ease;animation:scareEyes 3.8s ease-in-out infinite}' +
+    '.stage.awake .haunt-scare-overlay{opacity:.85}' +
+    '.stage.awake .haunt-scare-overlay:before{opacity:.9}' +
+    '.stage.haunt-lunge .haunt-scare-overlay{opacity:1;filter:contrast(1.6) brightness(1.5)}.stage.haunt-lunge .haunt-scare-overlay:before{opacity:1;animation-duration:.35s}' +
+    '.stage.haunt-blackout .haunt-scare-overlay{opacity:0!important}' +
+    '@keyframes scareEyes{0%,38%,44%,100%{opacity:.85}40%,42%{opacity:.12}70%{opacity:.55}}' +
   document.head.appendChild(style);
+
+  const scareOverlay = document.createElement('div');
+  scareOverlay.className = 'haunt-scare-overlay';
+  scareOverlay.setAttribute('aria-hidden', 'true');
+  stage.appendChild(scareOverlay);
 
   const dust = document.createElement('div');
   dust.className = 'haunt-dust';
