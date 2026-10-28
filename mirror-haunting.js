@@ -12,7 +12,7 @@
     '@keyframes dustFall{0%{transform:translate3d(0,-2vh,0);opacity:0}12%{opacity:var(--alpha,.5)}80%{opacity:var(--alpha,.5)}100%{transform:translate3d(var(--drift,18px),112vh,0);opacity:0}}' +
     '.haunt-film{position:absolute;z-index:8;inset:18px 14px 14px;border-radius:18% 18% 2px 2px/3% 3% 2px 2px;pointer-events:none;opacity:0;background:linear-gradient(115deg,#d8d0c21a,#766b5b0d 30%,#e4d9c61c 60%,#08070c20);transition:opacity 1.8s ease;mix-blend-mode:screen}' +
     '.stage.haunt-dirty .haunt-film{opacity:.74}.haunt-film:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 28% 36%,#d8d0c2a8 0 1px,transparent 2px),radial-gradient(ellipse at 72% 59%,#d8d0c288 0 1px,transparent 2px),radial-gradient(ellipse at 52% 19%,#d8d0c288 0 1px,transparent 2px);background-size:47px 51px,61px 57px,73px 63px;opacity:.48}' +
-    '.haunt-wipe{position:absolute;z-index:11;inset:18px 14px 14px;border-radius:18% 18% 2px 2px/3% 3% 2px 2px;pointer-events:auto;touch-action:pan-y;cursor:crosshair}' +
+    '.haunt-wipe{position:absolute;z-index:11;inset:18px 14px 14px;border-radius:18% 18% 2px 2px/3% 3% 2px 2px;pointer-events:auto;touch-action:none;cursor:crosshair}' +
     '.haunt-handprint{position:absolute;left:50%;top:47%;width:104px;height:126px;transform:translate(-50%,-50%) scale(.72) rotate(-9deg);opacity:0;transition:opacity .8s ease,transform .8s ease;filter:drop-shadow(0 0 8px #b5a6d433)}' +
     '.haunt-handprint:before{content:"";position:absolute;left:25px;top:38px;width:58px;height:73px;border-radius:45% 45% 38% 38%;background:#d7d0bf18;border:2px solid #d7d0bf44;box-shadow:inset 0 0 13px #d7d0bf12}' +
     '.haunt-handprint:after{content:"";position:absolute;left:24px;top:1px;width:12px;height:48px;border-radius:12px;background:#d7d0bf20;border:2px solid #d7d0bf44;box-shadow:17px -7px 0 -1px #d7d0bf20,17px -7px 0 1px #d7d0bf44,34px -3px 0 -1px #d7d0bf20,34px -3px 0 1px #d7d0bf44,51px 7px 0 -2px #d7d0bf20,51px 7px 0 0 #d7d0bf44,-10px 36px 0 -1px #d7d0bf20,-10px 36px 0 1px #d7d0bf44}' +
@@ -104,10 +104,20 @@
   function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
   document.getElementById('hauntDust').addEventListener('click', () => {
-    dirty = !dirty; stage.classList.toggle('haunt-dirty', dirty); stage.classList.toggle('haunt-hand', dirty);
-    document.getElementById('hauntDust').textContent = dirty ? 'Wipe the glass' : 'Gather the dust';
-    if (dirty) { wiped = 0; say('Dust gathers across the glass. Swipe the mirror to clear a path…'); creak(); }
-    else { say('The glass is clearer… but the handprint remains in the reflection.'); creak(); }
+    const button = document.getElementById('hauntDust');
+    if (dirty) {
+      say('Wiping mode is ready — drag your finger across the mirror. You only need to tap this button once.');
+      return;
+    }
+    dirty = true;
+    wiped = 0;
+    lastPoint = null;
+    stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
+    stage.classList.add('haunt-dirty');
+    stage.classList.remove('haunt-hand');
+    button.textContent = 'Wipe the glass';
+    say('Dust gathers across the glass. Now drag your finger across the mirror to wipe it away.');
+    creak();
   });
 
   let lastPoint = null;
@@ -116,10 +126,12 @@
     if (lastPoint) wiped += Math.hypot(x - lastPoint.x, y - lastPoint.y);
     lastPoint = {x:x,y:y};
     const rect = stage.getBoundingClientRect(), mark = document.createElement('i');
+    mark.dataset.hauntWipeMark = '1';
     mark.style.cssText = 'position:absolute;z-index:10;pointer-events:none;left:'+(x-rect.left)+'px;top:'+(y-rect.top)+'px;width:62px;height:62px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#111018aa 0,#11101855 38%,transparent 72%);';
     stage.appendChild(mark);
     if (wiped > 360) {
       stage.classList.remove('haunt-dirty'); stage.classList.add('haunt-hand'); dirty = false;
+      stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(wipeMark => wipeMark.remove());
       document.getElementById('hauntDust').textContent = 'Gather the dust';
       say('You wiped away the dust. A handprint is appearing from the other side of the glass…'); creak();
       setTimeout(() => { if (!sequenceRunning) say('Something is standing on the other side.'); }, 2300);
@@ -135,7 +147,8 @@
     sequenceRunning = true;
     stage.classList.remove('haunt-flicker','haunt-creak','haunt-warning','haunt-lunge','haunt-blackout');
     stage.classList.add('awake','haunt-dirty'); stage.classList.remove('haunt-hand');
-    dirty = true; wiped = 0;
+    stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
+    dirty = true; wiped = 0; lastPoint = null;
     document.getElementById('hauntAwaken').disabled = true;
     document.getElementById('hauntAwaken').textContent = 'The mirror is awake…';
     document.getElementById('hauntDust').textContent = 'Wipe the glass';
