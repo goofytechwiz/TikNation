@@ -33,6 +33,13 @@
     '.stage.haunt-lunge .haunt-scare-overlay{opacity:1;filter:contrast(1.6) brightness(1.5)}.stage.haunt-lunge .haunt-scare-overlay:before{opacity:1;animation-duration:.35s}' +
     '.stage.haunt-blackout .haunt-scare-overlay{opacity:0!important}' +
     '@keyframes scareEyes{0%,38%,44%,100%{opacity:.85}40%,42%{opacity:.12}70%{opacity:.55}}' +
+
+    '.stage.fx-haunted:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:7;background:radial-gradient(ellipse at 50% 40%,transparent 25%,#10001599 100%);box-shadow:inset 0 0 45px #5d003c55;animation:fxHaunted 5s ease-in-out infinite}' +
+    '@keyframes fxHaunted{0%,100%{opacity:.45}50%{opacity:.9}}' +
+    '.stage.fx-bloodmoon:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:7;background:radial-gradient(circle at 50% 34%,#b0003022,transparent 48%),linear-gradient(180deg,#26000820,transparent 65%);mix-blend-mode:screen}' +
+    '.stage.fx-static:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:7;background:repeating-linear-gradient(0deg,#fff0 0 3px,#d7c8ff18 4px,#fff0 5px);animation:fxStatic .16s steps(2,end) infinite}' +
+    '@keyframes fxStatic{0%{transform:translateY(-2px)}100%{transform:translateY(2px)}}' +
+    '@media(prefers-reduced-motion:reduce){.stage.fx-haunted:after,.stage.fx-static:after{animation:none}}' +
   document.head.appendChild(style);
 
   const scareOverlay = document.createElement('div');
@@ -108,7 +115,7 @@
 
   const controls = document.createElement('div');
   controls.className = 'haunt-controls';
-  controls.innerHTML = '<button type="button" class="haunt-start" id="hauntAwaken">Awaken the mirror</button><button type="button" id="hauntDust">Gather the dust</button>';
+  controls.innerHTML = '<button type="button" class="haunt-start" id="hauntAwaken">Awaken the mirror</button><button type="button" id="hauntDust">Gather the dust</button><button type="button" id="hauntSound">Sound: On</button><button type="button" id="hauntFX">Effects: Cycle</button>';
   stage.insertAdjacentElement('afterend', controls);
 
   const status = document.getElementById('status');
@@ -145,6 +152,32 @@
     gain.gain.setValueAtTime(.001, now); gain.gain.exponentialRampToValueAtTime(.36, now + .025); gain.gain.exponentialRampToValueAtTime(.001, now + .62);
     osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now + .65);
   }
+
+  let soundEnabled = true, fxMode = 0;
+  const soundButton = document.getElementById('hauntSound');
+  const fxButton = document.getElementById('hauntFX');
+  const fxModes = [
+    {name:'FX: Haunted', cls:'fx-haunted'},
+    {name:'FX: Blood Moon', cls:'fx-bloodmoon'},
+    {name:'FX: Static', cls:'fx-static'},
+    {name:'FX: Off', cls:''}
+  ];
+  soundButton.addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    soundButton.textContent = soundEnabled ? 'Sound: On' : 'Sound: Off';
+    say(soundEnabled ? 'Sound effects enabled.' : 'Sound effects muted.');
+    if (soundEnabled) creak();
+  });
+  fxButton.addEventListener('click', () => {
+    stage.classList.remove(...fxModes.map(m=>m.cls).filter(Boolean));
+    fxMode = (fxMode + 1) % fxModes.length;
+    if (fxModes[fxMode].cls) stage.classList.add(fxModes[fxMode].cls);
+    fxButton.textContent = fxModes[fxMode].name;
+    say('Visual effect set to ' + fxModes[fxMode].name.replace('FX: ','') + '.');
+    if (soundEnabled) creak();
+  });
+  const originalGetAudio = getAudio;
+
   function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
   document.getElementById('hauntDust').addEventListener('click', () => {
