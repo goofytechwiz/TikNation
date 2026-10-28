@@ -278,15 +278,45 @@
   let audioContext = null, sequenceRunning = false, wiped = 0, dirty = false, wipeStartedAt = 0, revealTimer = null;
   const WIPE_MIN_DURATION_MS = 20000;
   function say(text) { if (status) status.textContent = text; }
-  function speakEvil(text, pitch = 0.58, rate = 0.78) {
+  function whisperBed(duration = 1.8, intensity = 0.12) {
+    if (!soundEnabled) return;
+    const ctx = getAudio(); if (!ctx) return;
+    const now = ctx.currentTime;
+    const length = Math.max(.7, duration);
+    const count = Math.floor(ctx.sampleRate * length);
+    const buffer = ctx.createBuffer(1, count, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < count; i++) {
+      const fadeIn = Math.min(1, i / (ctx.sampleRate * .16));
+      const fadeOut = Math.min(1, (count - i) / (ctx.sampleRate * .42));
+      data[i] = (Math.random() * 2 - 1) * fadeIn * fadeOut * .7;
+    }
+    const source = ctx.createBufferSource(); source.buffer = buffer;
+    const filter = ctx.createBiquadFilter(); filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(720, now);
+    filter.frequency.exponentialRampToValueAtTime(260, now + length);
+    filter.Q.value = 1.15;
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(.001, now);
+    gain.gain.linearRampToValueAtTime(intensity, now + .2);
+    gain.gain.setValueAtTime(intensity * .72, now + Math.max(.25, length - .45));
+    gain.gain.exponentialRampToValueAtTime(.001, now + length);
+    source.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+    source.start(now); source.stop(now + length);
+  }
+  function speakEvil(text, pitch = 0.76, rate = 0.82) {
     if (!soundEnabled || !('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
     try {
       window.speechSynthesis.cancel();
       const line = new SpeechSynthesisUtterance(text);
-      line.lang = 'en-US'; line.pitch = pitch; line.rate = rate; line.volume = 0.9;
-      const voices = window.speechSynthesis.getVoices();
-      const voice = voices.find(v => /^en(-|_)/i.test(v.lang) && /deep|male|daniel|david|mark|guy/i.test(v.name)) || voices.find(v => /^en(-|_)/i.test(v.lang));
+      line.lang = 'en-US'; line.pitch = pitch; line.rate = rate; line.volume = 0.86;
+      const voices = window.speechSynthesis.getVoices().filter(v => /^en(-|_)/i.test(v.lang));
+      const voice = voices.find(v => /google.*(us|united states).*english|english.*(us|united states)|natural|enhanced/i.test(v.name + ' ' + v.voiceURI))
+        || voices.find(v => /en-US/i.test(v.lang))
+        || voices[0];
       if (voice) line.voice = voice;
+      const duration = Math.max(1.2, text.length / Math.max(.55, rate) * .075);
+      whisperBed(duration, /GET OUT/i.test(text) ? .07 : .13);
       window.speechSynthesis.speak(line);
     } catch (_) {}
   }
