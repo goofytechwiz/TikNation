@@ -452,7 +452,7 @@
     if (fxModes[fxMode].cls) stage.classList.add(fxModes[fxMode].cls);
     fxButton.textContent = fxModes[fxMode].name;
     say('Visual effect set to ' + fxModes[fxMode].name.replace('FX: ','') + '.');
-    if (soundEnabled) creak();
+    // Visual controls stay silent; sound effects belong to the scare sequence only.
   });
   const originalGetAudio = getAudio;
 
@@ -520,9 +520,7 @@
 
   document.getElementById('hauntAwaken').addEventListener('click', async () => {
     if (sequenceRunning) return;
-    // A tap on Awaken is a direct user gesture: enable sound so the prerecorded voice can play.
-    soundEnabled = true;
-    soundButton.textContent = 'Sound: On';
+    // Awaken stays silent unless the user explicitly turns Sound on.
     apparitionVoiceStarted = false;
     disturbTheStare();
     sequenceRunning = true;
@@ -533,7 +531,8 @@
     document.getElementById('hauntAwaken').disabled = true;
     document.getElementById('hauntAwaken').textContent = 'The mirror is awake…';
     document.getElementById('hauntDust').textContent = 'Wipe the glass';
-    say('The glass is clouding over. Listen carefully…'); speakEvil('Can you hear me?', 0.52, 0.72); creak();
+    say('The glass is clouding over. Listen carefully…');
+    if (soundEnabled) { speakEvil('Can you hear me?', 0.52, 0.72); creak(); }
     await wait(reduceMotion ? 600 : 2600); if (!sequenceRunning) return;
     say('Something is moving behind the dust… footsteps are getting closer.'); speakEvil('You should never have opened the mirror.', 0.48, 0.72); stage.classList.add('haunt-creak'); footsteps(); creak();
     await wait(reduceMotion ? 400 : 1800); if (!sequenceRunning) return;
