@@ -509,6 +509,10 @@
 
   document.getElementById('hauntAwaken').addEventListener('click', async () => {
     if (sequenceRunning) return;
+    // A tap on Awaken is a direct user gesture: enable sound so the prerecorded voice can play.
+    soundEnabled = true;
+    soundButton.textContent = 'Sound: On';
+    apparitionVoiceStarted = false;
     disturbTheStare();
     sequenceRunning = true;
     stage.classList.remove('haunt-flicker','haunt-creak','haunt-warning','haunt-lunge','haunt-blackout','haunt-hands-reach','haunt-hands-grab','haunt-redflash','haunt-staring');
