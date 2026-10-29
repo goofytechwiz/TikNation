@@ -399,8 +399,14 @@ button.primary{border-color:#79f0ff99;background:linear-gradient(115deg,#133543,
      status.textContent='The mirror is active. Move gently, then reveal the presence.';
      stopMotionWatch(); watchMotion();
    }catch(e){
-     const messages={NotAllowedError:'Camera permission was denied. Allow camera access in your browser settings, then try again.',NotFoundError:'No camera was found on this device.',NotReadableError:'The camera is busy. Close other camera apps and try again.',SecurityError:'Camera access is blocked here. Open the page over HTTPS.'};
-     status.textContent=messages[e.name]||'Could not open the camera. Check browser permission and try again.';
+     // Return to a clean, retryable state if permission, playback, or camera switching fails.
+     if(stream) stream.getTracks().forEach(t=>t.stop());
+     stream=null; video.srcObject=null; stopMotionWatch();
+     stage.classList.remove('active','awake','motion-ripple');
+     awake=false; start.textContent='Try camera again';
+     reveal.textContent='Reveal presence'; reveal.disabled=true; stop.disabled=true;
+     const messages={NotAllowedError:'Camera permission was denied. Allow camera access in your browser settings, then tap Try camera again.',NotFoundError:'No camera was found on this device. Check your camera and try again.',NotReadableError:'The camera is busy. Close other camera apps and tap Try camera again.',SecurityError:'Camera access is blocked here. Open the page over HTTPS.',AbortError:'The camera stopped unexpectedly. Tap Try camera again.'};
+     status.textContent=messages[e.name]||'The camera could not start. Check browser permission, then tap Try camera again.';
    }
  }
  start.addEventListener('click',()=>{if(stream){facing=facing==='user'?'environment':'user';startCamera()}else startCamera()});
