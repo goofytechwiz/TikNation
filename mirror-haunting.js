@@ -328,7 +328,7 @@
     return audioContext;
   }
   function creak() {
-    if (!soundEnabled || (typeof apparitionVoice !== 'undefined' && !apparitionVoice.paused)) return;
+    if (!soundEnabled || apparitionVoiceStarted) return;
     const ctx = getAudio(); if (!ctx) return;
     const now = ctx.currentTime, length = 1.55;
     const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * length), ctx.sampleRate);
@@ -344,7 +344,7 @@
     noise.start(now); noise.stop(now + length); osc.start(now); osc.stop(now + 1.4);
   }
   function hit() {
-    if (!soundEnabled || (typeof apparitionVoice !== 'undefined' && !apparitionVoice.paused)) return;
+    if (!soundEnabled || apparitionVoiceStarted) return;
     const ctx = getAudio(); if (!ctx) return;
     const now = ctx.currentTime, osc = ctx.createOscillator(), gain = ctx.createGain();
     osc.type = 'sawtooth'; osc.frequency.setValueAtTime(115, now); osc.frequency.exponentialRampToValueAtTime(38, now + .42);
@@ -353,7 +353,7 @@
   }
 
   function whisper() {
-    if (!soundEnabled || (typeof apparitionVoice !== 'undefined' && !apparitionVoice.paused)) return;
+    if (!soundEnabled || apparitionVoiceStarted) return;
     const ctx = getAudio(); if (!ctx) return;
     const now = ctx.currentTime, length = 2.1;
     const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * length), ctx.sampleRate);
@@ -379,7 +379,7 @@
   }
 
   function breath() {
-    if (!soundEnabled || (typeof apparitionVoice !== 'undefined' && !apparitionVoice.paused)) return;
+    if (!soundEnabled || apparitionVoiceStarted) return;
     const ctx = getAudio(); if (!ctx) return;
     const now = ctx.currentTime, length = 2.6;
     const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * length), ctx.sampleRate);
@@ -402,7 +402,7 @@
   }
 
   function footsteps() {
-    if (!soundEnabled || (typeof apparitionVoice !== 'undefined' && !apparitionVoice.paused)) return;
+    if (!soundEnabled || apparitionVoiceStarted) return;
     const ctx = getAudio(); if (!ctx) return;
     [0, .48, .96, 1.44].forEach((offset, index) => {
       const now = ctx.currentTime + offset;
