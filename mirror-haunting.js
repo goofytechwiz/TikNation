@@ -583,7 +583,7 @@
   secretStyle.textContent =
     '.stage.haunt-secret:before{background:linear-gradient(#27000b,#08030a)!important;box-shadow:inset 0 0 60px #ff003c!important}' +
     '.stage.haunt-secret:after{border-color:#ff315488!important;box-shadow:inset 0 0 70px #a00035aa,0 0 35px #ff003c!important}' +
-    '.stage.haunt-secret .haunt-message{opacity:1!important;color:#fff!important;font-size:clamp(1.1rem,5vw,1.8rem);text-shadow:0 0 8px #fff,0 0 24px #ff174c,0 0 45px #b0002c;animation:secretReveal 5s ease both!important}' +
+    '.stage.haunt-secret .haunt-message{opacity:1!important;color:#fff!important;font-size:clamp(1.1rem,5vw,1.8rem);text-shadow:0 0 8px #fff,0 0 24px #ff174c,0 0 45px #b0002c;animation:none!important;opacity:1!important;transform:none!important;letter-spacing:normal!important}' +
     '@keyframes secretReveal{0%,100%{opacity:0;transform:scale(.9)}12%,82%{opacity:1;transform:scale(1.04)}45%{letter-spacing:.2em;transform:scale(1)}}';
   document.head.appendChild(secretStyle);
   stage.addEventListener('click', () => {
@@ -597,10 +597,11 @@
     stage.classList.add('haunt-secret', 'haunt-staring');
     message.textContent = 'YOU FOUND WHAT WAS LEFT BEHIND';
     say('The reflection smiles after you stop moving. You found what was left behind.');
+    // Keep the secret message readable; do not fade or flicker it away.
     setTimeout(() => {
       stage.classList.remove('haunt-secret');
       secretEndingShown = false;
       say('The mirror is quiet. For now.');
-    }, 5200);
+    }, 9000);
   });
 })();
