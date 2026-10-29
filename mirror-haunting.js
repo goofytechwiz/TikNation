@@ -534,8 +534,12 @@
     await wait(reduceMotion ? 500 : 1400); if (!sequenceRunning) return;
     stage.classList.add('haunt-warning'); say("Don't look behind you."); speakEvil("Don't turn around.", 0.42, 0.7); whisper();
     await wait(reduceMotion ? 500 : 2100); if (!sequenceRunning) return;
+    // Give the warning a brief silent beat before the hands emerge.
+    await wait(reduceMotion ? 100 : 650); if (!sequenceRunning) return;
     stage.classList.add('haunt-hands-reach'); say('Something is reaching through the glass…'); speakEvil('Let me out.', 0.5, 0.68); creak(); breath();
-    await wait(reduceMotion ? 350 : 1250); if (!sequenceRunning) return;
+    await wait(reduceMotion ? 350 : 1550); if (!sequenceRunning) return;
+    // Hold the reaching pose briefly so the lunge feels intentional rather than rushed.
+    await wait(reduceMotion ? 100 : 450); if (!sequenceRunning) return;
     stage.classList.remove('haunt-warning'); stage.classList.add('haunt-hands-grab','haunt-lunge','haunt-redflash'); hit(); say('IT IS REACHING FOR YOU. IT GOT OUT.'); speakEvil('GET OUT!', 0.35, 0.92);
     await wait(reduceMotion ? 600 : 1100); if (!sequenceRunning) return;
     stage.classList.add('haunt-blackout');
