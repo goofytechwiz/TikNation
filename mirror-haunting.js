@@ -304,23 +304,21 @@
     source.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
     source.start(now); source.stop(now + length);
   }
-  // Temporary spoken fallback so the apparition is not silent while the
-  // prerecorded voice clips are being added. This uses the device voice.
+  // Prerecorded horror voice: the uploaded 32-second recording replaces robotic device speech.
+  const apparitionVoice = new Audio('./freesound_community-horror-whisper-voice-angry-29738.mp3');
+  apparitionVoice.preload = 'auto';
+  apparitionVoice.volume = 0.92;
+  let apparitionVoiceStarted = false;
   function speakEvil(text, pitch = 0.76, rate = 0.82) {
-    if (!soundEnabled || !('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+    if (!soundEnabled || apparitionVoiceStarted) return;
+    apparitionVoiceStarted = true;
     try {
-      window.speechSynthesis.cancel();
-      const line = new SpeechSynthesisUtterance(text);
-      line.lang = 'en-US'; line.pitch = pitch; line.rate = rate; line.volume = 0.86;
-      const voices = window.speechSynthesis.getVoices().filter(v => /^en(-|_)/i.test(v.lang));
-      const voice = voices.find(v => /google.*(us|united states).*english|english.*(us|united states)|natural|enhanced/i.test(v.name + ' ' + v.voiceURI))
-        || voices.find(v => /en-US/i.test(v.lang))
-        || voices[0];
-      if (voice) line.voice = voice;
-      const duration = Math.max(1.2, text.length / Math.max(.55, rate) * .075);
-      whisperBed(duration, /GET OUT/i.test(text) ? .07 : .13);
-      window.speechSynthesis.speak(line);
-    } catch (_) {}
+      apparitionVoice.currentTime = 0;
+      const playback = apparitionVoice.play();
+      if (playback && typeof playback.catch === 'function') playback.catch(() => {
+        apparitionVoiceStarted = false;
+      });
+    } catch (_) { apparitionVoiceStarted = false; }
   }
   function getAudio() {
     const AC = window.AudioContext || window.webkitAudioContext;
