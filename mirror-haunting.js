@@ -171,27 +171,6 @@
       }, 1800);
     }
   }
-  // Hidden discovery: tap the awake mirror three times after the main scare.
-  let secretTapCount = 0, secretTapTimer = null, secretEndingTimer = null;
-  style.textContent +=
-    '.stage.haunt-secret{filter:brightness(.42) sepia(.2)!important;transition:filter .8s ease}' +
-    '.stage.haunt-secret .haunt-omen{opacity:1!important;transform:scale(1.35)!important;background:radial-gradient(ellipse at 50% 48%,#050207f2 0 18%,#24051bdb 38%,transparent 75%)}' +
-    '.stage.haunt-secret .haunt-scare-overlay{opacity:1!important;filter:hue-rotate(65deg) brightness(1.5)}' +
-    '.stage.haunt-secret .haunt-reflection-echo{opacity:.48!important;filter:blur(1px) drop-shadow(0 0 22px #ff174c)!important;transform:translate(0,-2%) scale(1.18)!important}';
-  stage.addEventListener('click', () => {
-    if (!stage.classList.contains('awake') || dirty || sequenceRunning || stage.classList.contains('haunt-blackout')) return;
-    secretTapCount++;
-    if (secretTapTimer) clearTimeout(secretTapTimer);
-    secretTapTimer = setTimeout(() => { secretTapCount = 0; }, 2400);
-    if (secretTapCount >= 3) {
-      secretTapCount = 0;
-      clearTimeout(secretTapTimer);
-      stage.classList.add('haunt-secret', 'haunt-staring');
-      say('The reflection smiles after you stop moving. YOU FOUND WHAT WAS LEFT BEHIND.');
-      if (secretEndingTimer) clearTimeout(secretEndingTimer);
-      secretEndingTimer = setTimeout(() => stage.classList.remove('haunt-secret'), 5200);
-    }
-  });
   stage.addEventListener('pointermove', e => {
     disturbTheStare();
     if (hauntPointerFrame) return;
