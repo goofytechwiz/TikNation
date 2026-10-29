@@ -432,8 +432,12 @@
   soundButton.addEventListener('click', () => {
     soundEnabled = !soundEnabled;
     soundButton.textContent = soundEnabled ? 'Sound: On' : 'Sound: Off';
-    say(soundEnabled ? 'Sound effects enabled.' : 'Sound effects muted.');
-    if (soundEnabled) creak();
+    // Keep this control completely silent: toggling audio must not trigger a scare sound.
+    if (!soundEnabled) {
+      try { apparitionVoice.pause(); apparitionVoice.currentTime = 0; } catch (_) {}
+      try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (_) {}
+      apparitionVoiceStarted = false;
+    }
   });
   fxButton.addEventListener('click', () => {
     stage.classList.remove(...fxModes.map(m=>m.cls).filter(Boolean));
