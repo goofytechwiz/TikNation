@@ -530,8 +530,13 @@
     await wait(reduceMotion ? 600 : 2600); if (!sequenceRunning) return;
     say('Something is moving behind the dust… footsteps are getting closer.'); speakEvil('You should never have opened the mirror.', 0.48, 0.72); stage.classList.add('haunt-creak'); footsteps(); creak();
     await wait(reduceMotion ? 400 : 1800); if (!sequenceRunning) return;
+    // Let the reflection stare silently for a beat before the next scare.
+    stage.classList.add('haunt-staring');
+    say('…Something is watching you.');
+    await wait(reduceMotion ? 250 : 1250); if (!sequenceRunning) return;
     stage.classList.add('haunt-flicker'); say('The mirror is flickering…');
     await wait(reduceMotion ? 500 : 1400); if (!sequenceRunning) return;
+    stage.classList.remove('haunt-staring');
     stage.classList.add('haunt-warning'); say("Don't look behind you."); speakEvil("Don't turn around.", 0.42, 0.7); whisper();
     await wait(reduceMotion ? 500 : 2100); if (!sequenceRunning) return;
     // Give the warning a brief silent beat before the hands emerge.
