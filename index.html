@@ -9384,6 +9384,25 @@ function toggleTikNationPassword(inputId, button){
     button.setAttribute("aria-label",showing?"Hide password":"Show password");
 }
 </script>
+<script>
+/* Keep the open Messages view fresh without requiring a manual refresh. */
+(function initTikNationMessageRefresh(){
+    let refreshBusy = false;
+    window.setInterval(async function(){
+        const page = document.getElementById("messages");
+        if(!page || !page.classList.contains("active") || !currentUser || refreshBusy) return;
+        refreshBusy = true;
+        try{
+            await loadDirectMessageInbox();
+            if(activeDirectMessageUser) await loadDirectMessageThread();
+        }catch(error){
+            console.error("Automatic message refresh failed:", error);
+        }finally{
+            refreshBusy = false;
+        }
+    }, 12000);
+})();
+</script>
 <script src="gifts.js"></script>
 </body>
 </html>
