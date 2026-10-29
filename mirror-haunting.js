@@ -574,12 +574,16 @@
     if (secretTapTimes.length < 3) return;
     secretTapTimes = [];
     secretEndingShown = true;
-    stage.classList.add('haunt-secret', 'haunt-staring');
+    stage.classList.remove('haunt-warning','haunt-flicker','haunt-redflash','haunt-staring');
+    stage.classList.add('haunt-secret');
     message.textContent = 'YOU FOUND WHAT WAS LEFT BEHIND';
+    // Lock the reveal itself against any earlier warning/flicker animation rules.
+    Object.assign(message.style, {position:'absolute', left:'8%', right:'8%', top:'50%', opacity:'1', color:'#fff', animation:'none', transition:'none', transform:'translateY(-50%)', letterSpacing:'.04em', lineHeight:'1.35', textShadow:'0 0 5px #fff, 0 0 14px #ff174c, 0 0 26px #b0002c'});
     say('The reflection smiles after you stop moving. You found what was left behind.');
     // Keep the secret message readable; do not fade or flicker it away.
     setTimeout(() => {
       stage.classList.remove('haunt-secret');
+      message.removeAttribute('style');
       secretEndingShown = false;
       say('The mirror is quiet. For now.');
     }, 9000);
