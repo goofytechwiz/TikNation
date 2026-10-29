@@ -560,9 +560,10 @@
   let secretEndingShown = false;
   const secretStyle = document.createElement('style');
   secretStyle.textContent =
-    '.stage.haunt-secret:before{background:linear-gradient(#27000b,#08030a)!important;box-shadow:inset 0 0 60px #ff003c!important}' +
+    '.stage.haunt-secret{filter:none!important;box-shadow:inset 0 0 70px #6e001d,0 0 32px #8d001f!important;transition:box-shadow 1.4s ease!important}' +
+    '.stage.haunt-secret:before{background:linear-gradient(#180008,#08030a)!important;box-shadow:inset 0 0 55px #8c0028!important;transition:background 1.4s ease,box-shadow 1.4s ease!important}' +
     '.stage.haunt-secret:after{border-color:#ff315488!important;box-shadow:inset 0 0 70px #a00035aa,0 0 35px #ff003c!important}' +
-    '.stage.haunt-secret .haunt-message{opacity:1!important;color:#fff!important;font-size:clamp(1.1rem,5vw,1.8rem);text-shadow:0 0 8px #fff,0 0 24px #ff174c,0 0 45px #b0002c;animation:none!important;opacity:1!important;transform:none!important;letter-spacing:normal!important}' +
+    '.stage.haunt-secret .haunt-message{opacity:1!important;color:#fff!important;font-size:clamp(1.1rem,5vw,1.8rem);line-height:1.35;text-shadow:0 0 5px #fff,0 0 14px #ff174c,0 0 26px #b0002c;animation:none!important;transform:none!important;letter-spacing:.04em!important;transition:none!important}' +
     '@keyframes secretReveal{0%,100%{opacity:0;transform:scale(.9)}12%,82%{opacity:1;transform:scale(1.04)}45%{letter-spacing:.2em;transform:scale(1)}}';
   document.head.appendChild(secretStyle);
   stage.addEventListener('click', () => {
