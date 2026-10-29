@@ -330,18 +330,25 @@
   function creak() {
     if (!soundEnabled) return;
     const ctx = getAudio(); if (!ctx) return;
-    const now = ctx.currentTime, length = 1.55;
+    const now = ctx.currentTime, length = 1.45;
+    // A softer, filtered glass groan: remove the low sawtooth layer that sounded like an electronic buzz.
     const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * length), ctx.sampleRate);
     const data = buffer.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length) * .45;
+    for (let i = 0; i < data.length; i++) {
+      const fade = Math.pow(1 - i / data.length, 1.5);
+      data[i] = (Math.random() * 2 - 1) * fade * .22;
+    }
     const noise = ctx.createBufferSource(); noise.buffer = buffer;
     const filter = ctx.createBiquadFilter(); filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(340, now); filter.frequency.exponentialRampToValueAtTime(95, now + 1.2); filter.Q.value = 3.8;
-    const gain = ctx.createGain(); gain.gain.setValueAtTime(.001, now); gain.gain.exponentialRampToValueAtTime(.22, now + .12); gain.gain.exponentialRampToValueAtTime(.001, now + length);
-    const osc = ctx.createOscillator(); osc.type = 'sawtooth'; osc.frequency.setValueAtTime(83, now); osc.frequency.exponentialRampToValueAtTime(42, now + 1.3);
-    const og = ctx.createGain(); og.gain.setValueAtTime(.001, now); og.gain.linearRampToValueAtTime(.045, now + .2); og.gain.exponentialRampToValueAtTime(.001, now + 1.35);
-    noise.connect(filter); filter.connect(gain); gain.connect(ctx.destination); osc.connect(og); og.connect(ctx.destination);
-    noise.start(now); noise.stop(now + length); osc.start(now); osc.stop(now + 1.4);
+    filter.frequency.setValueAtTime(520, now);
+    filter.frequency.exponentialRampToValueAtTime(190, now + 1.15);
+    filter.Q.value = 2.2;
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(.001, now);
+    gain.gain.linearRampToValueAtTime(.10, now + .16);
+    gain.gain.exponentialRampToValueAtTime(.001, now + length);
+    noise.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+    noise.start(now); noise.stop(now + length);
   }
   function hit() {
     if (!soundEnabled) return;
