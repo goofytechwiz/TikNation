@@ -130,7 +130,7 @@
     '.stage.fx-bloodmoon:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:7;background:radial-gradient(circle at 50% 34%,#b0003022,transparent 48%),linear-gradient(180deg,#26000820,transparent 65%);mix-blend-mode:screen}' +
     '.stage.fx-static:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:7;background:repeating-linear-gradient(0deg,#fff0 0 3px,#d7c8ff18 4px,#fff0 5px);animation:fxStatic .16s steps(2,end) infinite}' +
     '@keyframes fxStatic{0%{transform:translateY(-2px)}100%{transform:translateY(2px)}}' +
-    '@media(prefers-reduced-motion:reduce){.stage.fx-haunted:after,.stage.fx-static:after{animation:none}}' +
+    '@media(prefers-reduced-motion:reduce){.stage.fx-haunted:after,.stage.fx-static:after{animation:none}}';
   document.head.appendChild(style);
 
   const reachingHands = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
