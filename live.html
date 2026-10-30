@@ -655,5 +655,34 @@ async function boot(){try{let session=null;let authCheckTimedOut=false;const aut
 supabase.auth.onAuthStateChange((_event,session)=>{user=session?.user||null;$("authBadge").textContent=user?"Signed in":"Viewer mode";if(user){$("creator").classList.remove("hide");$("chatInput").placeholder="Write a message…";$("creatorHint").textContent="Creator access is verified securely when you start a broadcast. Live access is invite-only during beta.";setTimeout(()=>{void loadStreams();},0);}else{if(!isHost)$("creator").classList.add("hide");$("chatInput").placeholder="Sign in and join a stream to chat…";$("chatInput").disabled=true;$("sendChat").disabled=true;if(!activeSession)notice("Sign in to view streams, join, chat, report, or broadcast.");}});
 boot();
 </script>
+<script>
+(function(){
+  function showStartupFailure(message){
+    const badge=document.getElementById("authBadge");
+    if(badge && badge.textContent.trim()==="Checking sign-in…"){
+      badge.textContent="LIVE startup problem";
+      badge.title=message;
+    }
+    const notice=document.getElementById("notice");
+    if(notice && (!notice.textContent || !notice.textContent.trim())){
+      notice.textContent=message;
+      notice.className="status error";
+    }
+    console.error("TikNation LIVE startup diagnostic:",message);
+  }
+  window.addEventListener("error",function(event){
+    showStartupFailure(event.message||"A LIVE script or library failed to load.");
+  });
+  window.addEventListener("unhandledrejection",function(event){
+    showStartupFailure(event.reason?.message||"LIVE startup was interrupted.");
+  });
+  window.setTimeout(function(){
+    const badge=document.getElementById("authBadge");
+    if(badge && badge.textContent.trim()==="Checking sign-in…"){
+      showStartupFailure(window.supabase?"LIVE script did not finish starting.":"Supabase sign-in library did not load. Check your connection or browser content blocker.");
+    }
+  },10000);
+})();
+</script>
 </body>
 </html>
