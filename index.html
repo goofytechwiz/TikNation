@@ -1863,6 +1863,74 @@ textarea.form-control{
     #passwordRecoveryPanel .form-control{font-size:16px;}
 }
 </style>
+
+<style>
+/* TikNation landing polish — visual refinement only; desktop structure remains unchanged. */
+#home .hero-card{min-height:330px;display:flex;flex-direction:column;justify-content:center;border-color:rgba(112,232,255,.28);background:radial-gradient(circle at 84% 25%,rgba(0,213,255,.16),transparent 27%),radial-gradient(circle at 72% 90%,rgba(156,124,255,.16),transparent 35%),linear-gradient(125deg,rgba(100,50,220,.28),rgba(0,150,220,.13),rgba(12,12,25,.96))}
+#home .hero-card::after{content:"";position:absolute;width:290px;height:290px;right:7%;top:50%;transform:translateY(-50%);border:1px solid rgba(126,234,255,.13);border-radius:50%;box-shadow:0 0 0 24px rgba(126,234,255,.025),0 0 0 52px rgba(180,154,255,.025),inset 0 0 55px rgba(126,234,255,.05);pointer-events:none}
+#home .hero-card h1,#home .hero-card p,#home .hero-card .eyebrow,#home .hero-card .tn-landing-actions,#home .hero-card .tn-public-browse-note{z-index:1}
+#home .hero-card h1{letter-spacing:-.045em;text-shadow:0 8px 35px rgba(0,0,0,.2)}
+#home .tn-founder-quotes{position:relative;overflow:hidden}
+#home .tn-founder-quotes blockquote{transition:transform .22s ease,border-color .22s ease,background .22s ease}
+#home .tn-founder-quotes blockquote:hover{transform:translateY(-3px);border-color:rgba(126,234,255,.38)!important;background:rgba(8,10,24,.78)!important}
+#home .tn-host-feature{box-shadow:0 16px 45px rgba(0,0,0,.18)}
+#home .tn-public-explore-grid .tn-explore-card{position:relative;isolation:isolate;overflow:hidden;min-height:225px;border-color:rgba(126,234,255,.13);background:linear-gradient(150deg,rgba(23,24,48,.96),rgba(11,12,25,.96))}
+#home .tn-public-explore-grid .tn-explore-card::after{content:"";position:absolute;z-index:-1;width:130px;height:130px;right:-55px;top:-55px;border-radius:50%;background:rgba(112,232,255,.08);filter:blur(3px);transition:transform .25s ease}
+#home .tn-public-explore-grid .tn-explore-card:hover::after{transform:scale(1.6)}
+#home .tn-public-explore-grid .tn-explore-card:focus-visible{outline:2px solid #70e8ff;outline-offset:3px}
+#home .tn-join-guide{box-shadow:0 18px 48px rgba(0,0,0,.18)}
+#home .tn-join-guide-step{transition:border-color .2s ease,background .2s ease}
+#home .tn-join-guide-step:hover{border-color:rgba(126,234,255,.24);background:rgba(126,234,255,.045)}
+@media(max-width:650px){
+#home{padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+#home .hero-card{min-height:0;padding:34px 22px 28px;border-radius:24px;background:radial-gradient(circle at 92% 8%,rgba(0,213,255,.16),transparent 34%),linear-gradient(145deg,rgba(100,50,220,.26),rgba(0,150,220,.11),rgba(12,12,25,.97))}
+#home .hero-card::after{width:170px;height:170px;right:-88px;top:44%;opacity:.65}
+#home .hero-card .eyebrow{font-size:10px;letter-spacing:2.8px}
+#home .hero-card h1{font-size:clamp(43px,12vw,62px);line-height:.99;letter-spacing:-.05em}
+#home .hero-card>p{font-size:15px;line-height:1.65}
+#home .tn-landing-actions{gap:10px}
+#home .tn-landing-actions .primary-button,#home .tn-landing-actions .tn-landing-secondary{margin-top:14px;min-height:48px}
+#home .tn-public-browse-note{margin-top:13px!important;font-size:12px!important}
+#home .tn-founder-quotes{margin:20px 0 24px!important;padding:22px 17px!important;border-radius:22px!important}
+#home .tn-founder-quotes h2{line-height:1.18}
+#home .tn-founder-quotes blockquote{padding:17px!important}
+#home .tn-founder-quotes blockquote p{font-size:16px!important}
+#home .tn-host-feature{grid-template-columns:minmax(0,1fr) 68px;gap:12px;padding:18px;border-radius:21px}
+#home .tn-host-feature .tn-host-avatar{width:68px;height:68px;border-radius:20px;font-size:36px}
+#home .tn-host-feature h2{font-size:22px;line-height:1.2}
+#home .tn-host-feature p{font-size:13px;line-height:1.55}
+#home .tn-host-actions{gap:8px}
+#home .tn-host-button{padding:10px 12px;font-size:12px}
+#home #tnExploreSection{align-items:flex-start;gap:8px;flex-direction:column;margin:28px 0 13px}
+#home #tnExploreSection h2{font-size:23px}
+#home .tn-explore-intro{font-size:13px;line-height:1.6;margin-bottom:15px}
+#home .tn-public-explore-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+#home .tn-public-explore-grid .tn-explore-card{min-height:205px;padding:16px 14px;border-radius:18px}
+#home .tn-explore-card .card-icon{font-size:31px;margin-bottom:12px}
+#home .tn-explore-card-title{font-size:16px;line-height:1.25}
+#home .tn-explore-card-copy{font-size:12px;line-height:1.5}
+#home .tn-explore-card-link{font-size:11px;padding-top:13px}
+#home .tn-join-guide{padding:19px 16px;border-radius:21px;gap:16px}
+#home .tn-join-guide-copy h2{line-height:1.2}
+#home .tn-join-guide-copy p{font-size:13px}
+#home .tn-join-guide-step{padding:11px}
+#home .tn-join-guide-cta{min-height:46px}
+.tn-host-launcher{right:12px;bottom:calc(82px + env(safe-area-inset-bottom));padding:8px 12px 8px 8px}
+.tn-host-launcher-avatar{width:38px;height:38px;font-size:21px}
+.tn-host-panel{right:10px;bottom:calc(138px + env(safe-area-inset-bottom));max-height:calc(76dvh - env(safe-area-inset-bottom))}
+}
+@media(max-width:380px){
+#home .tn-public-explore-grid{grid-template-columns:1fr}
+#home .tn-public-explore-grid .tn-explore-card{min-height:170px}
+#home .tn-host-feature{grid-template-columns:1fr}
+#home .tn-host-feature .tn-host-avatar{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+#home .tn-founder-quotes blockquote,#home .tn-public-explore-grid .tn-explore-card::after,#home .tn-join-guide-step{transition:none}
+#home .tn-founder-quotes blockquote:hover{transform:none}
+}
+</style>
+
 </head>
 
 <body>
