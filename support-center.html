@@ -97,7 +97,7 @@ async function runDiagnostics(){
  button.disabled=false;button.textContent="Run safe checks";
 }
 $("runDiagnostics").addEventListener("click",runDiagnostics);
-$("refresh").addEventListener("click",loadTickets);\n
+$("refresh").addEventListener("click",loadTickets);
 $("refreshMine").addEventListener("click",loadMyTickets);
 $("myTickets").addEventListener("click",async e=>{
  const open=e.target.dataset.conversation;
