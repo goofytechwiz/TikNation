@@ -136,17 +136,17 @@
   // Full-screen mirror impact: branching fractures, then glass fragments burst outward.
   const shatterStyle = document.createElement('style');
   shatterStyle.textContent =
-    '.haunt-glass-shatter{position:absolute;z-index:40;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;overflow:visible;transition:opacity .08s ease}' +
-    '.stage.haunt-glass-break .haunt-glass-shatter{opacity:1}' +
-    '.haunt-glass-shatter .fractures{fill:none;stroke:#f2f0ff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 3px #d9e8ff) drop-shadow(0 0 8px #fff)}' +
-    '.haunt-glass-shatter .fractures path{stroke-dasharray:520;stroke-dashoffset:520;animation:glassFracture .38s cubic-bezier(.1,.8,.2,1) forwards}' +
+    '.haunt-glass-shatter{position:absolute;z-index:999;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;overflow:visible;transition:opacity .04s linear}' +
+    '.stage.haunt-glass-break .haunt-glass-shatter{opacity:1!important;visibility:visible}' +
+    '.haunt-glass-shatter .fractures{fill:none;stroke:#fff;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 5px #d9e8ff) drop-shadow(0 0 13px #fff)}' +
+    '.haunt-glass-shatter .fractures path{stroke-dasharray:520;stroke-dashoffset:520;animation:glassFracture .24s cubic-bezier(.1,.8,.2,1) forwards}' +
     '.haunt-glass-shatter .fractures path:nth-child(2n){animation-delay:.045s}.haunt-glass-shatter .fractures path:nth-child(3n){animation-delay:.085s}' +
     '@keyframes glassFracture{to{stroke-dashoffset:0}}' +
     '.haunt-glass-shatter .shards{transform-origin:50% 50%}' +
-    '.haunt-glass-shatter .shards polygon{fill:url(#glassShard);stroke:#f4f1ff;stroke-width:1.2;opacity:0;filter:drop-shadow(0 0 5px #d7e6ff);transform-box:fill-box;transform-origin:center;animation:glassBurst .82s cubic-bezier(.12,.7,.18,1) forwards}' +
+    '.haunt-glass-shatter .shards polygon{fill:url(#glassShard);stroke:#fff;stroke-width:2;opacity:0;filter:drop-shadow(0 0 8px #d7e6ff);transform-box:fill-box;transform-origin:center;animation:glassBurst 1.25s cubic-bezier(.12,.7,.18,1) forwards}' +
     '.haunt-glass-shatter .shards polygon:nth-child(2n){animation-delay:.035s}.haunt-glass-shatter .shards polygon:nth-child(3n){animation-delay:.075s}' +
     '@keyframes glassBurst{0%{opacity:0;transform:translate(0,0) rotate(0) scale(.2)}12%{opacity:.95}100%{opacity:0;transform:translate(var(--sx),var(--sy)) rotate(var(--sr)) scale(.8)}}' +
-    '.stage.haunt-glass-break{animation:glassImpact .48s cubic-bezier(.2,.8,.2,1) both}' +
+    '.stage.haunt-glass-break{animation:glassImpact .62s cubic-bezier(.2,.8,.2,1) both;box-shadow:0 0 0 3px #fff,inset 0 0 70px #d9e8ff88,0 0 65px #fff!important}' +
     '@keyframes glassImpact{0%,100%{translate:0 0}15%{translate:-7px 3px}32%{translate:6px -4px}52%{translate:-4px -2px}72%{translate:2px 2px}}' +
     '@media(prefers-reduced-motion:reduce){.haunt-glass-shatter .fractures path{animation:none;stroke-dashoffset:0}.haunt-glass-shatter .shards polygon{animation:none;opacity:.3}.stage.haunt-glass-break{animation:none}}';
   document.head.appendChild(shatterStyle);
@@ -596,7 +596,7 @@
     // Hold the reaching pose briefly so the lunge feels intentional rather than rushed.
     await wait(reduceMotion ? 100 : 450); if (!sequenceRunning) return;
     stage.classList.remove('haunt-warning'); stage.classList.add('haunt-hands-grab','haunt-lunge','haunt-redflash','haunt-glass-break'); hit(); say('IT IS REACHING FOR YOU. IT GOT OUT.'); speakEvil('GET OUT!', 0.35, 0.92);
-    await wait(reduceMotion ? 600 : 1050); if (!sequenceRunning) return;
+    await wait(reduceMotion ? 900 : 1750); if (!sequenceRunning) return;
     stage.classList.add('haunt-blackout');
     await wait(reduceMotion ? 700 : 1800); if (!sequenceRunning) return;
     stage.classList.remove('haunt-blackout','haunt-lunge','haunt-redflash','haunt-flicker','haunt-creak','haunt-emerge','haunt-hands-reach','haunt-hands-grab','haunt-glass-break');
