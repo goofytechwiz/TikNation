@@ -446,10 +446,14 @@ function showLiveGiftCelebration(event) {
     const sender=String(event.sender_name||"A TikNation dreamer").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
     overlay.className="live-dragon-scene";
     overlay.innerHTML='<div class="live-dragon-flight"><svg class="live-dragon-art" viewBox="0 0 1200 620" role="img" aria-label="A detailed winged dragon flying forward and breathing a stream of fire"><defs><linearGradient id="dragonScale" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4c17a"/><stop offset=".25" stop-color="#a9432d"/><stop offset=".58" stop-color="#44202b"/><stop offset="1" stop-color="#10121e"/></linearGradient><linearGradient id="dragonWing" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a94a39"/><stop offset=".5" stop-color="#421b2b"/><stop offset="1" stop-color="#171323"/></linearGradient><linearGradient id="dragonFlame" x1="0" y1=".5" x2="1" y2=".5"><stop stop-color="#fffbd0"/><stop offset=".18" stop-color="#ffe36a"/><stop offset=".48" stop-color="#ff8a1d"/><stop offset=".78" stop-color="#ed3514"/><stop offset="1" stop-color="#9c1432" stop-opacity="0"/></linearGradient><radialGradient id="dragonEye"><stop stop-color="#fff8b0"/><stop offset=".35" stop-color="#ff9b24"/><stop offset="1" stop-color="#d51d12"/></radialGradient><filter id="dragonGlow"><feGaussianBlur stdDeviation="8"/></filter></defs><g stroke="#160d18" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
-<!-- far wing: broad leathery membrane and visible finger bones -->
-<path class="dragon-wing" fill="url(#dragonWing)" d="M590 350 Q520 165 285 55 Q335 180 300 285 Q365 225 425 330 Q470 245 530 370Z"/>
-<path class="dragon-wing" fill="none" stroke="#d18b62" stroke-width="9" d="M590 350L285 55 M300 285L365 145 M365 225L410 155 M425 330L470 205 M530 370L520 220"/>
-<path class="dragon-wing" fill="none" stroke="#24131e" stroke-width="17" d="M285 55Q300 165 300 285 M285 55Q360 65 365 145 M300 285Q355 245 410 155 M300 285Q380 300 470 205 M425 330Q480 300 520 220"/>
+<!-- far wing grows directly from the shoulder; curved spars and scalloped membrane make it read as a bat-like dragon wing -->
+<path class="dragon-wing" fill="url(#dragonWing)" d="M590 354 Q555 250 510 170 Q455 82 300 42 Q350 125 330 205 Q365 185 395 238 Q425 205 460 270 Q495 255 530 330Z"/>
+<path class="dragon-wing" fill="none" stroke="#d18b62" stroke-width="11" d="M590 354Q520 185 300 42 M590 354Q435 235 330 205 M590 354Q445 270 395 238 M590 354Q475 295 460 270 M590 354Q530 325 530 330"/>
+<path class="dragon-wing" fill="none" stroke="#21111e" stroke-width="20" d="M300 42Q332 120 330 205 M300 42Q395 70 425 115 M330 205Q360 185 395 238 M395 238Q420 210 460 270 M460 270Q490 245 530 330"/>
+<!-- near wing attaches visibly at the near shoulder and has a broad jointed membrane -->
+<path class="dragon-wing" fill="url(#dragonWing)" d="M565 360Q550 245 600 145Q650 62 805 38Q755 125 780 205Q735 185 710 245Q675 215 650 285Q610 270 595 345Z"/>
+<path class="dragon-wing" fill="none" stroke="#d18b62" stroke-width="11" d="M565 360Q650 175 805 38 M565 360Q690 230 780 205 M565 360Q655 270 710 245 M565 360Q610 300 650 285"/>
+<path class="dragon-wing" fill="none" stroke="#21111e" stroke-width="20" d="M805 38Q760 125 780 205 M805 38Q700 70 675 120 M780 205Q745 180 710 245 M710 245Q675 215 650 285"/>
 <!-- long muscular tail -->
 <path fill="url(#dragonScale)" d="M505 390 Q370 405 275 450 Q190 485 85 455 Q180 535 320 475 Q425 435 550 430Z"/>
 <path fill="#8f3b35" d="M105 462L45 425L75 480L35 500L120 490Z"/>
@@ -469,16 +473,19 @@ function showLiveGiftCelebration(event) {
 <!-- near wing root and shoulder -->
 <path fill="url(#dragonWing)" d="M570 345Q535 165 690 55Q675 180 735 245Q665 225 635 355Z"/>
 <path class="dragon-wing" fill="none" stroke="#d18b62" stroke-width="9" d="M570 345L690 55 M690 55L675 185 M690 55L735 245 M570 345L625 190 M570 345L675 300"/>
-<!-- four visible legs with joints and hooked claws -->
-<path fill="url(#dragonScale)" d="M505 390Q475 425 455 465L430 490L455 505L495 480L535 420Z"/>
-<path fill="url(#dragonScale)" d="M475 470L445 505L460 520L500 505L515 470Z"/>
-<path fill="none" stroke="#e8b37b" stroke-width="7" d="M452 505l-15 18m30-16l-5 21m24-28l4 18"/>
-<path fill="url(#dragonScale)" d="M675 405Q700 445 710 480L690 510L715 520L750 490L730 425Z"/>
-<path fill="url(#dragonScale)" d="M690 495L675 525L695 538L735 520L750 492Z"/>
-<path fill="none" stroke="#e8b37b" stroke-width="7" d="M687 520l-12 18m32-16l-3 20m23-30l7 18"/>
-<path fill="url(#dragonScale)" d="M760 360Q790 390 800 425L780 450L805 465L835 435L815 375Z"/>
-<path fill="url(#dragonScale)" d="M780 435L765 460L785 473L820 455L835 430Z"/>
-<path fill="url(#dragonScale)" d="M420 365Q395 390 380 420L355 435L375 452L415 435L450 390Z"/>
+<!-- four larger, weight-bearing legs with thick thighs, defined ankles and broad clawed feet -->
+<path fill="url(#dragonScale)" d="M475 382Q430 410 420 455L395 495Q390 515 420 520L475 505Q505 475 525 420Z"/>
+<path fill="url(#dragonScale)" d="M405 490Q365 500 355 530Q365 550 415 548L470 535Q485 520 465 500Z"/>
+<path fill="#d9a06a" stroke="#25121a" stroke-width="6" d="M370 535Q350 548 345 565Q365 573 385 555L400 548Q410 570 430 567L438 545Q460 565 478 550L465 525Z"/>
+<path fill="url(#dragonScale)" d="M655 395Q690 425 700 465L690 505Q675 530 710 535L765 510Q780 490 750 465L730 410Z"/>
+<path fill="url(#dragonScale)" d="M685 495Q655 515 665 545Q700 560 750 540L780 520Q780 500 755 490Z"/>
+<path fill="#d9a06a" stroke="#25121a" stroke-width="6" d="M675 535Q655 555 665 572Q690 580 710 555L725 550Q730 575 752 570L765 545Q790 565 808 545L785 520Z"/>
+<path fill="url(#dragonScale)" d="M755 355Q795 380 820 415L835 450Q825 475 855 480L895 455Q905 435 875 410L820 365Z"/>
+<path fill="url(#dragonScale)" d="M830 445Q805 470 820 495Q850 510 890 485L910 465Q905 445 880 440Z"/>
+<path fill="#d9a06a" stroke="#25121a" stroke-width="6" d="M825 485Q805 505 818 520Q840 530 858 505L875 500Q885 525 905 515L915 490Q938 508 952 490L925 465Z"/>
+<path fill="url(#dragonScale)" d="M405 355Q365 380 350 420L325 455Q325 480 355 482L405 455Q435 420 455 385Z"/>
+<path fill="url(#dragonScale)" d="M335 445Q300 460 300 490Q325 510 370 490L395 470Q390 450 365 442Z"/>
+<path fill="#d9a06a" stroke="#25121a" stroke-width="6" d="M310 485Q290 505 302 522Q325 530 340 505L355 500Q360 525 382 515L390 490Q415 508 430 488L405 465Z"/>
 <!-- dorsal spines and individual scale ridges -->
 <path fill="#d18b62" stroke-width="5" d="M485 330L500 295L520 326L540 300L560 326L580 300L600 325L620 302L640 330L660 310L680 340L700 320L720 350L740 335L755 365Z"/>
 <path fill="none" stroke="#e4a46e" stroke-width="5" d="M480 365l22 18m25-30 22 18m24-25 22 18m24-20 22 18m24-12 22 16m24-8 20 15"/>
