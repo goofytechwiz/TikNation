@@ -133,6 +133,29 @@
     '@media(prefers-reduced-motion:reduce){.stage.fx-haunted:after,.stage.fx-static:after{animation:none}}';
   document.head.appendChild(style);
 
+  // Full-screen mirror impact: branching fractures, then glass fragments burst outward.
+  const shatterStyle = document.createElement('style');
+  shatterStyle.textContent =
+    '.haunt-glass-shatter{position:absolute;z-index:40;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;overflow:visible;transition:opacity .08s ease}' +
+    '.stage.haunt-glass-break .haunt-glass-shatter{opacity:1}' +
+    '.haunt-glass-shatter .fractures{fill:none;stroke:#f2f0ff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 3px #d9e8ff) drop-shadow(0 0 8px #fff)}' +
+    '.haunt-glass-shatter .fractures path{stroke-dasharray:520;stroke-dashoffset:520;animation:glassFracture .38s cubic-bezier(.1,.8,.2,1) forwards}' +
+    '.haunt-glass-shatter .fractures path:nth-child(2n){animation-delay:.045s}.haunt-glass-shatter .fractures path:nth-child(3n){animation-delay:.085s}' +
+    '@keyframes glassFracture{to{stroke-dashoffset:0}}' +
+    '.haunt-glass-shatter .shards{transform-origin:50% 50%}' +
+    '.haunt-glass-shatter .shards polygon{fill:url(#glassShard);stroke:#f4f1ff;stroke-width:1.2;opacity:0;filter:drop-shadow(0 0 5px #d7e6ff);transform-box:fill-box;transform-origin:center;animation:glassBurst .82s cubic-bezier(.12,.7,.18,1) forwards}' +
+    '.haunt-glass-shatter .shards polygon:nth-child(2n){animation-delay:.035s}.haunt-glass-shatter .shards polygon:nth-child(3n){animation-delay:.075s}' +
+    '@keyframes glassBurst{0%{opacity:0;transform:translate(0,0) rotate(0) scale(.2)}12%{opacity:.95}100%{opacity:0;transform:translate(var(--sx),var(--sy)) rotate(var(--sr)) scale(.8)}}' +
+    '.stage.haunt-glass-break{animation:glassImpact .48s cubic-bezier(.2,.8,.2,1) both}' +
+    '@keyframes glassImpact{0%,100%{translate:0 0}15%{translate:-7px 3px}32%{translate:6px -4px}52%{translate:-4px -2px}72%{translate:2px 2px}}' +
+    '@media(prefers-reduced-motion:reduce){.haunt-glass-shatter .fractures path{animation:none;stroke-dashoffset:0}.haunt-glass-shatter .shards polygon{animation:none;opacity:.3}.stage.haunt-glass-break{animation:none}}';
+  document.head.appendChild(shatterStyle);
+  const glassShatter = document.createElement('div');
+  glassShatter.className = 'haunt-glass-shatter';
+  glassShatter.setAttribute('aria-hidden','true');
+  glassShatter.innerHTML = '<svg viewBox="0 0 360 640" preserveAspectRatio="none" width="100%" height="100%"><defs><linearGradient id="glassShard" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset=".48" stop-color="#b9d5f5" stop-opacity=".32"/><stop offset="1" stop-color="#fff" stop-opacity=".06"/></linearGradient></defs><g class="fractures"><path d="M180 320 L158 278 125 254 139 214 104 185 117 145 82 112"/><path d="M180 320 L211 287 245 276 253 232 291 207 278 165 319 128"/><path d="M180 320 L147 338 111 330 83 360 47 354 18 390"/><path d="M180 320 L218 345 249 337 281 367 319 360 350 394"/><path d="M180 320 L171 367 145 399 159 442 130 477 142 520"/><path d="M180 320 L202 366 232 393 220 435 255 467 245 514"/><path d="M180 320 L180 270 166 235 183 201 171 166 185 126 178 82"/><path d="M180 320 L180 370 195 405 179 443 196 481 184 523 192 570"/><path d="M180 320 L130 302 97 281 60 290 28 268"/><path d="M180 320 L231 305 268 286 304 298 340 276"/></g><g class="shards"><polygon points="180,320 158,278 211,287" style="--sx:-90px;--sy:-170px;--sr:-42deg"/><polygon points="180,320 211,287 245,276" style="--sx:110px;--sy:-155px;--sr:55deg"/><polygon points="180,320 147,338 111,330" style="--sx:-160px;--sy:25px;--sr:-70deg"/><polygon points="180,320 218,345 249,337" style="--sx:165px;--sy:45px;--sr:75deg"/><polygon points="180,320 171,367 145,399" style="--sx:-90px;--sy:175px;--sr:48deg"/><polygon points="180,320 202,366 232,393" style="--sx:100px;--sy:180px;--sr:-55deg"/><polygon points="180,320 166,235 183,201" style="--sx:-35px;--sy:-210px;--sr:95deg"/><polygon points="180,320 195,405 179,443" style="--sx:25px;--sy:220px;--sr:-95deg"/></g></svg>';
+  stage.appendChild(glassShatter);
+
   const creatureStyle = document.createElement('style');
   creatureStyle.textContent =
     '.haunt-reaching-hands .haunt-face{filter:drop-shadow(0 0 8px #8d163b) drop-shadow(0 0 22px #24000d);transform-origin:180px 180px}' +
@@ -572,11 +595,11 @@
     await wait(reduceMotion ? 350 : 1550); if (!sequenceRunning) return;
     // Hold the reaching pose briefly so the lunge feels intentional rather than rushed.
     await wait(reduceMotion ? 100 : 450); if (!sequenceRunning) return;
-    stage.classList.remove('haunt-warning'); stage.classList.add('haunt-hands-grab','haunt-lunge','haunt-redflash'); hit(); say('IT IS REACHING FOR YOU. IT GOT OUT.'); speakEvil('GET OUT!', 0.35, 0.92);
-    await wait(reduceMotion ? 600 : 1100); if (!sequenceRunning) return;
+    stage.classList.remove('haunt-warning'); stage.classList.add('haunt-hands-grab','haunt-lunge','haunt-redflash','haunt-glass-break'); hit(); say('IT IS REACHING FOR YOU. IT GOT OUT.'); speakEvil('GET OUT!', 0.35, 0.92);
+    await wait(reduceMotion ? 600 : 1050); if (!sequenceRunning) return;
     stage.classList.add('haunt-blackout');
     await wait(reduceMotion ? 700 : 1800); if (!sequenceRunning) return;
-    stage.classList.remove('haunt-blackout','haunt-lunge','haunt-redflash','haunt-flicker','haunt-creak','haunt-emerge','haunt-hands-reach','haunt-hands-grab');
+    stage.classList.remove('haunt-blackout','haunt-lunge','haunt-redflash','haunt-flicker','haunt-creak','haunt-emerge','haunt-hands-reach','haunt-hands-grab','haunt-glass-break');
     stage.classList.add('haunt-hand','haunt-last-look'); stage.classList.remove('haunt-dirty');
     message.textContent = 'IT’S STILL IN THERE'; stage.classList.add('haunt-warning');
     say('A final creak echoes from the darkness. IT’S STILL IN THERE.'); speakEvil('I am still here.', 0.38, 0.62); creak();
