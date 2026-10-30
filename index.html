@@ -1931,6 +1931,37 @@ textarea.form-control{
 }
 </style>
 
+
+/* Mobile destination rail: preserve readable labels and allow deliberate horizontal browsing. */
+@media(max-width:650px){
+  .mobile-nav{
+    justify-content:flex-start;
+    gap:2px;
+    padding-left:7px;
+    padding-right:7px;
+    overflow-x:auto;
+    overscroll-behavior-x:contain;
+    touch-action:pan-x;
+    scroll-snap-type:x proximity;
+    -webkit-overflow-scrolling:touch;
+  }
+  .mobile-nav button{
+    flex:0 0 58px;
+    min-width:58px;
+    min-height:54px;
+    padding:5px 2px;
+    scroll-snap-align:center;
+    font-size:10px;
+    line-height:1.15;
+  }
+  .mobile-nav button:focus-visible{
+    outline:2px solid #70e8ff;
+    outline-offset:-2px;
+    border-radius:12px;
+  }
+  .mobile-nav span{font-size:21px;line-height:1.1}
+}
+
 </head>
 
 <body>
