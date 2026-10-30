@@ -58,6 +58,12 @@
     '@keyframes hauntEchoFlare{0%{filter:drop-shadow(0 0 5px #5b1638)}55%{filter:drop-shadow(0 0 24px #ff1744) brightness(1.8)}100%{filter:drop-shadow(0 0 10px #a00035) brightness(1.1)}}' +
     '@keyframes hauntEchoGlitch{0%,100%{filter:blur(3px) drop-shadow(0 0 12px #5c1439)}50%{filter:blur(1px) drop-shadow(0 0 20px #c10038) brightness(1.8)}}' +
     '.stage.haunt-blackout .haunt-reflection-echo{opacity:0!important}' +
+    '.stage.haunt-emerge .presence{opacity:1!important;transform:translate(-2%,4%) scale(1.32)!important;filter:contrast(1.35) brightness(1.15) drop-shadow(0 0 16px #a00035)!important;transition:transform 1.1s cubic-bezier(.16,.72,.2,1),filter .8s ease!important}' +
+    '.stage.haunt-emerge .haunt-reflection-echo{opacity:.42!important;filter:blur(1.5px) drop-shadow(0 0 22px #b0003b)!important;transform:translate(0,-1%) scale(1.12)!important;transition:opacity .7s ease,transform 1s cubic-bezier(.16,.72,.2,1)!important}' +
+    '.stage.haunt-emerge .haunt-ripple{opacity:.9;animation:hauntRipple .9s ease-out infinite}' +
+    '.stage.haunt-emerge .haunt-shatter-lines{opacity:.7;stroke:#e4e0ec;animation:hauntShiver .22s steps(2,end) infinite}' +
+    '.stage.haunt-emerge:after{border-color:#ff315477;box-shadow:inset 0 0 45px #ff17442b,0 0 28px #a0003566;animation:omenPulse .45s ease-in-out infinite}' +
+    '@media(prefers-reduced-motion:reduce){.stage.haunt-emerge .presence,.stage.haunt-emerge .haunt-reflection-echo{transition:none!important}}' +
     '.stage.haunt-hands-reach .haunt-reaching-hands{opacity:1;transform:translateY(3%) scale(1)}' +
     '.stage.haunt-hands-grab .haunt-reaching-hands{opacity:1;transform:translateY(-2%) scale(1.28);filter:drop-shadow(0 0 20px #ff002f) brightness(1.25)}' +
     '.haunt-ripple{opacity:0;transform-origin:180px 180px;pointer-events:none}' +
@@ -524,7 +530,7 @@
     apparitionVoiceStarted = false;
     disturbTheStare();
     sequenceRunning = true;
-    stage.classList.remove('haunt-flicker','haunt-creak','haunt-warning','haunt-lunge','haunt-blackout','haunt-hands-reach','haunt-hands-grab','haunt-redflash','haunt-staring');
+    stage.classList.remove('haunt-flicker','haunt-creak','haunt-warning','haunt-lunge','haunt-blackout','haunt-emerge','haunt-hands-reach','haunt-hands-grab','haunt-redflash','haunt-staring');
     stage.classList.add('awake','haunt-dirty'); stage.classList.remove('haunt-hand');
     stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
     dirty = true; wiped = 0; lastPoint = null; stage.style.touchAction = 'none'; paintDust();
@@ -545,8 +551,11 @@
     stage.classList.remove('haunt-staring');
     stage.classList.add('haunt-warning'); say("Don't look behind you."); speakEvil("Don't turn around.", 0.42, 0.7); whisper();
     await wait(reduceMotion ? 500 : 2100); if (!sequenceRunning) return;
-    // Give the warning a brief silent beat before the hands emerge.
+    // The reflection visibly presses forward before the hands break through.
     await wait(reduceMotion ? 100 : 650); if (!sequenceRunning) return;
+    stage.classList.add('haunt-emerge'); say('The reflection is pressing against the glass…');
+    if (soundEnabled) creak();
+    await wait(reduceMotion ? 180 : 1050); if (!sequenceRunning) return;
     stage.classList.add('haunt-hands-reach'); say('Something is reaching through the glass…'); speakEvil('Let me out.', 0.5, 0.68); creak(); breath();
     await wait(reduceMotion ? 350 : 1550); if (!sequenceRunning) return;
     // Hold the reaching pose briefly so the lunge feels intentional rather than rushed.
@@ -555,7 +564,7 @@
     await wait(reduceMotion ? 600 : 1100); if (!sequenceRunning) return;
     stage.classList.add('haunt-blackout');
     await wait(reduceMotion ? 700 : 1800); if (!sequenceRunning) return;
-    stage.classList.remove('haunt-blackout','haunt-lunge','haunt-redflash','haunt-flicker','haunt-creak','haunt-hands-reach','haunt-hands-grab');
+    stage.classList.remove('haunt-blackout','haunt-lunge','haunt-redflash','haunt-flicker','haunt-creak','haunt-emerge','haunt-hands-reach','haunt-hands-grab');
     stage.classList.add('haunt-hand'); stage.classList.remove('haunt-dirty');
     message.textContent = 'IT’S STILL IN THERE'; stage.classList.add('haunt-warning');
     say('A final creak echoes from the darkness. IT’S STILL IN THERE.'); speakEvil('I am still here.', 0.38, 0.62); creak();
