@@ -24,7 +24,7 @@
 .live-gift-choice:hover:not(:disabled){border-color:#00c8ff;background:#17162b}.live-gift-choice:disabled{opacity:.45}.live-gift-emoji{display:block;font-size:1.6rem}.live-gift-name{display:block;font-size:.78rem;overflow-wrap:anywhere}.live-gift-cost{display:block;color:#83eaff;font-size:.75rem;margin-top:3px}
 .live-gift-status{min-height:24px;margin:10px 0;color:#cfc9e4;font-size:.85rem}.live-gift-status.error{color:#ffb9c9}.live-gift-status.success{color:#a9ffdc}
 .live-gift-feed{display:grid;gap:7px;margin-top:10px}.live-gift-feed-item{padding:9px 10px;border-radius:10px;background:#0a0a14;border:1px solid #29243d;font-size:.83rem;overflow-wrap:anywhere}.live-gift-feed-item strong{color:#d9c9ff}
-.live-gift-celebration{position:fixed;z-index:9999;inset:0;display:grid;place-items:center;pointer-events:none;background:radial-gradient(ellipse at center,rgba(70,38,120,.42),rgba(3,3,10,.08) 65%,transparent)}
+.live-gift-celebration{position:fixed;z-index:2147483647;inset:0;display:grid;place-items:center;pointer-events:none;background:radial-gradient(ellipse at center,rgba(70,38,120,.72),rgba(3,3,10,.38) 65%,rgba(3,3,10,.12));isolation:isolate;visibility:visible;opacity:1}
 .live-gift-celebration-card{padding:25px 30px;border:1px solid rgba(146,110,255,.7);border-radius:24px;background:rgba(12,9,26,.94);box-shadow:0 0 70px #805bff66;text-align:center;animation:liveGiftPop .55s cubic-bezier(.2,1.6,.4,1) both;max-width:min(88vw,360px)}
 .live-gift-celebration-card span{display:block;font-size:4rem;line-height:1.3}.live-gift-celebration-card strong{display:block;font-size:1.35rem}.live-gift-celebration-card small{display:block;color:#8ceaff;margin-top:8px}.live-gift-celebration-special-effects .live-gift-celebration-card{border-color:#ffca66;box-shadow:0 0 85px #ff9f4388;animation:liveGiftBurst .65s cubic-bezier(.2,1.7,.4,1) both}.live-gift-celebration-visual-effects .live-gift-celebration-card{border-color:#65f4ff;box-shadow:0 0 90px #45dfff99;animation:liveGiftPrism 1.2s ease-in-out both}.live-gift-celebration-surprises .live-gift-celebration-card{border-color:#ff83d8;box-shadow:0 0 85px #d65bff99;animation:liveGiftMystery .7s cubic-bezier(.2,1.5,.4,1) both}@keyframes liveGiftBurst{0%{opacity:0;transform:scale(.25) rotate(-12deg)}65%{transform:scale(1.12) rotate(3deg)}100%{opacity:1;transform:scale(1) rotate(0)}}@keyframes liveGiftPrism{0%,100%{filter:hue-rotate(0);transform:scale(.9)}50%{filter:hue-rotate(110deg);transform:scale(1.05)}}@keyframes liveGiftMystery{0%{opacity:0;transform:scale(.3) rotate(10deg)}70%{transform:scale(1.1) rotate(-3deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
 @keyframes liveGiftPop{from{opacity:0;transform:scale(.45) translateY(25px)}to{opacity:1;transform:scale(1) translateY(0)}}
@@ -431,7 +431,7 @@ function showLiveGiftCelebration(event) {
   const note=document.createElement("small");note.textContent="TIKNATION LIVE · "+gift.cost+" TEST COINS";
   card.append(emoji,title,note);overlay.appendChild(card);document.body.appendChild(overlay);
   playLiveGiftSound(event,gift);
-  window.setTimeout(()=>overlay.remove(),2300);
+  window.setTimeout(()=>overlay.remove(),5000);
 }
 function renderLiveGiftEvent(event) {
   const feed=$("liveGiftFeed");if(!feed)return;const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
