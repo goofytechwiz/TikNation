@@ -445,7 +445,7 @@ async function pollLiveGiftEvents() {
   catch(error){if(!/ended or is unavailable/i.test(error.message))console.warn("Live gift feed:",error.message);}
 }
 function startLiveGiftPolling() {
-  stopLiveGiftPolling();const giftPanel=$("liveGiftPanel");if(giftPanel){giftPanel.classList.add("hide");giftPanel.classList.remove("is-open");}liveGiftCursor=new Date(Date.now()-30000).toISOString();seenLiveGiftIds=new Set();
+  stopLiveGiftPolling();const giftPanel=$("liveGiftPanel");if(giftPanel){giftPanel.classList.add("hide");giftPanel.classList.remove("is-open");}liveGiftCursor="1970-01-01T00:00:00.000Z";seenLiveGiftIds=new Set();
   $("liveGiftFeed").innerHTML='<div class="small">Gifts sent during this live will appear here.</div>';renderLiveGiftCatalog();void refreshLiveGiftBalance();void pollLiveGiftEvents();liveGiftTimer=window.setInterval(()=>void pollLiveGiftEvents(),3000);
 }
 function stopLiveGiftPolling() {
