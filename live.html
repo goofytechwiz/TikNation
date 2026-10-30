@@ -664,9 +664,10 @@ boot();
       badge.title=message;
     }
     const notice=document.getElementById("notice");
-    if(notice && (!notice.textContent || !notice.textContent.trim())){
-      notice.textContent=message;
+    if(notice){
+      notice.textContent="Startup diagnostic: "+message;
       notice.className="status error";
+      notice.style.display="block";
     }
     console.error("TikNation LIVE startup diagnostic:",message);
   }
