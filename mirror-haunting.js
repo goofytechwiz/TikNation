@@ -133,6 +133,18 @@
     '@media(prefers-reduced-motion:reduce){.stage.fx-haunted:after,.stage.fx-static:after{animation:none}}';
   document.head.appendChild(style);
 
+  const creatureStyle = document.createElement('style');
+  creatureStyle.textContent =
+    '.haunt-reaching-hands .haunt-face{filter:drop-shadow(0 0 8px #8d163b) drop-shadow(0 0 22px #24000d);transform-origin:180px 180px}' +
+    '.stage.haunt-hands-grab .haunt-reaching-hands .haunt-face{transform:translateY(8px) scale(1.42)!important;filter:drop-shadow(0 0 15px #ff123d) drop-shadow(0 0 34px #650018);animation:hauntFaceLunge .24s cubic-bezier(.12,.8,.18,1) both}' +
+    '@keyframes hauntFaceLunge{0%{transform:translateY(0) scale(.9)}42%{transform:translateY(34px) scale(1.62)}68%{transform:translateY(4px) scale(1.35)}100%{transform:translateY(8px) scale(1.42)}}' +
+    '.stage.haunt-last-look .haunt-reflection-echo{opacity:.88!important;filter:blur(.3px) drop-shadow(0 0 24px #d0003c)!important;transform:translate(0,-2%) scale(1.42)!important;transition:opacity .16s ease,transform .32s cubic-bezier(.12,.8,.18,1)!important}' +
+    '.stage.haunt-last-look .haunt-reflection-echo .haunt-face{opacity:1!important;filter:drop-shadow(0 0 18px #ff174c) brightness(1.35);animation:lastLookPulse .42s steps(2,end) 3}' +
+    '@keyframes lastLookPulse{0%,100%{opacity:.85}50%{opacity:1;filter:drop-shadow(0 0 30px #ff174c) brightness(1.8)}}' +
+    '.stage.haunt-last-look .haunt-handprint{opacity:0!important}' +
+    '@media(prefers-reduced-motion:reduce){.stage.haunt-last-look .haunt-reflection-echo,.stage.haunt-last-look .haunt-reflection-echo .haunt-face{transition:none!important;animation:none!important}}';
+  document.head.appendChild(creatureStyle);
+
   const reachingHands = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   reachingHands.setAttribute('viewBox', '0 0 360 640');
   reachingHands.setAttribute('preserveAspectRatio', 'xMidYMid meet');
@@ -143,7 +155,7 @@
     '<g class="haunt-ripple" fill="none" stroke="#b9eaff" stroke-width="2"><ellipse cx="180" cy="180" rx="48" ry="62"/><ellipse cx="180" cy="180" rx="70" ry="88"/><ellipse cx="180" cy="180" rx="90" ry="112"/></g>' +
     '<g class="haunt-edge-grip"><path d="M28 105 Q39 95 48 109 L57 125 M32 118 Q44 108 53 124 L61 139 M330 105 Q321 95 312 109 L303 125 M326 118 Q314 108 305 124 L297 139"/></g>' +
     '<g class="haunt-shatter-lines"><path d="M180 180 L154 151 L163 127 M180 180 L211 151 L202 124 M180 180 L155 207 L129 215 M180 180 L207 208 L229 235 M154 151 L131 145 L119 127 M211 151 L236 144 L246 126 M155 207 L147 236 L128 249 M207 208 L214 239 L234 252"/></g>' +
-    '<g class="haunt-face"><path d="M139 193 Q130 148 153 122 Q180 96 207 122 Q230 148 221 193 L209 224 Q180 251 151 224Z" fill="#09070c" stroke="#493541" stroke-width="2"/><path d="M148 168 Q163 151 174 169 Q161 179 148 168Z M186 169 Q198 151 212 168 Q199 179 186 169Z" fill="#ff173d"/><ellipse cx="161" cy="167" rx="3" ry="5" fill="#fff0e8"/><ellipse cx="199" cy="167" rx="3" ry="5" fill="#fff0e8"/><path d="M151 207 Q180 192 209 207 L202 225 Q180 237 158 225Z" fill="#020103" stroke="#6d2638" stroke-width="2"/><path d="M160 208 L166 220 172 207 178 222 185 207 192 220 200 208" fill="none" stroke="#d9c8d0" stroke-width="3"/></g>' +
+    '<g class="haunt-face"><path d="M139 211 Q121 174 132 132 Q139 100 164 91 Q183 78 205 96 Q237 115 231 165 L220 211 205 246 181 266 153 246Z" fill="#08060b" stroke="#51404d" stroke-width="3"/><path d="M139 145 Q147 106 177 103 Q207 96 224 130 L215 147 198 136 183 145 166 134 151 151Z" fill="#17111b" stroke="#725365" stroke-width="2"/><path d="M142 169 Q155 145 176 163 Q164 184 143 179Z" fill="#020105" stroke="#7b243e" stroke-width="2"/><path d="M185 162 Q205 143 221 165 L217 181 Q198 185 185 162Z" fill="#020105" stroke="#7b243e" stroke-width="2"/><ellipse cx="161" cy="166" rx="5" ry="8" fill="#ff183f" filter="url(#hauntGlow)"/><ellipse cx="205" cy="165" rx="4" ry="7" fill="#ff183f" filter="url(#hauntGlow)"/><path d="M180 171 L169 202 183 198 190 210 198 179Z" fill="#050308" stroke="#39232f" stroke-width="2"/><path d="M148 211 Q176 192 216 207 L222 235 Q202 255 178 251 Q154 246 143 231Z" fill="#010104" stroke="#76243b" stroke-width="2"/><path d="M151 211 L160 229 168 213 177 234 186 212 195 232 204 211 214 225" fill="none" stroke="#d8c8d0" stroke-width="4"/><path d="M154 239 Q180 250 210 235" fill="none" stroke="#a33a53" stroke-width="2"/><path d="M143 118 Q118 97 124 72 M217 111 Q242 87 236 62 M148 244 Q130 264 119 286 M209 245 Q230 265 243 284" fill="none" stroke="#120d16" stroke-width="8" stroke-linecap="round"/><path d="M143 118 Q118 97 124 72 M217 111 Q242 87 236 62" fill="none" stroke="#725365" stroke-width="1.5" opacity=".65"/></g>' +
     '<g class="arm"><path d="M40 650 Q35 560 47 488 Q54 435 73 388 L105 329 Q116 309 133 323 Q145 335 132 355 L111 401 105 451 118 492 131 650Z"/><path d="M320 650 Q325 560 313 488 Q306 435 287 388 L255 329 Q244 309 227 323 Q215 335 228 355 L249 401 255 451 242 492 229 650Z"/></g>' +
     '<g class="claw"><path d="M89 425 Q73 407 61 382 L39 344 Q31 329 40 321 Q49 315 58 332 L81 359 70 319 Q66 300 78 297 Q91 296 95 316 L108 356 102 311 Q101 292 114 291 Q127 292 127 312 L132 354 137 325 Q141 308 153 313 Q164 318 157 337 L146 385 Q139 414 120 436Z"/><path d="M271 425 Q287 407 299 382 L321 344 Q329 329 320 321 Q311 315 302 332 L279 359 290 319 Q294 300 282 297 Q269 296 265 316 L252 356 258 311 Q259 292 246 291 Q233 292 233 312 L228 354 223 325 Q219 308 207 313 Q196 318 203 337 L214 385 Q221 414 240 436Z"/></g>' +
     '<g fill="#d5c6cf" opacity=".72"><path d="M42 325 L49 330 43 334Z"/><path d="M79 301 L85 309 79 312Z"/><path d="M115 295 L120 304 114 307Z"/><path d="M318 325 L311 330 317 334Z"/><path d="M281 301 L275 309 281 312Z"/><path d="M245 295 L240 304 246 307Z"/></g>';
@@ -530,7 +542,7 @@
     apparitionVoiceStarted = false;
     disturbTheStare();
     sequenceRunning = true;
-    stage.classList.remove('haunt-flicker','haunt-creak','haunt-warning','haunt-lunge','haunt-blackout','haunt-emerge','haunt-hands-reach','haunt-hands-grab','haunt-redflash','haunt-staring');
+    stage.classList.remove('haunt-flicker','haunt-creak','haunt-warning','haunt-lunge','haunt-blackout','haunt-emerge','haunt-hands-reach','haunt-hands-grab','haunt-redflash','haunt-staring','haunt-last-look');
     stage.classList.add('awake','haunt-dirty'); stage.classList.remove('haunt-hand');
     stage.querySelectorAll('[data-haunt-wipe-mark]').forEach(mark => mark.remove());
     dirty = true; wiped = 0; lastPoint = null; stage.style.touchAction = 'none'; paintDust();
@@ -565,11 +577,11 @@
     stage.classList.add('haunt-blackout');
     await wait(reduceMotion ? 700 : 1800); if (!sequenceRunning) return;
     stage.classList.remove('haunt-blackout','haunt-lunge','haunt-redflash','haunt-flicker','haunt-creak','haunt-emerge','haunt-hands-reach','haunt-hands-grab');
-    stage.classList.add('haunt-hand'); stage.classList.remove('haunt-dirty');
+    stage.classList.add('haunt-hand','haunt-last-look'); stage.classList.remove('haunt-dirty');
     message.textContent = 'IT’S STILL IN THERE'; stage.classList.add('haunt-warning');
     say('A final creak echoes from the darkness. IT’S STILL IN THERE.'); speakEvil('I am still here.', 0.38, 0.62); creak();
     await wait(3000);
-    stage.classList.remove('haunt-warning'); sequenceRunning = false;
+    stage.classList.remove('haunt-warning','haunt-last-look'); sequenceRunning = false;
     document.getElementById('hauntAwaken').disabled = false;
     document.getElementById('hauntAwaken').textContent = 'Awaken the mirror again';
     say('The mirror is quiet. For now.');
