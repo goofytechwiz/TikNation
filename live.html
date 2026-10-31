@@ -352,6 +352,28 @@ const LIVE_GIFT_CATALOG = {
   magic_spark:{name:"Magic Spark",emoji:"✨",category:"Magical",cost:10}, mystic_portal:{name:"Mystic Portal",emoji:"🌀",category:"Magical",cost:25}, dragon_spirit:{name:"Dragon Spirit",emoji:"🐉",category:"Magical",cost:75}, galaxy_gift:{name:"Galaxy Gift",emoji:"🌌",category:"Magical",cost:100},
   thunder_clap:{name:"Thunder Clap",emoji:"⚡",category:"Special Effects",cost:25}, prism_wave:{name:"Prism Wave",emoji:"🌈",category:"Visual Effects",cost:50}, mystery_reveal:{name:"Mystery Reveal",emoji:"🎁",category:"Surprises",cost:25},
   creator_crown:{name:"Creator’s Crown",emoji:"👑",category:"Legendary",cost:50}, infinity_crystal:{name:"Infinity Crystal",emoji:"💎",category:"Legendary",cost:150}
+,
+  dragon_ball:{name:"Dragon Ball",emoji:"🔮",category:"Magical",cost:75},
+  changing_face:{name:"Changing Face",emoji:"🎭",category:"Surprises",cost:25},
+  clouds_of_mystery:{name:"Clouds of Mystery",emoji:"☁️",category:"Magical",cost:50},
+  hammer_of_pain:{name:"Hammer of Pain",emoji:"🔨",category:"Special Effects",cost:50},
+  thunder_ass:{name:"Thunder Ass",emoji:"⚡🍑",category:"Special Effects",cost:69},
+  storm_of_the_world:{name:"Storm of the World",emoji:"🌪️",category:"Special Effects",cost:100},
+  lightning_bolts_of_doom:{name:"Lightning Bolts of Doom",emoji:"⚡💀",category:"Special Effects",cost:125},
+  book_of_death:{name:"Book of Death",emoji:"📕☠️",category:"Legendary",cost:150},
+  dream_makers:{name:"The Dream Makers",emoji:"✨🧚",category:"Magical",cost:100},
+  phoenix_rebirth:{name:"Phoenix Rebirth",emoji:"🔥🪽",category:"Legendary",cost:175},
+  treasure_explosion:{name:"Treasure Explosion",emoji:"💎💰",category:"Legendary",cost:150},
+  meteor_mayhem:{name:"Meteor Mayhem",emoji:"☄️",category:"Special Effects",cost:125},
+  disco_raccoon:{name:"Disco Raccoon",emoji:"🦝🪩",category:"Musical",cost:75},
+  portal_party:{name:"Portal Party",emoji:"🌀🎉",category:"Magical",cost:100},
+  blast_from_my_ass:{name:"Blast from My Ass",emoji:"💨🍑",category:"Special Effects",cost:69},
+  asshole_of_death:{name:"The Asshole of Death",emoji:"☠️🍑",category:"Legendary",cost:199},
+  golden_throne:{name:"The Golden Throne",emoji:"🚽👑",category:"Legendary",cost:125},
+  chicken_of_doom:{name:"Chicken of Doom",emoji:"🐔💀",category:"Special Effects",cost:75},
+  cheesepocalypse:{name:"The Cheesepocalypse",emoji:"🧀☄️",category:"Special Effects",cost:99},
+  skeleton_disco:{name:"Skeleton Disco",emoji:"💀🪩",category:"Musical",cost:100},
+  dragons_revenge:{name:"The Dragon's Revenge",emoji:"🐉🔥",category:"Legendary",cost:200}
 };
 let liveGiftTimer = null, liveGiftCursor = null, seenLiveGiftIds = new Set(), liveGiftRequestBusy = false;
 function notice(message, type=""){const n=$("notice");n.textContent=message;n.className="status"+(type?" "+type:"");}
@@ -450,7 +472,8 @@ function playLiveGiftSound(event, gift) {
         melody_note:[659,784,988,784,659], symphony:[523,659,784,1047,784,659,784,1047],
         magic_spark:[784,988,1175], mystic_portal:[392,523,659,784], dragon_spirit:[196,247,294,392],
         galaxy_gift:[392,523,659,784,1047], creator_crown:[523,659,784,1047,1319],
-        infinity_crystal:[523,659,784,1047,1319,1568]
+        infinity_crystal:[523,659,784,1047,1319,1568],
+        dragon_ball:[392,523,784,1047],changing_face:[659,784,523],clouds_of_mystery:[392,523,659,784],hammer_of_pain:[110,82,55],thunder_ass:[196,392,196],storm_of_the_world:[110,165,220,330],lightning_bolts_of_doom:[880,440,988,494],book_of_death:[196,147,110,73],dream_makers:[523,659,784,1047],phoenix_rebirth:[392,523,659,784,1047],treasure_explosion:[523,659,880,1047],meteor_mayhem:[880,440,220,110],disco_raccoon:[659,784,988,1175],portal_party:[392,587,784,1175],blast_from_my_ass:[110,73,55],asshole_of_death:[73,55,41,110],golden_throne:[392,523,659],chicken_of_doom:[784,392,784],cheesepocalypse:[330,440,554,659],skeleton_disco:[659,784,988,1175],dragons_revenge:[196,293,392,587]
       };
       (melodies[code] || [523,659,784]).forEach((frequency, index) =>
         softTone(now + index * (gift.category === "Musical" ? 0.17 : 0.12), frequency, gift.category === "Musical" ? 0.24 : 0.19, gift.category === "Musical" ? 0.055 : 0.04, gift.category === "Musical" ? "triangle" : "sine"));
