@@ -37,20 +37,6 @@ section{margin-top:20px}
 @media(max-width:520px){body{padding:13px}.top{font-size:10px}.hero,.panel{border-radius:19px}.cards{grid-template-columns:1fr 1fr}.social{padding:14px;min-height:145px}}
 @media(max-width:360px){.cards{grid-template-columns:1fr}}
 
-/* Each folder has its own visual identity */
-.social-folder:first-of-type{border-color:#70e8ff70;background:radial-gradient(ellipse at 0 0,#0c7b9b30,transparent 58%),linear-gradient(135deg,#07141f,#111026)}
-.social-folder:first-of-type .folder-icon{filter:drop-shadow(0 0 12px #70e8ff99)}
-.social-folder:first-of-type summary strong{color:#a9f4ff}
-.social-folder:first-of-type .folder-content>.eyebrow{color:#70e8ff}
-.social-folder:first-of-type .social{border-color:#70e8ff35;background:linear-gradient(145deg,#70e8ff0b,#ffffff04);transition:transform .18s,border-color .18s}
-.social-folder:first-of-type .social:hover{transform:translateY(-3px);border-color:#70e8ff99}
-.social-folder:last-of-type{border-color:#d1a5ff70;background:radial-gradient(ellipse at 100% 0,#7e3eaa30,transparent 58%),linear-gradient(135deg,#1a0d20,#111026)}
-.social-folder:last-of-type .folder-icon{filter:drop-shadow(0 0 12px #d1a5ff99)}
-.social-folder:last-of-type summary strong{color:#e0c5ff}
-.social-folder:last-of-type .folder-content>.eyebrow{color:#d1a5ff}
-.social-folder:last-of-type .social{border-color:#d1a5ff35;background:linear-gradient(145deg,#d1a5ff0b,#ffffff04);transition:transform .18s,border-color .18s}
-.social-folder:last-of-type .social:hover{transform:translateY(-3px);border-color:#d1a5ff99}
-.social-folder:last-of-type .btn{border-color:#d1a5ff70;background:linear-gradient(100deg,#d1a5ff22,#ff9bd322)}
 .social-folder{margin-top:14px;border:1px solid #70e8ff55;border-radius:18px;background:linear-gradient(120deg,#70e8ff0b,#b49aff0b);overflow:hidden}
 .social-folder summary{list-style:none;display:flex;align-items:center;gap:14px;padding:20px;cursor:pointer;min-height:84px}
 .social-folder summary::-webkit-details-marker{display:none}
@@ -62,7 +48,24 @@ section{margin-top:20px}
 .social-folder[open] .folder-arrow{transform:rotate(45deg)}
 .folder-content{padding:0 20px 22px;border-top:1px solid #ffffff16}
 .folder-content>.eyebrow{margin-top:20px}
-\n</style>
+/* Strong, distinct identities; intentionally placed after shared base styles */
+.kaevoryn-folder{border:2px solid #00e5ff!important;background:linear-gradient(135deg,#031b2b 0%,#06394b 45%,#11132b 100%)!important;box-shadow:0 0 0 1px #00e5ff30,0 0 32px #00cfff30!important}
+.kaevoryn-folder summary{background:linear-gradient(90deg,#00e5ff18,transparent)!important}
+.kaevoryn-folder summary strong{color:#71f3ff!important;text-transform:uppercase;letter-spacing:.04em}
+.kaevoryn-folder .folder-icon,.kaevoryn-folder .folder-arrow{color:#00e5ff!important;filter:drop-shadow(0 0 10px #00e5ff)}
+.kaevoryn-folder .folder-content{border-top:1px solid #00e5ff55!important}
+.kaevoryn-folder .social{border:1px solid #00e5ff80!important;background:linear-gradient(145deg,#063b50,#07111f)!important;border-radius:8px!important;box-shadow:inset 3px 0 #00e5ff35}
+.kaevoryn-folder .social h3{color:#9bf7ff!important}
+.kaevoryn-folder .btn{border-color:#00e5ff!important;background:#00394a!important;color:#a8f8ff!important}
+.personal-folder{border:2px solid #d946ef!important;background:linear-gradient(135deg,#210b2c 0%,#42134a 45%,#191027 100%)!important;box-shadow:0 0 0 1px #d946ef30,0 0 32px #d946ef28!important;border-radius:28px!important}
+.personal-folder summary{background:linear-gradient(90deg,#d946ef18,transparent)!important}
+.personal-folder summary strong{color:#f0b3ff!important}
+.personal-folder .folder-icon,.personal-folder .folder-arrow{color:#e879f9!important;filter:drop-shadow(0 0 10px #e879f9)}
+.personal-folder .folder-content{border-top:1px solid #d946ef55!important}
+.personal-folder .social{border:1px solid #d946ef80!important;background:linear-gradient(145deg,#421449,#201027)!important;border-radius:24px!important;box-shadow:0 8px 22px #d946ef14}
+.personal-folder .social h3{color:#f5c7ff!important}
+.personal-folder .btn{border-color:#e879f9!important;background:linear-gradient(110deg,#701a75,#4c1d55)!important;color:#ffe3ff!important}
+</style>
 </head>
 <body>
 <main>
@@ -76,7 +79,7 @@ section{margin-top:20px}
 </header>
 <section class="panel">
 <div class="section-head"><div class="eyebrow">YOUR SOCIAL WORLDS</div><h2>Choose a folder</h2><p>Two separate spaces, so your personal accounts and Kaevoryn Studios never get mixed together.</p></div>
-<details class="social-folder">
+<details class="social-folder kaevoryn-folder">
 <summary><span class="folder-icon" aria-hidden="true">📁</span><span><strong>Kaevoryn</strong><small>Official Kaevoryn Studios accounts</small></span><span class="folder-arrow" aria-hidden="true">＋</span></summary>
 <div class="folder-content"><div class="eyebrow">OFFICIAL STUDIO CHANNELS</div><p>Follow Kaevoryn Studios across its official platforms.</p><div class="cards">
 <article class="social"><div class="symbol">♪</div><h3>TikTok</h3><p>@kaevoryn.studios</p><a class="btn" href="https://www.tiktok.com/@kaevoryn.studios?_r=1&_t=ZP-9B0HGBSVQWE" target="_blank" rel="noopener noreferrer">Visit TikTok ↗</a></article>
@@ -88,7 +91,7 @@ section{margin-top:20px}
 </div>
 <p class="note">Studio links are kept separate from Matt's personal accounts.</p></div>
 </details>
-<details class="social-folder">
+<details class="social-folder personal-folder">
 <summary><span class="folder-icon" aria-hidden="true">📁</span><span><strong>Matt's Socials</strong><small>Your personal creator accounts</small></span><span class="folder-arrow" aria-hidden="true">＋</span></summary>
 <div class="folder-content"><div class="eyebrow">PERSONAL ACCOUNTS</div><p>These are for your own accounts, separate from the studio.</p><div class="cards">
 <article class="social"><div class="symbol" aria-hidden="true">◎</div><h3>Instagram</h3><p>Photos, moments, and behind-the-scenes updates.</p><span class="status">Official profile link to be added</span></article>
