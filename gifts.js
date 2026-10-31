@@ -257,7 +257,7 @@ async function loadTikNationGiftDashboard() {
   const summary = document.getElementById("creatorGiftSummary");
   const historyNode = document.getElementById("creatorGiftHistory");
   const refresh = document.getElementById("refreshGiftHistoryButton");
-  if (!balance || !summary || !historyNode || !currentUser) return;
+  if (!balance || !summary || !historyNode || !currentUser) return false;
   if (refresh) refresh.disabled = true;
   try {
     const values = await Promise.all([
@@ -278,9 +278,11 @@ async function loadTikNationGiftDashboard() {
       const label = gift ? gift.emoji + " " + gift.name : "🎁 Gift";
       return '<div class="gift-history-item"><span><strong>' + direction + name + '</strong><br><span class="gift-panel-copy">' + escapeHtml(label) + ' · ' + date + '</span></span><strong>' + (item.direction === "sent" ? "−" : "+") + amount + ' test coins</strong></div>';
     }).join("") : '<p class="gift-panel-copy">No gifts yet. Your gift history will appear here.</p>';
+    return true;
   } catch (error) {
     balance.textContent = "Test coin balance unavailable";
     summary.textContent = error.message || "Gift activity could not be loaded.";
+    return false;
   } finally {
     if (refresh) refresh.disabled = false;
   }
