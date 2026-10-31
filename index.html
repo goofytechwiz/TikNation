@@ -6023,7 +6023,23 @@ function openMagicOrbitGifts(postId){
         modal = document.createElement("div");
         modal.id = "tnMagicOrbitGiftModal";
         modal.className = "tn-orbit-gift-modal";
-        modal.innerHTML = '<section class="tn-orbit-gift-dialog" role="dialog" aria-modal="true" aria-labelledby="tnOrbitGiftTitle"><button type="button" class="tn-orbit-gift-close" aria-label="Close gifts" onclick="closeMagicOrbitGifts()">×</button><p class="tn-orbit-gift-eyebrow">TIKNATION MAGIC ORBIT</p><h2 id="tnOrbitGiftTitle">✨ Summon a Gift</h2><p class="tn-orbit-gift-copy">Choose an original TikNation gift for this creator. Test coins are free and have no cash value.</p><p class="tn-orbit-gift-status" role="status" aria-live="polite"></p><div class="tn-orbit-gift-grid"><button type="button" onclick="chooseMagicOrbitGift(\'melody_note\',this)">🎵<strong>Melody Note</strong><small>5 test coins</small></button><button type="button" onclick="chooseMagicOrbitGift(\'magic_spark\',this)">✨<strong>Magic Spark</strong><small>10 test coins</small></button><button type="button" onclick="chooseMagicOrbitGift(\'mystic_portal\',this)">🌀<strong>Mystic Portal</strong><small>25 test coins</small></button><button type="button" onclick="chooseMagicOrbitGift(\'dragon_spirit\',this)">🐉<strong>Dragon Spirit</strong><small>75 test coins</small></button><button type="button" onclick="chooseMagicOrbitGift(\'galaxy_gift\',this)">🌌<strong>Galaxy Gift</strong><small>100 test coins</small></button><button type="button" onclick="chooseMagicOrbitGift(\'mystery_reveal\',this)">🎁<strong>Mystery Reveal</strong><small>25 test coins</small></button></div><p class="tn-orbit-gift-note">No real money or cash payouts are involved.</p></section>';
+        modal.innerHTML = '<section class="tn-orbit-gift-dialog" role="dialog" aria-modal="true" aria-labelledby="tnOrbitGiftTitle"><button type="button" class="tn-orbit-gift-close" aria-label="Close gifts" onclick="closeMagicOrbitGifts()">×</button><p class="tn-orbit-gift-eyebrow">TIKNATION MAGIC ORBIT</p><h2 id="tnOrbitGiftTitle">✨ Summon a Gift</h2><p class="tn-orbit-gift-copy">Choose an original TikNation gift for this creator. Test coins are free and have no cash value.</p><p class="tn-orbit-gift-status" role="status" aria-live="polite"></p><div class="tn-orbit-gift-grid" aria-label="All TikNation gifts"></div><p class="tn-orbit-gift-note">No real money or cash payouts are involved.</p></section>';
+        const giftGrid = modal.querySelector(".tn-orbit-gift-grid");
+        if (giftGrid && typeof TIKNATION_GIFT_CATALOG !== "undefined") {
+            Object.entries(TIKNATION_GIFT_CATALOG).forEach(([giftId, gift]) => {
+                const choice = document.createElement("button");
+                choice.type = "button";
+                choice.addEventListener("click", () => chooseMagicOrbitGift(giftId, choice));
+                const emoji = document.createElement("span");
+                emoji.textContent = gift.emoji;
+                const name = document.createElement("strong");
+                name.textContent = gift.name;
+                const cost = document.createElement("small");
+                cost.textContent = gift.cost + " test coins";
+                choice.append(emoji, name, cost);
+                giftGrid.appendChild(choice);
+            });
+        }
         modal.addEventListener("click", event => { if(event.target === modal) closeMagicOrbitGifts(); });
         modal.addEventListener("keydown", event => {
             if(event.key === "Escape"){
