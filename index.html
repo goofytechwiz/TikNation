@@ -1915,6 +1915,15 @@ textarea.form-control{
  #watch .watch-collection-tools button{transition:none}
 }
 
+
+/* New comedy gifts: toxic stink cloud and skeletal finger rattle */
+.gift-celebration-stinkdeath .gift-celebration-content{border-color:#8dff38;background:radial-gradient(circle at 50% 0%,rgba(115,255,35,.24),transparent 58%),linear-gradient(145deg,rgba(13,35,17,.97),rgba(24,12,34,.97));box-shadow:0 0 75px rgba(119,255,39,.32);}
+.gift-celebration-stinkdeath .gift-celebration-emoji{filter:drop-shadow(0 0 22px #79ff25);animation:giftStinkFloat .55s ease-in-out infinite alternate;}
+.gift-celebration-rattlebone .gift-celebration-content{border-color:#c9b6ff;background:radial-gradient(circle at 50% 0%,rgba(185,160,255,.24),transparent 60%),linear-gradient(145deg,rgba(35,28,49,.98),rgba(12,10,24,.98));box-shadow:0 0 75px rgba(177,135,255,.38);}
+.gift-celebration-rattlebone .gift-celebration-emoji{filter:drop-shadow(0 0 18px #c9b6ff);animation:giftBoneRattle .12s linear infinite alternate;}
+@keyframes giftStinkFloat{from{transform:translateY(-5px) rotate(-4deg) scale(.96)}to{transform:translateY(7px) rotate(4deg) scale(1.08)}}
+@keyframes giftBoneRattle{from{transform:rotate(-9deg) translateX(-3px)}to{transform:rotate(9deg) translateX(3px)}}
+@media(prefers-reduced-motion:reduce){.gift-celebration-stinkdeath .gift-celebration-emoji,.gift-celebration-rattlebone .gift-celebration-emoji{animation:none!important}}
 </style>
 
 <style>
