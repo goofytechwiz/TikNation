@@ -26,6 +26,22 @@ main{width:min(1120px,100%);margin:auto;padding:28px 18px 64px}.eyebrow{color:va
 @media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tiers{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:390px){main{padding-inline:12px}.grid{gap:9px}.gift{padding:11px}.icon{height:76px;font-size:3.2rem}.gift p{font-size:.78rem}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+
+/* Full-screen gift preview stage */
+.preview-stage{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at 50% 45%,#29204eeF,#080812f7 72%);text-align:center;overflow:hidden}
+.preview-stage.open{display:flex}
+.preview-stage-inner{position:relative;z-index:2;width:min(560px,100%);padding:34px 20px;border:1px solid #8e7cff88;border-radius:26px;background:linear-gradient(150deg,#211d3fee,#101020f5);box-shadow:0 0 70px #927cff44}
+.preview-stage-tier{color:var(--cyan);font-weight:900;letter-spacing:.22em;font-size:.75rem}
+.preview-stage-icon{font-size:clamp(6rem,27vw,10rem);line-height:1.25;margin:12px 0;text-shadow:0 0 34px var(--stage-accent,#75eaff)}
+.preview-stage-title{font-size:clamp(1.6rem,6vw,2.5rem);font-weight:900;margin:4px 0}
+.preview-stage-desc{color:#d0cde6;margin:8px auto 20px;max-width:420px}
+.preview-stage-close{border:1px solid #a99aff;background:#292448;color:white;border-radius:999px;padding:11px 24px;font-weight:850;font-size:1rem}
+.preview-stage-burst{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at center,var(--stage-accent,#75eaff)33,transparent 58%);opacity:0}
+.preview-stage.open .preview-stage-burst{animation:stageBurst 1.2s ease-out}
+.preview-stage.open .preview-stage-icon{animation:stageGift 1.25s cubic-bezier(.2,.85,.25,1) both}
+@keyframes stageGift{0%{transform:translateY(55px) scale(.25) rotate(-16deg);opacity:0}55%{transform:translateY(-12px) scale(1.18) rotate(5deg);opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
+@keyframes stageBurst{0%{opacity:.75;transform:scale(.35)}100%{opacity:0;transform:scale(1.8)}}
+@media(prefers-reduced-motion:reduce){.preview-stage.open .preview-stage-icon,.preview-stage.open .preview-stage-burst{animation:none}.preview-stage-icon{opacity:1}}
 </style>
 </head>
 <body>
@@ -59,6 +75,7 @@ main{width:min(1120px,100%);margin:auto;padding:28px 18px 64px}.eyebrow{color:va
 <article class="gift" data-tier="Legendary" data-effect="spin"><div class="gift-top"><span class="level">Legendary</span><span>🎩</span></div><div class="icon">🎩</div><h2>The Magical Show</h2><p>A miniature stage spectacle erupts in dazzling illusions.</p><button class="preview">Preview effect</button></article>
 </section>
 <p class="footer">18 gift concepts · Power levels are a first draft and can be rearranged together.</p>
+<div class="preview-stage" id="previewStage" role="dialog" aria-modal="true" aria-labelledby="stageTitle" aria-describedby="stageDesc"><div class="preview-stage-burst"></div><div class="preview-stage-inner"><div class="preview-stage-tier" id="stageTier"></div><div class="preview-stage-icon" id="stageIcon"></div><div class="preview-stage-title" id="stageTitle"></div><p class="preview-stage-desc" id="stageDesc"></p><button class="preview-stage-close" id="closePreview" type="button">Close preview</button></div></div>
 </main>
 <script>
 const cards=[...document.querySelectorAll(".gift")];
@@ -66,33 +83,28 @@ document.querySelectorAll(".filter").forEach(button=>button.addEventListener("cl
  document.querySelectorAll(".filter").forEach(b=>b.setAttribute("aria-pressed",String(b===button)));
  cards.forEach(card=>card.hidden=button.dataset.filter!=="All"&&card.dataset.tier!==button.dataset.filter);
 }));
-
-// Preview motion is started only by an explicit tap. Web Animations keeps this
-// one requested preview available even when the device asks sites to reduce motion.
-const previewMotion={
- pop:[{transform:"scale(.45) rotate(-12deg)",opacity:.35},{transform:"scale(1.22) rotate(7deg)",opacity:1,offset:.68},{transform:"scale(1) rotate(0)"}],
- flight:[{transform:"translate(-48px,14px) scale(.72)",opacity:.25},{transform:"translate(12px,-8px) scale(1.16)",opacity:1,offset:.6},{transform:"translate(0,0) scale(1)"}],
- spin:[{transform:"rotate(0) scale(.72)",opacity:.4},{transform:"rotate(360deg) scale(1.18)",opacity:1},{transform:"rotate(360deg) scale(1)"}],
- shake:[{transform:"translateX(0)"},{transform:"translateX(-10px) rotate(-7deg)",offset:.25},{transform:"translateX(10px) rotate(7deg)",offset:.5},{transform:"translateX(-6px) rotate(-4deg)",offset:.75},{transform:"translateX(0)"}],
- rise:[{transform:"translateY(30px) scale(.65)",opacity:.2},{transform:"translateY(-10px) scale(1.18)",opacity:1,offset:.68},{transform:"translateY(0) scale(1)"}],
- orbit:[{transform:"rotate(-22deg) scale(.75)"},{transform:"rotate(22deg) scale(1.18)",offset:.55},{transform:"rotate(0) scale(1)"}],
- glow:[{filter:"drop-shadow(0 0 0 transparent)",transform:"scale(.9)"},{filter:"drop-shadow(0 0 18px var(--accent))",transform:"scale(1.14)",offset:.5},{filter:"drop-shadow(0 0 0 transparent)",transform:"scale(1)"}]
-};
+const stage=document.getElementById("previewStage");
+const closePreview=()=>{stage.classList.remove("open");document.body.style.overflow="";};
+document.getElementById("closePreview").addEventListener("click",closePreview);
+stage.addEventListener("click",e=>{if(e.target===stage)closePreview();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&stage.classList.contains("open"))closePreview();});
 document.querySelectorAll(".preview").forEach(button=>button.addEventListener("click",()=>{
  const card=button.closest(".gift");
- const icon=card.querySelector(".icon");
- const effect=card.dataset.effect||"pop";
- if(card._previewAnimation) card._previewAnimation.cancel();
- card._previewAnimation=icon.animate(previewMotion[effect]||previewMotion.pop,{
-  duration:1100,easing:"cubic-bezier(.2,.8,.3,1)",iterations:1
- });
- button.textContent="Playing preview…";
- button.setAttribute("aria-label","Playing "+card.querySelector("h2").textContent+" preview");
- window.setTimeout(()=>{
-  if(card._previewAnimation){card._previewAnimation.cancel();card._previewAnimation=null;}
-  button.textContent="Preview effect";
-  button.setAttribute("aria-label","Preview "+card.querySelector("h2").textContent+" effect");
- },1150);
+ const title=card.querySelector("h2").textContent;
+ const icon=card.querySelector(".icon").textContent.trim();
+ const desc=card.querySelector("p").textContent;
+ const tier=card.dataset.tier;
+ const colors={Special:"#75eaff",Epic:"#b59aff",Legendary:"#ffc76e",Ultimate:"#ff83bb"};
+ document.getElementById("stageTitle").textContent=title;
+ document.getElementById("stageIcon").textContent=icon;
+ document.getElementById("stageDesc").textContent=desc;
+ document.getElementById("stageTier").textContent=tier.toUpperCase()+" GIFT";
+ stage.style.setProperty("--stage-accent",colors[tier]||"#75eaff");
+ stage.classList.remove("open");
+ void stage.offsetWidth;
+ stage.classList.add("open");
+ document.body.style.overflow="hidden";
+ document.getElementById("closePreview").focus();
 }));
 </script>
 </body>
