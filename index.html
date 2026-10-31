@@ -5304,6 +5304,7 @@ async function loadWatchFeed(){
 
     `;
 
+    try{
     const {
         data,
         error
@@ -5466,6 +5467,18 @@ async function loadWatchFeed(){
             grid.prepend(notice);
         }
     }
+    }catch(watchError){
+        console.error("Watch feed could not complete:",watchError);
+        grid.innerHTML = `
+            <div class="card" role="alert">
+                <div class="card-icon">⚠️</div>
+                <h3>Watch is temporarily unavailable</h3>
+                <p>Something interrupted the feed. Your account and saved collections have not been changed. Please try again.</p>
+                <button type="button" class="primary-button" onclick="loadWatchFeed()">TRY AGAIN</button>
+            </div>
+        `;
+    }
+
 }
 
 function setupWatchVideoPlayback(){
