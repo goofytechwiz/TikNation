@@ -708,7 +708,7 @@ function showLiveGiftCelebration(event) {
     overlay.className="live-gift-celebration live-gift-celebration-"+gift.category.toLowerCase().replace(/\s+/g,"-")+" live-gift-code-"+event.gift_code;
     const card=document.createElement("div");card.className="live-gift-celebration-card";
     const emoji=document.createElement("span");emoji.textContent=gift.emoji;
-    const title=document.createElement("strong");title.textContent=(event.sender_name||"TikNation member")+" sent "+gift.name+"!";
+    const title=document.createElement("strong");title.textContent=(event.sender_name||"TikNation member")+" sent "+gift.name+(event.recipient_name?" to "+event.recipient_name:"")+"!";
     const note=document.createElement("small");note.textContent=isPreview?"FREE CREATOR PREVIEW · NO COINS SPENT":"TIKNATION LIVE · "+gift.cost+" TEST COINS";
     card.append(emoji,title,note);overlay.appendChild(card);
   }
