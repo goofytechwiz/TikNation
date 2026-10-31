@@ -815,7 +815,7 @@ async function joinBattleStage(invite){
  }
 }
 async function leaveBattleStage(){
- if(!isBattle)return;const returnSession=battleReturnSession;const inviteToFinish=activeBattleInvite;clearBattleClock();if(inviteToFinish?.id){try{await api("battle_finish",{invite_id:inviteToFinish.id});}catch(finishError){console.warn("Could not close battle record:",finishError.message);}}
+ if(!isBattle)return;const returnSession=battleReturnSession;const inviteToFinish=activeBattleInvite;clearBattleClock();if(inviteToFinish?.id){try{await api("battle_finish",{invite_id:inviteToFinish.id});await refreshBattleScore(inviteToFinish,true);}catch(finishError){console.warn("Could not close battle record:",finishError.message);}}
  const closing=room;room=null;if(closing)try{await closing.disconnect();}catch{}
  for(const track of localTracks){try{track.stop();track.detach().forEach(el=>el.remove());}catch{}}
  localTracks=[];isBattle=false;activeBattleInvite=null;battleReturnSession=null;$("leaveGuestStageBtn").classList.add("hide");
@@ -876,6 +876,7 @@ function startBattleClock(invite,asOpponent=false){
      $("battleOpponentScore").textContent=Number(result.score.opponent_score||0).toLocaleString();
      const summary=result.score.result_status==="tie"?"Battle tied · "+result.score.host_score+"–"+result.score.opponent_score+".": "Final score · "+result.score.host_score+"–"+result.score.opponent_score+".";
      if(node)node.textContent=summary;
+     void refreshBattleScore(invite,asOpponent);
     }
     if(isBattle)void leaveBattleStage();
    }).catch(error=>{if(node)node.textContent="The round ended, but TikNation could not confirm the final score. Please refresh.";console.warn("Battle finalization:",error.message);});
