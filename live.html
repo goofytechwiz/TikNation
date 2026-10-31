@@ -773,7 +773,7 @@ function renderLiveGiftEvent(event) {
   row.append(strong,document.createTextNode(isPreview?" previewed "+gift.emoji+" "+gift.name+" · FREE PREVIEW":" sent "+gift.emoji+" "+gift.name+(event.recipient_name?" to "+event.recipient_name:"")+" · "+gift.cost+" test coins"));feed.prepend(row);while(feed.children.length>8)feed.lastElementChild.remove();
 }
 async function pollLiveGiftEvents() {
-  if(!activeSession||!user)return;
+  if(!activeSession)return;
   try{const result=await giftApi("live_events",{session_id:activeSession.id,after:liveGiftCursor,...(liveGiftCursorId?{after_id:liveGiftCursorId}:{})});updateLiveGiftBattleTarget(result.battle||null);for(const event of result.events||[]){if(seenLiveGiftIds.has(event.id))continue;seenLiveGiftIds.add(event.id);renderLiveGiftEvent(event);if(event.created_at&&(!liveGiftCursor||event.created_at>liveGiftCursor||(event.created_at===liveGiftCursor&&String(event.id)>String(liveGiftCursorId||"")))){liveGiftCursor=event.created_at;liveGiftCursorId=event.id;}}}
   catch(error){if(!/ended or is unavailable/i.test(error.message))console.warn("Live gift feed:",error.message);}
 }
