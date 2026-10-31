@@ -27,6 +27,23 @@
     <div class="metric"><div class="label">Cash-out minimum</div><div class="amount">Not set</div><div class="muted">Will be published before launch</div></div>
   </div>
 </section>
+<section class="panel" aria-labelledby="giftActivityTitle">
+  <div class="row" style="justify-content:space-between;align-items:center">
+    <h2 id="giftActivityTitle">🎁 Gift activity · test coins only</h2>
+    <span class="pill">No cash value · No payouts</span>
+  </div>
+  <p>Track gifts you receive and the test coins added to your creator wallet. These coins are only for TikNation testing and cannot be withdrawn or converted to money.</p>
+  <div class="metrics" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:14px">
+    <div class="metric"><div class="label">Available test coins</div><div class="balance" id="creatorGiftBalance">Sign in to view</div></div>
+    <div class="metric"><div class="label">Received gift activity</div><div id="creatorGiftSummary" class="muted">Sign in to view your gift history.</div></div>
+  </div>
+  <div class="row" style="margin-top:14px">
+    <button class="btn primary" id="refreshGiftHistoryButton" type="button">↻ Refresh gift activity</button>
+    <a class="btn" href="./index.html">Sign in to TikNation</a>
+  </div>
+  <div id="creatorGiftHistory" style="margin-top:12px"><p class="muted">Your sent and received gifts will appear here after you sign in.</p></div>
+  <p id="giftDashboardStatus" class="status" role="status" aria-live="polite"></p>
+</section>
 <section class="panel">
   <h2>💸 Choose how you would prefer to cash out</h2>
   <p>You should not be forced to connect a bank account if another supported option works better for you. These are planned options to evaluate—not active payout connections.</p>
@@ -88,5 +105,44 @@
     });
   });
 })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://mekzfezaefcimxncklfj.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+let currentUser = null;
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[character]));
+}
+function showSignedOutGiftDashboard() {
+  const balance = document.getElementById("creatorGiftBalance");
+  const summary = document.getElementById("creatorGiftSummary");
+  const history = document.getElementById("creatorGiftHistory");
+  if (balance) balance.textContent = "Sign in to view";
+  if (summary) summary.textContent = "Your received gifts and test-coin total will appear here.";
+  if (history) history.innerHTML = '<p class="muted">Sign in to TikNation to view your gift activity.</p>';
+}
+</script>
+<script src="./gifts.js"></script>
+<script>
+document.getElementById("refreshGiftHistoryButton")?.addEventListener("click", () => {
+  if (currentUser) void loadTikNationGiftDashboard();
+  else showSignedOutGiftDashboard();
+});
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  currentUser = session?.user || null;
+  if (currentUser) {
+    const status = document.getElementById("giftDashboardStatus");
+    if (status) status.textContent = "Refreshing your gift activity…";
+    void loadTikNationGiftDashboard().finally(() => {
+      if (status) status.textContent = "Gift activity updated.";
+    });
+  } else {
+    showSignedOutGiftDashboard();
+  }
+});
 </script>
 </main></body></html>
