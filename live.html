@@ -236,6 +236,33 @@ body:has(#viewer:not(.hide)) .live-hub-hero,body:has(#viewer:not(.hide)) .live-h
 @media(max-width:600px){.live-hub-hero{display:block;min-height:0;margin:12px 0;padding:22px 18px;border-radius:20px}.live-hub-copy h1{font-size:2.25rem;max-width:420px}.live-hub-copy p{font-size:.91rem}.live-hub-actions{gap:8px;margin-top:18px}.live-hub-actions a{padding:11px 12px;font-size:.84rem}.live-hub-trust{gap:8px;flex-direction:column;margin-top:14px}.live-hub-orbit{position:absolute;width:120px;right:-20px;top:-20px;opacity:.28;pointer-events:none}.live-hub-feature-row{gap:8px;margin-bottom:14px}.live-hub-feature{padding:10px;gap:8px}.live-hub-feature>span{width:34px;height:34px;flex-basis:34px;font-size:1rem;border-radius:10px}.live-hub-feature strong{font-size:.76rem}.live-hub-feature small{font-size:.68rem}}
 @media(prefers-reduced-motion:reduce){.live-hub-hero:after,.live-hub-pulse{animation:none}}
 
+
+/* Live room finishing polish: clearer focus, readable chat and compact phone controls. */
+.chat-form{align-items:stretch}
+.chat-form input{min-height:44px}
+.chat-form button{min-height:44px;white-space:nowrap}
+.messages{scrollbar-width:thin;scrollbar-color:#514477 #080811;overscroll-behavior:contain}
+.message{line-height:1.45;padding:2px 0}
+.message b{font-weight:800}
+.video:focus-within{border-color:#6250a0;box-shadow:0 0 0 2px #8d63ff22}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.stream{min-width:0}
+.stream>div{min-width:0}
+.stream button{flex-shrink:0}
+@media(max-width:560px){
+  .chat-form{gap:6px}
+  .chat-form input{padding:10px;font-size:16px}
+  .chat-form button{padding:10px 12px}
+  .stream{align-items:flex-start;padding:12px}
+  .stream button{padding:9px 11px}
+  .video{border-radius:13px}
+  .live-gift-choice{overflow-wrap:anywhere}
+}
+@media(prefers-reduced-motion:reduce){
+  .live-gift-choice{transition:none}
+  .live-gift-choice:hover:not(:disabled){transform:none}
+}
+
 </style>
 </head>
 <body>
