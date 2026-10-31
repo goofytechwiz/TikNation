@@ -278,6 +278,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 @keyframes battleConfetti{0%{opacity:0;transform:translateY(-8px) rotate(0)}12%{opacity:1}100%{opacity:0;transform:translateY(125px) rotate(300deg)}}
 @media(prefers-reduced-motion:reduce){#battleCelebration.is-visible{animation:none}#battleCelebration .battle-spark{display:none}}
 
+
+.battle-timer-track{height:7px;margin:10px 0 14px;overflow:hidden;border-radius:99px;background:#ffffff16;border:1px solid #ffffff12}
+#battleTimerFill{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#00c8ff,#8d63ff,#ff9ad5);box-shadow:0 0 12px #8d63ff88;transition:width .9s linear}
+@media(prefers-reduced-motion:reduce){#battleTimerFill{transition:none}}
+
 </style>
 </head>
 <body>
@@ -374,6 +379,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   </section>
   <section id="battleResultsPanel" class="live-power-card" style="margin-top:14px" aria-label="Live Battle results">
     <h3>🏆 Live Battle results</h3>
+    <div class="battle-timer-track" role="progressbar" aria-label="Live Battle round progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="battleTimerFill"></span></div>
     <div id="battleCelebration" aria-hidden="true"></div>
     <div id="battleResultSummary" class="live-power-status" role="status" aria-live="polite">Your completed battles will appear here.</div>
     <div class="live-power-actions"><button type="button" class="ghost" id="loadBattleHistoryBtn">View battle history</button></div>
@@ -867,7 +873,7 @@ function showBattleResult(score,invite){
   const detail=document.createElement("div");detail.className="battle-celebration-sub";
   detail.textContent=score.result_status==="void"?"The round ended early — no winner was declared.":score.result_status==="tie"?"Both players finished with the same score.":(score.winner_name||"Winner")+" takes the round!";
   celebration.append(title,detail);
-  if(score.result_status==="finalized"&&score.winner_id){for(let i=0;i<18;i++){const spark=document.createElement("span");spark.className="battle-spark";spark.style.left=(4+(i*37)%92)+"%";spark.style.animationDelay=((i%6)*.09)+"s";spark.style.transform="rotate("+((i*41)%180)+"deg)";celebration.appendChild(spark);}}
+  if(score.status==="finalized"&&score.winner_id){for(let i=0;i<18;i++){const spark=document.createElement("span");spark.className="battle-spark";spark.style.left=(4+(i*37)%92)+"%";spark.style.animationDelay=((i%6)*.09)+"s";spark.style.transform="rotate("+((i*41)%180)+"deg)";celebration.appendChild(spark);}}
   celebration.classList.remove("is-visible");void celebration.offsetWidth;celebration.classList.add("is-visible");
  }
 }
@@ -893,6 +899,10 @@ function startBattleClock(invite,asOpponent=false){
  let finishRequested=false;
  const tick=()=>{
   const remaining=Math.max(0,Math.ceil((endAt-Date.now())/1000));
+  const progress=Math.max(0,Math.min(100,((duration-remaining)/duration)*100));
+  const timerFill=$("battleTimerFill"),timerTrack=timerFill?.parentElement;
+  if(timerFill)timerFill.style.width=progress+"%";
+  if(timerTrack)timerTrack.setAttribute("aria-valuenow",String(Math.round(progress)));
   const node=$(asOpponent?"battleRequestStatus":"hostBattleStatus");
   if(remaining>0&&node)node.textContent="LIVE BATTLE · "+fmtBattleTime(remaining)+" remaining · test-coin gift points";
   if(remaining%5===0||remaining===0)void refreshBattleScore(invite,asOpponent);
