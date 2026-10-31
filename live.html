@@ -528,7 +528,29 @@ function stopLiveGiftPolling() {
   if(liveGiftTimer)window.clearInterval(liveGiftTimer);liveGiftTimer=null;liveGiftCursor=null;seenLiveGiftIds=new Set();const panel=$("liveGiftPanel");if(panel){panel.classList.add("hide");panel.classList.remove("is-open");}
 }
 async function sendLiveGift(giftCode,button) {
-  if(liveGiftRequestBusy||!activeSession||isHost)return;const gift=LIVE_GIFT_CATALOG[giftCode];if(!gift)return;
+  if(liveGiftRequestBusy||!activeSession)return;const gift=LIVE_GIFT_CATALOG[giftCode];if(!gift)return;
+  // Fail closed: verify the signed-in account does not own this session before any paid-gift request.
+  // This protects creators even if the page's local host flag is stale.
+  if(isHost)return;
+  try {
+    const ownership=await supabase.from("live_sessions").select("creator_id").eq("id",activeSession.id).maybeSingle();
+    if(ownership.error)throw ownership.error;
+    if(ownership.data?.creator_id===user?.id){
+      isHost=true;
+      unlockLiveGiftAudio();
+      const preview={id:"preview-"+Date.now(),gift_code:giftCode,sender_name:"Creator preview"};
+      showLiveGiftCelebration(preview);
+      const feed=$("liveGiftFeed");
+      if(feed){const row=document.createElement("div");row.className="live-gift-feed-item";row.textContent="Creator preview · "+gift.emoji+" "+gift.name+" · FREE";feed.prepend(row);}
+      setLiveGiftStatus("✨ "+gift.name+" preview · Free, no coins spent.","success");
+      renderLiveGiftCatalog();
+      await refreshLiveGiftBalance();
+      return;
+    }
+  } catch(error) {
+    setLiveGiftStatus("Gift not sent. TikNation could not verify whether this account owns the live session. No coins were charged.","error");
+    return;
+  }
   if(!window.crypto||!window.crypto.randomUUID){setLiveGiftStatus("Please update your browser before sending gifts.","error");return;}
   liveGiftRequestBusy=true;const buttons=Array.from(document.querySelectorAll(".live-gift-choice"));buttons.forEach(b=>b.disabled=true);setLiveGiftStatus("Sending "+gift.name+"…");
   try{const result=await giftApi("send_live",{session_id:activeSession.id,gift_code:giftCode,request_id:window.crypto.randomUUID()});$("liveGiftBalance").textContent="🪙 "+Number(result.balance||0).toLocaleString()+" test coins remaining";setLiveGiftStatus("✨ "+gift.name+" sent! Your gift will appear in the live celebration.","success");await pollLiveGiftEvents();}
