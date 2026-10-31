@@ -5526,7 +5526,7 @@ async function searchTikNationCreators(event){
         return;
     }
 
-    const term = (input ? input.value : "").trim().replace(/[^a-zA-Z0-9_. -]/g,"").slice(0,40);
+    const term = (input ? input.value : "").trim().replace(/[^\p{L}\p{N}\p{M}_. -]/gu,"").slice(0,40);
     message.textContent = term ? "Searching creators..." : "Showing creators on TikNation...";
     results.innerHTML = "";
 
