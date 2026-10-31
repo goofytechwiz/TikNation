@@ -275,6 +275,80 @@ Deno.serve(async (req: Request) => {
     return json({ session_id: session.id, role: "guest", ...credentials });
   }
 
+  async function calculateBattleScore(inviteId: string, finalize = false, voluntaryFinish = false) {
+    const { data: invite, error: inviteError } = await admin.from("live_battle_invites")
+      .select("id,session_id,host_id,opponent_id,status,round_seconds,decided_at")
+      .eq("id", inviteId).maybeSingle();
+    if (inviteError || !invite || !invite.decided_at) {
+      return { error: "Could not load the accepted Live Battle.", status: 404 };
+    }
+    const startedAt = new Date(invite.decided_at);
+    const duration = Math.max(30, Math.min(600, Number(invite.round_seconds) || 180));
+    const deadline = new Date(startedAt.getTime() + duration * 1000);
+    const now = new Date();
+    const roundEnded = now.getTime() >= deadline.getTime();
+    const endAt = roundEnded ? deadline : now;
+    let hostScore = 0;
+    let opponentScore = 0;
+    let offset = 0;
+    while (true) {
+      const { data: events, error: eventsError } = await admin.from("live_gift_events")
+        .select("recipient_id,coin_cost")
+        .eq("session_id", invite.session_id)
+        .in("recipient_id", [invite.host_id, invite.opponent_id])
+        .gte("created_at", startedAt.toISOString())
+        .lte("created_at", endAt.toISOString())
+        .order("created_at", { ascending: true })
+        .range(offset, offset + 999);
+      if (eventsError) return { error: "Could not calculate the verified battle score.", status: 500 };
+      for (const event of events ?? []) {
+        const points = Math.max(0, Number(event.coin_cost) || 0);
+        if (event.recipient_id === invite.host_id) hostScore += points;
+        if (event.recipient_id === invite.opponent_id) opponentScore += points;
+      }
+      if (!events || events.length < 1000) break;
+      offset += 1000;
+    }
+    const shouldFinalize = finalize || roundEnded || invite.status === "completed";
+    if (!shouldFinalize) {
+      return { score: { invite_id: invite.id, host_score: hostScore, opponent_score: opponentScore, status: "live", ends_at: deadline.toISOString(), scoring_method: "test_coin_gifts_v1" } };
+    }
+    const isVoid = voluntaryFinish && !roundEnded;
+    const winnerId = isVoid || hostScore === opponentScore ? null : hostScore > opponentScore ? invite.host_id : invite.opponent_id;
+    const resultStatus = isVoid ? "void" : hostScore === opponentScore ? "tie" : "finalized";
+    if (invite.status === "accepted") {
+      const { error: closeError } = await admin.from("live_battle_invites")
+        .update({ status: "completed" }).eq("id", invite.id).eq("status", "accepted");
+      if (closeError) return { error: "Could not close the Live Battle round.", status: 500 };
+    }
+    const resultRow = {
+      invite_id: invite.id, session_id: invite.session_id, host_id: invite.host_id,
+      opponent_id: invite.opponent_id, host_score: hostScore, opponent_score: opponentScore,
+      winner_id: winnerId, result_status: resultStatus, scoring_method: "test_coin_gifts_v1",
+      started_at: startedAt.toISOString(), ended_at: (isVoid ? now : deadline).toISOString(),
+    };
+    const { error: saveError } = await admin.from("live_battle_results")
+      .upsert(resultRow, { onConflict: "invite_id", ignoreDuplicates: true });
+    if (saveError) return { error: "Could not save the verified battle result.", status: 500 };
+    const { data: saved, error: readError } = await admin.from("live_battle_results")
+      .select("invite_id,host_score,opponent_score,winner_id,result_status,scoring_method,started_at,ended_at")
+      .eq("invite_id", invite.id).single();
+    if (readError || !saved) return { error: "Could not confirm the saved battle result.", status: 500 };
+    return { score: { ...saved, status: "finalized" } };
+  }
+
+  if (action === "battle_score") {
+    const inviteId = String(body.invite_id ?? "");
+    if (!/^[0-9a-f-]{36}$/i.test(inviteId)) return json({ error: "Invalid battle invitation." }, 400);
+    const { data: invite, error: inviteError } = await admin.from("live_battle_invites")
+      .select("id,host_id,opponent_id").eq("id", inviteId).maybeSingle();
+    if (inviteError) return json({ error: "Could not load the battle invitation." }, 500);
+    if (!invite || ![invite.host_id, invite.opponent_id].includes(user.id)) return json({ error: "You cannot view this battle score." }, 403);
+    const result = await calculateBattleScore(inviteId);
+    if (result.error) return json({ error: result.error }, result.status || 500);
+    return json({ score: result.score });
+  }
+
   if (action === "battle_decide") {
     const inviteId = String(body.invite_id ?? "");
     const status = String(body.status ?? "");
@@ -302,14 +376,15 @@ Deno.serve(async (req: Request) => {
     const inviteId = String(body.invite_id ?? "");
     if (!/^[0-9a-f-]{36}$/i.test(inviteId)) return json({ error: "Invalid battle invitation." }, 400);
     const { data: invite, error: inviteError } = await admin.from("live_battle_invites")
-      .select("id,host_id,opponent_id,status").eq("id", inviteId).maybeSingle();
+      .select("id,host_id,opponent_id,status,round_seconds,decided_at").eq("id", inviteId).maybeSingle();
     if (inviteError) return json({ error: "Could not load the battle invitation." }, 500);
     if (!invite || ![invite.host_id, invite.opponent_id].includes(user.id)) return json({ error: "You cannot end this battle." }, 403);
-    if (invite.status !== "accepted") return json({ status: invite.status });
-    const { error: finishError } = await admin.from("live_battle_invites")
-      .update({ status: "completed" }).eq("id", inviteId).eq("status", "accepted");
-    if (finishError) return json({ error: "Could not close the Live Battle." }, 500);
-    return json({ status: "completed" });
+    if (invite.status !== "accepted" && invite.status !== "completed") return json({ status: invite.status });
+    const duration = Math.max(30, Math.min(600, Number(invite.round_seconds) || 180));
+    const roundEnded = !!invite.decided_at && Date.now() >= new Date(invite.decided_at).getTime() + duration * 1000;
+    const result = await calculateBattleScore(inviteId, true, !roundEnded);
+    if (result.error) return json({ error: result.error }, result.status || 500);
+    return json({ status: "completed", score: result.score });
   }
 
   if (action === "battle_join") {
