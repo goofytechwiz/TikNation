@@ -342,7 +342,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
         <h4>📡 Live session status</h4>
         <div class="score-row"><span>Media room</span><span class="score" id="mediaRoomStatus">Not connected</span></div>
         <div class="score-row"><span>Connected participants</span><span class="score" id="mediaParticipantStatus">0</span></div>
-        <p class="tiny-note" id="livePowerCapabilityNote">Guest requests and battle invitations are stored in TikNation. Approved guests can publish camera/microphone to the broadcast. Battle scoring is still a local preview and is not server-verified. No test action awards real coins or earnings.</p>
+        <p class="tiny-note" id="livePowerCapabilityNote">Guest requests and battle invitations are stored in TikNation. Approved guests can publish camera/microphone to the broadcast. Live Battle scoring is verified from test-coin gifts received by each player during the timed round. Test coins have no cash value or payout.</p>
       </div>
     </section>
     <p class="small" id="creatorHint" style="margin-top:10px">Broadcasting is invite-only during beta.</p>
@@ -351,6 +351,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     <h3>🎁 Live Gifts</h3>
     <div class="live-gift-note">Send Musical, Magical, Special Effects, Visual Effects, Legendary, and Surprise gifts without leaving the livestream. Free test coins only; no cash value or payouts.</div>
     <div id="liveGiftBalance" class="live-gift-balance">Loading test coin balance…</div>
+    <label id="liveGiftRecipientWrap" class="small hide" for="liveGiftRecipient">Send battle gift to <select id="liveGiftRecipient" aria-label="Choose Live Battle player to receive gift"></select></label>
     <div id="liveGiftCategories" class="live-gift-categories"></div>
     <div id="liveGiftStatus" class="live-gift-status" role="status" aria-live="polite"></div>
     <h4>✨ Live gift celebrations</h4>
@@ -439,6 +440,20 @@ function notice(message, type=""){const n=$("notice");n.textContent=message;n.cl
 function esc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 async function api(action, extra={}){const {data:{session}}=await supabase.auth.getSession();if(!session?.access_token)throw new Error("Please sign in to use TikNation Live.");const res=await fetch(API,{method:"POST",headers:{"Authorization":"Bearer "+session.access_token,"apikey":SUPABASE_PUBLISHABLE_KEY,"Content-Type":"application/json"},body:JSON.stringify({action,...extra})});let body={};try{body=await res.json()}catch{}if(!res.ok)throw new Error(body.error||"TikNation Live request failed.");return body;}
 
+function updateLiveGiftBattleTarget(battle){
+  liveGiftBattle=battle;
+  const wrap=$("liveGiftRecipientWrap"),select=$("liveGiftRecipient");
+  if(!wrap||!select)return;
+  if(!battle){wrap.classList.add("hide");select.replaceChildren();return;}
+  const previous=select.value;
+  select.replaceChildren();
+  for(const [id,name] of [[battle.host_id,battle.host_name],[battle.opponent_id,battle.opponent_name]]){
+    const option=document.createElement("option");option.value=id;option.textContent=name;select.appendChild(option);
+  }
+  if([battle.host_id,battle.opponent_id].includes(previous))select.value=previous;
+  else select.value=battle.host_id;
+  wrap.classList.remove("hide");
+}
 async function giftApi(action, extra={}) {
   if (!user) throw new Error("Please sign in to send live gifts.");
   const { data, error } = await supabase.functions.invoke("tiknation-gifts", { body: { action, ...extra } });
@@ -722,7 +737,7 @@ function renderLiveGiftEvent(event) {
 }
 async function pollLiveGiftEvents() {
   if(!activeSession||!user)return;
-  try{const result=await giftApi("live_events",{session_id:activeSession.id,after:liveGiftCursor});for(const event of result.events||[]){if(seenLiveGiftIds.has(event.id))continue;seenLiveGiftIds.add(event.id);renderLiveGiftEvent(event);if(event.created_at&&(!liveGiftCursor||event.created_at>liveGiftCursor))liveGiftCursor=event.created_at;}}
+  try{const result=await giftApi("live_events",{session_id:activeSession.id,after:liveGiftCursor});updateLiveGiftBattleTarget(result.battle||null);for(const event of result.events||[]){if(seenLiveGiftIds.has(event.id))continue;seenLiveGiftIds.add(event.id);renderLiveGiftEvent(event);if(event.created_at&&(!liveGiftCursor||event.created_at>liveGiftCursor))liveGiftCursor=event.created_at;}}
   catch(error){if(!/ended or is unavailable/i.test(error.message))console.warn("Live gift feed:",error.message);}
 }
 function startLiveGiftPolling() {
@@ -758,7 +773,7 @@ async function sendLiveGift(giftCode,button) {
   }
   if(!window.crypto||!window.crypto.randomUUID){setLiveGiftStatus("Please update your browser before sending gifts.","error");return;}
   liveGiftRequestBusy=true;const buttons=Array.from(document.querySelectorAll(".live-gift-choice"));buttons.forEach(b=>b.disabled=true);setLiveGiftStatus("Sending "+gift.name+"…");
-  try{const result=await giftApi("send_live",{session_id:activeSession.id,gift_code:giftCode,request_id:window.crypto.randomUUID()});$("liveGiftBalance").textContent="🪙 "+Number(result.balance||0).toLocaleString()+" test coins remaining";setLiveGiftStatus("✨ "+gift.name+" sent! Your gift will appear in the live celebration.","success");await pollLiveGiftEvents();}
+  try{const recipientId=$("liveGiftRecipient")?.value||null;const result=await giftApi("send_live",{session_id:activeSession.id,gift_code:giftCode,request_id:window.crypto.randomUUID(),...(recipientId?{recipient_id:recipientId}:{})});$("liveGiftBalance").textContent="🪙 "+Number(result.balance||0).toLocaleString()+" test coins remaining";setLiveGiftStatus("✨ "+gift.name+" sent! Your gift will appear in the live celebration.","success");await pollLiveGiftEvents();}
   catch(error){setLiveGiftStatus(error.message||"Gift could not be sent.","error");}
   finally{liveGiftRequestBusy=false;buttons.forEach(b=>b.disabled=false);}
 }
@@ -801,11 +816,42 @@ async function leaveBattleStage(){
  await leaveStream(false);notice("You left the Live Battle.");
 }
 function clearBattleClock(){if(battleClockTimer)window.clearInterval(battleClockTimer);battleClockTimer=null;}
+async function refreshBattleScore(invite,asOpponent=false){
+ if(!invite?.id)return;
+ try{
+  const result=await api("battle_score",{invite_id:invite.id});const score=result.score;if(!score)return;
+  $("battleHostScore").textContent=Number(score.host_score||0).toLocaleString();
+  $("battleOpponentScore").textContent=Number(score.opponent_score||0).toLocaleString();
+  if(score.status==="finalized"){
+   const summary=score.result_status==="void"?"Round ended early. Score saved, but no winner was declared.":score.result_status==="tie"?"Battle tied · "+score.host_score+"–"+score.opponent_score+".":"Final score · "+score.host_score+"–"+score.opponent_score+".";
+   const node=$(asOpponent?"battleRequestStatus":"hostBattleStatus");if(node)node.textContent=summary;
+  }
+ }catch(error){console.warn("Live Battle score refresh:",error.message);}
+}
 function startBattleClock(invite,asOpponent=false){
  if(!invite?.decided_at)return;clearBattleClock();
  const duration=Math.max(30,Math.min(600,Number(invite.round_seconds)||180));
  const endAt=new Date(invite.decided_at).getTime()+duration*1000;
- const tick=()=>{const remaining=Math.max(0,Math.ceil((endAt-Date.now())/1000));const message="LIVE BATTLE · "+fmtBattleTime(remaining)+" remaining · score tracking is not active yet.";const node=$(asOpponent?"battleRequestStatus":"hostBattleStatus");if(node)node.textContent=message;if(remaining<=0){clearBattleClock();if(isBattle)void leaveBattleStage();else if(node)node.textContent="Battle round time ended. No score or rewards were recorded.";}};tick();battleClockTimer=window.setInterval(tick,1000);
+ let finishRequested=false;
+ const tick=()=>{
+  const remaining=Math.max(0,Math.ceil((endAt-Date.now())/1000));
+  const node=$(asOpponent?"battleRequestStatus":"hostBattleStatus");
+  if(remaining>0&&node)node.textContent="LIVE BATTLE · "+fmtBattleTime(remaining)+" remaining · test-coin gift points";
+  if(remaining%5===0||remaining===0)void refreshBattleScore(invite,asOpponent);
+  if(remaining<=0&&!finishRequested){
+   finishRequested=true;clearBattleClock();
+   void api("battle_finish",{invite_id:invite.id}).then(result=>{
+    if(result.score){
+     $("battleHostScore").textContent=Number(result.score.host_score||0).toLocaleString();
+     $("battleOpponentScore").textContent=Number(result.score.opponent_score||0).toLocaleString();
+     const summary=result.score.result_status==="tie"?"Battle tied · "+result.score.host_score+"–"+result.score.opponent_score+".": "Final score · "+result.score.host_score+"–"+result.score.opponent_score+".";
+     if(node)node.textContent=summary;
+    }
+    if(isBattle)void leaveBattleStage();
+   }).catch(error=>{if(node)node.textContent="The round ended, but TikNation could not confirm the final score. Please refresh.";console.warn("Battle finalization:",error.message);});
+  }
+ };
+ tick();battleClockTimer=window.setInterval(tick,1000);
 }
 function updateLiveViewerCount(){const node=$("liveViewerCount");const roomNode=$("mediaRoomStatus");const countNode=$("mediaParticipantStatus");if(!activeSession){if(node)node.textContent="";if(roomNode)roomNode.textContent="Not connected";if(countNode)countNode.textContent="0";return;}const count=room?room.remoteParticipants.size+(isHost?0:1):0;if(node)node.textContent="👥 "+count+" participant"+(count===1?"":"s")+" connected";if(roomNode)roomNode.textContent=room?"Connected":"Connecting…";if(countNode)countNode.textContent=String(count);}
 function resetVideo(id,text){const box=$(id);const overlayId=id==="creatorVideo"?"creatorChatOverlay":"viewerChatOverlay";const guestId=id==="creatorVideo"?"creatorGuestVideo":"guestVideo";box.innerHTML='<div class="placeholder">'+esc(text)+'</div><div class="live-chat-overlay" id="'+overlayId+'" aria-label="Live comments on video"></div><div id="'+guestId+'" class="guest-pip hide" aria-label="Guest video"><div class="placeholder">Guest stage</div></div>';}
