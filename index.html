@@ -8951,12 +8951,15 @@ async function loadTikNationSecurityEvents(){
   const {data,error}=await supabaseClient.functions.invoke("tiknation-security-events",{body:{}});
   if(error)throw error;
   const events=Array.isArray(data?.events)?data.events:[];
-  if(!events.length){status.textContent="No username-login security events have been recorded yet.";return;}
-  status.textContent="Showing the latest "+events.length+" username-login events. Email-login activity is not included in this log.";
+  if(!events.length){status.textContent="No email or username sign-in security events have been recorded yet.";return;}
+  status.textContent="Showing the latest "+events.length+" email and username sign-in events. Identifiers and network addresses are stored as one-way hashes.";
   const labels={
    username_login_succeeded:"Successful username login",
    username_login_failed:"Failed username login",
-   username_login_throttled:"Login attempt blocked by rate limit"
+   username_login_throttled:"Username login blocked by rate limit",
+   email_login_succeeded:"Successful email login",
+   email_login_failed:"Failed email login",
+   email_login_throttled:"Email login blocked by rate limit"
   };
   for(const event of events){
    const card=document.createElement("div");
