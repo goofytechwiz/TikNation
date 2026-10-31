@@ -104,6 +104,17 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
 .editor{box-shadow:inset 0 0 30px #d946ef0a,0 0 24px #d946ef12}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.social-folder:hover,.social:hover,.btn:hover{transform:none}}
 
+
+.folder-emblem{width:48px;height:48px;flex:0 0 48px;display:grid;place-items:center;border-radius:15px;position:relative}
+.kaevoryn-folder .folder-emblem{background:radial-gradient(circle,#0b6b83,#031a2b 70%);border:1px solid #00e5ff;box-shadow:0 0 22px #00e5ff55,inset 0 0 18px #00e5ff30}
+.personal-folder .folder-emblem{background:radial-gradient(circle,#8d3a9d,#28102f 70%);border:1px solid #e879f9;border-radius:50%;box-shadow:0 0 22px #e879f955,inset 0 0 18px #e879f930}
+.folder-emblem svg{width:32px;height:32px}
+.account-preview{display:flex;align-items:center;gap:12px;margin:12px 0;padding:13px;border-radius:14px;background:linear-gradient(110deg,#70e8ff12,#b49aff12);border:1px solid #ffffff24}
+.preview-mark{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border-radius:12px;font-size:21px;font-weight:bold;background:linear-gradient(145deg,#16465c,#252044);border:1px solid #70e8ff66;box-shadow:0 0 16px #70e8ff20}
+.preview-copy{min-width:0;overflow-wrap:anywhere}.preview-copy strong{display:block}.preview-copy small{color:#b7b4d1}
+.account-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.account-actions button{cursor:pointer}.account-actions button:disabled{opacity:.35;cursor:not-allowed}
+@media(max-width:520px){.folder-emblem{width:42px;height:42px;flex-basis:42px}.folder-emblem svg{width:28px;height:28px}}
+
 </style>
 </head>
 <body>
@@ -119,7 +130,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
 <section class="panel">
 <div class="section-head"><div class="eyebrow">YOUR SOCIAL WORLDS</div><h2>Choose a folder</h2><p>Two separate spaces, so your personal accounts and Kaevoryn Studios never get mixed together.</p></div>
 <details class="social-folder kaevoryn-folder">
-<summary><span class="folder-icon" aria-hidden="true">📁</span><span><strong>Kaevoryn</strong><small>Official Kaevoryn Studios accounts</small></span><span class="folder-arrow" aria-hidden="true">＋</span></summary>
+<summary><span class="folder-emblem" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M24 4 39 13v22L24 44 9 35V13L24 4Z" stroke="#7cf5ff" stroke-width="1.8"/><path d="m24 11 9 5v15l-9 6-9-6V16l9-5Z" stroke="#00e5ff" stroke-width="1.5"/><path d="m17 25 5 5 10-13" stroke="#d7fbff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong>Kaevoryn</strong><small>Official Kaevoryn Studios accounts</small></span><span class="folder-arrow" aria-hidden="true">＋</span></summary>
 <div class="folder-content"><div class="eyebrow">OFFICIAL STUDIO CHANNELS</div><p>Follow Kaevoryn Studios across its official platforms.</p><div class="cards">
 <article class="social"><div class="symbol">♪</div><h3>TikTok</h3><p>@kaevoryn.studios</p><a class="btn" href="https://www.tiktok.com/@kaevoryn.studios?_r=1&_t=ZP-9B0HGBSVQWE" target="_blank" rel="noopener noreferrer">Visit TikTok ↗</a></article>
 <article class="social"><div class="symbol">f</div><h3>Facebook</h3><p>Kaevoryn Studios</p><a class="btn" href="https://www.facebook.com/share/1HvqQg4KBc/" target="_blank" rel="noopener noreferrer">Visit Facebook ↗</a></article>
@@ -142,7 +153,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
 </div>
 <div class="editor" style="margin-top:22px;padding:20px;border:1px solid #70e8ff44;border-radius:18px;background:#070a16">
 <div class="eyebrow">CREATOR EDITOR</div><h2 style="margin-top:10px">Add your social accounts</h2>
-<p>Enter a platform, username, and public profile link. Your entries are saved in this browser on this device.</p>
+<p>Add a platform, display name, and public profile link. A visual preview is created below; entries are currently saved in this browser on this device.</p>
 <form id="socialEditor">
 <label for="socialPlatform">Platform</label><br>
 <select id="socialPlatform" required style="width:100%;padding:12px;margin:6px 0 12px;background:#0b0b19;color:white;border:1px solid #ffffff33;border-radius:10px">
@@ -155,18 +166,39 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
 <script>
 (function(){
 var key='tiknation_creator_social_accounts_v1';
-var form=document.getElementById('socialEditor'), entries=document.getElementById('socialEntries'), status=document.getElementById('socialStatus');
-function read(){try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e){return []}}
-function draw(){entries.replaceChildren();read().forEach(function(item,i){
-var row=document.createElement('div');row.style.cssText='padding:12px;margin-top:10px;border:1px solid #ffffff22;border-radius:12px;overflow-wrap:anywhere';
-var title=document.createElement('strong');title.textContent=item.platform+' · '+item.handle;
-var link=document.createElement('a');link.href=item.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=item.url;link.style.cssText='display:block;color:#70e8ff;margin:8px 0';
-var remove=document.createElement('button');remove.type='button';remove.textContent='Remove';remove.className='btn';remove.addEventListener('click',function(){var all=read();all.splice(i,1);localStorage.setItem(key,JSON.stringify(all));status.textContent='Account removed.';draw()});
-row.append(title,link,remove);entries.append(row)
-})}
-form.addEventListener('submit',function(e){e.preventDefault();var url=document.getElementById('socialUrl').value.trim();if(!/^https?:\/\//i.test(url)){status.textContent='Use a public link beginning with https://';return}
-var all=read();all.push({platform:document.getElementById('socialPlatform').value,handle:document.getElementById('socialHandle').value.trim(),url:url});localStorage.setItem(key,JSON.stringify(all));form.reset();status.textContent='Account saved in this browser.';draw()
-});draw()
+var form=document.getElementById('socialEditor'),entries=document.getElementById('socialEntries'),status=document.getElementById('socialStatus'),editing=-1;
+function read(){try{var x=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(x)?x:[]}catch(e){return []}}
+function save(x){localStorage.setItem(key,JSON.stringify(x))}
+function host(u){try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return 'Public profile'}}
+function mark(p){return ({Instagram:'◎',TikTok:'♪',YouTube:'▶',Facebook:'f',X:'𝕏',Snapchat:'◉',Threads:'@',Discord:'◈',Bluesky:'☁',Kick:'K'})[p]||'↗'}
+function reset(){editing=-1;form.reset();form.querySelector('button[type=submit]').textContent='＋ Add account'}
+function draw(){
+ entries.replaceChildren();var all=read();
+ all.forEach(function(item,i){
+  var row=document.createElement('article');row.className='account-preview';
+  var icon=document.createElement('div');icon.className='preview-mark';icon.textContent=mark(item.platform);
+  var copy=document.createElement('div');copy.className='preview-copy';
+  var title=document.createElement('strong');title.textContent=item.platform+' · '+item.handle;
+  var sub=document.createElement('small');sub.textContent=host(item.url)+' · profile preview';
+  var link=document.createElement('a');link.href=item.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open profile ↗';link.style.cssText='display:block;color:#70e8ff;margin-top:6px;font-size:12px';
+  copy.append(title,sub,link);row.append(icon,copy);
+  var actions=document.createElement('div');actions.className='account-actions';
+  function button(label,fn,disabled){var q=document.createElement('button');q.type='button';q.className='btn';q.textContent=label;q.disabled=!!disabled;q.addEventListener('click',fn);actions.append(q)}
+  button('Edit',function(){editing=i;document.getElementById('socialPlatform').value=item.platform;document.getElementById('socialHandle').value=item.handle;document.getElementById('socialUrl').value=item.url;form.querySelector('button[type=submit]').textContent='Save changes';status.textContent='Editing this account. Update the fields and save.';form.scrollIntoView({behavior:'smooth',block:'center'})});
+  button('↑',function(){var x=read(),t=x[i-1];x[i-1]=x[i];x[i]=t;save(x);draw()},i===0);
+  button('↓',function(){var x=read(),t=x[i+1];x[i+1]=x[i];x[i]=t;save(x);draw()},i===all.length-1);
+  button('Remove',function(){var x=read();x.splice(i,1);save(x);if(editing===i)reset();status.textContent='Account removed.';draw()});
+  entries.append(row,actions);
+ });
+}
+form.addEventListener('submit',function(e){
+ e.preventDefault();var url=document.getElementById('socialUrl').value.trim();
+ try{var u=new URL(url);if(!['http:','https:'].includes(u.protocol))throw new Error()}catch(e){status.textContent='Enter a valid public link beginning with https://';return}
+ var item={platform:document.getElementById('socialPlatform').value,handle:document.getElementById('socialHandle').value.trim(),url:url};
+ var x=read();if(editing>=0&&editing<x.length){x[editing]=item;status.textContent='Changes saved in this browser.'}else{x.push(item);status.textContent='Account added with a visual preview.'}
+ save(x);reset();draw();
+});
+draw();
 })();
 </script>
 
