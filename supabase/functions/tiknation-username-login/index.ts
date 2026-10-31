@@ -82,6 +82,56 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    async function sendNewNetworkAlert(recipient: string | undefined, accountId: string | null) {
+      const resendKey = Deno.env.get("RESEND_API_KEY");
+      const fromEmail = Deno.env.get("RECOVERY_FROM_EMAIL");
+      if (!resendKey || !fromEmail || !recipient || !accountId) return;
+
+      const { data: previous, error: historyError } = await admin
+        .from("tiknation_security_events")
+        .select("network_hash")
+        .eq("user_id", accountId)
+        .in("event_type", ["email_login_succeeded", "username_login_succeeded"])
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (historyError) {
+        console.error("TikNation new-network alert history could not be checked:", historyError.code ?? "unknown");
+        return;
+      }
+      if (previous?.network_hash === networkHash) return;
+
+      try {
+        const response = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${resendKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: fromEmail,
+            to: [recipient],
+            subject: "New sign-in to your TikNation account",
+            text: [
+              "A sign-in to your TikNation account was completed from a network we have not seen before.",
+              "",
+              "If this was you, no action is needed.",
+              "If this was not you, change your password and review your active sessions. Enable authenticator verification if it is not already enabled.",
+              "",
+              "For your privacy, this alert does not include your IP address.",
+            ].join("\\n"),
+          }),
+        });
+        if (!response.ok) {
+          const details = await response.text().catch(() => "");
+          console.error("TikNation new-network alert email failed:", response.status, details.slice(0, 300));
+        }
+      } catch (error) {
+        console.error("TikNation new-network alert email failed:", error instanceof Error ? error.message : "unknown error");
+      }
+    }
+
     const failedEvent: EventKind = kind === "email" ? "email_login_failed" : "username_login_failed";
     const throttledEvent: EventKind = kind === "email" ? "email_login_throttled" : "username_login_throttled";
     const successEvent: EventKind = kind === "email" ? "email_login_succeeded" : "username_login_succeeded";
@@ -143,6 +193,7 @@ Deno.serve(async (req: Request) => {
     }
 
     userId = signedIn.user?.id ?? userId;
+    await sendNewNetworkAlert(signedIn.user?.email ?? email, userId);
     await recordSecurityEvent(successEvent, userId);
 
     return json({
