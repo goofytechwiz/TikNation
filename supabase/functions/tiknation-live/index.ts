@@ -14,6 +14,23 @@ const json = (body: unknown, status = 200) =>
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 
+type BattleScore = {
+  invite_id: string;
+  host_score: number;
+  opponent_score: number;
+  winner_id: string | null;
+  status: "live" | "finalized";
+  ends_at?: string;
+  scoring_method: string;
+  result_status?: string;
+  started_at?: string;
+  ended_at?: string;
+};
+
+type BattleScoreCalculation =
+  | { error: string; status?: number }
+  | { score: BattleScore };
+
 function record(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === "object" && !Array.isArray(value);
 }
@@ -275,7 +292,7 @@ Deno.serve(async (req: Request) => {
     return json({ session_id: session.id, role: "guest", ...credentials });
   }
 
-  async function calculateBattleScore(inviteId: string, finalize = false, voluntaryFinish = false) {
+  async function calculateBattleScore(inviteId: string, finalize = false, voluntaryFinish = false): Promise<BattleScoreCalculation> {
     const { data: invite, error: inviteError } = await admin.from("live_battle_invites")
       .select("id,session_id,host_id,opponent_id,status,round_seconds,decided_at")
       .eq("id", inviteId).maybeSingle();
@@ -312,7 +329,7 @@ Deno.serve(async (req: Request) => {
     }
     const shouldFinalize = finalize || roundEnded || invite.status === "completed";
     if (!shouldFinalize) {
-      return { score: { invite_id: invite.id, host_score: hostScore, opponent_score: opponentScore, status: "live", ends_at: deadline.toISOString(), scoring_method: "test_coin_gifts_v1" } };
+      return { score: { invite_id: invite.id, host_score: hostScore, opponent_score: opponentScore, winner_id: null, status: "live", ends_at: deadline.toISOString(), scoring_method: "test_coin_gifts_v1" } };
     }
     const isVoid = voluntaryFinish && !roundEnded;
     const winnerId = isVoid || hostScore === opponentScore ? null : hostScore > opponentScore ? invite.host_id : invite.opponent_id;
@@ -364,7 +381,7 @@ Deno.serve(async (req: Request) => {
     if (inviteError) return json({ error: "Could not load the battle invitation." }, 500);
     if (!invite || ![invite.host_id, invite.opponent_id].includes(user.id)) return json({ error: "You cannot view this battle score." }, 403);
     const result = await calculateBattleScore(inviteId);
-    if (result.error) return json({ error: result.error }, result.status || 500);
+    if ("error" in result) return json({ error: result.error }, result.status || 500);
     const { data: profiles } = await admin.from("profiles").select("id,username,display_name").in("id", [invite.host_id, invite.opponent_id]);
     const names = new Map((profiles ?? []).map((p) => [p.id, p.display_name || p.username || "TikNation member"]));
     return json({ score: { ...result.score, host_name: names.get(invite.host_id) || "Host", opponent_name: names.get(invite.opponent_id) || "Opponent", winner_name: names.get(result.score.winner_id) || null } });
