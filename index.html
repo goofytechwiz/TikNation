@@ -2012,6 +2012,53 @@ textarea.form-control{
  #home .tn-founder-quotes blockquote{transition:none!important}
 }
 
+
+/* Header and navigation refinement */
+.header{height:68px;padding:0 clamp(14px,2.4vw,30px);gap:18px}
+.logo{font-size:19px;letter-spacing:2.2px;flex:0 0 auto}
+.search{width:min(340px,30vw);margin-left:auto;margin-right:auto}
+.search input{height:42px;padding:10px 16px;border-radius:13px}
+.header-actions{gap:8px;flex:0 0 auto}
+.header-actions .icon-button{width:40px;height:40px;border-radius:13px;transition:background .18s ease,border-color .18s ease}
+.header-actions .icon-button:hover,.header-actions .icon-button:focus-visible{background:rgba(141,99,255,.16);border-color:rgba(141,99,255,.4);outline:none}
+.header-actions .auth-button{min-height:40px;padding:9px 14px;border-radius:12px;font-size:11px;letter-spacing:.45px;white-space:nowrap}
+.header-actions .profile-mini{width:40px;height:40px}
+.header-menu-button{font-size:21px!important}
+.sidebar{padding:20px 13px;overflow-y:auto}
+.nav-button{gap:12px;padding:12px 13px;margin-bottom:5px;border-radius:12px;font-size:14px;transition:background .18s ease,border-color .18s ease}
+.nav-icon{width:23px;font-size:18px}
+.main{padding:clamp(20px,2.8vw,35px)}
+@media(max-width:900px){
+ .header{gap:12px}
+ .search{width:min(260px,27vw)}
+ .header-actions{gap:6px}
+ .header-actions .auth-button{padding:8px 10px;font-size:10px}
+}
+@media(max-width:650px){
+ .header{height:62px;padding:0 12px;gap:9px}
+ .logo{font-size:16px;letter-spacing:1.5px}
+ .search{width:auto;min-width:0;flex:1;margin:0 2px}
+ .search input{height:38px;padding:8px 11px;font-size:12px}
+ .header-actions{gap:5px}
+ .header-actions .icon-button{width:35px;height:35px;border-radius:11px;font-size:16px}
+ .header-actions .auth-button,.header-actions .tn-create-account-button{display:none}
+ .header-actions .profile-mini{width:35px;height:35px}
+ .header-menu-button{font-size:19px!important}
+ .app{padding-top:62px}
+ .sidebar{top:62px}
+ .main{padding:18px 13px}
+}
+@media(max-width:390px){
+ .header{gap:6px;padding:0 9px}
+ .logo{font-size:14px;letter-spacing:1px}
+ .search input{font-size:11px}
+ .header-actions{gap:4px}
+ .header-actions .icon-button{width:32px;height:32px}
+ .header-actions .profile-mini{width:32px;height:32px}
+}
+@media(prefers-reduced-motion:reduce){
+ .header-actions .icon-button,.nav-button{transition:none!important}
+}
 </style>
 </head>
 
