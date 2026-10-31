@@ -122,7 +122,7 @@ Deno.serve(async (req: Request) => {
               "If this was not you, change your password and review your active sessions. Enable authenticator verification if it is not already enabled.",
               "",
               "For your privacy, this alert does not include your IP address.",
-            ].join("\\n"),
+            ].join(String.fromCharCode(10)),
           }),
         });
         if (!response.ok) {
