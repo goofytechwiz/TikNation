@@ -243,6 +243,8 @@ async function sendTikNationGift(recipientId, giftCode) {
     }
     showTikNationGiftEffect(gift);
     if (status) { status.className = "gift-status success"; status.textContent = "✨ " + gift.name + " sent! Test gifts have no cash value."; }
+    // Keep the sender's Creator Wallet history in sync after a successful send.
+    await loadTikNationGiftDashboard();
     return true;
   } catch (error) {
     if (status) { status.className = "gift-status error"; status.textContent = error.message || "Gift could not be sent."; }
@@ -287,3 +289,76 @@ async function loadTikNationGiftDashboard() {
     if (refresh) refresh.disabled = false;
   }
 }
+
+
+/* Deliver received gifts to the creator immediately while TikNation is open. */
+let tikNationGiftRealtimeChannel = null;
+let tikNationGiftRealtimeUserId = null;
+
+function startTikNationGiftRealtime(userId) {
+  if (!userId || !supabaseClient || !supabaseClient.channel) return;
+  if (tikNationGiftRealtimeUserId === userId && tikNationGiftRealtimeChannel) return;
+  if (tikNationGiftRealtimeChannel) {
+    try { supabaseClient.removeChannel(tikNationGiftRealtimeChannel); } catch (_ignored) {}
+    tikNationGiftRealtimeChannel = null;
+  }
+  tikNationGiftRealtimeUserId = userId;
+  tikNationGiftRealtimeChannel = supabaseClient
+    .channel("tiknation-gift-receipts-" + userId)
+    .on("postgres_changes", {
+      event: "INSERT",
+      schema: "public",
+      table: "gift_transactions",
+      filter: "recipient_id=eq." + userId
+    }, async (event) => {
+      const row = event && event.new;
+      if (!row || row.recipient_id !== userId || row.sender_id === userId) return;
+      const gift = TIKNATION_GIFT_CATALOG[row.gift_code];
+      if (!gift) return;
+      try {
+        const { data: sender } = await supabaseClient.from("profiles")
+          .select("display_name,username").eq("id", row.sender_id).maybeSingle();
+        const senderName = sender && (sender.display_name || sender.username)
+          ? (sender.display_name || "@" + sender.username)
+          : "A TikNation creator";
+        showTikNationGiftEffect(gift);
+        const dashboard = document.getElementById("creatorGiftDashboard");
+        if (dashboard) {
+          const summary = document.getElementById("creatorGiftSummary");
+          if (summary) summary.textContent = "🎁 " + senderName + " sent you " + gift.name + "! Your test coins were credited.";
+          await loadTikNationGiftDashboard();
+        }
+        const balance = document.getElementById("publicCreatorGiftBalance");
+        if (balance) await refreshPublicGiftBalance();
+      } catch (error) {
+        console.error("Incoming TikNation gift update failed:", error);
+      }
+    })
+    .subscribe((status) => {
+      if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+        console.warn("TikNation gift receipt updates are temporarily unavailable.");
+      }
+    });
+}
+
+function initTikNationGiftRealtime() {
+  if (typeof supabaseClient === "undefined" || !supabaseClient || !supabaseClient.auth) return;
+  supabaseClient.auth.getSession().then(({ data }) => {
+    const userId = data && data.session && data.session.user && data.session.user.id;
+    if (userId) startTikNationGiftRealtime(userId);
+  }).catch(() => {});
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    const userId = session && session.user && session.user.id;
+    if (userId) {
+      startTikNationGiftRealtime(userId);
+    } else {
+      if (tikNationGiftRealtimeChannel) {
+        try { supabaseClient.removeChannel(tikNationGiftRealtimeChannel); } catch (_ignored) {}
+      }
+      tikNationGiftRealtimeChannel = null;
+      tikNationGiftRealtimeUserId = null;
+    }
+  });
+}
+
+initTikNationGiftRealtime();
