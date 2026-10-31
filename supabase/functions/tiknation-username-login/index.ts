@@ -87,12 +87,14 @@ Deno.serve(async (req: Request) => {
       const fromEmail = Deno.env.get("RECOVERY_FROM_EMAIL");
       if (!resendKey || !fromEmail || !recipient || !accountId) return;
 
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
       const { data: previous, error: historyError } = await admin
         .from("tiknation_security_events")
         .select("network_hash")
         .eq("user_id", accountId)
+        .eq("network_hash", networkHash)
         .in("event_type", ["email_login_succeeded", "username_login_succeeded"])
-        .order("created_at", { ascending: false })
+        .gte("created_at", thirtyDaysAgo)
         .limit(1)
         .maybeSingle();
 
@@ -100,7 +102,7 @@ Deno.serve(async (req: Request) => {
         console.error("TikNation new-network alert history could not be checked:", historyError.code ?? "unknown");
         return;
       }
-      if (previous?.network_hash === networkHash) return;
+      if (previous) return;
 
       try {
         const response = await fetch("https://api.resend.com/emails", {
