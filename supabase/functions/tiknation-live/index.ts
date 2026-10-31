@@ -275,6 +275,64 @@ Deno.serve(async (req: Request) => {
     return json({ session_id: session.id, role: "guest", ...credentials });
   }
 
+  if (action === "battle_decide") {
+    const inviteId = String(body.invite_id ?? "");
+    const status = String(body.status ?? "");
+    if (!/^[0-9a-f-]{36}$/i.test(inviteId)) return json({ error: "Invalid battle invitation." }, 400);
+    if (!["accepted", "declined"].includes(status)) return json({ error: "Invalid battle response." }, 400);
+    const { data: invite, error: inviteError } = await admin.from("live_battle_invites")
+      .select("id,session_id,host_id,opponent_id,status")
+      .eq("id", inviteId).maybeSingle();
+    if (inviteError) return json({ error: "Could not load the battle invitation." }, 500);
+    if (!invite || ![invite.host_id, invite.opponent_id].includes(user.id)) return json({ error: "You cannot respond to this battle invitation." }, 403);
+    if (invite.status !== "pending") return json({ error: "This battle invitation is no longer pending." }, 409);
+    const { data: session, error: sessionError } = await admin.from("live_sessions")
+      .select("id,status,creator_id").eq("id", invite.session_id).maybeSingle();
+    if (sessionError) return json({ error: "Could not verify the live broadcast." }, 500);
+    if (!session || session.status !== "live" || session.creator_id !== invite.host_id) return json({ error: "The live broadcast has ended." }, 409);
+    const { data: updated, error: updateError } = await admin.from("live_battle_invites")
+      .update({ status, decided_at: new Date().toISOString() }).eq("id", inviteId).eq("status", "pending")
+      .select("id,session_id,host_id,opponent_id,status,round_seconds,decided_at").maybeSingle();
+    if (updateError) return json({ error: "Could not save your battle response." }, 500);
+    if (!updated) return json({ error: "This battle invitation was already answered." }, 409);
+    return json({ invite: updated });
+  }
+
+  if (action === "battle_join") {
+    const inviteId = String(body.invite_id ?? "");
+    if (!/^[0-9a-f-]{36}$/i.test(inviteId)) return json({ error: "Invalid battle invitation." }, 400);
+    if (accountAge < 16) return json({ error: "You must be at least 16 to join a Live Battle." }, 403);
+    const { data: invite, error: inviteError } = await admin.from("live_battle_invites")
+      .select("id,session_id,host_id,opponent_id,status,round_seconds,decided_at")
+      .eq("id", inviteId).eq("opponent_id", user.id).eq("status", "accepted").maybeSingle();
+    if (inviteError) return json({ error: "Could not verify your accepted battle invitation." }, 500);
+    if (!invite) return json({ error: "The host must accept your battle challenge before you can join." }, 403);
+    const { data: session, error: sessionError } = await admin.from("live_sessions")
+      .select("id,title,room_name,status,started_at,creator_id,follower_only_chat")
+      .eq("id", invite.session_id).eq("status", "live").maybeSingle();
+    if (sessionError) return json({ error: "Could not verify the live broadcast." }, 500);
+    if (!session || session.creator_id !== invite.host_id) return json({ error: "This Live Battle broadcast has ended." }, 404);
+    const endsAt = new Date(new Date(invite.decided_at).getTime() + Math.max(30, Math.min(600, Number(invite.round_seconds) || 180)) * 1000);
+    if (endsAt.getTime() <= Date.now()) {
+      await admin.from("live_battle_invites").update({ status: "completed" }).eq("id", invite.id).eq("status", "accepted");
+      return json({ error: "This Live Battle round has already ended." }, 409);
+    }
+    const { data: blocks, error: blockError } = await admin.from("user_blocks")
+      .select("blocker_id")
+      .or("and(blocker_id.eq." + user.id + ",blocked_id.eq." + invite.host_id + "),and(blocker_id.eq." + invite.host_id + ",blocked_id.eq." + user.id + ")")
+      .limit(1);
+    if (blockError) return json({ error: "Could not verify battle access." }, 500);
+    if (blocks?.length) return json({ error: "Battle access is unavailable because of a block between these accounts." }, 403);
+    const { data: restrictions, error: restrictionError } = await admin.from("live_moderation_actions")
+      .select("id").eq("session_id", invite.session_id).eq("target_user_id", user.id)
+      .is("revoked_at", null).in("action_type", ["remove", "creator_live_block"])
+      .or("expires_at.is.null,expires_at.gt." + new Date().toISOString()).limit(1);
+    if (restrictionError) return json({ error: "Could not verify battle safety restrictions." }, 500);
+    if (restrictions?.length) return json({ error: "The host has restricted your access to this Live." }, 403);
+    const credentials = await issueToken(session.room_name, true, true);
+    return json({ session: { id: session.id, title: session.title, status: session.status, started_at: session.started_at, creator_id: session.creator_id, follower_only_chat: !!session.follower_only_chat, can_chat: true }, invite, role: "battle_opponent", ...credentials });
+  }
+
   if (action === "refresh") {
     const sessionId = String(body.session_id ?? "");
     if (!/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Invalid live session." }, 400);
@@ -290,6 +348,15 @@ Deno.serve(async (req: Request) => {
         .eq("status", "approved").maybeSingle();
       if (guestRequestError) return json({ error: "Could not verify guest-stage access. Please reconnect." }, 500);
       if (guestRequest && (!guestRequest.inviter_id || guestRequest.inviter_id === session.creator_id)) isApprovedGuest = true;
+      const { data: battleInvite, error: battleInviteError } = await admin.from("live_battle_invites")
+        .select("id,round_seconds,decided_at").eq("session_id", sessionId).eq("opponent_id", user.id)
+        .eq("status", "accepted").maybeSingle();
+      if (battleInviteError) return json({ error: "Could not verify Live Battle access. Please reconnect." }, 500);
+      let isApprovedBattle = false;
+      if (battleInvite?.decided_at) {
+        const battleEnd = new Date(new Date(battleInvite.decided_at).getTime() + Math.max(30, Math.min(600, Number(battleInvite.round_seconds) || 180)) * 1000);
+        isApprovedBattle = battleEnd.getTime() > Date.now();
+      }
       const { data: blockRows, error: blockError } = await admin.from("user_blocks")
         .select("blocker_id")
         .or("and(blocker_id.eq." + user.id + ",blocked_id.eq." + session.creator_id + "),and(blocker_id.eq." + session.creator_id + ",blocked_id.eq." + user.id + ")")
@@ -303,7 +370,7 @@ Deno.serve(async (req: Request) => {
       if (restrictionError) return json({ error: "Could not verify Live access. Please try again." }, 500);
       if (restrictions?.length) return json({ error: "The creator has restricted your access to this Live." }, 403);
     }
-    const credentials = await issueToken(session.room_name, isCreator || isApprovedGuest, true);
+    const credentials = await issueToken(session.room_name, isCreator || isApprovedGuest || isApprovedBattle, true);
     return json(credentials);
   }
 
