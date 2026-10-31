@@ -13,6 +13,7 @@
 <link rel="apple-touch-icon" href="./icons/tiknation.svg">
 <title>TikNation Live</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./gifts.js"></script>
 <style>
 :root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0%,#20123c 0,transparent 45%),var(--bg);color:#fff;font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;background:#242039;color:#fff;font-weight:700}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:linear-gradient(110deg,var(--purple),#5c55ff);box-shadow:0 5px 24px #8d63ff2b}.danger{background:#4a1e32;color:#ffb9c9}.ghost{border:1px solid var(--line);background:transparent}.wrap{max-width:1180px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:18px}.brand{font-size:1.35rem;font-weight:900;letter-spacing:.03em}.brand span{color:var(--cyan)}.sub{color:var(--muted);font-size:.9rem}.pill{border:1px solid #523f7b;background:#211737;color:#d9c9ff;border-radius:99px;padding:5px 10px;font-size:.78rem}.layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);gap:18px;margin-top:22px}.panel{background:#10101deF;border:1px solid var(--line);border-radius:20px;padding:18px;min-width:0}.panel h2,.panel h3{margin:0 0 12px}.controls{display:flex;gap:9px;flex-wrap:wrap}.field{display:grid;gap:6px;margin:12px 0}.field label{color:#d4d0e5;font-size:.88rem}.field input,.field textarea,.field select{width:100%;background:#080812;border:1px solid #37314d;border-radius:11px;color:#fff;padding:12px;outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--cyan)}.status{padding:10px 12px;border-radius:12px;background:#181629;color:#c9c3df;margin:12px 0;white-space:pre-wrap}.status.error{color:#ffb9c9;background:#351725}.status.ok{color:#a9ffdc;background:#102b26}.video{width:100%;aspect-ratio:16/9;min-height:300px;background:radial-gradient(ellipse,#19132e,#030308);border:1px solid #2b2542;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;color:var(--muted)}.video video{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.video .placeholder{position:relative;z-index:1;padding:24px;text-align:center}.guest-pip{position:absolute;z-index:6;right:12px;top:12px;width:min(32%,190px);height:32%;min-height:110px;border:2px solid #a98cff;border-radius:16px;overflow:hidden;background:#100d1d;box-shadow:0 8px 28px #0009}.guest-pip video{object-fit:cover!important}.guest-pip .placeholder{font-size:.75rem;padding:10px}.live-chat-overlay{position:absolute;z-index:4;left:10px;right:10px;bottom:12px;display:flex;flex-direction:column;align-items:flex-start;gap:7px;pointer-events:none;overflow:hidden;max-height:68%;mask-image:linear-gradient(to bottom,transparent 0%,#000 12%)}.live-chat-bubble{max-width:min(92%,520px);padding:7px 11px;border:1px solid #ffffff24;border-radius:14px;background:rgba(8,8,18,.78);box-shadow:0 3px 14px #0005;color:#fff;font-size:.9rem;line-height:1.35;overflow-wrap:anywhere;backdrop-filter:blur(5px);animation:liveChatPop .22s ease-out both}.live-chat-bubble strong{color:#bda7ff;margin-right:5px}.live-chat-bubble.is-fading{opacity:0;transform:translateY(-8px);transition:opacity .35s ease,transform .35s ease}@keyframes liveChatPop{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}@media(prefers-reduced-motion:reduce){.live-chat-bubble{animation:none}.live-chat-bubble.is-fading{transition:none}}.stream-head{display:flex;justify-content:space-between;gap:12px;align-items:start;margin:14px 0}.live-dot{color:#ff5479;font-weight:900}.list{display:grid;gap:10px}.stream{border:1px solid var(--line);background:#0b0b14;border-radius:14px;padding:14px;display:flex;justify-content:space-between;gap:10px;align-items:center}.stream strong{display:block;overflow-wrap:anywhere}.stream small{color:var(--muted)}.chat{display:flex;flex-direction:column;min-height:300px}.messages{height:300px;overflow:auto;border:1px solid var(--line);background:#080811;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:9px}.message{overflow-wrap:anywhere}.message b{color:#bda7ff}.message time{font-size:.75rem;color:#77738d;margin-left:6px}.chat-form{display:flex;gap:8px;margin-top:10px}.chat-form input{min-width:0;flex:1;background:#080812;border:1px solid #37314d;border-radius:11px;padding:11px;color:#fff}.small{font-size:.82rem;color:var(--muted)}.divider{height:1px;background:var(--line);margin:18px 0}.hide{display:none!important}.footer{color:#7f7b94;font-size:.8rem;margin:20px 0}.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:780px){.layout{grid-template-columns:1fr}.wrap{padding:14px}.panel{padding:14px}.messages{height:230px}.top{align-items:flex-start}.report-grid{grid-template-columns:1fr}.video{aspect-ratio:4/5;min-height:320px}}
@@ -519,40 +520,11 @@ compactLivePanelsForPhone();
 let user = null, activeSession = null, room = null, localTracks = [], isHost = false, chatTimer = null, lastMessageAt = null, listedSessions = [];
 let liveGiftBattle = null;
 let battleCelebratedInviteId = null;
-const LIVE_GIFT_CATALOG = {
-  heart_pulse:{name:"Heart Pulse",emoji:"💗",category:"Musical",cost:5,sound:[523, 659, 784, 988]}, melody_note:{name:"Melody Note",emoji:"🎵",category:"Musical",cost:5,sound:[659, 784, 988]}, heartbeat_beat:{name:"Heartbeat Beat",emoji:"🥁",category:"Musical",cost:10,sound:[440, 554, 659, 880, 659, 554]}, symphony:{name:"Symphony",emoji:"🎼",category:"Musical",cost:50,sound:[523, 659, 784, 1047]},
-  magic_spark:{name:"Magic Spark",emoji:"✨",category:"Magical",cost:10,sound:[784, 1175]}, mystic_portal:{name:"Mystic Portal",emoji:"🌀",category:"Magical",cost:25,sound:[392, 587, 784]}, dragon_spirit:{name:"Dragon Spirit",emoji:"🐉",category:"Magical",cost:75,sound:[196, 293, 392, 587]}, galaxy_gift:{name:"Galaxy Gift",emoji:"🌌",category:"Magical",cost:100,sound:[220, 330, 440, 660, 880]},
-  thunder_clap:{name:"Thunder Clap",emoji:"⚡",category:"Special Effects",cost:25,sound:[196, 392, 587, 784]}, prism_wave:{name:"Prism Wave",emoji:"🌈",category:"Visual Effects",cost:50,sound:[523, 659, 880, 1047, 1319]}, mystery_reveal:{name:"Mystery Reveal",emoji:"🎁",category:"Surprises",cost:25,sound:[392, 523, 784, 1047]},
-  creator_crown:{name:"Creator’s Crown",emoji:"👑",category:"Legendary",cost:50,sound:[523, 659, 784]}, infinity_crystal:{name:"Infinity Crystal",emoji:"💎",category:"Legendary",cost:150,sound:[392, 523, 659, 784, 1047]}
-,
-  dragon_ball:{name:"Dragon Ball",emoji:"🔮",category:"Magical",cost:75,sound:[294, 440, 587, 880]},
-  changing_face:{name:"Changing Face",emoji:"🎭",category:"Surprises",cost:25,sound:[659, 784, 523, 880]},
-  clouds_of_mystery:{name:"Clouds of Mystery",emoji:"☁️",category:"Magical",cost:50,sound:[392, 523, 659, 784, 988]},
-  hammer_of_pain:{name:"Hammer of Pain",emoji:"🔨",category:"Special Effects",cost:50,sound:[110, 82, 55, 73]},
-  thunder_ass:{name:"Thunder Ass",emoji:"⚡🍑",category:"Special Effects",cost:69,sound:[196, 392, 196, 587]},
-  storm_of_the_world:{name:"Storm of the World",emoji:"🌪️",category:"Special Effects",cost:100,sound:[110, 165, 220, 330, 165]},
-  lightning_bolts_of_doom:{name:"Lightning Bolts of Doom",emoji:"⚡💀",category:"Special Effects",cost:125,sound:[880, 440, 988, 494, 1175]},
-  book_of_death:{name:"Book of Death",emoji:"📕☠️",category:"Legendary",cost:150,sound:[196, 147, 110, 73]},
-  dream_makers:{name:"The Dream Makers",emoji:"✨🧚",category:"Magical",cost:100,sound:[523, 659, 784, 1047, 1319]},
-  phoenix_rebirth:{name:"Phoenix Rebirth",emoji:"🔥🪽",category:"Legendary",cost:175,sound:[392, 523, 659, 784, 1047, 1319]},
-  treasure_explosion:{name:"Treasure Explosion",emoji:"💎💰",category:"Legendary",cost:150,sound:[587, 740, 988, 1175, 1480]},
-  meteor_mayhem:{name:"Meteor Mayhem",emoji:"☄️",category:"Special Effects",cost:125,sound:[880, 440, 220, 110, 55]},
-  disco_raccoon:{name:"Disco Raccoon",emoji:"🦝🪩",category:"Musical",cost:75,sound:[659, 784, 988, 1175, 988, 784]},
-  portal_party:{name:"Portal Party",emoji:"🌀🎉",category:"Magical",cost:100,sound:[392, 587, 784, 1175, 1568]},
-  blast_from_my_ass:{name:"Blast from My Ass",emoji:"💨🍑",category:"Special Effects",cost:69,sound:[110, 73, 55, 82]},
-  asshole_of_death:{name:"The Asshole of Death",emoji:"🚽💀",category:"Legendary",cost:199,sound:[73, 55, 41, 110]},
-  golden_throne:{name:"The Golden Throne",emoji:"🚽👑",category:"Legendary",cost:125,sound:[392, 523, 659, 784]},
-  chicken_of_doom:{name:"Chicken of Doom",emoji:"🐔💀",category:"Special Effects",cost:75,sound:[784, 392, 784, 988]},
-  cheesepocalypse:{name:"The Cheesepocalypse",emoji:"🧀☄️",category:"Special Effects",cost:99,sound:[330, 440, 554, 659, 440]},
-  skeleton_disco:{name:"Skeleton Disco",emoji:"💀🪩",category:"Musical",cost:100,sound:[659, 784, 988, 1175, 1397, 1175]},
-  dragons_revenge:{name:"The Dragon's Revenge",emoji:"🐉🔥",category:"Legendary",cost:200,sound:[196, 293, 392, 587, 784]},
-  stinky_fart_or_death:{name:"Stinky Fart or Death",emoji:"💨💀",category:"Special Effects",cost:69,sound:[110,73,55,82]},
-  madafaka_rattle:{name:"Madafaka Rattle",emoji:"🦴🖕",category:"Special Effects",cost:69,sound:[180,95,210,80,240,100]},
-  toxic_cloud:{name:"Toxic Cloud",emoji:"☣️💚",category:"Special Effects",cost:49,sound:[95,72,110,58]},
-  bone_breaker:{name:"Bone Breaker",emoji:"💀👎",category:"Special Effects",cost:49,sound:[180,95,210,80,240]},
-  knockout:{name:"Knockout!",emoji:"🥊💥",category:"Special Effects",cost:69,sound:[130,90,65,220]},
-  cant_breathe:{name:"Can't Breathe",emoji:"😂💀",category:"Special Effects",cost:69,sound:[660,880,740,988,660]}
-};
+const LIVE_GIFT_CATALOG = Object.fromEntries(
+  Object.entries(window.TIKNATION_GIFT_CATALOG || {}).map(([code, gift]) => [code, {
+    name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound
+  }])
+);
 let liveGiftTimer = null, liveGiftCursor = null, liveGiftCursorId = null, seenLiveGiftIds = new Set(), liveGiftRequestBusy = false;
 function notice(message, type=""){const n=$("notice");n.textContent=message;n.className="status"+(type?" "+type:"");}
 function esc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
