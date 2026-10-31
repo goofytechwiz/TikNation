@@ -4242,54 +4242,36 @@ async function submitAuth(){
 
         }else{
 
-            if(email.includes("@")){
-                mfaSignInPending = true;
-                const {
-                    data,
-                    error
-                } = await supabaseClient.auth.signInWithPassword({
-                    email:email,
-                    password:password
-                });
+            mfaSignInPending = true;
+            const {data,error} = await supabaseClient.functions.invoke(
+                "tiknation-username-login",
+                {body:{identifier:email,password:password}}
+            );
 
-                if(error) throw error;
-
-                if(data.session && !(await completeMfaSignIn(message))) return;
-                if(data.session && !(await ensureAgeAssurance(message))) return;
-                closeAuthModal();
-                if(data.session) showPage("home");
-            }else{
-                mfaSignInPending = true;
-                const {data,error} = await supabaseClient.functions.invoke(
-                    "tiknation-username-login",
-                    {body:{username:email,password:password}}
-                );
-
-                if(error){
-                    let detail = null;
-                    try{
-                        if(error.context && typeof error.context.json === "function"){
-                            detail = await error.context.json();
-                        }
-                    }catch(_ignored){}
-                    throw new Error(detail?.error || "Username sign-in failed. Please check your username and password, or sign in with your email.");
-                }
-
-                if(!data?.session?.access_token || !data?.session?.refresh_token){
-                    throw new Error(data?.error || "Username sign-in failed. Please try your email instead.");
-                }
-
-                const {error:sessionError} = await supabaseClient.auth.setSession({
-                    access_token:data.session.access_token,
-                    refresh_token:data.session.refresh_token
-                });
-                if(sessionError) throw sessionError;
-
-                if(!(await completeMfaSignIn(message))) return;
-                if(!(await ensureAgeAssurance(message))) return;
-                closeAuthModal();
-                showPage("home");
+            if(error){
+                let detail = null;
+                try{
+                    if(error.context && typeof error.context.json === "function"){
+                        detail = await error.context.json();
+                    }
+                }catch(_ignored){}
+                throw new Error(detail?.error || "Sign-in failed. Check your email or username and password, then try again.");
             }
+
+            if(!data?.session?.access_token || !data?.session?.refresh_token){
+                throw new Error(data?.error || "Sign-in failed. Please try again.");
+            }
+
+            const {error:sessionError} = await supabaseClient.auth.setSession({
+                access_token:data.session.access_token,
+                refresh_token:data.session.refresh_token
+            });
+            if(sessionError) throw sessionError;
+
+            if(!(await completeMfaSignIn(message))) return;
+            if(!(await ensureAgeAssurance(message))) return;
+            closeAuthModal();
+            showPage("home");
         }
 
     }catch(error){
