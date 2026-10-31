@@ -101,6 +101,30 @@ Deno.serve(async (req: Request) => {
   const admin = createClient(supabaseUrl, serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+  const { data: ageRecord, error: ageError } = await admin
+    .from("tiknation_age_assurance")
+    .select("date_of_birth")
+    .eq("user_id", authenticatedUser.id)
+    .maybeSingle();
+  if (ageError) {
+    console.error("TikNation Live age check failed:", ageError.code ?? "unknown");
+    return json({ error: "We couldn't verify your age status. Please try again." }, 500);
+  }
+  if (!ageRecord?.date_of_birth) {
+    return json({ error: "Complete the TikNation age check before using Live." }, 403);
+  }
+  const dob = new Date(String(ageRecord.date_of_birth) + "T00:00:00.000Z");
+  const now = new Date();
+  let accountAge = now.getUTCFullYear() - dob.getUTCFullYear();
+  if (now.getUTCMonth() < dob.getUTCMonth() ||
+      (now.getUTCMonth() === dob.getUTCMonth() && now.getUTCDate() < dob.getUTCDate())) accountAge--;
+  if (!Number.isFinite(dob.getTime()) || accountAge < 13 || String(ageRecord.date_of_birth) > now.toISOString().slice(0, 10)) {
+    return json({ error: "This account does not meet TikNation Live's age requirements." }, 403);
+  }
+  if (action === "start" && accountAge < 16) {
+    return json({ error: "You must be at least 16 to start a TikNation Live broadcast. You can still watch eligible broadcasts." }, 403);
+  }
+
   const livekitHttpUrl = livekitUrl.replace(/^wss:/i, "https:").replace(/^ws:/i, "http:");
   const rooms = new RoomServiceClient(livekitHttpUrl, livekitApiKey, livekitApiSecret);
 
@@ -218,6 +242,37 @@ Deno.serve(async (req: Request) => {
     }
   }
 
+  if (action === "guest_join") {
+    const sessionId = String(body.session_id ?? "");
+    if (!/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Invalid live session." }, 400);
+    if (accountAge < 16) return json({ error: "You must be at least 16 to join a creator's live stage." }, 403);
+    const { data: request, error: requestError } = await admin.from("live_guest_requests")
+      .select("id,session_id,requester_id,status,inviter_id")
+      .eq("session_id", sessionId).eq("requester_id", user.id).eq("status", "approved")
+      .is("inviter_id", null).maybeSingle();
+    if (requestError) return json({ error: "Could not verify your approved guest request." }, 500);
+    if (!request) return json({ error: "The host must approve your guest request before you can join the stage." }, 403);
+    const { data: session, error: sessionError } = await admin.from("live_sessions")
+      .select("id,room_name,creator_id,status").eq("id", sessionId).eq("status", "live").maybeSingle();
+    if (sessionError) return json({ error: "Could not verify this live broadcast." }, 500);
+    if (!session) return json({ error: "This broadcast has ended." }, 404);
+    if (session.creator_id === user.id) return json({ error: "The host cannot join their own guest stage." }, 400);
+    const { data: blocks, error: blockError } = await admin.from("user_blocks")
+      .select("blocker_id")
+      .or("and(blocker_id.eq." + user.id + ",blocked_id.eq." + session.creator_id + "),and(blocker_id.eq." + session.creator_id + ",blocked_id.eq." + user.id + ")")
+      .limit(1);
+    if (blockError) return json({ error: "Could not verify guest-stage access." }, 500);
+    if (blocks?.length) return json({ error: "Guest-stage access is unavailable because of a block between these accounts." }, 403);
+    const { data: restrictions, error: restrictionError } = await admin.from("live_moderation_actions")
+      .select("id").eq("session_id", sessionId).eq("target_user_id", user.id)
+      .is("revoked_at", null).in("action_type", ["remove", "creator_live_block"])
+      .or("expires_at.is.null,expires_at.gt." + new Date().toISOString()).limit(1);
+    if (restrictionError) return json({ error: "Could not verify guest-stage safety restrictions." }, 500);
+    if (restrictions?.length) return json({ error: "The host has restricted your access to this Live." }, 403);
+    const credentials = await issueToken(session.room_name, true, true);
+    return json({ session_id: session.id, role: "guest", ...credentials });
+  }
+
   if (action === "refresh") {
     const sessionId = String(body.session_id ?? "");
     if (!/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Invalid live session." }, 400);
@@ -312,6 +367,23 @@ Deno.serve(async (req: Request) => {
       .select("id,creator_id,follower_only_chat").eq("id", sessionId).eq("status", "live").maybeSingle();
     if (sessionError) return json({ error: "Could not verify this broadcast. Please try again." }, 500);
     if (!session) return json({ error: "This broadcast has ended." }, 404);
+    if (session.creator_id !== user.id) {
+      const { data: creatorAgeRecord, error: creatorAgeError } = await admin
+        .from("tiknation_age_assurance").select("date_of_birth").eq("user_id", session.creator_id).maybeSingle();
+      if (creatorAgeError) return json({ error: "Could not verify chat safety settings." }, 500);
+      if (!creatorAgeRecord?.date_of_birth) {
+        return json({ error: "Chat is temporarily unavailable while the creator's age status is confirmed." }, 403);
+      }
+      const creatorDob = new Date(String(creatorAgeRecord.date_of_birth) + "T00:00:00.000Z");
+      const creatorNow = new Date();
+      let creatorAge = creatorNow.getUTCFullYear() - creatorDob.getUTCFullYear();
+      if (creatorNow.getUTCMonth() < creatorDob.getUTCMonth() ||
+          (creatorNow.getUTCMonth() === creatorDob.getUTCMonth() && creatorNow.getUTCDate() < creatorDob.getUTCDate())) creatorAge--;
+      if (!Number.isFinite(creatorDob.getTime())) return json({ error: "Could not verify chat safety settings." }, 500);
+      if (creatorAge < 18 && accountAge >= 18) {
+        return json({ error: "Adult accounts cannot chat in a teen creator's Live. You can continue watching." }, 403);
+      }
+    }
     if (session.creator_id !== user.id && session.follower_only_chat) {
       const { data: follow, error: followError } = await admin.from("follows").select("follower_id")
         .eq("follower_id", user.id).eq("following_id", session.creator_id).maybeSingle();
@@ -394,6 +466,82 @@ Deno.serve(async (req: Request) => {
     if (error?.code === "23505") return json({ error: "You have already reported this broadcast." }, 409);
     if (error || !report) return json({ error: "Could not submit the report." }, 500);
     return json({ report });
+  }
+
+
+  if (action === "live_access_list" || action === "live_access_grant" || action === "live_access_revoke") {
+    const appMeta = user.app_metadata ?? {};
+    const roles = Array.isArray(appMeta.roles) ? appMeta.roles : [];
+    const isAdmin = roles.includes("admin") || appMeta.role === "admin";
+    if (!isAdmin) return json({ error: "TikNation founder/admin access is required to manage Live creator access." }, 403);
+
+    if (action === "live_access_list") {
+      const { data, error } = await admin.from("live_creator_access")
+        .select("creator_id,status,invited_by,invited_at,approved_at,updated_at")
+        .order("updated_at", { ascending: false }).limit(200);
+      if (error) return json({ error: "Could not load Live creator access." }, 500);
+      const rows = data ?? [];
+      const ids = rows.map((r) => r.creator_id);
+      let profiles: Array<{ id: string; username: string | null; display_name: string | null }> = [];
+      if (ids.length) {
+        const { data: found } = await admin.from("profiles")
+          .select("id,username,display_name").in("id", ids);
+        profiles = found ?? [];
+      }
+      const byId = new Map(profiles.map((p) => [p.id, p]));
+      return json({ creators: rows.map((r) => ({ ...r, username: byId.get(r.creator_id)?.username ?? null, display_name: byId.get(r.creator_id)?.display_name ?? null })) });
+    }
+
+    const identifier = String(body.account ?? "").trim();
+    if (identifier.length < 3 || identifier.length > 254) return json({ error: "Enter the existing creator's username or account email." }, 400);
+    let target: { id: string; email?: string } | null = null;
+    // Resolve existing accounts server-side; no client can submit a creator UUID to grant access.
+    const normalized = identifier.replace(/^@/, "").toLowerCase();
+    const { data: matchingProfiles, error: profileError } = await admin.from("profiles")
+      .select("id,username,display_name").ilike("username", normalized).limit(2);
+    if (profileError) return json({ error: "Could not look up that TikNation account." }, 500);
+    if ((matchingProfiles ?? []).length > 1) return json({ error: "That username is not unique. Use the account email instead." }, 409);
+    if ((matchingProfiles ?? []).length === 1) {
+      target = { id: matchingProfiles![0].id };
+    } else if (identifier.includes("@")) {
+      const { data: users, error: usersError } = await admin.auth.admin.listUsers({ page: 1, perPage: 1000 });
+      if (usersError) return json({ error: "Could not look up that account email." }, 500);
+      const match = (users.users ?? []).find((u) => String(u.email ?? "").toLowerCase() === normalized);
+      if (match) target = { id: match.id, email: match.email ?? undefined };
+    }
+    if (!target) return json({ error: "No existing TikNation account matched. Check the username/email and try again." }, 404);
+
+    if (action === "live_access_grant") {
+      const now = new Date().toISOString();
+      const { data: saved, error } = await admin.from("live_creator_access").upsert({
+        creator_id: target.id, status: "approved", invited_by: user.id,
+        invited_at: now, approved_at: now, updated_at: now,
+      }, { onConflict: "creator_id" }).select("creator_id,status,invited_by,invited_at,approved_at,updated_at").single();
+      if (error || !saved) {
+        console.error("Live creator access grant failed:", error);
+        return json({ error: "Could not grant Live access. No account was changed." }, 500);
+      }
+      return json({ success: true, access: saved });
+    }
+
+    const { data: saved, error } = await admin.from("live_creator_access").upsert({
+      creator_id: target.id, status: "revoked", invited_by: user.id, updated_at: new Date().toISOString(),
+    }, { onConflict: "creator_id" }).select("creator_id,status,invited_by,invited_at,approved_at,updated_at").single();
+    if (error || !saved) {
+      console.error("Live creator access revoke failed:", error);
+      return json({ error: "Could not revoke Live access. No account was changed." }, 500);
+    }
+    // End any active session and remove the associated LiveKit room as a safety measure.
+    const { data: sessions } = await admin.from("live_sessions").select("id,room_name").eq("creator_id", target.id).eq("status", "live");
+    for (const session of sessions ?? []) {
+      try { await rooms.deleteRoom(session.room_name); } catch (e) { console.error("Could not close revoked creator room:", e); }
+    }
+    if ((sessions ?? []).length) {
+      const { error: endError } = await admin.from("live_sessions").update({ status: "ended", ended_at: new Date().toISOString() })
+        .eq("creator_id", target.id).eq("status", "live");
+      if (endError) console.error("Could not mark revoked creator sessions ended:", endError);
+    }
+    return json({ success: true, access: saved });
   }
 
   if (action === "moderation_list" || action === "review_report") {
