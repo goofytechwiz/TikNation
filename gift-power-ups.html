@@ -66,9 +66,33 @@ document.querySelectorAll(".filter").forEach(button=>button.addEventListener("cl
  document.querySelectorAll(".filter").forEach(b=>b.setAttribute("aria-pressed",String(b===button)));
  cards.forEach(card=>card.hidden=button.dataset.filter!=="All"&&card.dataset.tier!==button.dataset.filter);
 }));
+
+// Preview motion is started only by an explicit tap. Web Animations keeps this
+// one requested preview available even when the device asks sites to reduce motion.
+const previewMotion={
+ pop:[{transform:"scale(.45) rotate(-12deg)",opacity:.35},{transform:"scale(1.22) rotate(7deg)",opacity:1,offset:.68},{transform:"scale(1) rotate(0)"}],
+ flight:[{transform:"translate(-48px,14px) scale(.72)",opacity:.25},{transform:"translate(12px,-8px) scale(1.16)",opacity:1,offset:.6},{transform:"translate(0,0) scale(1)"}],
+ spin:[{transform:"rotate(0) scale(.72)",opacity:.4},{transform:"rotate(360deg) scale(1.18)",opacity:1},{transform:"rotate(360deg) scale(1)"}],
+ shake:[{transform:"translateX(0)"},{transform:"translateX(-10px) rotate(-7deg)",offset:.25},{transform:"translateX(10px) rotate(7deg)",offset:.5},{transform:"translateX(-6px) rotate(-4deg)",offset:.75},{transform:"translateX(0)"}],
+ rise:[{transform:"translateY(30px) scale(.65)",opacity:.2},{transform:"translateY(-10px) scale(1.18)",opacity:1,offset:.68},{transform:"translateY(0) scale(1)"}],
+ orbit:[{transform:"rotate(-22deg) scale(.75)"},{transform:"rotate(22deg) scale(1.18)",offset:.55},{transform:"rotate(0) scale(1)"}],
+ glow:[{filter:"drop-shadow(0 0 0 transparent)",transform:"scale(.9)"},{filter:"drop-shadow(0 0 18px var(--accent))",transform:"scale(1.14)",offset:.5},{filter:"drop-shadow(0 0 0 transparent)",transform:"scale(1)"}]
+};
 document.querySelectorAll(".preview").forEach(button=>button.addEventListener("click",()=>{
- const card=button.closest(".gift");card.classList.remove("playing");void card.offsetWidth;card.classList.add("playing");
- button.textContent="Playing preview…";window.setTimeout(()=>{card.classList.remove("playing");button.textContent="Preview effect";},1250);
+ const card=button.closest(".gift");
+ const icon=card.querySelector(".icon");
+ const effect=card.dataset.effect||"pop";
+ if(card._previewAnimation) card._previewAnimation.cancel();
+ card._previewAnimation=icon.animate(previewMotion[effect]||previewMotion.pop,{
+  duration:1100,easing:"cubic-bezier(.2,.8,.3,1)",iterations:1
+ });
+ button.textContent="Playing preview…";
+ button.setAttribute("aria-label","Playing "+card.querySelector("h2").textContent+" preview");
+ window.setTimeout(()=>{
+  if(card._previewAnimation){card._previewAnimation.cancel();card._previewAnimation=null;}
+  button.textContent="Preview effect";
+  button.setAttribute("aria-label","Preview "+card.querySelector("h2").textContent+" effect");
+ },1150);
 }));
 </script>
 </body>
