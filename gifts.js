@@ -12,6 +12,28 @@ const TIKNATION_GIFT_CATALOG = {
   mystery_reveal: { name: "Mystery Reveal", emoji: "🎁", category: "Surprises", cost: 25, sound: [392, 523, 784, 1047], style: "surprise", message: "Surprise! What wonder will appear next." },
   creator_crown: { name: "Creator’s Crown", emoji: "👑", category: "Legendary", cost: 50, sound: [523, 659, 784], style: "crown", message: "Celebrate the creator." },
   infinity_crystal: { name: "Infinity Crystal", emoji: "💎", category: "Legendary", cost: 150, sound: [392, 523, 659, 784, 1047], style: "infinity", message: "A gift beyond the ordinary." }
+,
+  dragon_ball: { name: "Dragon Ball", emoji: "🔮", category: "Magical", cost: 75, sound: [523, 659, 784], style: "dragon", message: "A mysterious dragon orb erupts with golden energy." },
+  changing_face: { name: "Changing Face", emoji: "🎭", category: "Surprises", cost: 25, sound: [523, 659, 784], style: "surprise", message: "A face-changing mask spins through a magical transformation." },
+  clouds_of_mystery: { name: "Clouds of Mystery", emoji: "☁️", category: "Magical", cost: 50, sound: [523, 659, 784], style: "clouds", message: "Mystic clouds swirl across the live stage." },
+  hammer_of_pain: { name: "Hammer of Pain", emoji: "🔨", category: "Special Effects", cost: 50, sound: [523, 659, 784], style: "hammer", message: "A giant cartoon hammer slams down with a comic shockwave." },
+  thunder_ass: { name: "Thunder Ass", emoji: "⚡🍑", category: "Special Effects", cost: 69, sound: [523, 659, 784], style: "thunderass", message: "A silly thunderclap and peach-shaped lightning burst across the screen." },
+  storm_of_the_world: { name: "Storm of the World", emoji: "🌪️", category: "Special Effects", cost: 100, sound: [523, 659, 784], style: "storm", message: "A massive storm sweeps across the live stage." },
+  lightning_bolts_of_doom: { name: "Lightning Bolts of Doom", emoji: "⚡💀", category: "Special Effects", cost: 125, sound: [523, 659, 784], style: "lightning", message: "Crackling bolts strike in a dramatic finale." },
+  book_of_death: { name: "Book of Death", emoji: "📕☠️", category: "Legendary", cost: 150, sound: [523, 659, 784], style: "book", message: "A cursed book opens and releases shadowy magic." },
+  dream_makers: { name: "The Dream Makers", emoji: "✨🧚", category: "Magical", cost: 100, sound: [523, 659, 784], style: "dreammakers", message: "A team of dream makers appears and builds a glowing dream." },
+  phoenix_rebirth: { name: "Phoenix Rebirth", emoji: "🔥🪽", category: "Legendary", cost: 175, sound: [523, 659, 784], style: "phoenix", message: "A phoenix rises from glowing flames." },
+  treasure_explosion: { name: "Treasure Explosion", emoji: "💎💰", category: "Legendary", cost: 150, sound: [523, 659, 784], style: "treasure", message: "A treasure chest bursts open with sparkling riches." },
+  meteor_mayhem: { name: "Meteor Mayhem", emoji: "☄️", category: "Special Effects", cost: 125, sound: [523, 659, 784], style: "meteor", message: "A blazing meteor streaks across the live screen." },
+  disco_raccoon: { name: "Disco Raccoon", emoji: "🦝🪩", category: "Musical", cost: 75, sound: [523, 659, 784], style: "raccoon", message: "A dancing raccoon takes over the stage." },
+  portal_party: { name: "Portal Party", emoji: "🌀🎉", category: "Magical", cost: 100, sound: [523, 659, 784], style: "portalparty", message: "A colorful portal opens with a burst of energy." },
+  blast_from_my_ass: { name: "Blast from My Ass", emoji: "💨🍑", category: "Special Effects", cost: 69, sound: [523, 659, 784], style: "blastass", message: "A ridiculous cartoon smoke blast fills the screen." },
+  asshole_of_death: { name: "The Asshole of Death", emoji: "☠️🍑", category: "Legendary", cost: 199, sound: [523, 659, 784], style: "deathass", message: "A cursed portal erupts and launches a cartoon skeleton." },
+  golden_throne: { name: "The Golden Throne", emoji: "🚽👑", category: "Legendary", cost: 125, sound: [523, 659, 784], style: "throne", message: "A golden throne crashes in with a royal fanfare." },
+  chicken_of_doom: { name: "Chicken of Doom", emoji: "🐔💀", category: "Special Effects", cost: 75, sound: [523, 659, 784], style: "chicken", message: "A furious chicken storms across the stage in a feather frenzy." },
+  cheesepocalypse: { name: "The Cheesepocalypse", emoji: "🧀☄️", category: "Special Effects", cost: 99, sound: [523, 659, 784], style: "cheese", message: "A giant cheese meteor crashes in a cheesy explosion." },
+  skeleton_disco: { name: "Skeleton Disco", emoji: "💀🪩", category: "Musical", cost: 100, sound: [523, 659, 784], style: "skeleton", message: "A dancing skeleton takes over with a neon light show." },
+  dragons_revenge: { name: "The Dragon's Revenge", emoji: "🐉🔥", category: "Legendary", cost: 200, sound: [523, 659, 784], style: "dragonrevenge", message: "The dragon returns with a fiery entrance and energy blast." }
 };
 
 let tikNationGiftAudioContext = null;
