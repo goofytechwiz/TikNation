@@ -337,6 +337,24 @@ Deno.serve(async (req: Request) => {
     return { score: { ...saved, status: "finalized" } };
   }
 
+  if (action === "battle_history") {
+    const { data: results, error: historyError } = await admin.from("live_battle_results")
+      .select("invite_id,session_id,host_id,opponent_id,host_score,opponent_score,winner_id,result_status,scoring_method,started_at,ended_at")
+      .or("host_id.eq." + user.id + ",opponent_id.eq." + user.id)
+      .order("ended_at", { ascending: false }).limit(20);
+    if (historyError) return json({ error: "Could not load your Live Battle history." }, 500);
+    const ids = [...new Set((results ?? []).flatMap((row) => [row.host_id, row.opponent_id]))];
+    const { data: profiles, error: profilesError } = ids.length
+      ? await admin.from("profiles").select("id,username,display_name").in("id", ids)
+      : { data: [], error: null };
+    if (profilesError) return json({ error: "Could not load battle player names." }, 500);
+    const names = new Map((profiles ?? []).map((p) => [p.id, p.display_name || p.username || "TikNation member"]));
+    return json({ history: (results ?? []).map((row) => ({
+      ...row, host_name: names.get(row.host_id) || "Host",
+      opponent_name: names.get(row.opponent_id) || "Opponent",
+      your_result: row.result_status === "void" ? "void" : row.result_status === "tie" ? "tie" : row.winner_id === user.id ? "win" : "loss"
+    })) });
+  }
   if (action === "battle_score") {
     const inviteId = String(body.invite_id ?? "");
     if (!/^[0-9a-f-]{36}$/i.test(inviteId)) return json({ error: "Invalid battle invitation." }, 400);
@@ -346,7 +364,9 @@ Deno.serve(async (req: Request) => {
     if (!invite || ![invite.host_id, invite.opponent_id].includes(user.id)) return json({ error: "You cannot view this battle score." }, 403);
     const result = await calculateBattleScore(inviteId);
     if (result.error) return json({ error: result.error }, result.status || 500);
-    return json({ score: result.score });
+    const { data: profiles } = await admin.from("profiles").select("id,username,display_name").in("id", [invite.host_id, invite.opponent_id]);
+    const names = new Map((profiles ?? []).map((p) => [p.id, p.display_name || p.username || "TikNation member"]));
+    return json({ score: { ...result.score, host_name: names.get(invite.host_id) || "Host", opponent_name: names.get(invite.opponent_id) || "Opponent", winner_name: names.get(result.score.winner_id) || null } });
   }
 
   if (action === "battle_decide") {
