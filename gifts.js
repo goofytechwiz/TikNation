@@ -78,6 +78,19 @@ function playTikNationGiftSound(gift) {
     const context = tikNationGiftAudioContext;
     if (context.state === "suspended") context.resume().catch(() => {});
     const now = context.currentTime;
+    if (gift.style === "stinkdeath") {
+      [0,0.12,0.24,0.42].forEach((delay,index)=>{
+        const oscillator=context.createOscillator(), gain=context.createGain();
+        oscillator.type=index===2?"square":"sawtooth";
+        oscillator.frequency.setValueAtTime([110,73,55,82][index],now+delay);
+        gain.gain.setValueAtTime(0.0001,now+delay);
+        gain.gain.exponentialRampToValueAtTime(0.09,now+delay+0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001,now+delay+0.14);
+        oscillator.connect(gain);gain.connect(context.destination);
+        oscillator.start(now+delay);oscillator.stop(now+delay+0.15);
+      });
+      return;
+    }
     if (gift.style === "rattlebone") {
       [0, 0.055, 0.11, 0.18, 0.25, 0.33].forEach((delay, index) => {
         const oscillator = context.createOscillator();
