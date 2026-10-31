@@ -137,8 +137,8 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
   if (currentUser) {
     const status = document.getElementById("giftDashboardStatus");
     if (status) status.textContent = "Refreshing your gift activity…";
-    void loadTikNationGiftDashboard().finally(() => {
-      if (status) status.textContent = "Gift activity updated.";
+    void loadTikNationGiftDashboard().then(ok => {
+      if (status) status.textContent = ok ? "Gift activity updated." : "Gift activity could not be refreshed. Please try again.";
     });
   } else {
     showSignedOutGiftDashboard();
