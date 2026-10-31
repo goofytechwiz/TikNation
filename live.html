@@ -349,7 +349,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   </section>
   <section id="liveGiftPanel" class="live-gifts hide" aria-label="Live gifts">
     <h3>🎁 Live Gifts</h3>
-    <div class="live-gift-note">Send Musical, Magical, Special Effects, Visual Effects, Legendary, and Surprise gifts without leaving the livestream. Free test coins only; no cash value or payouts.</div>
+    <div class="live-gift-note">Send Musical, Magical, Special Effects, Visual Effects, Legendary, and Surprise gifts without leaving the livestream. During a Live Battle, choose which player receives each gift; its test-coin value counts as battle points. Test coins have no cash value or payouts.</div>
     <div id="liveGiftBalance" class="live-gift-balance">Loading test coin balance…</div>
     <label id="liveGiftRecipientWrap" class="small hide" for="liveGiftRecipient">Send battle gift to <select id="liveGiftRecipient" aria-label="Choose Live Battle player to receive gift"></select></label>
     <div id="liveGiftCategories" class="live-gift-categories"></div>
@@ -823,6 +823,7 @@ async function refreshBattleScore(invite,asOpponent=false){
   const result=await api("battle_score",{invite_id:invite.id});const score=result.score;if(!score)return;
   $("battleHostScore").textContent=Number(score.host_score||0).toLocaleString();
   $("battleOpponentScore").textContent=Number(score.opponent_score||0).toLocaleString();
+  if(asOpponent&&score.status==="live"){$("battleRequestStatus").textContent="LIVE BATTLE · You "+Number(score.opponent_score||0).toLocaleString()+" — Host "+Number(score.host_score||0).toLocaleString()+" points";}
   if(score.status==="finalized"){
    const summary=score.result_status==="void"?"Round ended early. Score saved, but no winner was declared.":score.result_status==="tie"?"Battle tied · "+score.host_score+"–"+score.opponent_score+".":"Final score · "+score.host_score+"–"+score.opponent_score+".";
    const node=$(asOpponent?"battleRequestStatus":"hostBattleStatus");if(node)node.textContent=summary;
