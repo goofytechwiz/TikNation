@@ -50,6 +50,17 @@
 .live-throne-art{position:relative;z-index:2;text-align:center;font-size:clamp(5rem,18vw,11rem);filter:drop-shadow(0 0 22px #ffb23d);animation:throneRise 1.1s cubic-bezier(.2,1.5,.4,1) both}
 .live-throne-paper{position:absolute;z-index:3;font-size:clamp(3.2rem,10vw,6rem);line-height:1;filter:drop-shadow(0 0 12px #fff4c2);animation:thronePaper 3.5s ease-in-out infinite}
 .live-throne-title{position:absolute;z-index:4;bottom:12%;left:0;right:0;text-align:center;font-weight:1000;font-size:clamp(1.2rem,4vw,2.4rem);letter-spacing:.08em;text-shadow:0 0 18px #ff8b24,0 3px 5px #000}.live-throne-tagline{display:block;margin-top:8px;font-size:clamp(.68rem,2.2vw,1rem);letter-spacing:.22em;color:#ffe0b0;text-shadow:0 0 12px #ff6b22;animation:throneTagline .8s .35s both}@keyframes throneTagline{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.live-throne-stink{position:absolute;z-index:3;inset:12% 4% 20%;pointer-events:none}
+.live-throne-cloud{position:absolute;font-size:clamp(3rem,12vw,7rem);filter:drop-shadow(0 0 18px #9bff45);opacity:0;animation:stinkCloud 3.8s ease-out infinite}
+.live-throne-cloud.one{left:8%;bottom:8%}.live-throne-cloud.two{right:8%;bottom:12%;animation-delay:.7s}.live-throne-cloud.three{left:42%;bottom:0;font-size:clamp(2.5rem,9vw,5rem);animation-delay:1.3s}
+.live-throne-fly{position:absolute;font-size:clamp(1.4rem,4vw,2.2rem);animation:stinkFly 4s linear infinite}
+.live-throne-warning{position:absolute;z-index:5;top:7%;left:50%;transform:translateX(-50%);width:max-content;max-width:92vw;padding:8px 13px;border:1px solid #b4f36c88;border-radius:999px;background:#101c0eeF;color:#d9ff9c;text-align:center;font-size:clamp(.65rem,2.4vw,.9rem);font-weight:900;letter-spacing:.08em;box-shadow:0 0 22px #8cff3d55}
+.live-throne-title{bottom:8%;padding:0 12px}
+.live-throne-tagline{font-size:clamp(.75rem,2.6vw,1.05rem);letter-spacing:.14em;color:#e6ffb8}
+@keyframes stinkCloud{0%{opacity:0;transform:translateY(25px) scale(.55) rotate(-12deg)}18%{opacity:.95}75%{opacity:.72}100%{opacity:0;transform:translateY(-42vh) scale(1.5) rotate(18deg)}}
+@keyframes stinkFly{0%{left:8%;top:70%;transform:translate(0,0) rotate(0)}50%{left:80%;top:22%;transform:translate(0,0) rotate(180deg)}100%{left:8%;top:70%;transform:translate(0,0) rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.live-throne-cloud,.live-throne-fly{animation:none;opacity:.7}}
+
 @keyframes thronePortal{from{transform:scale(.88) rotate(-8deg);filter:hue-rotate(-12deg)}to{transform:scale(1.08) rotate(8deg);filter:hue-rotate(18deg)}}
 @keyframes throneRise{from{opacity:0;transform:translateY(80px) scale(.35) rotate(-12deg)}to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
 @keyframes thronePaper{0%{transform:translateY(-65vh) rotate(0) scale(.8);opacity:0}15%{opacity:1}100%{transform:translateY(65vh) rotate(620deg) scale(1.12);opacity:0}}
@@ -469,7 +480,28 @@ function playLiveGiftSound(event, gift) {
       osc.connect(gain); gain.connect(ctx.destination);
       osc.start(start); osc.stop(start + duration + 0.02);
     };
-    if (code === "heart_pulse") {
+    if (code === "asshole_of_death") {
+      // Original synthesized toilet flush: filtered noise sweep plus descending gurgle tones.
+      const length = Math.floor(ctx.sampleRate * 2.6);
+      const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < length; i++) {
+        const t = i / length;
+        const envelope = Math.pow(Math.sin(Math.PI * t), 1.15) * (0.72 + 0.28 * Math.sin(t * 42));
+        data[i] = (Math.random() * 2 - 1) * envelope;
+      }
+      const noise = ctx.createBufferSource(); noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter(); filter.type = "lowpass";
+      filter.frequency.setValueAtTime(1250, now);
+      filter.frequency.exponentialRampToValueAtTime(180, now + 2.45);
+      const gain = ctx.createGain(); gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.22, now + 0.12);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.55);
+      noise.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+      noise.start(now); noise.stop(now + 2.6);
+      [0,0.32,0.7,1.08,1.42].forEach((offset,i)=>softTone(now+offset, 145-i*19, .42, .055, "sine"));
+      softTone(now + 2.05, 660, .18, .018, "triangle");
+    } else if (code === "heart_pulse") {
       // Soft, warm pulse with a subtle magical shimmer at the end.
       [0, 0.24, 0.68, 0.92].forEach((offset, i) =>
         thump(now + offset, i % 2 ? 72 : 92, i % 2 ? 0.11 : 0.14, 0.25, i % 2 ? 48 : 58));
@@ -501,7 +533,7 @@ function showLiveGiftCelebration(event) {
   if(isPreview)overlay.dataset.giftPreview="true";
   if(event.gift_code==="asshole_of_death"){
     overlay.className="live-throne-scene";
-    overlay.innerHTML='<div class="live-throne-portal"></div><div class="live-throne-art" role="img" aria-label="Toilet and skull in a fiery portal">🚽💀</div><span class="live-throne-paper" style="left:12%;top:72%">🧻</span><span class="live-throne-paper" style="right:14%;top:64%;animation-delay:.8s">🧻</span><span class="live-throne-paper" style="left:72%;top:82%;animation-delay:1.5s">💀</span><div class="live-throne-title">THE ASSHOLE OF DEATH<span class="live-throne-tagline">THE FINAL FLUSH · NO MERCY</span></div>';
+    overlay.innerHTML='<div class="live-throne-portal"></div><div class="live-throne-stink" aria-hidden="true"><span class="live-throne-cloud one">💨</span><span class="live-throne-cloud two">☁️</span><span class="live-throne-cloud three">💚</span><span class="live-throne-fly" style="left:18%;top:38%">🪰</span><span class="live-throne-fly" style="left:78%;top:52%;animation-delay:1s">🪰</span></div><div class="live-throne-warning">⚠️ ODOR DEPLOYMENT INITIATED · VISUAL EFFECT ONLY</div><div class="live-throne-art" role="img" aria-label="Toilet and skull in a fiery portal">🚽💀</div><span class="live-throne-paper" style="left:12%;top:72%">🧻</span><span class="live-throne-paper" style="right:14%;top:64%;animation-delay:.8s">🧻</span><span class="live-throne-paper" style="left:72%;top:82%;animation-delay:1.5s">💀</span><div class="live-throne-title">THE ASSHOLE OF DEATH<span class="live-throne-tagline">THE FINAL FLUSH · NO MERCY</span></div>';
   }else if(event.gift_code==="dragon_spirit"){
     const sender=String(event.sender_name||"A TikNation dreamer").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
     overlay.className="live-dragon-scene"+(isPreview?" live-dragon-scene-preview":"");
