@@ -571,8 +571,14 @@ function showOfflineCreatorGiftPreview() {
 function renderLiveGiftCatalog() {
   const root=$("liveGiftCategories");if(!root)return;
   const previewMode=isFreeCreatorGiftPreview();
+  const signInRequired=!user;
   const groups=["Musical","Magical","Special Effects","Visual Effects","Legendary","Surprises"];
-  root.innerHTML=(previewMode?'<p class="small">Free creator preview · Tap any gift to see its animation. This is a local preview only: no coins are spent and viewers are not notified.</p>':"")+groups.map(category=>'<div class="live-gift-category"><h4>'+category+' Gifts</h4><div class="live-gift-grid">'+Object.entries(LIVE_GIFT_CATALOG).filter(([,gift])=>gift.category===category).map(([code,gift])=>'<button type="button" class="live-gift-choice" data-gift-code="'+code+'"><span class="live-gift-emoji">'+gift.emoji+'</span><span class="live-gift-name">'+gift.name+'</span><span class="live-gift-cost">'+(previewMode?"✨ FREE PREVIEW":"🪙 "+gift.cost+" test coins")+'</span></button>').join("")+'</div></div>').join("");
+  const intro=previewMode
+    ? '<p class="small">Free creator preview · Tap any gift to see its animation. This is a local preview only: no coins are spent and viewers are not notified.</p>'
+    : signInRequired
+      ? '<p class="small">Sign in to send gifts. You can still watch gift celebrations without an account.</p>'
+      : "";
+  root.innerHTML=intro+groups.map(category=>'<div class="live-gift-category"><h4>'+category+' Gifts</h4><div class="live-gift-grid">'+Object.entries(LIVE_GIFT_CATALOG).filter(([,gift])=>gift.category===category).map(([code,gift])=>'<button type="button" class="live-gift-choice"'+(signInRequired?" disabled":"")+' data-gift-code="'+code+'"><span class="live-gift-emoji">'+gift.emoji+'</span><span class="live-gift-name">'+gift.name+'</span><span class="live-gift-cost">'+(previewMode?"✨ FREE PREVIEW":signInRequired?"SIGN IN TO SEND":"🪙 "+gift.cost+" test coins")+'</span></button>').join("")+'</div></div>').join("");
   root.querySelectorAll("[data-gift-code]").forEach(button=>button.addEventListener("click",()=>{const code=button.dataset.giftCode;if(isFreeCreatorGiftPreview()){unlockLiveGiftAudio();const preview={id:"preview-"+Date.now(),gift_code:code,sender_name:"Creator preview"};renderLiveGiftEvent(preview);setLiveGiftStatus("✨ "+LIVE_GIFT_CATALOG[code].name+" preview · Free, no coins spent.","success");}else void sendLiveGift(code,button);}));
 }
 async function refreshLiveGiftBalance() {
@@ -785,6 +791,7 @@ function stopLiveGiftPolling() {
   if(liveGiftTimer)window.clearInterval(liveGiftTimer);liveGiftTimer=null;liveGiftCursor=null;liveGiftCursorId=null;seenLiveGiftIds=new Set();const panel=$("liveGiftPanel");if(panel){panel.classList.add("hide");panel.classList.remove("is-open");}
 }
 async function sendLiveGift(giftCode,button) {
+  if(!user){setLiveGiftStatus("Sign in to send gifts. You can still watch celebrations.", "error");return;}
   if(liveGiftRequestBusy||!activeSession)return;const gift=LIVE_GIFT_CATALOG[giftCode];if(!gift)return;
   // Fail closed: verify the signed-in account does not own this session before any paid-gift request.
   // This protects creators even if the page's local host flag is stale.
