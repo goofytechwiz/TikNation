@@ -1942,6 +1942,33 @@ textarea.form-control{
 @keyframes giftLaughShake{from{transform:rotate(-8deg) translateX(-3px)}to{transform:rotate(8deg) translateX(3px)}}
 @media(prefers-reduced-motion:reduce){.gift-celebration-toxiccloud .gift-celebration-emoji,.gift-celebration-bonebreaker .gift-celebration-emoji,.gift-celebration-knockout .gift-celebration-emoji,.gift-celebration-cantbreathe .gift-celebration-emoji{animation:none!important}}
 
+
+/* High-impact comedy gift entrances: visible even on a small phone screen. */
+.gift-celebration-toxiccloud::before,
+.gift-celebration-stinkdeath::before{
+ content:"";position:absolute;left:50%;top:50%;width:min(86vw,520px);aspect-ratio:1;border-radius:50%;
+ transform:translate(-50%,-50%) scale(.12);background:radial-gradient(circle,rgba(151,255,48,.42) 0 18%,rgba(93,205,28,.26) 38%,transparent 70%);
+ filter:blur(12px);animation:giftCloudBlast 2.2s ease-out both;pointer-events:none
+}
+.gift-celebration-toxiccloud .gift-celebration-content::before{content:"☣";position:absolute;left:50%;top:-.72em;transform:translateX(-50%);font-size:clamp(42px,12vw,86px);color:#b6ff42;text-shadow:0 0 16px #9cff42,0 0 42px #79ff25;animation:giftHazardDrop .72s cubic-bezier(.16,1.4,.35,1) both}
+.gift-celebration-stinkdeath .gift-celebration-content::before{content:"💀";position:absolute;left:50%;top:-.76em;transform:translateX(-50%);font-size:clamp(42px,12vw,86px);filter:drop-shadow(0 0 20px #9cff42);animation:giftHazardDrop .72s cubic-bezier(.16,1.4,.35,1) both}
+.gift-celebration-bonebreaker .gift-celebration-content::before,
+.gift-celebration-rattlebone .gift-celebration-content::before{content:"🦴";position:absolute;left:50%;top:-.72em;transform:translateX(-50%);font-size:clamp(42px,12vw,86px);filter:drop-shadow(0 0 18px #d8ccff);animation:giftBoneEntrance .5s steps(2,end) infinite}
+.gift-celebration-knockout::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,rgba(255,193,84,.58),transparent 48%);animation:giftImpactFlash .55s ease-out 2 both;pointer-events:none}
+.gift-celebration-knockout .gift-celebration-content::before{content:"💥";position:absolute;left:50%;top:-.78em;transform:translateX(-50%);font-size:clamp(48px,14vw,100px);filter:drop-shadow(0 0 24px #ff9c36);animation:giftPunchIn .65s cubic-bezier(.15,1.55,.35,1) both}
+.gift-celebration-cantbreathe .gift-celebration-content::before{content:"😂";position:absolute;left:50%;top:-.78em;transform:translateX(-50%);font-size:clamp(48px,14vw,100px);filter:drop-shadow(0 0 20px #ff9de5);animation:giftLaughBurst .32s ease-in-out infinite alternate}
+.gift-celebration-toxiccloud .gift-celebration-particle,.gift-celebration-stinkdeath .gift-celebration-particle{color:#aaff42;text-shadow:0 0 12px #8dff38}
+.gift-celebration-bonebreaker .gift-celebration-particle,.gift-celebration-rattlebone .gift-celebration-particle{color:#e2d8ff;text-shadow:0 0 12px #c9b6ff}
+.gift-celebration-knockout .gift-celebration-particle{color:#ffc16c;text-shadow:0 0 14px #ff9c36}
+.gift-celebration-cantbreathe .gift-celebration-particle{color:#ffb1e9;text-shadow:0 0 14px #ff72d8}
+@keyframes giftCloudBlast{0%{opacity:0;transform:translate(-50%,-50%) scale(.12)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.55)}}
+@keyframes giftHazardDrop{0%{opacity:0;transform:translate(-50%,-85%) scale(.25) rotate(-22deg)}72%{opacity:1;transform:translate(-50%,8%) scale(1.2) rotate(8deg)}100%{transform:translate(-50%,0) scale(1) rotate(0)}}
+@keyframes giftBoneEntrance{0%{transform:translateX(-50%) rotate(-22deg) scale(.85)}100%{transform:translateX(-50%) rotate(22deg) scale(1.12)}}
+@keyframes giftImpactFlash{0%,100%{opacity:0}22%{opacity:1}}
+@keyframes giftPunchIn{0%{opacity:0;transform:translate(-50%,65%) scale(.12) rotate(-35deg)}68%{opacity:1;transform:translate(-50%,-8%) scale(1.28) rotate(12deg)}100%{transform:translate(-50%,0) scale(1) rotate(0)}}
+@keyframes giftLaughBurst{from{transform:translateX(-50%) rotate(-12deg) scale(.92)}to{transform:translateX(-50%) rotate(12deg) scale(1.18)}}
+@media(prefers-reduced-motion:reduce){.gift-celebration-toxiccloud::before,.gift-celebration-stinkdeath::before,.gift-celebration-toxiccloud .gift-celebration-content::before,.gift-celebration-stinkdeath .gift-celebration-content::before,.gift-celebration-bonebreaker .gift-celebration-content::before,.gift-celebration-rattlebone .gift-celebration-content::before,.gift-celebration-knockout::before,.gift-celebration-knockout .gift-celebration-content::before,.gift-celebration-cantbreathe .gift-celebration-content::before{animation:none!important}}
+
 </style>
 
 <style>
