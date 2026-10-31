@@ -1,0 +1,9 @@
+project_id = "mekzfezaefcimxncklfj"
+
+# These two endpoints intentionally validate credentials inside their handlers.
+# Keep this aligned with the current deployed Supabase function settings.
+[functions.tiknation-gifts]
+verify_jwt = false
+
+[functions.tiknation-username-login]
+verify_jwt = false
