@@ -5613,7 +5613,7 @@ async function searchTikNationCreators(event){
         results.innerHTML = visibleProfiles.map(function(profile){
             const name = profile.display_name || profile.username || "TikNation Creator";
             const username = profile.username || "TikNationCreator";
-            return '<article class="card"><div class="card-icon">👤</div><h3>'+escapeHtml(name)+'</h3><p class="muted">@'+escapeHtml(username)+'</p><p>'+escapeHtml(profile.bio || "Creating my world on TikNation.")+'</p><button type="button" class="primary-button" onclick="openPublicCreatorProfile(\\''+escapeJs(profile.id)+'\\')">VIEW PROFILE</button></article>';
+            return '<article class="card"><div class="card-icon">👤</div><h3>'+escapeHtml(name)+'</h3><p class="muted">@'+escapeHtml(username)+'</p><p>'+escapeHtml(profile.bio || "Creating my world on TikNation.")+'</p><button type="button" class="primary-button" onclick="openPublicCreatorProfile(&#39;'+escapeJs(profile.id)+'&#39;)">VIEW PROFILE</button></article>';
         }).join("");
     }catch(searchError){
         console.error("Creator search could not complete:",searchError);
