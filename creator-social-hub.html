@@ -65,6 +65,45 @@ section{margin-top:20px}
 .personal-folder .social{border:1px solid #d946ef80!important;background:linear-gradient(145deg,#421449,#201027)!important;border-radius:24px!important;box-shadow:0 8px 22px #d946ef14}
 .personal-folder .social h3{color:#f5c7ff!important}
 .personal-folder .btn{border-color:#e879f9!important;background:linear-gradient(110deg,#701a75,#4c1d55)!important;color:#ffe3ff!important}
+
+/* CINEMATIC CREATOR REALMS */
+body{isolation:isolate;background-color:#05050b;background-image:radial-gradient(ellipse at 12% 8%,#34205c 0,transparent 38%),radial-gradient(ellipse at 90% 28%,#06384b 0,transparent 35%),radial-gradient(ellipse at 50% 100%,#17102d 0,transparent 48%),#05050b}
+body:before,body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1}
+body:before{opacity:.34;background-image:radial-gradient(1px 1px at 8% 18%,#fff 99%,transparent),radial-gradient(1px 1px at 74% 12%,#9cefff 99%,transparent),radial-gradient(2px 2px at 42% 72%,#d7baff 99%,transparent),radial-gradient(1px 1px at 91% 83%,#fff 99%,transparent),radial-gradient(1px 1px at 23% 91%,#9cefff 99%,transparent);background-size:310px 260px;animation:star-drift 34s linear infinite}
+body:after{background:radial-gradient(ellipse at center,transparent 35%,#020208aa 100%);opacity:.7}
+@keyframes star-drift{to{background-position:310px 260px}}
+.hero{border-color:#75eaff55;box-shadow:0 20px 80px #0008,0 0 35px #25cfff16,inset 0 1px #ffffff16}
+.hero:before{content:"";position:absolute;width:360px;height:360px;border:1px solid #70e8ff22;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-43%);box-shadow:0 0 0 22px #70e8ff08,0 0 0 48px #b49aff08,0 0 55px #70e8ff12;pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.orb{position:relative;width:94px;height:94px;animation:core-float 5s ease-in-out infinite;box-shadow:0 0 25px #70e8ff99,0 0 70px #8b63ff88,0 0 120px #00d9ff22}
+.orb:before,.orb:after{content:"";position:absolute;inset:-13px;border:1px solid #70e8ff99;border-radius:50%;transform:rotateX(68deg);box-shadow:0 0 15px #70e8ff55}
+.orb:after{inset:-22px;border-color:#b49aff77;transform:rotateX(68deg) rotate(58deg);animation:ring-turn 16s linear infinite}
+@keyframes core-float{50%{transform:translateY(-7px)}}
+@keyframes ring-turn{to{transform:rotateX(68deg) rotate(418deg)}}
+h1{text-shadow:0 0 35px #70e8ff20}
+.pill{box-shadow:0 0 24px #70e8ff15,inset 0 0 16px #70e8ff0b}
+.panel{border-color:#ffffff26;box-shadow:0 18px 60px #0006,inset 0 1px #ffffff0b}
+.social-folder{position:relative;transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease}
+.social-folder:hover{transform:translateY(-2px)}
+.social-folder summary{transition:background .25s ease}
+.social-folder[open]{padding-bottom:2px}
+.social-folder[open] summary{min-height:94px}
+.social-folder[open] .folder-icon{transform:scale(1.12) rotate(-5deg)}
+.folder-icon{transition:transform .35s ease}
+.social{position:relative;overflow:hidden;transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}
+.social:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 25%,#ffffff0b 48%,transparent 70%);transform:translateX(-120%);transition:transform .7s ease}
+.social:hover{transform:translateY(-5px) perspective(700px) rotateX(2deg);box-shadow:0 12px 28px #0005,0 0 22px #70e8ff20}
+.social:hover:after{transform:translateX(120%)}
+.btn{transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.16);box-shadow:0 0 20px #70e8ff2c}
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #fff;outline-offset:4px}
+.kaevoryn-folder:hover{box-shadow:0 0 0 1px #00e5ff55,0 0 44px #00cfff42!important}
+.kaevoryn-folder .social:hover{box-shadow:0 12px 28px #00131c,0 0 25px #00e5ff35}
+.personal-folder:hover{box-shadow:0 0 0 1px #d946ef55,0 0 44px #d946ef38!important}
+.personal-folder .social:hover{box-shadow:0 12px 28px #100617,0 0 25px #d946ef35}
+.editor{box-shadow:inset 0 0 30px #d946ef0a,0 0 24px #d946ef12}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.social-folder:hover,.social:hover,.btn:hover{transform:none}}
+
 </style>
 </head>
 <body>
