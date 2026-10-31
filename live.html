@@ -527,6 +527,9 @@ function showLiveGiftCelebration(event) {
   if(isPreview && typeof Element.prototype.animate==="function"){
     const card=overlay.querySelector(".live-gift-celebration-card");
     if(card){
+      /* Inline important animation wins over gift-category CSS animation overrides. */
+      card.style.setProperty("animation","liveGiftPop .85s cubic-bezier(.2,1.5,.4,1) both, liveGiftGlow 1.4s ease-in-out .2s 2","important");
+      card.style.setProperty("transform-origin","center center");
       card.animate([{opacity:0,transform:"translateY(28px) scale(.35) rotate(-8deg)"},{opacity:1,transform:"translateY(-8px) scale(1.12) rotate(2deg)",offset:.68},{opacity:1,transform:"translateY(0) scale(1) rotate(0)"}],{duration:850,easing:"cubic-bezier(.2,1.5,.4,1)",fill:"both"});
       const emoji=card.querySelector("span");
       if(emoji)emoji.animate([{transform:"translateY(35px) scale(.2) rotate(-25deg)",opacity:0},{transform:"translateY(-14px) scale(1.4) rotate(10deg)",opacity:1,offset:.58},{transform:"translateY(0) scale(1) rotate(0)",opacity:1}],{duration:1000,easing:"cubic-bezier(.2,1.7,.4,1)",fill:"both"});
