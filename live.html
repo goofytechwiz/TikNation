@@ -520,11 +520,21 @@ compactLivePanelsForPhone();
 let user = null, activeSession = null, room = null, localTracks = [], isHost = false, chatTimer = null, lastMessageAt = null, listedSessions = [];
 let liveGiftBattle = null;
 let battleCelebratedInviteId = null;
-const LIVE_GIFT_CATALOG = Object.fromEntries(
+let LIVE_GIFT_CATALOG = Object.fromEntries(
   Object.entries(window.TIKNATION_GIFT_CATALOG || {}).map(([code, gift]) => [code, {
     name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound
   }])
 );
+function syncLiveGiftCatalog() {
+  const source = window.TIKNATION_GIFT_CATALOG;
+  if (!source || typeof source !== "object") return false;
+  LIVE_GIFT_CATALOG = Object.fromEntries(
+    Object.entries(source).map(([code, gift]) => [code, {
+      name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound
+    }])
+  );
+  return Object.keys(LIVE_GIFT_CATALOG).length > 0;
+}
 let liveGiftTimer = null, liveGiftCursor = null, liveGiftCursorId = null, seenLiveGiftIds = new Set(), liveGiftRequestBusy = false;
 function notice(message, type=""){const n=$("notice");n.textContent=message;n.className="status"+(type?" "+type:"");}
 function esc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
@@ -565,6 +575,11 @@ function showOfflineCreatorGiftPreview() {
 }
 function renderLiveGiftCatalog() {
   const root=$("liveGiftCategories");if(!root)return;
+  syncLiveGiftCatalog();
+  if (!Object.keys(LIVE_GIFT_CATALOG).length) {
+    root.innerHTML='<div class="live-gift-status error">Gift catalog is still loading. Please refresh TikNation LIVE in a moment.</div>';
+    return;
+  }
   const previewMode=isFreeCreatorGiftPreview();
   const signInRequired=!user;
   const groups=["Musical","Magical","Special Effects","Visual Effects","Legendary","Surprises"];
