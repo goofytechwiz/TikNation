@@ -5577,17 +5577,6 @@ async function searchTikNationCreators(event){
         results.innerHTML = "";
     }
 
-    if(!visibleProfiles.length){
-        message.textContent = term ? "No creators matched that search yet. Try another name or interest." : "No creator profiles to show yet. Check back soon!";
-        return;
-    }
-
-    message.textContent = visibleProfiles.length + (visibleProfiles.length === 1 ? " creator found" : " creators found");
-    results.innerHTML = visibleProfiles.map(function(profile){
-        const name = profile.display_name || profile.username || "TikNation Creator";
-        const username = profile.username || "TikNationCreator";
-        return '<article class="card"><div class="card-icon">👤</div><h3>'+escapeHtml(name)+'</h3><p class="muted">@'+escapeHtml(username)+'</p><p>'+escapeHtml(profile.bio || "Creating my world on TikNation.")+'</p><button type="button" class="primary-button" onclick="openPublicCreatorProfile(\''+escapeJs(profile.id)+'\')">VIEW PROFILE</button></article>';
-    }).join("");
 }
 
 function clearCreatorSearch(){
