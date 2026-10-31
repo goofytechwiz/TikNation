@@ -298,6 +298,20 @@ Deno.serve(async (req: Request) => {
     return json({ invite: updated });
   }
 
+  if (action === "battle_finish") {
+    const inviteId = String(body.invite_id ?? "");
+    if (!/^[0-9a-f-]{36}$/i.test(inviteId)) return json({ error: "Invalid battle invitation." }, 400);
+    const { data: invite, error: inviteError } = await admin.from("live_battle_invites")
+      .select("id,host_id,opponent_id,status").eq("id", inviteId).maybeSingle();
+    if (inviteError) return json({ error: "Could not load the battle invitation." }, 500);
+    if (!invite || ![invite.host_id, invite.opponent_id].includes(user.id)) return json({ error: "You cannot end this battle." }, 403);
+    if (invite.status !== "accepted") return json({ status: invite.status });
+    const { error: finishError } = await admin.from("live_battle_invites")
+      .update({ status: "completed" }).eq("id", inviteId).eq("status", "accepted");
+    if (finishError) return json({ error: "Could not close the Live Battle." }, 500);
+    return json({ status: "completed" });
+  }
+
   if (action === "battle_join") {
     const inviteId = String(body.invite_id ?? "");
     if (!/^[0-9a-f-]{36}$/i.test(inviteId)) return json({ error: "Invalid battle invitation." }, 400);
