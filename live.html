@@ -263,6 +263,21 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   .live-gift-choice:hover:not(:disabled){transform:none}
 }
 
+
+/* Live Battle finale: cinematic but lightweight, with reduced-motion support. */
+#battleResultsPanel{position:relative;overflow:hidden;border:1px solid #7560b866;background:linear-gradient(145deg,#17132b,#0b1524 68%,#111020)}
+#battleResultSummary{font-weight:750;font-size:1.04rem;line-height:1.55}
+#battleCelebration{display:none;position:relative;isolation:isolate;min-height:92px;margin:12px 0;padding:18px 14px;overflow:hidden;text-align:center;border:1px solid #8b7aff66;border-radius:16px;background:radial-gradient(ellipse at 50% 120%,#7b50ff55,transparent 68%),linear-gradient(120deg,#101b32,#21163b)}
+#battleCelebration.is-visible{display:block;animation:battleReveal .65s cubic-bezier(.2,.8,.2,1) both}
+#battleCelebration .battle-celebration-title{position:relative;z-index:2;font-size:clamp(1.35rem,5vw,2rem);font-weight:950;letter-spacing:.12em;text-shadow:0 0 20px #a58bff99}
+#battleCelebration .battle-celebration-sub{position:relative;z-index:2;margin-top:5px;color:#d9d5ff;font-size:.82rem}
+#battleCelebration .battle-spark{position:absolute;z-index:1;top:-18px;width:7px;height:13px;border-radius:3px;background:linear-gradient(#9cfaff,#a68aff);opacity:0;animation:battleConfetti 1.8s ease-out both}
+#battleCelebration .battle-spark:nth-child(3n){background:linear-gradient(#ffe69a,#ff8fc8)}
+#battleCelebration .battle-spark:nth-child(3n + 1){background:linear-gradient(#a4ffdc,#74baff)}
+@keyframes battleReveal{0%{opacity:0;transform:translateY(12px) scale(.96)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes battleConfetti{0%{opacity:0;transform:translateY(-8px) rotate(0)}12%{opacity:1}100%{opacity:0;transform:translateY(125px) rotate(300deg)}}
+@media(prefers-reduced-motion:reduce){#battleCelebration.is-visible{animation:none}#battleCelebration .battle-spark{display:none}}
+
 </style>
 </head>
 <body>
@@ -359,6 +374,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   </section>
   <section id="battleResultsPanel" class="live-power-card" style="margin-top:14px" aria-label="Live Battle results">
     <h3>🏆 Live Battle results</h3>
+    <div id="battleCelebration" aria-hidden="true"></div>
     <div id="battleResultSummary" class="live-power-status" role="status" aria-live="polite">Your completed battles will appear here.</div>
     <div class="live-power-actions"><button type="button" class="ghost" id="loadBattleHistoryBtn">View battle history</button></div>
     <div id="battleHistoryList" class="live-gift-feed" aria-live="polite"><div class="small">Sign in to view your battle history.</div></div>
@@ -414,6 +430,7 @@ compactLivePanelsForPhone();
 
 let user = null, activeSession = null, room = null, localTracks = [], isHost = false, chatTimer = null, lastMessageAt = null, listedSessions = [];
 let liveGiftBattle = null;
+let battleCelebratedInviteId = null;
 const LIVE_GIFT_CATALOG = {
   heart_pulse:{name:"Heart Pulse",emoji:"💗",category:"Musical",cost:5}, melody_note:{name:"Melody Note",emoji:"🎵",category:"Musical",cost:5}, heartbeat_beat:{name:"Heartbeat Beat",emoji:"🥁",category:"Musical",cost:10}, symphony:{name:"Symphony",emoji:"🎼",category:"Musical",cost:50},
   magic_spark:{name:"Magic Spark",emoji:"✨",category:"Magical",cost:10}, mystic_portal:{name:"Mystic Portal",emoji:"🌀",category:"Magical",cost:25}, dragon_spirit:{name:"Dragon Spirit",emoji:"🐉",category:"Magical",cost:75}, galaxy_gift:{name:"Galaxy Gift",emoji:"🌌",category:"Magical",cost:100},
@@ -831,17 +848,28 @@ async function refreshBattleScore(invite,asOpponent=false){
   $("battleOpponentScore").textContent=Number(score.opponent_score||0).toLocaleString();
   if(asOpponent&&score.status==="live"){$("battleRequestStatus").textContent="LIVE BATTLE · You "+Number(score.opponent_score||0).toLocaleString()+" — Host "+Number(score.host_score||0).toLocaleString()+" points";}
   if(score.status==="finalized"){
-   showBattleResult(score);
+   showBattleResult(score,invite);
    const summary=score.result_status==="void"?"Round ended early. Score saved, but no winner was declared.":score.result_status==="tie"?"Battle tied · "+score.host_score+"–"+score.opponent_score+".":"Final score · "+score.host_score+"–"+score.opponent_score+".";
    const node=$(asOpponent?"battleRequestStatus":"hostBattleStatus");if(node)node.textContent=summary;
   }
  }catch(error){console.warn("Live Battle score refresh:",error.message);}
 }
-function showBattleResult(score){
+function showBattleResult(score,invite){
  const summary=$("battleResultSummary");if(!summary)return;
  const host=score.host_name||"Host",opponent=score.opponent_name||"Opponent";
  const resultText=score.result_status==="void"?"No winner — round ended early":score.result_status==="tie"?"It is a tie":score.winner_name?"🏆 Winner: "+score.winner_name:"Battle completed";
  summary.textContent=resultText+" · "+host+" "+Number(score.host_score||0).toLocaleString()+" — "+Number(score.opponent_score||0).toLocaleString()+" "+opponent;
+ const celebration=$("battleCelebration");
+ if(celebration&&invite?.id&&battleCelebratedInviteId!==invite.id){
+  battleCelebratedInviteId=invite.id;celebration.replaceChildren();
+  const title=document.createElement("div");title.className="battle-celebration-title";
+  title.textContent=score.result_status==="void"?"ROUND COMPLETE":score.result_status==="tie"?"BATTLE DRAW":score.winner_id===user?.id?"VICTORY!":"BATTLE COMPLETE";
+  const detail=document.createElement("div");detail.className="battle-celebration-sub";
+  detail.textContent=score.result_status==="void"?"The round ended early — no winner was declared.":score.result_status==="tie"?"Both players finished with the same score.":(score.winner_name||"Winner")+" takes the round!";
+  celebration.append(title,detail);
+  if(score.result_status==="finalized"&&score.winner_id){for(let i=0;i<18;i++){const spark=document.createElement("span");spark.className="battle-spark";spark.style.left=(4+(i*37)%92)+"%";spark.style.animationDelay=((i%6)*.09)+"s";spark.style.transform="rotate("+((i*41)%180)+"deg)";celebration.appendChild(spark);}}
+  celebration.classList.remove("is-visible");void celebration.offsetWidth;celebration.classList.add("is-visible");
+ }
 }
 async function loadBattleHistory(){
  const list=$("battleHistoryList");if(!list)return;list.replaceChildren();
