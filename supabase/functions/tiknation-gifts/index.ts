@@ -43,7 +43,7 @@ Deno.serve(async (req: Request) => {
       const sessionId = body.session_id;
       const giftCode = body.gift_code;
       const requestId = body.request_id;
-      const allowedGifts = ["heart_pulse", "magic_spark", "creator_crown", "infinity_crystal", "melody_note", "heartbeat_beat", "symphony", "mystic_portal", "dragon_spirit", "galaxy_gift", "thunder_clap", "prism_wave", "mystery_reveal"];
+      const allowedGifts = ["heart_pulse", "magic_spark", "creator_crown", "infinity_crystal", "melody_note", "heartbeat_beat", "symphony", "mystic_portal", "dragon_spirit", "galaxy_gift", "thunder_clap", "prism_wave", "mystery_reveal", "dragon_ball", "changing_face", "clouds_of_mystery", "hammer_of_pain", "thunder_ass", "storm_of_the_world", "lightning_bolts_of_doom", "book_of_death", "dream_makers", "phoenix_rebirth", "treasure_explosion", "meteor_mayhem", "disco_raccoon", "portal_party", "blast_from_my_ass", "asshole_of_death", "golden_throne", "chicken_of_doom", "cheesepocalypse", "skeleton_disco", "dragons_revenge"];
       if (!isUuid(sessionId) || !isUuid(requestId) || !allowedGifts.includes(String(giftCode))) return json({ error: "Choose a valid gift and active livestream." }, 400);
       const { data: liveSession, error: sessionError } = await admin.from("live_sessions").select("id,creator_id,status").eq("id", sessionId).eq("status", "live").maybeSingle();
       if (sessionError || !liveSession) return json({ error: "This livestream has ended or is unavailable." }, 404);
@@ -90,7 +90,7 @@ Deno.serve(async (req: Request) => {
       const giftCode = body.gift_code;
       const requestId = body.request_id;
       if (!isUuid(recipientId) || !isUuid(requestId) ||
-          !["heart_pulse", "magic_spark", "creator_crown", "infinity_crystal", "melody_note", "heartbeat_beat", "symphony", "mystic_portal", "dragon_spirit", "galaxy_gift", "thunder_clap", "prism_wave", "mystery_reveal"].includes(String(giftCode))) {
+          !["heart_pulse", "magic_spark", "creator_crown", "infinity_crystal", "melody_note", "heartbeat_beat", "symphony", "mystic_portal", "dragon_spirit", "galaxy_gift", "thunder_clap", "prism_wave", "mystery_reveal", "dragon_ball", "changing_face", "clouds_of_mystery", "hammer_of_pain", "thunder_ass", "storm_of_the_world", "lightning_bolts_of_doom", "book_of_death", "dream_makers", "phoenix_rebirth", "treasure_explosion", "meteor_mayhem", "disco_raccoon", "portal_party", "blast_from_my_ass", "asshole_of_death", "golden_throne", "chicken_of_doom", "cheesepocalypse", "skeleton_disco", "dragons_revenge"].includes(String(giftCode))) {
         return json({ error: "Choose a valid gift and creator profile." }, 400);
       }
       const { data, error } = await admin.rpc("send_test_gift", {
