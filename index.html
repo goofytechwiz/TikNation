@@ -3598,6 +3598,14 @@ function showPage(pageId,button){
 
     document.body.classList.toggle("tn-watch-active",pageId === "watch");
 
+    // Stop Watch media immediately when navigating to another in-app page.
+    if(pageId !== "watch"){
+        const watchGrid = document.getElementById("watchGrid");
+        if(watchGrid){
+            watchGrid.querySelectorAll("video").forEach(video => video.pause());
+        }
+    }
+
     document.querySelectorAll(".page")
         .forEach(function(page){
             page.classList.remove("active");
