@@ -5885,25 +5885,17 @@ async function loadPublicCreatorProfile(userId){
             <div class="gift-balance" id="publicCreatorGiftBalance">🪙 Sign in to check test coins</div>
             ${currentUser ? `
                 <div class="gift-grid">
-                    <div class="gift-category-label">🎵 MUSICAL GIFTS</div>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','melody_note')"><span class="gift-emoji">🎵</span><span class="gift-choice-text"><strong>Melody Note</strong><small>5 test coins · Tiny tune</small></span></button>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','heart_pulse')"><span class="gift-emoji">💗</span><span class="gift-choice-text"><strong>Heart Pulse</strong><small>5 test coins · Heartbeat chime</small></span></button>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','heartbeat_beat')"><span class="gift-emoji">🥁</span><span class="gift-choice-text"><strong>Heartbeat Beat</strong><small>10 test coins · Feel the rhythm</small></span></button>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','symphony')"><span class="gift-emoji">🎼</span><span class="gift-choice-text"><strong>Symphony</strong><small>50 test coins · Grand flourish</small></span></button>
-                    <div class="gift-category-label">✨ MAGICAL GIFTS</div>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','magic_spark')"><span class="gift-emoji">✨</span><span class="gift-choice-text"><strong>Magic Spark</strong><small>10 test coins · Sparkle burst</small></span></button>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','mystic_portal')"><span class="gift-emoji">🌀</span><span class="gift-choice-text"><strong>Mystic Portal</strong><small>25 test coins · Portal glow</small></span></button>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','dragon_spirit')"><span class="gift-emoji">🐉</span><span class="gift-choice-text"><strong>Dragon Spirit</strong><small>75 test coins · Legendary spirit</small></span></button>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','galaxy_gift')"><span class="gift-emoji">🌌</span><span class="gift-choice-text"><strong>Galaxy Gift</strong><small>100 test coins · Cosmic celebration</small></span></button>
-                    <div class="gift-category-label">⚡ SPECIAL EFFECTS</div>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','thunder_clap')"><span class="gift-emoji">⚡</span><span class="gift-choice-text"><strong>Thunder Clap</strong><small>25 test coins · Lightning burst</small></span></button>
-                    <div class="gift-category-label">🌈 VISUAL EFFECTS</div>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','prism_wave')"><span class="gift-emoji">🌈</span><span class="gift-choice-text"><strong>Prism Wave</strong><small>50 test coins · Color-shifting wave</small></span></button>
-                    <div class="gift-category-label">🎁 SURPRISES</div>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','mystery_reveal')"><span class="gift-emoji">🎁</span><span class="gift-choice-text"><strong>Mystery Reveal</strong><small>25 test coins · Surprise reveal</small></span></button>
-                    <div class="gift-category-label">👑 LEGENDARY GIFTS</div>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','creator_crown')"><span class="gift-emoji">👑</span><span class="gift-choice-text"><strong>Creator’s Crown</strong><small>50 test coins · Creator celebration</small></span></button>
-                    <button type="button" class="gift-choice" onclick="sendTikNationGift('${escapeJs(userId)}','infinity_crystal')"><span class="gift-emoji">💎</span><span class="gift-choice-text"><strong>Infinity Crystal</strong><small>150 test coins · Beyond the ordinary</small></span></button>
+                    ${["Musical","Magical","Special Effects","Visual Effects","Legendary","Surprises"].map(category => {
+                        const entries = Object.entries(TIKNATION_GIFT_CATALOG).filter(([, gift]) => gift.category === category);
+                        if (!entries.length) return "";
+                        const icons = {Musical:"🎵",Magical:"✨","Special Effects":"⚡","Visual Effects":"🌈",Legendary:"👑",Surprises:"🎁"};
+                        return '<div class="gift-category-label">' + icons[category] + ' ' + category.toUpperCase() + ' GIFTS</div>' +
+                            entries.map(([giftCode, gift]) =>
+                                '<button type="button" class="gift-choice" onclick="sendTikNationGift(\'' + escapeJs(userId) + '\',\'' + escapeJs(giftCode) + '\')">' +
+                                '<span class="gift-emoji">' + escapeHtml(gift.emoji) + '</span>' +
+                                '<span class="gift-choice-text"><strong>' + escapeHtml(gift.name) + '</strong><small>' + Number(gift.cost) + ' test coins · ' + escapeHtml(gift.message) + '</small></span></button>'
+                            ).join("");
+                    }).join("")}
                 </div>
             ` : `
                 <button type="button" class="primary-button" onclick="openAuthModal('signin')">SIGN IN TO SEND A GIFT</button>
