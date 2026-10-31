@@ -1,7 +1,7 @@
 const TIKNATION_GIFT_CATALOG = {
-  heart_pulse: { name: "Heart Pulse", emoji: "💗", category: "Musical", cost: 5, sound: [523, 659], style: "pulse", message: "A little love, with a heartbeat." },
+  heart_pulse: { name: "Heart Pulse", emoji: "💗", category: "Musical", cost: 5, sound: [523, 659, 784, 988], style: "pulse", message: "A little love, carried by a warm melody." },
   melody_note: { name: "Melody Note", emoji: "🎵", category: "Musical", cost: 5, sound: [659, 784, 988], style: "notes", message: "A tiny melody for your world." },
-  heartbeat_beat: { name: "Heartbeat Beat", emoji: "🥁", category: "Musical", cost: 10, sound: [110, 110, 220], style: "pulse", message: "Feel the rhythm." },
+  heartbeat_beat: { name: "Heartbeat Beat", emoji: "🥁", category: "Musical", cost: 10, sound: [440, 554, 659, 880, 659, 554], style: "pulse", message: "A bright rhythm for your moment." },
   symphony: { name: "Symphony", emoji: "🎼", category: "Musical", cost: 50, sound: [523, 659, 784, 1047], style: "grand", message: "A little grand finale." },
   magic_spark: { name: "Magic Spark", emoji: "✨", category: "Magical", cost: 10, sound: [784, 1175], style: "spark", message: "A spark of possibility." },
   mystic_portal: { name: "Mystic Portal", emoji: "🌀", category: "Magical", cost: 25, sound: [392, 587, 784], style: "portal", message: "Open a doorway to wonder." },
