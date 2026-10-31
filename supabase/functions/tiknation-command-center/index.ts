@@ -165,7 +165,7 @@ Deno.serve(async (req: Request) => {
       }
       if (!existing) return json({ error: "This report could not be found." }, 404);
 
-      const targetId = source === "live" ? existing.session_id : existing.target_id;
+      const targetId = "session_id" in existing ? existing.session_id : existing.target_id;
       const testRecord = String(targetId ?? "").toUpperCase().startsWith("ADMIN-TEST-")
         || String(existing.reason ?? "").toUpperCase().includes("TEST ONLY")
         || String(existing.details ?? "").toUpperCase().includes("TEST ONLY");
