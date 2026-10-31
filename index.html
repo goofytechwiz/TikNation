@@ -1928,6 +1928,20 @@ textarea.form-control{
 @keyframes giftStinkFloat{from{transform:translateY(-5px) rotate(-4deg) scale(.96)}to{transform:translateY(7px) rotate(4deg) scale(1.08)}}
 @keyframes giftBoneRattle{from{transform:rotate(-9deg) translateX(-3px)}to{transform:rotate(9deg) translateX(3px)}}
 @media(prefers-reduced-motion:reduce){.gift-celebration-stinkdeath .gift-celebration-emoji,.gift-celebration-rattlebone .gift-celebration-emoji{animation:none!important}}
+/* Additional original comedy gift celebrations */
+.gift-celebration-toxiccloud .gift-celebration-content{border-color:#9cff42;background:radial-gradient(circle at 50% 0%,rgba(151,255,48,.28),transparent 58%),linear-gradient(145deg,rgba(18,42,13,.98),rgba(17,12,32,.98));box-shadow:0 0 78px rgba(139,255,48,.38);}
+.gift-celebration-toxiccloud .gift-celebration-emoji{filter:drop-shadow(0 0 22px #9cff42);animation:giftToxicDrift .7s ease-in-out infinite alternate;}
+.gift-celebration-bonebreaker .gift-celebration-content{border-color:#d8ccff;background:radial-gradient(circle at 50% 0%,rgba(208,190,255,.25),transparent 60%),linear-gradient(145deg,rgba(35,31,50,.98),rgba(12,10,24,.98));box-shadow:0 0 78px rgba(196,170,255,.4);}
+.gift-celebration-bonebreaker .gift-celebration-emoji{filter:drop-shadow(0 0 20px #d8ccff);animation:giftBoneRattle .12s linear infinite alternate;}
+.gift-celebration-knockout .gift-celebration-content{border-color:#ffb45f;background:radial-gradient(circle at 50% 0%,rgba(255,157,67,.28),transparent 60%),linear-gradient(145deg,rgba(55,24,12,.98),rgba(25,13,35,.98));box-shadow:0 0 82px rgba(255,144,55,.42);}
+.gift-celebration-knockout .gift-celebration-emoji{filter:drop-shadow(0 0 22px #ffb45f);animation:giftKnockoutHit .48s ease-in-out infinite alternate;}
+.gift-celebration-cantbreathe .gift-celebration-content{border-color:#ff9de5;background:radial-gradient(circle at 50% 0%,rgba(255,123,221,.26),transparent 60%),linear-gradient(145deg,rgba(52,20,54,.98),rgba(15,14,38,.98));box-shadow:0 0 82px rgba(255,100,214,.4);}
+.gift-celebration-cantbreathe .gift-celebration-emoji{filter:drop-shadow(0 0 20px #ff9de5);animation:giftLaughShake .18s ease-in-out infinite alternate;}
+@keyframes giftToxicDrift{from{transform:translate(-5px,-3px) rotate(-5deg) scale(.96)}to{transform:translate(6px,5px) rotate(5deg) scale(1.1)}}
+@keyframes giftKnockoutHit{0%{transform:scale(.88) rotate(-8deg)}55%{transform:scale(1.18) rotate(7deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes giftLaughShake{from{transform:rotate(-8deg) translateX(-3px)}to{transform:rotate(8deg) translateX(3px)}}
+@media(prefers-reduced-motion:reduce){.gift-celebration-toxiccloud .gift-celebration-emoji,.gift-celebration-bonebreaker .gift-celebration-emoji,.gift-celebration-knockout .gift-celebration-emoji,.gift-celebration-cantbreathe .gift-celebration-emoji{animation:none!important}}
+
 </style>
 
 <style>
