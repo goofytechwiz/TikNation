@@ -366,7 +366,7 @@ function renderLiveGiftCatalog() {
   const root=$("liveGiftCategories");if(!root)return;
   const groups=["Musical","Magical","Special Effects","Visual Effects","Legendary","Surprises"];
   root.innerHTML=(isHost?'<p class="small">Creator preview · Tap any gift to see its animation for free. Preview gifts do not spend coins or notify viewers.</p>':"")+groups.map(category=>'<div class="live-gift-category"><h4>'+category+' Gifts</h4><div class="live-gift-grid">'+Object.entries(LIVE_GIFT_CATALOG).filter(([,gift])=>gift.category===category).map(([code,gift])=>'<button type="button" class="live-gift-choice" data-gift-code="'+code+'"><span class="live-gift-emoji">'+gift.emoji+'</span><span class="live-gift-name">'+gift.name+'</span><span class="live-gift-cost">'+(isHost?"✨ FREE PREVIEW":"🪙 "+gift.cost+" test coins")+'</span></button>').join("")+'</div></div>').join("");
-  root.querySelectorAll("[data-gift-code]").forEach(button=>button.addEventListener("click",()=>{if(isHost){unlockLiveGiftAudio();const code=button.dataset.giftCode;renderLiveGiftEvent({id:"preview-"+Date.now(),gift_code:code,sender_name:"Creator preview"});setLiveGiftStatus("✨ "+LIVE_GIFT_CATALOG[code].name+" preview · Free, no coins spent.","success");}else void sendLiveGift(button.dataset.giftCode,button);}));
+  root.querySelectorAll("[data-gift-code]").forEach(button=>button.addEventListener("click",()=>{const code=button.dataset.giftCode;if(isHost){unlockLiveGiftAudio();const preview={id:"preview-"+Date.now(),gift_code:code,sender_name:"Creator preview"};showLiveGiftCelebration(preview);const feed=$("liveGiftFeed");if(feed){const row=document.createElement("div");row.className="live-gift-feed-item";row.textContent="Creator preview · "+LIVE_GIFT_CATALOG[code].emoji+" "+LIVE_GIFT_CATALOG[code].name+" · FREE";feed.prepend(row);}setLiveGiftStatus("✨ "+LIVE_GIFT_CATALOG[code].name+" preview · Free, no coins spent.","success");}else void sendLiveGift(code,button);}));
 }
 async function refreshLiveGiftBalance() {
   const node=$("liveGiftBalance");if(!node)return;
@@ -507,10 +507,13 @@ function showLiveGiftCelebration(event) {
   window.setTimeout(()=>overlay.remove(),5000);
 }
 function renderLiveGiftEvent(event) {
-  const feed=$("liveGiftFeed");if(!feed)return;const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
+  const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
+  showLiveGiftCelebration(event);
+  const feed=$("liveGiftFeed");if(!feed)return;
   const empty=feed.querySelector(".small");if(empty)feed.innerHTML="";
   const row=document.createElement("div");row.className="live-gift-feed-item";const strong=document.createElement("strong");strong.textContent=event.sender_name||"TikNation member";
-  row.append(strong,document.createTextNode(" sent "+gift.emoji+" "+gift.name+" · "+gift.cost+" test coins"));feed.prepend(row);while(feed.children.length>8)feed.lastElementChild.remove();showLiveGiftCelebration(event);
+  const isPreview=String(event.id||"").startsWith("preview-");
+  row.append(strong,document.createTextNode(isPreview?" previewed "+gift.emoji+" "+gift.name+" · FREE PREVIEW":" sent "+gift.emoji+" "+gift.name+" · "+gift.cost+" test coins"));feed.prepend(row);while(feed.children.length>8)feed.lastElementChild.remove();
 }
 async function pollLiveGiftEvents() {
   if(!activeSession||!user)return;
