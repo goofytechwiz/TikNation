@@ -3404,6 +3404,16 @@ textarea.form-control{
             FORGOT PASSWORD?
         </button>
 
+        <button
+            type="button"
+            id="forgotUsernameButton"
+            class="secondary-button"
+            style="display:none;width:100%;margin-top:10px;"
+            onclick="requestUsernameRecovery()"
+        >
+            FORGOT USERNAME?
+        </button>
+
         <form id="passwordRecoveryPanel" onsubmit="submitPasswordRecovery(event)" style="display:none;margin-top:16px;">
             <p class="muted" style="margin:0 0 12px;">Choose a new password for your TikNation account. Use at least 8 characters.</p>
             <label for="recoveryNewPassword">New password</label>
@@ -3884,9 +3894,11 @@ function switchAuthMode(mode){
     const authTabs = document.querySelector("#authModal .auth-tabs");
     const recoveryPanel = document.getElementById("passwordRecoveryPanel");
     const forgotPasswordButton = document.getElementById("forgotPasswordButton");
+    const forgotUsernameButton = document.getElementById("forgotUsernameButton");
     if(authTabs) authTabs.style.display = "";
     if(recoveryPanel) recoveryPanel.style.display = "none";
     if(forgotPasswordButton) forgotPasswordButton.style.display = mode === "signin" ? "block" : "none";
+    if(forgotUsernameButton) forgotUsernameButton.style.display = mode === "signin" ? "block" : "none";
 
     const resendButton = document.getElementById("resendConfirmationButton");
     if(resendButton) resendButton.style.display = mode === "signin" ? "block" : "none";
@@ -3954,6 +3966,43 @@ function switchAuthMode(mode){
     }
 }
 
+async function requestUsernameRecovery(){
+    const message = document.getElementById("authMessage");
+    const emailInput = document.getElementById("authEmail");
+    const button = document.getElementById("forgotUsernameButton");
+    const email = emailInput ? emailInput.value.trim() : "";
+
+    message.className = "auth-message";
+    if(!email || !email.includes("@")){
+        message.className = "auth-message error";
+        message.textContent = "Enter the email address registered to your TikNation account in the field above.";
+        if(emailInput) emailInput.focus();
+        return;
+    }
+
+    if(button){ button.disabled = true; button.textContent = "REQUESTING…"; }
+    try{
+        const {data,error} = await supabaseClient.functions.invoke("tiknation-account-recovery",{
+            body:{action:"forgot_username",identifier:email}
+        });
+        if(error){
+            let detail = error.message || "We couldn't request username recovery.";
+            try{
+                const payload = await error.context?.json();
+                if(payload?.error) detail = payload.error;
+            }catch(_ignored){}
+            throw new Error(detail);
+        }
+        message.className = "auth-message success";
+        message.textContent = data?.message || "If an account matches that email, username recovery instructions will be sent. Check your inbox and spam folder.";
+    }catch(error){
+        message.className = "auth-message error";
+        message.textContent = error.message || "Username recovery is temporarily unavailable. Please try again later.";
+    }finally{
+        if(button){ button.disabled = false; button.textContent = "FORGOT USERNAME?"; }
+    }
+}
+
 async function requestPasswordReset(){
     const message = document.getElementById("authMessage");
     const emailInput = document.getElementById("authEmail");
@@ -3996,7 +4045,7 @@ function openPasswordRecovery(){
     modal.classList.add("active");
     if(title) title.textContent = "Choose a New Password";
     if(tabs) tabs.style.display = "none";
-    ["signupAgeGate","signupFields","signupMethodChoices","authEmailGroup","authPasswordGroup","authSubmit","resendConfirmationButton","forgotPasswordButton"].forEach(function(id){
+    ["signupAgeGate","signupFields","signupMethodChoices","authEmailGroup","authPasswordGroup","authSubmit","resendConfirmationButton","forgotPasswordButton","forgotUsernameButton"].forEach(function(id){
         const node = document.getElementById(id);
         if(node) node.style.display = "none";
     });
