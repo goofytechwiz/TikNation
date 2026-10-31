@@ -299,6 +299,7 @@ Deno.serve(async (req: Request) => {
         .gte("created_at", startedAt.toISOString())
         .lte("created_at", endAt.toISOString())
         .order("created_at", { ascending: true })
+        .order("id", { ascending: true })
         .range(offset, offset + 999);
       if (eventsError) return { error: "Could not calculate the verified battle score.", status: 500 };
       for (const event of events ?? []) {
@@ -363,12 +364,10 @@ Deno.serve(async (req: Request) => {
     if (inviteError) return json({ error: "Could not load the battle invitation." }, 500);
     if (!invite || ![invite.host_id, invite.opponent_id].includes(user.id)) return json({ error: "You cannot view this battle score." }, 403);
     const result = await calculateBattleScore(inviteId);
-    if ("error" in result) return json({ error: result.error }, result.status || 500);
-    if (!result.score) return json({ error: "Could not calculate the battle score." }, 500);
+    if (result.error) return json({ error: result.error }, result.status || 500);
     const { data: profiles } = await admin.from("profiles").select("id,username,display_name").in("id", [invite.host_id, invite.opponent_id]);
     const names = new Map((profiles ?? []).map((p) => [p.id, p.display_name || p.username || "TikNation member"]));
-    const winnerId = "winner_id" in result.score ? result.score.winner_id : null;
-    return json({ score: { ...result.score, host_name: names.get(invite.host_id) || "Host", opponent_name: names.get(invite.opponent_id) || "Opponent", winner_name: winnerId ? names.get(winnerId) || null : null } });
+    return json({ score: { ...result.score, host_name: names.get(invite.host_id) || "Host", opponent_name: names.get(invite.opponent_id) || "Opponent", winner_name: names.get(result.score.winner_id) || null } });
   }
 
   if (action === "battle_decide") {
@@ -453,7 +452,6 @@ Deno.serve(async (req: Request) => {
     if (!session) return json({ error: "This broadcast has ended or is unavailable." }, 404);
     const isCreator = session.creator_id === user.id;
     let isApprovedGuest = false;
-    let isApprovedBattle = false;
     if (!isCreator) {
       const { data: guestRequest, error: guestRequestError } = await admin.from("live_guest_requests")
         .select("id,inviter_id").eq("session_id", sessionId).eq("requester_id", user.id)
@@ -464,6 +462,7 @@ Deno.serve(async (req: Request) => {
         .select("id,round_seconds,decided_at").eq("session_id", sessionId).eq("opponent_id", user.id)
         .eq("status", "accepted").maybeSingle();
       if (battleInviteError) return json({ error: "Could not verify Live Battle access. Please reconnect." }, 500);
+      let isApprovedBattle = false;
       if (battleInvite?.decided_at) {
         const battleEnd = new Date(new Date(battleInvite.decided_at).getTime() + Math.max(30, Math.min(600, Number(battleInvite.round_seconds) || 180)) * 1000);
         isApprovedBattle = battleEnd.getTime() > Date.now();
