@@ -456,6 +456,14 @@ function unlockLiveGiftAudio() {
 }
 function playLiveGiftSound(event, gift) {
   try {
+    if (event.gift_code === "asshole_of_death") {
+      // Real toilet-flush recording by DrTrumpet, CC BY-SA 4.0.
+      const flushAudio = new Audio("https://upload.wikimedia.org/wikipedia/commons/4/4b/Toilet-flush.ogg");
+      flushAudio.preload = "auto";
+      flushAudio.volume = 0.9;
+      flushAudio.play().catch(error => console.warn("Flush recording could not play:", error));
+      return;
+    }
     unlockLiveGiftAudio();
     const ctx = liveGiftAudioContext;
     if (!ctx) return;
