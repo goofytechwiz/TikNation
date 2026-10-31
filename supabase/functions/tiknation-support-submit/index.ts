@@ -43,15 +43,23 @@ Deno.serve(async (req: Request) => {
     const admin = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
     const { data: ticket, error } = await admin.from("support_tickets").insert({
       user_id: user.id, contact_email: user.email ?? null, username_label: username || null,
-      category, summary, priority: category === "Safety report" ? "high" : "normal",
+      category, summary, priority: category === "Safety report" ? "urgent" : "normal",
     }).select("id,ticket_number,category,status,created_at").single();
     if (error || !ticket) {
       console.error("Support ticket creation failed:", error?.code ?? "unknown");
       return json({ error: "Your ticket could not be created right now. Please try again." }, 500);
     }
+    const acknowledgment = category === "Safety report"
+      ? "Automated acknowledgment: Your safety report has been received and placed at urgent priority for human review. This message is automatic; a support person has not necessarily reviewed your report yet. If someone is in immediate danger, contact local emergency services. Never send passwords or one-time codes."
+      : "Automated acknowledgment: Your support request has been received and saved. This message is automatic; a support person has not necessarily reviewed your ticket yet. You can reply here to add details. Never send passwords or one-time codes.";
+    const { error: acknowledgmentError } = await admin.from("support_messages").insert({
+      ticket_id: ticket.id, sender_id: user.id, sender_role: "system",
+      message: acknowledgment, is_internal: false,
+    });
+    if (acknowledgmentError) console.error("Support acknowledgment write failed:", acknowledgmentError.code ?? "unknown");
     const { error: auditError } = await admin.from("support_audit").insert({
       ticket_id: ticket.id, actor_id: user.id, action: "ticket_created",
-      details: { category, source: "user_portal" },
+      details: { category, priority: ticket.priority, source: "user_portal", acknowledgment_created: !acknowledgmentError },
     });
     if (auditError) {
       console.error("Support audit write failed:", auditError.code ?? "unknown");
