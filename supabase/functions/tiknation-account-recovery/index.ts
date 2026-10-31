@@ -2,7 +2,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": "https://goofytechwiz.github.io",
     "Access-Control-Allow-Headers":
         "authorization, x-client-info, apikey, content-type",
           "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -46,46 +46,10 @@ const corsHeaders = {
                                                                                                               });
 
                                                                                                                   if (action === "login") {
-                                                                                                                        if (!identifier || !password) {
-                                                                                                                                return json({ error: "Enter your username or email and password." }, 400);
-                                                                                                                                      }
+  return json({ error: "Use the protected sign-in service for account access." }, 410);
+}
 
-                                                                                                                                            let email = identifier;
-
-                                                                                                                                                  if (!identifier.includes("@")) {
-                                                                                                                                                          const { data: profile, error } = await admin
-                                                                                                                                                                    .from("profiles")
-                                                                                                                                                                              .select("id")
-                                                                                                                                                                                        .ilike("username", identifier)
-                                                                                                                                                                                                  .maybeSingle();
-
-                                                                                                                                                                                                          if (error || !profile) {
-                                                                                                                                                                                                                    return json({ error: "Invalid username/email or password." }, 401);
-                                                                                                                                                                                                                            }
-
-                                                                                                                                                                                                                                    const { data: userData, error: userError } =
-                                                                                                                                                                                                                                              await admin.auth.admin.getUserById(profile.id);
-
-                                                                                                                                                                                                                                                      if (userError || !userData.user?.email) {
-                                                                                                                                                                                                                                                                return json({ error: "Invalid username/email or password." }, 401);
-                                                                                                                                                                                                                                                                        }
-
-                                                                                                                                                                                                                                                                                email = userData.user.email;
-                                                                                                                                                                                                                                                                                      }
-
-                                                                                                                                                                                                                                                                                            const { data, error } = await publicClient.auth.signInWithPassword({
-                                                                                                                                                                                                                                                                                                    email,
-                                                                                                                                                                                                                                                                                                            password,
-                                                                                                                                                                                                                                                                                                                  });
-
-                                                                                                                                                                                                                                                                                                                        if (error || !data.session) {
-                                                                                                                                                                                                                                                                                                                                return json({ error: "Invalid username/email or password." }, 401);
-                                                                                                                                                                                                                                                                                                                                      }
-
-                                                                                                                                                                                                                                                                                                                                            return json({ session: data.session, user: data.user });
-                                                                                                                                                                                                                                                                                                                                                }
-
-                                                                                                                                                                                                                                                                                                                                                    if (action === "forgot_password") {
+if (action === "forgot_password") {
                                                                                                                                                                                                                                                                                                                                                           if (!identifier || !identifier.includes("@")) {
                                                                                                                                                                                                                                                                                                                                                                   return json({ error: "Enter your registered email address." }, 400);
                                                                                                                                                                                                                                                                                                                                                                         }
