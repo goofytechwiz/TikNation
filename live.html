@@ -359,10 +359,9 @@ async function giftApi(action, extra={}) {
 function setLiveGiftStatus(message, type="") { const node=$("liveGiftStatus");if(node){node.textContent=message;node.className="live-gift-status"+(type?" "+type:"");} }
 function renderLiveGiftCatalog() {
   const root=$("liveGiftCategories");if(!root)return;
-  if(isHost){root.innerHTML='<p class="small">You are hosting this live. Viewers can send you gifts, and their celebrations will appear below.</p>';return;}
   const groups=["Musical","Magical","Special Effects","Visual Effects","Legendary","Surprises"];
-  root.innerHTML=groups.map(category=>'<div class="live-gift-category"><h4>'+category+' Gifts</h4><div class="live-gift-grid">'+Object.entries(LIVE_GIFT_CATALOG).filter(([,gift])=>gift.category===category).map(([code,gift])=>'<button type="button" class="live-gift-choice" data-gift-code="'+code+'"><span class="live-gift-emoji">'+gift.emoji+'</span><span class="live-gift-name">'+gift.name+'</span><span class="live-gift-cost">🪙 '+gift.cost+' test coins</span></button>').join("")+'</div></div>').join("");
-  root.querySelectorAll("[data-gift-code]").forEach(button=>button.addEventListener("click",()=>void sendLiveGift(button.dataset.giftCode,button)));
+  root.innerHTML=(isHost?'<p class="small">Creator preview · Tap any gift to see its animation for free. Preview gifts do not spend coins or notify viewers.</p>':"")+groups.map(category=>'<div class="live-gift-category"><h4>'+category+' Gifts</h4><div class="live-gift-grid">'+Object.entries(LIVE_GIFT_CATALOG).filter(([,gift])=>gift.category===category).map(([code,gift])=>'<button type="button" class="live-gift-choice" data-gift-code="'+code+'"><span class="live-gift-emoji">'+gift.emoji+'</span><span class="live-gift-name">'+gift.name+'</span><span class="live-gift-cost">'+(isHost?"✨ FREE PREVIEW":"🪙 "+gift.cost+" test coins")+'</span></button>').join("")+'</div></div>').join("");
+  root.querySelectorAll("[data-gift-code]").forEach(button=>button.addEventListener("click",()=>{if(isHost){unlockLiveGiftAudio();const code=button.dataset.giftCode;renderLiveGiftEvent({id:"preview-"+Date.now(),gift_code:code,sender_name:"Creator preview"});setLiveGiftStatus("✨ "+LIVE_GIFT_CATALOG[code].name+" preview · Free, no coins spent.","success");}else void sendLiveGift(button.dataset.giftCode,button);}));
 }
 async function refreshLiveGiftBalance() {
   const node=$("liveGiftBalance");if(!node)return;
