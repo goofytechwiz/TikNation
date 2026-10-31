@@ -1,0 +1,89 @@
+alter table public.gift_transactions
+  add column if not exists recipient_credited_at timestamptz;
+
+insert into public.gift_wallets (user_id, balance, starter_granted)
+select distinct recipient_id, 0, false
+from public.gift_transactions
+where recipient_credited_at is null
+on conflict (user_id) do nothing;
+
+with uncredited as (
+  select recipient_id, sum(coin_cost)::integer as total_coins
+  from public.gift_transactions
+  where recipient_credited_at is null
+  group by recipient_id
+)
+update public.gift_wallets as wallet
+set balance = wallet.balance + uncredited.total_coins,
+    updated_at = now()
+from uncredited
+where wallet.user_id = uncredited.recipient_id;
+
+update public.gift_transactions
+set recipient_credited_at = now()
+where recipient_credited_at is null;
+
+create or replace function public.send_test_gift(
+  p_sender_id uuid,
+  p_recipient_id uuid,
+  p_gift_code text,
+  p_request_id uuid
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path to 'pg_catalog', 'public'
+as $function$
+declare
+  v_cost integer;
+  v_balance integer;
+  v_recipient_balance integer;
+  v_existing public.gift_transactions%rowtype;
+  v_gift_id uuid;
+begin
+  if p_sender_id is null or p_recipient_id is null or p_request_id is null then raise exception 'invalid_request'; end if;
+  if p_sender_id = p_recipient_id then raise exception 'cannot_gift_self'; end if;
+  if not exists (select 1 from public.profiles where id = p_recipient_id) then raise exception 'recipient_profile_not_found'; end if;
+  if exists (select 1 from public.user_blocks where (blocker_id=p_sender_id and blocked_id=p_recipient_id) or (blocker_id=p_recipient_id and blocked_id=p_sender_id)) then raise exception 'gifting_unavailable'; end if;
+
+  v_cost := case p_gift_code
+    when 'heart_pulse' then 5 when 'melody_note' then 5 when 'magic_spark' then 10 when 'heartbeat_beat' then 10
+    when 'mystic_portal' then 25 when 'thunder_clap' then 25 when 'mystery_reveal' then 25
+    when 'creator_crown' then 50 when 'symphony' then 50 when 'prism_wave' then 50
+    when 'dragon_spirit' then 75 when 'galaxy_gift' then 100 when 'infinity_crystal' then 150
+    when 'dragon_ball' then 75 when 'changing_face' then 25 when 'clouds_of_mystery' then 50
+    when 'hammer_of_pain' then 50 when 'thunder_ass' then 69 when 'storm_of_the_world' then 100
+    when 'lightning_bolts_of_doom' then 125 when 'book_of_death' then 150 when 'dream_makers' then 100
+    when 'phoenix_rebirth' then 175 when 'treasure_explosion' then 150 when 'meteor_mayhem' then 125
+    when 'disco_raccoon' then 75 when 'portal_party' then 100 when 'blast_from_my_ass' then 69
+    when 'asshole_of_death' then 199 when 'golden_throne' then 125 when 'chicken_of_doom' then 75
+    when 'cheesepocalypse' then 99 when 'skeleton_disco' then 100 when 'dragons_revenge' then 200
+    when 'stinky_fart_or_death' then 69 when 'madafaka_rattle' then 69
+    when 'toxic_cloud' then 49 when 'bone_breaker' then 49 when 'knockout' then 69 when 'cant_breathe' then 69
+    else null end;
+  if v_cost is null then raise exception 'invalid_gift'; end if;
+
+  perform pg_advisory_xact_lock(hashtextextended(p_sender_id::text||':'||p_request_id::text,0));
+  select * into v_existing from public.gift_transactions where sender_id=p_sender_id and request_id=p_request_id;
+  if found then
+    if v_existing.recipient_id<>p_recipient_id or v_existing.gift_code<>p_gift_code then raise exception 'request_id_conflict'; end if;
+    select balance into v_balance from public.gift_wallets where user_id=p_sender_id;
+    select balance into v_recipient_balance from public.gift_wallets where user_id=p_recipient_id;
+    return jsonb_build_object('success',true,'duplicate',true,'gift_id',v_existing.id,'gift_code',v_existing.gift_code,'coin_cost',v_existing.coin_cost,'balance',coalesce(v_balance,0),'recipient_balance',coalesce(v_recipient_balance,0));
+  end if;
+
+  perform public.ensure_test_gift_wallet(p_sender_id);
+  insert into public.gift_wallets(user_id,balance,starter_granted) values(p_recipient_id,0,false) on conflict(user_id) do nothing;
+  select balance into v_balance from public.gift_wallets where user_id=p_sender_id for update;
+  if v_balance<v_cost then raise exception 'insufficient_test_coins'; end if;
+  update public.gift_wallets set balance=balance-v_cost,updated_at=now() where user_id=p_sender_id returning balance into v_balance;
+  insert into public.gift_transactions(sender_id,recipient_id,gift_code,coin_cost,request_id,recipient_credited_at)
+  values(p_sender_id,p_recipient_id,p_gift_code,v_cost,p_request_id,now()) returning id into v_gift_id;
+  update public.gift_wallets set balance=balance+v_cost,updated_at=now() where user_id=p_recipient_id returning balance into v_recipient_balance;
+
+  return jsonb_build_object('success',true,'duplicate',false,'gift_id',v_gift_id,'gift_code',p_gift_code,'coin_cost',v_cost,'balance',v_balance,'recipient_balance',v_recipient_balance);
+end;
+$function$;
+
+revoke execute on function public.send_test_gift(uuid,uuid,text,uuid) from public, anon, authenticated;
+grant execute on function public.send_test_gift(uuid,uuid,text,uuid) to service_role;
