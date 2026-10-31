@@ -530,7 +530,7 @@ const LIVE_GIFT_CATALOG = {
   skeleton_disco:{name:"Skeleton Disco",emoji:"💀🪩",category:"Musical",cost:100},
   dragons_revenge:{name:"The Dragon's Revenge",emoji:"🐉🔥",category:"Legendary",cost:200}
 };
-let liveGiftTimer = null, liveGiftCursor = null, seenLiveGiftIds = new Set(), liveGiftRequestBusy = false;
+let liveGiftTimer = null, liveGiftCursor = null, liveGiftCursorId = null, seenLiveGiftIds = new Set(), liveGiftRequestBusy = false;
 function notice(message, type=""){const n=$("notice");n.textContent=message;n.className="status"+(type?" "+type:"");}
 function esc(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 async function api(action, extra={}){const {data:{session}}=await supabase.auth.getSession();if(!session?.access_token)throw new Error("Please sign in to use TikNation Live.");const res=await fetch(API,{method:"POST",headers:{"Authorization":"Bearer "+session.access_token,"apikey":SUPABASE_PUBLISHABLE_KEY,"Content-Type":"application/json"},body:JSON.stringify({action,...extra})});let body={};try{body=await res.json()}catch{}if(!res.ok)throw new Error(body.error||"TikNation Live request failed.");return body;}
@@ -832,15 +832,15 @@ function renderLiveGiftEvent(event) {
 }
 async function pollLiveGiftEvents() {
   if(!activeSession||!user)return;
-  try{const result=await giftApi("live_events",{session_id:activeSession.id,after:liveGiftCursor});updateLiveGiftBattleTarget(result.battle||null);for(const event of result.events||[]){if(seenLiveGiftIds.has(event.id))continue;seenLiveGiftIds.add(event.id);renderLiveGiftEvent(event);if(event.created_at&&(!liveGiftCursor||event.created_at>liveGiftCursor))liveGiftCursor=event.created_at;}}
+  try{const result=await giftApi("live_events",{session_id:activeSession.id,after:liveGiftCursor,...(liveGiftCursorId?{after_id:liveGiftCursorId}:{})});updateLiveGiftBattleTarget(result.battle||null);for(const event of result.events||[]){if(seenLiveGiftIds.has(event.id))continue;seenLiveGiftIds.add(event.id);renderLiveGiftEvent(event);if(event.created_at&&(!liveGiftCursor||event.created_at>liveGiftCursor||(event.created_at===liveGiftCursor&&String(event.id)>String(liveGiftCursorId||"")))){liveGiftCursor=event.created_at;liveGiftCursorId=event.id;}}}
   catch(error){if(!/ended or is unavailable/i.test(error.message))console.warn("Live gift feed:",error.message);}
 }
 function startLiveGiftPolling() {
-  stopLiveGiftPolling();const giftPanel=$("liveGiftPanel");if(giftPanel){giftPanel.classList.add("hide");giftPanel.classList.remove("is-open");}liveGiftCursor="1970-01-01T00:00:00.000Z";seenLiveGiftIds=new Set();
+  stopLiveGiftPolling();const giftPanel=$("liveGiftPanel");if(giftPanel){giftPanel.classList.add("hide");giftPanel.classList.remove("is-open");}liveGiftCursor="1970-01-01T00:00:00.000Z";liveGiftCursorId=null;seenLiveGiftIds=new Set();
   $("liveGiftFeed").innerHTML='<div class="small">Gifts sent during this live will appear here.</div>';renderLiveGiftCatalog();void refreshLiveGiftBalance();void pollLiveGiftEvents();liveGiftTimer=window.setInterval(()=>void pollLiveGiftEvents(),3000);
 }
 function stopLiveGiftPolling() {
-  if(liveGiftTimer)window.clearInterval(liveGiftTimer);liveGiftTimer=null;liveGiftCursor=null;seenLiveGiftIds=new Set();const panel=$("liveGiftPanel");if(panel){panel.classList.add("hide");panel.classList.remove("is-open");}
+  if(liveGiftTimer)window.clearInterval(liveGiftTimer);liveGiftTimer=null;liveGiftCursor=null;liveGiftCursorId=null;seenLiveGiftIds=new Set();const panel=$("liveGiftPanel");if(panel){panel.classList.add("hide");panel.classList.remove("is-open");}
 }
 async function sendLiveGift(giftCode,button) {
   if(liveGiftRequestBusy||!activeSession)return;const gift=LIVE_GIFT_CATALOG[giftCode];if(!gift)return;
