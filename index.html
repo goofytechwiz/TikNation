@@ -1862,6 +1862,24 @@ textarea.form-control{
     .tn-password-toggle{min-width:56px;padding:0 9px;}
     #passwordRecoveryPanel .form-control{font-size:16px;}
 }
+
+/* Homepage interaction and accessibility finishing pass. */
+#home .tn-public-explore-grid .tn-explore-card{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+#home .tn-public-explore-grid .tn-explore-card:focus-visible{outline:2px solid #70e8ff;outline-offset:4px;border-color:rgba(112,232,255,.7);box-shadow:0 0 0 4px rgba(112,232,255,.12)}
+#home .tn-founder-quotes blockquote:focus-within{border-color:rgba(126,234,255,.5)!important}
+#home .tn-landing-actions button:focus-visible,#home .tn-join-guide button:focus-visible{outline:2px solid #70e8ff;outline-offset:3px}
+#home .tn-explore-card-copy{max-width:52ch}
+@media(max-width:650px){
+ #home .tn-public-explore-grid{gap:12px}
+ #home .tn-public-explore-grid .tn-explore-card{min-height:0;padding:20px}
+ #home .tn-explore-card .card-icon{margin-bottom:10px}
+ #home .tn-explore-card-link{padding-top:12px}
+}
+@media(prefers-reduced-motion:reduce){
+ #home .tn-public-explore-grid .tn-explore-card,#home .tn-founder-quotes blockquote{transition:none}
+ #home .tn-founder-quotes blockquote:hover{transform:none}
+}
+
 </style>
 
 <style>
