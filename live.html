@@ -462,7 +462,7 @@ function playLiveGiftSound(event, gift) {
       flushAudio.preload = "auto";
       flushAudio.volume = 0.9;
       flushAudio.play().catch(error => console.warn("Flush recording could not play:", error));
-      return;
+      return flushAudio;
     }
     unlockLiveGiftAudio();
     const ctx = liveGiftAudioContext;
@@ -670,8 +670,19 @@ function showLiveGiftCelebration(event) {
     overlay.querySelectorAll(".dragon-fire,.dragon-fire-core").forEach((flame,index)=>flame.animate([{transform:"scaleX(.72)",opacity:.72},{transform:"scaleX(1.12)",opacity:1},{transform:"scaleX(.72)",opacity:.72}],{duration:index?250:340,iterations:14}));
     overlay.querySelectorAll(".live-gift-spark").forEach(spark=>spark.animate([{opacity:0,transform:"translate(0,0) scale(.25)"},{opacity:1,offset:.12},{opacity:0,transform:"translate("+spark.style.getPropertyValue("--dx")+","+spark.style.getPropertyValue("--dy")+") scale(0)"}],{duration:1500+Math.random()*500,easing:"cubic-bezier(.12,.7,.25,1)",fill:"both"}));
   }
-  playLiveGiftSound(event,gift);
-  window.setTimeout(()=>overlay.remove(),5000);
+  const giftSound = playLiveGiftSound(event,gift);
+  if (event.gift_code === "asshole_of_death" && giftSound) {
+    const keepSceneUntilFlushEnds = () => {
+      const duration = Number.isFinite(giftSound.duration) ? giftSound.duration : 0;
+      const remaining = Math.max(6500, Math.min(22000, (duration - giftSound.currentTime) * 1000 + 450));
+      window.setTimeout(() => overlay.remove(), remaining);
+    };
+    if (Number.isFinite(giftSound.duration) && giftSound.duration > 0) keepSceneUntilFlushEnds();
+    else giftSound.addEventListener("loadedmetadata", keepSceneUntilFlushEnds, { once:true });
+    giftSound.addEventListener("ended", () => overlay.remove(), { once:true });
+  } else {
+    window.setTimeout(()=>overlay.remove(),5000);
+  }
 }
 function renderLiveGiftEvent(event) {
   const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
