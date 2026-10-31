@@ -283,7 +283,13 @@ Deno.serve(async (req: Request) => {
     if (error) return json({ error: "Could not refresh the broadcast connection." }, 500);
     if (!session) return json({ error: "This broadcast has ended or is unavailable." }, 404);
     const isCreator = session.creator_id === user.id;
+    let isApprovedGuest = false;
     if (!isCreator) {
+      const { data: guestRequest, error: guestRequestError } = await admin.from("live_guest_requests")
+        .select("id,inviter_id").eq("session_id", sessionId).eq("requester_id", user.id)
+        .eq("status", "approved").maybeSingle();
+      if (guestRequestError) return json({ error: "Could not verify guest-stage access. Please reconnect." }, 500);
+      if (guestRequest && (!guestRequest.inviter_id || guestRequest.inviter_id === session.creator_id)) isApprovedGuest = true;
       const { data: blockRows, error: blockError } = await admin.from("user_blocks")
         .select("blocker_id")
         .or("and(blocker_id.eq." + user.id + ",blocked_id.eq." + session.creator_id + "),and(blocker_id.eq." + session.creator_id + ",blocked_id.eq." + user.id + ")")
@@ -297,7 +303,7 @@ Deno.serve(async (req: Request) => {
       if (restrictionError) return json({ error: "Could not verify Live access. Please try again." }, 500);
       if (restrictions?.length) return json({ error: "The creator has restricted your access to this Live." }, 403);
     }
-    const credentials = await issueToken(session.room_name, isCreator, true);
+    const credentials = await issueToken(session.room_name, isCreator || isApprovedGuest, true);
     return json(credentials);
   }
 
