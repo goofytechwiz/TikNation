@@ -25,11 +25,15 @@ jobs:
             echo "No Edge Function entrypoints found."
             exit 1
           fi
-          # Check LIVE last and continue after individual failures so every
-          # function is checked and the complete failure list is visible.
-          mapfile -t functions < <(
-            printf '%s\n' "${functions[@]}" | grep -v '/tiknation-live/index.ts
-
+          # Continue after failures so every function is checked and the full failure list is visible.
+          failed=0
+          for function in "${functions[@]}"; do
+            echo "Type-checking ${function}"
+            if ! deno check "${function}"; then
+              failed=1
+            fi
+          done
+          exit "$failed"
   browser-script-syntax:
     runs-on: ubuntu-latest
     steps:
