@@ -9497,6 +9497,62 @@ if ("serviceWorker" in navigator) {
 .tn-host-small{margin-top:8px;color:#89899f;font-size:11px;line-height:1.5}
 .tn-host-answer{display:block;margin-top:10px;text-align:center}
 @media(max-width:420px){.tn-host-panel-actions{grid-template-columns:1fr}.tn-host-panel{right:10px;bottom:80px}}
+
+/* Per-gift signature effects for profile gifts. Style keys are shared with the 34-item catalog. */
+.gift-celebration-pulse .gift-celebration-emoji{animation:profileGiftPulse .72s ease-in-out infinite alternate;}
+.gift-celebration-notes .gift-celebration-emoji{animation:profileGiftNotes 1.1s ease-in-out infinite;}
+.gift-celebration-grand .gift-celebration-content{border-color:#f5d78b;box-shadow:0 0 90px #a88aff99,0 0 30px #ffe4a855;}
+.gift-celebration-spark .gift-celebration-emoji{animation:profileGiftSpark .55s ease-in-out infinite alternate;}
+.gift-celebration-portal .gift-celebration-orbit{border-style:dashed;animation:profileGiftPortal 3s linear infinite;}
+.gift-celebration-galaxy .gift-celebration-content{background:radial-gradient(circle at 50% 20%,#45327b,#10152d 70%);box-shadow:0 0 100px #695cffaa;}
+.gift-celebration-burst .gift-celebration-content{animation:profileGiftThunder .85s ease-in-out infinite alternate;}
+.gift-celebration-prism .gift-celebration-content{animation:profileGiftPrism 2.4s linear infinite;}
+.gift-celebration-surprise .gift-celebration-emoji{animation:profileGiftFlip 1.2s ease-in-out infinite;}
+.gift-celebration-crown .gift-celebration-content{border:2px solid #ffdf7e;box-shadow:0 0 95px #ffd34d88;}
+.gift-celebration-infinity .gift-celebration-emoji{animation:profileGiftCrystal 3.2s ease-in-out infinite;}
+.gift-celebration-dragon .gift-celebration-emoji{animation:profileGiftDragon 1.2s ease-in-out infinite alternate;}
+.gift-celebration-clouds .gift-celebration-content{box-shadow:0 0 100px #b8d7ff99;animation:profileGiftCloud 3s ease-in-out infinite alternate;}
+.gift-celebration-hammer .gift-celebration-content{animation:profileGiftHammer 1.15s cubic-bezier(.3,.7,.2,1) infinite;}
+.gift-celebration-thunderass .gift-celebration-content{animation:profileGiftThunder .7s ease-in-out infinite alternate;}
+.gift-celebration-storm .gift-celebration-content{animation:profileGiftStorm .9s ease-in-out infinite alternate;}
+.gift-celebration-lightning .gift-celebration-content{animation:profileGiftLightning 1.1s steps(2,end) infinite;}
+.gift-celebration-book .gift-celebration-emoji{animation:profileGiftBook 1.5s ease-in-out infinite alternate;}
+.gift-celebration-dreammakers .gift-celebration-content{animation:profileGiftDream 2.2s ease-in-out infinite alternate;}
+.gift-celebration-phoenix .gift-celebration-emoji{animation:profileGiftPhoenix 1.7s ease-in-out infinite alternate;}
+.gift-celebration-treasure .gift-celebration-content{animation:profileGiftTreasure 1.3s ease-out infinite alternate;}
+.gift-celebration-meteor .gift-celebration-content{animation:profileGiftMeteor 1.5s ease-in-out infinite;}
+.gift-celebration-raccoon .gift-celebration-emoji{animation:profileGiftDisco .55s steps(2,end) infinite;}
+.gift-celebration-portalparty .gift-celebration-orbit{animation:profileGiftPortal 1.8s linear infinite;}
+.gift-celebration-blastass .gift-celebration-content{animation:profileGiftPop .8s ease-in-out infinite alternate;}
+.gift-celebration-deathass .gift-celebration-content{animation:profileGiftStorm .8s ease-in-out infinite alternate;}
+.gift-celebration-throne .gift-celebration-content{border:2px solid #ffdb70;box-shadow:0 0 100px #e6b83c99;animation:profileGiftRoyal 1.5s ease-in-out infinite alternate;}
+.gift-celebration-chicken .gift-celebration-emoji{animation:profileGiftChicken .65s ease-in-out infinite alternate;}
+.gift-celebration-cheese .gift-celebration-content{animation:profileGiftMeteor 1.3s ease-in-out infinite;box-shadow:0 0 95px #ffdf70aa;}
+.gift-celebration-skeleton .gift-celebration-emoji{animation:profileGiftDisco .48s steps(2,end) infinite;}
+.gift-celebration-dragonrevenge .gift-celebration-content{animation:profileGiftDragon 1.1s ease-in-out infinite alternate;box-shadow:0 0 110px #ff612e99;}
+@keyframes profileGiftPulse{to{transform:scale(1.22) rotate(5deg)}}
+@keyframes profileGiftNotes{0%,100%{transform:translateY(0) rotate(-10deg)}50%{transform:translateY(-14px) rotate(12deg)}}
+@keyframes profileGiftSpark{to{transform:scale(1.28) rotate(16deg);filter:brightness(1.8) drop-shadow(0 0 28px #fff)}}
+@keyframes profileGiftPortal{to{transform:rotate(360deg)}}
+@keyframes profileGiftThunder{0%{transform:translateX(-3px) scale(.98)}35%{transform:translateX(4px) scale(1.04)}70%{transform:translateX(-2px)}100%{transform:translateX(2px) scale(1.02)}}
+@keyframes profileGiftPrism{to{filter:hue-rotate(360deg)}}
+@keyframes profileGiftFlip{0%,100%{transform:rotateY(0) scale(1)}50%{transform:rotateY(180deg) scale(1.15)}}
+@keyframes profileGiftCrystal{0%,100%{transform:rotate(-12deg) scale(.95)}50%{transform:rotate(12deg) scale(1.18)}}
+@keyframes profileGiftDragon{to{transform:scale(1.1) rotate(-1deg);filter:brightness(1.25) drop-shadow(0 0 24px #ff873c)}}
+@keyframes profileGiftCloud{to{transform:translateX(9px) translateY(-7px)}}
+@keyframes profileGiftHammer{0%,70%,100%{transform:translateY(0)}82%{transform:translateY(12px) scale(1.04)}90%{transform:translateY(-4px)}}
+@keyframes profileGiftStorm{to{transform:rotate(2deg) scale(1.035)}}
+@keyframes profileGiftLightning{0%,100%{filter:brightness(1)}50%{filter:brightness(1.8) contrast(1.2)}}
+@keyframes profileGiftBook{to{transform:perspective(200px) rotateY(-24deg) scale(1.08)}}
+@keyframes profileGiftDream{to{transform:translateY(-12px);filter:brightness(1.2)}}
+@keyframes profileGiftPhoenix{to{transform:translateY(-18px) scale(1.16);filter:drop-shadow(0 0 30px #ff9c38)}}
+@keyframes profileGiftTreasure{to{transform:scale(1.09);box-shadow:0 0 130px #ffd86eaa}}
+@keyframes profileGiftMeteor{0%,100%{transform:translateX(0) rotate(0)}50%{transform:translateX(8px) rotate(-2deg)}}
+@keyframes profileGiftDisco{0%{transform:rotate(-14deg) translateY(0)}50%{transform:rotate(14deg) translateY(-8px)}100%{transform:rotate(-14deg) translateY(0)}}
+@keyframes profileGiftPop{to{transform:scale(1.12) rotate(2deg)}}
+@keyframes profileGiftRoyal{to{transform:translateY(-9px) scale(1.04)}}
+@keyframes profileGiftChicken{to{transform:translateX(8px) rotate(13deg)}}
+@media(prefers-reduced-motion:reduce){.gift-celebration-content,.gift-celebration-emoji,.gift-celebration-orbit{animation:none!important}}
 </style>
 
 <!-- TikNation Host: a site guide and interactive show presenter -->
