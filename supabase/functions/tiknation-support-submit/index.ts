@@ -44,7 +44,7 @@ Deno.serve(async (req: Request) => {
     const { data: ticket, error } = await admin.from("support_tickets").insert({
       user_id: user.id, contact_email: user.email ?? null, username_label: username || null,
       category, summary, priority: category === "Safety report" ? "urgent" : "normal",
-    }).select("id,ticket_number,category,status,created_at").single();
+    }).select("id,ticket_number,category,status,priority,created_at").single();
     if (error || !ticket) {
       console.error("Support ticket creation failed:", error?.code ?? "unknown");
       return json({ error: "Your ticket could not be created right now. Please try again." }, 500);
