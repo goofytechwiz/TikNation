@@ -24,6 +24,14 @@
 .live-gift-choice:hover:not(:disabled){border-color:#00c8ff;background:#17162b}.live-gift-choice:disabled{opacity:.45}.live-gift-emoji{display:block;font-size:1.6rem}.live-gift-name{display:block;font-size:.78rem;overflow-wrap:anywhere}.live-gift-cost{display:block;color:#83eaff;font-size:.75rem;margin-top:3px}
 .live-gift-status{min-height:24px;margin:10px 0;color:#cfc9e4;font-size:.85rem}.live-gift-status.error{color:#ffb9c9}.live-gift-status.success{color:#a9ffdc}
 .live-gift-feed{display:grid;gap:7px;margin-top:10px}.live-gift-feed-item{padding:9px 10px;border-radius:10px;background:#0a0a14;border:1px solid #29243d;font-size:.83rem;overflow-wrap:anywhere}.live-gift-feed-item strong{color:#d9c9ff}
+/* Gift spectacle polish: layered sparks, orbit rings and a soft stage flash. */
+.live-gift-celebration,.live-dragon-scene{animation:giftStageFlash .55s ease-out both}
+.live-gift-celebration:after,.live-dragon-scene:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.28),transparent 46%);animation:giftFlash .8s ease-out both}
+.live-gift-spark{position:absolute;z-index:3;left:var(--x);top:var(--y);width:var(--size);height:var(--size);border-radius:50%;background:var(--spark);box-shadow:0 0 9px 3px var(--spark);animation:giftSparkFly var(--duration) cubic-bezier(.12,.7,.25,1) forwards;opacity:0}
+@keyframes giftStageFlash{0%{filter:brightness(1.7)}100%{filter:brightness(1)}}
+@keyframes giftFlash{0%{opacity:.85}100%{opacity:0}}
+@keyframes giftSparkFly{0%{opacity:0;transform:translate(0,0) scale(.3)}12%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}
+}
 .live-gift-celebration{position:fixed;z-index:2147483647;inset:0;display:grid;place-items:center;pointer-events:none;background:radial-gradient(ellipse at center,rgba(70,38,120,.72),rgba(3,3,10,.38) 65%,rgba(3,3,10,.12));isolation:isolate;visibility:visible;opacity:1}
 .live-gift-celebration-card{position:relative;padding:25px 30px;border:1px solid rgba(146,110,255,.9);border-radius:24px;background:rgba(12,9,26,.97);box-shadow:0 0 0 1px #b69cff44,0 0 70px #805bff99;text-align:center;animation:liveGiftPop .7s cubic-bezier(.2,1.6,.4,1) both,liveGiftGlow 1.4s ease-in-out .2s 2;max-width:min(88vw,360px)}
 .live-gift-celebration-card:before,.live-gift-celebration-card:after{content:"";position:absolute;inset:-12px;border:2px solid rgba(153,125,255,.8);border-radius:30px;pointer-events:none;animation:liveGiftRing 1.1s ease-out both}
@@ -33,7 +41,7 @@
 @keyframes liveGiftEmoji{0%{opacity:0;transform:translateY(35px) scale(.25) rotate(-25deg)}55%{opacity:1;transform:translateY(-12px) scale(1.35) rotate(10deg)}78%{transform:translateY(4px) scale(.92) rotate(-4deg)}100%{transform:translateY(0) scale(1) rotate(0)}}
 @keyframes liveGiftRing{0%{opacity:0;transform:scale(.72)}35%{opacity:1}100%{opacity:0;transform:scale(1.24)}}
 @keyframes liveGiftGlow{0%,100%{box-shadow:0 0 0 1px #b69cff44,0 0 55px #805bff77}50%{box-shadow:0 0 0 4px #b69cff66,0 0 100px #805bffcc}}
-@media(prefers-reduced-motion:reduce){.live-gift-celebration-card{animation:none}}
+@media(prefers-reduced-motion:reduce){.live-gift-celebration-card,.live-gift-celebration,.live-dragon-scene,.live-gift-celebration:after,.live-dragon-scene:after,.live-gift-spark{animation:none!important}.live-gift-spark{display:none}}
 
 /* Original TikNation Dragon Spirit spectacle */
 .live-dragon-scene{position:fixed;inset:0;z-index:2147483647;overflow:hidden;display:grid;place-items:center;pointer-events:none;background:radial-gradient(ellipse at 52% 52%,rgba(115,35,15,.48),rgba(10,5,16,.82) 58%,rgba(2,2,9,.94));isolation:isolate}
@@ -512,6 +520,8 @@ function showLiveGiftCelebration(event) {
     const note=document.createElement("small");note.textContent=isPreview?"FREE CREATOR PREVIEW · NO COINS SPENT":"TIKNATION LIVE · "+gift.cost+" TEST COINS";
     card.append(emoji,title,note);overlay.appendChild(card);
   }
+  const sparkColors=event.gift_code==="dragon_spirit"?["#ffb12e","#ff5b25","#fff0a6"]:["#8ceaff","#b69cff","#ff83d8","#fff0a6"];
+  for(let i=0;i<30;i++){const spark=document.createElement("i");spark.className="live-gift-spark";spark.style.setProperty("--x",(50+(Math.random()-.5)*18)+"%");spark.style.setProperty("--y",(48+(Math.random()-.5)*18)+"%");spark.style.setProperty("--dx",((Math.random()-.5)*Math.min(innerWidth*.9,720))+"px");spark.style.setProperty("--dy",((Math.random()-.5)*Math.min(innerHeight*.8,560))+"px");spark.style.setProperty("--size",(3+Math.random()*5)+"px");spark.style.setProperty("--duration",(1.1+Math.random()*.9)+"s");spark.style.setProperty("--spark",sparkColors[i%sparkColors.length]);overlay.appendChild(spark);}
   document.body.appendChild(overlay);
   playLiveGiftSound(event,gift);
   window.setTimeout(()=>overlay.remove(),5000);
