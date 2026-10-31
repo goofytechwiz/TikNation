@@ -421,7 +421,7 @@ Deno.serve(async (req: Request) => {
     const duration = Math.max(30, Math.min(600, Number(invite.round_seconds) || 180));
     const roundEnded = !!invite.decided_at && Date.now() >= new Date(invite.decided_at).getTime() + duration * 1000;
     const result = await calculateBattleScore(inviteId, true, !roundEnded);
-    if (result.error) return json({ error: result.error }, result.status || 500);
+    if ("error" in result) return json({ error: result.error }, result.status || 500);
     return json({ status: "completed", score: result.score });
   }
 
@@ -469,6 +469,7 @@ Deno.serve(async (req: Request) => {
     if (!session) return json({ error: "This broadcast has ended or is unavailable." }, 404);
     const isCreator = session.creator_id === user.id;
     let isApprovedGuest = false;
+    let isApprovedBattle = false;
     if (!isCreator) {
       const { data: guestRequest, error: guestRequestError } = await admin.from("live_guest_requests")
         .select("id,inviter_id").eq("session_id", sessionId).eq("requester_id", user.id)
@@ -479,7 +480,6 @@ Deno.serve(async (req: Request) => {
         .select("id,round_seconds,decided_at").eq("session_id", sessionId).eq("opponent_id", user.id)
         .eq("status", "accepted").maybeSingle();
       if (battleInviteError) return json({ error: "Could not verify Live Battle access. Please reconnect." }, 500);
-      let isApprovedBattle = false;
       if (battleInvite?.decided_at) {
         const battleEnd = new Date(new Date(battleInvite.decided_at).getTime() + Math.max(30, Math.min(600, Number(battleInvite.round_seconds) || 180)) * 1000);
         isApprovedBattle = battleEnd.getTime() > Date.now();
