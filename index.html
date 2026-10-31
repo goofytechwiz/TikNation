@@ -5487,29 +5487,52 @@ function setupWatchVideoPlayback(){
 
     if(grid._watchPlaybackObserver){
         grid._watchPlaybackObserver.disconnect();
+        grid._watchPlaybackObserver = null;
+    }
+    if(grid._watchVisibilityHandler){
+        document.removeEventListener("visibilitychange",grid._watchVisibilityHandler);
+        grid._watchVisibilityHandler = null;
     }
 
     const videos = Array.from(grid.querySelectorAll("video"));
     if(!videos.length) return;
 
     const autoplayEnabled = getTikNationPreference("autoplayVideos");
+    const pauseAll = () => videos.forEach(video => video.pause());
+
     videos.forEach(video => {
         video.muted = true;
         video.playsInline = true;
+        video.setAttribute("playsinline","");
         if(!autoplayEnabled) video.pause();
     });
 
-    if(!("IntersectionObserver" in window)){
-        if(autoplayEnabled && videos[0]){
-            videos[0].play().catch(() => {});
+    // Never keep a feed video playing in a background tab.
+    grid._watchVisibilityHandler = () => {
+        if(document.hidden || !grid.isConnected || !grid.closest("#watch.active")){
+            pauseAll();
         }
+    };
+    document.addEventListener("visibilitychange",grid._watchVisibilityHandler);
+
+    if(!autoplayEnabled || document.hidden || !grid.closest("#watch.active")){
+        pauseAll();
+        return;
+    }
+
+    if(!("IntersectionObserver" in window)){
+        if(videos[0]) videos[0].play().catch(() => {});
         return;
     }
 
     const observer = new IntersectionObserver(entries => {
+        if(document.hidden || !grid.isConnected || !grid.closest("#watch.active")){
+            pauseAll();
+            return;
+        }
         entries.forEach(entry => {
             const video = entry.target;
-            if(entry.isIntersecting && entry.intersectionRatio >= 0.6 && autoplayEnabled){
+            if(entry.isIntersecting && entry.intersectionRatio >= 0.6){
                 videos.forEach(otherVideo => {
                     if(otherVideo !== video) otherVideo.pause();
                 });
