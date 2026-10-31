@@ -447,6 +447,10 @@ body.tn-compact-feed .video-info p{
 .boo-effect-shadow span{font-size:clamp(110px,30vw,260px);color:#05050a;text-shadow:0 0 8px #fff,0 0 30px #a900ff;}
 .boo-effect-glitch span{font-family:monospace;color:#ff276b;text-shadow:8px 0 #00eaff,-8px 0 #b000ff;}
 .boo-effect-creepy_eyes span{color:#ff174d;text-shadow:0 0 18px #ff003c,0 0 55px #ff003c;}
+.boo-effect-stinkdeath span{font-size:clamp(76px,21vw,190px);filter:drop-shadow(0 0 24px #8dff38);animation:booStinkPulse .45s ease-in-out infinite alternate;}
+.boo-effect-rattlebone span{font-size:clamp(88px,24vw,220px);filter:drop-shadow(0 0 22px #d6c5ff);animation:booBoneShake .09s linear infinite alternate;}
+@keyframes booStinkPulse{from{transform:scale(.88) rotate(-5deg);filter:drop-shadow(0 0 12px #70ff20)}to{transform:scale(1.13) rotate(5deg);filter:drop-shadow(0 0 34px #b4ff39)}}
+@keyframes booBoneShake{from{transform:rotate(-12deg) translateX(-5px)}to{transform:rotate(12deg) translateX(5px)}}
 .boo-media-stage.boo-effect-armed .boo-playback-effect{animation:booFlash 1.35s 0s ease-out both;}
 .boo-media-stage.boo-effect-armed .boo-playback-effect span{animation:booReveal 1.35s 0s cubic-bezier(.15,.8,.25,1) both;}
 @keyframes booFlash{0%,100%{opacity:0;background:transparent}12%,62%{opacity:1;background:rgba(0,0,0,.86)}}
