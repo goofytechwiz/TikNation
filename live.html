@@ -770,7 +770,7 @@ function renderLiveGiftEvent(event) {
   const empty=feed.querySelector(".small");if(empty)feed.innerHTML="";
   const row=document.createElement("div");row.className="live-gift-feed-item";const strong=document.createElement("strong");strong.textContent=event.sender_name||"TikNation member";
   const isPreview=String(event.id||"").startsWith("preview-");
-  row.append(strong,document.createTextNode(isPreview?" previewed "+gift.emoji+" "+gift.name+" · FREE PREVIEW":" sent "+gift.emoji+" "+gift.name+" · "+gift.cost+" test coins"));feed.prepend(row);while(feed.children.length>8)feed.lastElementChild.remove();
+  row.append(strong,document.createTextNode(isPreview?" previewed "+gift.emoji+" "+gift.name+" · FREE PREVIEW":" sent "+gift.emoji+" "+gift.name+(event.recipient_name?" to "+event.recipient_name:"")+" · "+gift.cost+" test coins"));feed.prepend(row);while(feed.children.length>8)feed.lastElementChild.remove();
 }
 async function pollLiveGiftEvents() {
   if(!activeSession||!user)return;
