@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [feature/community-controls-magic-layout]
+    branches: [main, feature/community-controls-magic-layout]
 
 permissions:
   contents: read
