@@ -246,17 +246,19 @@ Deno.serve(async (req: Request) => {
     const sessionId = String(body.session_id ?? "");
     if (!/^[0-9a-f-]{36}$/i.test(sessionId)) return json({ error: "Invalid live session." }, 400);
     if (accountAge < 16) return json({ error: "You must be at least 16 to join a creator's live stage." }, 403);
-    const { data: request, error: requestError } = await admin.from("live_guest_requests")
-      .select("id,session_id,requester_id,status,inviter_id")
-      .eq("session_id", sessionId).eq("requester_id", user.id).eq("status", "approved")
-      .is("inviter_id", null).maybeSingle();
-    if (requestError) return json({ error: "Could not verify your approved guest request." }, 500);
-    if (!request) return json({ error: "The host must approve your guest request before you can join the stage." }, 403);
     const { data: session, error: sessionError } = await admin.from("live_sessions")
       .select("id,room_name,creator_id,status").eq("id", sessionId).eq("status", "live").maybeSingle();
     if (sessionError) return json({ error: "Could not verify this live broadcast." }, 500);
     if (!session) return json({ error: "This broadcast has ended." }, 404);
     if (session.creator_id === user.id) return json({ error: "The host cannot join their own guest stage." }, 400);
+    const { data: request, error: requestError } = await admin.from("live_guest_requests")
+      .select("id,session_id,requester_id,status,inviter_id")
+      .eq("session_id", sessionId).eq("requester_id", user.id).eq("status", "approved")
+      .maybeSingle();
+    if (requestError) return json({ error: "Could not verify your approved guest request." }, 500);
+    if (!request || (request.inviter_id && request.inviter_id !== session.creator_id)) {
+      return json({ error: "The host must approve your guest request or invitation before you can join the stage." }, 403);
+    }
     const { data: blocks, error: blockError } = await admin.from("user_blocks")
       .select("blocker_id")
       .or("and(blocker_id.eq." + user.id + ",blocked_id.eq." + session.creator_id + "),and(blocker_id.eq." + session.creator_id + ",blocked_id.eq." + user.id + ")")
