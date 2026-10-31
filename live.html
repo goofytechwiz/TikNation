@@ -41,7 +41,7 @@
 @keyframes liveGiftEmoji{0%{opacity:0;transform:translateY(35px) scale(.25) rotate(-25deg)}55%{opacity:1;transform:translateY(-12px) scale(1.35) rotate(10deg)}78%{transform:translateY(4px) scale(.92) rotate(-4deg)}100%{transform:translateY(0) scale(1) rotate(0)}}
 @keyframes liveGiftRing{0%{opacity:0;transform:scale(.72)}35%{opacity:1}100%{opacity:0;transform:scale(1.24)}}
 @keyframes liveGiftGlow{0%,100%{box-shadow:0 0 0 1px #b69cff44,0 0 55px #805bff77}50%{box-shadow:0 0 0 4px #b69cff66,0 0 100px #805bffcc}}
-@media(prefers-reduced-motion:reduce){.live-gift-celebration-card,.live-gift-celebration,.live-dragon-scene,.live-gift-celebration:after,.live-dragon-scene:after,.live-gift-spark{animation:none!important}.live-gift-spark{display:none}}
+@media(prefers-reduced-motion:reduce){.live-gift-celebration:not([data-gift-preview="true"]) .live-gift-celebration-card,.live-gift-celebration:not([data-gift-preview="true"]),.live-dragon-scene:not([data-gift-preview="true"]),.live-gift-celebration:not([data-gift-preview="true"]):after,.live-dragon-scene:not([data-gift-preview="true"]):after,.live-gift-celebration:not([data-gift-preview="true"]) .live-gift-spark,.live-dragon-scene:not([data-gift-preview="true"]) .live-gift-spark{animation:none!important}.live-gift-celebration:not([data-gift-preview="true"]) .live-gift-spark,.live-dragon-scene:not([data-gift-preview="true"]) .live-gift-spark{display:none}}
 
 /* Original TikNation Dragon Spirit spectacle */
 .live-dragon-scene{position:fixed;inset:0;z-index:2147483647;overflow:hidden;display:grid;place-items:center;pointer-events:none;background:radial-gradient(ellipse at 52% 52%,rgba(115,35,15,.48),rgba(10,5,16,.82) 58%,rgba(2,2,9,.94));isolation:isolate}
