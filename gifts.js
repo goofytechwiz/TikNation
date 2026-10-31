@@ -13,7 +13,7 @@ const TIKNATION_GIFT_CATALOG = {
   creator_crown: { name: "Creator’s Crown", emoji: "👑", category: "Legendary", cost: 50, sound: [523, 659, 784], style: "crown", message: "Celebrate the creator." },
   infinity_crystal: { name: "Infinity Crystal", emoji: "💎", category: "Legendary", cost: 150, sound: [392, 523, 659, 784, 1047], style: "infinity", message: "A gift beyond the ordinary." }
 ,
-  dragon_ball: { name: "Dragon Ball", emoji: "🔮", category: "Magical", cost: 75, sound: [392, 523, 784, 1047], style: "dragon", message: "A mysterious dragon orb erupts with golden energy." },
+  dragon_ball: { name: "Dragon Ball", emoji: "🔮", category: "Magical", cost: 75, sound: [294, 440, 587, 880], style: "dragon", message: "A mysterious dragon orb erupts with golden energy." },
   changing_face: { name: "Changing Face", emoji: "🎭", category: "Surprises", cost: 25, sound: [659, 784, 523, 880], style: "surprise", message: "A face-changing mask spins through a magical transformation." },
   clouds_of_mystery: { name: "Clouds of Mystery", emoji: "☁️", category: "Magical", cost: 50, sound: [392, 523, 659, 784, 988], style: "clouds", message: "Mystic clouds swirl across the live stage." },
   hammer_of_pain: { name: "Hammer of Pain", emoji: "🔨", category: "Special Effects", cost: 50, sound: [110, 82, 55, 73], style: "hammer", message: "A giant cartoon hammer slams down with a comic shockwave." },
@@ -23,7 +23,7 @@ const TIKNATION_GIFT_CATALOG = {
   book_of_death: { name: "Book of Death", emoji: "📕☠️", category: "Legendary", cost: 150, sound: [196, 147, 110, 73], style: "book", message: "A cursed book opens and releases shadowy magic." },
   dream_makers: { name: "The Dream Makers", emoji: "✨🧚", category: "Magical", cost: 100, sound: [523, 659, 784, 1047, 1319], style: "dreammakers", message: "A team of dream makers appears and builds a glowing dream." },
   phoenix_rebirth: { name: "Phoenix Rebirth", emoji: "🔥🪽", category: "Legendary", cost: 175, sound: [392, 523, 659, 784, 1047, 1319], style: "phoenix", message: "A phoenix rises from glowing flames." },
-  treasure_explosion: { name: "Treasure Explosion", emoji: "💎💰", category: "Legendary", cost: 150, sound: [523, 659, 880, 1047, 1319], style: "treasure", message: "A treasure chest bursts open with sparkling riches." },
+  treasure_explosion: { name: "Treasure Explosion", emoji: "💎💰", category: "Legendary", cost: 150, sound: [587, 740, 988, 1175, 1480], style: "treasure", message: "A treasure chest bursts open with sparkling riches." },
   meteor_mayhem: { name: "Meteor Mayhem", emoji: "☄️", category: "Special Effects", cost: 125, sound: [880, 440, 220, 110, 55], style: "meteor", message: "A blazing meteor streaks across the live screen." },
   disco_raccoon: { name: "Disco Raccoon", emoji: "🦝🪩", category: "Musical", cost: 75, sound: [659, 784, 988, 1175, 988, 784], style: "raccoon", message: "A dancing raccoon takes over the stage." },
   portal_party: { name: "Portal Party", emoji: "🌀🎉", category: "Magical", cost: 100, sound: [392, 587, 784, 1175, 1568], style: "portalparty", message: "A colorful portal opens with a burst of energy." },
