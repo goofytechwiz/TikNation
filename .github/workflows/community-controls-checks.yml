@@ -31,23 +31,48 @@ jobs:
       - name: Check inline JavaScript syntax
         run: |
           python3 - <<'PY'
-          import re
+          from html.parser import HTMLParser
           from pathlib import Path
-          pages = [Path("index.html"), Path("live.html")]
+          import subprocess
+
+          class InlineScriptParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.blocks = []
+                  self.current = None
+
+              def handle_starttag(self, tag, attrs):
+                  if tag.lower() == "script":
+                      attributes = dict(attrs)
+                      self.current = [] if "src" not in attributes else None
+
+              def handle_data(self, data):
+                  if self.current is not None:
+                      self.current.append(data)
+
+              def handle_endtag(self, tag):
+                  if tag.lower() == "script" and self.current is not None:
+                      source = "".join(self.current).strip()
+                      if source:
+                          self.blocks.append(source)
+                      self.current = None
+
           out = Path("/tmp/tiknation-inline-scripts")
           out.mkdir(exist_ok=True)
-          count = 0
-          for page in pages:
-              text = page.read_text(encoding="utf-8")
-              for index, match in enumerate(re.finditer(r"<script\b[^>]*>(.*?)</script\s*>", text, re.I | re.S)):
-                  source = match.group(1).strip()
-                  if not source:
-                      continue
+          checked = []
+          for page in (Path("index.html"), Path("live.html")):
+              parser = InlineScriptParser()
+              parser.feed(page.read_text(encoding="utf-8"))
+              for index, source in enumerate(parser.blocks):
                   path = out / f"{page.stem}-{index}.js"
                   path.write_text(source, encoding="utf-8")
-                  count += 1
-          print(f"Extracted {count} inline script blocks.")
-          if count == 0:
-              raise SystemExit("No inline script blocks found; check extraction pattern.")
+                  checked.append(path)
+
+          checked.extend(Path(".").glob("*.js"))
+          if not checked:
+              raise SystemExit("No JavaScript files found to check.")
+          for path in checked:
+              print(f"Checking {path}")
+              subprocess.run(["node", "--check", str(path)], check=True)
+          print(f"JavaScript syntax passed for {len(checked)} files.")
           PY
-          find /tmp/tiknation-inline-scripts -name '*.js' -print0 | xargs -0 -n1 node --check
