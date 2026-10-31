@@ -1960,6 +1960,59 @@ textarea.form-control{
 }
 </style>
 
+<style>
+
+/* Homepage visual cleanup: calmer spacing, consistent cards, clearer hierarchy */
+#home{max-width:1180px;margin:0 auto}
+#home .hero-card{min-height:0;padding:clamp(30px,5vw,52px);border-radius:26px;box-shadow:0 18px 55px rgba(0,0,0,.25)}
+#home .hero-card .eyebrow{letter-spacing:2.6px;margin-bottom:13px}
+#home .hero-card h1{max-width:760px;margin:0 0 16px;letter-spacing:-.045em}
+#home .hero-card>p{max-width:620px;margin:0 0 4px;font-size:16px;line-height:1.65}
+#home .tn-landing-actions{gap:10px;margin-top:18px}
+#home .tn-landing-actions .primary-button,#home .tn-landing-secondary{margin-top:8px;padding:12px 19px;border-radius:13px}
+#home .tn-public-browse-note{margin:13px 0 0!important}
+#home .tn-founder-quotes{margin:22px 0 24px!important;padding:clamp(20px,3vw,30px)!important;border-radius:22px!important;box-shadow:none!important}
+#home .tn-founder-quotes h2{font-size:clamp(22px,3vw,30px)!important;line-height:1.2}
+#home .tn-founder-quotes blockquote{padding:17px!important;border-radius:15px!important}
+#home .tn-founder-quotes blockquote p{font-size:16px!important;line-height:1.5!important}
+#home .tn-host-feature{margin-top:0;padding:20px 22px;border-radius:20px;box-shadow:none}
+#home .tn-host-avatar{width:88px;height:88px;border-radius:22px;font-size:46px}
+#home .section-head{margin:30px 0 12px;align-items:baseline;gap:12px}
+#home .section-head h2{margin:0;font-size:clamp(23px,3vw,28px)}
+#home .tn-explore-intro{margin:0 0 16px;max-width:700px}
+#home .tn-public-explore-grid{gap:12px}
+#home .tn-public-explore-grid .tn-explore-card{min-height:190px;padding:20px;border-radius:18px;box-shadow:none}
+#home .tn-explore-card .card-icon{margin-bottom:10px;font-size:25px}
+#home .tn-explore-card-title{font-size:17px;margin-bottom:5px}
+#home .tn-explore-card-copy{font-size:13px;line-height:1.55}
+#home .tn-explore-card-link{padding-top:12px}
+#home .tn-join-guide{margin-top:20px;padding:22px;border-radius:20px;box-shadow:none}
+#home .tn-join-guide-step{padding:10px 12px}
+#home .tn-join-guide-cta{border-radius:12px}
+@media(max-width:780px){
+ #home .tn-founder-quotes>div:last-child{grid-template-columns:1fr!important}
+ #home .tn-host-feature{grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:17px}
+ #home .tn-host-avatar{width:68px;height:68px;font-size:36px}
+}
+@media(max-width:650px){
+ #home .hero-card{padding:28px 21px 24px}
+ #home .hero-card h1{font-size:clamp(40px,11vw,56px);line-height:1.02}
+ #home .hero-card>p{font-size:14px}
+ #home .tn-landing-actions{flex-direction:column;align-items:stretch}
+ #home .tn-landing-actions button{width:100%}
+ #home .tn-host-feature{grid-template-columns:minmax(0,1fr) auto}
+ #home .tn-host-actions{gap:7px}
+ #home .tn-host-button{padding:9px 11px;font-size:13px}
+ #home .section-head{align-items:flex-start;flex-direction:column;gap:3px}
+ #home .tn-public-explore-grid .tn-explore-card{min-height:0;padding:18px}
+ #home .tn-join-guide{padding:18px}
+}
+@media(prefers-reduced-motion:reduce){
+ #home .tn-host-avatar{animation:none!important}
+ #home .tn-founder-quotes blockquote{transition:none!important}
+}
+
+</style>
 </head>
 
 <body>
