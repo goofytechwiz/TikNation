@@ -36,7 +36,19 @@ section{margin-top:20px}
 .btn{display:inline-block;padding:11px 15px;border-radius:11px;background:linear-gradient(100deg,#70e8ff22,#b49aff22);border:1px solid #b49aff66;text-decoration:none;color:#fff;font-size:13px}
 @media(max-width:520px){body{padding:13px}.top{font-size:10px}.hero,.panel{border-radius:19px}.cards{grid-template-columns:1fr 1fr}.social{padding:14px;min-height:145px}}
 @media(max-width:360px){.cards{grid-template-columns:1fr}}
-</style>
+
+.social-folder{margin-top:14px;border:1px solid #70e8ff55;border-radius:18px;background:linear-gradient(120deg,#70e8ff0b,#b49aff0b);overflow:hidden}
+.social-folder summary{list-style:none;display:flex;align-items:center;gap:14px;padding:20px;cursor:pointer;min-height:84px}
+.social-folder summary::-webkit-details-marker{display:none}
+.social-folder summary:hover{background:#ffffff08}
+.folder-icon{font-size:30px;filter:drop-shadow(0 0 10px #70e8ff66)}
+.social-folder summary strong{display:block;font-size:18px;color:#fff}
+.social-folder summary small{display:block;margin-top:5px;color:#aaa8c5;font-size:12px}
+.folder-arrow{margin-left:auto;color:var(--cyan);font-size:24px;transition:transform .2s}
+.social-folder[open] .folder-arrow{transform:rotate(45deg)}
+.folder-content{padding:0 20px 22px;border-top:1px solid #ffffff16}
+.folder-content>.eyebrow{margin-top:20px}
+\n</style>
 </head>
 <body>
 <main>
@@ -49,8 +61,21 @@ section{margin-top:20px}
 <div class="pill">✦ Follow the Creator · Explore the Journey</div>
 </header>
 <section class="panel">
-<div class="section-head"><div class="eyebrow">YOUR PERSONAL SOCIALS</div><h2>My Socials</h2><p>Your personal creator accounts can be added here separately.</p></div>
-<div class="cards">
+<div class="section-head"><div class="eyebrow">YOUR SOCIAL WORLDS</div><h2>Choose a folder</h2><p>Two separate spaces, so your personal accounts and Kaevoryn Studios never get mixed together.</p></div>
+<details class="social-folder">
+<summary><span class="folder-icon" aria-hidden="true">📁</span><span><strong>Kaevoryn</strong><small>Official Kaevoryn Studios accounts</small></span><span class="folder-arrow" aria-hidden="true">＋</span></summary>
+<div class="folder-content"><div class="eyebrow">OFFICIAL STUDIO CHANNELS</div><p>Follow Kaevoryn Studios across its official platforms.</p><div class="cards">
+<article class="social"><div class="symbol">♪</div><h3>TikTok</h3><p>@kaevoryn.studios</p><a class="btn" href="https://www.tiktok.com/@kaevoryn.studios?_r=1&_t=ZP-9B0HGBSVQWE" target="_blank" rel="noopener noreferrer">Visit TikTok ↗</a></article>
+<article class="social"><div class="symbol">f</div><h3>Facebook</h3><p>Kaevoryn Studios</p><a class="btn" href="https://www.facebook.com/share/1HvqQg4KBc/" target="_blank" rel="noopener noreferrer">Visit Facebook ↗</a></article>
+<article class="social"><div class="symbol">◎</div><h3>Instagram</h3><p>@kaevorynstudios</p><a class="btn" href="https://www.instagram.com/kaevorynstudios?rpxt=ZjF2ZjdybzFubGc4" target="_blank" rel="noopener noreferrer">Visit Instagram ↗</a></article>
+<article class="social"><div class="symbol">▶</div><h3>YouTube</h3><p>@Kaevoryn</p><a class="btn" href="https://www.youtube.com/@Kaevoryn" target="_blank" rel="noopener noreferrer">Visit YouTube ↗</a></article>
+<article class="social"><div class="symbol">◉</div><h3>Kick</h3><p>@kaevoryn</p><a class="btn" href="https://kick.com/kaevoryn" target="_blank" rel="noopener noreferrer">Visit Kick ↗</a></article>
+</div>
+<p class="note">Studio links are kept separate from Matt's personal accounts.</p></div>
+</details>
+<details class="social-folder">
+<summary><span class="folder-icon" aria-hidden="true">📁</span><span><strong>Matt's Socials</strong><small>Your personal creator accounts</small></span><span class="folder-arrow" aria-hidden="true">＋</span></summary>
+<div class="folder-content"><div class="eyebrow">PERSONAL ACCOUNTS</div><p>These are for your own accounts, separate from the studio.</p><div class="cards">
 <article class="social"><div class="symbol" aria-hidden="true">◎</div><h3>Instagram</h3><p>Photos, moments, and behind-the-scenes updates.</p><span class="status">Official profile link to be added</span></article>
 <article class="social"><div class="symbol" aria-hidden="true">♪</div><h3>TikTok</h3><p>Short videos, creativity, and the latest projects.</p><span class="status">Official profile link to be added</span></article>
 <article class="social"><div class="symbol" aria-hidden="true">▶</div><h3>YouTube</h3><p>Videos, announcements, and creative adventures.</p><span class="status">Official channel link to be added</span></article>
@@ -58,16 +83,6 @@ section{margin-top:20px}
 <article class="social"><div class="symbol" aria-hidden="true">f</div><h3>Facebook</h3><p>Community updates and shared milestones.</p><span class="status">Official profile link to be added</span></article>
 <article class="social"><div class="symbol" aria-hidden="true">◉</div><h3>More platforms</h3><p>Snapchat, Threads, Discord, and any other channels you choose to share.</p><span class="status">Add only accounts you confirm</span></article>
 </div>
-<section style="margin-top:24px">
-<div class="eyebrow">OFFICIAL STUDIO CHANNELS</div><h2 style="margin:8px 0">Kaevoryn Studios</h2><p>Follow the studio across its official platforms.</p>
-<div class="cards">
-<article class="social"><div class="symbol">♪</div><h3>TikTok</h3><p>@kaevoryn.studios</p><a class="btn" href="https://www.tiktok.com/@kaevoryn.studios?_r=1&_t=ZP-9B0HGBSVQWE" target="_blank" rel="noopener noreferrer">Visit TikTok ↗</a></article>
-<article class="social"><div class="symbol">f</div><h3>Facebook</h3><p>Kaevoryn Studios</p><a class="btn" href="https://www.facebook.com/share/1HvqQg4KBc/" target="_blank" rel="noopener noreferrer">Visit Facebook ↗</a></article>
-<article class="social"><div class="symbol">◎</div><h3>Instagram</h3><p>@kaevorynstudios</p><a class="btn" href="https://www.instagram.com/kaevorynstudios?rpxt=ZjF2ZjdybzFubGc4" target="_blank" rel="noopener noreferrer">Visit Instagram ↗</a></article>
-<article class="social"><div class="symbol">▶</div><h3>YouTube</h3><p>@Kaevoryn</p><a class="btn" href="https://www.youtube.com/@Kaevoryn" target="_blank" rel="noopener noreferrer">Visit YouTube ↗</a></article>
-<article class="social"><div class="symbol">◉</div><h3>Kick</h3><p>@kaevoryn</p><a class="btn" href="https://kick.com/kaevoryn" target="_blank" rel="noopener noreferrer">Visit Kick ↗</a></article>
-</div></section>
-
 <div class="editor" style="margin-top:22px;padding:20px;border:1px solid #70e8ff44;border-radius:18px;background:#070a16">
 <div class="eyebrow">CREATOR EDITOR</div><h2 style="margin-top:10px">Add your social accounts</h2>
 <p>Enter a platform, username, and public profile link. Your entries are saved in this browser on this device.</p>
@@ -99,6 +114,8 @@ var all=read();all.push({platform:document.getElementById('socialPlatform').valu
 </script>
 
 <p class="note">Only add links you intend to share publicly. Never enter passwords or private account details.</p>
+</div>
+</details>
 </section>
 <section class="panel">
 <div class="eyebrow">MADE WITH IMAGINATION</div>
