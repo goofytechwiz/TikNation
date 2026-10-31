@@ -34,6 +34,8 @@ const TIKNATION_GIFT_CATALOG = {
   cheesepocalypse: { name: "The Cheesepocalypse", emoji: "🧀☄️", category: "Special Effects", cost: 99, sound: [330, 440, 554, 659, 440], style: "cheese", message: "A giant cheese meteor crashes in a cheesy explosion." },
   skeleton_disco: { name: "Skeleton Disco", emoji: "💀🪩", category: "Musical", cost: 100, sound: [659, 784, 988, 1175, 1397, 1175], style: "skeleton", message: "A dancing skeleton takes over with a neon light show." },
   dragons_revenge: { name: "The Dragon's Revenge", emoji: "🐉🔥", category: "Legendary", cost: 200, sound: [196, 293, 392, 587, 784], style: "dragonrevenge", message: "The dragon returns with a fiery entrance and energy blast." }
+  ,stinky_fart_or_death: { name: "Stinky Fart or Death", emoji: "💨💀", category: "Special Effects", cost: 69, sound: [110, 73, 55, 82], style: "stinkdeath", message: "Toxic green stink clouds burst across the stage before a dramatic skull appears." },
+  madafaka_rattle: { name: "Madafaka Rattle", emoji: "🦴🖕", category: "Special Effects", cost: 69, sound: [180, 95, 210, 80, 240, 100], style: "rattlebone", message: "A skeletal middle finger snaps upright with a loud, comic bone-rattling shake." }
 };
 
 let tikNationGiftAudioContext = null;
@@ -76,6 +78,20 @@ function playTikNationGiftSound(gift) {
     const context = tikNationGiftAudioContext;
     if (context.state === "suspended") context.resume().catch(() => {});
     const now = context.currentTime;
+    if (gift.style === "rattlebone") {
+      [0, 0.055, 0.11, 0.18, 0.25, 0.33].forEach((delay, index) => {
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        oscillator.type = index % 2 ? "square" : "sawtooth";
+        oscillator.frequency.setValueAtTime([180, 95, 210, 80, 240, 100][index], now + delay);
+        gain.gain.setValueAtTime(0.0001, now + delay);
+        gain.gain.exponentialRampToValueAtTime(0.075, now + delay + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 0.07);
+        oscillator.connect(gain); gain.connect(context.destination);
+        oscillator.start(now + delay); oscillator.stop(now + delay + 0.075);
+      });
+      return;
+    }
     const notes = gift.sound || [660, 880];
     notes.forEach((frequency, index) => {
       const oscillator = context.createOscillator();
