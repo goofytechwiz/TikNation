@@ -501,7 +501,7 @@ function showLiveGiftCelebration(event) {
   if(isPreview)overlay.dataset.giftPreview="true";
   if(event.gift_code==="asshole_of_death"){
     overlay.className="live-throne-scene";
-    overlay.innerHTML='<div class="live-throne-portal"></div><div class="live-throne-art" role="img" aria-label="Golden throne in a fiery portal">🚽👑💀</div><span class="live-throne-paper" style="left:12%;top:72%">🧻</span><span class="live-throne-paper" style="right:14%;top:64%;animation-delay:.8s">🧻</span><span class="live-throne-paper" style="left:72%;top:82%;animation-delay:1.5s">💀</span><div class="live-throne-title">THE ASSHOLE OF DEATH</div>';
+    overlay.innerHTML='<div class="live-throne-portal"></div><div class="live-throne-art" role="img" aria-label="Toilet and skull in a fiery portal">🚽💀</div><span class="live-throne-paper" style="left:12%;top:72%">🧻</span><span class="live-throne-paper" style="right:14%;top:64%;animation-delay:.8s">🧻</span><span class="live-throne-paper" style="left:72%;top:82%;animation-delay:1.5s">💀</span><div class="live-throne-title">THE ASSHOLE OF DEATH</div>';
   }else if(event.gift_code==="dragon_spirit"){
     const sender=String(event.sender_name||"A TikNation dreamer").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
     overlay.className="live-dragon-scene"+(isPreview?" live-dragon-scene-preview":"");
