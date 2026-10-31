@@ -35,7 +35,11 @@ const TIKNATION_GIFT_CATALOG = {
   skeleton_disco: { name: "Skeleton Disco", emoji: "💀🪩", category: "Musical", cost: 100, sound: [659, 784, 988, 1175, 1397, 1175], style: "skeleton", message: "A dancing skeleton takes over with a neon light show." },
   dragons_revenge: { name: "The Dragon's Revenge", emoji: "🐉🔥", category: "Legendary", cost: 200, sound: [196, 293, 392, 587, 784], style: "dragonrevenge", message: "The dragon returns with a fiery entrance and energy blast." }
   ,stinky_fart_or_death: { name: "Stinky Fart or Death", emoji: "💨💀", category: "Special Effects", cost: 69, sound: [110, 73, 55, 82], style: "stinkdeath", message: "Toxic green stink clouds burst across the stage before a dramatic skull appears." },
-  madafaka_rattle: { name: "Madafaka Rattle", emoji: "🦴🖕", category: "Special Effects", cost: 69, sound: [180, 95, 210, 80, 240, 100], style: "rattlebone", message: "A skeletal middle finger snaps upright with a loud, comic bone-rattling shake." }
+  madafaka_rattle: { name: "Madafaka Rattle", emoji: "🦴🖕", category: "Special Effects", cost: 69, sound: [180, 95, 210, 80, 240, 100], style: "rattlebone", message: "A skeletal middle finger snaps upright with a loud, comic bone-rattling shake." },
+  toxic_cloud: { name: "Toxic Cloud", emoji: "☣️💚", category: "Special Effects", cost: 49, sound: [95, 72, 110, 58], style: "toxiccloud", message: "A giant toxic-green cloud rolls across the stage with a swarm of silly buzzing flies." },
+  bone_breaker: { name: "Bone Breaker", emoji: "💀👎", category: "Special Effects", cost: 49, sound: [180, 95, 210, 80, 240], style: "bonebreaker", message: "A skeletal hand rattles into view and delivers the ultimate cartoon thumbs-down." },
+  knockout: { name: "Knockout!", emoji: "🥊💥", category: "Special Effects", cost: 69, sound: [130, 90, 65, 220], style: "knockout", message: "A giant boxing glove flies in with a comic impact and a burst of stars." },
+  cant_breathe: { name: "Can't Breathe", emoji: "😂💀", category: "Special Effects", cost: 69, sound: [660, 880, 740, 988, 660], style: "cantbreathe", message: "A laughing skull shakes with unstoppable laughter and bursts into cartoon tears." }
 };
 
 let tikNationGiftAudioContext = null;
@@ -88,6 +92,59 @@ function playTikNationGiftSound(gift) {
         gain.gain.exponentialRampToValueAtTime(0.0001,now+delay+0.14);
         oscillator.connect(gain);gain.connect(context.destination);
         oscillator.start(now+delay);oscillator.stop(now+delay+0.15);
+      });
+      return;
+    }
+    if (gift.style === "toxiccloud") {
+      [0,0.13,0.27,0.43,0.58].forEach((delay,index)=>{
+        const oscillator=context.createOscillator(), gain=context.createGain();
+        oscillator.type=index%2?"square":"sawtooth";
+        oscillator.frequency.setValueAtTime([95,72,110,58,88][index],now+delay);
+        gain.gain.setValueAtTime(0.0001,now+delay);
+        gain.gain.exponentialRampToValueAtTime(0.065,now+delay+0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001,now+delay+0.13);
+        oscillator.connect(gain);gain.connect(context.destination);
+        oscillator.start(now+delay);oscillator.stop(now+delay+0.14);
+      });
+      return;
+    }
+    if (gift.style === "bonebreaker") {
+      [0,0.07,0.14,0.22,0.31].forEach((delay,index)=>{
+        const oscillator=context.createOscillator(), gain=context.createGain();
+        oscillator.type=index%2?"square":"triangle";
+        oscillator.frequency.setValueAtTime([180,95,210,80,240][index],now+delay);
+        gain.gain.setValueAtTime(0.0001,now+delay);
+        gain.gain.exponentialRampToValueAtTime(0.075,now+delay+0.012);
+        gain.gain.exponentialRampToValueAtTime(0.0001,now+delay+0.075);
+        oscillator.connect(gain);gain.connect(context.destination);
+        oscillator.start(now+delay);oscillator.stop(now+delay+0.08);
+      });
+      return;
+    }
+    if (gift.style === "knockout") {
+      [0,0.12,0.24].forEach((delay,index)=>{
+        const oscillator=context.createOscillator(), gain=context.createGain();
+        oscillator.type=index===1?"square":"sawtooth";
+        oscillator.frequency.setValueAtTime([130,90,65][index],now+delay);
+        oscillator.frequency.exponentialRampToValueAtTime([65,45,38][index],now+delay+0.16);
+        gain.gain.setValueAtTime(0.0001,now+delay);
+        gain.gain.exponentialRampToValueAtTime(0.11,now+delay+0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001,now+delay+0.18);
+        oscillator.connect(gain);gain.connect(context.destination);
+        oscillator.start(now+delay);oscillator.stop(now+delay+0.19);
+      });
+      return;
+    }
+    if (gift.style === "cantbreathe") {
+      [0,0.14,0.28,0.42,0.56].forEach((delay,index)=>{
+        const oscillator=context.createOscillator(), gain=context.createGain();
+        oscillator.type="triangle";
+        oscillator.frequency.setValueAtTime([660,880,740,988,660][index],now+delay);
+        gain.gain.setValueAtTime(0.0001,now+delay);
+        gain.gain.exponentialRampToValueAtTime(0.07,now+delay+0.025);
+        gain.gain.exponentialRampToValueAtTime(0.0001,now+delay+0.16);
+        oscillator.connect(gain);gain.connect(context.destination);
+        oscillator.start(now+delay);oscillator.stop(now+delay+0.17);
       });
       return;
     }
