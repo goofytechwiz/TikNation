@@ -43,6 +43,18 @@
 @keyframes liveGiftGlow{0%,100%{box-shadow:0 0 0 1px #b69cff44,0 0 55px #805bff77}50%{box-shadow:0 0 0 4px #b69cff66,0 0 100px #805bffcc}}
 @media(prefers-reduced-motion:reduce){.live-gift-celebration:not([data-gift-preview="true"]) .live-gift-celebration-card,.live-gift-celebration:not([data-gift-preview="true"]),.live-dragon-scene:not([data-gift-preview="true"]),.live-gift-celebration:not([data-gift-preview="true"]):after,.live-dragon-scene:not([data-gift-preview="true"]):after,.live-gift-celebration:not([data-gift-preview="true"]) .live-gift-spark,.live-dragon-scene:not([data-gift-preview="true"]) .live-gift-spark{animation:none!important}.live-gift-celebration:not([data-gift-preview="true"]) .live-gift-spark,.live-dragon-scene:not([data-gift-preview="true"]) .live-gift-spark{display:none}}
 
+
+/* Golden throne spectacle */
+.live-throne-scene{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 50% 52%,#4b1c0dcc,#100817ed 62%,#03030a)}
+.live-throne-portal{position:absolute;width:min(82vw,620px);aspect-ratio:1;border:12px solid #ff9b35;border-radius:50%;box-shadow:0 0 25px #ff7b22,0 0 85px #e33c18,inset 0 0 65px #ff8a25;animation:thronePortal 2.2s ease-in-out infinite alternate}
+.live-throne-art{position:relative;z-index:2;text-align:center;font-size:clamp(5rem,18vw,11rem);filter:drop-shadow(0 0 22px #ffb23d);animation:throneRise 1.1s cubic-bezier(.2,1.5,.4,1) both}
+.live-throne-paper{position:absolute;z-index:3;font-size:clamp(1.5rem,5vw,3rem);animation:thronePaper 3.5s ease-in-out infinite}
+.live-throne-title{position:absolute;z-index:4;bottom:12%;left:0;right:0;text-align:center;font-weight:1000;font-size:clamp(1.2rem,4vw,2.4rem);letter-spacing:.08em;text-shadow:0 0 18px #ff8b24,0 3px 5px #000}
+@keyframes thronePortal{from{transform:scale(.88) rotate(-8deg);filter:hue-rotate(-12deg)}to{transform:scale(1.08) rotate(8deg);filter:hue-rotate(18deg)}}
+@keyframes throneRise{from{opacity:0;transform:translateY(80px) scale(.35) rotate(-12deg)}to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
+@keyframes thronePaper{0%{transform:translateY(35vh) rotate(0);opacity:0}20%{opacity:1}100%{transform:translateY(-65vh) rotate(620deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){.live-throne-portal,.live-throne-art,.live-throne-paper{animation:none}}
+
 /* Original TikNation Dragon Spirit spectacle */
 .live-dragon-scene{position:fixed;inset:0;z-index:2147483647;overflow:hidden;display:grid;place-items:center;pointer-events:none;background:radial-gradient(ellipse at 52% 52%,rgba(115,35,15,.48),rgba(10,5,16,.82) 58%,rgba(2,2,9,.94));isolation:isolate}
 .live-dragon-scene:before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 50% 55%,transparent 0 36px,rgba(255,111,35,.08) 38px 40px);animation:dragon-embers 2.4s linear infinite}
@@ -368,7 +380,7 @@ const LIVE_GIFT_CATALOG = {
   disco_raccoon:{name:"Disco Raccoon",emoji:"🦝🪩",category:"Musical",cost:75},
   portal_party:{name:"Portal Party",emoji:"🌀🎉",category:"Magical",cost:100},
   blast_from_my_ass:{name:"Blast from My Ass",emoji:"💨🍑",category:"Special Effects",cost:69},
-  asshole_of_death:{name:"The Asshole of Death",emoji:"☠️🍑",category:"Legendary",cost:199},
+  asshole_of_death:{name:"The Asshole of Death",emoji:"🚽💀",category:"Legendary",cost:199},
   golden_throne:{name:"The Golden Throne",emoji:"🚽👑",category:"Legendary",cost:125},
   chicken_of_doom:{name:"Chicken of Doom",emoji:"🐔💀",category:"Special Effects",cost:75},
   cheesepocalypse:{name:"The Cheesepocalypse",emoji:"🧀☄️",category:"Special Effects",cost:99},
@@ -487,7 +499,10 @@ function showLiveGiftCelebration(event) {
   const overlay=document.createElement("div");overlay.id="liveGiftCelebration";
   overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");
   if(isPreview)overlay.dataset.giftPreview="true";
-  if(event.gift_code==="dragon_spirit"){
+  if(event.gift_code==="asshole_of_death"){
+    overlay.className="live-throne-scene";
+    overlay.innerHTML='<div class="live-throne-portal"></div><div class="live-throne-art" role="img" aria-label="Golden throne in a fiery portal">🚽👑💀</div><span class="live-throne-paper" style="left:12%;top:72%">🧻</span><span class="live-throne-paper" style="right:14%;top:64%;animation-delay:.8s">🧻</span><span class="live-throne-paper" style="left:72%;top:82%;animation-delay:1.5s">💀</span><div class="live-throne-title">THE ASSHOLE OF DEATH</div>';
+  }else if(event.gift_code==="dragon_spirit"){
     const sender=String(event.sender_name||"A TikNation dreamer").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
     overlay.className="live-dragon-scene"+(isPreview?" live-dragon-scene-preview":"");
     overlay.innerHTML=`<div class="live-dragon-flight"><svg class="live-dragon-art" viewBox="0 0 1200 620" role="img" aria-label="A detailed winged dragon flying forward and breathing a stream of fire"><defs><linearGradient id="dragonScale" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4c17a"/><stop offset=".25" stop-color="#a9432d"/><stop offset=".58" stop-color="#44202b"/><stop offset="1" stop-color="#10121e"/></linearGradient><linearGradient id="dragonWing" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a94a39"/><stop offset=".5" stop-color="#421b2b"/><stop offset="1" stop-color="#171323"/></linearGradient><linearGradient id="dragonFlame" x1="0" y1=".5" x2="1" y2=".5"><stop stop-color="#fffbd0"/><stop offset=".18" stop-color="#ffe36a"/><stop offset=".48" stop-color="#ff8a1d"/><stop offset=".78" stop-color="#ed3514"/><stop offset="1" stop-color="#9c1432" stop-opacity="0"/></linearGradient><radialGradient id="dragonEye"><stop stop-color="#fff8b0"/><stop offset=".35" stop-color="#ff9b24"/><stop offset="1" stop-color="#d51d12"/></radialGradient><filter id="dragonGlow"><feGaussianBlur stdDeviation="8"/></filter></defs><g stroke="#160d18" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
