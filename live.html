@@ -503,32 +503,32 @@ let user = null, activeSession = null, room = null, localTracks = [], isHost = f
 let liveGiftBattle = null;
 let battleCelebratedInviteId = null;
 const LIVE_GIFT_CATALOG = {
-  heart_pulse:{name:"Heart Pulse",emoji:"💗",category:"Musical",cost:5}, melody_note:{name:"Melody Note",emoji:"🎵",category:"Musical",cost:5}, heartbeat_beat:{name:"Heartbeat Beat",emoji:"🥁",category:"Musical",cost:10}, symphony:{name:"Symphony",emoji:"🎼",category:"Musical",cost:50},
-  magic_spark:{name:"Magic Spark",emoji:"✨",category:"Magical",cost:10}, mystic_portal:{name:"Mystic Portal",emoji:"🌀",category:"Magical",cost:25}, dragon_spirit:{name:"Dragon Spirit",emoji:"🐉",category:"Magical",cost:75}, galaxy_gift:{name:"Galaxy Gift",emoji:"🌌",category:"Magical",cost:100},
-  thunder_clap:{name:"Thunder Clap",emoji:"⚡",category:"Special Effects",cost:25}, prism_wave:{name:"Prism Wave",emoji:"🌈",category:"Visual Effects",cost:50}, mystery_reveal:{name:"Mystery Reveal",emoji:"🎁",category:"Surprises",cost:25},
-  creator_crown:{name:"Creator’s Crown",emoji:"👑",category:"Legendary",cost:50}, infinity_crystal:{name:"Infinity Crystal",emoji:"💎",category:"Legendary",cost:150}
+  heart_pulse:{name:"Heart Pulse",emoji:"💗",category:"Musical",cost:5,sound:[523, 659]}, melody_note:{name:"Melody Note",emoji:"🎵",category:"Musical",cost:5,sound:[659, 784, 988]}, heartbeat_beat:{name:"Heartbeat Beat",emoji:"🥁",category:"Musical",cost:10,sound:[110, 110, 220]}, symphony:{name:"Symphony",emoji:"🎼",category:"Musical",cost:50,sound:[523, 659, 784, 1047]},
+  magic_spark:{name:"Magic Spark",emoji:"✨",category:"Magical",cost:10,sound:[784, 1175]}, mystic_portal:{name:"Mystic Portal",emoji:"🌀",category:"Magical",cost:25,sound:[392, 587, 784]}, dragon_spirit:{name:"Dragon Spirit",emoji:"🐉",category:"Magical",cost:75,sound:[196, 293, 392, 587]}, galaxy_gift:{name:"Galaxy Gift",emoji:"🌌",category:"Magical",cost:100,sound:[220, 330, 440, 660, 880]},
+  thunder_clap:{name:"Thunder Clap",emoji:"⚡",category:"Special Effects",cost:25,sound:[196, 392, 587, 784]}, prism_wave:{name:"Prism Wave",emoji:"🌈",category:"Visual Effects",cost:50,sound:[523, 659, 880, 1047, 1319]}, mystery_reveal:{name:"Mystery Reveal",emoji:"🎁",category:"Surprises",cost:25,sound:[392, 523, 784, 1047]},
+  creator_crown:{name:"Creator’s Crown",emoji:"👑",category:"Legendary",cost:50,sound:[523, 659, 784]}, infinity_crystal:{name:"Infinity Crystal",emoji:"💎",category:"Legendary",cost:150,sound:[392, 523, 659, 784, 1047]}
 ,
-  dragon_ball:{name:"Dragon Ball",emoji:"🔮",category:"Magical",cost:75},
-  changing_face:{name:"Changing Face",emoji:"🎭",category:"Surprises",cost:25},
-  clouds_of_mystery:{name:"Clouds of Mystery",emoji:"☁️",category:"Magical",cost:50},
-  hammer_of_pain:{name:"Hammer of Pain",emoji:"🔨",category:"Special Effects",cost:50},
-  thunder_ass:{name:"Thunder Ass",emoji:"⚡🍑",category:"Special Effects",cost:69},
-  storm_of_the_world:{name:"Storm of the World",emoji:"🌪️",category:"Special Effects",cost:100},
-  lightning_bolts_of_doom:{name:"Lightning Bolts of Doom",emoji:"⚡💀",category:"Special Effects",cost:125},
-  book_of_death:{name:"Book of Death",emoji:"📕☠️",category:"Legendary",cost:150},
-  dream_makers:{name:"The Dream Makers",emoji:"✨🧚",category:"Magical",cost:100},
-  phoenix_rebirth:{name:"Phoenix Rebirth",emoji:"🔥🪽",category:"Legendary",cost:175},
-  treasure_explosion:{name:"Treasure Explosion",emoji:"💎💰",category:"Legendary",cost:150},
-  meteor_mayhem:{name:"Meteor Mayhem",emoji:"☄️",category:"Special Effects",cost:125},
-  disco_raccoon:{name:"Disco Raccoon",emoji:"🦝🪩",category:"Musical",cost:75},
-  portal_party:{name:"Portal Party",emoji:"🌀🎉",category:"Magical",cost:100},
-  blast_from_my_ass:{name:"Blast from My Ass",emoji:"💨🍑",category:"Special Effects",cost:69},
-  asshole_of_death:{name:"The Asshole of Death",emoji:"🚽💀",category:"Legendary",cost:199},
-  golden_throne:{name:"The Golden Throne",emoji:"🚽👑",category:"Legendary",cost:125},
-  chicken_of_doom:{name:"Chicken of Doom",emoji:"🐔💀",category:"Special Effects",cost:75},
-  cheesepocalypse:{name:"The Cheesepocalypse",emoji:"🧀☄️",category:"Special Effects",cost:99},
-  skeleton_disco:{name:"Skeleton Disco",emoji:"💀🪩",category:"Musical",cost:100},
-  dragons_revenge:{name:"The Dragon's Revenge",emoji:"🐉🔥",category:"Legendary",cost:200}
+  dragon_ball:{name:"Dragon Ball",emoji:"🔮",category:"Magical",cost:75,sound:[294, 440, 587, 880]},
+  changing_face:{name:"Changing Face",emoji:"🎭",category:"Surprises",cost:25,sound:[659, 784, 523, 880]},
+  clouds_of_mystery:{name:"Clouds of Mystery",emoji:"☁️",category:"Magical",cost:50,sound:[392, 523, 659, 784, 988]},
+  hammer_of_pain:{name:"Hammer of Pain",emoji:"🔨",category:"Special Effects",cost:50,sound:[110, 82, 55, 73]},
+  thunder_ass:{name:"Thunder Ass",emoji:"⚡🍑",category:"Special Effects",cost:69,sound:[196, 392, 196, 587]},
+  storm_of_the_world:{name:"Storm of the World",emoji:"🌪️",category:"Special Effects",cost:100,sound:[110, 165, 220, 330, 165]},
+  lightning_bolts_of_doom:{name:"Lightning Bolts of Doom",emoji:"⚡💀",category:"Special Effects",cost:125,sound:[880, 440, 988, 494, 1175]},
+  book_of_death:{name:"Book of Death",emoji:"📕☠️",category:"Legendary",cost:150,sound:[196, 147, 110, 73]},
+  dream_makers:{name:"The Dream Makers",emoji:"✨🧚",category:"Magical",cost:100,sound:[523, 659, 784, 1047, 1319]},
+  phoenix_rebirth:{name:"Phoenix Rebirth",emoji:"🔥🪽",category:"Legendary",cost:175,sound:[392, 523, 659, 784, 1047, 1319]},
+  treasure_explosion:{name:"Treasure Explosion",emoji:"💎💰",category:"Legendary",cost:150,sound:[587, 740, 988, 1175, 1480]},
+  meteor_mayhem:{name:"Meteor Mayhem",emoji:"☄️",category:"Special Effects",cost:125,sound:[880, 440, 220, 110, 55]},
+  disco_raccoon:{name:"Disco Raccoon",emoji:"🦝🪩",category:"Musical",cost:75,sound:[659, 784, 988, 1175, 988, 784]},
+  portal_party:{name:"Portal Party",emoji:"🌀🎉",category:"Magical",cost:100,sound:[392, 587, 784, 1175, 1568]},
+  blast_from_my_ass:{name:"Blast from My Ass",emoji:"💨🍑",category:"Special Effects",cost:69,sound:[110, 73, 55, 82]},
+  asshole_of_death:{name:"The Asshole of Death",emoji:"🚽💀",category:"Legendary",cost:199,sound:[73, 55, 41, 110]},
+  golden_throne:{name:"The Golden Throne",emoji:"🚽👑",category:"Legendary",cost:125,sound:[392, 523, 659, 784]},
+  chicken_of_doom:{name:"Chicken of Doom",emoji:"🐔💀",category:"Special Effects",cost:75,sound:[784, 392, 784, 988]},
+  cheesepocalypse:{name:"The Cheesepocalypse",emoji:"🧀☄️",category:"Special Effects",cost:99,sound:[330, 440, 554, 659, 440]},
+  skeleton_disco:{name:"Skeleton Disco",emoji:"💀🪩",category:"Musical",cost:100,sound:[659, 784, 988, 1175, 1397, 1175]},
+  dragons_revenge:{name:"The Dragon's Revenge",emoji:"🐉🔥",category:"Legendary",cost:200,sound:[196, 293, 392, 587, 784]}
 };
 let liveGiftTimer = null, liveGiftCursor = null, liveGiftCursorId = null, seenLiveGiftIds = new Set(), liveGiftRequestBusy = false;
 function notice(message, type=""){const n=$("notice");n.textContent=message;n.className="status"+(type?" "+type:"");}
@@ -593,14 +593,6 @@ function unlockLiveGiftAudio() {
 }
 function playLiveGiftSound(event, gift) {
   try {
-    if (event.gift_code === "asshole_of_death") {
-      // Real toilet-flush recording by DrTrumpet, CC BY-SA 4.0.
-      const flushAudio = new Audio("https://upload.wikimedia.org/wikipedia/commons/transcoded/4/4b/Toilet-flush.ogg/Toilet-flush.ogg.mp3");
-      flushAudio.preload = "auto";
-      flushAudio.volume = 0.9;
-      flushAudio.play().catch(error => console.warn("Flush recording could not play:", error));
-      return flushAudio;
-    }
     unlockLiveGiftAudio();
     const ctx = liveGiftAudioContext;
     if (!ctx) return;
@@ -612,96 +604,46 @@ function playLiveGiftSound(event, gift) {
     }
     const now = ctx.currentTime + 0.035;
     const code = event.gift_code;
-    // Rounded, low-frequency heart sounds instead of generic musical beeps.
-    const thump = (start, frequency, volume, duration, endFrequency) => {
-      const osc = ctx.createOscillator();
-      const filter = ctx.createBiquadFilter();
+    const playNoiseSweep = (at, duration, volume, startHz, endHz) => {
+      const count = Math.floor(ctx.sampleRate * duration);
+      const buffer = ctx.createBuffer(1, count, ctx.sampleRate);
+      const samples = buffer.getChannelData(0);
+      for (let i = 0; i < count; i++) {
+        const t = i / count;
+        samples[i] = (Math.random() * 2 - 1) * Math.min(1, t * 16) * Math.pow(Math.max(0, 1 - t), 1.05);
+      }
+      const source = ctx.createBufferSource(); source.buffer = buffer;
+      const filter = ctx.createBiquadFilter(); filter.type = "bandpass";
+      filter.frequency.setValueAtTime(startHz, at);
+      filter.frequency.exponentialRampToValueAtTime(Math.max(80, endHz), at + duration);
+      filter.Q.setValueAtTime(0.55, at);
       const gain = ctx.createGain();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(frequency, start);
-      osc.frequency.exponentialRampToValueAtTime(Math.max(28, endFrequency || frequency * 0.62), start + duration * 0.72);
-      filter.type = "lowpass";
-      filter.frequency.setValueAtTime(180, start);
-      filter.Q.setValueAtTime(0.7, start);
-      gain.gain.setValueAtTime(0.0001, start);
-      gain.gain.exponentialRampToValueAtTime(volume, start + 0.018);
-      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
-      osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
-      osc.start(start); osc.stop(start + duration + 0.015);
-    };
-    const softTone = (start, frequency, duration, volume, type = "sine") => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = type;
-      osc.frequency.setValueAtTime(frequency, start);
-      gain.gain.setValueAtTime(0.0001, start);
-      gain.gain.exponentialRampToValueAtTime(volume, start + 0.035);
-      gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(start); osc.stop(start + duration + 0.02);
+      gain.gain.setValueAtTime(0.0001, at);
+      gain.gain.exponentialRampToValueAtTime(volume, at + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, at + duration);
+      source.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+      source.start(at); source.stop(at + duration + 0.02);
     };
     if (code === "asshole_of_death") {
-      // Keep this effect water-only: no oscillator tones or high-pitched beeps.
-      const waterNoise = (at, duration, volume, lowStart, lowEnd, highStart, highEnd, pulseRate = 0) => {
-        const count = Math.floor(ctx.sampleRate * duration);
-        const buffer = ctx.createBuffer(1, count, ctx.sampleRate);
-        const samples = buffer.getChannelData(0);
-        for (let i = 0; i < count; i++) {
-          const t = i / count;
-          const attack = Math.min(1, t * 14);
-          const release = Math.pow(Math.max(0, 1 - t), 1.1);
-          const pulse = pulseRate ? 0.76 + 0.24 * Math.sin(t * Math.PI * 2 * pulseRate) : 1;
-          samples[i] = (Math.random() * 2 - 1) * attack * release * pulse;
-        }
-        const source = ctx.createBufferSource(); source.buffer = buffer;
-        const band = ctx.createBiquadFilter(); band.type = "bandpass";
-        band.frequency.setValueAtTime(lowStart, at);
-        band.frequency.exponentialRampToValueAtTime(Math.max(80, lowEnd), at + duration);
-        band.Q.setValueAtTime(0.45, at);
-        const low = ctx.createBiquadFilter(); low.type = "lowpass";
-        low.frequency.setValueAtTime(highStart, at);
-        low.frequency.exponentialRampToValueAtTime(Math.max(140, highEnd), at + duration);
-        const amp = ctx.createGain();
-        amp.gain.setValueAtTime(0.0001, at);
-        amp.gain.exponentialRampToValueAtTime(volume, at + 0.07);
-        amp.gain.setValueAtTime(volume * 0.82, at + duration * 0.5);
-        amp.gain.exponentialRampToValueAtTime(0.0001, at + duration);
-        source.connect(band); band.connect(low); low.connect(amp); amp.connect(ctx.destination);
-        source.start(at); source.stop(at + duration + 0.02);
-      };
-      // Lever clunk is a low thud only, followed by a sustained rushing swirl.
-      thump(now, 92, 0.13, 0.13, 42);
-      waterNoise(now + 0.12, 2.9, 0.38, 920, 180, 3200, 480, 1.8);
-      waterNoise(now + 0.23, 2.55, 0.24, 260, 85, 980, 210, 2.6);
-      // Deep irregular water gulping as the bowl drains; no pitched tones.
-      [0.52,0.83,1.09,1.32,1.56,1.78].forEach((offset,i) => {
-        const f = [150,122,98,82,66,52][i];
-        thump(now + offset, f, 0.095 - i * 0.008, 0.26, Math.max(30, f * 0.52));
-      });
-      waterNoise(now + 2.38, 0.75, 0.18, 420, 100, 1200, 260, 4.1);
-      // Short, soft refill hiss: noise only, so it cannot sound like a beep.
-      waterNoise(now + 3.05, 1.05, 0.085, 1450, 900, 3600, 1700, 3.5);
-    } else if (code === "heart_pulse") {
-      // Soft, warm pulse with a subtle magical shimmer at the end.
-      [0, 0.24, 0.68, 0.92].forEach((offset, i) =>
-        thump(now + offset, i % 2 ? 72 : 92, i % 2 ? 0.11 : 0.14, 0.25, i % 2 ? 48 : 58));
-      softTone(now + 1.22, 659, 0.32, 0.025);
-      softTone(now + 1.36, 784, 0.42, 0.022);
-    } else if (code === "heartbeat_beat") {
-      // Deeper, more organic lub-dub rhythm with a pause between each beat.
-      [0, 0.17, 0.62, 0.79, 1.24, 1.41].forEach((offset, i) =>
-        thump(now + offset, i % 2 ? 61 : 82, i % 2 ? 0.13 : 0.17, i % 2 ? 0.23 : 0.31, i % 2 ? 38 : 46));
-    } else {
-      const melodies = { thunder_clap:[196,392,587,784], prism_wave:[523,659,880,1047,1319], mystery_reveal:[392,523,784,1047],
-        melody_note:[659,784,988,784,659], symphony:[523,659,784,1047,784,659,784,1047],
-        magic_spark:[784,988,1175], mystic_portal:[392,523,659,784], dragon_spirit:[196,247,294,392],
-        galaxy_gift:[392,523,659,784,1047], creator_crown:[523,659,784,1047,1319],
-        infinity_crystal:[523,659,784,1047,1319,1568],
-        dragon_ball:[392,523,784,1047],changing_face:[659,784,523],clouds_of_mystery:[392,523,659,784],hammer_of_pain:[110,82,55],thunder_ass:[196,392,196],storm_of_the_world:[110,165,220,330],lightning_bolts_of_doom:[880,440,988,494],book_of_death:[196,147,110,73],dream_makers:[523,659,784,1047],phoenix_rebirth:[392,523,659,784,1047],treasure_explosion:[523,659,880,1047],meteor_mayhem:[880,440,220,110],disco_raccoon:[659,784,988,1175],portal_party:[392,587,784,1175],blast_from_my_ass:[110,73,55],asshole_of_death:[73,55,41,110],golden_throne:[392,523,659],chicken_of_doom:[784,392,784],cheesepocalypse:[330,440,554,659],skeleton_disco:[659,784,988,1175],dragons_revenge:[196,293,392,587]
-      };
-      (melodies[code] || [523,659,784]).forEach((frequency, index) =>
-        softTone(now + index * (gift.category === "Musical" ? 0.17 : 0.12), frequency, gift.category === "Musical" ? 0.24 : 0.19, gift.category === "Musical" ? 0.055 : 0.04, gift.category === "Musical" ? "triangle" : "sine"));
+      playNoiseSweep(now, 2.7, 0.25, 1050, 170);
+      playNoiseSweep(now + 0.2, 2.2, 0.15, 420, 90);
+      playNoiseSweep(now + 2.35, 0.85, 0.1, 1450, 650);
+      return;
     }
+    const softTone = (at, frequency, duration, volume, type) => {
+      const oscillator = ctx.createOscillator(), gain = ctx.createGain();
+      oscillator.type = type; oscillator.frequency.setValueAtTime(frequency, at);
+      gain.gain.setValueAtTime(0.0001, at);
+      gain.gain.exponentialRampToValueAtTime(volume, at + 0.025);
+      gain.gain.exponentialRampToValueAtTime(0.0001, at + duration);
+      oscillator.connect(gain); gain.connect(ctx.destination);
+      oscillator.start(at); oscillator.stop(at + duration + 0.02);
+    };
+    const notes = Array.isArray(gift.sound) && gift.sound.length ? gift.sound : [523,659,784];
+    const step = gift.category === "Musical" ? 0.16 : 0.115;
+    const duration = gift.category === "Musical" ? 0.25 : 0.2;
+    const wave = gift.category === "Musical" ? "triangle" : gift.category === "Special Effects" ? "sawtooth" : "sine";
+    notes.forEach((frequency,index)=>softTone(now+index*step,Math.max(65,Math.min(1760,Number(frequency)||523)),duration,gift.category==="Musical"?0.045:0.032,wave));
   } catch (error) { console.warn("TikNation gift sound could not play:", error); }
 }
 function showLiveGiftCelebration(event) {
