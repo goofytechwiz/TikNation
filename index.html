@@ -2580,6 +2580,8 @@ textarea.form-control{
                     <option value="shadow">Shadow figure reveal</option>
                     <option value="glitch">Digital glitch reveal</option>
                     <option value="creepy_eyes">Creepy eyes reveal</option>
+                    <option value="stinkdeath">💨💀 Stinky Fart or Death</option>
+                    <option value="rattlebone">🦴🖕 Madafaka — skeletal finger rattle</option>
                 </select>
                 <p class="muted" style="margin-top:8px;font-size:12px;">Effects are a visual layer in TikNation playback, not permanently embedded into your original video. Horror posts will be labeled before viewing.</p>
                 <div id="booCreatorPreview" class="boo-creator-preview" aria-live="polite">
@@ -7060,7 +7062,9 @@ function updateBooCreatorPreview(){
         none:{symbol:"👻",name:"No jump-scare effect"},
         shadow:{symbol:"♟",name:"Shadow figure reveal"},
         glitch:{symbol:"▓▒░",name:"Digital glitch reveal"},
-        creepy_eyes:{symbol:"👁️",name:"Creepy eyes reveal"}
+        creepy_eyes:{symbol:"👁️",name:"Creepy eyes reveal"},
+        stinkdeath:{symbol:"💨💀",name:"Stinky Fart or Death"},
+        rattlebone:{symbol:"🦴🖕",name:"Madafaka — skeletal finger rattle"}
     };
     const choice = effects[select.value] || effects.none;
     if(symbol) symbol.textContent = choice.symbol;
@@ -7103,6 +7107,14 @@ function playBooEffectSound(effect){
                     tone("square", 760, 115, 0, 0.18, 0.35);
                     tone("square", 210, 980, 0.2, 0.16, 0.28);
                     tone("sawtooth", 540, 75, 0.42, 0.34, 0.3);
+                }else if(effect === "rattlebone"){
+                    [0,0.07,0.14,0.22,0.30,0.39].forEach((delay,index)=>{
+                        tone(index%2 ? "square" : "sawtooth",[190,95,230,82,250,105][index],[95,210,82,240,100,180][index],delay,0.075,0.32);
+                    });
+                }else if(effect === "stinkdeath"){
+                    tone("sawtooth",145,48,0,0.72,0.38);
+                    tone("square",82,55,0.12,0.42,0.22);
+                    tone("triangle",220,70,0.48,0.42,0.25);
                 }else{
                     tone("sawtooth", 880, 170, 0, 0.48, 0.42);
                     tone("sine", 130, 48, 0.08, 0.78, 0.5);
@@ -7138,7 +7150,7 @@ function handleBooPlayback(video){
             stage.dataset.booEffectScheduled = "false";
             return;
         }
-        const effect = ["shadow","glitch","creepy_eyes"].find(name => stage.classList.contains("boo-effect-" + name));
+        const effect = ["shadow","glitch","creepy_eyes","stinkdeath","rattlebone"].find(name => stage.classList.contains("boo-effect-" + name));
         if(!effect) return;
         stage.classList.add("boo-effect-armed");
         stage.dataset.booSoundPlayed = "true";
@@ -7179,12 +7191,12 @@ function renderMediaElement(post,className){
             getTikNationPreference("autoplayVideos") && post.content_category !== "horror"
                 ? "autoplay muted loop"
                 : "";
-        const effect = ["shadow","glitch","creepy_eyes"].includes(post.scare_effect) ? post.scare_effect : "none";
+        const effect = ["shadow","glitch","creepy_eyes","stinkdeath","rattlebone"].includes(post.scare_effect) ? post.scare_effect : "none";
         const horrorLabel = post.content_category === "horror"
             ? '<span class="boo-content-label">👻 HORROR · VIEWER DISCRETION</span>'
             : "";
         const effectLayer = effect !== "none"
-            ? '<div class="boo-playback-effect boo-effect-' + effect + '" aria-hidden="true"><span>' + (effect === "shadow" ? "♟" : effect === "glitch" ? "▓▒░" : "👁️") + '</span></div>'
+            ? '<div class="boo-playback-effect boo-effect-' + effect + '" aria-hidden="true"><span>' + (effect === "shadow" ? "♟" : effect === "glitch" ? "▓▒░" : effect === "stinkdeath" ? "💨💀" : effect === "rattlebone" ? "🦴🖕" : "👁️") + '</span></div>'
             : "";
 
         return `
