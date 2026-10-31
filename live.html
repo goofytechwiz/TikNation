@@ -550,7 +550,7 @@ function updateLiveGiftBattleTarget(battle){
   wrap.classList.remove("hide");
 }
 async function giftApi(action, extra={}) {
-  if (!user) throw new Error("Please sign in to send live gifts.");
+  if (!user && action !== "live_events") throw new Error("Please sign in to send live gifts.");
   const { data, error } = await supabase.functions.invoke("tiknation-gifts", { body: { action, ...extra } });
   if (error) {
     let message = error.message || "Live gifts could not connect.";
