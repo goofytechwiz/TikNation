@@ -365,6 +365,26 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 @keyframes giftChickenStrut{to{transform:translateX(8px) rotate(13deg)}}
 @keyframes giftDragonRoar{to{transform:scale(1.08) rotate(-1deg);filter:brightness(1.25)}}
 @media(prefers-reduced-motion:reduce){.live-gift-celebration:not([data-gift-preview="true"]) .live-gift-celebration-card,.live-gift-celebration:not([data-gift-preview="true"]) .live-gift-celebration-card>span,.live-gift-celebration:not([data-gift-preview="true"]) .live-gift-celebration-card:before{animation:none!important}}
+
+/* Dedicated creator-preview motion: overrides all per-gift animation rules. */
+@keyframes liveGiftPreviewEntrance {
+  0% { opacity:0; transform:translate3d(0,90px,0) scale(.12) rotate(-16deg); filter:brightness(2.2); }
+  58% { opacity:1; transform:translate3d(0,-14px,0) scale(1.16) rotate(5deg); filter:brightness(1.6); }
+  78% { transform:translate3d(0,5px,0) scale(.94) rotate(-2deg); }
+  100% { opacity:1; transform:translate3d(0,0,0) scale(1) rotate(0); filter:brightness(1); }
+}
+@keyframes liveGiftPreviewEmoji {
+  0% { opacity:0; transform:translateY(55px) scale(.1) rotate(-40deg); }
+  65% { opacity:1; transform:translateY(-12px) scale(1.5) rotate(14deg); }
+  100% { opacity:1; transform:translateY(0) scale(1) rotate(0); }
+}
+.live-gift-celebration[data-gift-preview="true"] .live-gift-celebration-card {
+  animation:liveGiftPreviewEntrance 1.15s cubic-bezier(.16,1.4,.3,1) both !important;
+}
+.live-gift-celebration[data-gift-preview="true"] .live-gift-celebration-card>span {
+  display:inline-block !important;
+  animation:liveGiftPreviewEmoji 1.05s cubic-bezier(.18,1.5,.35,1) both !important;
+}
 </style>
 </head>
 <body>
