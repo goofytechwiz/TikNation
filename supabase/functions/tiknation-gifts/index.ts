@@ -97,8 +97,8 @@ Deno.serve(async (req: Request) => {
         .order("id", { ascending: true })
         .limit(30);
       if (eventsError) { console.error("Live gift feed failed:", eventsError.code ?? "unknown"); return json({ error: "Live gifts could not be refreshed." }, 500); }
-      const senderIds = [...new Set((events ?? []).map((event) => event.sender_id))];
-      const { data: profiles } = senderIds.length ? await admin.from("profiles").select("id,username,display_name").in("id", senderIds) : { data: [] };
+      const profileIds = [...new Set((events ?? []).flatMap((event) => [event.sender_id, event.recipient_id]))];
+      const { data: profiles } = profileIds.length ? await admin.from("profiles").select("id,username,display_name").in("id", profileIds) : { data: [] };
       const profileMap = new Map((profiles ?? []).map((profile) => [profile.id, profile]));
       const { data: activeBattle } = await admin.from("live_battle_invites")
         .select("id,host_id,opponent_id,decided_at,round_seconds")
@@ -114,7 +114,7 @@ Deno.serve(async (req: Request) => {
             opponent_name: playerMap.get(activeBattle.opponent_id)?.display_name || playerMap.get(activeBattle.opponent_id)?.username || "Opponent" };
         }
       }
-      return json({ success: true, battle, events: (events ?? []).map((event) => ({ ...event, sender_name: profileMap.get(event.sender_id)?.display_name || profileMap.get(event.sender_id)?.username || "TikNation member" })) });
+      return json({ success: true, battle, events: (events ?? []).map((event) => ({ ...event, sender_name: profileMap.get(event.sender_id)?.display_name || profileMap.get(event.sender_id)?.username || "TikNation member", recipient_name: profileMap.get(event.recipient_id)?.display_name || profileMap.get(event.recipient_id)?.username || "Creator" })) });
     }
 
     if (body.action === "balance") {
