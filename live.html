@@ -737,27 +737,23 @@ function showLiveGiftCelebration(event) {
     if(card){
       /* Use explicit transitions for regular previews so category keyframes cannot cancel motion. */
       const emoji=card.querySelector("span");
+      /* Use Web Animations directly for every ordinary free-preview gift.
+         This is independent of CSS keyframes and reduced-motion media rules. */
       card.style.setProperty("animation","none","important");
-      card.style.setProperty("transition","transform 900ms cubic-bezier(.18,1.4,.35,1), opacity 650ms ease, box-shadow 700ms ease","important");
       card.style.setProperty("transform-origin","center center");
-      card.style.setProperty("opacity","0","important");
-      card.style.setProperty("transform","translateY(42px) scale(.35) rotate(-9deg)","important");
-      card.style.setProperty("box-shadow","0 0 0 1px #b69cff44,0 0 18px #805bff55","important");
+      card.animate([
+        {opacity:0,transform:"translateY(70px) scale(.18) rotate(-18deg)",filter:"brightness(2)",boxShadow:"0 0 0 1px #b69cff22"},
+        {opacity:1,transform:"translateY(-8px) scale(1.12) rotate(3deg)",filter:"brightness(1.5)",boxShadow:"0 0 0 5px #b69cff88,0 0 110px #805bff"},
+        {opacity:1,transform:"translateY(0) scale(1) rotate(0)",filter:"brightness(1)",boxShadow:"0 0 0 2px #b69cff66,0 0 70px #805bff99"}
+      ],{duration:1150,easing:"cubic-bezier(.16,1.4,.3,1)",fill:"both"});
       if(emoji){
-        emoji.style.setProperty("transition","transform 950ms cubic-bezier(.18,1.6,.35,1), opacity 450ms ease","important");
-        emoji.style.setProperty("transform","translateY(38px) scale(.2) rotate(-25deg)","important");
-        emoji.style.setProperty("opacity","0","important");
+        emoji.style.setProperty("display","inline-block");
+        emoji.animate([
+          {opacity:0,transform:"translateY(45px) scale(.1) rotate(-35deg)"},
+          {opacity:1,transform:"translateY(-10px) scale(1.45) rotate(12deg)",offset:.68},
+          {opacity:1,transform:"translateY(0) scale(1) rotate(0)"}
+        ],{duration:1050,easing:"cubic-bezier(.18,1.5,.35,1)",fill:"both"});
       }
-      requestAnimationFrame(()=>requestAnimationFrame(()=>{
-        if(!card.isConnected)return;
-        card.style.setProperty("opacity","1","important");
-        card.style.setProperty("transform","translateY(0) scale(1) rotate(0)","important");
-        card.style.setProperty("box-shadow","0 0 0 4px #b69cff66,0 0 100px #805bffcc","important");
-        if(emoji){
-          emoji.style.setProperty("transform","translateY(0) scale(1) rotate(0)","important");
-          emoji.style.setProperty("opacity","1","important");
-        }
-      }));
     }
     const flight=overlay.querySelector(".live-dragon-flight");
     if(flight)flight.animate([{transform:"translateX(-110vw) scale(.72)",opacity:0},{transform:"translateX(0) scale(1)",opacity:1,offset:.72},{transform:"translateX(0) scale(1.04)",opacity:1}],{duration:6200,easing:"cubic-bezier(.18,.62,.28,1)",fill:"both"});
