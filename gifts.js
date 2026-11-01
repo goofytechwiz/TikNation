@@ -321,19 +321,11 @@ function startTikNationGiftRealtime(userId) {
         const senderName = sender && (sender.display_name || sender.username)
           ? (sender.display_name || "@" + sender.username)
           : "A TikNation creator";
-        // Live gifts have their own LIVE-stage celebration, delivered from
-        // live_gift_events. Avoid stacking the generic profile overlay on top
-        // of that animation when the recipient is watching the LIVE page.
-        let isLiveGift = false;
-        try {
-          const { data: liveEvent } = await supabaseClient.from("live_gift_events")
-            .select("id").eq("transaction_id", row.id).maybeSingle();
-          isLiveGift = !!liveEvent;
-        } catch (_ignored) {
-          // If the lookup is unavailable, keep the normal receipt animation.
-        }
-        const isOnLivePage = !!document.getElementById("liveGiftFeed");
-        if (!isLiveGift || !isOnLivePage) showTikNationGiftEffect(gift);
+        // While the recipient is broadcasting, the LIVE page displays the
+        // richer live_gift_events celebration. Avoid stacking a second overlay.
+        const liveFeed = document.getElementById("liveGiftFeed");
+        const isActivelyShowingLive = liveFeed?.dataset.liveSessionActive === "true";
+        if (!isActivelyShowingLive) showTikNationGiftEffect(gift);
         const dashboard = document.getElementById("creatorGiftDashboard");
         if (dashboard) {
           const summary = document.getElementById("creatorGiftSummary");
