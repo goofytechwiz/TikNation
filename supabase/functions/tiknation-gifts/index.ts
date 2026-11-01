@@ -85,7 +85,21 @@ Deno.serve(async (req: Request) => {
       const { data: liveSession, error: sessionError } = await admin.from("live_sessions").select("id,status").eq("id", sessionId).eq("status", "live").maybeSingle();
       if (sessionError || !liveSession) return json({ error: "This livestream has ended or is unavailable." }, 404);
       const after = typeof body.after === "string" && !Number.isNaN(Date.parse(body.after)) ? new Date(body.after).toISOString() : new Date(Date.now() - 10000).toISOString();
-      const { data: events, error: eventsError } = await admin.from("live_gift_events").select("id,session_id,sender_id,recipient_id,gift_code,coin_cost,created_at").eq("session_id", sessionId).gt("created_at", after).order("created_at", { ascending: true }).limit(30);
+      const afterId = isUuid(body.after_id) ? String(body.after_id) : null;
+      let eventsQuery = admin.from("live_gift_events")
+        .select("id,session_id,sender_id,recipient_id,gift_code,coin_cost,created_at")
+        .eq("session_id", sessionId);
+      // Use a composite cursor so two gifts created in the same timestamp
+      // are both delivered instead of silently skipping the later row.
+      if (afterId) {
+        eventsQuery = eventsQuery.or(`created_at.gt.${after},and(created_at.eq.${after},id.gt.${afterId})`);
+      } else {
+        eventsQuery = eventsQuery.gt("created_at", after);
+      }
+      const { data: events, error: eventsError } = await eventsQuery
+        .order("created_at", { ascending: true })
+        .order("id", { ascending: true })
+        .limit(30);
       if (eventsError) { console.error("Live gift feed failed:", eventsError.code ?? "unknown"); return json({ error: "Live gifts could not be refreshed." }, 500); }
       const senderIds = [...new Set((events ?? []).map((event) => event.sender_id))];
       const { data: profiles } = senderIds.length ? await admin.from("profiles").select("id,username,display_name").in("id", senderIds) : { data: [] };
