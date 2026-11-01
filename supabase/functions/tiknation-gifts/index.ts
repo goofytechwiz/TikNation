@@ -80,7 +80,7 @@ Deno.serve(async (req: Request) => {
       if (!isUuid(sessionId)) return json({ error: "Invalid livestream." }, 400);
       const { data: liveSession, error: sessionError } = await admin.from("live_sessions").select("id,status").eq("id", sessionId).eq("status", "live").maybeSingle();
       if (sessionError || !liveSession) return json({ error: "This livestream has ended or is unavailable." }, 404);
-      const after = typeof body.after === "string" && !Number.isNaN(Date.parse(body.after)) ? new Date(body.after).toISOString() : new Date(Date.now() - 10000).toISOString();
+      const after = typeof body.after === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/.test(body.after) && !Number.isNaN(Date.parse(body.after)) ? body.after : new Date(Date.now() - 10000).toISOString();
       const afterId = isUuid(body.after_id) ? String(body.after_id) : null;
       let eventsQuery = admin.from("live_gift_events")
         .select("id,session_id,sender_id,recipient_id,gift_code,coin_cost,created_at")
