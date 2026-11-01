@@ -64,17 +64,13 @@ Deno.serve(async (req: Request) => {
         recipientId = requestedRecipient;
       }
       if (recipientId === user.id) return json({ error: "You can't send a gift to your own livestream or battle position." }, 400);
-      const { data, error } = await admin.rpc("send_test_gift", { p_sender_id: user.id, p_recipient_id: recipientId, p_gift_code: giftCode, p_request_id: requestId });
+      const { data, error } = await admin.rpc("send_live_test_gift", { p_sender_id: user.id, p_recipient_id: recipientId, p_gift_code: giftCode, p_request_id: requestId, p_session_id: liveSession.id });
       if (error) {
         const messages: Record<string, string> = { cannot_gift_self: "You can't send a gift to your own livestream.", recipient_profile_not_found: "That creator profile could not be found.", gifting_unavailable: "Gifting isn't available between these accounts.", invalid_gift: "That gift isn't available yet.", insufficient_test_coins: "You don't have enough test coins for that gift.", invalid_user: "Please sign in again before sending a gift." };
         const key = Object.keys(messages).find((item) => error.message?.includes(item));
         if (key) return json({ error: messages[key] }, 400);
         console.error("Live gift send failed:", error.code ?? "unknown");
         return json({ error: "We couldn't send that live gift. Please try again." }, 500);
-      }
-      if (data?.gift_id) {
-        const { error: eventError } = await admin.from("live_gift_events").upsert({ session_id: liveSession.id, transaction_id: data.gift_id, sender_id: user.id, recipient_id: recipientId, gift_code: data.gift_code || giftCode, coin_cost: data.coin_cost }, { onConflict: "transaction_id", ignoreDuplicates: true });
-        if (eventError) console.error("Live gift announcement failed:", eventError.code ?? "unknown");
       }
       return json({ ...data, session_id: liveSession.id, live_gift: true });
     }
