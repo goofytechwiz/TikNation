@@ -7,3 +7,8 @@ verify_jwt = false
 
 [functions.tiknation-username-login]
 verify_jwt = false
+
+# Username reminders are requested before a user is signed in.
+# The handler applies its own input checks, anti-enumeration response, and rate limits.
+[functions.tiknation-account-recovery]
+verify_jwt = false
