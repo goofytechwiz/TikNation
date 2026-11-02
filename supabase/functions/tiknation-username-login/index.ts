@@ -24,8 +24,22 @@ Deno.serve(async (req: Request) => {
 
   try {
     const url = Deno.env.get("SUPABASE_URL");
-    const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
-    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    function keyFromMap(raw: string | undefined, keyName = "default"): string | undefined {
+      if (!raw) return undefined;
+      try {
+        const parsed = JSON.parse(raw);
+        const value = parsed && typeof parsed === "object" ? parsed[keyName] : undefined;
+        return typeof value === "string" && value.trim() ? value.trim() : undefined;
+      } catch {
+        return undefined;
+      }
+    }
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ||
+      Deno.env.get("SUPABASE_PUBLISHABLE_KEY") ||
+      keyFromMap(Deno.env.get("SUPABASE_PUBLISHABLE_KEYS"));
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
+      Deno.env.get("SUPABASE_SECRET_KEY") ||
+      keyFromMap(Deno.env.get("SUPABASE_SECRET_KEYS"));
     if (!url || !anonKey || !serviceKey) {
       console.error("TikNation login server configuration is incomplete.");
       return json({ error: "Sign-in is temporarily unavailable. Please try again later." }, 503);
