@@ -14,7 +14,9 @@ Scope: source review and static checks only; no real account credentials or prod
 - Other identifiers are validated against the 3–24 character username format, looked up case-insensitively in `public.profiles`, mapped to the account email, and then authenticated with Supabase Auth `signInWithPassword`.
 - Invalid email/username and password responses are intentionally generic.
 - The function applies identifier, identifier-plus-network, and network rate limits, and stores hashed security-event identifiers.
+- The login and username-recovery functions now accept the legacy Supabase key environment variables or the newer publishable/secret key variables and `default` key maps, matching the compatibility pattern already used by the Live function.
 - Its CORS allowlist is the GitHub Pages origin `https://goofytechwiz.github.io`.
+- The login function calls `tiknation_check_login_rate_limit`; no definition for that RPC was found in the tracked migrations. It may exist from a dashboard/manual setup, but production availability and its counter semantics were not verified. The function fails closed with a 503 if the RPC call errors.
 
 **Status:** Both paths are implemented in the checked-in source. Neither path has been verified with a real account in a browser during this check. Do not advertise username sign-in as launch-ready until both email and username sign-in pass live tests.
 
