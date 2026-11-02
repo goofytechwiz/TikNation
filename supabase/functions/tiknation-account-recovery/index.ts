@@ -24,6 +24,17 @@ async function sha256(value: string): Promise<string> {
     .join("");
 }
 
+function keyFromMap(raw: string | undefined, keyName = "default"): string | undefined {
+  if (!raw) return undefined;
+  try {
+    const parsed = JSON.parse(raw);
+    const value = parsed && typeof parsed === "object" ? parsed[keyName] : undefined;
+    return typeof value === "string" && value.trim() ? value.trim() : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "POST requests only." }, 405);
@@ -51,7 +62,9 @@ Deno.serve(async (req: Request) => {
     }
 
     const url = Deno.env.get("SUPABASE_URL");
-    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
+      Deno.env.get("SUPABASE_SECRET_KEY") ||
+      keyFromMap(Deno.env.get("SUPABASE_SECRET_KEYS"));
     const resendKey = Deno.env.get("RESEND_API_KEY");
     const fromEmail = Deno.env.get("RECOVERY_FROM_EMAIL");
     if (!url || !serviceKey) return json({ error: "Recovery is temporarily unavailable." }, 503);
