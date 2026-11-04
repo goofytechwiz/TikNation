@@ -1015,7 +1015,7 @@ async function startBroadcast(title, followerOnlyChat=false){
     throw error;
   }
 }
-async function endBroadcast(){if(!activeSession||!isHost)return;const id=activeSession.id;$("endBtn").disabled=true;try{await api("end",{session_id:id});await leaveStream(false);await loadStreams();notice("Your broadcast has ended.","ok");}catch(e){notice(e.message,"error");}finally{$("endBtn").disabled=false;}}
+async function endBroadcast(){if(!activeSession||!isHost)return;const id=activeSession.id;$("endBtn").disabled=true;const endRequest=api("end",{session_id:id});try{await leaveStream(false);await endRequest;await loadStreams();notice("Your broadcast has ended.","ok");}catch(e){try{await loadStreams();}catch{}notice(e.message||"TikNation could not confirm that the broadcast ended. Please check Live Now.","error");}finally{$("endBtn").disabled=false;}}
 $("startForm").addEventListener("submit",async e=>{e.preventDefault();if(!user){notice("Please sign in on TikNation before going live.","error");return;}const title=$("streamTitle").value.trim();if(!title)return;$("startBtn").disabled=true;try{await startBroadcast(title,$("followerOnlyChat").checked);}catch(err){const failedSession=activeSession?.id;if(failedSession&&isHost){try{await api("end",{session_id:failedSession});}catch(cleanupError){console.warn("Could not clean up failed broadcast:",cleanupError.message);}}await leaveStream(false);if(user)$("creator").classList.remove("hide");notice(err.message,"error");}finally{$("startBtn").disabled=false;}});
 $("endBtn").addEventListener("click",endBroadcast);
 $("leaveBtn").addEventListener("click",async()=>{await leaveStream();$("viewTitle").textContent="Live now";});
