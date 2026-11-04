@@ -752,7 +752,7 @@ function showLiveGiftCelebration(event) {
   for(let i=0;i<30;i++){const spark=document.createElement("i");spark.className="live-gift-spark";spark.style.setProperty("--x",(50+(Math.random()-.5)*18)+"%");spark.style.setProperty("--y",(48+(Math.random()-.5)*18)+"%");spark.style.setProperty("--dx",((Math.random()-.5)*Math.min(innerWidth*.9,720))+"px");spark.style.setProperty("--dy",((Math.random()-.5)*Math.min(innerHeight*.8,560))+"px");spark.style.setProperty("--size",(3+Math.random()*5)+"px");spark.style.setProperty("--duration",(1.1+Math.random()*.9)+"s");spark.style.setProperty("--spark",sparkColors[i%sparkColors.length]);overlay.appendChild(spark);}
   document.body.appendChild(overlay);
   /* Drive free previews with the Web Animations API, independent of CSS rules. */
-  if(isPreview && !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) && typeof Element.prototype.animate==="function"){
+  if(!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) && typeof Element.prototype.animate==="function"){
     const card=overlay.querySelector(".live-gift-celebration-card");
     if(card){
       /* Use explicit transitions for regular previews so category keyframes cannot cancel motion. */
