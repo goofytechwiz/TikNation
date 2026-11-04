@@ -94,6 +94,24 @@ function playTikNationGiftSound(gift) {
     const context = tikNationGiftAudioContext;
     if (context.state === "suspended") context.resume().catch(() => {});
     const now = context.currentTime;
+    if (gift.style === "storm") {
+      [0, 0.38, 1.85, 2.15].forEach((delay, index) => {
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        const filter = context.createBiquadFilter();
+        oscillator.type = index === 2 ? "sawtooth" : "triangle";
+        oscillator.frequency.setValueAtTime([58, 72, 42, 55][index], now + delay);
+        oscillator.frequency.exponentialRampToValueAtTime([34, 40, 28, 32][index], now + delay + 1.2);
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(index === 2 ? 260 : 150, now + delay);
+        gain.gain.setValueAtTime(0.0001, now + delay);
+        gain.gain.exponentialRampToValueAtTime(index === 2 ? 0.16 : 0.09, now + delay + 0.09);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 1.35);
+        oscillator.connect(filter); filter.connect(gain); gain.connect(context.destination);
+        oscillator.start(now + delay); oscillator.stop(now + delay + 1.4);
+      });
+      return;
+    }
     if (gift.style === "stinkdeath") {
       [0,0.12,0.24,0.42].forEach((delay,index)=>{
         const oscillator=context.createOscillator(), gain=context.createGain();
