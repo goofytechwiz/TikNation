@@ -640,14 +640,7 @@ function playLiveGiftSound(event, gift) {
     }
     const now = ctx.currentTime + 0.035;
     const code = event.gift_code;
-    if (code === "storm_of_the_world") {
-      playNoiseSweep(now, 3.8, 0.19, 180, 48);
-      playNoiseSweep(now + 0.45, 2.6, 0.13, 720, 110);
-      playNoiseSweep(now + 2.1, 1.25, 0.2, 1250, 75);
-      softTone(now + 0.35, 48, 3.6, 0.11, "sawtooth");
-      softTone(now + 2.05, 62, 1.8, 0.09, "triangle");
-      return;
-    }
+
     const playNoiseSweep = (at, duration, volume, startHz, endHz) => {
       const count = Math.floor(ctx.sampleRate * duration);
       const buffer = ctx.createBuffer(1, count, ctx.sampleRate);
@@ -683,6 +676,14 @@ function playLiveGiftSound(event, gift) {
       oscillator.connect(gain); gain.connect(ctx.destination);
       oscillator.start(at); oscillator.stop(at + duration + 0.02);
     };
+    if (code === "storm_of_the_world") {
+      playNoiseSweep(now, 3.8, 0.19, 180, 48);
+      playNoiseSweep(now + 0.45, 2.6, 0.13, 720, 110);
+      playNoiseSweep(now + 2.1, 1.25, 0.2, 1250, 75);
+      softTone(now + 0.35, 48, 3.6, 0.11, "sawtooth");
+      softTone(now + 2.05, 62, 1.8, 0.09, "triangle");
+      return;
+    }
     const notes = Array.isArray(gift.sound) && gift.sound.length ? gift.sound : [523,659,784];
     const step = gift.category === "Musical" ? 0.16 : 0.115;
     const duration = gift.category === "Musical" ? 0.25 : 0.2;
