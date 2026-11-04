@@ -45,6 +45,17 @@ window.TIKNATION_GIFT_CATALOG = TIKNATION_GIFT_CATALOG;
 
 let tikNationGiftAudioContext = null;
 
+function unlockTikNationGiftAudio() {
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+    if (!tikNationGiftAudioContext) tikNationGiftAudioContext = new AudioContextClass();
+    if (tikNationGiftAudioContext.state === "suspended") void tikNationGiftAudioContext.resume().catch(() => {});
+  } catch (_ignored) {}
+}
+document.addEventListener("pointerdown", unlockTikNationGiftAudio, { passive: true });
+document.addEventListener("keydown", unlockTikNationGiftAudio);
+
 async function invokeTikNationGifts(payload) {
   if (!currentUser) throw new Error("Please sign in to use Gifts.");
   const result = await supabaseClient.functions.invoke("tiknation-gifts", { body: payload });
