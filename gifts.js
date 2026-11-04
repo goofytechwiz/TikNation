@@ -182,32 +182,27 @@ function playTikNationGiftSound(gift) {
   }
 }
 
+function ensureTikNationGiftEngine() {
+  if (window.TikNationGiftEngine) return Promise.resolve(window.TikNationGiftEngine);
+  if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
+  window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "./gift-engine.js?v=20261104";
+    script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
+    script.onerror = () => reject(new Error("Gift animation engine could not load."));
+    document.head.appendChild(script);
+  });
+  return window.tikNationGiftEnginePromise;
+}
+
 function showTikNationGiftEffect(gift) {
-  const reduced = document.body.classList.contains("tn-reduce-motion") ||
-    (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  const old = document.getElementById("tikNationGiftCelebration");
-  if (old) old.remove();
-  const overlay = document.createElement("div");
-  overlay.id = "tikNationGiftCelebration";
-  overlay.className = "gift-celebration gift-celebration-" + gift.category.toLowerCase().replace(/\s+/g, "-") + " gift-celebration-" + gift.style + (reduced ? " gift-celebration-reduced" : "");
-  overlay.setAttribute("role", "status");
-  overlay.setAttribute("aria-live", "polite");
-  const safeName = escapeHtml(gift.name);
-  const safeMessage = escapeHtml(gift.message);
-  overlay.innerHTML = '<div class="gift-celebration-orbit" aria-hidden="true"></div><div class="gift-celebration-content"><span class="gift-celebration-emoji" aria-hidden="true">' + gift.emoji + '</span><strong>' + safeName + '</strong><span>' + safeMessage + '</span><small>TIKNATION GIFT · TEST COINS ONLY</small></div>';
-  document.body.appendChild(overlay);
-  if (!reduced) {
-    for (let i = 0; i < 18; i++) {
-      const particle = document.createElement("span");
-      particle.className = "gift-celebration-particle";
-      particle.textContent = ["✦", "·", "✧", "✶"][i % 4];
-      particle.style.setProperty("--particle-index", String(i));
-      particle.style.setProperty("--angle", (i * 20) + "deg");
-      overlay.appendChild(particle);
-    }
-  }
-  window.setTimeout(() => overlay.remove(), reduced ? 1600 : 2600);
-  playTikNationGiftSound(gift);
+  ensureTikNationGiftEngine().then(engine => {
+    engine.show(gift, {
+      meta: "TIKNATION GIFT · TEST COINS ONLY",
+      onSound: () => playTikNationGiftSound(gift),
+      duration: 4300
+    });
+  }).catch(error => console.error("TikNation gift effect unavailable:", error));
 }
 
 async function sendTikNationGift(recipientId, giftCode) {
