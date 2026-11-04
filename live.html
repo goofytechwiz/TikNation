@@ -1082,8 +1082,16 @@ $("liveLikeBtn")?.addEventListener("click",()=>{
   const heart=document.createElement("span");heart.className="live-like-float";heart.textContent=["❤️","💖","💗","💕"][Math.floor(Math.random()*4)];heart.setAttribute("aria-hidden","true");box.appendChild(heart);window.setTimeout(()=>heart.remove(),1250);liveActionFeedback("Like sent ✨");
 });
 $("liveGiftToggleBtn")?.addEventListener("click",()=>{
-  if(!activeSession){liveActionFeedback("Join a live broadcast first to open gifts.");return;}
   const panel=$("liveGiftPanel");if(!panel)return;
+  if(!activeSession){
+    if(!user){liveActionFeedback("Sign in to open free creator gift previews.");return;}
+    const opening=panel.classList.contains("hide");
+    if(opening)showOfflineCreatorGiftPreview();
+    panel.classList.toggle("hide",!opening);panel.classList.toggle("is-open",opening);
+    if(opening){panel.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"nearest"});liveActionFeedback("Free creator preview is ready. Choose any gift to test its animation.");}
+    else{liveActionFeedback("Gift preview closed.");}
+    return;
+  }
   const opening=panel.classList.contains("hide");
   panel.classList.toggle("hide",!opening);panel.classList.toggle("is-open",opening);
   if(opening){panel.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"nearest"});liveActionFeedback("Choose a gift below. Test coins only.");}
