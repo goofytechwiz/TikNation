@@ -542,7 +542,7 @@ let liveGiftBattle = null;
 let battleCelebratedInviteId = null;
 let LIVE_GIFT_CATALOG = Object.fromEntries(
   Object.entries(window.TIKNATION_GIFT_CATALOG || {}).map(([code, gift]) => [code, {
-    name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound
+    name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound, style: gift.style, message: gift.message
   }])
 );
 function syncLiveGiftCatalog() {
@@ -550,7 +550,7 @@ function syncLiveGiftCatalog() {
   if (!source || typeof source !== "object") return false;
   LIVE_GIFT_CATALOG = Object.fromEntries(
     Object.entries(source).map(([code, gift]) => [code, {
-      name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound
+      name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound, style: gift.style, message: gift.message
     }])
   );
   return Object.keys(LIVE_GIFT_CATALOG).length > 0;
