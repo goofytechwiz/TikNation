@@ -685,6 +685,18 @@ function playLiveGiftSound(event, gift) {
 function showLiveGiftCelebration(event) {
   const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
   const isPreview=String(event.id||"").startsWith("preview-");
+  if(event.gift_code!=="dragon_spirit" && event.gift_code!=="asshole_of_death"){
+    ensureTikNationGiftEngine().then(engine=>{
+      const sender=event.sender_name||"A TikNation member";
+      const recipient=event.recipient_name||"";
+      engine.show(gift,{
+        meta:(isPreview?"FREE CREATOR PREVIEW · NO COINS SPENT":"TIKNATION LIVE · "+gift.cost+" TEST COINS"),
+        duration:4300,
+        onSound:()=>playLiveGiftSound(event,gift)
+      });
+    }).catch(error=>console.error("TikNation LIVE gift animation unavailable:",error));
+    return;
+  }
   const old=$("liveGiftCelebration");if(old)old.remove();
   const overlay=document.createElement("div");overlay.id="liveGiftCelebration";
   overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");overlay.dataset.motionEnabled="true";
