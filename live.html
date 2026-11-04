@@ -692,6 +692,12 @@ function playLiveGiftSound(event, gift) {
     notes.forEach((frequency,index)=>softTone(now+index*step,Math.max(65,Math.min(1760,Number(frequency)||523)),duration,gift.category==="Musical"?0.045:0.032,wave));
   } catch (error) { console.warn("TikNation gift sound could not play:", error); }
 }
+function ensureTikNationGiftEngine() {
+  if (window.TikNationGiftEngine && typeof window.TikNationGiftEngine.show === "function") {
+    return Promise.resolve(window.TikNationGiftEngine);
+  }
+  return Promise.reject(new Error("Gift animation engine did not load. Please refresh TikNation LIVE."));
+}
 function showLiveGiftCelebration(event) {
   const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
   const isPreview=String(event.id||"").startsWith("preview-");
@@ -704,7 +710,7 @@ function showLiveGiftCelebration(event) {
         duration:4300,
         onSound:()=>playLiveGiftSound(event,gift)
       });
-    }).catch(error=>console.error("TikNation LIVE gift animation unavailable:",error));
+    }).catch(error=>{console.error("TikNation LIVE gift animation unavailable:",error);setLiveGiftStatus(error.message||"Gift animation could not start. Please refresh LIVE.","error");});
     return;
   }
   const old=$("liveGiftCelebration");if(old)old.remove();
