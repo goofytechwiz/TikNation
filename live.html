@@ -759,7 +759,7 @@ function showLiveGiftCelebration(event) {
       const emoji=card.querySelector("span");
       /* Use Web Animations directly for every ordinary gift, including received gifts.
          This is independent of CSS keyframes and reduced-motion media rules. */
-      card.style.setProperty("animation","none","important");
+      /* Let the Web Animations API take precedence over the stylesheet animation. */
       card.style.setProperty("transform-origin","center center");
       card.animate([
         {opacity:0,transform:"translateY(70px) scale(.18) rotate(-18deg)",filter:"brightness(2)",boxShadow:"0 0 0 1px #b69cff22"},
