@@ -1,8 +1,9 @@
-const CACHE_NAME = "tiknation-shell-v6";
+const CACHE_NAME = "tiknation-shell-v7";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./horror-zone.html",
+  "./gift-engine.js",
   "./manifest.json",
   "./icons/tiknation.svg"
 ];
