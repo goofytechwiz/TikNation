@@ -221,13 +221,16 @@ function renderDiscoRaccoonGift(gift,opts){
 
 
  #tiknation-gift-engine[data-style=raccoon] .rac-left-leg{transform-origin:190px 390px;animation:disco-leg-left .48s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=raccoon] .rac-left-forearm,#tiknation-gift-engine[data-style=raccoon] .rac-right-forearm{transform-box:view-box}
+ #tiknation-gift-engine[data-style=raccoon] .rac-left-forearm{transform-origin:112px 274px}
+ #tiknation-gift-engine[data-style=raccoon] .rac-right-forearm{transform-origin:308px 274px}
  #tiknation-gift-engine[data-style=raccoon] .rac-right-leg{transform-origin:230px 390px;animation:disco-leg-right .48s ease-in-out infinite alternate}
  #tiknation-gift-engine[data-style=raccoon] .rac-tail{transform-origin:95px 365px;animation:disco-tail .7s ease-in-out infinite alternate}
  #tiknation-gift-engine[data-style=raccoon] .disco-title{position:absolute;z-index:6;left:0;right:0;bottom:3%;text-align:center;font-size:clamp(20px,5vw,38px);font-weight:1000;letter-spacing:.12em;text-shadow:0 0 12px #ff5de7,0 0 28px #6ceaff}
  #tiknation-gift-engine[data-style=raccoon] .disco-title small{display:block;margin-top:5px;font-size:clamp(10px,2vw,14px);letter-spacing:.18em;color:#d6c9ff}
  #tiknation-gift-engine[data-style=raccoon] .disco-note{position:absolute;z-index:5;font-size:clamp(24px,5vw,48px);text-shadow:0 0 16px currentColor;animation:disco-note 2.4s ease-in-out infinite}
  #tiknation-gift-engine[data-style=raccoon] .dn1{left:12%;top:35%;color:#7df7ff}#tiknation-gift-engine[data-style=raccoon] .dn2{right:12%;top:43%;color:#ff85e9;animation-delay:.6s}#tiknation-gift-engine[data-style=raccoon] .dn3{left:20%;top:62%;color:#fff18c;animation-delay:1.1s}
- @keyframes disco-spin{to{transform:translateX(-50%) rotate(360deg)}}@keyframes disco-bounce{0%,100%{transform:translateX(-50%) translateY(0) rotate(-3deg)}50%{transform:translateX(-50%) translateY(-8px) rotate(3deg)}}
+ @keyframes disco-spin{to{transform:translateX(-50%) rotate(360deg)}}@keyframes disco-bounce{0%,100%{transform:translateX(-50%) translateY(0) rotate(-2deg) scale(1)}25%{transform:translateX(-50%) translateY(-10px) rotate(2deg) scale(1.015)}50%{transform:translateX(-50%) translateY(-3px) rotate(-1deg) scale(1)}75%{transform:translateX(-50%) translateY(-12px) rotate(2deg) scale(1.01)}}
 
 
  #tiknation-gift-engine[data-style=raccoon] .rac-left-leg{transform-box:fill-box;transform-origin:70% 5%;animation:disco-leg-left .32s ease-in-out infinite alternate}
@@ -253,14 +256,22 @@ function renderDiscoRaccoonGift(gift,opts){
  <g class="rac-right-leg"><animateTransform attributeName="transform" type="rotate" values="-17 239 390;20 239 390;-17 239 390" dur=".48s" repeatCount="indefinite"/><path d="M224 380L235 455L220 478L244 489L266 466L250 371Z" fill="url(#racFur)" stroke="#303849" stroke-width="7"/><path d="M223 472Q249 467 273 484Q287 503 267 511L218 504L210 489Z" fill="url(#racDark)" stroke="#171d2b" stroke-width="5"/><path d="M230 486Q251 479 272 495" fill="none" stroke="#ff8de5" stroke-width="4"/></g>
  <path d="M145 220Q210 191 275 220L288 389Q211 424 132 389Z" fill="url(#racFur)" stroke="#303849" stroke-width="9"/><path d="M163 248Q210 230 257 248L264 365Q211 395 157 365Z" fill="url(#racCream)" stroke="#747b89" stroke-width="4"/><path d="M174 268Q210 280 246 268" fill="none" stroke="#fff" stroke-width="7" opacity=".5"/>
  <g class="rac-left-arm">
-  <path d="M151 247Q128 251 112 274L91 291" fill="none" stroke="#303849" stroke-width="43" stroke-linecap="round"/>
-  <path d="M151 247Q128 251 112 274L91 291" fill="none" stroke="url(#racFur)" stroke-width="32" stroke-linecap="round"/>
-  <path d="M91 291Q70 275 54 289Q42 307 64 321L94 317L108 300Z" fill="url(#racCream)" stroke="#303849" stroke-width="6"/>
+  <path d="M151 247Q128 251 112 274" fill="none" stroke="#303849" stroke-width="43" stroke-linecap="round"/>
+  <path d="M151 247Q128 251 112 274" fill="none" stroke="url(#racFur)" stroke-width="32" stroke-linecap="round"/>
+  <g class="rac-left-forearm"><animateTransform attributeName="transform" type="rotate" values="-12 112 274;22 112 274;-12 112 274" dur=".62s" repeatCount="indefinite"/>
+   <path d="M112 274L91 291" fill="none" stroke="#303849" stroke-width="39" stroke-linecap="round"/>
+   <path d="M112 274L91 291" fill="none" stroke="url(#racFur)" stroke-width="29" stroke-linecap="round"/>
+   <path d="M91 291Q70 275 54 289Q42 307 64 321L94 317L108 300Z" fill="url(#racCream)" stroke="#303849" stroke-width="6"/>
+  </g><circle cx="112" cy="274" r="13" fill="#8993a4" stroke="#303849" stroke-width="4"/>
  </g>
  <g class="rac-right-arm">
-  <path d="M269 247Q292 251 308 274L329 291" fill="none" stroke="#303849" stroke-width="43" stroke-linecap="round"/>
-  <path d="M269 247Q292 251 308 274L329 291" fill="none" stroke="url(#racFur)" stroke-width="32" stroke-linecap="round"/>
-  <path d="M329 291Q350 275 366 289Q378 307 356 321L326 317L312 300Z" fill="url(#racCream)" stroke="#303849" stroke-width="6"/>
+  <path d="M269 247Q292 251 308 274" fill="none" stroke="#303849" stroke-width="43" stroke-linecap="round"/>
+  <path d="M269 247Q292 251 308 274" fill="none" stroke="url(#racFur)" stroke-width="32" stroke-linecap="round"/>
+  <g class="rac-right-forearm"><animateTransform attributeName="transform" type="rotate" values="12 308 274;-22 308 274;12 308 274" dur=".62s" repeatCount="indefinite"/>
+   <path d="M308 274L329 291" fill="none" stroke="#303849" stroke-width="39" stroke-linecap="round"/>
+   <path d="M308 274L329 291" fill="none" stroke="url(#racFur)" stroke-width="29" stroke-linecap="round"/>
+   <path d="M329 291Q350 275 366 289Q378 307 356 321L326 317L312 300Z" fill="url(#racCream)" stroke="#303849" stroke-width="6"/>
+  </g><circle cx="308" cy="274" r="13" fill="#8993a4" stroke="#303849" stroke-width="4"/>
  </g>
  <path d="M126 132L106 43Q102 22 123 34L184 86Q210 75 236 86L297 34Q318 22 314 43L294 132Z" fill="url(#racFur)" stroke="#303849" stroke-width="9"/><path d="M128 53L171 94L145 111Z" fill="#f19aa9"/><path d="M292 53L249 94L275 111Z" fill="#f19aa9"/>
  <ellipse cx="210" cy="158" rx="105" ry="94" fill="url(#racFur)" stroke="#303849" stroke-width="9"/>
