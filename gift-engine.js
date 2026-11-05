@@ -129,6 +129,9 @@ css += String.raw`
 @keyframes music-travel{0%{opacity:0;transform:translate3d(0,45vh,0) rotate(-18deg) scale(.35)}18%{opacity:1}78%{opacity:1}100%{opacity:0;transform:translate3d(var(--dx),-55vh,0) rotate(24deg) scale(1.15)}}`;
 
 /* Heat Pulse: a true double-beat heartbeat, not a floating/bobbing motion. */
+#tiknation-gift-engine[data-style=pulse] .cinema-art{animation:heat-core-glow 1.15s ease-in-out infinite}
+@keyframes heat-core-glow{0%,100%{filter:drop-shadow(0 0 8px rgba(255,85,155,.45))}9%,29%{filter:drop-shadow(0 0 30px rgba(255,85,155,.98)) drop-shadow(0 0 58px rgba(255,55,125,.6))}18%,43%{filter:drop-shadow(0 0 12px rgba(255,85,155,.55))}}
+
 css += String.raw`
 #tiknation-gift-engine[data-style=pulse] .cinema-stage:before{content:"";position:absolute;left:50%;top:45%;width:min(42vw,260px);aspect-ratio:1;border:2px solid rgba(255,135,190,.58);border-radius:50%;transform:translate(-50%,-50%) scale(.72);box-shadow:0 0 28px rgba(255,75,155,.25),inset 0 0 28px rgba(255,75,155,.12);animation:heat-pulse-echo 1.15s ease-out infinite;pointer-events:none}
 #tiknation-gift-engine[data-style=pulse] .cinema-object{transform-box:fill-box;transform-origin:center;animation:heat-pulse-beat 1.15s ease-in-out infinite}
