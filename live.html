@@ -506,7 +506,20 @@ let Room, RoomEvent, Track, createLocalTracks;
 var requestPollingTimer = null;
 const SUPABASE_URL = "https://mekzfezaefcimxncklfj.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Cr0ssF3pEz5lE08KwvyacQ_dKC2IUbQ";
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+let supabase;
+try {
+  const supabaseSDK = window.supabase || await import("https://esm.sh/@supabase/supabase-js@2");
+  supabase = supabaseSDK.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+} catch (supabaseLoadError) {
+  console.error("TikNation LIVE Supabase SDK unavailable:", supabaseLoadError);
+  const unavailable = async () => ({ data: { session: null }, error: supabaseLoadError });
+  supabase = {
+    auth: {
+      getSession: unavailable,
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe() {} } } })
+    }
+  };
+}
 const API = SUPABASE_URL + "/functions/v1/tiknation-live";
 const $ = id => document.getElementById(id);
 
