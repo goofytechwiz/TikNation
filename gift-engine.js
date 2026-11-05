@@ -293,7 +293,9 @@ function renderMagicSparkGift(gift,opts){
  const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style="spark";overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");
  overlay.style.cssText="position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at center,rgba(17,42,75,.48),rgba(2,7,20,.82) 72%,rgba(0,0,0,.94));";
  const style=document.getElementById("tiknation-magic-spark-style")||document.createElement("style");style.id="tiknation-magic-spark-style";
- style.textContent=`@keyframes ms-hue{0%{filter:hue-rotate(0deg) saturate(1.15)}25%{filter:hue-rotate(85deg) saturate(1.6)}50%{filter:hue-rotate(175deg) saturate(1.7)}75%{filter:hue-rotate(265deg) saturate(1.5)}100%{filter:hue-rotate(360deg) saturate(1.15)}}\n @keyframes ms-twinkle{0%,100%{opacity:.25;transform:scale(.55)}50%{opacity:1;transform:scale(1.5)}}\n @keyframes ms-core{0%{transform:scale(.05) rotate(-25deg);opacity:0}18%{opacity:1}55%{transform:scale(1.18) rotate(15deg)}100%{transform:scale(.75) rotate(45deg);opacity:0}}
+ style.textContent=`@keyframes ms-hue{0%{filter:hue-rotate(0deg) saturate(1.15)}25%{filter:hue-rotate(85deg) saturate(1.6)}50%{filter:hue-rotate(175deg) saturate(1.7)}75%{filter:hue-rotate(265deg) saturate(1.5)}100%{filter:hue-rotate(360deg) saturate(1.15)}}
+ @keyframes ms-twinkle{0%,100%{opacity:.25;transform:scale(.55)}50%{opacity:1;transform:scale(1.5)}}
+ @keyframes ms-core{0%{transform:scale(.05) rotate(-25deg);opacity:0}18%{opacity:1}55%{transform:scale(1.18) rotate(15deg)}100%{transform:scale(.75) rotate(45deg);opacity:0}}
  @keyframes ms-ring{0%{transform:scale(.12);opacity:0}18%{opacity:.95}100%{transform:scale(3.8);opacity:0}}
  @keyframes ms-ray{0%{transform:rotate(var(--a)) translateY(0) scaleY(.1);opacity:0}20%{opacity:1}100%{transform:rotate(var(--a)) translateY(-42vh) scaleY(1);opacity:0}}
  @keyframes ms-float{0%{transform:translate(0,0) scale(.2) rotate(0);opacity:0}15%{opacity:1}100%{transform:translate(var(--x),var(--y)) scale(1.2) rotate(240deg);opacity:0}}
