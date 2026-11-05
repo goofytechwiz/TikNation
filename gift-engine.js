@@ -227,7 +227,13 @@ function renderDiscoRaccoonGift(gift,opts){
  #tiknation-gift-engine[data-style=raccoon] .disco-title small{display:block;margin-top:5px;font-size:clamp(10px,2vw,14px);letter-spacing:.18em;color:#d6c9ff}
  #tiknation-gift-engine[data-style=raccoon] .disco-note{position:absolute;z-index:5;font-size:clamp(24px,5vw,48px);text-shadow:0 0 16px currentColor;animation:disco-note 2.4s ease-in-out infinite}
  #tiknation-gift-engine[data-style=raccoon] .dn1{left:12%;top:35%;color:#7df7ff}#tiknation-gift-engine[data-style=raccoon] .dn2{right:12%;top:43%;color:#ff85e9;animation-delay:.6s}#tiknation-gift-engine[data-style=raccoon] .dn3{left:20%;top:62%;color:#fff18c;animation-delay:1.1s}
- @keyframes disco-spin{to{transform:translateX(-50%) rotate(360deg)}}@keyframes disco-bounce{from{translate:0 0;rotate:-5deg}to{translate:0 -18px;rotate:5deg}}
+ @keyframes disco-spin{to{transform:translateX(-50%) rotate(360deg)}}@keyframes disco-bounce{0%,100%{transform:translateX(-50%) translateY(0) rotate(-3deg)}50%{transform:translateX(-50%) translateY(-8px) rotate(3deg)}}
+ #tiknation-gift-engine[data-style=raccoon] .rac-left-arm{transform-box:fill-box;transform-origin:85% 15%;animation:disco-arm-left .38s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=raccoon] .rac-right-arm{transform-box:fill-box;transform-origin:15% 15%;animation:disco-arm-right .38s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=raccoon] .rac-left-leg{transform-box:fill-box;transform-origin:70% 5%;animation:disco-leg-left .32s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=raccoon] .rac-right-leg{transform-box:fill-box;transform-origin:30% 5%;animation:disco-leg-right .32s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=raccoon] .rac-tail{transform-box:fill-box;transform-origin:85% 55%;animation:disco-tail .42s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=raccoon] .raccoon-dancer svg{overflow:visible}
  @keyframes disco-arm-left{from{transform:rotate(28deg)}to{transform:rotate(-42deg)}}@keyframes disco-arm-right{from{transform:rotate(-38deg)}to{transform:rotate(36deg)}}
  @keyframes disco-leg-left{from{transform:rotate(-16deg)}to{transform:rotate(18deg)}}@keyframes disco-leg-right{from{transform:rotate(18deg)}to{transform:rotate(-16deg)}}
  @keyframes disco-tail{from{transform:rotate(-18deg)}to{transform:rotate(22deg)}}@keyframes disco-note{0%,100%{opacity:.25;transform:translateY(16px) rotate(-14deg)}50%{opacity:1;transform:translateY(-18px) rotate(14deg)}}
