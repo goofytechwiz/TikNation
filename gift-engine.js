@@ -42,7 +42,7 @@ css += String.raw`
 #tiknation-gift-engine .world-particle{animation:none!important}
 `;
 css += String.raw`
-#tiknation-gift-engine .dragon-v2{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 58%,#6b2415 0%,#24101b 42%,#050611 82%);isolation:isolate}
+#tiknation-gift-engine .dragon-v2{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,#050914 0%,#090d19 58%,#03050b 100%)!important;isolation:isolate}
 #tiknation-gift-engine .dragon-v2:before{content:none!important;display:none!important}
 #tiknation-gift-engine .dragon-flight-v2{position:absolute;z-index:4;left:50%;top:40%;font-size:clamp(130px,34vw,300px);line-height:1;filter:drop-shadow(0 0 28px #ff6a24);animation:dragon-flight-v2 4.2s cubic-bezier(.2,.65,.25,1) both}
 #tiknation-gift-engine .dragon-fire-v2{position:absolute;z-index:3;left:50%;top:43%;width:min(85vw,780px);height:150px;transform:translate(-5%,-50%);border-radius:50%;background:radial-gradient(ellipse,#fff8b2 0%,#ffc04a 15%,#ff5a1e 38%,rgba(255,50,15,.25) 62%,transparent 72%);filter:blur(5px);transform-origin:left center;animation:dragon-fire-v2 .65s ease-in-out infinite alternate}
