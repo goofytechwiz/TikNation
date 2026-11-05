@@ -43,7 +43,7 @@ css += String.raw`
 `;
 css += String.raw`
 #tiknation-gift-engine .dragon-v2{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 58%,#6b2415 0%,#24101b 42%,#050611 82%);isolation:isolate}
-#tiknation-gift-engine .dragon-v2:before{content:'';position:absolute;inset:0;background:repeating-radial-gradient(ellipse at 50% 100%,transparent 0 24px,rgba(255,112,35,.12) 26px 28px,transparent 31px 58px);animation:dragon-ground-v2 2s ease-in-out infinite alternate}
+#tiknation-gift-engine .dragon-v2:before{content:none!important;display:none!important}
 #tiknation-gift-engine .dragon-flight-v2{position:absolute;z-index:4;left:50%;top:40%;font-size:clamp(130px,34vw,300px);line-height:1;filter:drop-shadow(0 0 28px #ff6a24);animation:dragon-flight-v2 4.2s cubic-bezier(.2,.65,.25,1) both}
 #tiknation-gift-engine .dragon-fire-v2{position:absolute;z-index:3;left:50%;top:43%;width:min(85vw,780px);height:150px;transform:translate(-5%,-50%);border-radius:50%;background:radial-gradient(ellipse,#fff8b2 0%,#ffc04a 15%,#ff5a1e 38%,rgba(255,50,15,.25) 62%,transparent 72%);filter:blur(5px);transform-origin:left center;animation:dragon-fire-v2 .65s ease-in-out infinite alternate}
 #tiknation-gift-engine .dragon-blast-v2{position:absolute;z-index:2;left:8%;right:8%;top:46%;height:3px;background:linear-gradient(90deg,transparent,#fff1a2,#ff6b22,transparent);box-shadow:0 0 30px 12px #ff5b1e;animation:dragon-blast-v2 .8s ease-in-out infinite alternate}
@@ -95,7 +95,7 @@ if(gift.style==="dragon"||gift.style==="dragonrevenge"){const world=document.cre
  <filter id="d4Shadow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="17"/></filter>
  <filter id="d4FireGlow" x="-50%" y="-80%" width="200%" height="260%"><feGaussianBlur stdDeviation="13"/></filter>
 </defs>
-<ellipse cx="510" cy="625" rx="370" ry="36" fill="#ff641f" opacity=".22" filter="url(#d4Shadow)"/>
+
 <!-- far wing: broad leathery membrane and long finger bones -->
 <g class="dragon-wing dragon-wing-far">
  <path d="M492 365Q394 84 176 34Q222 174 82 230Q225 205 293 350Q352 280 492 405Z" fill="url(#d4Wing)" stroke="#a3b18b" stroke-width="8"/>
