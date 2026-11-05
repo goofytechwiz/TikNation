@@ -93,6 +93,41 @@ function playTikNationGiftSound(gift) {
     const context = tikNationGiftAudioContext;
     if (context.state === "suspended") context.resume().catch(() => {});
     const now = context.currentTime;
+    if (gift.style === "raccoon") {
+      const beat = 0.42;
+      const bass = [82.41,82.41,110,98,73.42,73.42,98,110,82.41,82.41,110,98,73.42,73.42,98,110];
+      for(let i=0;i<16;i++){
+        const at=now+i*beat/2;
+        if(i%2===0){
+          const kick=context.createOscillator(),kg=context.createGain();
+          kick.type="sine";kick.frequency.setValueAtTime(125,at);kick.frequency.exponentialRampToValueAtTime(42,at+.16);
+          kg.gain.setValueAtTime(.0001,at);kg.gain.exponentialRampToValueAtTime(.19,at+.012);kg.gain.exponentialRampToValueAtTime(.0001,at+.2);
+          kick.connect(kg);kg.connect(context.destination);kick.start(at);kick.stop(at+.21);
+        }
+        const hat=context.createOscillator(),hg=context.createGain(),hf=context.createBiquadFilter();
+        hat.type="square";hat.frequency.setValueAtTime(i%2?7400:5200,at);
+        hf.type="highpass";hf.frequency.value=4200;
+        hg.gain.setValueAtTime(.0001,at);hg.gain.exponentialRampToValueAtTime(.025,at+.004);hg.gain.exponentialRampToValueAtTime(.0001,at+.055);
+        hat.connect(hf);hf.connect(hg);hg.connect(context.destination);hat.start(at);hat.stop(at+.06);
+        if(i%2===0){
+          const o=context.createOscillator(),g=context.createGain(),filter=context.createBiquadFilter();
+          o.type="sawtooth";o.frequency.setValueAtTime(bass[i],at);
+          filter.type="lowpass";filter.frequency.value=360;
+          g.gain.setValueAtTime(.0001,at);g.gain.linearRampToValueAtTime(.055,at+.018);g.gain.exponentialRampToValueAtTime(.0001,at+.19);
+          o.connect(filter);filter.connect(g);g.connect(context.destination);o.start(at);o.stop(at+.2);
+        }
+        if(i%4===2){
+          [392,493.88,587.33].forEach((freq,j)=>{
+            const o=context.createOscillator(),g=context.createGain(),filter=context.createBiquadFilter();
+            o.type="sawtooth";o.frequency.setValueAtTime(freq,at);
+            filter.type="lowpass";filter.frequency.value=1700;
+            g.gain.setValueAtTime(.0001,at);g.gain.linearRampToValueAtTime(.018,at+.025);g.gain.exponentialRampToValueAtTime(.0001,at+.16);
+            o.connect(filter);filter.connect(g);g.connect(context.destination);o.start(at);o.stop(at+.17);
+          });
+        }
+      }
+      return;
+    }
     if (gift.style === "storm") {
       [0, 0.38, 1.85, 2.15].forEach((delay, index) => {
         const oscillator = context.createOscillator();
