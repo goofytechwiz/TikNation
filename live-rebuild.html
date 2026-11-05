@@ -19,6 +19,54 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;fl
 .giftgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.gift{min-height:95px;display:grid;place-items:center;text-align:center;padding:8px}.gift span:first-child{font-size:1.6rem}.gift small{color:var(--cyan)}
 #giftPanel[hidden],[hidden]{display:none!important}.foot{font-size:.8rem;color:var(--muted);padding:18px 0}
 @media(max-width:760px){.grid{grid-template-columns:1fr}.wrap{padding:12px}.video{aspect-ratio:4/5;min-height:300px}.giftgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{padding:13px}}
+
+/* TikNation LIVE visual rebuild */
+:root{--bg:#060611;--panel:#101020;--line:#343052;--violet:#9b72ff;--cyan:#70efff;--muted:#b8b4ce}
+body{background:radial-gradient(ellipse at 50% -15%,#38206c 0,transparent 42%),radial-gradient(ellipse at 100% 45%,#102c48 0,transparent 38%),#060611}
+.wrap{max-width:1320px;padding:22px}
+header{padding:14px 2px 22px;border-bottom:1px solid #49406a}
+.brand{font-size:1.65rem;letter-spacing:.09em;text-shadow:0 0 24px #9167ff77}
+.brand span{color:var(--cyan)}
+.grid{grid-template-columns:minmax(0,1.65fr) minmax(320px,.8fr);gap:20px;margin-top:20px;align-items:start}
+.panel{background:linear-gradient(155deg,#17152beF,#0c0c19f5);border:1px solid #494064;border-radius:22px;padding:20px;box-shadow:0 18px 60px #0008}
+.panel h2{font-size:1.15rem;letter-spacing:.04em}
+.video{aspect-ratio:9/10;min-height:500px;max-height:760px;background:radial-gradient(ellipse at 50% 35%,#34245c 0,#17132d 36%,#080812 76%);border:1px solid #5c4d83;border-radius:20px;box-shadow:inset 0 0 70px #7e56ff22,0 12px 38px #0008}
+.video:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 20%,#9e79ff24,transparent 30%),linear-gradient(180deg,transparent 45%,#05050bd9 100%);z-index:1}
+.video:after{content:"TIKNATION  •  YOUR VOICE. YOUR WORLD.";position:absolute;bottom:18px;left:18px;right:18px;text-align:center;color:#c6c0e9;font-size:.68rem;letter-spacing:.2em;pointer-events:none;z-index:2}
+.video video{z-index:0;object-fit:cover}
+.video .placeholder{position:relative;z-index:2;max-width:420px;padding:38px 24px;color:#f8f4ff;font-size:1.2rem;font-weight:800;letter-spacing:.02em;text-shadow:0 2px 18px #000;line-height:1.55}
+#stageTitle{font-size:1.35rem;margin-bottom:16px}
+#notice{border:1px solid #554477;background:linear-gradient(90deg,#241b42,#11172b);border-radius:14px;padding:13px 16px}
+.actions{gap:10px}
+button{border-radius:14px;padding:12px 16px;background:linear-gradient(145deg,#292542,#17172b);border-color:#4a4169;transition:transform .16s,border-color .16s,filter .16s;box-shadow:0 5px 18px #0003}
+button:hover{transform:translateY(-1px);border-color:var(--cyan);filter:brightness(1.12)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.primary{background:linear-gradient(110deg,#8555f5,#426ce8);box-shadow:0 7px 24px #6948dc55}
+.danger{background:linear-gradient(110deg,#742944,#43192d);border-color:#a04464}
+#creatorPanel,#viewerActions{margin-top:16px;padding:16px;border:1px solid #484064;border-radius:17px;background:#0a0a16}
+#creatorActions{padding-top:12px}
+.field input,.field select,.chatform input{background:#080812;border:1px solid #484064;border-radius:12px;padding:13px;color:#fff}
+#streams{margin-top:18px!important}
+.stream{background:linear-gradient(100deg,#17152b,#0b0b16);border-color:#373052;border-radius:14px;padding:13px}
+.stream button{flex-shrink:0}
+aside.panel{position:sticky;top:12px}
+.chatbox{height:350px;background:linear-gradient(180deg,#080812,#0d0c1b);border-color:#383052;border-radius:15px;padding:14px}
+.msg{padding:8px 2px;border-bottom:1px solid #ffffff0b}
+.msg b{color:#9feeff}
+.chatform{gap:9px}
+.chatform input{min-width:0}
+#giftPanel{margin-top:24px;padding-top:18px;border-top:1px solid #4a4169}
+#giftPanel h2{font-size:1.25rem}
+#giftBalance{padding:10px 12px;background:#0b1822;border:1px solid #234c5a;border-radius:12px;color:#9fefff}
+#giftStatus{border-radius:12px}
+.giftgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.gift{min-height:118px;background:linear-gradient(145deg,#282044,#111326);border:1px solid #51436f;border-radius:16px;gap:3px}
+.gift span:first-child{font-size:2rem;filter:drop-shadow(0 0 10px #a987ff88)}
+.gift small{color:var(--cyan);font-size:.72rem}
+.foot{text-align:center;border-top:1px solid #28243d;margin-top:24px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}aside.panel{position:static}.video{min-height:430px;aspect-ratio:4/5;max-height:680px}}
+@media(max-width:600px){.wrap{padding:10px}.panel{padding:14px;border-radius:18px}.video{min-height:390px;aspect-ratio:4/5}.chatbox{height:260px}header{align-items:flex-start}.brand{font-size:1.35rem}.giftgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 </style>
 <script src="./gift-engine.js?v=live-rebuild-1" defer></script>
 <script src="./gifts.js?v=live-rebuild-1" defer></script>
