@@ -82,6 +82,31 @@ css += String.raw`
 @keyframes dragon-breath-v4{from{opacity:.65;transform:scaleX(.82)}to{opacity:1;transform:scaleX(1.16)}}
 
 `;
+
+/* Clean presentation for every gift: preserve the gift animation, remove the floating scene dressing. */
+css += String.raw\`
+#tiknation-gift-engine{background:transparent!important}
+#tiknation-gift-engine .stage{background:transparent!important;border:0!important;box-shadow:none!important}
+#tiknation-gift-engine .stage:before,
+#tiknation-gift-engine .stage:after,
+#tiknation-gift-engine .ring,
+#tiknation-gift-engine .particle{display:none!important;content:none!important}
+#tiknation-gift-engine .gift-world{background:transparent!important}
+#tiknation-gift-engine .gift-world:before,
+#tiknation-gift-engine .world-halo,
+#tiknation-gift-engine .world-side,
+#tiknation-gift-engine .world-ground,
+#tiknation-gift-engine .world-beam,
+#tiknation-gift-engine .world-particle{display:none!important;content:none!important}
+#tiknation-gift-engine[data-style=storm]{background:transparent!important}
+#tiknation-gift-engine .storm-world{background:transparent!important}
+#tiknation-gift-engine .storm-cloud,
+#tiknation-gift-engine .storm-rain,
+#tiknation-gift-engine .storm-horizon,
+#tiknation-gift-engine .storm-flash,
+#tiknation-gift-engine .storm-world:after{display:none!important;content:none!important}
+\`;
+
 function install(){if(document.getElementById("tiknation-gift-engine-style"))return;const s=document.createElement("style");s.id="tiknation-gift-engine-style";s.textContent=css;document.head.appendChild(s)}
 function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="storm"){overlay.innerHTML='<div class="storm-world"><div class="storm-cloud"></div><div class="storm-cloud c2"></div><div class="storm-cloud c3"></div><div class="storm-rain"></div><div class="storm-flash"></div><svg class="storm-bolt" viewBox="0 0 220 500" aria-hidden="true"><path d="M132 0L72 178L119 178L32 390L157 158L108 158Z" fill="#f5fbff" stroke="#c9e8ff" stroke-width="7" stroke-linejoin="round"/></svg><svg class="storm-bolt second" viewBox="0 0 220 500" aria-hidden="true"><path d="M132 0L72 178L119 178L32 390L157 158L108 158Z" fill="#f5fbff" stroke="#c9e8ff" stroke-width="7" stroke-linejoin="round"/></svg><div class="storm-horizon"></div><div class="storm-title">STORM OF THE WORLD<span class="storm-caption">THE SKY HAS AWAKENED</span></div></div>';document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const stormDuration=Math.max(4500,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},stormDuration);return overlay;}const worlds={pulse:["magic","💗","💓","✨","💗"],notes:["party","🎵","🎶","🎼","🎵"],grand:["prism","🎼","🎻","🎺","🎶"],spark:["magic","✨","✦","✧","💫"],portal:["cosmic","🌀","✦","🪄","🌀"],dragon:["fire","🐉","🔥","💥","🐲"],galaxy:["cosmic","🌌","🪐","⭐","🌠"],burst:["stormlight","⚡","💥","✨","⚡"],prism:["prism","🌈","💎","✨","🌈"],surprise:["magic","🎁","❔","✨","🎉"],crown:["gold","👑","✨","💎","👑"],infinity:["cosmic","💎","♾️","✨","💠"],clouds:["ice","☁️","🌫️","✨","☁️"],hammer:["impact","🔨","💥","⭐","🔨"],thunderass:["stormlight","⚡","🍑","💥","⚡"],lightning:["stormlight","⚡","💀","⚡","🌩️"],book:["shadow","📕","☠️","🌫️","📖"],dreammakers:["magic","🧚","✨","🌟","🪄"],phoenix:["fire","🪽","🔥","🌅","🪽"],treasure:["gold","💰","💎","🪙","🏆"],meteor:["impact","☄️","🔥","💥","🌠"],raccoon:["party","🦝","🪩","🎵","🦝"],portalparty:["prism","🌀","🎉","✨","🌀"],blastass:["impact","💨","🍑","💥","💨"],deathass:["shadow","☠️","💀","🌑","☠️"],throne:["gold","👑","🚽","✨","🏆"],chicken:["fire","🐔","💥","🪶","🐓"],cheese:["gold","🧀","☄️","💥","🧀"],skeleton:["party","💀","🪩","🎶","💀"],dragonrevenge:["fire","🐉","🔥","💥","🐲"],stinkdeath:["shadow","💨","💀","☣️","💨"],rattlebone:["shadow","🦴","💀","⚡","🦴"],toxiccloud:["shadow","☣️","💚","🪰","☣️"],bonebreaker:["impact","💀","🦴","👎","💀"],knockout:["impact","🥊","💥","⭐","🥊"],cantbreathe:["party","😂","💀","💧","😂"]};
 if(gift.style==="dragon"||gift.style==="dragonrevenge"){const world=document.createElement("div");world.className="dragon-v2";const dragon=document.createElement("div");dragon.className="dragon-flight-v2";dragon.innerHTML=`<svg class="dragon-svg-v4" viewBox="0 0 1100 700" role="img" aria-label="A detailed fire-breathing dragon">
