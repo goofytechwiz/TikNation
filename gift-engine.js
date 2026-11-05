@@ -381,7 +381,6 @@ function renderCinematicGift(gift,opts){
     };
     danceFrame=requestAnimationFrame(danceLoop);
   }
-  const reducedSkeleton=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(reducedSkeleton){world.querySelectorAll(".skeleton-disco-ball,.skeleton-disco-lights i,.skel-body,.skel-arm,.skel-leg,.skel-head,.skeleton-dancer").forEach(n=>n.style.animation="none");}
   const skeletonTitle=document.createElement("div");skeletonTitle.className="cinema-title";skeletonTitle.textContent=gift.name||"SKELETON DISCO";const skeletonSub=document.createElement("small");skeletonSub.textContent="THE BONES ARE GROOVING · TIKNATION LIVE";skeletonTitle.appendChild(skeletonSub);world.appendChild(skeletonTitle);
   overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const skeletonDuration=Math.max(7000,Number(opts.duration)||9000);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .55s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),580)}},skeletonDuration);return overlay;
