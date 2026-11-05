@@ -252,8 +252,26 @@ function renderDiscoRaccoonGift(gift,opts){
  <g class="rac-left-leg"><animateTransform attributeName="transform" type="rotate" values="12 183 390;-22 183 390;12 183 390" dur=".48s" repeatCount="indefinite"/><path d="M174 366L164 454L183 478L205 467L202 384Z" fill="url(#racFur)" stroke="#303849" stroke-width="7"/><path d="M174 463Q145 468 145 490Q153 510 207 500L211 482L192 468Z" fill="url(#racDark)" stroke="#171d2b" stroke-width="5"/><path d="M155 486Q176 476 197 486" fill="none" stroke="#8eeeff" stroke-width="4"/></g>
  <g class="rac-right-leg"><animateTransform attributeName="transform" type="rotate" values="-17 239 390;20 239 390;-17 239 390" dur=".48s" repeatCount="indefinite"/><path d="M224 380L235 455L220 478L244 489L266 466L250 371Z" fill="url(#racFur)" stroke="#303849" stroke-width="7"/><path d="M223 472Q249 467 273 484Q287 503 267 511L218 504L210 489Z" fill="url(#racDark)" stroke="#171d2b" stroke-width="5"/><path d="M230 486Q251 479 272 495" fill="none" stroke="#ff8de5" stroke-width="4"/></g>
  <path d="M145 220Q210 191 275 220L288 389Q211 424 132 389Z" fill="url(#racFur)" stroke="#303849" stroke-width="9"/><path d="M163 248Q210 230 257 248L264 365Q211 395 157 365Z" fill="url(#racCream)" stroke="#747b89" stroke-width="4"/><path d="M174 268Q210 280 246 268" fill="none" stroke="#fff" stroke-width="7" opacity=".5"/>
- <g class="rac-left-arm"><animateTransform attributeName="transform" type="rotate" values="18 151 260;-48 151 260;18 151 260" dur=".52s" repeatCount="indefinite"/><path d="M154 254Q112 265 99 307L75 286" fill="none" stroke="#303849" stroke-width="43" stroke-linecap="round"/><path d="M154 254Q112 265 99 307L75 286" fill="none" stroke="url(#racFur)" stroke-width="32" stroke-linecap="round"/><path d="M73 285Q52 267 39 281Q27 299 49 314L79 315L93 300Z" fill="url(#racCream)" stroke="#303849" stroke-width="6"/></g>
- <g class="rac-right-arm"><animateTransform attributeName="transform" type="rotate" values="-18 267 260;48 267 260;-18 267 260" dur=".52s" repeatCount="indefinite"/><path d="M266 254Q308 265 321 307L345 286" fill="none" stroke="#303849" stroke-width="43" stroke-linecap="round"/><path d="M266 254Q308 265 321 307L345 286" fill="none" stroke="url(#racFur)" stroke-width="32" stroke-linecap="round"/><path d="M347 285Q368 267 381 281Q393 299 371 314L341 315L327 300Z" fill="url(#racCream)" stroke="#303849" stroke-width="6"/></g>
+ <g class="rac-left-arm">
+  <path d="M154 254Q128 257 112 283" fill="none" stroke="#303849" stroke-width="43" stroke-linecap="round"/>
+  <path d="M154 254Q128 257 112 283" fill="none" stroke="url(#racFur)" stroke-width="32" stroke-linecap="round"/>
+  <g><animateTransform attributeName="transform" type="rotate" values="-22 112 283;30 112 283;-22 112 283" dur=".52s" repeatCount="indefinite"/>
+   <path d="M112 283L75 286" fill="none" stroke="#303849" stroke-width="38" stroke-linecap="round"/>
+   <path d="M112 283L75 286" fill="none" stroke="url(#racFur)" stroke-width="29" stroke-linecap="round"/>
+   <path d="M73 285Q52 267 39 281Q27 299 49 314L79 315L93 300Z" fill="url(#racCream)" stroke="#303849" stroke-width="6"/>
+  </g>
+  <circle cx="112" cy="283" r="17" fill="#8993a4" stroke="#303849" stroke-width="5"/>
+ </g>
+ <g class="rac-right-arm">
+  <path d="M266 254Q292 257 308 283" fill="none" stroke="#303849" stroke-width="43" stroke-linecap="round"/>
+  <path d="M266 254Q292 257 308 283" fill="none" stroke="url(#racFur)" stroke-width="32" stroke-linecap="round"/>
+  <g><animateTransform attributeName="transform" type="rotate" values="22 308 283;-30 308 283;22 308 283" dur=".52s" repeatCount="indefinite"/>
+   <path d="M308 283L345 286" fill="none" stroke="#303849" stroke-width="38" stroke-linecap="round"/>
+   <path d="M308 283L345 286" fill="none" stroke="url(#racFur)" stroke-width="29" stroke-linecap="round"/>
+   <path d="M347 285Q368 267 381 281Q393 299 371 314L341 315L327 300Z" fill="url(#racCream)" stroke="#303849" stroke-width="6"/>
+  </g>
+  <circle cx="308" cy="283" r="17" fill="#8993a4" stroke="#303849" stroke-width="5"/>
+ </g>
  <path d="M126 132L106 43Q102 22 123 34L184 86Q210 75 236 86L297 34Q318 22 314 43L294 132Z" fill="url(#racFur)" stroke="#303849" stroke-width="9"/><path d="M128 53L171 94L145 111Z" fill="#f19aa9"/><path d="M292 53L249 94L275 111Z" fill="#f19aa9"/>
  <ellipse cx="210" cy="158" rx="105" ry="94" fill="url(#racFur)" stroke="#303849" stroke-width="9"/>
  <path d="M108 143Q149 101 197 143L210 178Q177 216 128 187Z" fill="#202738"/><path d="M312 143Q271 101 223 143L210 178Q243 216 292 187Z" fill="#202738"/>
