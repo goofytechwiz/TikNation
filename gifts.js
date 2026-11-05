@@ -24,7 +24,6 @@ const TIKNATION_GIFT_CATALOG = {
   phoenix_rebirth: { name: "Phoenix Rebirth", emoji: "🔥🪽", category: "Legendary", cost: 175, sound: [392, 523, 659, 784, 1047, 1319], style: "phoenix", message: "A phoenix rises from glowing flames." },
   treasure_explosion: { name: "Treasure Explosion", emoji: "💎💰", category: "Legendary", cost: 150, sound: [587, 740, 988, 1175, 1480], style: "treasure", message: "A treasure chest bursts open with sparkling riches." },
   meteor_mayhem: { name: "Meteor Mayhem", emoji: "☄️", category: "Special Effects", cost: 125, sound: [880, 440, 220, 110, 55], style: "meteor", message: "A blazing meteor streaks across the live screen." },
-  disco_raccoon: { name: "Disco Raccoon", emoji: "🦝🪩", category: "Musical", cost: 75, sound: [659, 784, 988, 1175, 988, 784], style: "raccoon", message: "A dancing raccoon takes over the stage." },
   portal_party: { name: "Portal Party", emoji: "🌀🎉", category: "Magical", cost: 100, sound: [392, 587, 784, 1175, 1568], style: "portalparty", message: "A colorful portal opens with a burst of energy." },
   blast_from_my_ass: { name: "Blast from My Ass", emoji: "💨🍑", category: "Special Effects", cost: 69, sound: [110, 73, 55, 82], style: "blastass", message: "A ridiculous cartoon smoke blast fills the screen." },
   asshole_of_death: { name: "The Asshole of Death", emoji: "☠️🍑", category: "Legendary", cost: 199, sound: [73, 55, 41, 110], style: "deathass", message: "A cursed portal erupts and launches a cartoon skeleton." },
@@ -93,46 +92,7 @@ function playTikNationGiftSound(gift) {
     const context = tikNationGiftAudioContext;
     if (context.state === "suspended") context.resume().catch(() => {});
     const now = context.currentTime;
-    if (gift.style === "raccoon") {
-      const groove = () => {
-        const startAt = context.currentTime + 0.08;
-        const beat = 0.25;
-        const bass = [82.41,82.41,110,98,73.42,73.42,98,110,82.41,82.41,110,98,73.42,73.42,98,110];
-        const chords = [[392,493.88,587.33],[349.23,440,523.25],[329.63,415.3,493.88],[349.23,440,523.25]];
-        for (let i=0;i<32;i++) {
-          const at=startAt+i*beat;
-          if(i%4===0){
-            const kick=context.createOscillator(),gain=context.createGain();
-            kick.type="sine";kick.frequency.setValueAtTime(145,at);kick.frequency.exponentialRampToValueAtTime(48,at+.19);
-            gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.42,at+.012);gain.gain.exponentialRampToValueAtTime(.0001,at+.24);
-            kick.connect(gain);gain.connect(context.destination);kick.start(at);kick.stop(at+.25);
-          }
-          if(i%2===1){
-            const noise=context.createBufferSource(),buffer=context.createBuffer(1,Math.ceil(context.sampleRate*.07),context.sampleRate),data=buffer.getChannelData(0);
-            for(let n=0;n<data.length;n++)data[n]=Math.random()*2-1;
-            noise.buffer=buffer;const filter=context.createBiquadFilter(),gain=context.createGain();
-            filter.type="highpass";filter.frequency.value=6500;gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.075,at+.004);gain.gain.exponentialRampToValueAtTime(.0001,at+.065);
-            noise.connect(filter);filter.connect(gain);gain.connect(context.destination);noise.start(at);noise.stop(at+.07);
-          }
-          if(i%2===0){
-            const bassOsc=context.createOscillator(),bassGain=context.createGain(),low=context.createBiquadFilter();
-            bassOsc.type="triangle";bassOsc.frequency.setValueAtTime(bass[(i/2)%16],at);low.type="lowpass";low.frequency.value=520;
-            bassGain.gain.setValueAtTime(.0001,at);bassGain.gain.linearRampToValueAtTime(.22,at+.015);bassGain.gain.exponentialRampToValueAtTime(.0001,at+.21);
-            bassOsc.connect(low);low.connect(bassGain);bassGain.connect(context.destination);bassOsc.start(at);bassOsc.stop(at+.22);
-          }
-          if(i%4===0){
-            chords[(i/4)%4].forEach((freq,j)=>{
-              const osc=context.createOscillator(),gain=context.createGain(),filter=context.createBiquadFilter();
-              osc.type="sawtooth";osc.frequency.setValueAtTime(freq,at);filter.type="lowpass";filter.frequency.value=1900;
-              gain.gain.setValueAtTime(.0001,at);gain.gain.linearRampToValueAtTime(.045,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.38);
-              osc.connect(filter);filter.connect(gain);gain.connect(context.destination);osc.start(at);osc.stop(at+.4);
-            });
-          }
-        }
-      };
-      if(context.state==="suspended"){context.resume().then(groove).catch(()=>{});}else groove();
-      return;
-    }
+
     if (gift.style === "storm") {
       [0, 0.38, 1.85, 2.15].forEach((delay, index) => {
         const oscillator = context.createOscillator();
@@ -283,7 +243,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=20261105-disco-raccoon-v4";
+    script.src = "./gift-engine.js?v=20261105-gift-cleanup-v1";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
