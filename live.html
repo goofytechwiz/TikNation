@@ -1154,6 +1154,28 @@ boot();
       showStartupFailure(window.supabase?"LIVE script did not finish starting.":"Supabase sign-in library did not load. Check your connection or browser content blocker.");
     }
   },10000);
+
+  document.addEventListener("click",function(event){
+    const button=event.target && event.target.closest ? event.target.closest("[data-gift-code]") : null;
+    if(!button)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const code=button.getAttribute("data-gift-code");
+    const gift=window.TIKNATION_GIFT_CATALOG && window.TIKNATION_GIFT_CATALOG[code];
+    const status=document.getElementById("liveGiftStatus");
+    const report=function(message,type){
+      if(status){status.textContent=message;status.className="live-gift-status"+(type?" "+type:"");}
+      else {const notice=document.getElementById("notice");if(notice){notice.textContent=message;notice.className="status"+(type==="error"?" error":" ok");}}
+    };
+    if(!gift){report("Gift tap detected, but the gift details did not load. Refresh LIVE.","error");return;}
+    try{
+      const engine=window.TikNationGiftEngine;
+      if(!engine || typeof engine.show!=="function")throw new Error("Gift animation engine is unavailable. Refresh LIVE.");
+      const effect=engine.show(gift,{meta:"FREE CREATOR PREVIEW · NO COINS SPENT",duration:5200});
+      if(!effect || !effect.isConnected)throw new Error("The gift effect could not be placed on the screen.");
+      report("✨ "+gift.name+" animation started · Free preview.","success");
+    }catch(error){report(error.message||"Gift animation failed to start.","error");}
+  },true);
 })();
 </script>
 </body>
