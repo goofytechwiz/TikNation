@@ -63,12 +63,14 @@ css += String.raw`
 #tiknation-gift-engine .dragon-wing-near{transform-origin:430px 310px;animation:dragon-wing-near-v3 .72s ease-in-out infinite alternate}
 #tiknation-gift-engine .dragon-breath{transform-origin:860px 260px;animation:dragon-breath-v3 .32s ease-in-out infinite alternate}
 @keyframes dragon-flight-v3{0%{opacity:0;transform:translate(-160vw,70vh) scale(.22) rotate(-18deg)}35%{opacity:1;transform:translate(-50%,-40%) scale(1.08) rotate(5deg)}60%{transform:translate(-50%,-52%) scale(1) rotate(-2deg)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes dragon-flight-v5{0%{opacity:0;transform:translate(-160vw,-50%) scale(.68) rotate(2deg)}8%{opacity:1}48%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}92%{opacity:1}100%{opacity:0;transform:translate(160vw,-50%) scale(.68) rotate(-2deg)}}
 @keyframes dragon-wing-far-v3{from{transform:rotate(-18deg)}to{transform:rotate(24deg)}}
 @keyframes dragon-wing-near-v3{from{transform:rotate(20deg)}to{transform:rotate(-22deg)}}
 @keyframes dragon-breath-v3{from{opacity:.55;transform:scaleX(.72) scaleY(.8)}to{opacity:1;transform:scaleX(1.2) scaleY(1.18)}}
 
 
 #tiknation-gift-engine .dragon-flight-v2{width:min(98vw,1100px);top:38%;filter:drop-shadow(0 18px 24px rgba(0,0,0,.65)) drop-shadow(0 0 20px rgba(255,104,30,.42))}
+#tiknation-gift-engine .dragon-flight-v2{animation:dragon-flight-v5 5.2s linear both!important;will-change:transform,opacity}
 #tiknation-gift-engine .dragon-svg-v4{display:block;width:100%;height:auto;overflow:visible}
 #tiknation-gift-engine .dragon-wing-far{transform-origin:490px 385px;animation:dragon-wing-far-v4 .9s cubic-bezier(.45,0,.55,1) infinite alternate}
 #tiknation-gift-engine .dragon-wing-near{transform-origin:490px 390px;animation:dragon-wing-near-v4 .9s cubic-bezier(.45,0,.55,1) infinite alternate}
