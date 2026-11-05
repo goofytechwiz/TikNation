@@ -191,6 +191,34 @@ function playTikNationGiftSound(gift) {
       });
       return;
     }
+    if (gift.style === "grand") {
+      const progression = [
+        {t:0.00, f:[130.81,196.00,261.63,329.63]},
+        {t:0.85, f:[146.83,220.00,293.66,369.99]},
+        {t:1.70, f:[164.81,246.94,329.63,392.00]},
+        {t:2.55, f:[174.61,261.63,349.23,440.00]},
+        {t:3.40, f:[196.00,293.66,392.00,493.88]},
+        {t:4.25, f:[174.61,261.63,349.23,440.00]},
+        {t:5.10, f:[196.00,293.66,392.00,523.25]},
+        {t:6.00, f:[261.63,329.63,392.00,523.25]}
+      ];
+      progression.forEach((chord,step)=>{
+        chord.f.forEach((frequency,voice)=>{
+          const oscillator=context.createOscillator(),gain=context.createGain(),filter=context.createBiquadFilter();
+          oscillator.type=voice===0?"triangle":voice===3?"sine":"sawtooth";
+          oscillator.frequency.setValueAtTime(frequency,now+chord.t);
+          filter.type="lowpass";filter.frequency.setValueAtTime(voice===0?420:voice===3?1800:1100,now+chord.t);
+          const peak=voice===0?0.055:voice===3?0.022:0.016;
+          gain.gain.setValueAtTime(0.0001,now+chord.t);
+          gain.gain.linearRampToValueAtTime(peak,now+chord.t+0.12);
+          gain.gain.setValueAtTime(peak*0.82,now+chord.t+0.48);
+          gain.gain.exponentialRampToValueAtTime(0.0001,now+chord.t+0.82);
+          oscillator.connect(filter);filter.connect(gain);gain.connect(context.destination);
+          oscillator.start(now+chord.t);oscillator.stop(now+chord.t+0.85);
+        });
+      });
+      return;
+    }
     const notes = gift.sound || [660, 880];
     notes.forEach((frequency, index) => {
       const oscillator = context.createOscillator();
@@ -215,7 +243,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=20261104-fullscenes";
+    script.src = "./gift-engine.js?v=20261105-symphony-stage-v1";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
