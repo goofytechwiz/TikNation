@@ -377,7 +377,38 @@ function renderCinematicGift(gift,opts){
   /* Upright mirrored disco ball, plus layered low-lying stage fog and moving beams. */
   discoStyle.textContent += "#tiknation-gift-engine[data-style=skeleton] .skeleton-disco-ball{transform:translateX(-50%) rotate(0deg)!important;animation:none!important;background:radial-gradient(ellipse at 32% 22%,#fff 0 3%,transparent 18%),repeating-linear-gradient(90deg,#f9ffff 0 5px,#a7eaff 5px 10px,#6c4caa 10px 15px,#f9ffff 15px 19px);background-size:auto,38px 100%;animation:none!important;box-shadow:0 0 24px #a9f6ff,0 0 55px #b56cff,inset -12px -10px 18px #050817;transform-origin:50% 50%}#tiknation-gift-engine[data-style=skeleton] .skeleton-disco-ball span{background:radial-gradient(ellipse at 28% 20%,#fff 0 4%,transparent 18%),linear-gradient(90deg,transparent,#ffffff55,transparent);animation:skel-ball-glint 2.2s ease-in-out infinite alternate}#tiknation-gift-engine[data-style=skeleton] .skeleton-fog{position:absolute;z-index:2;left:-25%;width:150%;height:25%;bottom:4%;border-radius:50%;pointer-events:none;filter:blur(18px);opacity:.58;background:radial-gradient(ellipse at 25% 55%,#b5faff88,transparent 48%),radial-gradient(ellipse at 70% 45%,#e87dff77,transparent 52%),radial-gradient(ellipse at 48% 60%,#d7eaff66,transparent 62%);animation:skel-fog-drift 7s ease-in-out infinite alternate}#tiknation-gift-engine[data-style=skeleton] .skeleton-fog.fog-front{z-index:5;bottom:-3%;height:18%;opacity:.42;filter:blur(24px);animation-duration:9s;animation-direction:alternate-reverse}#tiknation-gift-engine[data-style=skeleton] .skeleton-disco-lights i{width:52%;opacity:.52;filter:blur(7px);animation:skel-spot 2.2s ease-in-out infinite alternate}#tiknation-gift-engine[data-style=skeleton] .skeleton-disco-lights i:nth-child(1){animation:skel-beam-left 5s ease-in-out infinite alternate}#tiknation-gift-engine[data-style=skeleton] .skeleton-disco-lights i:nth-child(2){animation:skel-beam-right 5.6s ease-in-out infinite alternate}#tiknation-gift-engine[data-style=skeleton] .skeleton-disco-lights i:nth-child(3){animation:skel-beam-mid 4.8s ease-in-out infinite alternate}#tiknation-gift-engine[data-style=skeleton] .skeleton-disco-lights i:nth-child(4){animation:skel-beam-mid 5.4s ease-in-out infinite alternate-reverse}@keyframes skel-ball-glint{from{opacity:.45;transform:translateX(-8%)}to{opacity:1;transform:translateX(8%)}}@keyframes skel-fog-drift{from{transform:translateX(-8%) scaleY(.8)}to{transform:translateX(8%) scaleY(1.15)}}@keyframes skel-beam-left{from{transform:rotate(-34deg);opacity:.18}to{transform:rotate(8deg);opacity:.62}}@keyframes skel-beam-right{from{transform:rotate(34deg);opacity:.18}to{transform:rotate(-8deg);opacity:.62}}@keyframes skel-beam-mid{from{transform:rotate(-14deg);opacity:.2}to{transform:rotate(18deg);opacity:.58}}@media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=skeleton] .skeleton-fog,#tiknation-gift-engine[data-style=skeleton] .skeleton-disco-ball span{animation:none!important}}";
   const skeletonTitle=document.createElement("div");skeletonTitle.className="cinema-title";skeletonTitle.textContent=gift.name||"SKELETON DISCO";const skeletonSub=document.createElement("small");skeletonSub.textContent="THE BONES ARE GROOVING · TIKNATION LIVE";skeletonTitle.appendChild(skeletonSub);world.appendChild(skeletonTitle);
-  overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const skeletonDuration=Math.max(7000,Number(opts.duration)||9000);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .55s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),580)}},skeletonDuration);return overlay;
+  overlay.appendChild(world);document.body.appendChild(overlay);
+  /* V13: drive every skeleton joint directly in SVG user coordinates. This avoids CSS/SMIL transform conflicts. */
+  const dancer=world.querySelector(".skeleton-dancer");
+  if(dancer&&!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+   const joints={
+    torso:world.querySelector(".skel-torso"),head:world.querySelector(".skel-head"),
+    leftArm:world.querySelector(".skel-arm-left"),leftForearm:world.querySelector(".skel-forearm-left"),
+    rightArm:world.querySelector(".skel-arm-right"),rightForearm:world.querySelector(".skel-forearm-right"),
+    leftLeg:world.querySelector(".skel-leg-left"),leftShin:world.querySelector(".skel-shin-left"),
+    rightLeg:world.querySelector(".skel-leg-right"),rightShin:world.querySelector(".skel-shin-right")
+   };
+   const setJoint=(el,angle,x,y)=>{if(el)el.setAttribute("transform","rotate("+angle.toFixed(2)+" "+x+" "+y+")");};
+   const dance=(now)=>{
+    if(!overlay.isConnected)return;
+    const t=now/1000,beat=t*Math.PI*2/1.05;
+    const step=Math.sin(beat),alt=Math.sin(beat+Math.PI);
+    setJoint(joints.torso,Math.sin(beat*.5)*8,250,300);
+    setJoint(joints.head,Math.sin(beat*1.5)*13,250,180);
+    setJoint(joints.leftArm,-18+Math.sin(beat+0.7)*88,183,224);
+    setJoint(joints.leftForearm,Math.sin(beat+1.8)*72,145,270);
+    setJoint(joints.rightArm,18+Math.sin(beat+Math.PI+0.7)*88,317,224);
+    setJoint(joints.rightForearm,Math.sin(beat+Math.PI+1.8)*72,378,165);
+    setJoint(joints.leftLeg,step*27,229,403);
+    setJoint(joints.leftShin,Math.max(0,step)*-48+Math.max(0,-step)*18,195,477);
+    setJoint(joints.rightLeg,alt*27,271,403);
+    setJoint(joints.rightShin,Math.max(0,alt)*-48+Math.max(0,-alt)*18,307,474);
+    dancer.style.setProperty("--dance-bob",(Math.abs(step)*-15)+"px");
+    requestAnimationFrame(dance);
+   };
+   requestAnimationFrame(dance);
+  }
+  if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const skeletonDuration=Math.max(7000,Number(opts.duration)||9000);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .55s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),580)}},skeletonDuration);return overlay;
  }
  const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
  if(!reduced){for(let i=0;i<10;i++){const mote=document.createElement("i");mote.className="cinema-mote";mote.style.setProperty("--mx",(Math.cos(i*2.4)*42)+"vw");mote.style.setProperty("--my",(Math.sin(i*2.4)*34)+"vh");mote.style.setProperty("--wait",(i*.19)+"s");world.appendChild(mote);}}
