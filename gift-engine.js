@@ -1,42 +1,105 @@
-(function(){
-"use strict";
-if(window.TikNationGiftEngine)return;
-const css="#tiknation-gift-engine{--accent:#7eeaff;position:fixed!important;inset:0!important;z-index:2147483647!important;display:grid!important;place-items:center!important;overflow:hidden!important;pointer-events:none!important;padding:12px!important;box-sizing:border-box!important;background:radial-gradient(ellipse,rgba(16,24,60,.35),rgba(0,0,0,.82))!important;opacity:1!important}#tiknation-gift-engine .stage{position:relative;isolation:isolate;display:grid;place-items:center;text-align:center;width:min(94vw,780px);min-height:min(68vh,540px);padding:24px 16px;box-sizing:border-box;border:1px solid var(--accent);border-radius:28px;background:radial-gradient(ellipse,rgba(72,58,145,.32),rgba(6,10,29,.96) 70%);box-shadow:0 0 38px color-mix(in srgb,var(--accent),transparent 65%),inset 0 0 55px rgba(120,100,255,.13);animation:ge-in .65s cubic-bezier(.16,1,.3,1) both}#tiknation-gift-engine .stage:before,#tiknation-gift-engine .stage:after{content:'';position:absolute;inset:9%;border:1px solid color-mix(in srgb,var(--accent),transparent 45%);border-radius:50%;transform:scaleX(1.3);animation:ge-orbit 5s linear infinite;z-index:-1}#tiknation-gift-engine .stage:after{inset:18%;animation-direction:reverse;animation-duration:7s}#tiknation-gift-engine .ring{position:absolute;width:min(55vw,350px);aspect-ratio:1;border:2px solid var(--accent);border-radius:50%;box-shadow:0 0 22px var(--accent),inset 0 0 22px var(--accent);animation:ge-ring 2.2s ease-out both}#tiknation-gift-engine .hero{position:relative;z-index:2;font-size:clamp(76px,17vw,154px);line-height:1.2;filter:drop-shadow(0 0 18px var(--accent));animation:ge-hero 2.6s cubic-bezier(.16,1,.3,1) both;white-space:nowrap}#tiknation-gift-engine .title{position:relative;z-index:2;margin-top:12px;color:white;font-size:clamp(19px,4vw,32px);font-weight:900;letter-spacing:.08em;text-transform:uppercase;text-shadow:0 0 15px var(--accent);animation:ge-text .7s .2s both}#tiknation-gift-engine .message{position:relative;z-index:2;max-width:560px;margin:9px auto 0;color:#dce9ff;font-size:clamp(13px,2.5vw,17px);line-height:1.5;animation:ge-text .7s .35s both}#tiknation-gift-engine .meta{position:relative;z-index:2;margin-top:17px;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.18em;animation:ge-text .7s .45s both}#tiknation-gift-engine .particle{position:absolute;left:50%;top:50%;color:var(--accent);font-size:20px;text-shadow:0 0 12px currentColor;animation:ge-particle 2.5s cubic-bezier(.12,.7,.2,1) both;animation-delay:var(--delay)}#tiknation-gift-engine[data-style=dragon],#tiknation-gift-engine[data-style=dragonrevenge]{--accent:#ff9b55}#tiknation-gift-engine[data-style=deathass],#tiknation-gift-engine[data-style=stinkdeath],#tiknation-gift-engine[data-style=toxiccloud]{--accent:#b9ff65}#tiknation-gift-engine[data-style=galaxy],#tiknation-gift-engine[data-style=infinity],#tiknation-gift-engine[data-style=phoenix]{--accent:#c5a2ff}#tiknation-gift-engine[data-style=lightning],#tiknation-gift-engine[data-style=burst],#tiknation-gift-engine[data-style=meteor]{--accent:#fff17b}#tiknation-gift-engine[data-style=notes],#tiknation-gift-engine[data-style=pulse],#tiknation-gift-engine[data-style=grand],#tiknation-gift-engine[data-style=raccoon],#tiknation-gift-engine[data-style=skeleton]{--accent:#ff9bd7}#tiknation-gift-engine[data-style=portal],#tiknation-gift-engine[data-style=portalparty]{--accent:#9b9cff}#tiknation-gift-engine[data-style=dragon] .hero,#tiknation-gift-engine[data-style=dragonrevenge] .hero{animation-name:ge-dragon}#tiknation-gift-engine[data-style=deathass] .hero{animation-name:ge-throne}#tiknation-gift-engine[data-style=meteor] .hero,#tiknation-gift-engine[data-style=treasure] .hero,#tiknation-gift-engine[data-style=hammer] .hero,#tiknation-gift-engine[data-style=knockout] .hero{animation-name:ge-impact}#tiknation-gift-engine[data-style=notes] .hero,#tiknation-gift-engine[data-style=raccoon] .hero,#tiknation-gift-engine[data-style=skeleton] .hero{animation-name:ge-dance}#tiknation-gift-engine[data-style=portal] .ring,#tiknation-gift-engine[data-style=portalparty] .ring{animation-name:ge-portal}@keyframes ge-in{from{opacity:0;transform:scale(.75) translateY(25px);filter:blur(8px)}to{opacity:1;transform:scale(1);filter:blur(0)}}@keyframes ge-orbit{to{transform:rotate(360deg) scaleX(1.3)}}@keyframes ge-ring{0%{opacity:0;transform:scale(.1)}35%{opacity:1}100%{opacity:0;transform:scale(1.8)}}@keyframes ge-portal{0%{opacity:0;transform:scale(.05) rotate(-90deg)}35%{opacity:1}100%{opacity:0;transform:scale(1.9) rotate(180deg)}}@keyframes ge-hero{0%{opacity:0;transform:translateY(90px) scale(.25) rotate(-18deg)}45%{opacity:1;transform:translateY(-12px) scale(1.15) rotate(5deg)}70%{transform:translateY(0) scale(.96)}100%{transform:scale(1)}}@keyframes ge-dragon{0%{opacity:0;transform:translateX(-100vw) scale(.2) rotate(-14deg)}50%{opacity:1;transform:translateX(10px) scale(1.15) rotate(4deg)}100%{transform:translateX(0) scale(1)}}@keyframes ge-throne{0%{opacity:0;transform:translateY(-100vh) rotate(35deg) scale(.2)}55%{opacity:1;transform:translateY(10px) rotate(-8deg) scale(1.15)}100%{transform:none}}@keyframes ge-impact{0%{opacity:0;transform:translate(80vw,-80vh) rotate(180deg) scale(.2)}65%{opacity:1;transform:translate(-8px,8px) rotate(-12deg) scale(1.2)}100%{transform:none}}@keyframes ge-dance{0%,100%{transform:none}20%{transform:translateY(-24px) rotate(-14deg)}40%{transform:rotate(14deg)}60%{transform:translateY(-18px) rotate(-10deg)}80%{transform:rotate(10deg)}}@keyframes ge-text{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}@keyframes ge-particle{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}15%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(260deg) scale(.3)}}@media(max-width:600px){#tiknation-gift-engine .stage{width:96vw;min-height:56vh;padding:18px 12px}#tiknation-gift-engine .hero{font-size:clamp(68px,22vw,118px)}}@media(prefers-reduced-motion:reduce){#tiknation-gift-engine *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}"+
-String.raw`#tiknation-gift-engine[data-style=storm]{background:transparent!important;padding:0!important}#tiknation-gift-engine .storm-world{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#10172b 0%,#252e42 38%,#101827 72%,#070b14 100%);isolation:isolate}#tiknation-gift-engine .storm-cloud{position:absolute;left:-25%;width:150%;height:45%;top:4%;border-radius:50%;background:radial-gradient(ellipse at 30% 65%,#657080 0%,#394454 24%,#202b3c 58%,transparent 72%);filter:blur(15px);animation:ge-cloud 7s ease-in-out infinite alternate}#tiknation-gift-engine .storm-cloud.c2{top:12%;left:-15%;opacity:.9;transform:scale(1.15);animation-duration:9s;animation-direction:alternate-reverse}#tiknation-gift-engine .storm-cloud.c3{top:24%;left:-30%;opacity:.65;transform:scale(.9);animation-duration:6s}#tiknation-gift-engine .storm-rain{position:absolute;inset:-20% 0 0;background-image:repeating-linear-gradient(104deg,transparent 0 18px,rgba(190,220,255,.55) 19px,transparent 21px 38px);background-size:90px 150px;opacity:.0;animation:ge-rain .24s linear infinite;mask-image:linear-gradient(transparent,#000 18%,#000)}#tiknation-gift-engine .storm-bolt{position:absolute;top:8%;left:53%;width:30%;height:70%;opacity:0;filter:drop-shadow(0 0 12px #d8efff);animation:ge-bolt 4.5s steps(1,end) infinite}#tiknation-gift-engine .storm-bolt.second{left:22%;top:17%;width:20%;height:58%;animation-delay:1.8s;transform:scaleX(-1)}#tiknation-gift-engine .storm-horizon{position:absolute;bottom:-8%;left:-10%;width:120%;height:38%;background:radial-gradient(ellipse at 50% 0%,rgba(115,142,172,.3),transparent 68%),linear-gradient(transparent,#050910 70%);border-radius:50%}#tiknation-gift-engine .storm-title{position:absolute;z-index:5;bottom:9%;left:0;right:0;text-align:center;color:#fff;font-size:clamp(22px,5vw,44px);font-weight:1000;letter-spacing:.12em;text-shadow:0 0 20px #9bcaff,0 3px 8px #000;animation:ge-storm-title 1s both}#tiknation-gift-engine .storm-caption{display:block;margin-top:9px;font-size:11px;letter-spacing:.2em;color:#c9e4ff}#tiknation-gift-engine .storm-flash{position:absolute;inset:0;background:#d9ecff;opacity:0;animation:ge-flash 4.5s steps(1,end) infinite}#tiknation-gift-engine .storm-world:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse,transparent 25%,rgba(0,0,0,.52) 100%);pointer-events:none}@keyframes ge-cloud{from{transform:translateX(-8%) scale(1)}to{transform:translateX(9%) scale(1.12)}}@keyframes ge-rain{0%{opacity:.5;transform:translateY(-3%)}100%{opacity:.78;transform:translateY(8%)}}@keyframes ge-bolt{0%,8%,12%,100%{opacity:0}9%,10%{opacity:1}11%{opacity:.2}12%{opacity:0}}@keyframes ge-flash{0%,8%,12%,100%{opacity:0}9%{opacity:.22}10%{opacity:0}11%{opacity:.12}12%{opacity:0}}@keyframes ge-storm-title{from{opacity:0;transform:translateY(30px);letter-spacing:.3em}to{opacity:1;transform:none;letter-spacing:.12em}}`;
+(function () {
+  "use strict";
+  if (window.TikNationGiftEngine) return;
 
-css += String.raw`
-#tiknation-gift-engine .gift-world{position:absolute;inset:0;overflow:hidden;display:grid;place-items:center;isolation:isolate;background:#080b19}
-#tiknation-gift-engine .gift-world:before{content:"";position:absolute;inset:-20%;background:radial-gradient(ellipse at 50% 65%,var(--world-glow),transparent 55%),radial-gradient(ellipse at 50% 110%,rgba(0,0,0,.9),transparent 60%);animation:world-breathe 3s ease-in-out infinite alternate}
-#tiknation-gift-engine .world-halo{position:absolute;width:min(76vw,650px);aspect-ratio:1;border:2px solid var(--world-line);border-radius:50%;box-shadow:0 0 30px var(--world-glow),inset 0 0 50px var(--world-glow);animation:world-halo 5s linear infinite}
-#tiknation-gift-engine .world-hero{position:absolute;z-index:3;top:38%;left:50%;transform:translate(-50%,-50%);font-size:clamp(90px,20vw,190px);line-height:1;filter:drop-shadow(0 0 25px var(--world-glow));white-space:nowrap;animation:world-hero 4.8s cubic-bezier(.2,.75,.25,1) both}
-#tiknation-gift-engine .world-side{position:absolute;z-index:2;top:43%;font-size:clamp(46px,10vw,100px);filter:drop-shadow(0 0 20px var(--world-glow));animation:world-side 4s ease-in-out infinite}
-#tiknation-gift-engine .world-side.left{left:8%;animation-delay:-1s}#tiknation-gift-engine .world-side.right{right:8%;animation-delay:-2.2s}
-#tiknation-gift-engine .world-ground{position:absolute;z-index:1;left:-10%;right:-10%;bottom:-24%;height:55%;border-radius:50%;background:radial-gradient(ellipse,var(--world-glow),transparent 68%);filter:blur(15px);animation:world-ground 2.5s ease-in-out infinite alternate}
-#tiknation-gift-engine .world-beam{position:absolute;z-index:1;left:50%;top:0;width:2px;height:90%;background:linear-gradient(transparent,var(--world-line),transparent);box-shadow:0 0 35px 10px var(--world-glow);transform-origin:top;animation:world-beam 2s ease-in-out infinite alternate}
-#tiknation-gift-engine .world-title{position:absolute;z-index:5;bottom:12%;left:4%;right:4%;text-align:center;color:white;font-weight:1000;font-size:clamp(22px,5vw,46px);letter-spacing:.1em;text-shadow:0 0 22px var(--world-glow),0 3px 9px #000;text-transform:uppercase;animation:ge-storm-title .8s both}
-#tiknation-gift-engine .world-message{display:block;margin-top:10px;color:#eef5ff;font-size:clamp(12px,2.5vw,17px);letter-spacing:.05em;font-weight:600;text-transform:none}
-#tiknation-gift-engine .world-particle{position:absolute;z-index:2;left:50%;top:52%;font-size:clamp(18px,4vw,32px);animation:world-particle 3.8s ease-out infinite;animation-delay:var(--delay);filter:drop-shadow(0 0 8px var(--world-glow))}
-#tiknation-gift-engine .gift-world[data-world=fire]{--world-glow:#ff6b20;--world-line:#ffd06c;background:radial-gradient(ellipse at 50% 85%,#a52a12,#32101b 42%,#080713 82%)}
-#tiknation-gift-engine .gift-world[data-world=cosmic]{--world-glow:#956bff;--world-line:#c7b6ff;background:radial-gradient(ellipse at 50% 50%,#30206b,#080b24 65%,#02030b)}
-#tiknation-gift-engine .gift-world[data-world=stormlight]{--world-glow:#a7dfff;--world-line:#e4f5ff;background:linear-gradient(#10172d,#172b48 55%,#030812)}
-#tiknation-gift-engine .gift-world[data-world=magic]{--world-glow:#b68cff;--world-line:#f1d8ff;background:radial-gradient(ellipse at 50% 50%,#46206d,#100d2b 65%,#05040c)}
-#tiknation-gift-engine .gift-world[data-world=gold]{--world-glow:#ffca58;--world-line:#fff0ad;background:radial-gradient(ellipse at 50% 75%,#8d4c13,#33200c 50%,#09070a)}
-#tiknation-gift-engine .gift-world[data-world=ice]{--world-glow:#65eaff;--world-line:#d5fbff;background:radial-gradient(ellipse at 50% 65%,#176b89,#10233f 48%,#040914)}
-#tiknation-gift-engine .gift-world[data-world=party]{--world-glow:#ff76d8;--world-line:#ffe17a;background:repeating-conic-gradient(from 0deg at 50% 50%,#251047 0 12deg,#101a3a 12deg 24deg,#3d1748 24deg 36deg)}
-#tiknation-gift-engine .gift-world[data-world=shadow]{--world-glow:#9bff86;--world-line:#d7ffc7;background:radial-gradient(ellipse at 50% 75%,#344a28,#101b1a 50%,#020609)}
-#tiknation-gift-engine .gift-world[data-world=impact]{--world-glow:#ff9d50;--world-line:#fff2b0;background:radial-gradient(ellipse at 50% 65%,#74321d,#25101a 48%,#05050c)}
-#tiknation-gift-engine .gift-world[data-world=prism]{--world-glow:#a7eaff;--world-line:#fff;background:conic-gradient(from 0deg at 50% 50%,#321b5b,#174b67,#4a235b,#174b67,#321b5b)}
-@keyframes world-breathe{to{transform:scale(1.15) rotate(8deg);opacity:.7}}@keyframes world-halo{to{transform:rotate(360deg) scale(.82)}}
-@keyframes world-hero{0%{opacity:0;transform:translate(-50%,90%) scale(.15) rotate(-24deg)}35%{opacity:1;transform:translate(-50%,-58%) scale(1.18) rotate(8deg)}60%{transform:translate(-50%,-48%) scale(.96)}100%{transform:translate(-50%,-50%) scale(1)}}
-@keyframes world-side{0%,100%{transform:translateY(10px) rotate(-12deg) scale(.85)}50%{transform:translateY(-55px) rotate(14deg) scale(1.18)}}
-@keyframes world-ground{to{transform:scale(1.25);opacity:.6}}@keyframes world-beam{to{transform:rotate(24deg);opacity:.35}}
-@keyframes world-particle{0%{opacity:0;transform:translate(-50%,20vh) scale(.3) rotate(0)}15%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--x)),-65vh) scale(1.1) rotate(240deg)}}
-`;
-function install(){if(document.getElementById("tiknation-gift-engine-style"))return;const s=document.createElement("style");s.id="tiknation-gift-engine-style";s.textContent=css;document.head.appendChild(s)}
-function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="storm"){overlay.innerHTML='<div class="storm-world"><div class="storm-cloud"></div><div class="storm-cloud c2"></div><div class="storm-cloud c3"></div><div class="storm-rain"></div><div class="storm-flash"></div><svg class="storm-bolt" viewBox="0 0 220 500" aria-hidden="true"><path d="M132 0L72 178L119 178L32 390L157 158L108 158Z" fill="#f5fbff" stroke="#c9e8ff" stroke-width="7" stroke-linejoin="round"/></svg><svg class="storm-bolt second" viewBox="0 0 220 500" aria-hidden="true"><path d="M132 0L72 178L119 178L32 390L157 158L108 158Z" fill="#f5fbff" stroke="#c9e8ff" stroke-width="7" stroke-linejoin="round"/></svg><div class="storm-horizon"></div><div class="storm-title">STORM OF THE WORLD<span class="storm-caption">THE SKY HAS AWAKENED</span></div></div>';document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const stormDuration=Math.max(4500,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},stormDuration);return overlay;}const worlds={pulse:["magic","💗","💓","✨","💗"],notes:["party","🎵","🎶","🎼","🎵"],grand:["prism","🎼","🎻","🎺","🎶"],spark:["magic","✨","✦","✧","💫"],portal:["cosmic","🌀","✦","🪄","🌀"],dragon:["fire","🐉","🔥","💥","🐲"],galaxy:["cosmic","🌌","🪐","⭐","🌠"],burst:["stormlight","⚡","💥","✨","⚡"],prism:["prism","🌈","💎","✨","🌈"],surprise:["magic","🎁","❔","✨","🎉"],crown:["gold","👑","✨","💎","👑"],infinity:["cosmic","💎","♾️","✨","💠"],clouds:["ice","☁️","🌫️","✨","☁️"],hammer:["impact","🔨","💥","⭐","🔨"],thunderass:["stormlight","⚡","🍑","💥","⚡"],lightning:["stormlight","⚡","💀","⚡","🌩️"],book:["shadow","📕","☠️","🌫️","📖"],dreammakers:["magic","🧚","✨","🌟","🪄"],phoenix:["fire","🪽","🔥","🌅","🪽"],treasure:["gold","💰","💎","🪙","🏆"],meteor:["impact","☄️","🔥","💥","🌠"],raccoon:["party","🦝","🪩","🎵","🦝"],portalparty:["prism","🌀","🎉","✨","🌀"],blastass:["impact","💨","🍑","💥","💨"],deathass:["shadow","☠️","💀","🌑","☠️"],throne:["gold","👑","🚽","✨","🏆"],chicken:["fire","🐔","💥","🪶","🐓"],cheese:["gold","🧀","☄️","💥","🧀"],skeleton:["party","💀","🪩","🎶","💀"],dragonrevenge:["fire","🐉","🔥","💥","🐲"],stinkdeath:["shadow","💨","💀","☣️","💨"],rattlebone:["shadow","🦴","💀","⚡","🦴"],toxiccloud:["shadow","☣️","💚","🪰","☣️"],bonebreaker:["impact","💀","🦴","👎","💀"],knockout:["impact","🥊","💥","⭐","🥊"],cantbreathe:["party","😂","💀","💧","😂"]};
-const scene=worlds[gift.style];if(scene){const world=document.createElement("div");world.className="gift-world";world.dataset.world=scene[0];const halo=document.createElement("div");halo.className="world-halo";const ground=document.createElement("div");ground.className="world-ground";const beam=document.createElement("div");beam.className="world-beam";const hero=document.createElement("div");hero.className="world-hero";hero.textContent=scene[1];const left=document.createElement("div");left.className="world-side left";left.textContent=scene[2];const right=document.createElement("div");right.className="world-side right";right.textContent=scene[3];const title=document.createElement("div");title.className="world-title";title.textContent=gift.name||"TikNation Gift";const message=document.createElement("span");message.className="world-message";message.textContent=gift.message||"A gift has arrived.";title.appendChild(message);world.append(halo,ground,beam,left,right,hero);for(let i=0;i<18;i++){const p=document.createElement("span");p.className="world-particle";p.textContent=[scene[4],"✦","•","✧"][i%4];p.style.setProperty("--x",((i%2?1:-1)*(70+(i%6)*34))+"px");p.style.setProperty("--delay",(i*.11)+"s");world.appendChild(p)}world.appendChild(title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const sceneDuration=Math.max(4000,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},sceneDuration);return overlay;}const stage=document.createElement("div");stage.className="stage";const ring=document.createElement("div");ring.className="ring";const hero=document.createElement("div");hero.className="hero";hero.textContent=gift.emoji||"🎁";hero.setAttribute("aria-hidden","true");const title=document.createElement("div");title.className="title";title.textContent=gift.name||"TikNation Gift";const message=document.createElement("div");message.className="message";message.textContent=gift.message||"A gift has arrived.";const meta=document.createElement("div");meta.className="meta";meta.textContent=opts.meta||"TIKNATION LIVE · GIFT RECEIVED";stage.append(ring,hero,title,message,meta);if(!window.matchMedia||!window.matchMedia("(prefers-reduced-motion: reduce)").matches){const symbols=["✦","✧","✶","•","✷","⋆"];for(let i=0;i<28;i++){const p=document.createElement("span");const a=Math.PI*2*i/28,d=110+(i%5)*42;p.className="particle";p.textContent=symbols[i%symbols.length];p.style.setProperty("--dx",Math.cos(a)*d+"px");p.style.setProperty("--dy",Math.sin(a)*d+"px");p.style.setProperty("--delay",(i%7)*.035+"s");stage.appendChild(p)}}overlay.appendChild(stage);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const duration=Math.max(1800,Number(opts.duration)||4300);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .35s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),380)}},duration);return overlay}
-const giftQueue=[];let giftPlaying=false;
-function playNextGift(){const item=giftQueue.shift();if(!item){giftPlaying=false;return;}giftPlaying=true;const duration=Math.max(4500,Number(item.opts&&item.opts.duration)||6500);try{renderGift(item.gift,item.opts);}catch(error){console.error("Gift animation failed:",error);}setTimeout(()=>{giftPlaying=false;playNextGift();},duration+600);}
-function show(gift,opts){if(!gift||!document.body)return null;giftQueue.push({gift,opts:opts||{}});if(!giftPlaying)playNextGift();return true;}
-window.TikNationGiftEngine=Object.freeze({show:show});
+  var css = [
+    "#tiknation-gift-engine{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;pointer-events:none;padding:12px;box-sizing:border-box;background:radial-gradient(ellipse,rgba(17,25,62,.45),rgba(0,0,0,.88));opacity:1}",
+    "#tiknation-gift-engine .ge-card{position:relative;width:min(94vw,760px);min-height:min(66vh,520px);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;box-sizing:border-box;border:2px solid var(--ge-accent);border-radius:30px;background:radial-gradient(ellipse at 50% 55%,var(--ge-glow),#080b20 72%);box-shadow:0 0 55px var(--ge-glow),inset 0 0 60px rgba(140,120,255,.18);animation:ge-enter .7s cubic-bezier(.16,1,.3,1) both}",
+    "#tiknation-gift-engine .ge-ring{position:absolute;width:min(58vw,360px);aspect-ratio:1;border:3px solid var(--ge-accent);border-radius:50%;box-shadow:0 0 30px var(--ge-accent),inset 0 0 30px var(--ge-accent);animation:ge-ring 2.6s ease-out infinite}",
+    "#tiknation-gift-engine .ge-emoji{position:relative;z-index:2;font-size:clamp(90px,22vw,190px);line-height:1.2;filter:drop-shadow(0 0 22px var(--ge-accent));animation:ge-hero 2.8s cubic-bezier(.2,.8,.2,1) both}",
+    "#tiknation-gift-engine .ge-title{position:relative;z-index:3;margin-top:14px;padding:0 12px;color:#fff;text-align:center;font-size:clamp(22px,5vw,42px);font-weight:1000;letter-spacing:.08em;text-transform:uppercase;text-shadow:0 0 20px var(--ge-accent)}",
+    "#tiknation-gift-engine .ge-message{position:relative;z-index:3;margin:10px 14px 0;color:#e5edff;text-align:center;font-size:clamp(13px,2.5vw,18px)}",
+    "#tiknation-gift-engine .ge-particle{position:absolute;left:50%;top:50%;color:var(--ge-accent);font-size:clamp(18px,4vw,34px);text-shadow:0 0 14px currentColor;animation:ge-particle 3s ease-out both;animation-delay:var(--delay)}",
+    "#tiknation-gift-engine[data-style=dragon],#tiknation-gift-engine[data-style=dragonrevenge]{--ge-accent:#ff9b55;--ge-glow:rgba(255,90,25,.48)}",
+    "#tiknation-gift-engine[data-style=galaxy],#tiknation-gift-engine[data-style=infinity],#tiknation-gift-engine[data-style=portal]{--ge-accent:#c5a2ff;--ge-glow:rgba(116,65,255,.5)}",
+    "#tiknation-gift-engine[data-style=storm],#tiknation-gift-engine[data-style=lightning],#tiknation-gift-engine[data-style=burst]{--ge-accent:#bceaff;--ge-glow:rgba(65,155,255,.5)}",
+    "#tiknation-gift-engine[data-style=crown],#tiknation-gift-engine[data-style=treasure]{--ge-accent:#ffe08a;--ge-glow:rgba(255,174,40,.5)}",
+    "#tiknation-gift-engine[data-style=notes],#tiknation-gift-engine[data-style=pulse],#tiknation-gift-engine[data-style=grand]{--ge-accent:#ff9bd7;--ge-glow:rgba(255,65,190,.45)}",
+    "#tiknation-gift-engine[data-style=ice],#tiknation-gift-engine[data-style=clouds]{--ge-accent:#8af3ff;--ge-glow:rgba(45,200,255,.48)}",
+    "@keyframes ge-enter{from{opacity:0;transform:scale(.55) translateY(40px);filter:blur(8px)}to{opacity:1;transform:scale(1);filter:blur(0)}}",
+    "@keyframes ge-ring{0%{opacity:0;transform:scale(.15)}35%{opacity:1}100%{opacity:0;transform:scale(1.7)}}",
+    "@keyframes ge-hero{0%{opacity:0;transform:translateY(100px) scale(.2) rotate(-20deg)}45%{opacity:1;transform:translateY(-14px) scale(1.18) rotate(7deg)}75%{transform:translateY(0) scale(.96)}100%{transform:scale(1)}}",
+    "@keyframes ge-particle{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}18%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(260deg) scale(.25)}}",
+    "@media(prefers-reduced-motion:reduce){#tiknation-gift-engine *{animation-duration:.01ms!important;animation-iteration-count:1!important}}"
+  ].join("\n");
+
+  function install() {
+    if (document.getElementById("tiknation-gift-engine-style")) return;
+    var style = document.createElement("style");
+    style.id = "tiknation-gift-engine-style";
+    style.textContent = css;
+    document.head.appendChild(style);
+  }
+
+  function render(gift, options) {
+    if (!gift || !document.body) return false;
+    options = options || {};
+    install();
+    var previous = document.getElementById("tiknation-gift-engine");
+    if (previous) previous.remove();
+
+    var overlay = document.createElement("div");
+    overlay.id = "tiknation-gift-engine";
+    overlay.dataset.style = String(gift.style || "spark").toLowerCase().replace(/[^a-z0-9_-]/g, "");
+    overlay.style.setProperty("--ge-accent", "#7eeaff");
+    overlay.style.setProperty("--ge-glow", "rgba(60,190,255,.45)");
+
+    var card = document.createElement("div");
+    card.className = "ge-card";
+    var ring = document.createElement("div");
+    ring.className = "ge-ring";
+    var emoji = document.createElement("div");
+    emoji.className = "ge-emoji";
+    emoji.textContent = gift.emoji || "🎁";
+    var title = document.createElement("div");
+    title.className = "ge-title";
+    title.textContent = gift.name || "TikNation Gift";
+    var message = document.createElement("div");
+    message.className = "ge-message";
+    message.textContent = gift.message || "A gift has arrived!";
+    card.append(ring, emoji, title, message);
+
+    var symbols = ["✦", "✧", "✶", "•", "✷", "⋆"];
+    for (var i = 0; i < 24; i++) {
+      var particle = document.createElement("span");
+      var angle = Math.PI * 2 * i / 24;
+      var distance = 120 + (i % 5) * 42;
+      particle.className = "ge-particle";
+      particle.textContent = symbols[i % symbols.length];
+      particle.style.setProperty("--dx", Math.cos(angle) * distance + "px");
+      particle.style.setProperty("--dy", Math.sin(angle) * distance + "px");
+      particle.style.setProperty("--delay", (i % 8) * .04 + "s");
+      card.appendChild(particle);
+    }
+
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+    var duration = Math.max(2200, Number(options.duration) || 4800);
+    window.setTimeout(function () {
+      if (!overlay.isConnected) return;
+      overlay.style.transition = "opacity .4s ease";
+      overlay.style.opacity = "0";
+      window.setTimeout(function () { overlay.remove(); }, 430);
+    }, duration);
+    return true;
+  }
+
+  var queue = [];
+  var playing = false;
+  function next() {
+    var item = queue.shift();
+    if (!item) { playing = false; return; }
+    playing = true;
+    try { render(item.gift, item.options); }
+    catch (error) { console.error("TikNation gift render error:", error); }
+    window.setTimeout(function () { next(); }, Math.max(2600, Number(item.options.duration) || 4800) + 500);
+  }
+  function show(gift, options) {
+    if (!gift || !document.body) return false;
+    queue.push({ gift: gift, options: options || {} });
+    if (!playing) next();
+    return true;
+  }
+
+  window.TikNationGiftEngine = Object.freeze({ show: show });
 })();
