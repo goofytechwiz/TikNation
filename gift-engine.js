@@ -119,7 +119,8 @@ css += String.raw`
 @keyframes cinema-hover{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-9px) rotate(.5deg)}}
 @keyframes cinema-drift{0%{opacity:0;transform:translate3d(0,12vh,0) scale(.4)}15%{opacity:.8}100%{opacity:0;transform:translate3d(var(--mx),var(--my),0) scale(.1)}}
 @media(prefers-reduced-motion:reduce){#tiknation-gift-engine .cinema-art,#tiknation-gift-engine .cinema-object,#tiknation-gift-engine .cinema-mote{animation:none!important}}
-\n#tiknation-gift-engine .music-stage{position:absolute;inset:0;overflow:hidden;background:transparent!important;display:grid;place-items:center}
+
+#tiknation-gift-engine .music-stage{position:absolute;inset:0;overflow:hidden;background:transparent!important;display:grid;place-items:center}
 #tiknation-gift-engine .music-hero{position:absolute;left:50%;top:46%;font-size:clamp(112px,27vw,230px);line-height:1;transform:translate(-50%,-50%);filter:drop-shadow(0 8px 18px rgba(0,0,0,.65));animation:music-arrive 1.15s cubic-bezier(.16,1,.3,1) both}
 #tiknation-gift-engine .music-note{position:absolute;left:var(--sx);top:var(--sy);font-size:clamp(34px,8vw,76px);line-height:1;color:var(--note-color);text-shadow:0 3px 12px rgba(0,0,0,.7);animation:music-travel var(--dur) cubic-bezier(.2,.7,.2,1) var(--delay) both}
 #tiknation-gift-engine .music-title{position:absolute;left:5%;right:5%;bottom:12%;text-align:center;color:white;font-size:clamp(22px,5vw,44px);font-weight:1000;letter-spacing:.1em;text-transform:uppercase;text-shadow:0 3px 12px #000;animation:ge-text .7s .25s both}
