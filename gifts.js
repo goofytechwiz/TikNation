@@ -94,38 +94,43 @@ function playTikNationGiftSound(gift) {
     if (context.state === "suspended") context.resume().catch(() => {});
     const now = context.currentTime;
     if (gift.style === "raccoon") {
-      const beat = 0.42;
-      const bass = [82.41,82.41,110,98,73.42,73.42,98,110,82.41,82.41,110,98,73.42,73.42,98,110];
-      for(let i=0;i<16;i++){
-        const at=now+i*beat/2;
-        if(i%2===0){
-          const kick=context.createOscillator(),kg=context.createGain();
-          kick.type="sine";kick.frequency.setValueAtTime(125,at);kick.frequency.exponentialRampToValueAtTime(42,at+.16);
-          kg.gain.setValueAtTime(.0001,at);kg.gain.exponentialRampToValueAtTime(.19,at+.012);kg.gain.exponentialRampToValueAtTime(.0001,at+.2);
-          kick.connect(kg);kg.connect(context.destination);kick.start(at);kick.stop(at+.21);
+      const groove = () => {
+        const startAt = context.currentTime + 0.08;
+        const beat = 0.25;
+        const bass = [82.41,82.41,110,98,73.42,73.42,98,110,82.41,82.41,110,98,73.42,73.42,98,110];
+        const chords = [[392,493.88,587.33],[349.23,440,523.25],[329.63,415.3,493.88],[349.23,440,523.25]];
+        for (let i=0;i<32;i++) {
+          const at=startAt+i*beat;
+          if(i%4===0){
+            const kick=context.createOscillator(),gain=context.createGain();
+            kick.type="sine";kick.frequency.setValueAtTime(145,at);kick.frequency.exponentialRampToValueAtTime(48,at+.19);
+            gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.42,at+.012);gain.gain.exponentialRampToValueAtTime(.0001,at+.24);
+            kick.connect(gain);gain.connect(context.destination);kick.start(at);kick.stop(at+.25);
+          }
+          if(i%2===1){
+            const noise=context.createBufferSource(),buffer=context.createBuffer(1,Math.ceil(context.sampleRate*.07),context.sampleRate),data=buffer.getChannelData(0);
+            for(let n=0;n<data.length;n++)data[n]=Math.random()*2-1;
+            noise.buffer=buffer;const filter=context.createBiquadFilter(),gain=context.createGain();
+            filter.type="highpass";filter.frequency.value=6500;gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.075,at+.004);gain.gain.exponentialRampToValueAtTime(.0001,at+.065);
+            noise.connect(filter);filter.connect(gain);gain.connect(context.destination);noise.start(at);noise.stop(at+.07);
+          }
+          if(i%2===0){
+            const bassOsc=context.createOscillator(),bassGain=context.createGain(),low=context.createBiquadFilter();
+            bassOsc.type="triangle";bassOsc.frequency.setValueAtTime(bass[(i/2)%16],at);low.type="lowpass";low.frequency.value=520;
+            bassGain.gain.setValueAtTime(.0001,at);bassGain.gain.linearRampToValueAtTime(.22,at+.015);bassGain.gain.exponentialRampToValueAtTime(.0001,at+.21);
+            bassOsc.connect(low);low.connect(bassGain);bassGain.connect(context.destination);bassOsc.start(at);bassOsc.stop(at+.22);
+          }
+          if(i%4===0){
+            chords[(i/4)%4].forEach((freq,j)=>{
+              const osc=context.createOscillator(),gain=context.createGain(),filter=context.createBiquadFilter();
+              osc.type="sawtooth";osc.frequency.setValueAtTime(freq,at);filter.type="lowpass";filter.frequency.value=1900;
+              gain.gain.setValueAtTime(.0001,at);gain.gain.linearRampToValueAtTime(.045,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.38);
+              osc.connect(filter);filter.connect(gain);gain.connect(context.destination);osc.start(at);osc.stop(at+.4);
+            });
+          }
         }
-        const hat=context.createOscillator(),hg=context.createGain(),hf=context.createBiquadFilter();
-        hat.type="square";hat.frequency.setValueAtTime(i%2?7400:5200,at);
-        hf.type="highpass";hf.frequency.value=4200;
-        hg.gain.setValueAtTime(.0001,at);hg.gain.exponentialRampToValueAtTime(.025,at+.004);hg.gain.exponentialRampToValueAtTime(.0001,at+.055);
-        hat.connect(hf);hf.connect(hg);hg.connect(context.destination);hat.start(at);hat.stop(at+.06);
-        if(i%2===0){
-          const o=context.createOscillator(),g=context.createGain(),filter=context.createBiquadFilter();
-          o.type="sawtooth";o.frequency.setValueAtTime(bass[i],at);
-          filter.type="lowpass";filter.frequency.value=360;
-          g.gain.setValueAtTime(.0001,at);g.gain.linearRampToValueAtTime(.055,at+.018);g.gain.exponentialRampToValueAtTime(.0001,at+.19);
-          o.connect(filter);filter.connect(g);g.connect(context.destination);o.start(at);o.stop(at+.2);
-        }
-        if(i%4===2){
-          [392,493.88,587.33].forEach((freq,j)=>{
-            const o=context.createOscillator(),g=context.createGain(),filter=context.createBiquadFilter();
-            o.type="sawtooth";o.frequency.setValueAtTime(freq,at);
-            filter.type="lowpass";filter.frequency.value=1700;
-            g.gain.setValueAtTime(.0001,at);g.gain.linearRampToValueAtTime(.018,at+.025);g.gain.exponentialRampToValueAtTime(.0001,at+.16);
-            o.connect(filter);filter.connect(g);g.connect(context.destination);o.start(at);o.stop(at+.17);
-          });
-        }
-      }
+      };
+      if(context.state==="suspended"){context.resume().then(groove).catch(()=>{});}else groove();
       return;
     }
     if (gift.style === "storm") {
@@ -278,7 +283,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=20261105-disco-raccoon-v3";
+    script.src = "./gift-engine.js?v=20261105-disco-raccoon-v4";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
