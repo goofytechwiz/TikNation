@@ -31,6 +31,66 @@ main{width:min(100% - 32px,900px);margin:auto;padding:35px 0 60px}.eyebrow{color
 @media(max-width:420px){.notification-toast{gap:9px;padding:12px}.toast-view{padding:8px}.toast-title{font-size:15px}}
 @media(prefers-reduced-motion:reduce){.notification-toast{transition:none}}
 .profile-title{margin-top:7px;color:#fff1c9;font:italic 16px Georgia,serif;letter-spacing:.02em;text-shadow:0 0 18px #ffe0a855;overflow-wrap:anywhere}.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 4px;position:relative;z-index:1}.profile-badge{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border:1px solid #ffffff35;border-radius:99px;background:#ffffff0b;color:#e9e3f7;font-size:10px;letter-spacing:.06em}.profile-badge.founder{border-color:#f3d58b88;background:linear-gradient(110deg,#f3d58b22,#b98b2d18);color:#ffe5a8;box-shadow:0 0 16px #e9c86b18}.profile-badge.achievement{border-color:#82f6e866;background:#82f6e811;color:var(--cyan)}.profile-badge.locked{border-style:dashed;color:#aaa4bf}.badge-picker{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.badge-option{border:1px solid #ffffff30;border-radius:12px;padding:10px 12px;background:#ffffff08;color:#e9e3f7;text-align:left;font:11px system-ui;cursor:pointer}.badge-option[aria-pressed=true]{border-color:var(--cyan);background:#82f6e818;color:var(--cyan)}.badge-option:disabled{opacity:.6;cursor:not-allowed}.badge-help{display:block;color:#a9a2c4;font-size:10px;line-height:1.5;margin-top:7px}.milestone-banner{display:none;position:relative;z-index:1;overflow:hidden;margin:14px 0 2px;padding:14px 17px;border:1px solid #ffffff55;border-radius:14px;background:linear-gradient(105deg,#3b2a59,#173e50);box-shadow:0 8px 30px #0003}.milestone-banner.show{display:flex;align-items:center;gap:12px}.milestone-banner .banner-icon{font-size:24px}.milestone-banner strong{display:block;font:17px Georgia,serif;color:#fff1c9}.milestone-banner small{display:block;margin-top:3px;color:#e0dcef;font-size:9px;letter-spacing:.12em}.milestone-banner[data-banner="community"]{background:linear-gradient(105deg,#164d56,#263b61);border-color:#82f6e877}.milestone-banner[data-banner="dreamer"]{background:linear-gradient(105deg,#41285d,#222d58);border-color:#c4a3ff88}.milestone-banner[data-banner="founder"]{background:linear-gradient(105deg,#63451e,#35294d);border-color:#ffe0a899}.showcase-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}.showcase-card{display:block;position:relative;min-width:0;overflow:hidden;padding:17px;border:1px solid #ffffff25;border-radius:17px;background:linear-gradient(145deg,#1d3452,#292047 65%,#122d3b)}.showcase-card:before{content:"";position:absolute;width:100px;height:100px;right:-35px;top:-45px;border-radius:50%;background:#82f6e855;filter:blur(24px)}.showcase-card:nth-child(2){background:linear-gradient(145deg,#31204e,#193c51)}.showcase-card:nth-child(3){background:linear-gradient(145deg,#47304a,#172f49)}.showcase-icon{font-size:23px;position:relative}.showcase-card h3{position:relative;margin:10px 0 7px;font:18px Georgia,serif;color:#fff}.showcase-card p{position:relative;color:#d3cde5;font-size:11px;line-height:1.55;min-height:52px}.showcase-status{position:relative;display:inline-block;margin-top:12px;padding:6px 9px;border:1px solid #82f6e866;border-radius:99px;color:#9df5e8;font-size:9px;letter-spacing:.1em}.showcase-edit{padding:15px;border:1px solid #ffffff20;border-radius:15px;background:#ffffff06}.showcase-edit strong{display:block;margin-bottom:9px;color:#e9e3f7;font-size:11px}.showcase-edit label{display:block;margin-top:9px}.showcase-edit input,.showcase-edit textarea,.showcase-edit select{display:block;width:100%;margin-top:5px;padding:10px;border:1px solid #ffffff30;border-radius:10px;background:#090b20;color:white;font:inherit}.showcase-edit textarea{min-height:60px;resize:vertical}@media(max-width:560px){.showcase-grid{grid-template-columns:1fr}.showcase-card p{min-height:0}}
+
+/* Featured creation cards: lightweight portal interaction polish */
+.showcase-card{
+  isolation:isolate;
+  transform:translateZ(0);
+  transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease,filter .24s ease;
+  box-shadow:0 8px 24px #0002;
+  animation:showcaseArrive .55s both;
+}
+.showcase-card:nth-child(2){animation-delay:.07s}
+.showcase-card:nth-child(3){animation-delay:.14s}
+.showcase-card:after{
+  content:"";
+  position:absolute;
+  inset:-45%;
+  z-index:0;
+  pointer-events:none;
+  opacity:0;
+  background:
+    radial-gradient(circle at 25% 35%,#ffffffb8 0 1px,transparent 2px),
+    radial-gradient(circle at 72% 58%,var(--cyan) 0 1px,transparent 2px),
+    radial-gradient(circle at 55% 18%,#c9b8ff 0 1px,transparent 2px),
+    linear-gradient(115deg,transparent 35%,#ffffff22 48%,var(--cyan) 50%,#ffffff18 52%,transparent 65%);
+  background-size:100% 100%,100% 100%,100% 100%,220% 100%;
+  background-position:center,center,center,-120% 0;
+  background-repeat:no-repeat;
+  transition:opacity .2s ease;
+}
+.showcase-card>*{z-index:1}
+.showcase-card:focus-visible{
+  outline:3px solid var(--cyan);
+  outline-offset:4px;
+  border-color:var(--cyan);
+  box-shadow:0 0 0 5px #82f6e822,0 0 34px #82f6e855;
+}
+.showcase-card:active{
+  transform:scale(.975);
+  border-color:var(--cyan);
+  box-shadow:0 0 0 3px #82f6e822,0 0 34px #82f6e866,inset 0 0 28px #82f6e81c;
+  filter:brightness(1.16);
+}
+.showcase-card:active:after{opacity:.8;background-position:center,center,center,120% 0}
+@media(hover:hover) and (pointer:fine){
+  .showcase-card:hover{
+    transform:translateY(-5px) scale(1.012);
+    border-color:#82f6e8aa;
+    box-shadow:0 16px 38px #0005,0 0 26px #82f6e833,inset 0 0 22px #82f6e80b;
+    filter:brightness(1.08);
+  }
+  .showcase-card:hover:after{opacity:.52;background-position:center,center,center,120% 0;transition:opacity .25s ease,background-position .8s ease}
+}
+@keyframes showcaseArrive{
+  from{opacity:0;transform:translateY(12px) scale(.985)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@media(prefers-reduced-motion:reduce){
+  .showcase-card,.showcase-card:after{animation:none!important;transition:none!important}
+  .showcase-card:hover,.showcase-card:active{transform:none;filter:none}
+}
+
 </style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><div class="header-actions"><button class="notify-button" id="notificationButton" type="button" aria-expanded="false" aria-controls="notificationPanel">♧ NOTIFICATIONS<span class="notify-count" id="notificationCount">0</span></button><a class="back" href="../settings/">⚙ SETTINGS</a><a class="back" href="../realms/">← ALL REALMS</a></div></header>
