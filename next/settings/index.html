@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08091c"><title>TikNation — Creator Settings</title>
+<style>
+:root{color-scheme:dark;--bg:#08091c;--cyan:#82f6e8;--violet:#b49cff;--gold:#ffe0a8;--ink:#f6f2ff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 75% 0%,#42356e 0,transparent 42%),radial-gradient(ellipse at 5% 50%,#123b4a66,transparent 38%),var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif}
+header{height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,60px);border-bottom:1px solid #ffffff16;background:#090a20d9;backdrop-filter:blur(16px);position:sticky;top:0;z-index:3}.brand{font-size:13px;font-weight:900;letter-spacing:.2em}.brand span{color:var(--cyan)}a{color:inherit;text-decoration:none}.back{font-size:10px;letter-spacing:.12em;color:#e4def8;border:1px solid #ffffff30;border-radius:99px;padding:11px 15px;background:#ffffff0b}
+main{width:min(100% - 32px,850px);margin:auto;padding:35px 0 65px}.eyebrow{color:var(--cyan);font-size:10px;letter-spacing:.25em;font-weight:800}.hero{padding:clamp(22px,5vw,38px);border:1px solid #ffffff25;border-radius:28px;background:linear-gradient(130deg,#1a2445,#332452 60%,#123b47);box-shadow:0 24px 80px #0007;position:relative;overflow:hidden}.hero:after{content:"✦";position:absolute;right:30px;top:5px;font:100px Georgia;color:#82f6e822}.hero h1{font:400 clamp(34px,7vw,54px)/1.05 Georgia,serif;margin:12px 0}.hero p{color:#d6d0e9;line-height:1.65;font-size:13px;max-width:600px;margin:0}
+.group{margin-top:22px;padding:22px;border:1px solid #ffffff20;border-radius:22px;background:linear-gradient(145deg,#171a37,#111329)}.group h2{font:400 24px Georgia,serif;margin:0 0 5px}.group>p{color:#aaa4c4;font-size:11px;line-height:1.5;margin:0 0 14px}.setting{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 0;border-top:1px solid #ffffff15}.setting:first-of-type{border-top:0}.copy{min-width:0}.copy strong{display:block;font-size:13px;font-weight:650}.copy span{display:block;color:#aaa4c4;font-size:11px;line-height:1.5;margin-top:4px}.switch{flex:none;position:relative;width:52px;height:30px;border:1px solid #ffffff38;border-radius:99px;background:#ffffff15;cursor:pointer;transition:background .2s,border-color .2s}.switch:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;border-radius:50%;background:#d6d1e7;transition:transform .2s}.switch[aria-checked=true]{background:#3eaaa2;border-color:#82f6e8}.switch[aria-checked=true]:before{transform:translateX(22px);background:white}.switch:focus-visible,.back:focus-visible{outline:2px solid var(--gold);outline-offset:3px}.status{display:inline-flex;align-items:center;gap:7px;color:#ffe0a8;font-size:10px;letter-spacing:.08em}.status:before{content:"";width:7px;height:7px;border-radius:50%;background:#ffe0a8;box-shadow:0 0 10px #ffe0a8}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.button{border:1px solid #ffffff30;border-radius:99px;padding:12px 17px;background:#ffffff0b;color:#f5efff;font-size:10px;letter-spacing:.12em;cursor:pointer}.primary{border:0;background:linear-gradient(110deg,var(--cyan),#c5b5ff);color:#101329;font-weight:900}.message{min-height:18px;margin-top:12px;color:var(--cyan);font-size:11px}.footnote{margin-top:18px;padding:14px;border:1px solid #ffe0a844;border-radius:14px;background:#ffe0a80c;color:#e8d8b8;font-size:11px;line-height:1.6}
+body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@media(max-width:520px){.group{padding:18px}.setting{gap:10px}.copy strong{font-size:12px}.copy span{max-width:245px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+</style></head>
+<body>
+<header><div class="brand">TIK<span>NATION</span></div><a class="back" href="../profile/">← MY PROFILE</a></header>
+<main>
+<div class="eyebrow">YOUR CREATOR SPACE · CONTROL ROOM</div>
+<section class="hero"><div class="eyebrow">SETTINGS</div><h1>Make this world yours.</h1><p>Choose how your TikNation preview feels and which local activity alerts you want to see. Your choices are saved on this device.</p></section>
+<section class="group" aria-labelledby="notificationsTitle"><h2 id="notificationsTitle">Notification preferences</h2><p>These switches control the local profile preview only.</p>
+<div class="setting"><div class="copy"><strong>Likes</strong><span>Show a preview alert when a photo post is liked.</span></div><button class="switch" type="button" role="switch" aria-checked="true" data-setting="likes" aria-label="Likes notifications"></button></div>
+<div class="setting"><div class="copy"><strong>Comments</strong><span>Show a preview alert when someone comments on a photo post.</span></div><button class="switch" type="button" role="switch" aria-checked="true" data-setting="comments" aria-label="Comment notifications"></button></div>
+<div class="setting"><div class="copy"><strong>Notification sounds</strong><span>Play the gentle three-note chime for preview alerts.</span></div><button class="switch" type="button" role="switch" aria-checked="true" data-setting="sounds" aria-label="Notification sounds"></button></div>
+</section>
+<section class="group" aria-labelledby="experienceTitle"><h2 id="experienceTitle">Experience</h2><p>Comfort and display preferences for this device.</p>
+<div class="setting"><div class="copy"><strong>Reduce motion</strong><span>Limit animated effects and transitions on this settings page.</span></div><button class="switch" type="button" role="switch" aria-checked="false" data-setting="motion" aria-label="Reduce motion"></button></div>
+<div class="setting"><div class="copy"><strong>Extra contrast</strong><span>Strengthen borders and text contrast in this preview.</span></div><button class="switch" type="button" role="switch" aria-checked="false" data-setting="contrast" aria-label="Extra contrast"></button></div>
+</section>
+<section class="group" aria-labelledby="accountTitle"><h2 id="accountTitle">Account & safety</h2><p>Account security and privacy controls are not connected in this prototype.</p>
+<div class="setting"><div class="copy"><strong>Sign-in protection</strong><span>Two-step verification and sign-in management will be connected to the real account system later.</span></div><span class="status">NOT CONNECTED</span></div>
+<div class="setting"><div class="copy"><strong>Profile visibility</strong><span>Public/private account controls will be connected when real profile services are integrated.</span></div><span class="status">NOT CONNECTED</span></div>
+</section>
+<div class="actions"><button class="button primary" id="save" type="button">SAVE PREFERENCES</button><button class="button" id="reset" type="button">RESET THIS DEVICE</button></div><div class="message" id="message" role="status" aria-live="polite"></div>
+<div class="footnote">Preview only: these preferences are stored in this browser on this device. They do not change real account security, privacy, public notifications, or other users' experience. Existing sign-in, Supabase, and LIVE systems have not been changed.</div>
+</main>
+<script>
+(()=>{const defaults={likes:true,comments:true,sounds:true,motion:false,contrast:false};let prefs={...defaults};const key='tiknationNextSettingsV1';const buttons=[...document.querySelectorAll('[data-setting]')];const message=document.getElementById('message');
+try{const saved=JSON.parse(localStorage.getItem(key)||'null');if(saved&&typeof saved==='object')prefs={...prefs,...saved}}catch{}
+function render(){buttons.forEach(b=>{const on=!!prefs[b.dataset.setting];b.setAttribute('aria-checked',String(on));b.title=on?'On':'Off'});document.body.classList.toggle('reduce-motion',!!prefs.motion);document.body.classList.toggle('extra-contrast',!!prefs.contrast);document.body.style.setProperty('--contrast-edge',prefs.contrast?'#ffffff88':'#ffffff20')}
+buttons.forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.setting;prefs[k]=!prefs[k];render();message.textContent='Preference changed. Select SAVE PREFERENCES to keep it.'}));
+document.getElementById('save').addEventListener('click',()=>{try{localStorage.setItem(key,JSON.stringify(prefs));message.textContent='Preferences saved on this device.'}catch{message.textContent='This browser could not save preferences.'}});
+document.getElementById('reset').addEventListener('click',()=>{prefs={...defaults};try{localStorage.removeItem(key)}catch{}render();message.textContent='Settings reset to their defaults.'});
+render();
+})();
+</script></body></html>
