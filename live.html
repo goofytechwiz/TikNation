@@ -386,6 +386,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   display:inline-block !important;
   animation:liveGiftPreviewEmoji 1.05s cubic-bezier(.18,1.5,.35,1) both !important;
 }
+a.live-action-btn{text-decoration:none}
+#liveGiftPanel:target{display:block!important}
 </style>
 </head>
 <body>
@@ -408,7 +410,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     <div id="viewerVideo" class="video"><div class="placeholder">Connecting to broadcast…</div><div class="live-chat-overlay" id="viewerChatOverlay" aria-label="Live comments on video"></div><div id="guestVideo" class="guest-pip hide" aria-label="Guest video"><div class="placeholder">Guest stage</div></div></div>
     <div class="live-action-rail" aria-label="Live viewer actions">
       <button type="button" class="live-action-btn" id="liveLikeBtn" aria-label="Like this live"><span class="live-action-icon">❤️</span><span class="live-action-label">Like</span></button>
-      <button type="button" class="live-action-btn" id="liveGiftToggleBtn" aria-label="Open live gifts"><span class="live-action-icon">🎁</span><span class="live-action-label">Gifts</span></button>
+      <a href="#liveGiftPanel" class="live-action-btn" id="liveGiftToggleBtn" aria-label="Open live gifts" aria-controls="liveGiftPanel" aria-expanded="false"><span class="live-action-icon">🎁</span><span class="live-action-label">Gifts</span></a>
       <button type="button" class="live-action-btn" id="liveChatJumpBtn" aria-label="Go to live chat"><span class="live-action-icon">💬</span><span class="live-action-label">Chat</span></button>
       <button type="button" class="live-action-btn" id="liveShareBtn" aria-label="Share this live"><span class="live-action-icon">↗️</span><span class="live-action-label">Share</span></button>
       <button type="button" class="live-action-btn" id="liveMoreBtn" aria-expanded="false" aria-controls="liveMoreMenu" aria-label="More live actions"><span class="live-action-icon">⋯</span><span class="live-action-label">More</span></button>
@@ -472,6 +474,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
     <p class="small" id="creatorHint" style="margin-top:10px">Broadcasting is invite-only during beta.</p>
   </section>
   <section id="liveGiftPanel" class="live-gifts hide" aria-label="Live gifts">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><a href="#viewer" id="liveGiftClose" class="ghost" style="display:inline-block;padding:7px 11px;border:1px solid #51436f;border-radius:10px;color:#e7dcff;text-decoration:none">Close gifts ✕</a></div>
     <h3>🎁 Live Gifts</h3>
     <div class="live-gift-note">Send Musical, Magical, Special Effects, Visual Effects, Legendary, and Surprise gifts without leaving the livestream. During a Live Battle, choose which player receives each gift; its test-coin value counts as battle points. Test coins have no cash value or payouts.</div>
     <div id="liveGiftBalance" class="live-gift-balance">Loading test coin balance…</div>
@@ -1188,14 +1191,13 @@ boot();
     }
   }
   button.addEventListener("click",function(){
-    const opening=panel.classList.contains("hide");
-    panel.classList.toggle("hide",!opening);panel.classList.toggle("is-open",opening);
-    button.setAttribute("aria-expanded",String(opening));
-    if(opening){
-      if(!root.children.length)buildCatalog();
-      panel.scrollIntoView({behavior:"auto",block:"nearest"});
-      say("Gift panel opened. Choose a gift for a free local preview; no coins are spent.");
-    }else say("Gift panel closed.");
+    button.setAttribute("aria-expanded","true");
+    if(!root.children.length)buildCatalog();
+    say("Gift panel opened. Choose a gift for a free local preview; no coins are spent.");
+  });
+  document.getElementById("liveGiftClose")?.addEventListener("click",function(){
+    button.setAttribute("aria-expanded","false");
+    say("Gift panel closed.");
   });
   root.addEventListener("click",function(event){
     const choice=event.target.closest("[data-gift-code]");if(!choice)return;
