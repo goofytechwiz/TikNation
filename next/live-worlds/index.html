@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09091b"><title>TikNation — LIVE Worlds</title>
+<style>
+:root{color-scheme:dark;--ink:#f7f3ff;--muted:#b9b3d5;--cyan:#8cf7ef;--pink:#ff9dcc;--gold:#ffdfa0;--violet:#b9a4ff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);font-family:Inter,system-ui,sans-serif;background:radial-gradient(ellipse at 50% 8%,#3a245e 0,#17152f 34%,#09091b 76%);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;background-image:radial-gradient(1px 1px at 12% 18%,#fff 99%,transparent),radial-gradient(1px 1px at 78% 26%,#fff 99%,transparent),radial-gradient(2px 2px at 44% 72%,#fff 99%,transparent),radial-gradient(1px 1px at 91% 82%,#fff 99%,transparent);background-size:230px 190px,310px 250px,270px 220px,190px 210px}
+header{height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,58px);border-bottom:1px solid #ffffff16;background:#09091dbb;backdrop-filter:blur(16px);position:relative;z-index:2}
+.brand{font-weight:900;letter-spacing:.22em;font-size:13px}.brand span{color:var(--cyan)}a{color:inherit;text-decoration:none}.back{font-size:10px;letter-spacing:.13em;color:#d2cce9;border:1px solid #ffffff2b;border-radius:99px;padding:10px 14px}
+main{width:min(100% - 30px,1050px);margin:auto;padding:38px 0 55px}.intro{text-align:center}.eyebrow{font-size:9px;letter-spacing:.34em;color:var(--cyan);font-weight:850}.intro h1{font:400 clamp(42px,8vw,76px)/.98 Georgia,serif;margin:16px 0 12px}.intro h1 em{font-style:normal;background:linear-gradient(90deg,var(--cyan),#d5b7ff,var(--gold));color:transparent;background-clip:text}.intro p{max-width:580px;margin:0 auto;color:var(--muted);font-size:13px;line-height:1.75}
+.stage{position:relative;margin:34px auto 28px;max-width:850px;min-height:330px;border:1px solid #ffffff20;border-radius:30px;overflow:hidden;background:radial-gradient(ellipse at 50% 48%,#583d8055,transparent 54%),linear-gradient(145deg,#ffffff0c,#ffffff02);box-shadow:0 28px 90px #0007,inset 0 0 60px #bbaaff0a;display:grid;place-items:center}
+.stage:before,.stage:after{content:"";position:absolute;border:1px solid #a99aff2a;border-radius:50%;width:280px;height:280px;box-shadow:0 0 45px #a78bfa15;animation:orbit 32s linear infinite}.stage:after{width:350px;height:350px;border-color:#8cf7ef20;animation-direction:reverse;animation-duration:46s}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.portal{position:relative;z-index:1;width:176px;height:176px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#fff9 0 2%,#8cf7ef44 5%,#a88aff22 34%,#09091b 69%);box-shadow:0 0 28px #8cf7ef55,0 0 85px #a88aff44,inset 0 0 28px #fff5;cursor:pointer;transition:.3s}
+.portal:before,.portal:after{content:"";position:absolute;inset:-10px;border-radius:50%;border:2px solid transparent;border-top-color:var(--cyan);border-bottom-color:#c5a8ff;filter:drop-shadow(0 0 8px #8cf7ef);animation:orbit 9s linear infinite}.portal:after{inset:-20px;border-width:1px;border-left-color:#ffb6d7;border-right-color:#ffe1a6;animation-duration:15s;animation-direction:reverse}
+.portal:hover{transform:scale(1.05)}.portal span{font-size:46px;text-shadow:0 0 25px white}.stage-caption{position:absolute;bottom:22px;text-align:center;z-index:1}.stage-caption b{display:block;font-size:10px;letter-spacing:.28em}.stage-caption small{color:#aaa4c9;font-size:10px;letter-spacing:.08em}
+.constellation{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0 auto 24px;max-width:920px}
+.room{position:relative;text-align:left;min-height:185px;padding:20px;border-radius:22px;border:1px solid #ffffff22;background:linear-gradient(145deg,#ffffff13,#ffffff04);color:var(--ink);cursor:pointer;overflow:hidden;transition:.25s}
+.room:before{content:"";position:absolute;width:150px;height:150px;right:-65px;top:-65px;border-radius:50%;background:var(--glow);filter:blur(30px);opacity:.35}.room:hover,.room[aria-pressed=true]{transform:translateY(-4px);border-color:var(--glow);box-shadow:0 14px 40px #0005,0 0 25px color-mix(in srgb,var(--glow),transparent 76%)}
+.room .glyph{font-size:27px;color:var(--glow);text-shadow:0 0 20px var(--glow)}.room h2{font:400 24px Georgia,serif;margin:20px 0 7px}.room p{font-size:11px;line-height:1.6;color:#c5bfdc;margin:0}.room small{display:block;margin-top:12px;color:var(--glow);font-size:8px;letter-spacing:.17em;font-weight:800}
+.dream{--glow:#8cf7ef}.music{--glow:#ff9dcc}.wonder{--glow:#c1a9ff}
+.control{max-width:920px;margin:auto;padding:22px;border-radius:24px;border:1px solid #ffffff20;background:linear-gradient(120deg,#201c3d,#15152d);display:grid;grid-template-columns:1fr auto;gap:15px;align-items:center}
+.control .eyebrow{text-align:left}.control h2{font:400 29px Georgia,serif;margin:9px 0}.control p{font-size:12px;line-height:1.7;color:var(--muted);margin:0;max-width:600px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}.actions button{border-radius:99px;padding:12px 16px;border:1px solid #ffffff35;background:#ffffff0c;color:var(--ink);font-size:9px;font-weight:850;letter-spacing:.1em;cursor:pointer}.actions .primary{background:linear-gradient(100deg,var(--cyan),#cbb5ff,var(--gold));color:#111126;border:0}
+.status{min-height:24px;margin:14px auto 0;text-align:center;color:#c7bee5;font-size:10px;letter-spacing:.08em}
+.pulse{animation:pulse .7s ease-out}@keyframes pulse{0%{transform:scale(.8);opacity:0}40%{opacity:1}100%{transform:scale(1.5);opacity:0}}
+footer{text-align:center;color:#777393;font-size:9px;letter-spacing:.1em;margin-top:28px}
+@media(max-width:650px){main{padding-top:30px}.stage{min-height:280px;margin-top:26px}.stage:before{width:230px;height:230px}.stage:after{width:285px;height:285px}.portal{width:145px;height:145px}.constellation{grid-template-columns:1fr;gap:10px}.room{min-height:140px;padding:17px}.room h2{margin:12px 0 6px}.control{grid-template-columns:1fr}.actions{justify-content:flex-start}.control h2{font-size:26px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style></head>
+<body>
+<header><div class="brand">TIK<span>NATION</span></div><a class="back" href="../realms/">← THE REALMS</a></header>
+<main>
+<section class="intro"><div class="eyebrow">REALM 02 · BE HERE NOW</div><h1>LIVE <em>Worlds.</em></h1><p>Not another row of livestreams. Imagine stepping into a living constellation of rooms—each with its own atmosphere, creator, and way to take part.</p></section>
+<section class="stage" aria-label="Interactive LIVE Worlds portal">
+<button class="portal" id="portal" aria-label="Send a light pulse into the portal"><span>✧</span></button>
+<div class="stage-caption"><b id="stageName">THE GATHERING GATE</b><small id="stageHint">Choose a world below to change its atmosphere</small></div>
+</section>
+<section class="constellation" aria-label="Choose a live world">
+<button class="room dream" data-room="dream" aria-pressed="true"><span class="glyph">✧</span><h2>Dream Lounge</h2><p>Late-night conversations, gentle company, and a room that feels like a place to belong.</p><small>THE QUIET GLOW</small></button>
+<button class="room music" data-room="music" aria-pressed="false"><span class="glyph">♫</span><h2>Sound Garden</h2><p>Live music, creator sessions, rhythm-led moments, and audience energy.</p><small>FEEL THE FREQUENCY</small></button>
+<button class="room wonder" data-room="wonder" aria-pressed="false"><span class="glyph">☄</span><h2>Wonder Vault</h2><p>Games, challenges, reveals, and unexpected experiences made with the audience.</p><small>EXPECT THE UNEXPECTED</small></button>
+</section>
+<section class="control" aria-live="polite">
+<div><div class="eyebrow" id="roomTag">WORLD 01 · CONNECTION</div><h2 id="roomTitle">A little light, shared.</h2><p id="roomCopy">The Dream Lounge is a softer kind of LIVE space. Picture creator-led conversations, expressive reactions, and small moments that make viewers feel included—not just counted.</p></div>
+<div class="actions"><button id="pulse">SEND A LIGHT PULSE ✧</button><button class="primary" id="enter">PREVIEW THIS WORLD →</button></div>
+</section>
+<div class="status" id="status" role="status">CONCEPT SPACE · NO CAMERA, MICROPHONE, OR LIVE BROADCAST IS ACTIVE</div>
+<footer>AN EXPERIMENT IN WHAT LIVE COULD BECOME · EXISTING TIKNATION LIVE IS UNCHANGED</footer>
+</main>
+<script>
+const rooms={
+dream:{tag:'WORLD 01 · CONNECTION',name:'THE DREAM LOUNGE',hint:'A soft glow for shared moments',title:'A little light, shared.',copy:'The Dream Lounge is a softer kind of LIVE space. Picture creator-led conversations, expressive reactions, and small moments that make viewers feel included—not just counted.',status:'DREAM LOUNGE SELECTED · IMAGINED FEATURES ONLY'},
+music:{tag:'WORLD 02 · SOUND',name:'THE SOUND GARDEN',hint:'Feel the frequency move around you',title:'Let the room find its rhythm.',copy:'The Sound Garden gives music and performance their own atmosphere: a visual stage, audience energy, and creator moments designed to feel immersive without forcing sound to play.',status:'SOUND GARDEN SELECTED · AUDIO DOES NOT AUTOPLAY'},
+wonder:{tag:'WORLD 03 · SURPRISE',name:'THE WONDER VAULT',hint:'A doorway to the unexpected',title:'The audience becomes part of the story.',copy:'The Wonder Vault is built around interactive shows, game nights, reveals, and playful audience participation. The room itself can transform as the experience unfolds.',status:'WONDER VAULT SELECTED · PREVIEW ONLY'}
+};
+const cards=[...document.querySelectorAll('[data-room]')];let active='dream';
+function choose(key){active=key;const r=rooms[key];cards.forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.room===key)));document.getElementById('roomTag').textContent=r.tag;document.getElementById('stageName').textContent=r.name;document.getElementById('stageHint').textContent=r.hint;document.getElementById('roomTitle').textContent=r.title;document.getElementById('roomCopy').textContent=r.copy;document.getElementById('status').textContent=r.status}
+cards.forEach(c=>c.addEventListener('click',()=>choose(c.dataset.room)));
+function sparkle(){const p=document.createElement('span');p.textContent='✦';p.className='pulse';p.style.cssText='position:absolute;z-index:3;left:'+(42+Math.random()*16)+'%;top:'+(35+Math.random()*25)+'%;font-size:30px;color:#fff7c8;text-shadow:0 0 20px #fff,0 0 35px #8cf7ef;pointer-events:none';document.querySelector('.stage').appendChild(p);setTimeout(()=>p.remove(),750)}
+document.getElementById('pulse').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent='✧ YOUR LIGHT PULSE HAS CROSSED THE '+rooms[active].name+' · VISUAL DEMO'});
+document.getElementById('portal').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent='THE GATE RESPONDED · THIS IS A VISUAL INTERACTION, NOT A LIVE ROOM'});
+document.getElementById('enter').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent=rooms[active].name+' · YOU ARE PREVIEWING THE CONCEPT, NOT JOINING A BROADCAST'});
+</script></body></html>
