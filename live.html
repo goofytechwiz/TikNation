@@ -701,11 +701,25 @@ function playLiveGiftSound(event, gift) {
       softTone(now + 2.05, 62, 1.8, 0.09, "triangle");
       return;
     }
-    const notes = Array.isArray(gift.sound) && gift.sound.length ? gift.sound : [523,659,784];
-    const step = gift.category === "Musical" ? 0.16 : 0.115;
-    const duration = gift.category === "Musical" ? 0.25 : 0.2;
-    const wave = gift.category === "Musical" ? "triangle" : gift.category === "Special Effects" ? "sawtooth" : "sine";
-    notes.forEach((frequency,index)=>softTone(now+index*step,Math.max(65,Math.min(1760,Number(frequency)||523)),duration,gift.category==="Musical"?0.045:0.032,wave));
+    const notes = Array.isArray(gift.sound) && gift.sound.length ? gift.sound : [523,659,784,1047];
+    if (gift.category === "Musical") {
+      // Restore a clearly audible, longer melody with a soft harmonic backing.
+      const beat = 0.34;
+      notes.forEach((frequency,index)=>{
+        const hz=Math.max(110,Math.min(1760,Number(frequency)||523));
+        softTone(now+index*beat,hz,0.52,0.14,"triangle");
+        softTone(now+index*beat,hz*0.5,0.48,0.045,"sine");
+      });
+      return;
+    }
+    const step = 0.18;
+    const duration = gift.category === "Special Effects" ? 0.42 : 0.34;
+    const wave = gift.category === "Special Effects" ? "sawtooth" : "sine";
+    notes.forEach((frequency,index)=>{
+      const hz=Math.max(65,Math.min(1760,Number(frequency)||523));
+      softTone(now+index*step,hz,duration,gift.category==="Special Effects"?0.105:0.085,wave);
+      if(gift.category==="Special Effects") softTone(now+index*step,hz*0.5,duration*0.9,0.035,"triangle");
+    });
   } catch (error) { console.warn("TikNation gift sound could not play:", error); }
 }
 function ensureTikNationGiftEngine() {
