@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090817">
+<title>TikNation · Gifts Test Lab</title>
+<script src="./gift-engine.js?v=20261105-engine-return-fix"></script>
+<script src="./gifts.js?v=20261105-fix-gift-catalog-buttons"></script>
+<style>
+:root{color-scheme:dark;--bg:#090817;--panel:#151329;--line:#393257;--cyan:#7eeaff;--violet:#b49aff;--muted:#c4bfd8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#29204e 0,transparent 55%),var(--bg);color:#fff;font:16px/1.5 system-ui,sans-serif}
+main{width:min(100% - 28px,980px);margin:0 auto;padding:24px 0 56px}
+header{padding:24px 20px;border:1px solid #554b82;border-radius:22px;background:linear-gradient(135deg,#211b40,#101323);box-shadow:0 12px 40px #0006}
+.kicker{color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:.2em}h1{font-size:clamp(27px,6vw,42px);line-height:1.08;margin:8px 0}header p{color:var(--muted);margin:8px 0 0}
+.status{margin:16px 0;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#111022;color:var(--cyan)}.status.error{color:#ff9aaa;border-color:#804052}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.filter,.sound,.gift{border:1px solid var(--line);background:#17152b;color:#fff;border-radius:12px;cursor:pointer;font:inherit}.filter,.sound{padding:9px 13px}.filter[aria-pressed=true]{border-color:var(--cyan);background:#183044}.sound{margin-left:auto;border-color:#64559c}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.gift{min-height:150px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;transition:transform .15s,border-color .15s,background .15s}
+.gift:active{transform:scale(.97)}.gift:focus-visible,.filter:focus-visible,.sound:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.emoji{font-size:42px;line-height:1.25;filter:drop-shadow(0 0 12px #9c8cff66)}.gift strong{text-align:center;font-size:14px}.category{font-size:11px;color:var(--cyan)}.cost{font-size:12px;color:var(--muted)}
+.note{color:var(--muted);font-size:13px;margin-top:20px}.footer{margin-top:24px;color:#918ba9;font-size:12px;text-align:center}
+</style>
+</head>
+<body><main>
+<header><div class="kicker">TIKNATION · ISOLATED DIAGNOSTICS</div><h1>🎁 Gifts Test Lab</h1><p>Test gift buttons, visual celebrations and sound independently of the LIVE page. This lab does not send gifts, spend coins, or change your LIVE session.</p></header>
+<div id="labStatus" class="status" role="status" aria-live="polite">Checking gift catalog and animation engine…</div>
+<div class="toolbar" id="filters" aria-label="Filter gifts"></div>
+<div class="toolbar"><button id="soundToggle" class="sound" type="button" aria-pressed="true">🔊 Sound: On</button></div>
+<div id="giftGrid" class="grid" aria-label="Gift test buttons"></div>
+<p class="note">Each button launches a local preview only. No account sign-in or network gift transaction is used. If a preview fails, the status above will show the error.</p>
+<div class="footer">TikNation Gifts Test Lab · Separate from TikNation LIVE</div>
+</main>
+<script>
+(function(){
+"use strict";
+const status=document.getElementById("labStatus");
+const grid=document.getElementById("giftGrid");
+const filters=document.getElementById("filters");
+const catalog=window.TIKNATION_GIFT_CATALOG||{};
+const engine=window.TikNationGiftEngine;
+let selected="All",soundOn=true,audio=null;
+const entries=Object.entries(catalog);
+const categories=["All",...new Set(entries.map(([,gift])=>gift.category||"Other"))];
+function say(message,isError){status.textContent=message;status.classList.toggle("error",!!isError);}
+function renderFilters(){
+ filters.replaceChildren();
+ categories.forEach(category=>{
+  const button=document.createElement("button");button.type="button";button.className="filter";button.textContent=category;button.setAttribute("aria-pressed",String(selected===category));
+  button.addEventListener("click",()=>{selected=category;renderFilters();renderGifts();});
+  filters.appendChild(button);
+ });
+}
+function renderGifts(){
+ grid.replaceChildren();
+ entries.filter(([,gift])=>selected==="All"||gift.category===selected).forEach(([code,gift])=>{
+  const button=document.createElement("button");button.type="button";button.className="gift";
+  const emoji=document.createElement("span");emoji.className="emoji";emoji.textContent=gift.emoji||"🎁";
+  const name=document.createElement("strong");name.textContent=gift.name||code;
+  const category=document.createElement("span");category.className="category";category.textContent=gift.category||"Gift";
+  const cost=document.createElement("span");cost.className="cost";cost.textContent="Local preview · "+Number(gift.cost||0)+" test coins";
+  button.append(emoji,name,category,cost);
+  button.addEventListener("click",()=>preview(code,gift));
+  grid.appendChild(button);
+ });
+}
+function playSound(gift){
+ if(!soundOn)return;
+ try{
+  const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+  if(!audio)audio=new C();
+  if(audio.state==="suspended")void audio.resume();
+  const notes=Array.isArray(gift.sound)&&gift.sound.length?gift.sound:[523,659,784];
+  notes.forEach((frequency,index)=>{
+   const oscillator=audio.createOscillator(),gain=audio.createGain(),start=audio.currentTime+index*.17;
+   oscillator.type="sine";oscillator.frequency.value=Math.max(40,Math.min(1800,Number(frequency)||523));
+   gain.gain.setValueAtTime(.0001,start);gain.gain.exponentialRampToValueAtTime(.12,start+.025);gain.gain.exponentialRampToValueAtTime(.0001,start+.15);
+   oscillator.connect(gain);gain.connect(audio.destination);oscillator.start(start);oscillator.stop(start+.17);
+  });
+ }catch(error){say("Visual preview works, but sound could not start: "+error.message,true);}
+}
+function preview(code,gift){
+ try{
+  if(!engine||typeof engine.show!=="function")throw new Error("Animation engine did not load.");
+  const result=engine.show(gift,{meta:"TIKNATION GIFTS TEST LAB · LOCAL PREVIEW",duration:6200,onSound:()=>playSound(gift)});
+  if(result!==true&&!(result&&result.isConnected))throw new Error("Animation engine did not accept the preview.");
+  say("Preview launched: "+gift.name+". Local only — no coins spent.");
+ }catch(error){say("Preview failed for "+(gift.name||code)+": "+error.message,true);console.error(error);}
+}
+document.getElementById("soundToggle").addEventListener("click",function(){
+ soundOn=!soundOn;this.textContent=soundOn?"🔊 Sound: On":"🔇 Sound: Off";this.setAttribute("aria-pressed",String(soundOn));
+});
+if(!entries.length){say("Gift catalog did not load. Check gifts.js.",true);}
+else if(!engine||typeof engine.show!=="function"){say("Gift catalog loaded ("+entries.length+"), but the animation engine is missing.",true);}
+else{say("Ready · "+entries.length+" gifts loaded · animation engine detected.");}
+renderFilters();renderGifts();
+})();
+</script>
+</body></html>
