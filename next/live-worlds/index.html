@@ -31,21 +31,21 @@ footer{text-align:center;color:#777393;font-size:9px;letter-spacing:.1em;margin-
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style></head>
 <body>
-<header><div class="brand">TIK<span>NATION</span></div><a class="back" href="../realms/">← THE REALMS</a></header>
+<header><div class="brand">TIK<span>NATION</span></div><nav style="display:flex;gap:8px;align-items:center"><a class="back" href="../profile/">MY PROFILE</a><a class="back" href="../realms/">← THE REALMS</a></nav></header>
 <main>
 <section class="intro"><div class="eyebrow">REALM 02 · BE HERE NOW</div><h1>LIVE <em>Worlds.</em></h1><p>Not another row of livestreams. Imagine stepping into a living constellation of rooms—each with its own atmosphere, creator, and way to take part.</p></section>
 <section class="stage" aria-label="Interactive LIVE Worlds portal">
-<button class="portal" id="portal" aria-label="Send a light pulse into the portal"><span>✧</span></button>
+<button type="button" class="portal" id="portal" aria-label="Send a light pulse into the portal"><span>✧</span></button>
 <div class="stage-caption"><b id="stageName">THE GATHERING GATE</b><small id="stageHint">Choose a world below to change its atmosphere</small></div>
 </section>
 <section class="constellation" aria-label="Choose a live world">
-<button class="room dream" data-room="dream" aria-pressed="true"><span class="glyph">✧</span><h2>Dream Lounge</h2><p>Late-night conversations, gentle company, and a room that feels like a place to belong.</p><small>THE QUIET GLOW</small></button>
-<button class="room music" data-room="music" aria-pressed="false"><span class="glyph">♫</span><h2>Sound Garden</h2><p>Live music, creator sessions, rhythm-led moments, and audience energy.</p><small>FEEL THE FREQUENCY</small></button>
-<button class="room wonder" data-room="wonder" aria-pressed="false"><span class="glyph">☄</span><h2>Wonder Vault</h2><p>Games, challenges, reveals, and unexpected experiences made with the audience.</p><small>EXPECT THE UNEXPECTED</small></button>
+<button type="button" class="room dream" data-room="dream" aria-pressed="true"><span class="glyph">✧</span><h2>Dream Lounge</h2><p>Late-night conversations, gentle company, and a room that feels like a place to belong.</p><small>THE QUIET GLOW</small></button>
+<button type="button" class="room music" data-room="music" aria-pressed="false"><span class="glyph">♫</span><h2>Sound Garden</h2><p>Live music, creator sessions, rhythm-led moments, and audience energy.</p><small>FEEL THE FREQUENCY</small></button>
+<button type="button" class="room wonder" data-room="wonder" aria-pressed="false"><span class="glyph">☄</span><h2>Wonder Vault</h2><p>Games, challenges, reveals, and unexpected experiences made with the audience.</p><small>EXPECT THE UNEXPECTED</small></button>
 </section>
 <section class="control" aria-live="polite">
 <div><div class="eyebrow" id="roomTag">WORLD 01 · CONNECTION</div><h2 id="roomTitle">A little light, shared.</h2><p id="roomCopy">The Dream Lounge is a softer kind of LIVE space. Picture creator-led conversations, expressive reactions, and small moments that make viewers feel included—not just counted.</p></div>
-<div class="actions"><button id="pulse">SEND A LIGHT PULSE ✧</button><button class="primary" id="enter">PREVIEW THIS WORLD →</button></div>
+<div class="actions"><button type="button" id="pulse">SEND A LIGHT PULSE ✧</button><button type="button" class="primary" id="enter">PREVIEW THIS WORLD →</button></div>
 </section>
 <div class="status" id="status" role="status">CONCEPT SPACE · NO CAMERA, MICROPHONE, OR LIVE BROADCAST IS ACTIVE</div>
 <footer>AN EXPERIMENT IN WHAT LIVE COULD BECOME · EXISTING TIKNATION LIVE IS UNCHANGED</footer>
