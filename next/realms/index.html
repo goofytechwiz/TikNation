@@ -40,5 +40,5 @@ const buttons=[...document.querySelectorAll('[data-key]')],tag=document.getEleme
 let selected='discover';
 function choose(key){selected=key;const d=data[key];buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.key===key)));tag.textContent=d.tag;title.textContent=d.title;copy.textContent=d.copy;action.textContent=d.action+'  →'}
 buttons.forEach(b=>b.addEventListener('click',()=>choose(b.dataset.key)));
-action.addEventListener('click',()=>{if(selected==='discover'){window.location.href='../discover/';return;}if(selected==='live'){window.location.href='../live-worlds/';return;}copy.textContent=data[selected].copy+' This is a concept preview; the working realm will be built and tested before any existing TikNation features are replaced.';action.textContent='CONCEPT PREVIEW SELECTED'});
+action.addEventListener('click',()=>{if(selected==='discover'){window.location.href='../discover/';return;}if(selected==='live'){window.location.href='../live-worlds/';return;}if(selected==='create'){window.location.href='../create/';return;}copy.textContent=data[selected].copy+' This is a concept preview; the working realm will be built and tested before any existing TikNation features are replaced.';action.textContent='CONCEPT PREVIEW SELECTED'});
 </script></body></html>
