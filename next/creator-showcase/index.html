@@ -24,7 +24,18 @@ h1{font:400 clamp(29px,5vw,46px)/1 Georgia,serif;margin:0 0 7px}.handle{font-siz
 .lightbox{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:22px;background:#03040def;backdrop-filter:blur(14px)}.lightbox.open{display:flex}.lightbox img{max-width:100%;max-height:82vh;object-fit:contain;border-radius:14px}.close{position:absolute;top:18px;right:18px;width:42px;height:42px;border:1px solid #ffffff55;border-radius:50%;background:#171a37;color:white;font-size:24px}
 @media(max-width:650px){.featured-moment{grid-template-columns:1fr}.featured-media,.featured-media img{min-height:175px;max-height:240px}.project-grid{grid-template-columns:1fr}.project p{min-height:0}.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.cover{height:155px}.avatar{width:88px;height:88px;font-size:36px}.identity{gap:14px}.hero-content{padding-bottom:22px}}
 @media(prefers-reduced-motion:no-preference){.hero,.section{animation:rise .45s ease both}.section:nth-of-type(2){animation-delay:.08s}@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}}
- .avatar[data-frame="starlight"]{border-color:#d9eaff;box-shadow:0 0 0 7px #08091c,0 0 35px #8cc9ffcc}.avatar[data-frame="violet"]{border-color:#d7b5ff;box-shadow:0 0 0 7px #08091c,0 0 38px #b68cff}.avatar[data-frame="gold"]{border-color:#ffe6a8;box-shadow:0 0 0 7px #08091c,0 0 38px #ffd77dcc}.avatar[data-frame="aurora"]{border-color:#82f6e8;box-shadow:0 0 0 7px #08091c,0 0 40px #82f6e8aa}</style></head>
+ .avatar[data-frame="starlight"]{border-color:#d9eaff;box-shadow:0 0 0 7px #08091c,0 0 35px #8cc9ffcc}.avatar[data-frame="violet"]{border-color:#d7b5ff;box-shadow:0 0 0 7px #08091c,0 0 38px #b68cff}.avatar[data-frame="gold"]{border-color:#ffe6a8;box-shadow:0 0 0 7px #08091c,0 0 38px #ffd77dcc}.avatar[data-frame="aurora"]{border-color:#82f6e8;box-shadow:0 0 0 7px #08091c,0 0 40px #82f6e8aa}
+/* Shared TikNation app navigation */
+body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+.tn-dock{position:fixed;z-index:12;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:8px;border:1px solid #ffffff2b;border-radius:22px;background:linear-gradient(110deg,#10152beF,#211a3def 55%,#102a34ef);box-shadow:0 14px 48px #000b,0 0 28px #82f6e81c;backdrop-filter:blur(20px)}
+.tn-dock a{min-width:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid transparent;border-radius:14px;color:#bdb8d5;text-decoration:none;font:800 8px/1 system-ui,sans-serif;letter-spacing:.06em;transition:background .2s,border-color .2s,color .2s}
+.tn-dock a .tn-icon{font:19px/1 Georgia,serif;color:#b49cff;text-shadow:0 0 14px #b49cff66}
+.tn-dock a[aria-current=page]{border-color:#82f6e866;background:linear-gradient(145deg,#82f6e81c,#b49cff1b);color:#fff}
+.tn-dock a[aria-current=page] .tn-icon{color:#82f6e8;text-shadow:0 0 16px #82f6e8aa}
+.tn-dock a:focus-visible{outline:2px solid #82f6e8;outline-offset:2px}
+@media(max-width:390px){.tn-dock{gap:2px;padding:6px}.tn-dock a{font-size:7px;min-height:46px}.tn-dock a .tn-icon{font-size:17px}}
+@media(prefers-reduced-motion:reduce){.tn-dock a{transition:none}}
+</style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><a class="back" href="../profile/">← BACK TO PROFILE</a></header>
 <main>
@@ -68,4 +79,13 @@ $('closeLightbox').addEventListener('click',closeLightbox);$('lightbox').addEven
 document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderGallery(b.dataset.filter)}));
 readDB().then(saved=>{const v={...fallback,...saved};$('name').textContent=v.name||fallback.name;$('handle').textContent='@'+(v.name||fallback.name).replace(/\s+/g,'')+' · '+(v.category||'Founder');$('avatar').dataset.frame=v.avatarFrame||'aurora';$('bio').textContent=v.bio||fallback.bio;$('creatorTitle').textContent=v.title||'';if(v.avatar){$('avatar').textContent='';$('avatar').style.backgroundImage='url('+JSON.stringify(v.avatar)+')'}if(v.cover){$('cover').style.backgroundImage='url('+JSON.stringify(v.cover)+')'}$('badges').replaceChildren();addBadge($('badges'),'FOUNDER','✦','founder');(Array.isArray(v.selectedBadges)?v.selectedBadges:[]).forEach(k=>{if(badgeNames[k])addBadge($('badges'),badgeNames[k][0],badgeNames[k][1],'achievement')});const milestones={founder:['Founder’s Journey','✦'],community:['Community Builder','✧'],dreamer:['Early Dreamer','✦']};if(milestones[v.milestoneBanner]){$('milestoneName').textContent=milestones[v.milestoneBanner][0];$('milestoneIcon').textContent=milestones[v.milestoneBanner][1];$('milestone').classList.add('show')}const sectionMap=new Map([...document.querySelectorAll('[data-showcase-section]')].map(el=>[el.dataset.showcaseSection,el]));const order=Array.isArray(v.sectionOrder)?v.sectionOrder:['hero','featured','gallery'];order.forEach(key=>{const el=sectionMap.get(key);if(el)document.querySelector('main').insertBefore(el,document.querySelector('.footer'))});renderProjects(v.features);galleryItems=Array.isArray(v.gallery)?v.gallery.slice().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)):[];renderFeaturedMoment();renderGallery()});
 })();
-</script></body></html>
+</script><nav class="tn-dock" aria-label="TikNation main navigation">
+<a href="../" data-dock="home"><span class="tn-icon" aria-hidden="true">⌂</span>HOME</a>
+<a href="../discover/" data-dock="discover"><span class="tn-icon" aria-hidden="true">✧</span>DISCOVER</a>
+<a href="../live-worlds/" data-dock="live"><span class="tn-icon" aria-hidden="true">◉</span>LIVE</a>
+<a href="../create/" data-dock="create"><span class="tn-icon" aria-hidden="true">＋</span>CREATE</a>
+<a href="../community/" data-dock="community"><span class="tn-icon" aria-hidden="true">⌘</span>COMMUNITY</a>
+<a href="../profile/" data-dock="profile"><span class="tn-icon" aria-hidden="true">◈</span>PROFILE</a>
+<a href="../settings/" data-dock="settings"><span class="tn-icon" aria-hidden="true">⚙</span>SETTINGS</a>
+</nav>
+<script>(function(){const p=location.pathname;const map=[['discover','/discover/'],['live','/live-worlds/'],['create','/create/'],['community','/community/'],['profile','/profile/'],['settings','/settings/'],['home','/realms/']];let active=map.find(x=>p.includes(x[1]));if(p.includes('/creator-showcase/')||p.includes('/creator-studio/'))active=['profile','/profile/'];if(active){const a=document.querySelector('[data-dock="'+active[0]+'"]');if(a)a.setAttribute('aria-current','page')}})();</script></body></html>
