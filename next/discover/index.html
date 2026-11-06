@@ -19,7 +19,7 @@ footer{text-align:center;color:#787594;font-size:10px;letter-spacing:.12em;margi
 /* Creator constellation */
 .spotlight-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:42px 2px 15px}.spotlight-head h2{font:400 28px Georgia,serif;margin:0}.spotlight-head p{font-size:10px;color:#aaa5c9;letter-spacing:.12em;margin:0}
 .spotlights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.creator-card{position:relative;isolation:isolate;overflow:hidden;min-height:260px;padding:22px 18px 18px;text-align:center;border:1px solid #ffffff22;border-radius:24px;background:linear-gradient(155deg,#29224b,#10152b 75%);color:var(--ink);cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s}
+.creator-card{display:block;width:100%;font-family:inherit;position:relative;isolation:isolate;overflow:hidden;min-height:260px;padding:22px 18px 18px;text-align:center;border:1px solid #ffffff22;border-radius:24px;background:linear-gradient(155deg,#29224b,#10152b 75%);color:var(--ink);cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s}
 .creator-card:before{content:"";position:absolute;z-index:-1;width:180px;height:180px;left:50%;top:-110px;transform:translateX(-50%);border-radius:50%;background:var(--halo);filter:blur(45px);opacity:.65}
 .creator-card:hover,.creator-card[aria-pressed=true]{transform:translateY(-5px);border-color:var(--halo);box-shadow:0 16px 40px #0007,0 0 25px color-mix(in srgb,var(--halo) 24%,transparent)}
 .avatar-orbit{position:relative;width:112px;height:112px;margin:2px auto 15px;display:grid;place-items:center}
@@ -127,8 +127,11 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
 <a class="creator-card founder-spotlight" href="../creator-showcase/" aria-label="Open TikNationStudio creator showcase" style="display:block;text-decoration:none;--halo:#82f6e8">
 <span class="avatar-orbit"><span class="avatar-core">T</span></span><span class="role">Founder · creator showcase</span><h3>TikNationStudio</h3><p>Building a world where creators can bring imagination to life.</p><span class="spotlight-tag">✦ OPEN CREATOR SHOWCASE ↗</span>
 </a>
+<a class="creator-card founder-spotlight" href="../profile/" aria-label="Open MattOnLive creator profile preview" style="display:block;text-decoration:none;--halo:#ffadd0">
+<span class="avatar-orbit"><span class="avatar-core">M</span></span><span class="role">Verified creator · profile preview</span><h3>MattOnLive</h3><p>Step into the creator profile and explore the TikNation identity preview.</p><span class="spotlight-tag">◈ OPEN CREATOR PROFILE ↗</span>
+</a>
 </div>
-<p style="margin:12px 2px 0;color:#85809f;font-size:10px;line-height:1.6">Aura, Rhythm and Sol are fictional visual placeholders. TikNationStudio opens the local Creator Showcase preview; profile data is stored only in this browser and is not connected to public creator accounts.</p>
+<p style="margin:12px 2px 0;color:#85809f;font-size:10px;line-height:1.6">Aura, Rhythm and Sol are fictional visual placeholders. TikNationStudio and MattOnLive link to their respective local preview areas; this page does not fetch public creator posts or social data.</p>
 </section>
 
 <div class="post-modal" id="postModal" hidden role="dialog" aria-modal="true" aria-labelledby="postModalTitle"><div class="post-modal-card"><div class="post-modal-head"><span>CREATOR POST · SAMPLE PREVIEW</span><button type="button" class="post-modal-close" id="closePostModal" aria-label="Close post preview">×</button></div><div class="post-modal-art art-one" id="postModalArt">✧</div><div class="post-modal-copy"><small id="postModalLabel">VISUAL JOURNAL</small><h2 id="postModalTitle">Dreams in Color</h2><p id="postModalDescription"></p></div><p class="post-modal-note">This is fictional sample content for the TikNation design preview. It is not a published post and has no real likes or comments.</p></div></div>
@@ -153,7 +156,7 @@ const creatorProfiles={
  S:{name:'Sol',role:'WORLD BUILDER · STORYTELLER',bio:'Creating little universes with secret doors, unexpected paths and stories waiting to unfold.',posts:[['WORLD LOG','The Golden Passage','A glimpse into a fictional world-building project.'],['STORY SEED','A Door in the Clouds','A tiny story idea from an imagined universe.'],['MAKER NOTE','Maps of Elsewhere','A concept post about building places from scratch.']]}
 };
 const creatorPreview=document.getElementById('creatorPreview'),previewAvatar=document.getElementById('previewAvatar'),previewName=document.getElementById('creatorPreviewName'),previewRole=document.getElementById('previewRole'),previewBio=document.getElementById('previewBio'),samplePosts=document.getElementById('samplePosts'),followPreview=document.getElementById('followPreview');
-document.querySelectorAll('.creator-card').forEach(card=>card.addEventListener('click',()=>{
+document.querySelectorAll('button.creator-card').forEach(card=>card.addEventListener('click',()=>{
  document.querySelectorAll('.creator-card').forEach(x=>x.setAttribute('aria-pressed',String(x===card)));
  const key=card.querySelector('.avatar-core').textContent.trim(),profile=creatorProfiles[key];
  tag.textContent='CREATOR SPOTLIGHT · CONCEPT';title.textContent=profile.name+' · Creator Preview';copy.textContent=profile.bio+' Explore this sample profile below. All posts and creator details are fictional placeholders.';
