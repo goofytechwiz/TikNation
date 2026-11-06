@@ -91,6 +91,17 @@ main{width:min(100% - 32px,900px);margin:auto;padding:35px 0 60px}.eyebrow{color
   .showcase-card:hover,.showcase-card:active{transform:none;filter:none}
 }
 
+
+/* Shared TikNation app navigation */
+body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+.tn-dock{position:fixed;z-index:12;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:8px;border:1px solid #ffffff2b;border-radius:22px;background:linear-gradient(110deg,#10152beF,#211a3def 55%,#102a34ef);box-shadow:0 14px 48px #000b,0 0 28px #82f6e81c;backdrop-filter:blur(20px)}
+.tn-dock a{min-width:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid transparent;border-radius:14px;color:#bdb8d5;text-decoration:none;font:800 8px/1 system-ui,sans-serif;letter-spacing:.06em;transition:background .2s,border-color .2s,color .2s}
+.tn-dock a .tn-icon{font:19px/1 Georgia,serif;color:#b49cff;text-shadow:0 0 14px #b49cff66}
+.tn-dock a[aria-current=page]{border-color:#82f6e866;background:linear-gradient(145deg,#82f6e81c,#b49cff1b);color:#fff}
+.tn-dock a[aria-current=page] .tn-icon{color:#82f6e8;text-shadow:0 0 16px #82f6e8aa}
+.tn-dock a:focus-visible{outline:2px solid #82f6e8;outline-offset:2px}
+@media(max-width:390px){.tn-dock{gap:2px;padding:6px}.tn-dock a{font-size:7px;min-height:46px}.tn-dock a .tn-icon{font-size:17px}}
+@media(prefers-reduced-motion:reduce){.tn-dock a{transition:none}}
 </style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><div class="header-actions"><button class="notify-button" id="notificationButton" type="button" aria-expanded="false" aria-controls="notificationPanel">♧ NOTIFICATIONS<span class="notify-count" id="notificationCount">0</span></button><a class="back" href="../settings/">⚙ SETTINGS</a><a class="back" href="../realms/">← ALL REALMS</a></div></header>
@@ -203,4 +214,13 @@ grid.addEventListener('input',event=>{if(event.target.matches('.comment-form inp
 new MutationObserver(save).observe(document.getElementById('profileName'),{childList:true,characterData:true,subtree:true});
 new MutationObserver(save).observe(document.getElementById('profileBio'),{childList:true,characterData:true,subtree:true});
 })();
-</script></body></html>
+</script><nav class="tn-dock" aria-label="TikNation main navigation">
+<a href="../" data-dock="home"><span class="tn-icon" aria-hidden="true">⌂</span>HOME</a>
+<a href="../discover/" data-dock="discover"><span class="tn-icon" aria-hidden="true">✧</span>DISCOVER</a>
+<a href="../live-worlds/" data-dock="live"><span class="tn-icon" aria-hidden="true">◉</span>LIVE</a>
+<a href="../create/" data-dock="create"><span class="tn-icon" aria-hidden="true">＋</span>CREATE</a>
+<a href="../community/" data-dock="community"><span class="tn-icon" aria-hidden="true">⌘</span>COMMUNITY</a>
+<a href="../profile/" data-dock="profile"><span class="tn-icon" aria-hidden="true">◈</span>PROFILE</a>
+<a href="../settings/" data-dock="settings"><span class="tn-icon" aria-hidden="true">⚙</span>SETTINGS</a>
+</nav>
+<script>(function(){const p=location.pathname;const map=[['discover','/discover/'],['live','/live-worlds/'],['create','/create/'],['community','/community/'],['profile','/profile/'],['settings','/settings/'],['home','/realms/']];let active=map.find(x=>p.includes(x[1]));if(p.includes('/creator-showcase/')||p.includes('/creator-studio/'))active=['profile','/profile/'];if(active){const a=document.querySelector('[data-dock="'+active[0]+'"]');if(a)a.setAttribute('aria-current','page')}})();</script></body></html>
