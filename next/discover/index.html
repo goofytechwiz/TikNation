@@ -33,6 +33,30 @@ footer{text-align:center;color:#787594;font-size:10px;letter-spacing:.12em;margi
 @media(max-width:720px){.spotlights{grid-template-columns:1fr}.creator-card{min-height:220px}.avatar-orbit{width:100px;height:100px}.avatar-core{width:70px;height:70px}}
 @media(prefers-reduced-motion:reduce){.avatar-orbit:before,.avatar-orbit:after{animation:none}}
 
+/* Expanded creator profile preview */
+.creator-preview{margin-top:18px;border:1px solid #b49cff55;border-radius:26px;overflow:hidden;background:linear-gradient(150deg,#1b1d3b,#101329);box-shadow:0 22px 65px #0006}
+.creator-preview[hidden]{display:none}
+.preview-cover{height:130px;display:flex;align-items:flex-start;padding:18px 22px;background:radial-gradient(circle at 78% 20%,#82f6e877,transparent 22%),radial-gradient(circle at 25% 100%,#b49cff66,transparent 40%),linear-gradient(110deg,#263b60,#3a2858 55%,#153b49)}
+.preview-cover span{font-size:9px;letter-spacing:.2em;color:#f1eaff;background:#090b22a8;border:1px solid #ffffff35;border-radius:99px;padding:8px 11px}
+.preview-profile{display:flex;align-items:center;gap:17px;padding:0 24px 18px;margin-top:-38px;position:relative}
+.preview-avatar{width:88px;height:88px;flex:0 0 88px;display:grid;place-items:center;border-radius:50%;border:3px solid #17172f;background:radial-gradient(circle at 30% 25%,#82f6e8,#51427c 65%,#17172f);font:400 34px Georgia,serif;box-shadow:0 0 25px #b49cff77}
+.preview-identity{min-width:0;flex:1;padding-top:36px}.preview-identity h2{font:400 30px Georgia,serif;margin:5px 0}.preview-identity p{font-size:12px;color:#c9c4df;line-height:1.55;margin:0}
+.follow-preview{align-self:flex-end;border:1px solid #82f6e8aa;border-radius:99px;padding:11px 15px;background:#82f6e81a;color:#a9fff5;font-size:10px;font-weight:800;letter-spacing:.08em;cursor:pointer}
+.follow-preview[aria-pressed=true]{background:linear-gradient(110deg,#82f6e8,#b49cff);color:#101329;border-color:transparent}
+.preview-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 24px 22px;padding:15px;border:1px solid #ffffff1b;border-radius:16px;background:#ffffff08;text-align:center}
+.preview-stats div{display:grid;gap:4px}.preview-stats strong{font:400 22px Georgia,serif;color:#ffe0a8}.preview-stats span{font-size:9px;color:#aaa5c9;letter-spacing:.08em}
+.preview-post-head{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:0 24px 12px}.preview-post-head h3{font:400 22px Georgia,serif;margin:0}.preview-post-head span{font-size:9px;color:#a8a2c7;letter-spacing:.1em}
+.sample-posts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:0 24px}
+.sample-post{overflow:hidden;border:1px solid #ffffff1c;border-radius:16px;background:#ffffff08}
+.sample-art{height:118px;display:grid;place-items:center;font-size:42px;text-shadow:0 0 24px currentColor}
+.art-one{color:#a8fff2;background:radial-gradient(circle at 30% 30%,#6ddfc966,transparent 35%),linear-gradient(135deg,#172d4c,#47315f)}
+.art-two{color:#ffadd0;background:radial-gradient(circle at 70% 20%,#ffadd077,transparent 35%),linear-gradient(135deg,#40253f,#17152f)}
+.art-three{color:#ffe0a8;background:radial-gradient(circle at 45% 50%,#ffe0a855,transparent 38%),linear-gradient(135deg,#4b3b2a,#1b203e)}
+.sample-post-copy{padding:12px}.sample-post-copy span{font-size:8px;letter-spacing:.14em;color:#82f6e8}.sample-post-copy h4{font:400 17px Georgia,serif;margin:6px 0}.sample-post-copy p{font-size:10px;line-height:1.5;color:#bcb7d4;margin:0}
+.preview-disclaimer{margin:16px 24px 20px;color:#8984a4;font-size:9px;line-height:1.6}
+@media(max-width:620px){.preview-profile{flex-wrap:wrap;gap:12px;padding:0 16px 16px}.preview-identity{padding-top:36px}.preview-identity h2{font-size:26px}.follow-preview{margin-left:auto}.preview-stats{margin:0 16px 18px}.preview-post-head{margin:0 16px 12px;align-items:start;flex-direction:column}.sample-posts{grid-template-columns:1fr;padding:0 16px}.sample-post{display:grid;grid-template-columns:112px 1fr}.sample-art{height:100%;min-height:112px}.preview-disclaimer{margin:14px 16px 18px}}
+@media(prefers-reduced-motion:reduce){.follow-preview{transition:none}}
+
 </style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><nav style="display:flex;gap:8px;align-items:center"><a class="back" href="../profile/">MY PROFILE</a><a class="back" href="../realms/">← ALL REALMS</a></nav></header>
@@ -50,6 +74,23 @@ footer{text-align:center;color:#787594;font-size:10px;letter-spacing:.12em;margi
 </section>
 <div class="empty" id="empty">No matching sparks in this preview. Try another search.</div>
 <section class="detail" aria-live="polite"><div><div class="eyebrow" id="detailTag">YOUR DISCOVERY STARTS HERE</div><h2 id="detailTitle">What catches your imagination?</h2><p id="detailCopy">Choose a glowing spark above to open its preview. This is a visual prototype; real creator posts and accounts are not connected yet.</p></div><button type="button" id="clear">CLEAR SELECTION</button></section>
+
+<section class="creator-preview" id="creatorPreview" hidden aria-live="polite" aria-labelledby="creatorPreviewName">
+ <div class="preview-cover"><span>CREATOR REALM · SPOTLIGHT PREVIEW</span></div>
+ <div class="preview-profile">
+  <div class="preview-avatar" id="previewAvatar">A</div>
+  <div class="preview-identity"><div class="eyebrow" id="previewRole">DIGITAL ARTIST</div><h2 id="creatorPreviewName">Aura</h2><p id="previewBio">A creator preview bio.</p></div>
+  <button type="button" class="follow-preview" id="followPreview" aria-pressed="false">＋ FOLLOW · PREVIEW</button>
+ </div>
+ <div class="preview-stats"><div><strong id="previewPostsCount">03</strong><span>sample posts</span></div><div><strong>∞</strong><span>ideas to explore</span></div><div><strong>✧</strong><span>creator concept</span></div></div>
+ <div class="preview-post-head"><h3>Latest sparks</h3><span>SAMPLE CONTENT · NOT PUBLISHED</span></div>
+ <div class="sample-posts" id="samplePosts">
+  <article class="sample-post"><div class="sample-art art-one">✧</div><div class="sample-post-copy"><span>VISUAL JOURNAL</span><h4>Dreams in Color</h4><p>A sample post preview from this fictional creator.</p></div></article>
+  <article class="sample-post"><div class="sample-art art-two">♫</div><div class="sample-post-copy"><span>CREATOR NOTE</span><h4>Behind the Spark</h4><p>A sample post preview from this fictional creator.</p></div></article>
+  <article class="sample-post"><div class="sample-art art-three">◇</div><div class="sample-post-copy"><span>IN PROGRESS</span><h4>Something New</h4><p>A sample post preview from this fictional creator.</p></div></article>
+ </div>
+ <p class="preview-disclaimer">This is a fictional creator profile preview. Follow is a temporary on-page interaction only; no account, post, follow or social data is saved or connected.</p>
+</section>
 
 <section aria-labelledby="spotlightTitle">
 <div class="spotlight-head"><h2 id="spotlightTitle">Creator constellation</h2><p>THE SPOTLIGHT IS YOURS</p></div>
@@ -69,16 +110,28 @@ function refresh(){let shown=0;const q=input.value.trim().toLowerCase();tiles.fo
 filters.forEach(f=>f.addEventListener('click',()=>{category=f.dataset.filter;filters.forEach(x=>x.setAttribute('aria-pressed',String(x===f)));refresh()}));
 input.addEventListener('input',refresh);document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();refresh()});
 tiles.forEach(t=>t.addEventListener('click',()=>{tiles.forEach(x=>x.setAttribute('aria-pressed',String(x===t)));tag.textContent='DISCOVERY · '+t.dataset.kind.toUpperCase();title.textContent=t.dataset.title;copy.textContent=t.dataset.copy+' This category preview is ready for the next build stage.'}));
-document.getElementById('clear').addEventListener('click',()=>{tiles.forEach(x=>x.setAttribute('aria-pressed','false'));document.querySelectorAll('.creator-card').forEach(x=>x.setAttribute('aria-pressed','false'));input.value='';category='all';filters.forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.filter==='all')));tag.textContent='YOUR DISCOVERY STARTS HERE';title.textContent='What catches your imagination?';copy.textContent='Choose a category or creator spotlight above to open its preview. This prototype is a design experience; real creator posts and accounts are not connected yet.';refresh()});
+document.getElementById('clear').addEventListener('click',()=>{tiles.forEach(x=>x.setAttribute('aria-pressed','false'));document.querySelectorAll('.creator-card').forEach(x=>x.setAttribute('aria-pressed','false'));creatorPreview.hidden=true;followPreview.setAttribute('aria-pressed','false');followPreview.textContent='＋ FOLLOW · PREVIEW';input.value='';category='all';filters.forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.filter==='all')));tag.textContent='YOUR DISCOVERY STARTS HERE';title.textContent='What catches your imagination?';copy.textContent='Choose a category or creator spotlight above to open its preview. This prototype is a design experience; real creator posts and accounts are not connected yet.';refresh()});
 
 // Creator spotlight preview interactions
+const creatorProfiles={
+ A:{name:'Aura',role:'DIGITAL ARTIST · VISUAL DREAMER',bio:'Turning imagination into luminous places, strange little creatures and worlds that feel just out of reach.',posts:[['VISUAL JOURNAL','Dreams in Color','A glowing landscape imagined from a single color.'],['PROCESS','Building a New World','A behind-the-scenes look at a fictional digital art process.'],['STUDIO NOTE','The Shape of Wonder','A small study in light, texture and impossible architecture.']]},
+ R:{name:'Rhythm',role:'MUSIC MAKER · SOUND WEAVER',bio:'Collecting hidden rhythms, making sounds and turning everyday moments into musical ideas.',posts:[['SOUND DIARY','Midnight Frequency','A sample sound moment from a fictional music creator.'],['STUDIO NOTE','Finding the Beat','A peek into a made-up creative session.'],['MUSIC MOMENT','Echoes in Motion','A short concept for a future music post.']]},
+ S:{name:'Sol',role:'WORLD BUILDER · STORYTELLER',bio:'Creating little universes with secret doors, unexpected paths and stories waiting to unfold.',posts:[['WORLD LOG','The Golden Passage','A glimpse into a fictional world-building project.'],['STORY SEED','A Door in the Clouds','A tiny story idea from an imagined universe.'],['MAKER NOTE','Maps of Elsewhere','A concept post about building places from scratch.']]}
+};
+const creatorPreview=document.getElementById('creatorPreview'),previewAvatar=document.getElementById('previewAvatar'),previewName=document.getElementById('creatorPreviewName'),previewRole=document.getElementById('previewRole'),previewBio=document.getElementById('previewBio'),samplePosts=document.getElementById('samplePosts'),followPreview=document.getElementById('followPreview');
 document.querySelectorAll('.creator-card').forEach(card=>card.addEventListener('click',()=>{
  document.querySelectorAll('.creator-card').forEach(x=>x.setAttribute('aria-pressed',String(x===card)));
- tag.textContent='CREATOR SPOTLIGHT · CONCEPT';
- title.textContent=card.dataset.name;
- copy.textContent=card.dataset.role+'. '+card.dataset.bio+' This is a design preview only; profile actions are not connected.';
- document.querySelector('.detail').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
+ const key=card.querySelector('.avatar-core').textContent.trim(),profile=creatorProfiles[key];
+ tag.textContent='CREATOR SPOTLIGHT · CONCEPT';title.textContent=profile.name+' · Creator Preview';copy.textContent=profile.bio+' Explore this sample profile below. All posts and creator details are fictional placeholders.';
+ previewAvatar.textContent=key;previewName.textContent=profile.name;previewRole.textContent=profile.role;previewBio.textContent=profile.bio;
+ document.getElementById('previewPostsCount').textContent=String(profile.posts.length).padStart(2,'0');
+ samplePosts.replaceChildren();
+ profile.posts.forEach((post,i)=>{const article=document.createElement('article');article.className='sample-post';const art=document.createElement('div');art.className='sample-art '+['art-one','art-two','art-three'][i];art.textContent=[key==='A'?'✧':key==='R'?'♫':'◇',key==='A'?'◌':key==='R'?'♪':'✦',key==='A'?'✦':key==='R'?'♫':'☼'][i];const body=document.createElement('div');body.className='sample-post-copy';const label=document.createElement('span');label.textContent=post[0];const heading=document.createElement('h4');heading.textContent=post[1];const desc=document.createElement('p');desc.textContent=post[2];body.append(label,heading,desc);article.append(art,body);samplePosts.append(article)});
+ followPreview.setAttribute('aria-pressed','false');followPreview.textContent='＋ FOLLOW · PREVIEW';creatorPreview.hidden=false;
+ creatorPreview.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
 }));
+followPreview.addEventListener('click',()=>{const active=followPreview.getAttribute('aria-pressed')!=='true';followPreview.setAttribute('aria-pressed',String(active));followPreview.textContent=active?'✓ FOLLOWING · PREVIEW':'＋ FOLLOW · PREVIEW'});
+
 
 refresh();
 </script></body></html>
