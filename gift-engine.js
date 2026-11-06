@@ -366,7 +366,7 @@ function renderCinematicGift(gift,opts){
  }
  if(style==="skeleton"){
   world.className="cinema-stage skeleton-disco-stage";
-  world.innerHTML='<div class="skeleton-disco-lights"><i></i><i></i><i></i><i></i></div><div class="skeleton-fog fog-back"></div><div class="skeleton-fog fog-front"></div><div class="skeleton-disco-ball"><span></span></div><div class="skeleton-disco-floor"></div><svg class="skeleton-dancer" viewBox="0 0 500 620" role="img" aria-label="A full-body dancing skeleton">
+  world.innerHTML=`<div class="skeleton-disco-lights"><i></i><i></i><i></i><i></i></div><div class="skeleton-fog fog-back"></div><div class="skeleton-fog fog-front"></div><div class="skeleton-disco-ball"><span></span></div><div class="skeleton-disco-floor"></div><svg class="skeleton-dancer" viewBox="0 0 500 620" role="img" aria-label="A full-body dancing skeleton">
 <defs><linearGradient id="skBone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fffef0"/><stop offset=".48" stop-color="#d9e3e5"/><stop offset="1" stop-color="#8ca0aa"/></linearGradient><filter id="skGlow"><feGaussianBlur stdDeviation="8"/></filter></defs>
 <ellipse cx="250" cy="572" rx="126" ry="20" fill="#46eaff" opacity=".35" filter="url(#skGlow)"/>
 <g class="skel-torso">
