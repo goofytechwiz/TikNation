@@ -716,7 +716,7 @@ function playLiveGiftSound(event, gift) {
         oscillator.start(at); oscillator.stop(at+duration+0.025);
       };
       [0,0.19,0.82,1.01,1.64,1.83].forEach((offset,index)=>
-        heartbeat(now+offset,index%3===1?58:72,index%3===1?0.24:0.31,index%3===1?0.22:0.28)
+        heartbeat(now+offset,index%3===1?58:72,index%3===1?0.27:0.34,index%3===1?0.38:0.46)
       );
       return;
     }
