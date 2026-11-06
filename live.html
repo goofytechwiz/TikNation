@@ -754,10 +754,18 @@ function showLiveGiftCelebration(event) {
     ensureTikNationGiftEngine().then(engine=>{
       const sender=event.sender_name||"A TikNation member";
       const recipient=event.recipient_name||"";
+      // Play each gift sound once even if a renderer omits its onSound callback.
+      let giftSoundStarted=false;
+      const startGiftSound=()=>{
+        if(giftSoundStarted)return;
+        giftSoundStarted=true;
+        playLiveGiftSound(event,gift);
+      };
+      startGiftSound();
       const effect=engine.show(gift,{
         meta:(isPreview?"FREE CREATOR PREVIEW · NO COINS SPENT":"TIKNATION LIVE · "+gift.cost+" TEST COINS"),
         duration:4300,
-        onSound:()=>playLiveGiftSound(event,gift)
+        onSound:startGiftSound
       });
       if(!effect || (effect !== true && !effect.isConnected)) throw new Error("The gift animation did not appear on the LIVE stage.");
       setLiveGiftStatus("✨ "+gift.name+" animation started.","success");
