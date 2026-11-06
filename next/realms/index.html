@@ -15,6 +15,17 @@ main{width:min(100% - 32px,980px);margin:0 auto;padding:42px 0}.eyebrow{text-ali
 @media(max-width:600px){main{padding-top:32px}.grid{gap:10px}.realm{min-height:170px;padding:17px;border-radius:19px}.realm h2{font-size:22px}.realm p{font-size:11px}.symbol{margin-bottom:17px}}
 @media(max-width:360px){.grid{grid-template-columns:1fr}.realm{min-height:145px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
+
+/* Shared TikNation app navigation */
+body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+.tn-dock{position:fixed;z-index:12;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:8px;border:1px solid #ffffff2b;border-radius:22px;background:linear-gradient(110deg,#10152beF,#211a3def 55%,#102a34ef);box-shadow:0 14px 48px #000b,0 0 28px #82f6e81c;backdrop-filter:blur(20px)}
+.tn-dock a{min-width:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid transparent;border-radius:14px;color:#bdb8d5;text-decoration:none;font:800 8px/1 system-ui,sans-serif;letter-spacing:.06em;transition:background .2s,border-color .2s,color .2s}
+.tn-dock a .tn-icon{font:19px/1 Georgia,serif;color:#b49cff;text-shadow:0 0 14px #b49cff66}
+.tn-dock a[aria-current=page]{border-color:#82f6e866;background:linear-gradient(145deg,#82f6e81c,#b49cff1b);color:#fff}
+.tn-dock a[aria-current=page] .tn-icon{color:#82f6e8;text-shadow:0 0 16px #82f6e8aa}
+.tn-dock a:focus-visible{outline:2px solid #82f6e8;outline-offset:2px}
+@media(max-width:390px){.tn-dock{gap:2px;padding:6px}.tn-dock a{font-size:7px;min-height:46px}.tn-dock a .tn-icon{font-size:17px}}
+@media(prefers-reduced-motion:reduce){.tn-dock a{transition:none}}
 </style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><nav style="display:flex;gap:8px;align-items:center"><a class="back" href="../profile/">MY PROFILE</a><a class="back" href="../">← GATEWAY</a></nav></header>
@@ -41,4 +52,13 @@ let selected='discover';
 function choose(key){selected=key;const d=data[key];buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.key===key)));tag.textContent=d.tag;title.textContent=d.title;copy.textContent=d.copy;action.textContent=d.action+'  →'}
 buttons.forEach(b=>b.addEventListener('click',()=>choose(b.dataset.key)));
 action.addEventListener('click',()=>{if(selected==='discover'){window.location.href='../discover/';return;}if(selected==='live'){window.location.href='../live-worlds/';return;}if(selected==='create'){window.location.href='../create/';return;}if(selected==='community'){window.location.href='../community/';return;}copy.textContent=data[selected].copy+' This is a concept preview; the working realm will be built and tested before any existing TikNation features are replaced.';action.textContent='CONCEPT PREVIEW SELECTED'});
-</script></body></html>
+</script><nav class="tn-dock" aria-label="TikNation main navigation">
+<a href="../" data-dock="home"><span class="tn-icon" aria-hidden="true">⌂</span>HOME</a>
+<a href="../discover/" data-dock="discover"><span class="tn-icon" aria-hidden="true">✧</span>DISCOVER</a>
+<a href="../live-worlds/" data-dock="live"><span class="tn-icon" aria-hidden="true">◉</span>LIVE</a>
+<a href="../create/" data-dock="create"><span class="tn-icon" aria-hidden="true">＋</span>CREATE</a>
+<a href="../community/" data-dock="community"><span class="tn-icon" aria-hidden="true">⌘</span>COMMUNITY</a>
+<a href="../profile/" data-dock="profile"><span class="tn-icon" aria-hidden="true">◈</span>PROFILE</a>
+<a href="../settings/" data-dock="settings"><span class="tn-icon" aria-hidden="true">⚙</span>SETTINGS</a>
+</nav>
+<script>(function(){const p=location.pathname;const map=[['discover','/discover/'],['live','/live-worlds/'],['create','/create/'],['community','/community/'],['profile','/profile/'],['settings','/settings/'],['home','/realms/']];let active=map.find(x=>p.includes(x[1]));if(p.includes('/creator-showcase/')||p.includes('/creator-studio/'))active=['profile','/profile/'];if(active){const a=document.querySelector('[data-dock="'+active[0]+'"]');if(a)a.setAttribute('aria-current','page')}})();</script></body></html>
