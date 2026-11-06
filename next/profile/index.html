@@ -119,6 +119,7 @@ const row=document.createElement('div');row.className='reaction-row';const like=
 const watchClick=id=>document.getElementById(id)?.addEventListener('click',()=>setTimeout(save,350),true);
 const commentObserver=new MutationObserver(records=>{for(const record of records)for(const node of record.addedNodes){if(node.nodeType!==1)continue;if(node.classList.contains('post-card')){ensureComments(node);attachPinControl(node)}node.querySelectorAll?.('.post-card').forEach(card=>{ensureComments(card);attachPinControl(card)})}refreshPinControls();save()});commentObserver.observe(grid,{childList:true});
 ['addPostButton','addPhotoButton','saveButton'].forEach(watchClick);
+document.querySelectorAll('.cover-choice').forEach(button=>button.addEventListener('click',()=>setTimeout(save,120)));
 grid.addEventListener('click',()=>setTimeout(save,350),true);
 grid.addEventListener('input',event=>{if(event.target.matches('.comment-form input'))return});
 ['postPhotoFile','avatarFile','coverFile'].forEach(id=>document.getElementById(id)?.addEventListener('change',()=>setTimeout(()=>{if(id==='avatarFile'){const im=avatar.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/);if(im)avatar.dataset.savedImage=im[1]}if(id==='coverFile'){const im=cover.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/);if(im)cover.dataset.savedImage=im[1]}save()},900),true));
