@@ -39,8 +39,8 @@ footer{position:relative;z-index:2;text-align:center;padding:0 18px 22px;color:#
 <script>
 const modal=document.getElementById('modal'),title=document.getElementById('modalTitle'),copy=document.getElementById('modalText');
 function openRealm(name){title.textContent=name==='Gateway'?'The world is unfolding.':name+' is calling.';copy.textContent=name==='Gateway'?'Welcome to the new TikNation. This gateway is our first step into a more immersive, interactive social world.':name+' will become one of the places you can explore inside the new TikNation. This preview is a design prototype; its social features will be connected in later stages.';modal.classList.add('show')}
-document.getElementById('portal').addEventListener('click',()=>openRealm('Gateway'));
-document.getElementById('enter').addEventListener('click',()=>openRealm('Gateway'));
+document.getElementById('portal').addEventListener('click',()=>{window.location.href='realms/'});
+document.getElementById('enter').addEventListener('click',()=>{window.location.href='realms/'});
 document.querySelectorAll('[data-realm]').forEach(b=>b.addEventListener('click',()=>openRealm(b.dataset.realm)));
 document.getElementById('close').addEventListener('click',()=>modal.classList.remove('show'));
 modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show')});
