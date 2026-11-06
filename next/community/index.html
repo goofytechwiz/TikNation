@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09091c"><title>TikNation — Constellation</title>
+<style>
+:root{color-scheme:dark;--ink:#f7f3ff;--muted:#bcb6d8;--cyan:#8cf7ef;--violet:#b9a4ff;--pink:#ff9dcc;--gold:#ffe0a4}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);font-family:Inter,system-ui,sans-serif;background:radial-gradient(ellipse at 50% 0,#38275d 0,#17152f 36%,#09091c 80%)}
+header{height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,58px);border-bottom:1px solid #ffffff18;background:#09091cbb;backdrop-filter:blur(15px)}
+.brand{font-size:13px;font-weight:900;letter-spacing:.22em}.brand span{color:var(--cyan)}a{color:inherit;text-decoration:none}.back{font-size:10px;letter-spacing:.13em;border:1px solid #ffffff30;border-radius:99px;padding:10px 14px;color:#d7d1ed}
+main{width:min(100% - 30px,1000px);margin:auto;padding:38px 0 55px}.intro{text-align:center}.eyebrow{font-size:9px;letter-spacing:.32em;color:var(--cyan);font-weight:850}.intro h1{font:400 clamp(42px,8vw,72px)/1 Georgia,serif;margin:15px 0 12px}.intro h1 em{font-style:normal;color:var(--gold)}.intro p{max-width:600px;margin:auto;color:var(--muted);font-size:13px;line-height:1.7}
+.constellation{position:relative;min-height:290px;margin:32px auto 22px;border:1px solid #ffffff20;border-radius:27px;overflow:hidden;background:radial-gradient(ellipse at center,#4d397355,transparent 58%),linear-gradient(145deg,#ffffff0d,#ffffff02);display:flex;align-items:center;justify-content:center}
+.constellation:before,.constellation:after{content:"";position:absolute;width:250px;height:250px;border:1px solid #8cf7ef35;border-radius:50%;box-shadow:0 0 45px #b9a4ff16;animation:spin 40s linear infinite}.constellation:after{width:330px;height:330px;border-style:dashed;border-color:#ff9dcc24;animation-direction:reverse;animation-duration:60s}
+@keyframes spin{to{transform:rotate(360deg)}}
+.core{position:relative;z-index:1;width:112px;height:112px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,#fff8,#8cf7ef55 20%,#a78bfa22 60%,transparent 72%);box-shadow:0 0 40px #8cf7ef44,0 0 90px #b9a4ff22;font-size:38px}
+.orbit{position:absolute;z-index:1;width:100%;height:100%;pointer-events:none}.node{position:absolute;pointer-events:auto;border:1px solid #ffffff40;background:#17142fdc;backdrop-filter:blur(10px);border-radius:99px;padding:10px 13px;font-size:10px;letter-spacing:.04em;cursor:pointer;color:var(--ink);box-shadow:0 8px 24px #0005}.node:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--dot);box-shadow:0 0 10px var(--dot);margin-right:7px}.node:nth-child(1){top:18%;left:12%;--dot:var(--cyan)}.node:nth-child(2){top:20%;right:10%;--dot:var(--pink)}.node:nth-child(3){bottom:19%;left:12%;--dot:var(--violet)}.node:nth-child(4){bottom:18%;right:10%;--dot:var(--gold)}
+.section-title{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:27px 0 13px}.section-title h2{font:400 28px Georgia,serif;margin:0}.section-title span{font-size:9px;color:#aaa3c7;letter-spacing:.12em}
+.spaces{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.space{padding:18px;border:1px solid #ffffff22;border-radius:20px;background:linear-gradient(145deg,#ffffff10,#ffffff04);text-align:left;color:var(--ink);cursor:pointer;transition:.2s}.space:hover,.space[aria-pressed=true]{border-color:var(--accent);box-shadow:0 0 24px color-mix(in srgb,var(--accent),transparent 82%);transform:translateY(-2px)}.space h3{font:400 21px Georgia,serif;margin:0 0 7px}.space p{font-size:11px;color:#c4bfdc;line-height:1.6;margin:0}.space small{display:block;margin-top:12px;font-size:8px;letter-spacing:.16em;color:var(--accent)}
+.kindred{--accent:var(--cyan)}.makers{--accent:var(--pink)}.quest{--accent:var(--violet)}.quiet{--accent:var(--gold)}
+.detail{margin-top:16px;border:1px solid #b9a4ff55;border-radius:22px;padding:20px;background:radial-gradient(ellipse at 90% 0,#55448744,#15152f 65%)}.detail h2{font:400 25px Georgia,serif;margin:8px 0}.detail p{font-size:12px;color:#d0cbe4;line-height:1.7;margin:0}
+.status{text-align:center;min-height:22px;margin-top:13px;color:#bcb5d6;font-size:9px;letter-spacing:.08em}footer{text-align:center;color:#777393;font-size:9px;letter-spacing:.1em;margin-top:27px}
+@media(max-width:600px){main{padding-top:30px}.constellation{min-height:260px}.constellation:before{width:200px;height:200px}.constellation:after{width:270px;height:270px}.core{width:88px;height:88px}.node:nth-child(1){left:3%;top:17%}.node:nth-child(2){right:3%;top:17%}.node:nth-child(3){left:3%;bottom:17%}.node:nth-child(4){right:3%;bottom:17%}.spaces{grid-template-columns:1fr}.space{padding:16px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<header><div class="brand">TIK<span>NATION</span></div><a class="back" href="../realms/">← THE REALMS</a></header>
+<main>
+<section class="intro"><div class="eyebrow">REALM 04 · FIND YOUR PEOPLE</div><h1>Your <em>Constellation.</em></h1><p>Community should feel like finding your corner of the universe. Explore circles built around shared interests, creative energy, and the things that bring people together.</p></section>
+<section class="constellation" aria-label="Interactive community constellation">
+<div class="core">✧</div><div class="orbit">
+<button class="node" data-space="kindred">Kindred Sparks</button><button class="node" data-space="makers">The Makers</button><button class="node" data-space="quest">Quest Club</button><button class="node" data-space="quiet">Quiet Corner</button>
+</div></section>
+<div class="section-title"><h2>Find your circle.</h2><span>CHOOSE A CONSTELLATION</span></div>
+<section class="spaces">
+<button class="space kindred" data-space="kindred" aria-pressed="true"><h3>Kindred Sparks</h3><p>Meet people who light up around the same interests, fandoms, and ideas.</p><small>CONNECTION · SHARED INTERESTS</small></button>
+<button class="space makers" data-space="makers" aria-pressed="false"><h3>The Makers</h3><p>A gathering place for artists, builders, storytellers, and creative minds.</p><small>CREATE · COLLABORATE</small></button>
+<button class="space quest" data-space="quest" aria-pressed="false"><h3>Quest Club</h3><p>Friendly challenges, community games, and goals to take on together.</p><small>PLAY · PARTICIPATE</small></button>
+<button class="space quiet" data-space="quiet" aria-pressed="false"><h3>Quiet Corner</h3><p>A calmer space for thoughtful conversations and low-pressure connection.</p><small>UNWIND · BELONG</small></button>
+</section>
+<section class="detail" aria-live="polite"><div class="eyebrow" id="tag">CIRCLE 01 · CONNECTION</div><h2 id="title">Find a familiar spark.</h2><p id="copy">Kindred Sparks is a concept for discovering people through shared interests, not follower counts. In a future connected version, you would control what you share and who can reach you.</p></section>
+<div class="status" id="status" role="status">COMMUNITY CONCEPT · NO PROFILES OR MESSAGES ARE CONNECTED</div>
+<footer>YOUR PEOPLE · YOUR PACE · YOUR BOUNDARIES</footer>
+</main>
+<script>
+const info={kindred:{tag:'CIRCLE 01 · CONNECTION',title:'Find a familiar spark.',copy:'Kindred Sparks is a concept for discovering people through shared interests, not follower counts. In a future connected version, you would control what you share and who can reach you.'},makers:{tag:'CIRCLE 02 · CREATION',title:'Make something together.',copy:'The Makers brings artists, builders, storytellers, and imaginative people into one shared creative space. Think collaboration prompts, showcases, and friendly feedback.'},quest:{tag:'CIRCLE 03 · PLAY',title:'A little adventure is better shared.',copy:'Quest Club is imagined as a home for community challenges, casual games, and shared goals—with participation always optional and welcoming.'},quiet:{tag:'CIRCLE 04 · CALM',title:'A place to simply be.',copy:'Quiet Corner is a gentler community space. No pressure to perform, post constantly, or keep up—just thoughtful conversation at your own pace.'}};
+function choose(key){const d=info[key];document.querySelectorAll('[data-space]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.space===key))});document.getElementById('tag').textContent=d.tag;document.getElementById('title').textContent=d.title;document.getElementById('copy').textContent=d.copy;document.getElementById('status').textContent=d.tag+' SELECTED · DESIGN PREVIEW ONLY'}
+document.querySelectorAll('[data-space]').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.space)));
+</script></body></html>
