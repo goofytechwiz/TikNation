@@ -15,6 +15,13 @@ main{width:min(100% - 32px,900px);margin:auto;padding:35px 0 60px}.eyebrow{color
 .edit-grid{display:grid;gap:12px;margin-top:15px}.edit-grid label{font-size:11px;color:#bdb7d6}.edit-grid input,.edit-grid textarea{display:block;width:100%;margin-top:6px;padding:12px;border:1px solid #ffffff30;border-radius:12px;background:#090b20;color:white;font:inherit}.edit-grid textarea{min-height:90px;resize:vertical}.hidden{display:none!important}
 @media(max-width:560px){.post-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.top{align-items:flex-start;gap:16px}.avatar{width:82px;height:82px;font-size:36px}.stats{gap:16px}.profile{padding:22px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+.lightbox{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:22px;background:#03040deF;backdrop-filter:blur(14px)}
+.lightbox.open{display:flex}.lightbox-inner{position:relative;width:min(100%,760px);max-height:88vh;display:grid;place-items:center}
+.lightbox img{display:block;max-width:100%;max-height:78vh;object-fit:contain;border-radius:16px;box-shadow:0 20px 80px #000b}
+.lightbox-close{position:absolute;right:0;top:-48px;width:40px;height:40px;border:1px solid #ffffff55;border-radius:50%;background:#171a37;color:white;font-size:24px;cursor:pointer}
+.lightbox-caption{color:#d8d2ed;text-align:center;font-size:12px;margin-top:12px}
+.post-grid>div{cursor:zoom-in}
 </style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><a class="back" href="../realms/">← ALL REALMS</a></header>
@@ -32,7 +39,19 @@ main{width:min(100% - 32px,900px);margin:auto;padding:35px 0 60px}.eyebrow{color
 <section class="panel hidden" id="aboutPanel"><h2>About this creator</h2><p id="aboutCopy">TikNationStudio is the founder profile concept for the TikNation experience. Your voice. Your world.</p></section>
 <section class="panel hidden" id="editPanel"><h2>Shape your profile</h2><p>Try editing this local preview. Changes update this page only and are not saved to your account.</p><div class="edit-grid"><label>Display name<input id="editName" value="TikNationStudio" maxlength="40"></label><label>Creator category<input id="editCategory" value="Creator · Community builder" maxlength="50"></label><label>Bio<textarea id="editBio" maxlength="180">Your voice. Your world. Building a place for imagination, creativity and community.</textarea></label></div><div class="actions"><button class="action primary" id="saveButton" type="button">UPDATE PREVIEW</button><button class="action" id="cancelButton" type="button">CANCEL</button></div></section>
 </main>
+<div class="lightbox" id="photoLightbox" role="dialog" aria-modal="true" aria-label="Enlarged gallery photo" aria-hidden="true">
+  <div class="lightbox-inner"><button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close enlarged photo">×</button><img id="lightboxImage" alt="Enlarged gallery preview"><div class="lightbox-caption">Tap outside the image or press Escape to close</div></div>
+</div>
 <script>
+
+const lightbox=document.getElementById('photoLightbox'),lightboxImage=document.getElementById('lightboxImage'),lightboxClose=document.getElementById('lightboxClose');
+function openPhoto(src,alt){lightboxImage.src=src;lightboxImage.alt=alt||'Enlarged gallery preview';lightbox.classList.add('open');lightbox.setAttribute('aria-hidden','false');lightboxClose.focus();document.body.style.overflow='hidden'}
+function closePhoto(){lightbox.classList.remove('open');lightbox.setAttribute('aria-hidden','true');lightboxImage.removeAttribute('src');document.body.style.overflow=''}
+lightboxClose.addEventListener('click',closePhoto);
+lightbox.addEventListener('click',event=>{if(event.target===lightbox)closePhoto()});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&lightbox.classList.contains('open'))closePhoto()});
+document.getElementById('postGrid').addEventListener('click',event=>{if(event.target.closest('button'))return;const tile=event.target.closest('div');if(!tile)return;const img=tile.querySelector('img');if(img){openPhoto(img.src,img.alt);return}const bg=tile.style.backgroundImage;if(bg){const match=bg.match(/url\(["']?(.*?)["']?\)/);if(match)openPhoto(match[1],tile.textContent.trim()||'Post preview') }});
+
 const tabs=[...document.querySelectorAll('.tab')],posts=document.getElementById('postsPanel'),about=document.getElementById('aboutPanel'),edit=document.getElementById('editPanel');
 const avatarButton=document.getElementById('avatarButton'),avatarFile=document.getElementById('avatarFile');
 const coverButton=document.getElementById('coverButton'),coverFile=document.getElementById('coverFile'),coverPreview=document.getElementById('coverPreview');
