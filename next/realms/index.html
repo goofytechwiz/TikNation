@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08091c"><title>TikNation — The Realms</title>
+<style>
+:root{color-scheme:dark;--bg:#08091c;--violet:#a58aff;--cyan:#79f5e8;--gold:#ffdda5;--text:#f5f0ff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,system-ui,sans-serif;background:radial-gradient(ellipse at 50% 0,#30275c 0,#151631 35%,var(--bg) 78%);padding-bottom:40px}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px clamp(18px,5vw,58px);border-bottom:1px solid #ffffff12;background:#090a20aa;backdrop-filter:blur(16px);position:sticky;top:0;z-index:5}
+.brand{font-weight:900;letter-spacing:.22em;font-size:13px}.brand span{color:var(--cyan)}a{color:inherit;text-decoration:none}.back{font-size:11px;letter-spacing:.12em;color:#c9c4e7;border:1px solid #ffffff25;border-radius:99px;padding:10px 14px}
+main{width:min(100% - 32px,980px);margin:0 auto;padding:42px 0}.eyebrow{text-align:center;color:var(--cyan);font-size:10px;letter-spacing:.32em;font-weight:800}.intro{text-align:center}h1{font:400 clamp(38px,7vw,65px)/1.05 Georgia,serif;margin:14px 0}h1 em{font-style:normal;color:var(--gold)}.intro p{color:#c9c5e4;line-height:1.7;max-width:590px;margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin:38px 0}.realm{position:relative;overflow:hidden;text-align:left;min-height:190px;padding:22px;border:1px solid #ffffff24;border-radius:24px;background:linear-gradient(145deg,#ffffff13,#ffffff04);color:var(--text);cursor:pointer;transition:.25s}.realm:before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-70px;top:-75px;background:var(--glow);filter:blur(32px);opacity:.28}.realm:hover,.realm[aria-pressed=true]{transform:translateY(-4px);border-color:var(--glow);box-shadow:0 12px 40px #0005,0 0 28px color-mix(in srgb,var(--glow),transparent 75%)}.symbol{font-size:28px;color:var(--glow);display:block;margin-bottom:22px;text-shadow:0 0 20px var(--glow)}.realm h2{font:400 26px Georgia,serif;margin:0 0 8px}.realm p{margin:0;color:#c3c0dc;font-size:12px;line-height:1.6;max-width:300px}.discover{--glow:#7df5e8}.live{--glow:#ff9fca}.create{--glow:#b39aff}.community{--glow:#ffdda5}
+.detail{border:1px solid #a99aff55;border-radius:26px;padding:clamp(22px,5vw,34px);background:radial-gradient(ellipse at 90% 0,#55448755,#15152f 62%);box-shadow:0 20px 70px #0005;min-height:190px}.detail .eyebrow{text-align:left}.detail h2{font:400 32px Georgia,serif;margin:12px 0}.detail p{color:#d0cde5;line-height:1.7;font-size:14px;max-width:680px}.detail button{margin-top:10px;padding:13px 19px;border-radius:99px;border:1px solid #bbaaff99;background:linear-gradient(110deg,#a8fff1,#d9c8ff,#ffe0ad);color:#111329;font-weight:850;letter-spacing:.1em;font-size:10px;cursor:pointer}
+.note{text-align:center;color:#777795;font-size:10px;letter-spacing:.1em;margin:28px 0 0}
+@media(max-width:600px){main{padding-top:32px}.grid{gap:10px}.realm{min-height:170px;padding:17px;border-radius:19px}.realm h2{font-size:22px}.realm p{font-size:11px}.symbol{margin-bottom:17px}}
+@media(max-width:360px){.grid{grid-template-columns:1fr}.realm{min-height:145px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
+</style></head>
+<body>
+<header><div class="brand">TIK<span>NATION</span></div><a class="back" href="../">← GATEWAY</a></header>
+<main>
+<section class="intro"><div class="eyebrow">YOUR WORLD IS WAITING</div><h1>Choose your <em>realm.</em></h1><p>Every realm has its own energy. Pick a doorway to see what is taking shape inside the next TikNation.</p></section>
+<section class="grid" aria-label="TikNation realms">
+<button class="realm discover" data-key="discover" aria-pressed="true"><span class="symbol">✧</span><h2>Discover</h2><p>Find creators, ideas, stories and unexpected sparks.</p></button>
+<button class="realm live" data-key="live" aria-pressed="false"><span class="symbol">◉</span><h2>LIVE Worlds</h2><p>Step into live moments and shared experiences.</p></button>
+<button class="realm create" data-key="create" aria-pressed="false"><span class="symbol">✦</span><h2>Create</h2><p>Make something original and bring your imagination to life.</p></button>
+<button class="realm community" data-key="community" aria-pressed="false"><span class="symbol">⌘</span><h2>Community</h2><p>Find your people, follow conversations and belong.</p></button>
+</section>
+<section class="detail" aria-live="polite"><div class="eyebrow" id="detailTag">REALM 01 · EXPLORE</div><h2 id="detailTitle">A universe of discovery.</h2><p id="detailCopy">A living space for creator videos, new voices, trending ideas and things you did not know you were looking for. The future experience will put discovery in your hands.</p><button id="detailAction">EXPLORE THE CONCEPT&nbsp; →</button></section>
+<p class="note">THIS IS THE NEW TIKNATION DESIGN PROTOTYPE · SOCIAL FEATURES ARE NOT CONNECTED YET</p>
+</main>
+<script>
+const data={
+discover:{tag:'REALM 01 · EXPLORE',title:'A universe of discovery.',copy:'A living space for creator videos, new voices, trending ideas and things you did not know you were looking for. The future experience will put discovery in your hands.',action:'EXPLORE THE CONCEPT'},
+live:{tag:'REALM 02 · BE HERE NOW',title:'More than watching. Being there.',copy:'LIVE Worlds is imagined as a place for shared moments, interactive rooms and creator-led experiences. Existing LIVE services remain separate while this new design takes shape.',action:'VIEW THE LIVE VISION'},
+create:{tag:'REALM 03 · MAKE IT YOURS',title:'Your imagination has a home.',copy:'A creative studio for posts, short-form stories, effects and original ideas. The goal is to make creating feel expressive, playful and easy on a phone.',action:'VIEW THE CREATOR VISION'},
+community:{tag:'REALM 04 · FIND YOUR PEOPLE',title:'Belong to something bright.',copy:'A welcoming place for profiles, conversations, groups and connections—with clear controls and safety built into the experience.',action:'VIEW THE COMMUNITY VISION'}
+};
+const buttons=[...document.querySelectorAll('[data-key]')],tag=document.getElementById('detailTag'),title=document.getElementById('detailTitle'),copy=document.getElementById('detailCopy'),action=document.getElementById('detailAction');
+let selected='discover';
+function choose(key){selected=key;const d=data[key];buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.key===key)));tag.textContent=d.tag;title.textContent=d.title;copy.textContent=d.copy;action.textContent=d.action+'  →'}
+buttons.forEach(b=>b.addEventListener('click',()=>choose(b.dataset.key)));
+action.addEventListener('click',()=>{copy.textContent=data[selected].copy+' This is a concept preview; the working realm will be built and tested before any existing TikNation features are replaced.';action.textContent='CONCEPT PREVIEW SELECTED'});
+</script></body></html>
