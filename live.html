@@ -1102,6 +1102,7 @@ $("liveLikeBtn")?.addEventListener("click",()=>{
   const box=$("viewerVideo");if(!box)return;
   const heart=document.createElement("span");heart.className="live-like-float";heart.textContent=["❤️","💖","💗","💕"][Math.floor(Math.random()*4)];heart.setAttribute("aria-hidden","true");box.appendChild(heart);window.setTimeout(()=>heart.remove(),1250);liveActionFeedback("Like sent ✨");
 });
+window.__tikNationGiftToggleBound=true;
 $("liveGiftToggleBtn")?.addEventListener("click",()=>{
   const panel=$("liveGiftPanel");if(!panel)return;
   if(!activeSession){
@@ -1169,6 +1170,36 @@ boot();
   },10000);
 
 })();
+</script>
+<script>
+/* Independent safety net: keep the Gifts button usable if LIVE's main module fails early. */
+document.addEventListener("DOMContentLoaded",function(){
+  if(window.__tikNationGiftToggleBound)return;
+  const button=document.getElementById("liveGiftToggleBtn");
+  const panel=document.getElementById("liveGiftPanel");
+  if(!button||!panel)return;
+  button.addEventListener("click",function(){
+    const opening=panel.classList.contains("hide");
+    panel.classList.toggle("hide",!opening);
+    panel.classList.toggle("is-open",opening);
+    if(opening){
+      const root=document.getElementById("liveGiftCategories");
+      const catalog=window.TIKNATION_GIFT_CATALOG||{};
+      if(root&&!root.children.length){
+        root.innerHTML=Object.entries(catalog).map(([code,gift])=>'<button type="button" class="live-gift-choice" data-fallback-gift="'+code+'"><span class="live-gift-emoji">'+(gift.emoji||"🎁")+'</span><span class="live-gift-name">'+(gift.name||code)+'</span><span class="live-gift-cost">Preview</span></button>').join("");
+        root.addEventListener("click",function(event){
+          const choice=event.target.closest("[data-fallback-gift]");
+          if(!choice)return;
+          const gift=catalog[choice.dataset.fallbackGift];
+          if(window.TikNationGiftEngine&&gift)window.TikNationGiftEngine.show(gift,{meta:"LOCAL PREVIEW · NO COINS SPENT",duration:4300});
+        });
+      }
+      const status=document.getElementById("liveGiftStatus");
+      if(status)status.textContent="Gift panel opened using the backup controls.";
+      panel.scrollIntoView({behavior:"auto",block:"nearest"});
+    }
+  });
+});
 </script>
 </body>
 </html>
