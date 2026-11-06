@@ -39,24 +39,24 @@ footer{text-align:center;color:#777393;font-size:9px;letter-spacing:.1em;margin-
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style></head>
 <body>
-<header><div class="brand">TIK<span>NATION</span></div><a class="back" href="../realms/">← THE REALMS</a></header>
+<header><div class="brand">TIK<span>NATION</span></div><nav style="display:flex;gap:8px;align-items:center"><a class="back" href="../profile/">MY PROFILE</a><a class="back" href="../realms/">← THE REALMS</a></nav></header>
 <main>
 <section class="intro"><div class="eyebrow">REALM 03 · MAKE IT YOURS</div><h1>The Creation <em>Portal.</em></h1><p>Start with a spark. Choose what you want to make, shape its atmosphere, and watch your idea take form in the preview.</p></section>
 <section class="studio">
 <div class="panel">
 <div class="eyebrow">YOUR CREATIVE TOOLS</div><h2>What will you create?</h2>
 <div class="tools">
-<button class="tool post" data-kind="post" aria-pressed="true"><span>✧</span><b>A post</b><small>A thought, a moment, a little piece of you.</small></button>
-<button class="tool story" data-kind="story" aria-pressed="false"><span>◈</span><b>A story</b><small>Give a moment its own atmosphere.</small></button>
-<button class="tool art" data-kind="art" aria-pressed="false"><span>✦</span><b>Visual art</b><small>Build a visual from a simple idea.</small></button>
-<button class="tool sound" data-kind="sound" aria-pressed="false"><span>♫</span><b>A sound moment</b><small>Imagine a music-led creator moment.</small></button>
+<button type="button" class="tool post" data-kind="post" aria-pressed="true"><span>✧</span><b>A post</b><small>A thought, a moment, a little piece of you.</small></button>
+<button type="button" class="tool story" data-kind="story" aria-pressed="false"><span>◈</span><b>A story</b><small>Give a moment its own atmosphere.</small></button>
+<button type="button" class="tool art" data-kind="art" aria-pressed="false"><span>✦</span><b>Visual art</b><small>Build a visual from a simple idea.</small></button>
+<button type="button" class="tool sound" data-kind="sound" aria-pressed="false"><span>♫</span><b>A sound moment</b><small>Imagine a music-led creator moment.</small></button>
 </div>
 <div class="controls">
 <label for="titleInput">GIVE YOUR CREATION A TITLE</label><input id="titleInput" maxlength="48" value="A spark of something new" placeholder="Name your creation">
 <div style="height:13px"></div><label for="messageInput">ADD A LITTLE MAGIC</label><textarea id="messageInput" maxlength="180" placeholder="Write a caption or describe your idea...">Something wonderful is taking shape.</textarea>
 <label style="margin-top:15px">CHOOSE YOUR ATMOSPHERE</label>
-<div class="palette"><button class="swatch" data-color="cyan" aria-label="Turquoise" aria-pressed="true" style="background:#8cf7ef"></button><button class="swatch" data-color="violet" aria-label="Violet" aria-pressed="false" style="background:#b9a4ff"></button><button class="swatch" data-color="pink" aria-label="Pink" aria-pressed="false" style="background:#ff9dcc"></button><button class="swatch" data-color="gold" aria-label="Gold" aria-pressed="false" style="background:#ffe0a4"></button></div>
-<button class="action" id="save">SHAPE MY PREVIEW ✧</button>
+<div class="palette"><button type="button" class="swatch" data-color="cyan" aria-label="Turquoise" aria-pressed="true" style="background:#8cf7ef"></button><button type="button" class="swatch" data-color="violet" aria-label="Violet" aria-pressed="false" style="background:#b9a4ff"></button><button type="button" class="swatch" data-color="pink" aria-label="Pink" aria-pressed="false" style="background:#ff9dcc"></button><button type="button" class="swatch" data-color="gold" aria-label="Gold" aria-pressed="false" style="background:#ffe0a4"></button></div>
+<button type="button" class="action" id="save">SHAPE MY PREVIEW ✧</button>
 </div>
 </div>
 <div class="panel preview-wrap">
