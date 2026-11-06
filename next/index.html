@@ -16,6 +16,13 @@ footer{position:relative;z-index:2;text-align:center;padding:0 18px 22px;color:#
 @keyframes orbit{to{transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:560px){header{padding:18px 17px}.status{font-size:8px;padding:8px 10px}.portal-wrap{height:260px}.portal{width:220px}.sub{font-size:13px}.realms{gap:8px;margin-top:32px}.realm{flex:1 1 42%;padding:12px 8px}.realm b{font-size:15px}footer{font-size:8px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+
+/* Shared TikNation app navigation */
+body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+.tn-dock{position:fixed;z-index:12;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:8px;border:1px solid #ffffff2b;border-radius:22px;background:linear-gradient(110deg,#10152bef,#211a3def 55%,#102a34ef);box-shadow:0 14px 48px #000b,0 0 28px #82f6e81c;backdrop-filter:blur(20px)}
+.tn-dock a{min-width:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid transparent;border-radius:14px;color:#bdb8d5;text-decoration:none;font:800 8px/1 system-ui,sans-serif;letter-spacing:.06em}
+.tn-dock a .tn-icon{font:19px/1 Georgia,serif;color:#b49cff;text-shadow:0 0 14px #b49cff66}.tn-dock a[aria-current=page]{border-color:#82f6e866;background:linear-gradient(145deg,#82f6e81c,#b49cff1b);color:#fff}.tn-dock a[aria-current=page] .tn-icon{color:#82f6e8;text-shadow:0 0 16px #82f6e8aa}.tn-dock a:focus-visible{outline:2px solid #82f6e8;outline-offset:2px}
+@media(max-width:390px){.tn-dock{gap:2px;padding:6px}.tn-dock a{font-size:7px;min-height:46px}.tn-dock a .tn-icon{font-size:17px}}@media(prefers-reduced-motion:reduce){.tn-dock a{transition:none}}
 </style>
 </head>
 <body>
@@ -46,4 +53,5 @@ document.getElementById('close').addEventListener('click',()=>modal.classList.re
 modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show')});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('show')});
 </script>
-</body></html>
+<nav class="tn-dock" aria-label="TikNation main navigation">
+<a href="./" data-dock="home" aria-current="page"><span class="tn-icon" aria-hidden="true">⌂</span>HOME</a><a href="./discover/" data-dock="discover"><span class="tn-icon" aria-hidden="true">✧</span>DISCOVER</a><a href="./live-worlds/" data-dock="live"><span class="tn-icon" aria-hidden="true">◉</span>LIVE</a><a href="./create/" data-dock="create"><span class="tn-icon" aria-hidden="true">＋</span>CREATE</a><a href="./community/" data-dock="community"><span class="tn-icon" aria-hidden="true">⌘</span>COMMUNITY</a><a href="./profile/" data-dock="profile"><span class="tn-icon" aria-hidden="true">◈</span>PROFILE</a><a href="./settings/" data-dock="settings"><span class="tn-icon" aria-hidden="true">⚙</span>SETTINGS</a></nav></body></html>
