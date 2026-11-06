@@ -66,6 +66,17 @@ footer{text-align:center;color:#787594;font-size:10px;letter-spacing:.12em;margi
 
 /* Category-specific discovery feeds */
 .category-feed{margin-top:18px;padding:22px;border:1px solid #82f6e855;border-radius:25px;background:linear-gradient(145deg,#18203a,#101329);box-shadow:0 18px 55px #0005}.category-feed[hidden]{display:none}.feed-heading{display:flex;justify-content:space-between;align-items:start;gap:15px;margin-bottom:17px}.feed-heading h2{font:400 clamp(25px,4vw,34px) Georgia,serif;margin:7px 0}.feed-heading p{font-size:12px;color:#c4bfdc;line-height:1.6;margin:0;max-width:580px}.feed-stamp{flex:none;border:1px solid #82f6e855;border-radius:99px;padding:8px 10px;color:#82f6e8;font-size:8px;letter-spacing:.12em}.feed-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.feed-card{overflow:hidden;border:1px solid #ffffff20;border-radius:18px;background:#ffffff08;cursor:pointer;text-align:left;color:var(--ink);padding:0;transition:transform .2s,border-color .2s}.feed-card:hover{transform:translateY(-4px);border-color:var(--feed-accent,#82f6e8)}.feed-art{height:145px;display:grid;place-items:center;font-size:48px;color:var(--feed-accent,#82f6e8);text-shadow:0 0 25px currentColor;background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--feed-accent,#82f6e8) 35%,transparent),transparent 48%),linear-gradient(135deg,#26375a,#302448)}.feed-card:nth-child(2) .feed-art{background:radial-gradient(circle at 70% 30%,#ffadd066,transparent 40%),linear-gradient(135deg,#482941,#19203d)}.feed-card:nth-child(3) .feed-art{background:radial-gradient(circle at 30% 70%,#ffe0a866,transparent 40%),linear-gradient(135deg,#4b3b2b,#1b203e)}.feed-card-copy{padding:13px}.feed-card-copy small{font-size:8px;color:var(--feed-accent,#82f6e8);letter-spacing:.13em}.feed-card-copy h3{font:400 19px Georgia,serif;margin:7px 0}.feed-card-copy p{font-size:10px;line-height:1.55;color:#c0bbd8;margin:0}.feed-open{display:block;padding:0 13px 13px;color:#82f6e8;font-size:8px;letter-spacing:.12em;font-weight:900}.feed-footnote{font-size:9px;color:#8984a4;line-height:1.6;margin:14px 0 0}@media(max-width:650px){.category-feed{padding:16px}.feed-heading{flex-direction:column}.feed-grid{grid-template-columns:1fr}.feed-card{display:grid;grid-template-columns:110px 1fr;grid-template-rows:auto auto}.feed-art{height:100%;min-height:135px;grid-row:1/3}.feed-card-copy{padding:12px 12px 5px}.feed-open{padding:5px 12px 12px}}
+
+/* Shared TikNation app navigation */
+body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+.tn-dock{position:fixed;z-index:12;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:8px;border:1px solid #ffffff2b;border-radius:22px;background:linear-gradient(110deg,#10152beF,#211a3def 55%,#102a34ef);box-shadow:0 14px 48px #000b,0 0 28px #82f6e81c;backdrop-filter:blur(20px)}
+.tn-dock a{min-width:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid transparent;border-radius:14px;color:#bdb8d5;text-decoration:none;font:800 8px/1 system-ui,sans-serif;letter-spacing:.06em;transition:background .2s,border-color .2s,color .2s}
+.tn-dock a .tn-icon{font:19px/1 Georgia,serif;color:#b49cff;text-shadow:0 0 14px #b49cff66}
+.tn-dock a[aria-current=page]{border-color:#82f6e866;background:linear-gradient(145deg,#82f6e81c,#b49cff1b);color:#fff}
+.tn-dock a[aria-current=page] .tn-icon{color:#82f6e8;text-shadow:0 0 16px #82f6e8aa}
+.tn-dock a:focus-visible{outline:2px solid #82f6e8;outline-offset:2px}
+@media(max-width:390px){.tn-dock{gap:2px;padding:6px}.tn-dock a{font-size:7px;min-height:46px}.tn-dock a .tn-icon{font-size:17px}}
+@media(prefers-reduced-motion:reduce){.tn-dock a{transition:none}}
 </style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><nav style="display:flex;gap:8px;align-items:center"><a class="back" href="../profile/">MY PROFILE</a><a class="back" href="../realms/">← ALL REALMS</a></nav></header>
@@ -161,4 +172,13 @@ followPreview.addEventListener('click',()=>{const active=followPreview.getAttrib
 
 
 refresh();
-</script></body></html>
+</script><nav class="tn-dock" aria-label="TikNation main navigation">
+<a href="../" data-dock="home"><span class="tn-icon" aria-hidden="true">⌂</span>HOME</a>
+<a href="../discover/" data-dock="discover"><span class="tn-icon" aria-hidden="true">✧</span>DISCOVER</a>
+<a href="../live-worlds/" data-dock="live"><span class="tn-icon" aria-hidden="true">◉</span>LIVE</a>
+<a href="../create/" data-dock="create"><span class="tn-icon" aria-hidden="true">＋</span>CREATE</a>
+<a href="../community/" data-dock="community"><span class="tn-icon" aria-hidden="true">⌘</span>COMMUNITY</a>
+<a href="../profile/" data-dock="profile"><span class="tn-icon" aria-hidden="true">◈</span>PROFILE</a>
+<a href="../settings/" data-dock="settings"><span class="tn-icon" aria-hidden="true">⚙</span>SETTINGS</a>
+</nav>
+<script>(function(){const p=location.pathname;const map=[['discover','/discover/'],['live','/live-worlds/'],['create','/create/'],['community','/community/'],['profile','/profile/'],['settings','/settings/'],['home','/realms/']];let active=map.find(x=>p.includes(x[1]));if(p.includes('/creator-showcase/')||p.includes('/creator-studio/'))active=['profile','/profile/'];if(active){const a=document.querySelector('[data-dock="'+active[0]+'"]');if(a)a.setAttribute('aria-current','page')}})();</script></body></html>
