@@ -1168,57 +1168,6 @@ boot();
     }
   },10000);
 
-  function buildStandaloneGiftPanel(){
-    const panel=document.getElementById("liveGiftPanel");
-    const root=document.getElementById("liveGiftCategories");
-    const catalog=window.TIKNATION_GIFT_CATALOG;
-    if(!panel||!root||!catalog)return false;
-    panel.classList.remove("hide");
-    panel.classList.add("is-open");
-    if(!root.querySelector("[data-gift-code]")){
-      const groups=[...new Set(Object.values(catalog).map(g=>g.category||"Other"))];
-      root.innerHTML=groups.map(category=>'<div class="live-gift-category"><h4>'+category+' Gifts</h4><div class="live-gift-grid">'+Object.entries(catalog).filter(([,gift])=>(gift.category||"Other")===category).map(([code,gift])=>'<button type="button" class="live-gift-choice" data-gift-code="'+code+'"><span class="live-gift-emoji">'+(gift.emoji||"🎁")+'</span><span class="live-gift-name">'+gift.name+'</span><span class="live-gift-cost">✨ FREE PREVIEW</span></button>').join("")+'</div></div>').join("");
-    }
-    const status=document.getElementById("liveGiftStatus");
-    if(status){status.textContent="Free creator preview · Choose a gift to see its animation.";status.className="live-gift-status";}
-    panel.scrollIntoView({behavior:"auto",block:"nearest"});
-    return true;
-  }
-
-  document.addEventListener("click",function(event){
-    const toggle=event.target && event.target.closest ? event.target.closest("#liveGiftToggleBtn") : null;
-    if(toggle){
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      const panel=document.getElementById("liveGiftPanel");
-      if(panel && !panel.classList.contains("hide") && panel.classList.contains("is-open")){
-        panel.classList.add("hide");panel.classList.remove("is-open");
-      }else if(!buildStandaloneGiftPanel()){
-        const notice=document.getElementById("notice");
-        if(notice){notice.textContent="Gift catalog could not load. Please reopen LIVE.";notice.className="status error";}
-      }
-      return;
-    }
-    const button=event.target && event.target.closest ? event.target.closest("[data-gift-code]") : null;
-    if(!button)return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    const code=button.getAttribute("data-gift-code");
-    const gift=window.TIKNATION_GIFT_CATALOG && window.TIKNATION_GIFT_CATALOG[code];
-    const status=document.getElementById("liveGiftStatus");
-    const report=function(message,type){
-      if(status){status.textContent=message;status.className="live-gift-status"+(type?" "+type:"");}
-      else {const notice=document.getElementById("notice");if(notice){notice.textContent=message;notice.className="status"+(type==="error"?" error":" ok");}}
-    };
-    if(!gift){report("Gift tap detected, but the gift details did not load. Refresh LIVE.","error");return;}
-    try{
-      const engine=window.TikNationGiftEngine;
-      if(!engine || typeof engine.show!=="function")throw new Error("Gift animation engine is unavailable. Refresh LIVE.");
-      const effect=engine.show(gift,{meta:"FREE CREATOR PREVIEW · NO COINS SPENT",duration:5200});
-      if(!effect || !effect.isConnected)throw new Error("The gift effect could not be placed on the screen.");
-      report("✨ "+gift.name+" animation started · Free preview.","success");
-    }catch(error){report(error.message||"Gift animation failed to start.","error");}
-  },true);
 })();
 </script>
 </body>
