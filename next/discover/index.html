@@ -15,6 +15,24 @@ footer{text-align:center;color:#787594;font-size:10px;letter-spacing:.12em;margi
 @media(max-width:720px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tile{min-height:175px}.detail{grid-template-columns:1fr}.detail button{justify-self:start}}
 @media(max-width:420px){main{padding-top:22px}.grid{gap:9px}.tile{padding:15px;min-height:165px}.tile h3{font-size:20px}.tile p{font-size:11px}.sectionhead h2{font-size:24px}.search button{padding:0 12px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;animation:none!important}}
+
+/* Creator constellation */
+.spotlight-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:42px 2px 15px}.spotlight-head h2{font:400 28px Georgia,serif;margin:0}.spotlight-head p{font-size:10px;color:#aaa5c9;letter-spacing:.12em;margin:0}
+.spotlights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.creator-card{position:relative;isolation:isolate;overflow:hidden;min-height:260px;padding:22px 18px 18px;text-align:center;border:1px solid #ffffff22;border-radius:24px;background:linear-gradient(155deg,#29224b,#10152b 75%);color:var(--ink);cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s}
+.creator-card:before{content:"";position:absolute;z-index:-1;width:180px;height:180px;left:50%;top:-110px;transform:translateX(-50%);border-radius:50%;background:var(--halo);filter:blur(45px);opacity:.65}
+.creator-card:hover,.creator-card[aria-pressed=true]{transform:translateY(-5px);border-color:var(--halo);box-shadow:0 16px 40px #0007,0 0 25px color-mix(in srgb,var(--halo) 24%,transparent)}
+.avatar-orbit{position:relative;width:112px;height:112px;margin:2px auto 15px;display:grid;place-items:center}
+.avatar-orbit:before,.avatar-orbit:after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:var(--halo);border-right-color:var(--halo);filter:drop-shadow(0 0 7px var(--halo));animation:orbitSpin 8s linear infinite}
+.avatar-orbit:after{inset:7px;border-top-color:transparent;border-right-color:transparent;border-bottom-color:var(--halo);border-left-color:var(--halo);opacity:.75;animation-direction:reverse;animation-duration:6s}
+@keyframes orbitSpin{to{transform:rotate(360deg)}}
+.avatar-core{width:78px;height:78px;display:grid;place-items:center;border-radius:50%;font:400 30px Georgia,serif;color:#fff;background:radial-gradient(circle at 35% 25%,var(--halo),#29234b 65%);box-shadow:inset 0 0 22px #fff3,0 0 26px color-mix(in srgb,var(--halo) 48%,transparent);border:1px solid #ffffff66}
+.creator-card h3{font:400 22px Georgia,serif;margin:5px 0 5px}.creator-card .role{font-size:10px;color:var(--halo);letter-spacing:.13em;text-transform:uppercase}.creator-card p{font-size:11px;color:#c8c3df;line-height:1.55;margin:10px auto 13px;max-width:230px}
+.spotlight-tag{display:inline-block;padding:6px 10px;border-radius:99px;border:1px solid #ffffff25;background:#ffffff0b;color:#c9c3df;font-size:9px;letter-spacing:.1em}
+.creator-card:nth-child(1){--halo:#82f6e8}.creator-card:nth-child(2){--halo:#ffadd0}.creator-card:nth-child(3){--halo:#ffe0a8}
+@media(max-width:720px){.spotlights{grid-template-columns:1fr}.creator-card{min-height:220px}.avatar-orbit{width:100px;height:100px}.avatar-core{width:70px;height:70px}}
+@media(prefers-reduced-motion:reduce){.avatar-orbit:before,.avatar-orbit:after{animation:none}}
+
 </style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><a class="back" href="../realms/">← ALL REALMS</a></header>
@@ -32,6 +50,16 @@ footer{text-align:center;color:#787594;font-size:10px;letter-spacing:.12em;margi
 </section>
 <div class="empty" id="empty">No matching sparks in this preview. Try another search.</div>
 <section class="detail" aria-live="polite"><div><div class="eyebrow" id="detailTag">YOUR DISCOVERY STARTS HERE</div><h2 id="detailTitle">What catches your imagination?</h2><p id="detailCopy">Choose a glowing spark above to open its preview. This is a visual prototype; real creator posts and accounts are not connected yet.</p></div><button id="clear">CLEAR SELECTION</button></section>
+
+<section aria-labelledby="spotlightTitle">
+<div class="spotlight-head"><h2 id="spotlightTitle">Creator constellation</h2><p>THE SPOTLIGHT IS YOURS</p></div>
+<div class="spotlights">
+<button class="creator-card" data-name="AURA / THE VISUAL DREAMER" data-role="Digital artist · concept spotlight" data-bio="A showcase concept for creators who turn imagination into visual worlds. The profile ring glows with every new discovery." aria-pressed="false"><span class="avatar-orbit"><span class="avatar-core">A</span></span><span class="role">Visual dreamer</span><h3>Aura</h3><p>Painting impossible places, one pixel at a time.</p><span class="spotlight-tag">✧ FEATURED CONCEPT</span></button>
+<button class="creator-card" data-name="RHYTHM / THE SOUND WEAVER" data-role="Music maker · concept spotlight" data-bio="A showcase concept for musicians, performers and sound explorers. A soft rose-colored orbit marks this creator spotlight." aria-pressed="false"><span class="avatar-orbit"><span class="avatar-core">R</span></span><span class="role">Sound weaver</span><h3>Rhythm</h3><p>Finding the beat hidden inside every moment.</p><span class="spotlight-tag">♫ FEATURED CONCEPT</span></button>
+<button class="creator-card" data-name="SOL / THE WORLD BUILDER" data-role="World builder · concept spotlight" data-bio="A showcase concept for storytellers and makers who build places worth getting lost in. This golden orbit is a visual placeholder." aria-pressed="false"><span class="avatar-orbit"><span class="avatar-core">S</span></span><span class="role">World builder</span><h3>Sol</h3><p>Building little universes with endless doors.</p><span class="spotlight-tag">✦ FEATURED CONCEPT</span></button>
+</div>
+<p style="margin:12px 2px 0;color:#85809f;font-size:10px;line-height:1.6">These are fictional visual placeholders to demonstrate the spotlight design. No real creator accounts, follows or posts are connected.</p>
+</section>
 <footer>NEW TIKNATION · DISCOVERY PROTOTYPE · CONTENT AND SOCIAL CONNECTIONS COMING LATER</footer>
 </main>
 <script>
@@ -42,5 +70,15 @@ filters.forEach(f=>f.addEventListener('click',()=>{category=f.dataset.filter;fil
 input.addEventListener('input',refresh);document.getElementById('searchForm').addEventListener('submit',e=>{e.preventDefault();refresh()});
 tiles.forEach(t=>t.addEventListener('click',()=>{tiles.forEach(x=>x.setAttribute('aria-pressed',String(x===t)));tag.textContent='DISCOVERY · '+t.dataset.kind.toUpperCase();title.textContent=t.dataset.title;copy.textContent=t.dataset.copy+' This category preview is ready for the next build stage.'}));
 document.getElementById('clear').addEventListener('click',()=>{tiles.forEach(x=>x.setAttribute('aria-pressed','false'));tag.textContent='YOUR DISCOVERY STARTS HERE';title.textContent='What catches your imagination?';copy.textContent='Choose a category above to open its preview. This prototype is a design experience; real creator posts and accounts are not connected yet.'});
+
+// Creator spotlight preview interactions
+document.querySelectorAll('.creator-card').forEach(card=>card.addEventListener('click',()=>{
+ document.querySelectorAll('.creator-card').forEach(x=>x.setAttribute('aria-pressed',String(x===card)));
+ tag.textContent='CREATOR SPOTLIGHT · CONCEPT';
+ title.textContent=card.dataset.name;
+ copy.textContent=card.dataset.role+'. '+card.dataset.bio+' This is a design preview only; profile actions are not connected.';
+ document.querySelector('.detail').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'nearest'});
+}));
+
 refresh();
 </script></body></html>
