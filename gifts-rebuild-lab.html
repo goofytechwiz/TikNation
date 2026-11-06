@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090817"><title>TikNation · Gifts Rebuild Lab</title>
+<script src="./gift-engine.js?v=rebuild-20261106"></script>
+<script src="./gifts.js?v=rebuild-20261106"></script>
+<style>
+:root{color-scheme:dark;--bg:#090817;--panel:#151329;--line:#393257;--cyan:#7eeaff;--violet:#b49aff;--muted:#c4bfd8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#29204e 0,transparent 55%),var(--bg);color:#fff;font:16px/1.5 system-ui,sans-serif}
+main{width:min(100% - 28px,980px);margin:auto;padding:24px 0 56px}header{padding:24px 20px;border:1px solid #554b82;border-radius:22px;background:linear-gradient(135deg,#211b40,#101323);box-shadow:0 12px 40px #0006}
+.kicker{color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:.2em}h1{font-size:clamp(27px,6vw,42px);line-height:1.08;margin:8px 0}header p,.note{color:var(--muted)}
+.status{margin:16px 0;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#111022;color:var(--cyan)}.status.error{color:#ff9aaa;border-color:#804052}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.filter,.sound,.gift{border:1px solid var(--line);background:#17152b;color:#fff;border-radius:12px;cursor:pointer;font:inherit}.filter,.sound{padding:9px 13px}.filter[aria-pressed=true]{border-color:var(--cyan);background:#183044}.sound{margin-left:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.gift{min-height:150px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.gift:active{transform:scale(.97)}.gift:focus-visible,.filter:focus-visible,.sound:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.emoji{font-size:42px;line-height:1.25;filter:drop-shadow(0 0 12px #9c8cff66)}.gift strong{text-align:center;font-size:14px}.category{font-size:11px;color:var(--cyan)}.cost{font-size:12px;color:var(--muted)}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:16px 0}.metric{padding:12px;border:1px solid var(--line);border-radius:12px;background:#111022}.metric b{display:block;color:var(--cyan);font-size:20px}
+</style></head>
+<body><main>
+<header><div class="kicker">TIKNATION · ISOLATED REBUILD</div><h1>🎁 LIVE Gifts Rebuild Lab</h1><p>This is a separate local-preview test bench. It does not send gifts, spend coins, change accounts, or modify the LIVE session.</p></header>
+<div id="labStatus" class="status" role="status" aria-live="polite">Checking gift catalog, animation engine and audio support…</div>
+<div class="metrics"><div class="metric">Gift catalog<b id="giftCount">—</b></div><div class="metric">Animation engine<b id="engineState">—</b></div><div class="metric">Audio engine<b id="audioState">Not started</b></div></div>
+<div class="toolbar" id="filters" aria-label="Filter gifts"></div>
+<div class="toolbar"><button id="soundToggle" class="sound" type="button" aria-pressed="true">🔊 Sound: On</button></div>
+<div id="giftGrid" class="grid" aria-label="Gift test buttons"></div>
+<p class="note">Tap a gift once. Sound is initiated immediately inside that tap handler (not after a network request, promise, or animation callback). The animation also starts independently. Test on the same phone/browser used for LIVE.</p>
+</main>
+<script>
+(function(){
+"use strict";
+const status=document.getElementById("labStatus"),grid=document.getElementById("giftGrid"),filters=document.getElementById("filters");
+const catalog=window.TIKNATION_GIFT_CATALOG||{},engine=window.TikNationGiftEngine;
+let selected="All",soundOn=true,audio=null,lastSound="Not started";
+const entries=Object.entries(catalog),categories=["All",...new Set(entries.map(([,g])=>g.category||"Other"))];
+function say(message,isError){status.textContent=message;status.classList.toggle("error",!!isError);}
+function setAudioState(value){lastSound=value;document.getElementById("audioState").textContent=value;}
+function startSoundInGesture(gift){
+ if(!soundOn){setAudioState("Muted by toggle");return;}
+ const C=window.AudioContext||window.webkitAudioContext;
+ if(!C){setAudioState("Unsupported");say("This browser does not expose Web Audio. Animation tests remain available.",true);return;}
+ try{
+  if(!audio||audio.state==="closed")audio=new C();
+  const ctx=audio;
+  // resume() is invoked synchronously while the gift button's user activation is active.
+  const resume=ctx.state==="suspended"?ctx.resume():Promise.resolve();
+  const notes=Array.isArray(gift.sound)&&gift.sound.length?gift.sound:[523,659,784,1047];
+  const schedule=()=>{
+   if(ctx.state!=="running"){setAudioState("Blocked · "+ctx.state);return;}
+   const base=ctx.currentTime+.025;
+   notes.forEach((raw,i)=>{
+    const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22;
+    const osc=ctx.createOscillator(),gain=ctx.createGain(),harm=ctx.createOscillator(),hg=ctx.createGain();
+    osc.type="triangle";osc.frequency.setValueAtTime(hz,at);
+    gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.22,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.48);
+    harm.type="sine";harm.frequency.setValueAtTime(hz*2,at);
+    hg.gain.setValueAtTime(.0001,at);hg.gain.exponentialRampToValueAtTime(.055,at+.02);hg.gain.exponentialRampToValueAtTime(.0001,at+.34);
+    osc.connect(gain);gain.connect(ctx.destination);harm.connect(hg);hg.connect(ctx.destination);
+    osc.start(at);osc.stop(at+.5);harm.start(at);harm.stop(at+.36);
+   });
+   setAudioState("Playing · "+notes.length+" notes");
+  };
+  if(ctx.state==="running")schedule();
+  else resume.then(schedule).catch(err=>{setAudioState("Resume failed");say("Audio resume failed: "+err.message,true);});
+ }catch(err){setAudioState("Error");say("Audio error: "+err.message,true);}
+}
+function preview(code,gift){
+ try{
+  // Crucially, start audio before any asynchronous work and before calling the renderer.
+  startSoundInGesture(gift);
+  if(!engine||typeof engine.show!=="function")throw new Error("Animation engine did not load.");
+  const result=engine.show(gift,{meta:"TIKNATION GIFTS REBUILD LAB · LOCAL PREVIEW",duration:6200});
+  if(result!==true&&!(result&&result.isConnected))throw new Error("Animation engine did not accept this preview.");
+  say("Preview launched: "+(gift.name||code)+". Sound and animation were started separately; no coins spent.");
+ }catch(err){say("Preview failed for "+(gift.name||code)+": "+err.message,true);console.error(err);}
+}
+function renderFilters(){filters.replaceChildren();categories.forEach(category=>{const b=document.createElement("button");b.type="button";b.className="filter";b.textContent=category;b.setAttribute("aria-pressed",String(selected===category));b.addEventListener("click",()=>{selected=category;renderFilters();renderGifts();});filters.appendChild(b);});}
+function renderGifts(){grid.replaceChildren();entries.filter(([,g])=>selected==="All"||g.category===selected).forEach(([code,gift])=>{const b=document.createElement("button");b.type="button";b.className="gift";const emoji=document.createElement("span");emoji.className="emoji";emoji.textContent=gift.emoji||"🎁";const name=document.createElement("strong");name.textContent=gift.name||code;const cat=document.createElement("span");cat.className="category";cat.textContent=gift.category||"Gift";const cost=document.createElement("span");cost.className="cost";cost.textContent="Local preview · "+Number(gift.cost||0)+" test coins";b.append(emoji,name,cat,cost);b.addEventListener("click",()=>preview(code,gift));grid.appendChild(b);});}
+document.getElementById("soundToggle").addEventListener("click",function(){soundOn=!soundOn;this.textContent=soundOn?"🔊 Sound: On":"🔇 Sound: Off";this.setAttribute("aria-pressed",String(soundOn));});
+document.getElementById("giftCount").textContent=String(entries.length);
+document.getElementById("engineState").textContent=engine&&typeof engine.show==="function"?"Loaded":"Missing";
+if(!entries.length)say("Gift catalog failed to load.",true);else if(!engine||typeof engine.show!=="function")say("Catalog loaded, but animation engine is missing.",true);else say("Ready · "+entries.length+" gifts loaded. Magic Spark is not in this catalog.");
+renderFilters();renderGifts();
+})();
+</script></body></html>
