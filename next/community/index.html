@@ -21,6 +21,17 @@ main{width:min(100% - 30px,1000px);margin:auto;padding:38px 0 55px}.intro{text-a
 .status{text-align:center;min-height:22px;margin-top:13px;color:#bcb5d6;font-size:9px;letter-spacing:.08em}footer{text-align:center;color:#777393;font-size:9px;letter-spacing:.1em;margin-top:27px}
 @media(max-width:600px){main{padding-top:30px}.constellation{min-height:260px}.constellation:before{width:200px;height:200px}.constellation:after{width:270px;height:270px}.core{width:88px;height:88px}.node:nth-child(1){left:3%;top:17%}.node:nth-child(2){right:3%;top:17%}.node:nth-child(3){left:3%;bottom:17%}.node:nth-child(4){right:3%;bottom:17%}.spaces{grid-template-columns:1fr}.space{padding:16px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* Shared TikNation app navigation */
+body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+.tn-dock{position:fixed;z-index:12;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:8px;border:1px solid #ffffff2b;border-radius:22px;background:linear-gradient(110deg,#10152beF,#211a3def 55%,#102a34ef);box-shadow:0 14px 48px #000b,0 0 28px #82f6e81c;backdrop-filter:blur(20px)}
+.tn-dock a{min-width:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid transparent;border-radius:14px;color:#bdb8d5;text-decoration:none;font:800 8px/1 system-ui,sans-serif;letter-spacing:.06em;transition:background .2s,border-color .2s,color .2s}
+.tn-dock a .tn-icon{font:19px/1 Georgia,serif;color:#b49cff;text-shadow:0 0 14px #b49cff66}
+.tn-dock a[aria-current=page]{border-color:#82f6e866;background:linear-gradient(145deg,#82f6e81c,#b49cff1b);color:#fff}
+.tn-dock a[aria-current=page] .tn-icon{color:#82f6e8;text-shadow:0 0 16px #82f6e8aa}
+.tn-dock a:focus-visible{outline:2px solid #82f6e8;outline-offset:2px}
+@media(max-width:390px){.tn-dock{gap:2px;padding:6px}.tn-dock a{font-size:7px;min-height:46px}.tn-dock a .tn-icon{font-size:17px}}
+@media(prefers-reduced-motion:reduce){.tn-dock a{transition:none}}
 </style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><nav style="display:flex;gap:8px;align-items:center"><a class="back" href="../profile/">MY PROFILE</a><a class="back" href="../realms/">← THE REALMS</a></nav></header>
@@ -45,4 +56,13 @@ main{width:min(100% - 30px,1000px);margin:auto;padding:38px 0 55px}.intro{text-a
 const info={kindred:{tag:'CIRCLE 01 · CONNECTION',title:'Find a familiar spark.',copy:'Kindred Sparks is a concept for discovering people through shared interests, not follower counts. In a future connected version, you would control what you share and who can reach you.'},makers:{tag:'CIRCLE 02 · CREATION',title:'Make something together.',copy:'The Makers brings artists, builders, storytellers, and imaginative people into one shared creative space. Think collaboration prompts, showcases, and friendly feedback.'},quest:{tag:'CIRCLE 03 · PLAY',title:'A little adventure is better shared.',copy:'Quest Club is imagined as a home for community challenges, casual games, and shared goals—with participation always optional and welcoming.'},quiet:{tag:'CIRCLE 04 · CALM',title:'A place to simply be.',copy:'Quiet Corner is a gentler community space. No pressure to perform, post constantly, or keep up—just thoughtful conversation at your own pace.'}};
 function choose(key){const d=info[key];document.querySelectorAll('[data-space]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.space===key))});document.getElementById('tag').textContent=d.tag;document.getElementById('title').textContent=d.title;document.getElementById('copy').textContent=d.copy;document.getElementById('status').textContent=d.tag+' SELECTED · DESIGN PREVIEW ONLY'}
 document.querySelectorAll('[data-space]').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.space)));
-</script></body></html>
+</script><nav class="tn-dock" aria-label="TikNation main navigation">
+<a href="../" data-dock="home"><span class="tn-icon" aria-hidden="true">⌂</span>HOME</a>
+<a href="../discover/" data-dock="discover"><span class="tn-icon" aria-hidden="true">✧</span>DISCOVER</a>
+<a href="../live-worlds/" data-dock="live"><span class="tn-icon" aria-hidden="true">◉</span>LIVE</a>
+<a href="../create/" data-dock="create"><span class="tn-icon" aria-hidden="true">＋</span>CREATE</a>
+<a href="../community/" data-dock="community"><span class="tn-icon" aria-hidden="true">⌘</span>COMMUNITY</a>
+<a href="../profile/" data-dock="profile"><span class="tn-icon" aria-hidden="true">◈</span>PROFILE</a>
+<a href="../settings/" data-dock="settings"><span class="tn-icon" aria-hidden="true">⚙</span>SETTINGS</a>
+</nav>
+<script>(function(){const p=location.pathname;const map=[['discover','/discover/'],['live','/live-worlds/'],['create','/create/'],['community','/community/'],['profile','/profile/'],['settings','/settings/'],['home','/realms/']];let active=map.find(x=>p.includes(x[1]));if(p.includes('/creator-showcase/')||p.includes('/creator-studio/'))active=['profile','/profile/'];if(active){const a=document.querySelector('[data-dock="'+active[0]+'"]');if(a)a.setAttribute('aria-current','page')}})();</script></body></html>
