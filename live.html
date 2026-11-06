@@ -1102,23 +1102,8 @@ $("liveLikeBtn")?.addEventListener("click",()=>{
   const box=$("viewerVideo");if(!box)return;
   const heart=document.createElement("span");heart.className="live-like-float";heart.textContent=["❤️","💖","💗","💕"][Math.floor(Math.random()*4)];heart.setAttribute("aria-hidden","true");box.appendChild(heart);window.setTimeout(()=>heart.remove(),1250);liveActionFeedback("Like sent ✨");
 });
-window.__tikNationGiftToggleBound=true;
-$("liveGiftToggleBtn")?.addEventListener("click",()=>{
-  const panel=$("liveGiftPanel");if(!panel)return;
-  if(!activeSession){
-    if(!user){liveActionFeedback("Sign in to open free creator gift previews.");return;}
-    const opening=panel.classList.contains("hide");
-    if(opening)showOfflineCreatorGiftPreview();
-    panel.classList.toggle("hide",!opening);panel.classList.toggle("is-open",opening);
-    if(opening){panel.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"nearest"});liveActionFeedback("Free creator preview is ready. Choose any gift to test its animation.");}
-    else{liveActionFeedback("Gift preview closed.");}
-    return;
-  }
-  const opening=panel.classList.contains("hide");
-  panel.classList.toggle("hide",!opening);panel.classList.toggle("is-open",opening);
-  if(opening){panel.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"nearest"});liveActionFeedback("Choose a gift below. Test coins only.");}
-  else{liveActionFeedback("Gift panel closed.");}
-});
+// Gift-panel toggling is handled by the independent classic script below.
+window.__tikNationSendLiveGift=(code,button)=>sendLiveGift(code,button);
 $("liveChatJumpBtn")?.addEventListener("click",()=>{
   $("chatPanel")?.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
   $("chatInput")?.focus({preventScroll:true});liveActionFeedback("Live chat is ready below.");
@@ -1172,34 +1157,57 @@ boot();
 })();
 </script>
 <script>
-/* Independent safety net: keep the Gifts button usable if LIVE's main module fails early. */
-document.addEventListener("DOMContentLoaded",function(){
-  if(window.__tikNationGiftToggleBound)return;
+/* Independent gift controls: do not wait for the LIVE module's network imports. */
+(function(){
   const button=document.getElementById("liveGiftToggleBtn");
   const panel=document.getElementById("liveGiftPanel");
-  if(!button||!panel)return;
+  const root=document.getElementById("liveGiftCategories");
+  if(!button||!panel||!root)return;
+  const status=document.getElementById("liveGiftStatus");
+  const feedback=document.getElementById("liveActionFeedback");
+  function say(message){if(status)status.textContent=message;if(feedback)feedback.textContent=message;}
+  function buildCatalog(){
+    const catalog=window.TIKNATION_GIFT_CATALOG||{};
+    if(!Object.keys(catalog).length){say("Gift catalog did not load. Please refresh LIVE.");return;}
+    root.replaceChildren();
+    const categories=["Musical","Magical","Special Effects","Visual Effects","Legendary","Surprises"];
+    for(const category of categories){
+      const entries=Object.entries(catalog).filter(([,gift])=>gift.category===category);
+      if(!entries.length)continue;
+      const section=document.createElement("div");section.className="live-gift-category";
+      const heading=document.createElement("h4");heading.textContent=category+" Gifts";section.appendChild(heading);
+      const grid=document.createElement("div");grid.className="live-gift-grid";
+      for(const [code,gift] of entries){
+        const choice=document.createElement("button");choice.type="button";choice.className="live-gift-choice";choice.dataset.giftCode=code;
+        const emoji=document.createElement("span");emoji.className="live-gift-emoji";emoji.textContent=gift.emoji||"🎁";
+        const name=document.createElement("span");name.className="live-gift-name";name.textContent=gift.name||code;
+        const cost=document.createElement("span");cost.className="live-gift-cost";cost.textContent="FREE LOCAL PREVIEW";
+        choice.append(emoji,name,cost);grid.appendChild(choice);
+      }
+      section.appendChild(grid);root.appendChild(section);
+    }
+  }
   button.addEventListener("click",function(){
     const opening=panel.classList.contains("hide");
-    panel.classList.toggle("hide",!opening);
-    panel.classList.toggle("is-open",opening);
+    panel.classList.toggle("hide",!opening);panel.classList.toggle("is-open",opening);
+    button.setAttribute("aria-expanded",String(opening));
     if(opening){
-      const root=document.getElementById("liveGiftCategories");
-      const catalog=window.TIKNATION_GIFT_CATALOG||{};
-      if(root&&!root.children.length){
-        root.innerHTML=Object.entries(catalog).map(([code,gift])=>'<button type="button" class="live-gift-choice" data-fallback-gift="'+code+'"><span class="live-gift-emoji">'+(gift.emoji||"🎁")+'</span><span class="live-gift-name">'+(gift.name||code)+'</span><span class="live-gift-cost">Preview</span></button>').join("");
-        root.addEventListener("click",function(event){
-          const choice=event.target.closest("[data-fallback-gift]");
-          if(!choice)return;
-          const gift=catalog[choice.dataset.fallbackGift];
-          if(window.TikNationGiftEngine&&gift)window.TikNationGiftEngine.show(gift,{meta:"LOCAL PREVIEW · NO COINS SPENT",duration:4300});
-        });
-      }
-      const status=document.getElementById("liveGiftStatus");
-      if(status)status.textContent="Gift panel opened using the backup controls.";
+      if(!root.children.length)buildCatalog();
       panel.scrollIntoView({behavior:"auto",block:"nearest"});
-    }
+      say("Gift panel opened. Choose a gift for a free local preview; no coins are spent.");
+    }else say("Gift panel closed.");
   });
-});
+  root.addEventListener("click",function(event){
+    const choice=event.target.closest("[data-gift-code]");if(!choice)return;
+    const code=choice.dataset.giftCode;const gift=(window.TIKNATION_GIFT_CATALOG||{})[code];if(!gift)return;
+    if(typeof window.__tikNationSendLiveGift==="function" && document.getElementById("liveGiftFeed")?.dataset.liveSessionActive==="true"){
+      window.__tikNationSendLiveGift(code,choice);return;
+    }
+    if(!window.TikNationGiftEngine){say("Gift animation engine did not load.");return;}
+    window.TikNationGiftEngine.show(gift,{meta:"FREE LOCAL PREVIEW · NO COINS SPENT",duration:4300});
+    say("Preview started: "+(gift.name||code)+" · Free, no coins spent.");
+  });
+})();
 </script>
 </body>
 </html>
