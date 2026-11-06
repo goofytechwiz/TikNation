@@ -701,6 +701,25 @@ function playLiveGiftSound(event, gift) {
       softTone(now + 2.05, 62, 1.8, 0.09, "triangle");
       return;
     }
+    if (code === "heart_pulse") {
+      // A recognizable lub-dub heartbeat: two soft, low thumps with a short pause.
+      const heartbeat = (at, frequency, duration, volume) => {
+        const oscillator=ctx.createOscillator(), gain=ctx.createGain(), filter=ctx.createBiquadFilter();
+        oscillator.type="sine";
+        oscillator.frequency.setValueAtTime(frequency,at);
+        oscillator.frequency.exponentialRampToValueAtTime(Math.max(32,frequency*0.68),at+duration);
+        filter.type="lowpass"; filter.frequency.setValueAtTime(145,at);
+        gain.gain.setValueAtTime(0.0001,at);
+        gain.gain.exponentialRampToValueAtTime(volume,at+0.035);
+        gain.gain.exponentialRampToValueAtTime(0.0001,at+duration);
+        oscillator.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+        oscillator.start(at); oscillator.stop(at+duration+0.025);
+      };
+      [0,0.19,0.82,1.01,1.64,1.83].forEach((offset,index)=>
+        heartbeat(now+offset,index%3===1?58:72,index%3===1?0.24:0.31,index%3===1?0.22:0.28)
+      );
+      return;
+    }
     const notes = Array.isArray(gift.sound) && gift.sound.length ? gift.sound : [523,659,784,1047];
     if (gift.category === "Musical") {
       // Restore a clearly audible, longer melody with a soft harmonic backing.
