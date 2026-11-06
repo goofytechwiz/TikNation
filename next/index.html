@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08091c">
+<title>TikNation — Enter the Extraordinary</title>
+<style>
+:root{color-scheme:dark;--ink:#08091c;--violet:#9b7bff;--cyan:#73f4e8;--gold:#ffd89a;--cream:#f6f0ff}
+*{box-sizing:border-box}html{min-height:100%;background:var(--ink)}body{margin:0;min-height:100vh;overflow-x:hidden;color:var(--cream);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(ellipse at 50% 43%,#25204d 0,#11132d 34%,#08091c 76%);letter-spacing:.01em}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.32;background-image:radial-gradient(1px 1px at 12% 20%,#fff 99%,transparent),radial-gradient(1px 1px at 80% 14%,#b9b5ff 99%,transparent),radial-gradient(2px 2px at 66% 73%,#fff 99%,transparent),radial-gradient(1px 1px at 30% 82%,#8ff 99%,transparent),radial-gradient(1px 1px at 92% 54%,#fff 99%,transparent);background-size:230px 230px,310px 310px,390px 390px,270px 270px,340px 340px}
+header{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:24px clamp(18px,5vw,64px)}.brand{font-size:14px;font-weight:850;letter-spacing:.24em}.brand span{color:var(--cyan)}.status{font-size:10px;letter-spacing:.18em;color:#c4c0e6;border:1px solid #ffffff25;padding:9px 13px;border-radius:99px;background:#ffffff08;backdrop-filter:blur(14px)}
+main{position:relative;z-index:1;min-height:calc(100vh - 78px);display:grid;place-items:center;padding:10px 20px 70px}.stage{width:min(100%,900px);text-align:center;position:relative}.eyebrow{color:var(--cyan);font-size:10px;font-weight:750;letter-spacing:.36em;text-transform:uppercase;margin:0 0 20px}.portal-wrap{height:clamp(245px,42vw,390px);display:grid;place-items:center;position:relative;margin:0 auto 5px}.portal{width:clamp(205px,33vw,310px);aspect-ratio:1;border-radius:50%;position:relative;display:grid;place-items:center;cursor:pointer;border:0;background:radial-gradient(circle at 50% 50%,#c8ffff18 0 16%,#a78bff16 33%,transparent 64%);filter:drop-shadow(0 0 38px #9479ff55);transition:transform .6s ease,filter .6s ease}.portal:before,.portal:after{content:"";position:absolute;inset:5%;border-radius:50%;border:1px solid #b7a5ff9c;box-shadow:inset 0 0 24px #9e8aff3b,0 0 22px #a18bff50;animation:orbit 18s linear infinite}.portal:after{inset:13%;border-color:#76f6e8a6;box-shadow:inset 0 0 30px #7cf9e933,0 0 26px #6ef8e744;animation-direction:reverse;animation-duration:13s}.portal:hover{transform:scale(1.045);filter:drop-shadow(0 0 60px #8f7bff99)}.portal-core{width:53%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 48% 38%,#fff 0,#a8fff4 5%,#8c7cff 20%,#423a83 44%,#151a40 67%,#08091c 75%);box-shadow:0 0 20px #a4fff4,0 0 65px #9a7aff,0 0 120px #7257ff8c;position:relative;overflow:hidden}.portal-core:before{content:"";position:absolute;inset:-20%;background:conic-gradient(from 30deg,transparent,#ffffff99,transparent,#8dfdf2aa,transparent);animation:spin 8s linear infinite}.portal-core:after{content:"";position:absolute;inset:18%;border-radius:50%;border:1px solid #ffffff88;box-shadow:0 0 28px #a6fff8}
+h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(39px,7vw,76px);line-height:1.02;letter-spacing:-.045em;margin:0 auto 16px;text-shadow:0 0 32px #aa9bff38}h1 em{font-style:normal;color:var(--gold)}.sub{max-width:530px;margin:0 auto;color:#c7c5e3;font-size:15px;line-height:1.75}.enter{margin-top:32px;min-width:210px;padding:16px 26px;border:1px solid #c5b4ff99;border-radius:999px;color:#111329;font-weight:850;letter-spacing:.13em;font-size:11px;background:linear-gradient(110deg,#a9fff2,#d8c6ff 52%,#ffe0ae);box-shadow:0 0 28px #9d8bff42,0 8px 34px #0006;cursor:pointer;transition:transform .2s,box-shadow .2s}.enter:hover{transform:translateY(-3px);box-shadow:0 0 42px #9d8bff88,0 12px 38px #0008}.hint{margin-top:14px;color:#8e8eaf;font-size:10px;letter-spacing:.12em}.realms{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:42px auto 0}.realm{border:1px solid #ffffff1d;border-radius:18px;padding:13px 18px;background:linear-gradient(145deg,#ffffff0c,#ffffff04);color:#d9d6f0;font-size:11px;letter-spacing:.08em;backdrop-filter:blur(12px);cursor:pointer;transition:.25s}.realm:hover,.realm:focus-visible{border-color:#9d8bff99;background:#a18bff1a;transform:translateY(-3px);outline:none}.realm b{display:block;font-size:17px;margin-bottom:5px;font-weight:500;color:var(--cyan)}
+footer{position:relative;z-index:2;text-align:center;padding:0 18px 22px;color:#777794;font-size:9px;letter-spacing:.16em}.modal{position:fixed;inset:0;z-index:10;display:none;place-items:center;padding:22px;background:#050614d9;backdrop-filter:blur(18px)}.modal.show{display:grid}.modal-card{width:min(100%,470px);padding:34px 28px;border:1px solid #b9a9ff66;border-radius:26px;text-align:center;background:radial-gradient(circle at 50% 0,#39305f,#11142b 65%);box-shadow:0 0 70px #8873ff40}.modal-card h2{font:400 34px Georgia,serif;margin:0 0 12px}.modal-card p{color:#c6c4df;line-height:1.7;font-size:14px}.close{margin-top:14px;padding:12px 20px;border-radius:99px;border:1px solid #ffffff40;background:#ffffff10;color:white;cursor:pointer}
+@keyframes orbit{to{transform:rotate(360deg)}}@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:560px){header{padding:18px 17px}.status{font-size:8px;padding:8px 10px}.portal-wrap{height:260px}.portal{width:220px}.sub{font-size:13px}.realms{gap:8px;margin-top:32px}.realm{flex:1 1 42%;padding:12px 8px}.realm b{font-size:15px}footer{font-size:8px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="brand">TIK<span>NATION</span></div><div class="status">✦ THE NEXT CHAPTER · PREVIEW</div></header>
+<main><section class="stage" aria-label="TikNation welcome gateway">
+<p class="eyebrow">A new world is waiting</p>
+<div class="portal-wrap"><button class="portal" id="portal" aria-label="Activate the magical gateway"><span class="portal-core"></span></button></div>
+<h1>Enter the <em>Extraordinary.</em></h1>
+<p class="sub">A place where your voice opens doors, creativity takes shape, and every connection can become an adventure.</p>
+<button class="enter" id="enter">✧&nbsp; OPEN THE GATEWAY &nbsp;✧</button>
+<div class="hint">TAP THE GATEWAY OR BEGIN YOUR JOURNEY</div>
+<div class="realms" aria-label="Explore the realms">
+<button class="realm" data-realm="Discover"><b>✧</b>DISCOVER</button>
+<button class="realm" data-realm="LIVE"><b>◉</b>LIVE WORLDS</button>
+<button class="realm" data-realm="Create"><b>✦</b>CREATE</button>
+<button class="realm" data-realm="Community"><b>⌘</b>COMMUNITY</button>
+</div>
+</section></main>
+<footer>YOUR VOICE. YOUR WORLD. &nbsp;·&nbsp; IMAGINATION WITHOUT LIMITS</footer>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><p class="eyebrow">Gateway activated</p><h2 id="modalTitle">The world is unfolding.</h2><p id="modalText">This is the beginning of a different kind of social experience. The next realms will be built one by one.</p><button class="close" id="close">RETURN TO THE GATEWAY</button></div></div>
+<script>
+const modal=document.getElementById('modal'),title=document.getElementById('modalTitle'),copy=document.getElementById('modalText');
+function openRealm(name){title.textContent=name==='Gateway'?'The world is unfolding.':name+' is calling.';copy.textContent=name==='Gateway'?'Welcome to the new TikNation. This gateway is our first step into a more immersive, interactive social world.':name+' will become one of the places you can explore inside the new TikNation. This preview is a design prototype; its social features will be connected in later stages.';modal.classList.add('show')}
+document.getElementById('portal').addEventListener('click',()=>openRealm('Gateway'));
+document.getElementById('enter').addEventListener('click',()=>openRealm('Gateway'));
+document.querySelectorAll('[data-realm]').forEach(b=>b.addEventListener('click',()=>openRealm(b.dataset.realm)));
+document.getElementById('close').addEventListener('click',()=>modal.classList.remove('show'));
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('show')});
+</script>
+</body></html>
