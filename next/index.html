@@ -23,6 +23,25 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
 .tn-dock a{min-width:0;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid transparent;border-radius:14px;color:#bdb8d5;text-decoration:none;font:800 8px/1 system-ui,sans-serif;letter-spacing:.06em}
 .tn-dock a .tn-icon{font:19px/1 Georgia,serif;color:#b49cff;text-shadow:0 0 14px #b49cff66}.tn-dock a[aria-current=page]{border-color:#82f6e866;background:linear-gradient(145deg,#82f6e81c,#b49cff1b);color:#fff}.tn-dock a[aria-current=page] .tn-icon{color:#82f6e8;text-shadow:0 0 16px #82f6e8aa}.tn-dock a:focus-visible{outline:2px solid #82f6e8;outline-offset:2px}
 @media(max-width:390px){.tn-dock{gap:2px;padding:6px}.tn-dock a{font-size:7px;min-height:46px}.tn-dock a .tn-icon{font-size:17px}}@media(prefers-reduced-motion:reduce){.tn-dock a{transition:none}}
+
+/* TikNation home feed layer */
+main{display:block;min-height:auto;padding:22px 18px 54px}
+.stage{width:min(100%,980px);margin:0 auto 30px;padding:25px 20px 27px;border:1px solid #ffffff20;border-radius:28px;background:linear-gradient(135deg,#171b3ddd,#29204ddd 58%,#123c48bb);box-shadow:0 20px 65px #0006}
+.stage .eyebrow{margin-bottom:8px}.portal-wrap{height:clamp(145px,23vw,205px);margin:0 auto}.portal{width:clamp(130px,20vw,180px)}h1{font-size:clamp(34px,5vw,54px)}.sub{font-size:13px}.enter{margin-top:19px;padding:13px 22px}.realms{margin-top:22px}
+.home-feed{width:min(100%,980px);margin:0 auto;display:grid;gap:17px}
+.feed-heading{display:flex;justify-content:space-between;align-items:end;gap:12px;padding:0 3px}.feed-heading h2{font:400 27px Georgia,serif;margin:5px 0 0}.feed-heading p{margin:0;color:#aaa5c9;font-size:9px;letter-spacing:.14em}
+.feed-card{overflow:hidden;border:1px solid #ffffff22;border-radius:22px;background:linear-gradient(145deg,#191d3d,#111329 75%);box-shadow:0 12px 35px #0004}
+.creator-post{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+.post-art{min-height:235px;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 44%,#82f6e866,transparent 18%),radial-gradient(ellipse at 25% 85%,#b49cffaa,transparent 45%),radial-gradient(ellipse at 80% 15%,#ffe0a855,transparent 35%),linear-gradient(140deg,#102943,#342454 60%,#102d3c)}
+.post-art:before,.post-art:after{content:"";position:absolute;width:190px;height:190px;border:1px solid #d6d0ff88;border-radius:50%;box-shadow:0 0 35px #b49cff55,inset 0 0 28px #82f6e833}.post-art:after{width:145px;height:145px;border-color:#82f6e899;transform:rotateX(65deg) rotateZ(-25deg)}
+.post-art span{z-index:1;font:400 clamp(22px,4vw,35px) Georgia,serif;color:#fff4d9;text-shadow:0 0 25px #82f6e8aa}
+.post-copy{padding:clamp(18px,3vw,28px);align-self:center}.creator-line{display:flex;align-items:center;gap:10px;margin-bottom:15px}.creator-avatar{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 30% 20%,#82f6e8,#57438a);border:1px solid #ffffff80;font:20px Georgia,serif}.creator-line strong{display:block;font-size:12px}.creator-line small{display:block;color:#aaa5c9;font-size:9px;margin-top:3px}.feed-label{color:var(--cyan);font-size:9px;font-weight:800;letter-spacing:.18em}.post-copy h3{font:400 clamp(22px,3vw,31px) Georgia,serif;margin:9px 0}.post-copy p{font-size:12px;line-height:1.7;color:#cbc6df;margin:0}.feed-link{display:inline-flex;margin-top:17px;padding:11px 15px;border:1px solid #82f6e877;border-radius:99px;color:#a9fff5;font-size:9px;font-weight:850;letter-spacing:.1em;text-decoration:none;background:#82f6e812}
+.live-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.live-card{position:relative;min-height:155px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(ellipse at 85% 10%,#ff7eaa55,transparent 42%),linear-gradient(140deg,#34204c,#15182f 65%,#123b49)}
+.live-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.live-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid #ff8bb588;border-radius:99px;color:#ffb3ce;background:#ff70a518;font-size:8px;font-weight:900;letter-spacing:.12em}.live-pill:before{content:"";width:6px;height:6px;border-radius:50%;background:#ff83b8;box-shadow:0 0 10px #ff83b8}.preview-pill{font-size:8px;color:#bdb8d5;letter-spacing:.1em}.live-card h3{font:400 22px Georgia,serif;margin:12px 0 5px}.live-card p{font-size:11px;color:#c8c3df;margin:0;line-height:1.5}
+.quick-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.quick-link{display:block;padding:16px;border:1px solid #ffffff22;border-radius:17px;background:linear-gradient(145deg,#202344,#11152c);color:var(--cream);text-decoration:none}.quick-link b{display:block;color:var(--cyan);font:21px Georgia,serif;margin-bottom:7px}.quick-link strong{font-size:11px}.quick-link span{display:block;color:#aaa5c9;font-size:9px;line-height:1.5;margin-top:5px}
+@media(max-width:650px){main{padding:13px 12px 45px}.stage{padding:19px 13px 20px;margin-bottom:24px;border-radius:22px}.portal-wrap{height:145px}.portal{width:132px}.stage .realms{gap:7px;margin-top:18px}.stage .realm{font-size:9px;padding:10px 12px}.creator-post{grid-template-columns:1fr}.post-art{min-height:175px}.live-row{grid-template-columns:1fr}.live-card{min-height:140px}.quick-links{grid-template-columns:1fr}.feed-heading h2{font-size:24px}.feed-heading p{font-size:8px}}
+@media(prefers-reduced-motion:reduce){.post-art:before,.post-art:after{animation:none}}
 </style>
 </head>
 <body>
@@ -39,6 +58,24 @@ body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
 <button class="realm" data-realm="LIVE"><b>◉</b>LIVE WORLDS</button>
 <button class="realm" data-realm="Create"><b>✦</b>CREATE</button>
 <button class="realm" data-realm="Community"><b>⌘</b>COMMUNITY</button>
+</div>
+</section>
+<section class="home-feed" aria-label="TikNation home feed">
+<div class="feed-heading"><div><div class="eyebrow">YOUR WORLD STARTS HERE</div><h2>Creator moments</h2></div><p>THE COMMUNITY FEED · PREVIEW</p></div>
+<article class="feed-card creator-post">
+<div class="post-art" role="img" aria-label="Abstract glowing portal artwork"><span>YOUR VOICE. YOUR WORLD.</span></div>
+<div class="post-copy"><div class="creator-line"><span class="creator-avatar" aria-hidden="true">T</span><div><strong>TikNationStudio</strong><small>@TikNationStudio · Creator spotlight</small></div></div><div class="feed-label">✦ FEATURED CREATOR</div><h3>Imagination has a place to belong.</h3><p>Explore the creator showcase, discover featured moments, and see how a creator's world can take shape inside TikNation.</p><a class="feed-link" href="./creator-showcase/">VISIT CREATOR SHOWCASE →</a></div>
+</article>
+<div class="feed-heading"><div><div class="eyebrow">STEP INTO THE MOMENT</div><h2>Explore LIVE Worlds</h2></div><p>DISCOVERY PREVIEW</p></div>
+<div class="live-row">
+<a class="feed-card live-card" href="./live-worlds/" style="text-decoration:none;color:inherit"><div class="live-top"><span class="live-pill">LIVE WORLDS</span><span class="preview-pill">CONCEPT PREVIEW</span></div><div><h3>Find your next live experience</h3><p>Explore the LIVE Worlds design and its interactive rooms.</p></div></a>
+<a class="feed-card live-card" href="./discover/" style="text-decoration:none;color:inherit;background:radial-gradient(ellipse at 85% 10%,#82f6e855,transparent 42%),linear-gradient(140deg,#153e4b,#171831 65%,#30204b)"><div class="live-top"><span class="live-pill" style="border-color:#82f6e877;color:#a9fff5;background:#82f6e812">DISCOVER</span><span class="preview-pill">EXPLORE</span></div><div><h3>Meet creators and find interests</h3><p>Browse creator spotlights and themed discovery spaces.</p></div></a>
+</div>
+<div class="feed-heading"><div><div class="eyebrow">MAKE IT YOURS</div><h2>More of TikNation</h2></div></div>
+<div class="quick-links">
+<a class="quick-link" href="./create/"><b>＋</b><strong>Create something</strong><span>Shape a post or creative idea.</span></a>
+<a class="quick-link" href="./community/"><b>⌘</b><strong>Find your community</strong><span>Explore spaces built around shared interests.</span></a>
+<a class="quick-link" href="./profile/"><b>◈</b><strong>Your creator space</strong><span>Visit your profile and showcase.</span></a>
 </div>
 </section></main>
 <footer>YOUR VOICE. YOUR WORLD. &nbsp;·&nbsp; IMAGINATION WITHOUT LIMITS</footer>
