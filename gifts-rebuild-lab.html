@@ -113,36 +113,29 @@ function startStormSound(ctx,base){
 }
 function playStormThunderStrike(){
  if(!soundOn)return;
- // Use a real recorded single thunderclap, not synthesized white noise.
- // A short delay after the flash gives the strike a more natural sense of distance.
- window.setTimeout(()=>{
-  if(!soundOn)return;
-  try{
-   const strike=new Audio("https://sfxjar.com/audio/2718.mp3");
-   strike.preload="auto";strike.volume=.95;
-   window.__tiknationThunderStrikes=window.__tiknationThunderStrikes||[];
-   window.__tiknationThunderStrikes.push(strike);
-   strike.play().catch(err=>{setAudioState("Thunder recording unavailable");say("Recorded thunder could not play: "+err.message,true);});
-   strike.addEventListener("ended",()=>{window.__tiknationThunderStrikes=window.__tiknationThunderStrikes.filter(x=>x!==strike);},{once:true});
-  }catch(err){setAudioState("Thunder recording error");say("Thunder sound error: "+err.message,true);}
- },260);
+ // Reuse the audio element that was started by the user's tap. This avoids
+ // mobile-browser autoplay blocking on a brand-new audio element per flash.
+ const strike=window.__tiknationStormThunder;
+ if(!strike||!strike.paused)return;
+ try{strike.currentTime=0;strike.play().catch(err=>{setAudioState("Thunder playback blocked");say("Thunder could not play: "+err.message,true);});}
+ catch(err){setAudioState("Thunder playback error");say("Thunder sound error: "+err.message,true);}
 }
 function startSoundInGesture(gift){
  if(!soundOn){setAudioState("Muted by toggle");return Promise.resolve(false);}
  if(gift.style==="storm"){
   try{
-   const C=window.AudioContext||window.webkitAudioContext;
-   if(C){if(!audio||audio.state==="closed")audio=new C();if(audio.state==="suspended")audio.resume().catch(()=>{});}
-   const previous=window.__tiknationStormTrack;
+   // This real outdoor thunderclap is started directly from the tap gesture.
+   // Reusing this same element for later flashes keeps mobile playback unlocked.
+   const previous=window.__tiknationStormThunder;
    if(previous){previous.pause();previous.currentTime=0;}
-   const track=new Audio("https://sfxjar.com/audio/0740.mp3");
-   track.preload="auto";track.volume=.9;window.__tiknationStormTrack=track;
-   return track.play().then(()=>{
-    setAudioState("Playing · real recorded rain + thunder");
-    window.setTimeout(()=>{if(window.__tiknationStormTrack===track){track.pause();track.currentTime=0;}},7800);
+   const strike=new Audio("https://bigsoundbank.com/UPLOAD/mp3/3114.mp3");
+   strike.preload="auto";strike.volume=1;window.__tiknationStormThunder=strike;
+   strike.addEventListener("error",()=>{setAudioState("Thunder file failed to load");say("The recorded thunder file could not load. Please tell me this exact status.",true);},{once:true});
+   return strike.play().then(()=>{
+    setAudioState("Thunder recording playing · outdoor field recording");
     return true;
-   }).catch(err=>{setAudioState("Storm recording unavailable");say("The external storm recording could not play: "+err.message,true);return false;});
-  }catch(err){setAudioState("Storm recording unavailable");say("Storm recording error: "+err.message,true);return Promise.resolve(false);}
+   }).catch(err=>{setAudioState("Thunder playback blocked");say("The browser blocked the thunder recording: "+err.message,true);return false;});
+  }catch(err){setAudioState("Thunder playback error");say("Thunder sound error: "+err.message,true);return Promise.resolve(false);}
  }
  const C=window.AudioContext||window.webkitAudioContext;if(!C){setAudioState("Unsupported");say("Web Audio is unavailable. Animation preview still works.",true);return;}
  try{if(!audio||audio.state==="closed")audio=new C();const ctx=audio;const resume=ctx.state==="suspended"?ctx.resume():Promise.resolve();
