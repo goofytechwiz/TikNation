@@ -496,7 +496,12 @@ if(gift.style==="dragon"||gift.style==="dragonrevenge"){const world=document.cre
  <filter id="c5Undulate" x="-12%" y="-18%" width="124%" height="136%"><feTurbulence type="fractalNoise" baseFrequency=".007 .016" numOctaves="2" seed="8" result="wave"><animate attributeName="baseFrequency" values=".006 .014;.012 .022;.006 .014" dur="2.1s" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="wave" scale="15" xChannelSelector="R" yChannelSelector="G"/></filter>
 </defs>
 <!-- Live, depth-shaded body sections are positioned along a moving 3D-style coil. -->
-<g id="c5BodySections"></g>
+<g id="c5BodySections">
+ <path id="c5BodyOutline" fill="none" stroke="#102b28" stroke-width="91" stroke-linecap="round" stroke-linejoin="round"/>
+ <path id="c5BodyCore" fill="none" stroke="url(#c5Body)" stroke-width="78" stroke-linecap="round" stroke-linejoin="round"/>
+ <path id="c5BodyScale" fill="none" stroke="url(#c5Scales)" stroke-width="69" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>
+ <path id="c5BodyBelly" fill="none" stroke="url(#c5Belly)" stroke-width="19" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+</g>
 <path class="c5-tail" d="M112 430Q48 398 28 342Q83 370 124 397Q86 337 104 291Q143 353 155 405Q180 359 225 345Q197 414 151 447Z" fill="url(#c5Mane)" stroke="#783c27" stroke-width="6"/>
 <!-- four agile legs with curved claws -->
 <g fill="url(#c5Body)" stroke="#704522" stroke-width="8" stroke-linejoin="round">
@@ -552,62 +557,21 @@ if(gift.style==="dragon"||gift.style==="dragonrevenge"){const world=document.cre
 const bodySvg=dragon.querySelector("svg");
 const bodyGroup=bodySvg&&bodySvg.querySelector("#c5BodySections");
 if(bodyGroup){
- const ns="http://www.w3.org/2000/svg", sections=[];
- const backbone=document.createElementNS(ns,"path");
- backbone.setAttribute("fill","none");
- backbone.setAttribute("stroke","url(#c5Body)");
- backbone.setAttribute("stroke-width","54");
- backbone.setAttribute("stroke-linecap","round");
- backbone.setAttribute("stroke-linejoin","round");
- backbone.setAttribute("opacity",".98");
- bodyGroup.appendChild(backbone);
- for(let i=0;i<42;i++){
-  const shell=document.createElementNS(ns,"ellipse");
-  shell.setAttribute("fill","url(#c5Body)");
-  shell.setAttribute("stroke","#153a31");
-  shell.setAttribute("stroke-width","3");
-  const scales=document.createElementNS(ns,"ellipse");
-  scales.setAttribute("fill","url(#c5Scales)");
-  scales.setAttribute("opacity",".72");
-  scales.setAttribute("pointer-events","none");
-  bodyGroup.append(shell,scales);
-  sections.push({shell,scales,u:i/41});
- }
- const tail=bodySvg.querySelector(".c5-tail");
- const legs=bodySvg.querySelectorAll("g[fill='url(#c5Body)']");
+ const paths=["c5BodyOutline","c5BodyCore","c5BodyScale","c5BodyBelly"].map(id=>bodySvg.querySelector("#"+id));
  const startAt=performance.now();
- let coilFrame=0;
- const coilMotion=now=>{
-  if(!overlay.isConnected)return;
-  const t=(now-startAt)/1000, phase=t*1.05;
-  const spinePoints=sections.map(({u})=>{const e=Math.sin(Math.PI*u),w=phase+u*Math.PI*2.25;return [94+770*u+Math.sin(w*1.45)*48*e,430-160*u+Math.sin(w)*112*e];});
-  backbone.setAttribute("d",spinePoints.map((p,i)=>(i?"L":"M")+p[0].toFixed(2)+" "+p[1].toFixed(2)).join(" "));
-  sections.forEach(({shell,scales,u})=>{
-   const envelope=Math.sin(Math.PI*u);
-   const wave=phase+u*Math.PI*2.25;
-   const x=94+770*u+Math.sin(wave*1.45)*48*envelope;
-   const y=430-160*u+Math.sin(wave)*112*envelope;
-   const z=Math.cos(wave);
-   const ahead=Math.min(1,u+.012), behind=Math.max(0,u-.012);
-   const point=(v)=>{const e=Math.sin(Math.PI*v),w=phase+v*Math.PI*2.25;return [94+770*v+Math.sin(w*1.45)*48*e,430-160*v+Math.sin(w)*112*e]};
-   const p1=point(behind),p2=point(ahead);
-   const angle=Math.atan2(p2[1]-p1[1],p2[0]-p1[0])*180/Math.PI+90;
-   const depth=.72+(z+1)*.18;
-   const radius=(25+Math.sin(u*Math.PI)*7)*depth;
-   [shell,scales].forEach(el=>{
-    el.setAttribute("cx",x.toFixed(2));el.setAttribute("cy",(y+z*8).toFixed(2));
-    el.setAttribute("rx",(radius*1.25).toFixed(2));el.setAttribute("ry",radius.toFixed(2));
-    el.setAttribute("transform","rotate("+angle.toFixed(2)+" "+x.toFixed(2)+" "+(y+z*8).toFixed(2)+")");
-   });
-   shell.setAttribute("stroke",z>.35?"#d9b45c":"#153a31");
-   shell.setAttribute("opacity",String(.68+(z+1)*.16));
-   scales.setAttribute("opacity",String(.38+(z+1)*.2));
-  });
-  if(tail){const first=sections[0];tail.setAttribute("transform","translate("+(-Math.sin(phase)*9)+" "+(Math.sin(phase)*12)+") rotate("+Math.sin(phase+1)*13+" 130 410)");}
-  if(legs&&legs[0])legs[0].setAttribute("transform","translate(0 "+(Math.sin(phase*1.5)*5)+")");
-  coilFrame=requestAnimationFrame(coilMotion);
+ const makeCoil=t=>{
+  const a=18*Math.sin(t*1.05), b=24*Math.sin(t*1.05+1.7), c=20*Math.sin(t*1.05+3.2);
+  return "M 112 430 C "+(185+a)+" "+(315+b)+" "+(270-a)+" "+(255-b)+" 365 315 C "+(465+c)+" "+(405+a)+" "+(505-c)+" "+(505-a)+" 600 405 C "+(700+b)+" "+(485-c)+" "+(730-b)+" "+(350+c)+" 790 275 C 810 250 826 244 850 250";
  };
- coilFrame=requestAnimationFrame(coilMotion);
+ const animateBody=now=>{
+  if(!overlay.isConnected)return;
+  const d=makeCoil((now-startAt)/1000);
+  paths.forEach(p=>{if(p)p.setAttribute("d",d)});
+  const tail=bodySvg.querySelector(".c5-tail");
+  if(tail)tail.setAttribute("transform","translate("+(-Math.sin((now-startAt)/1000*1.05)*5)+" "+(Math.sin((now-startAt)/1000*1.05)*7)+")");
+  requestAnimationFrame(animateBody);
+ };
+ requestAnimationFrame(animateBody);
 }
 world.appendChild(title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const dragonDuration=Math.max(5000,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},dragonDuration);return overlay;}return renderCinematicGift(gift,opts,overlay);const scene=worlds[gift.style];if(scene){const world=document.createElement("div");world.className="gift-world";world.dataset.world=scene[0];const halo=document.createElement("div");halo.className="world-halo";const ground=document.createElement("div");ground.className="world-ground";const beam=document.createElement("div");beam.className="world-beam";const hero=document.createElement("div");hero.className="world-hero";hero.textContent=scene[1];const left=document.createElement("div");left.className="world-side left";left.textContent=scene[2];const right=document.createElement("div");right.className="world-side right";right.textContent=scene[3];const title=document.createElement("div");title.className="world-title";title.textContent=gift.name||"TikNation Gift";const message=document.createElement("span");message.className="world-message";message.textContent=gift.message||"A gift has arrived.";title.appendChild(message);world.append(halo,ground,beam,left,right,hero);
 const motionStart=Date.now();let motionTimer=0;function animateWorld(){if(!overlay.isConnected){if(motionTimer)clearInterval(motionTimer);return;}const t=(Date.now()-motionStart)/1000;const entry=Math.min(1,(Date.now()-motionStart)/950);const ease=1-Math.pow(1-entry,3);hero.style.opacity=String(ease);hero.style.transform="translate(-50%,calc(-50% + "+((1-ease)*150+Math.sin(t*1.8)*10)+"px)) scale("+(0.25+ease*.82+Math.sin(t*2.1)*.07)+") rotate("+((1-ease)*-24+Math.sin(t*1.4)*5)+"deg)";halo.style.transform="rotate("+((t*42)%360)+"deg) scale("+(1+Math.sin(t*1.7)*.09)+")";ground.style.transform="scale("+(1.05+Math.sin(t*2.4)*.22)+")";ground.style.opacity=String(.58+Math.sin(t*2.4)*.2);beam.style.transform="rotate("+Math.sin(t*1.35)*27+"deg)";beam.style.opacity=String(.5+Math.sin(t*1.35)*.35);left.style.transform="translateY("+Math.sin(t*1.8)*38+"px) rotate("+Math.sin(t*1.5)*15+"deg) scale("+(1+Math.sin(t*1.8)*.12)+")";right.style.transform="translateY("+Math.sin(t*1.55+2)*42+"px) rotate("+Math.sin(t*1.3+2)*15+"deg) scale("+(1+Math.sin(t*1.55+2)*.12)+")";} for(let i=0;i<18;i++){const p=document.createElement("span");p.className="world-particle";p.textContent=[scene[4],"✦","•","✧"][i%4];p.style.setProperty("--x",((i%2?1:-1)*(70+(i%6)*34))+"px");p.style.setProperty("--delay",(i*.11)+"s");world.appendChild(p);try{p.animate([{opacity:0,transform:"translate(-50%,20vh) scale(.2)"},{opacity:1,offset:.18},{opacity:0,transform:"translate(calc(-50% + "+((i%2?1:-1)*(70+(i%6)*34))+"px),-65vh) scale(1.1)"}],{duration:2800,delay:i*110,iterations:Infinity,easing:"ease-out"});}catch(_){}}world.appendChild(title);overlay.appendChild(world);document.body.appendChild(overlay);animateWorld();motionTimer=setInterval(animateWorld,32);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const sceneDuration=Math.max(4000,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},sceneDuration);return overlay;}const stage=document.createElement("div");stage.className="stage";const ring=document.createElement("div");ring.className="ring";const hero=document.createElement("div");hero.className="hero";hero.textContent=gift.emoji||"🎁";hero.setAttribute("aria-hidden","true");const title=document.createElement("div");title.className="title";title.textContent=gift.name||"TikNation Gift";const message=document.createElement("div");message.className="message";message.textContent=gift.message||"A gift has arrived.";const meta=document.createElement("div");meta.className="meta";meta.textContent=opts.meta||"TIKNATION LIVE · GIFT RECEIVED";stage.append(ring,hero,title,message,meta);if(!window.matchMedia||!window.matchMedia("(prefers-reduced-motion: reduce)").matches){const symbols=["✦","✧","✶","•","✷","⋆"];for(let i=0;i<28;i++){const p=document.createElement("span");const a=Math.PI*2*i/28,d=110+(i%5)*42;p.className="particle";p.textContent=symbols[i%symbols.length];p.style.setProperty("--dx",Math.cos(a)*d+"px");p.style.setProperty("--dy",Math.sin(a)*d+"px");p.style.setProperty("--delay",(i%7)*.035+"s");stage.appendChild(p)}}overlay.appendChild(stage);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const duration=Math.max(1800,Number(opts.duration)||4300);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .35s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),380)}},duration);return overlay}
