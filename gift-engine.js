@@ -611,7 +611,7 @@ function renderHauntedHearseGift(gift,opts,overlay){
    const ghostBody=new THREE.Mesh(new THREE.ConeGeometry(.34,1.2,10),ghostMat);ghostBody.position.y=.3;ghost.add(ghostBody);
    const ghostHead=new THREE.Mesh(new THREE.SphereGeometry(.22,16,12),ghostMat);ghostHead.position.y=1.03;ghost.add(ghostHead);
    const loading=scene.querySelector(".hearse-loading");if(loading)loading.remove();
-   resizeHandler=()=>{if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight),aspect=width/height;renderer.setSize(width,height,false);camera.aspect=aspect;if(aspect<.82){camera.fov=48;camera.position.set(10.8,7.5,14.5);}else{camera.fov=34;camera.position.set(8.8,5.3,10.5);}camera.lookAt(0,1.05,0);camera.updateProjectionMatrix();};window.addEventListener("resize",resizeHandler);
+   resizeHandler=()=>{if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight),aspect=width/height;renderer.setSize(width,height,false);camera.aspect=aspect;if(aspect<.82){camera.fov=48;camera.position.set(10.8,7.5,14.5);}else{camera.fov=34;camera.position.set(8.8,5.3,10.5);}camera.lookAt(0,1.05,0);camera.updateProjectionMatrix();};resizeHandler();window.addEventListener("resize",resizeHandler);
    const clock=new THREE.Clock();let elapsed=0;
    function animate(){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(animate);const dt=Math.min(.05,clock.getDelta());elapsed+=dt;
     const arrival=Math.min(1,Math.max(0,(elapsed-.3)/2.3));car.position.x=-1.05+(1-Math.pow(1-arrival,3))*1.05;car.position.y=Math.sin(elapsed*1.7)*.012;
