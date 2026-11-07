@@ -101,39 +101,29 @@ function startMeteorShowerSound(ctx,base){
 }
 function startSoundInGesture(gift){
  if(!soundOn){setAudioState("Muted by toggle");return;}
- const C=window.AudioContext||window.webkitAudioContext;
- if(!C){setAudioState("Unsupported");say("This browser does not expose Web Audio. Animation tests remain available.",true);return;}
+ const C=window.AudioContext||window.webkitAudioContext;if(!C){setAudioState("Unsupported");say("Web Audio is unavailable. Animation preview still works.",true);return;}
  try{
-  if(!audio||audio.state==="closed")audio=new C();
-  const ctx=audio;
-  // Resume synchronously inside the tap, before starting the animation.
+  if(!audio||audio.state==="closed")audio=new C();const ctx=audio;
   const resume=ctx.state==="suspended"?ctx.resume():Promise.resolve();
-  const notes=Array.isArray(gift.sound)&&gift.sound.length?gift.sound:[523,659,784,1047];
   const schedule=()=>{
    if(ctx.state!=="running"){setAudioState("Blocked · "+ctx.state);return;}
-   const base=ctx.currentTime+.025;else if(gift.style==="dragon"){
-    startDragonSound(ctx,base);
-    setAudioState("Playing · dragon roar + fire blast");
-   }else if(gift.style==="meteor"){
-    startMeteorShowerSound(ctx,base);
-    setAudioState("Playing · meteor whooshes + fiery impacts");
+   const base=ctx.currentTime+.025;
+   if(gift.style==="dragon"){startDragonSound(ctx,base);setAudioState("Playing · dragon roar + fire blast");return;}
+   if(gift.style==="meteor"){startMeteorShowerSound(ctx,base);setAudioState("Playing · meteor whooshes + fiery impacts");return;}
+   if(gift.style==="storm"){
+    const length=Math.floor(ctx.sampleRate*4.6),buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);
+    for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(.75+Math.random()*.25);
+    const rumble=ctx.createBufferSource();rumble.buffer=buffer;const low=ctx.createBiquadFilter();low.type="lowpass";low.frequency.setValueAtTime(180,base);low.frequency.exponentialRampToValueAtTime(48,base+3.8);
+    const gain=ctx.createGain();gain.gain.setValueAtTime(.0001,base);gain.gain.exponentialRampToValueAtTime(.28,base+.55);gain.gain.setValueAtTime(.19,base+1.2);gain.gain.exponentialRampToValueAtTime(.0001,base+4.5);
+    rumble.connect(low);low.connect(gain);gain.connect(ctx.destination);rumble.start(base);rumble.stop(base+4.6);
+    for(let n=0;n<3;n++){const at=base+.35+n*1.35,thunder=ctx.createBufferSource(),buf=ctx.createBuffer(1,Math.floor(ctx.sampleRate*1.5),ctx.sampleRate),samples=buf.getChannelData(0);for(let i=0;i<samples.length;i++)samples[i]=(Math.random()*2-1)*(1-i/samples.length);thunder.buffer=buf;const filter=ctx.createBiquadFilter();filter.type="lowpass";filter.frequency.value=115;const g=ctx.createGain();g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.38,at+.025);g.gain.exponentialRampToValueAtTime(.0001,at+1.4);thunder.connect(filter);filter.connect(g);g.connect(ctx.destination);thunder.start(at);thunder.stop(at+1.45);}
+    setAudioState("Playing · rolling thunder + lightning");return;
    }
-   if(gift.style!=="dragon"&&gift.style!=="dragonrevenge"&&gift.style!=="meteor"){
-   notes.forEach((raw,i)=>{
-    const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22;
-    const osc=ctx.createOscillator(),gain=ctx.createGain(),harm=ctx.createOscillator(),hg=ctx.createGain();
-    osc.type="triangle";osc.frequency.setValueAtTime(hz,at);
-    gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.14,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.48);
-    harm.type="sine";harm.frequency.setValueAtTime(hz*2,at);
-    hg.gain.setValueAtTime(.0001,at);hg.gain.exponentialRampToValueAtTime(.04,at+.02);hg.gain.exponentialRampToValueAtTime(.0001,at+.34);
-    osc.connect(gain);gain.connect(ctx.destination);harm.connect(hg);hg.connect(ctx.destination);
-    osc.start(at);osc.stop(at+.5);harm.start(at);harm.stop(at+.36);
-   });
-   }
-   if(gift.style!=="dragon"&&gift.style!=="meteor")setAudioState("Playing · "+notes.length+" notes");
+   const notes=Array.isArray(gift.sound)&&gift.sound.length?gift.sound:[523,659,784,1047];
+   notes.forEach((raw,i)=>{const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22,osc=ctx.createOscillator(),gain=ctx.createGain();osc.type="triangle";osc.frequency.setValueAtTime(hz,at);gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.14,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.48);osc.connect(gain);gain.connect(ctx.destination);osc.start(at);osc.stop(at+.5);});
+   setAudioState("Playing · "+notes.length+" notes");
   };
-  if(ctx.state==="running")schedule();
-  else resume.then(schedule).catch(err=>{setAudioState("Resume failed");say("Audio resume failed: "+err.message,true);});
+  if(ctx.state==="running")schedule();else resume.then(schedule).catch(err=>{setAudioState("Resume failed");say("Audio resume failed: "+err.message,true);});
  }catch(err){setAudioState("Error");say("Audio error: "+err.message,true);}
 }
 function preview(code,gift){
