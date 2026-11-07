@@ -35,23 +35,24 @@ let selected="All",soundOn=true,audio=null,lastSound="Not started";
 const entries=Object.entries(catalog),categories=["All",...new Set(entries.map(([,g])=>g.category||"Other"))];
 function say(message,isError){status.textContent=message;status.classList.toggle("error",!!isError);}
 function setAudioState(value){lastSound=value;document.getElementById("audioState").textContent=value;}
-function startVoidRiftSound(ctx,base){
- // A low cinematic pressure swell, tearing air sweep, then a heavy sub impact and long decay.
- const duration=4.8,length=Math.floor(ctx.sampleRate*duration),buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);
- for(let i=0;i<length;i++){const t=i/ctx.sampleRate;data[i]=(Math.random()*2-1)*(0.72+0.28*Math.sin(t*31));}
- const tear=ctx.createBufferSource(),tearFilter=ctx.createBiquadFilter(),tearGain=ctx.createGain();
- tear.buffer=buffer;tearFilter.type="bandpass";tearFilter.Q.value=.55;tearFilter.frequency.setValueAtTime(180,base);tearFilter.frequency.exponentialRampToValueAtTime(1250,base+1.8);tearFilter.frequency.exponentialRampToValueAtTime(95,base+3.4);
- tearGain.gain.setValueAtTime(.0001,base);tearGain.gain.exponentialRampToValueAtTime(.17,base+.8);tearGain.gain.exponentialRampToValueAtTime(.0001,base+3.6);
- tear.connect(tearFilter);tearFilter.connect(tearGain);tearGain.connect(ctx.destination);tear.start(base);tear.stop(base+3.7);
- const sub=ctx.createOscillator(),subGain=ctx.createGain(),subFilter=ctx.createBiquadFilter();
- sub.type="sine";sub.frequency.setValueAtTime(58,base+2.65);sub.frequency.exponentialRampToValueAtTime(28,base+4.55);
- subFilter.type="lowpass";subFilter.frequency.value=115;
- subGain.gain.setValueAtTime(.0001,base+2.65);subGain.gain.exponentialRampToValueAtTime(.42,base+2.78);subGain.gain.setValueAtTime(.31,base+3.2);subGain.gain.exponentialRampToValueAtTime(.0001,base+4.7);
- sub.connect(subFilter);subFilter.connect(subGain);subGain.connect(ctx.destination);sub.start(base+2.65);sub.stop(base+4.75);
- const hit=ctx.createBufferSource(),hitFilter=ctx.createBiquadFilter(),hitGain=ctx.createGain();
- hit.buffer=buffer;hitFilter.type="lowpass";hitFilter.frequency.setValueAtTime(460,base+2.65);hitFilter.frequency.exponentialRampToValueAtTime(70,base+4.1);
- hitGain.gain.setValueAtTime(.0001,base+2.65);hitGain.gain.exponentialRampToValueAtTime(.34,base+2.68);hitGain.gain.exponentialRampToValueAtTime(.0001,base+4.35);
- hit.connect(hitFilter);hitFilter.connect(hitGain);hitGain.connect(ctx.destination);hit.start(base+2.65);hit.stop(base+4.4);
+function startVoidRiftSound(){
+ // Published CC0 portal transition + creator-made Pixabay cinematic impact.
+ const old=window.__tiknationVoidRiftAudio||[];
+ old.forEach(a=>{try{a.pause();a.currentTime=0;}catch(_){}});
+ if(window.__tiknationVoidRiftTimers)window.__tiknationVoidRiftTimers.forEach(clearTimeout);
+ const opening=new Audio("https://sfxmint.com/dl/magic-scifi-portal-32.mp3");
+ const collapse=new Audio("https://sfxmint.com/dl/magic-scifi-portal-36.mp3");
+ const impact=new Audio("https://cdn.pixabay.com/download/audio/2022/10/24/audio_75bc71dae3.mp3?filename=boom-geomorphism-cinematic-trailer-sound-effects-123876.mp3");
+ [opening,collapse,impact].forEach(a=>{a.preload="auto";a.volume=1;});
+ window.__tiknationVoidRiftAudio=[opening,collapse,impact];
+ const timers=[];
+ opening.addEventListener("error",()=>{setAudioState("Portal sound failed to load");say("The portal sound file failed to load. Please tell me this status.",true);},{once:true});
+ impact.addEventListener("error",()=>{setAudioState("Impact sound failed to load");say("The cinematic impact file failed to load. Please tell me this status.",true);},{once:true});
+ const play=(a)=>a.play().catch(err=>{setAudioState("Sound playback blocked");say("The browser blocked a Void Rift sound: "+err.message,true);});
+ play(opening);
+ timers.push(setTimeout(()=>{play(impact);play(collapse);},5100));
+ window.__tiknationVoidRiftTimers=timers;
+ setAudioState("Playing · portal tear + cinematic impact");
 }
 function startDragonSound(ctx,base){
   // A layered, synthesized roar followed by a hot, crackling fire blast.
@@ -161,7 +162,7 @@ function startSoundInGesture(gift){
  if(gift.style==="dragon"){startDragonSound(ctx,base);setAudioState("Playing · dragon roar + fire blast");return;}
  if(gift.style==="meteor"){startMeteorShowerSound(ctx,base);setAudioState("Playing · meteor whooshes + fiery impacts");return;}
  if(gift.style==="storm"){startStormSound(ctx,base);setAudioState("Playing · wind, rain + rolling thunder");return;}
- if(gift.style==="voidrift"){startVoidRiftSound(ctx,base);setAudioState("Playing · void pressure + collapse impact");return;}
+ if(gift.style==="voidrift"){startVoidRiftSound();return;}
  const notes=Array.isArray(gift.sound)&&gift.sound.length?gift.sound:[523,659,784,1047];notes.forEach((raw,i)=>{const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22,osc=ctx.createOscillator(),gain=ctx.createGain();osc.type="triangle";osc.frequency.setValueAtTime(hz,at);gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.14,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.48);osc.connect(gain);gain.connect(ctx.destination);osc.start(at);osc.stop(at+.5);});setAudioState("Playing · "+notes.length+" notes");};
  if(ctx.state==="running")schedule();else resume.then(schedule).catch(err=>{setAudioState("Resume failed");say("Audio resume failed: "+err.message,true);});
  }catch(err){setAudioState("Error");say("Audio error: "+err.message,true);}
