@@ -71,10 +71,10 @@ function startMeteorShowerSound(ctx,base){
   // A sustained fiery atmosphere keeps the sound from becoming one short swish.
   const bed=ctx.createBufferSource(),bedFilter=ctx.createBiquadFilter(),bedGain=ctx.createGain();
   bed.buffer=buffer;bedFilter.type="lowpass";bedFilter.frequency.setValueAtTime(720,base);bedFilter.frequency.linearRampToValueAtTime(1150,base+2.2);bedFilter.frequency.exponentialRampToValueAtTime(390,base+5.1);
-  bedGain.gain.setValueAtTime(.0001,base);bedGain.gain.exponentialRampToValueAtTime(.105,base+.65);bedGain.gain.setValueAtTime(.09,base+3.8);bedGain.gain.exponentialRampToValueAtTime(.0001,base+5.25);
+  bedGain.gain.setValueAtTime(.0001,base);bedGain.gain.exponentialRampToValueAtTime(.24,base+.65);bedGain.gain.setValueAtTime(.2,base+3.8);bedGain.gain.exponentialRampToValueAtTime(.0001,base+5.25);
   bed.connect(bedFilter);bedFilter.connect(bedGain);bedGain.connect(ctx.destination);bed.start(base);bed.stop(base+5.3);
   // Seven separate meteors sweep across the stereo field with longer, descending flame trails.
-  const passes=[{at:.12,pan:-.8,peak:.19,high:3100,low:420},{at:.72,pan:.7,peak:.17,high:2700,low:350},{at:1.35,pan:-.35,peak:.2,high:3400,low:390},{at:2.02,pan:.85,peak:.18,high:2900,low:330},{at:2.72,pan:-.72,peak:.2,high:3200,low:410},{at:3.45,pan:.38,peak:.18,high:2800,low:320},{at:4.08,pan:-.12,peak:.2,high:3300,low:370}];
+  const passes=[{at:.12,pan:-.8,peak:.34,high:3100,low:420},{at:.72,pan:.7,peak:.31,high:2700,low:350},{at:1.35,pan:-.35,peak:.36,high:3400,low:390},{at:2.02,pan:.85,peak:.32,high:2900,low:330},{at:2.72,pan:-.72,peak:.2,high:3200,low:410},{at:3.45,pan:.38,peak:.18,high:2800,low:320},{at:4.08,pan:-.12,peak:.2,high:3300,low:370}];
   passes.forEach(p=>{
     const src=ctx.createBufferSource();src.buffer=buffer;
     const filter=ctx.createBiquadFilter();filter.type="bandpass";filter.Q.value=.42;
@@ -89,8 +89,8 @@ function startMeteorShowerSound(ctx,base){
   [1.12,2.82,4.48].forEach((at,i)=>{
     const hit=ctx.createOscillator(),hitGain=ctx.createGain(),sub=ctx.createOscillator(),subGain=ctx.createGain();
     hit.type="triangle";hit.frequency.setValueAtTime(145-i*12,base+at);hit.frequency.exponentialRampToValueAtTime(42,base+at+.82);
-    hitGain.gain.setValueAtTime(.0001,base+at);hitGain.gain.exponentialRampToValueAtTime(.27,base+at+.025);hitGain.gain.exponentialRampToValueAtTime(.0001,base+at+1.05);
-    sub.type="sine";sub.frequency.setValueAtTime(78-i*7,base+at);subGain.gain.setValueAtTime(.0001,base+at);subGain.gain.exponentialRampToValueAtTime(.2,base+at+.035);subGain.gain.exponentialRampToValueAtTime(.0001,base+at+1.2);
+    hitGain.gain.setValueAtTime(.0001,base+at);hitGain.gain.exponentialRampToValueAtTime(.42,base+at+.025);hitGain.gain.exponentialRampToValueAtTime(.0001,base+at+1.05);
+    sub.type="sine";sub.frequency.setValueAtTime(78-i*7,base+at);subGain.gain.setValueAtTime(.0001,base+at);subGain.gain.exponentialRampToValueAtTime(.34,base+at+.035);subGain.gain.exponentialRampToValueAtTime(.0001,base+at+1.2);
     hit.connect(hitGain);hitGain.connect(ctx.destination);sub.connect(subGain);subGain.connect(ctx.destination);
     hit.start(base+at);hit.stop(base+at+1.08);sub.start(base+at);sub.stop(base+at+1.22);
     const crack=ctx.createBufferSource(),crackFilter=ctx.createBiquadFilter(),crackGain=ctx.createGain();
@@ -131,7 +131,7 @@ function startSoundInGesture(gift){
     osc.start(at);osc.stop(at+.5);harm.start(at);harm.stop(at+.36);
    });
    }
-   if(gift.style!=="dragon")setAudioState("Playing · "+notes.length+" notes");
+   if(gift.style!=="dragon"&&gift.style!=="meteor")setAudioState("Playing · "+notes.length+" notes");
   };
   if(ctx.state==="running")schedule();
   else resume.then(schedule).catch(err=>{setAudioState("Resume failed");say("Audio resume failed: "+err.message,true);});
