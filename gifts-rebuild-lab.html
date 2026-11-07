@@ -79,6 +79,7 @@ function startSoundInGesture(gift){
     startDragonSound(ctx,base);
     setAudioState("Playing · dragon roar + fire blast");
    }
+   if(gift.style!=="dragon"&&gift.style!=="dragonrevenge"){
    notes.forEach((raw,i)=>{
     const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22;
     const osc=ctx.createOscillator(),gain=ctx.createGain(),harm=ctx.createOscillator(),hg=ctx.createGain();
@@ -89,6 +90,7 @@ function startSoundInGesture(gift){
     osc.connect(gain);gain.connect(ctx.destination);harm.connect(hg);hg.connect(ctx.destination);
     osc.start(at);osc.stop(at+.5);harm.start(at);harm.stop(at+.36);
    });
+   }
    if(gift.style!=="dragon")setAudioState("Playing · "+notes.length+" notes");
   };
   if(ctx.state==="running")schedule();
@@ -102,6 +104,18 @@ function preview(code,gift){
   if(!engine||typeof engine.show!=="function")throw new Error("Animation engine did not load.");
   const result=engine.show(gift,{meta:"TIKNATION GIFTS REBUILD LAB · LOCAL PREVIEW",duration:6200});
   if(result!==true&&!(result&&result.isConnected))throw new Error("Animation engine did not accept this preview.");
+  if(gift.style==="dragon"||gift.style==="dragonrevenge"){
+   const overlay=document.getElementById("tiknation-gift-engine");
+   const far=overlay&&overlay.querySelector(".dragon-wing-far"),near=overlay&&overlay.querySelector(".dragon-wing-near");
+   if(far&&typeof far.animate==="function"){
+    far.style.transformBox="view-box";far.style.transformOrigin="490px 385px";
+    far.animate([{transform:"rotate(-12deg) scaleY(.9)"},{transform:"rotate(17deg) scaleY(1.08)"}],{duration:560,direction:"alternate",iterations:Infinity,easing:"ease-in-out"});
+   }
+   if(near&&typeof near.animate==="function"){
+    near.style.transformBox="view-box";near.style.transformOrigin="490px 390px";
+    near.animate([{transform:"rotate(15deg) scaleY(1.08)"},{transform:"rotate(-14deg) scaleY(.9)"}],{duration:560,direction:"alternate",iterations:Infinity,easing:"ease-in-out"});
+   }
+  }
   say("Preview launched: "+(gift.name||code)+". Sound and animation were started separately; no coins spent.");
  }catch(err){say("Preview failed for "+(gift.name||code)+": "+err.message,true);console.error(err);}
 }
