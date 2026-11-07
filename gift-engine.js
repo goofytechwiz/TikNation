@@ -474,6 +474,26 @@ function renderCinematicGift(gift,opts,overlay){
   }
   if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const skeletonDuration=Math.max(7000,Number(opts.duration)||9000);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .55s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),580)}},skeletonDuration);return overlay;
  }
+ if(style==="meteor"){
+  world.classList.add("meteor-stage");
+  let meteorStyle=document.getElementById("tiknation-meteor-style");
+  if(!meteorStyle){meteorStyle=document.createElement("style");meteorStyle.id="tiknation-meteor-style";document.head.appendChild(meteorStyle);}
+  meteorStyle.textContent=`
+  #tiknation-gift-engine[data-style=meteor]{background:radial-gradient(ellipse at 50% 70%,rgba(95,37,18,.42),rgba(2,5,14,.98) 72%)!important}
+  #tiknation-gift-engine[data-style=meteor] .meteor-stage{background:radial-gradient(ellipse at 50% 82%,rgba(255,107,35,.22),transparent 38%),linear-gradient(160deg,#080d1b,#17101a 58%,#03050c)}
+  #tiknation-gift-engine[data-style=meteor] .meteor-stage:before{content:"";position:absolute;z-index:1;left:-35%;top:17%;width:82vw;height:18px;border-radius:50%;background:linear-gradient(90deg,transparent,rgba(255,110,35,.05) 18%,#ff7b27 65%,#fff5bd);filter:blur(7px);transform:rotate(28deg);animation:meteor-trail 1.65s cubic-bezier(.2,.7,.3,1) both}
+  #tiknation-gift-engine[data-style=meteor] .meteor-stage:after{content:"";position:absolute;z-index:1;left:50%;top:58%;width:min(48vw,300px);aspect-ratio:1;border:5px solid rgba(255,208,119,.9);border-radius:50%;box-shadow:0 0 28px #ff762e,inset 0 0 22px #ff9a42;opacity:0;transform:translate(-50%,-50%) scale(.12);animation:meteor-impact 2.8s 1.35s ease-out both}
+  #tiknation-gift-engine[data-style=meteor] .cinema-art{z-index:3;width:min(66vw,430px);animation:meteor-flight 2.05s cubic-bezier(.18,.72,.2,1) both;filter:drop-shadow(0 0 22px #ff8b36) drop-shadow(0 18px 28px #000b)}
+  #tiknation-gift-engine[data-style=meteor] .cinema-object{animation:meteor-spin 2.1s ease-in-out both}
+  #tiknation-gift-engine[data-style=meteor] .cinema-title{z-index:5;text-shadow:0 0 16px #ff8b36,0 3px 14px #000}
+  #tiknation-gift-engine[data-style=meteor] .cinema-title small{color:#ffe0b6}
+  @keyframes meteor-trail{0%{opacity:0;transform:translate(-22vw,-28vh) rotate(28deg) scaleX(.2)}35%{opacity:1}100%{opacity:.12;transform:translate(68vw,42vh) rotate(28deg) scaleX(1.15)}}
+  @keyframes meteor-flight{0%{opacity:0;transform:translate(-70vw,-55vh) rotate(18deg) scale(.35)}18%{opacity:1}72%{transform:translate(5vw,3vh) rotate(8deg) scale(1.12)}100%{opacity:1;transform:translate(0,0) rotate(0) scale(1.08)}}
+  @keyframes meteor-spin{0%{transform:rotate(-38deg) scale(.7)}65%{transform:rotate(20deg) scale(1.08)}100%{transform:rotate(0) scale(1)}}
+  @keyframes meteor-impact{0%{opacity:0;transform:translate(-50%,-50%) scale(.12)}18%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(2.1)}}
+  @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=meteor] .cinema-art,#tiknation-gift-engine[data-style=meteor] .meteor-stage:before,#tiknation-gift-engine[data-style=meteor] .meteor-stage:after{animation:none!important;opacity:1}}
+  `;
+ }
  const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
  if(!reduced){for(let i=0;i<10;i++){const mote=document.createElement("i");mote.className="cinema-mote";mote.style.setProperty("--mx",(Math.cos(i*2.4)*42)+"vw");mote.style.setProperty("--my",(Math.sin(i*2.4)*34)+"vh");mote.style.setProperty("--wait",(i*.19)+"s");world.appendChild(mote);}}
  overlay.appendChild(world);document.body.appendChild(overlay);
