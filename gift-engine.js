@@ -358,36 +358,57 @@ function renderPhoenixRisingGift(gift,opts,overlay){
  let style=document.getElementById(styleId);
  if(!style){style=document.createElement("style");style.id=styleId;document.head.appendChild(style);}
  style.textContent=`
- #tiknation-gift-engine[data-style=phoenix_rising]{position:fixed!important;inset:0!important;padding:0!important;background:#09040a!important}
- #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-scene{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 72%,#70240d 0%,#29101a 35%,#090713 76%);isolation:isolate}
- #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-moon{position:absolute;width:min(72vw,520px);aspect-ratio:1;left:50%;top:42%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 38% 32%,#fff4d2 0%,#ffbd66 18%,#d85b2b 42%,#5d1a23 68%,transparent 72%);filter:blur(1px);opacity:.72;box-shadow:0 0 85px #ff6b2580}
- #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-firebed{position:absolute;left:-15%;right:-15%;bottom:-18%;height:52%;background:radial-gradient(ellipse at 50% 15%,#fff3a1 0%,#ff8a22 15%,#c92e12 35%,transparent 70%);filter:blur(18px);animation:ph-fire 1.8s ease-in-out infinite alternate}
- #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-flame{position:absolute;bottom:-4%;width:18%;height:40%;border-radius:50% 50% 15% 15%;background:linear-gradient(0deg,#ff3d12,#ff9c25 40%,#fff0a0 75%,transparent);filter:blur(7px);transform-origin:bottom;animation:ph-flame .8s ease-in-out infinite alternate}
- #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-flame.f1{left:8%;height:32%;animation-delay:-.2s}#tiknation-gift-engine[data-style=phoenix_rising] .phoenix-flame.f2{left:28%;height:45%;animation-delay:-.6s}#tiknation-gift-engine[data-style=phoenix_rising] .phoenix-flame.f3{right:25%;height:39%;animation-delay:-.4s}#tiknation-gift-engine[data-style=phoenix_rising] .phoenix-flame.f4{right:5%;height:30%;animation-delay:-.1s}
- #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-bird{position:absolute;z-index:4;left:50%;top:58%;width:min(94vw,820px);height:auto;overflow:visible;transform:translate(-50%,-50%);filter:drop-shadow(0 0 22px #ff8a2b) drop-shadow(0 0 55px #e9441b);animation:ph-rise 8.2s cubic-bezier(.18,.72,.24,1) both}
- #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-wing-left{transform-box:view-box;transform-origin:400px 315px;animation:ph-wing-left .72s ease-in-out infinite alternate}
- #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-wing-right{transform-box:view-box;transform-origin:400px 315px;animation:ph-wing-right .72s ease-in-out infinite alternate}
- #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-tail{transform-box:view-box;transform-origin:400px 450px;animation:ph-tail 2.4s ease-in-out infinite alternate}
- #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-title{position:absolute;z-index:8;left:0;right:0;bottom:8%;text-align:center;color:#fff3d0;font:1000 clamp(25px,6vw,52px)/1.1 system-ui;letter-spacing:.12em;text-shadow:0 0 14px #ff7b24,0 0 35px #e33318;animation:ph-title 1s .6s both}
- #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-title small{display:block;margin-top:12px;color:#ffe2b4;font-size:clamp(10px,2vw,14px);letter-spacing:.24em}
- #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-ember{position:absolute;z-index:5;left:var(--x);bottom:-8%;width:var(--s);height:var(--s);border-radius:50%;background:#ffd978;box-shadow:0 0 10px 3px #ff692c,0 0 24px #ff3c18;animation:ph-ember var(--d) linear var(--delay) infinite}
- @keyframes ph-rise{0%{top:105%;transform:translate(-50%,-50%) scale(.48);opacity:.2}38%{opacity:1}100%{top:42%;transform:translate(-50%,-50%) scale(1.03);opacity:1}}
- @keyframes ph-wing-left{from{transform:rotate(13deg) scaleY(.86)}to{transform:rotate(-19deg) scaleY(1.08)}}
- @keyframes ph-wing-right{from{transform:rotate(-13deg) scaleY(.86)}to{transform:rotate(19deg) scaleY(1.08)}}
- @keyframes ph-tail{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
- @keyframes ph-fire{from{transform:scaleX(.92);opacity:.75}to{transform:scaleX(1.08);opacity:1}}
- @keyframes ph-flame{from{transform:scaleY(.8) skewX(-5deg);opacity:.65}to{transform:scaleY(1.18) skewX(6deg);opacity:1}}
- @keyframes ph-ember{0%{transform:translateY(0) translateX(0) scale(.5);opacity:0}12%{opacity:1}100%{transform:translateY(-115vh) translateX(var(--drift)) scale(.15);opacity:0}}
- @keyframes ph-title{from{opacity:0;transform:translateY(24px);letter-spacing:.3em}to{opacity:1;transform:none;letter-spacing:.12em}}
- @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=phoenix_rising] .phoenix-wing-left,#tiknation-gift-engine[data-style=phoenix_rising] .phoenix-wing-right,#tiknation-gift-engine[data-style=phoenix_rising] .phoenix-tail,#tiknation-gift-engine[data-style=phoenix_rising] .phoenix-flame,#tiknation-gift-engine[data-style=phoenix_rising] .phoenix-ember{animation:none!important}}
+ #tiknation-gift-engine[data-style=phoenix_rising]{position:fixed!important;inset:0!important;padding:0!important;background:#070910!important}
+ #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-scene{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 56%,#4d201a 0%,#1d1721 42%,#070910 82%);isolation:isolate}
+ #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-haze{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 78%,#ff6a1a38,transparent 52%),linear-gradient(180deg,#090d18 0%,#17121b 60%,#35170f 100%)}
+ #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-sun{position:absolute;width:min(66vw,430px);aspect-ratio:1;left:50%;top:43%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 40% 36%,#fff1c5 0%,#ffc06b 15%,#b84d32 43%,#52222a 67%,transparent 71%);opacity:.58;filter:blur(1px);box-shadow:0 0 90px #ff782d50}
+ #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-fireline{position:absolute;bottom:-18%;left:-10%;width:120%;height:48%;background:radial-gradient(ellipse at 50% 0%,#fff1a0 0%,#ff9a2b 9%,#d84018 26%,#6d1d17 43%,transparent 70%);filter:blur(24px);animation:ph-firebed 2.6s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-bird{position:absolute;z-index:4;left:50%;top:55%;width:min(100vw,900px);height:auto;overflow:visible;transform:translate(-50%,-50%);filter:drop-shadow(0 12px 20px #10070b) drop-shadow(0 0 22px #ff782c88);animation:ph-rise 8.5s cubic-bezier(.16,.68,.2,1) both}
+ #tiknation-gift-engine[data-style=phoenix_rising] .ph-wingL{transform-box:view-box;transform-origin:398px 292px;animation:ph-wingL 1.35s cubic-bezier(.4,0,.6,1) infinite alternate}
+ #tiknation-gift-engine[data-style=phoenix_rising] .ph-wingR{transform-box:view-box;transform-origin:402px 292px;animation:ph-wingR 1.35s cubic-bezier(.4,0,.6,1) infinite alternate}
+ #tiknation-gift-engine[data-style=phoenix_rising] .ph-tail{transform-box:view-box;transform-origin:400px 405px;animation:ph-tail 2.8s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=phoenix_rising] .ph-body{animation:ph-breathe 2.1s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-title{position:absolute;z-index:8;left:0;right:0;bottom:7%;text-align:center;color:#fff0d2;font:900 clamp(22px,5.4vw,46px)/1.1 system-ui;letter-spacing:.13em;text-shadow:0 2px 5px #190a09,0 0 20px #f66b25;animation:ph-title 1.1s .6s both}
+ #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-title small{display:block;margin-top:10px;color:#f4cda4;font-size:clamp(9px,1.8vw,13px);letter-spacing:.24em}
+ #tiknation-gift-engine[data-style=phoenix_rising] .phoenix-ember{position:absolute;z-index:5;left:var(--x);bottom:-5%;width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle,#fff6c2 0%,#ffb04d 40%,#d73a18 75%);box-shadow:0 0 8px 2px #ff692c;animation:ph-ember var(--d) linear var(--delay) infinite}
+ @keyframes ph-rise{0%{top:110%;transform:translate(-50%,-50%) scale(.56);opacity:.1}35%{opacity:1}100%{top:43%;transform:translate(-50%,-50%) scale(1);opacity:1}}
+ @keyframes ph-wingL{from{transform:rotate(7deg) scaleY(.93)}to{transform:rotate(-7deg) scaleY(1.035)}}
+ @keyframes ph-wingR{from{transform:rotate(-7deg) scaleY(.93)}to{transform:rotate(7deg) scaleY(1.035)}}
+ @keyframes ph-tail{from{transform:rotate(-2deg)}to{transform:rotate(3deg)}}
+ @keyframes ph-breathe{from{transform:translateY(0)}to{transform:translateY(-5px)}}
+ @keyframes ph-firebed{from{transform:scaleX(.94);opacity:.7}to{transform:scaleX(1.05);opacity:1}}
+ @keyframes ph-ember{0%{transform:translateY(0) translateX(0) scale(.5);opacity:0}12%{opacity:1}100%{transform:translateY(-110vh) translateX(var(--drift)) scale(.12);opacity:0}}
+ @keyframes ph-title{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+ @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=phoenix_rising] .ph-wingL,#tiknation-gift-engine[data-style=phoenix_rising] .ph-wingR,#tiknation-gift-engine[data-style=phoenix_rising] .ph-tail,#tiknation-gift-engine[data-style=phoenix_rising] .ph-body,#tiknation-gift-engine[data-style=phoenix_rising] .phoenix-ember{animation:none!important}}
  `;
+ const feather=(x1,y1,x2,y2,tipX,tipY,w,color)=>'<path d="M '+x1+' '+y1+' Q '+(x1+(tipX-x1)*.48-w)+' '+(y1+(tipY-y1)*.52)+' '+tipX+' '+tipY+' Q '+(x1+(tipX-x1)*.55+w)+' '+(y1+(tipY-y1)*.48)+' '+x2+' '+y2+' Q '+((x1+x2)/2)+' '+((y1+y2)/2)+' '+x1+' '+y1+'Z" fill="'+color+'" stroke="#6f251b" stroke-opacity=".65" stroke-width="2"/>';
+ const palette=["#ffcf72","#f7a743","#ed7830","#d94c27","#a92b26","#6d202b"];
+ let left="",right="";
+ for(let row=0;row<4;row++){
+  for(let n=0;n<11;n++){
+   const t=n/10,baseX=360-row*13,baseY=290+row*18;
+   const tipX=28+t*310+row*17,tipY=70+t*225+row*12;
+   const width=18-row*2;
+   const color=palette[(n+row*2)%palette.length];
+   left+=feather(baseX,baseY+n*1.8,baseX+17,baseY+23+n*1.8,tipX,tipY,width,color);
+   right+=feather(800-baseX,baseY+n*1.8,783-baseX,baseY+23+n*1.8,800-tipX,tipY,width,color);
+  }
+ }
+ let tail="";
+ for(let n=0;n<9;n++){const spread=(n-4)*20;tail+=feather(390+n*2,388,410+n*2,405,400+spread,555-Math.abs(n-4)*5,16,palette[n%palette.length]);}
  const scene=document.createElement("div");scene.className="phoenix-scene";
- scene.innerHTML='<div class="phoenix-moon"></div><div class="phoenix-firebed"></div><i class="phoenix-flame f1"></i><i class="phoenix-flame f2"></i><i class="phoenix-flame f3"></i><i class="phoenix-flame f4"></i><svg class="phoenix-bird" viewBox="0 0 800 560" role="img" aria-label="A fiery phoenix rising with wings spread"><defs><linearGradient id="ph-feather" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff2b0"/><stop offset=".32" stop-color="#ffbd4c"/><stop offset=".7" stop-color="#f04b1d"/><stop offset="1" stop-color="#71172a"/></linearGradient><linearGradient id="ph-body" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0ad"/><stop offset=".35" stop-color="#ff9c28"/><stop offset="1" stop-color="#9e1c22"/></linearGradient></defs><g class="phoenix-tail" fill="url(#ph-feather)" stroke="#ffcf70" stroke-width="5"><path d="M390 380Q300 450 235 535Q335 500 405 425Z"/><path d="M405 380Q360 480 365 550Q425 485 430 414Z"/><path d="M420 380Q510 455 570 530Q475 500 405 425Z"/></g><g class="phoenix-wing-left" fill="url(#ph-feather)" stroke="#ffcf70" stroke-width="5" stroke-linejoin="round"><path d="M390 315Q300 235 35 95Q105 250 220 330Q115 300 70 335Q205 390 390 355Z"/><path d="M355 300Q220 180 92 145Q170 270 300 340Z"/><path d="M330 315Q210 260 145 235Q225 330 340 360Z"/></g><g class="phoenix-wing-right" fill="url(#ph-feather)" stroke="#ffcf70" stroke-width="5" stroke-linejoin="round"><path d="M410 315Q500 235 765 95Q695 250 580 330Q685 300 730 335Q595 390 410 355Z"/><path d="M445 300Q580 180 708 145Q630 270 500 340Z"/><path d="M470 315Q590 260 655 235Q575 330 460 360Z"/></g><g fill="url(#ph-body)" stroke="#ffd77d" stroke-width="5"><path d="M400 190Q455 245 448 340Q438 415 400 450Q362 415 352 340Q345 245 400 190Z"/><path d="M365 215Q315 175 350 115Q365 160 395 176Q380 115 420 70Q425 140 448 177Q475 200 435 228Z"/><path d="M414 95L465 112L421 130Z" fill="#fff0a0"/><circle cx="414" cy="174" r="7" fill="#241018" stroke="none"/></g><path d="M385 420Q370 470 335 515M400 430Q400 485 400 535M415 420Q430 470 465 515" fill="none" stroke="#fff0a0" stroke-width="9" stroke-linecap="round"/></svg><div class="phoenix-title">THE PHOENIX RISING<small>FROM THE ASHES · A LEGEND TAKES FLIGHT</small></div>';
- for(let i=0;i<46;i++){const ember=document.createElement("i");ember.className="phoenix-ember";ember.style.setProperty("--x",(Math.random()*100)+"%");ember.style.setProperty("--s",(3+Math.random()*6)+"px");ember.style.setProperty("--d",(3.5+Math.random()*4)+"s");ember.style.setProperty("--delay",(-Math.random()*7)+"s");ember.style.setProperty("--drift",((Math.random()-.5)*170)+"px");scene.appendChild(ember);}
+ scene.innerHTML='<div class="phoenix-haze"></div><div class="phoenix-sun"></div><div class="phoenix-fireline"></div>'+
+ '<svg class="phoenix-bird" viewBox="0 0 800 590" role="img" aria-label="A detailed phoenix with layered flame-colored feathers rising from fire"><defs><linearGradient id="ph-feather-shade" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff0b2"/><stop offset=".22" stop-color="#ffbd55"/><stop offset=".62" stop-color="#dc5628"/><stop offset="1" stop-color="#5d1a2a"/></linearGradient><radialGradient id="ph-chest"><stop stop-color="#fff0b1"/><stop offset=".35" stop-color="#ffad3e"/><stop offset=".8" stop-color="#b93227"/><stop offset="1" stop-color="#4c1726"/></radialGradient><linearGradient id="ph-beak" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0a0"/><stop offset="1" stop-color="#c66a24"/></linearGradient></defs>'+
+ '<g class="ph-tail">'+tail+'</g>'+
+ '<g class="ph-wingL">'+left+'<path d="M390 290Q260 210 40 70Q180 260 390 345Z" fill="url(#ph-feather-shade)" opacity=".55"/><path d="M380 295Q220 240 82 160Q205 300 390 355Z" fill="#ffb44d" opacity=".35"/></g>'+
+ '<g class="ph-wingR">'+right+'<path d="M410 290Q540 210 760 70Q620 260 410 345Z" fill="url(#ph-feather-shade)" opacity=".55"/><path d="M420 295Q580 240 718 160Q595 300 410 355Z" fill="#ffb44d" opacity=".35"/></g>'+
+ '<g class="ph-body"><path d="M400 190C455 215 466 285 448 360C439 405 416 438 400 451C384 438 361 405 352 360C334 285 345 215 400 190Z" fill="url(#ph-chest)" stroke="#ffd17b" stroke-width="3"/><path d="M365 260Q400 290 435 260M360 292Q400 322 440 292M365 325Q400 352 435 325M375 358Q400 380 425 358" fill="none" stroke="#ffe0a0" stroke-opacity=".55" stroke-width="5"/><path d="M377 210C347 170 355 120 391 91C388 132 405 150 414 163C420 126 444 102 456 70C465 136 457 183 426 216Z" fill="url(#ph-feather-shade)" stroke="#ffc36c" stroke-width="3"/><path d="M447 145L489 157L449 174Z" fill="url(#ph-beak)" stroke="#ffe2a0" stroke-width="2"/><path d="M432 148Q447 139 456 151" fill="none" stroke="#35131a" stroke-width="8" stroke-linecap="round"/><circle cx="444" cy="148" r="4" fill="#fff6c9"/><path d="M385 425L373 469L390 458L400 476L410 458L427 469L415 425" fill="none" stroke="#d88c3d" stroke-width="8" stroke-linejoin="round"/></g></svg>'+
+ '<div class="phoenix-title">THE PHOENIX RISING<small>FROM THE ASHES · A LEGEND TAKES FLIGHT</small></div>';
+ for(let i=0;i<55;i++){const p=document.createElement("i");p.className="phoenix-ember";p.style.setProperty("--x",Math.random()*100+"%");p.style.setProperty("--s",2+Math.random()*5+"px");p.style.setProperty("--d",3+Math.random()*4+"s");p.style.setProperty("--delay",-Math.random()*7+"s");p.style.setProperty("--drift",(Math.random()-.5)*130+"px");scene.appendChild(p);}
  overlay.appendChild(scene);document.body.appendChild(overlay);
  if(typeof opts.onSound==="function"){try{opts.onSound()}catch(error){console.warn("Phoenix sound unavailable",error);}}
  const duration=Math.max(6500,Number(opts.duration)||9200);
- setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .65s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),680);}},duration);
+ setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .7s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),720);}},duration);
  return overlay;
 }
 
