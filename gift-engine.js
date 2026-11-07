@@ -784,7 +784,7 @@ function renderHauntedCarouselGift(gift,opts,overlay){
   ctx.fillStyle="#08090c";ctx.beginPath();ctx.moveTo(0,h*.61);ctx.lineTo(w*.12,h*.52);ctx.lineTo(w*.2,h*.61);ctx.lineTo(w*.36,h*.5);ctx.lineTo(w*.49,h*.62);ctx.lineTo(w*.7,h*.53);ctx.lineTo(w*.86,h*.62);ctx.lineTo(w,h*.54);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
   // low rolling mist
   for(let i=0;i<9;i++){const x=((i*.17+t*.025)%1.3-.15)*w,y=h*(.72+(i%3)*.065);const fog=ctx.createRadialGradient(x,y,0,x,y,Math.max(40,w*.18));fog.addColorStop(0,"rgba(175,183,188,.12)");fog.addColorStop(1,"transparent");ctx.fillStyle=fog;ctx.fillRect(x-w*.2,y-h*.13,w*.4,h*.26);}
-  const cx=w*.5,cy=h*.48,scale=Math.min(w/420,h/520),spin=reduced?0:-t*.58;
+  const cx=w*.5,cy=h*.48,scale=Math.min(w/420,h/520),spin=reduced?0:t*.58;
   // shadowed carousel platform and brass rim
   ctx.save();ctx.translate(cx,cy+h*.13);ctx.scale(1.18,.34);
   ellipse(0,0,w*.31/1.18,h*.12/0.34,"#08090b","#5e4a37");ctx.restore();
