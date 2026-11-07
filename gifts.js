@@ -287,7 +287,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=meteor-crater-20261107b";
+    script.src = "./gift-engine.js?v=meteor-impact-20261107c";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
@@ -300,7 +300,7 @@ function showTikNationGiftEffect(gift) {
     engine.show(gift, {
       meta: "TIKNATION GIFT · TEST COINS ONLY",
       onSound: () => playTikNationGiftSound(gift),
-      duration: gift.style === "grand" ? 7600 : 4300
+      duration: gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
     });
   }).catch(error => console.error("TikNation gift effect unavailable:", error));
 }
