@@ -3,7 +3,23 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090817"><title>TikNation · Gifts Rebuild Lab</title>
-<script src="./gift-engine.js?v=carnevil-engine-reload-20261107w"></script>
+<script>
+window.__giftEngineScriptState="Requesting engine…";
+window.__giftEngineRuntimeError="";
+window.addEventListener("error",function(event){
+ const target=event.target;
+ if(target&&target.tagName==="SCRIPT"&&/gift-engine\.js/.test(target.src)){
+  window.__giftEngineScriptState="Script request failed: "+target.src;
+  return;
+ }
+ if(event.message&&(!event.filename||/gift-engine\.js/.test(event.filename))){
+  window.__giftEngineRuntimeError=event.message+" ("+(event.filename||"unknown file")+":"+event.lineno+")";
+ }
+},true);
+</script>
+<script src="./gift-engine.js?v=carnevil-engine-rebuild-20261107x"
+ onload="window.__giftEngineScriptState='Engine file loaded';"
+ onerror="window.__giftEngineScriptState='Engine file request failed (check deployment/path)';"></script>
 <script src="./gifts.js?v=storm-recorded-sync-20261107f"></script>
 <style>
 :root{color-scheme:dark;--bg:#090817;--panel:#151329;--line:#393257;--cyan:#7eeaff;--violet:#b49aff;--muted:#c4bfd8}
@@ -267,7 +283,7 @@ function renderGifts(){grid.replaceChildren();entries.filter(([,g])=>selected===
 document.getElementById("soundToggle").addEventListener("click",function(){soundOn=!soundOn;this.textContent=soundOn?"🔊 Sound: On":"🔇 Sound: Off";this.setAttribute("aria-pressed",String(soundOn));});
 document.getElementById("giftCount").textContent=String(entries.length);
 document.getElementById("engineState").textContent=engine&&typeof engine.show==="function"?"Loaded":"Missing";
-if(!entries.length)say("Gift catalog failed to load.",true);else if(!engine||typeof engine.show!=="function")say("Catalog loaded, but animation engine is missing.",true);else say("Ready · The Void Rift is isolated in this lab. Tap it to test the rift, debris pull and collapse shockwave.");
+if(!entries.length)say("Gift catalog failed to load.",true);else if(!engine||typeof engine.show!=="function"){const detail=window.__giftEngineRuntimeError?" Engine error: "+window.__giftEngineRuntimeError:(" Engine status: "+(window.__giftEngineScriptState||"unknown")+"; global export: "+(typeof window.TikNationGiftEngine)+".");say("Catalog loaded, but animation engine is unavailable."+detail,true);}else say("Ready · Animation engine loaded. Tap a gift to test its full preview.");
 renderFilters();renderGifts();
 })();
 </script></body></html>
