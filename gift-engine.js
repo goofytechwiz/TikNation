@@ -471,54 +471,6 @@ function renderCarnevilGift(gift,opts,overlay){
    for(let i=0;i<16;i++){const a=i*Math.PI/8;const spoke=new T.Mesh(new T.CylinderGeometry(.035,.035,5.7,6),steel);spoke.position.set(Math.cos(a)*1.42,Math.sin(a)*1.42,0);spoke.rotation.z=a-Math.PI/2;wheel.add(spoke);
     const gondola=new T.Group();const cabin=new T.Mesh(new T.BoxGeometry(.55,.48,.45),i%2?red:dark);cabin.position.y=-.28;gondola.add(cabin);const roofCap=new T.Mesh(new T.BoxGeometry(.64,.08,.5),gold);roofCap.position.y=-.02;gondola.add(roofCap);gondola.position.set(Math.cos(a)*2.85,Math.sin(a)*2.85,0);wheel.add(gondola);}
    for(const x of [-1.1,1.1]){const leg=new T.Mesh(new T.CylinderGeometry(.09,.15,4.3,8),steel);leg.position.set(x,-2.1,0);leg.rotation.z=x<0?-.27:.27;wheel.add(leg);}
-   // Ticket kiosk and crooked funhouse frontage.
-   function booth(x,z,w,h,sign){const g=new T.Group();g.position.set(x,0,z);world.add(g);const body=new T.Mesh(new T.BoxGeometry(w,h,w*.55),dark);body.position.y=h/2;body.castShadow=true;g.add(body);const awning=new T.Mesh(new T.ConeGeometry(w*.72,.72,4),red);awning.position.y=h+.3;awning.rotation.y=Math.PI/4;g.add(awning);const board=new T.Mesh(new T.BoxGeometry(w*.9,.34,.12),gold);board.position.set(0,h*.78,w*.29);g.add(board);const post=new T.Mesh(new T.BoxGeometry(w*.72,.22,.13),cream);post.position.set(0,h*.78+.02,w*.37);g.add(post);return g;}
-   booth(-7,1.1,2.35,2.2);booth(1.1,-1.5,2.1,2.0);
-   // Abandoned funhouse: rebuild as a small, physically layered derelict attraction.
-   const fun=new T.Group();fun.position.set(8,0,-1.6);fun.rotation.z=-.025;world.add(fun);
-   const wood=new T.MeshStandardMaterial({color:0x392d29,roughness:.96});
-   const rotten=new T.MeshStandardMaterial({color:0x665047,roughness:1});
-   const fadedRed=new T.MeshStandardMaterial({color:0x592b30,roughness:.95});
-   const dirtyCream=new T.MeshStandardMaterial({color:0x8a7a65,roughness:1});
-   const rust=new T.MeshStandardMaterial({color:0x49352e,roughness:.9,metalness:.18});
-   const blackGlass=new T.MeshStandardMaterial({color:0x080b10,roughness:.28,metalness:.42});
-   const facade=new T.Mesh(new T.BoxGeometry(5.25,4.35,2.25),wood);facade.position.set(0,2.18,-.05);facade.castShadow=true;facade.receiveShadow=true;fun.add(facade);
-   // Narrow side return and a sagging roof give the structure real volume.
-   const side=new T.Mesh(new T.BoxGeometry(.16,4.05,2.15),rotten);side.position.set(2.68,2.05,-.08);side.rotation.z=-.012;fun.add(side);
-   const funRoof=new T.Mesh(new T.BoxGeometry(5.75,.24,2.8),wood);funRoof.position.set(0,4.42,-.08);funRoof.rotation.z=-.035;funRoof.castShadow=true;fun.add(funRoof);
-   const roofLip=new T.Mesh(new T.BoxGeometry(5.55,.18,.22),rust);roofLip.position.set(0,4.25,1.12);roofLip.rotation.z=-.035;fun.add(roofLip);
-   const funBase=new T.Mesh(new T.BoxGeometry(5.5,.28,2.55),rust);funBase.position.set(0,.15,-.03);fun.add(funBase);
-   // Peeling, mismatched boards are mounted on the front at slightly different depths.
-   for(let i=0;i<13;i++){const w=.27+(i%3)*.08;const board=new T.Mesh(new T.BoxGeometry(w,3.92,.075),i%2?fadedRed:dirtyCream);board.position.set(-2.35+i*.39,2.17,1.105+(i%4)*.008);board.rotation.z=((i%4)-1.5)*.009;fun.add(board);}
-   // Exposed structural posts, cross-bracing and missing siding.
-   for(const x of [-2.52,-1.72,1.72,2.52]){const post=new T.Mesh(new T.BoxGeometry(.17,4.15,.18),rotten);post.position.set(x,2.18,1.2);post.rotation.z=x===-1.72?-.025:.012;post.castShadow=true;fun.add(post);}
-   for(const x of [-2.05,2.08]){const brace=new T.Mesh(new T.BoxGeometry(.13,2.15,.14),rust);brace.position.set(x,2.55,1.24);brace.rotation.z=x<0?-.62:.58;fun.add(brace);}
-   // Deep, blackened mirror windows with heavy timber surrounds and fractured panes.
-   for(let i=0;i<3;i++){const x=-1.72+i*1.72;const frame=new T.Mesh(new T.BoxGeometry(1.18,1.78,.22),rust);frame.position.set(x,2.8,1.25);fun.add(frame);
-    const pane=new T.Mesh(new T.BoxGeometry(.98,1.56,.07),blackGlass);pane.position.set(x,2.8,1.38);fun.add(pane);
-    const mullion=new T.Mesh(new T.BoxGeometry(.07,1.56,.09),wood);mullion.position.set(x,2.8,1.43);fun.add(mullion);
-    const sill=new T.Mesh(new T.BoxGeometry(1.34,.14,.38),rotten);sill.position.set(x,1.88,1.38);sill.rotation.z=(i-1)*.035;fun.add(sill);
-    const crackPts=[[-.42,.66],[-.12,.19],[-.25,-.08],[.19,-.55],[.34,-.72]];
-    const crackGeo=new T.BufferGeometry().setFromPoints(crackPts.map(([px,py])=>new T.Vector3(x+px,2.8+py,1.435)));
-    fun.add(new T.Line(crackGeo,new T.LineBasicMaterial({color:0x9b9b91,transparent:true,opacity:.5})));
-   }
-   // Recessed entrance tunnel, crooked door leaf and battered frame.
-   const entry=new T.Mesh(new T.BoxGeometry(1.38,2.68,.18),new T.MeshStandardMaterial({color:0x020305,roughness:1}));entry.position.set(0,1.48,1.25);fun.add(entry);
-   const tunnelTop=new T.Mesh(new T.BoxGeometry(1.62,.2,.72),wood);tunnelTop.position.set(0,2.86,1.48);fun.add(tunnelTop);
-   for(const x of [-.82,.82]){const jamb=new T.Mesh(new T.BoxGeometry(.2,2.95,.34),rotten);jamb.position.set(x,1.48,1.4);jamb.rotation.z=x<0?-.035:.055;fun.add(jamb);}
-   const hangingDoor=new T.Mesh(new T.BoxGeometry(.62,2.45,.1),rust);hangingDoor.position.set(-.35,1.35,1.39);hangingDoor.rotation.z=-.045;fun.add(hangingDoor);
-   for(let i=0;i<4;i++){const slat=new T.Mesh(new T.BoxGeometry(.12,.58,.09),rotten);slat.position.set(-.35+(i%2)*.22,.55+Math.floor(i/2)*.72,1.46);slat.rotation.z=(i%2?-.16:.12);fun.add(slat);}
-   // A warped, rain-stained sign hangs from corroded brackets.
-   const sign=new T.Group();sign.position.set(0,4.72,.9);sign.rotation.z=-.095;fun.add(sign);
-   for(const x of [-1.65,1.65]){const chain=new T.Mesh(new T.CylinderGeometry(.025,.025,.48,6),rust);chain.position.set(x,.25,0);chain.rotation.z=x<0?-.08:.1;sign.add(chain);}
-   const board=new T.Mesh(new T.BoxGeometry(4.25,.7,.18),wood);board.castShadow=true;sign.add(board);
-   const signFace=new T.Mesh(new T.BoxGeometry(4.05,.52,.07),fadedRed);signFace.position.z=.13;sign.add(signFace);
-   const signCanvas=document.createElement("canvas");signCanvas.width=1024;signCanvas.height=180;const signCtx=signCanvas.getContext("2d");signCtx.fillStyle="#3c2424";signCtx.fillRect(0,0,1024,180);signCtx.font="900 108px Georgia";signCtx.textAlign="center";signCtx.fillStyle="#b7a78b";signCtx.fillText("FUN HOUSE",512,124);signCtx.strokeStyle="#211719";signCtx.lineWidth=7;signCtx.strokeText("FUN HOUSE",512,124);
-   const signTex=new T.CanvasTexture(signCanvas);signTex.colorSpace=T.SRGBColorSpace;const signText=new T.Mesh(new T.PlaneGeometry(3.95,.46),new T.MeshBasicMaterial({map:signTex,transparent:true}));signText.position.set(0,0,.18);sign.add(signText);
-   // Splintered boards, hanging wire and debris at the foot of the wall.
-   for(let i=0;i<8;i++){const plank=new T.Mesh(new T.BoxGeometry(.12+(.03*(i%3)),.65+(i%3)*.38,.1),i%2?rotten:wood);plank.position.set(-2.2+i*.62,.38+(i%2)*.28,1.42);plank.rotation.z=(i%2?-.42:.31);fun.add(plank);}
-   const cable=new T.Mesh(new T.TorusGeometry(.52,.022,5,28,Math.PI),rust);cable.position.set(2.08,3.55,1.18);cable.rotation.z=Math.PI/2;fun.add(cable);
-   const bulbs=[];for(let i=0;i<12;i++){const bulb=new T.Mesh(new T.SphereGeometry(.052,8,6),new T.MeshStandardMaterial({color:0x28201c,emissive:0x160b08,roughness:.8}));bulb.position.set(-2.02+i*.37,4.02+(i%2)*.015,1.34);fun.add(bulb);bulbs.push(bulb);}
    // Hanging strings of warm carnival bulbs.
    const bulbs2=[];for(let strand=0;strand<3;strand++){const cable=new T.Mesh(new T.TorusGeometry(7.1,.018,4,64,Math.PI),steel);cable.rotation.z=Math.PI; cable.position.set(0,8.2-strand*.65,-2);world.add(cable);for(let i=0;i<18;i++){const a=Math.PI+i*Math.PI/17;const b=new T.Mesh(new T.SphereGeometry(.07,8,6),mat(0xffc47b,.25));b.position.set(Math.cos(a)*7.1,8.2-strand*.65-Math.sin(a)*.9,-2);world.add(b);bulbs2.push(b);}}
    // Clown apparition hidden inside the big-top doorway; it slowly emerges.
@@ -779,53 +731,7 @@ function renderLivingTombstonesGift(gift,opts,overlay){
  return overlay;
 }
 
-function renderAbandonedFunhouseGift(gift,opts,overlay){
- const canvas=document.createElement("canvas");canvas.className="cinema-funhouse-canvas";canvas.setAttribute("role","img");canvas.setAttribute("aria-label","A cursed abandoned funhouse with a slowly opening door and a shadow behind warped glass");
- canvas.style.cssText="width:min(96vw,1000px);height:auto;max-height:72vh;display:block;border-radius:12px;box-shadow:0 20px 80px #000";
- const world=document.createElement("div");world.style.cssText="position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;color:#fff;text-align:center";
- const title=document.createElement("div");title.style.cssText="font:900 clamp(20px,4vw,34px)/1.1 system-ui;letter-spacing:.13em;text-shadow:0 0 18px #d34b42";
- title.textContent=gift.name||"THE ABANDONED FUNHOUSE";
- const sub=document.createElement("small");sub.style.cssText="display:block;margin-top:8px;color:#e8c7bd;font:700 11px system-ui;letter-spacing:.2em";sub.textContent="ONE LAST RIDE · NO WAY OUT";
- title.appendChild(sub);world.append(canvas,title);overlay.appendChild(world);document.body.appendChild(overlay);
- const ctx=canvas.getContext("2d");let raf=0,alive=true,start=performance.now();
- function draw(now){
-  if(!alive||!overlay.isConnected)return;
-  const t=(now-start)/1000,w=1000,h=560;canvas.width=w;canvas.height=h;
-  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#080b16");sky.addColorStop(.55,"#17131d");sky.addColorStop(1,"#09090e");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
-  const moon=ctx.createRadialGradient(760,100,8,760,100,170);moon.addColorStop(0,"#b8c4bf");moon.addColorStop(.18,"#53616a");moon.addColorStop(1,"rgba(36,45,55,0)");ctx.fillStyle=moon;ctx.fillRect(560,0,400,300);
-  ctx.fillStyle="#10141a";for(let i=0;i<12;i++){let x=i*94-20;ctx.fillRect(x,280,9,130);ctx.beginPath();ctx.moveTo(x-38,300);ctx.lineTo(x+4,190+(i%3)*15);ctx.lineTo(x+42,300);ctx.fill();}
-  // weathered carnival frontage
-  ctx.fillStyle="#17151a";ctx.beginPath();ctx.moveTo(125,420);ctx.lineTo(180,180);ctx.quadraticCurveTo(500,35,820,180);ctx.lineTo(875,420);ctx.closePath();ctx.fill();
-  ctx.strokeStyle="#8c252b";ctx.lineWidth=5;ctx.stroke();
-  for(let i=0;i<9;i++){ctx.save();ctx.beginPath();ctx.moveTo(180+i*79,180);ctx.lineTo(180+i*79,420);ctx.clip();ctx.fillStyle=i%2?"#5c2026":"#d0b69a";ctx.globalAlpha=.5;ctx.fillRect(180+i*79,100,40,340);ctx.restore();}
-  // aged trim and roof ribs
-  ctx.strokeStyle="#b89d78";ctx.globalAlpha=.55;ctx.lineWidth=3;for(let i=0;i<8;i++){ctx.beginPath();ctx.moveTo(180+i*90,185);ctx.lineTo(220+i*75,412);ctx.stroke();}ctx.globalAlpha=1;
-  ctx.fillStyle="#090a0d";ctx.fillRect(365,250,270,170);ctx.strokeStyle="#b99c72";ctx.lineWidth=8;ctx.strokeRect(365,250,270,170);
-  // entrance curtains parting slowly
-  const open=Math.max(0,Math.min(1,(t-1.3)/3.2));const curtain=132*(1-open);
-  ctx.fillStyle="#4b1019";ctx.beginPath();ctx.moveTo(373,257);ctx.quadraticCurveTo(430-curtain,310,373,415);ctx.lineTo(373,257);ctx.fill();
-  ctx.beginPath();ctx.moveTo(627,257);ctx.quadraticCurveTo(570+curtain,310,627,415);ctx.lineTo(627,257);ctx.fill();
-  // deep interior and moving silhouette
-  const glow=ctx.createRadialGradient(500,330,4,500,330,180);glow.addColorStop(0,"rgba(123,24,29,.42)");glow.addColorStop(1,"rgba(0,0,0,.98)");ctx.fillStyle=glow;ctx.fillRect(380,260,240,155);
-  const sx=500+Math.sin(t*1.15)*35,sy=315+Math.sin(t*2.1)*5;ctx.fillStyle="#050609";ctx.beginPath();ctx.ellipse(sx,sy-28,19,25,0,0,Math.PI*2);ctx.fill();ctx.fillRect(sx-13,sy-8,26,70);
-  // cracked mirror window with a shadow that crosses behind the glass
-  ctx.fillStyle="#18212a";ctx.fillRect(690,250,112,150);ctx.strokeStyle="#bba17b";ctx.lineWidth=7;ctx.strokeRect(690,250,112,150);
-  const mx=746+Math.sin(t*.72)*38;ctx.fillStyle="rgba(147,190,194,.2)";ctx.fillRect(697,257,98,136);ctx.fillStyle="rgba(2,5,9,.9)";ctx.beginPath();ctx.ellipse(mx,310,12,18,0,0,Math.PI*2);ctx.fill();ctx.fillRect(mx-8,326,16,49);
-  ctx.strokeStyle="rgba(224,228,218,.65)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(697,257);ctx.lineTo(728,302);ctx.lineTo(711,337);ctx.lineTo(749,393);ctx.moveTo(795,270);ctx.lineTo(767,316);ctx.lineTo(790,349);ctx.stroke();
-  // marquee bulbs flicker irregularly
-  for(let i=0;i<32;i++){const a=i/31;const x=160+a*680,y=174+Math.sin(a*Math.PI)*-74;const flick=.35+.65*Math.abs(Math.sin(t*7+i*2.31));ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fillStyle="rgba(255,190,104,"+flick+")";ctx.shadowColor="#ffb45e";ctx.shadowBlur=12*flick;ctx.fill();ctx.shadowBlur=0;}
-  // cracked pavement and ground fog
-  ctx.fillStyle="#090b10";ctx.fillRect(0,420,w,140);ctx.strokeStyle="#44404a";ctx.lineWidth=2;for(let i=0;i<9;i++){ctx.beginPath();ctx.moveTo(i*130,560);ctx.lineTo(470+(i-4)*28,420);ctx.stroke();}
-  for(let i=0;i<7;i++){const x=((i*173+t*16)%1150)-75;const y=445+(i%3)*28;ctx.fillStyle="rgba(171,185,184,"+(.035+.025*Math.sin(t+i))+")";ctx.beginPath();ctx.ellipse(x,y,100,13,0,0,Math.PI*2);ctx.fill();}
-  ctx.fillStyle="rgba(0,0,0,.25)";ctx.fillRect(0,0,w,h);
-  raf=requestAnimationFrame(draw);
- }
- raf=requestAnimationFrame(draw);
- const duration=Math.max(7500,Number(opts.duration)||9000);
- setTimeout(()=>{alive=false;cancelAnimationFrame(raf);if(overlay.isConnected){overlay.style.transition="opacity .7s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),730);}},duration);
- return overlay;
-}
-function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(gift.style==="abandonedfunhouse")return renderAbandonedFunhouseGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
+function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
 
 /* Cinematic object renderer: custom shaded vector artwork replaces emoji-only gift posters. */
 function renderCinematicGift(gift,opts,overlay){
