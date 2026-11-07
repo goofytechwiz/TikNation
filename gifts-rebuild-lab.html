@@ -141,6 +141,27 @@ function playStormThunderStrike(){
 }
 function startSoundInGesture(gift){
  if(!soundOn){setAudioState("Muted by toggle");return Promise.resolve(false);}
+ if(gift.style==="hauntedhearse"){
+  try{
+   // CC0 recordings: real car engine start/stop and physical door hinge creak.
+   (window.__tiknationHearseTimers||[]).forEach(clearTimeout);
+   (window.__tiknationHearseAudio||[]).forEach(a=>{try{a.pause();a.currentTime=0;}catch(_){}});
+   const engineSound=new Audio("https://bigsoundbank.com/UPLOAD/mp3/1571.mp3");
+   const doorSound=new Audio("https://bigsoundbank.com/UPLOAD/mp3/1160.mp3");
+   window.__tiknationHearseAudio=[engineSound,doorSound];
+   [engineSound,doorSound].forEach(a=>{a.preload="auto";a.volume=.95;});
+   engineSound.addEventListener("error",()=>{setAudioState("Hearse engine recording failed to load");say("The hearse engine recording could not load. Check the audio status above.",true);},{once:true});
+   doorSound.addEventListener("error",()=>{setAudioState("Hearse door recording failed to load");say("The rear-door creak recording could not load. Check the audio status above.",true);},{once:true});
+   engineSound.play().then(()=>setAudioState("Playing · recorded car engine start/stop")).catch(err=>{setAudioState("Engine audio blocked");say("The browser blocked the engine recording: "+err.message,true);});
+   const timer=window.setTimeout(()=>{
+    if(window.__tiknationHearseAudio?.includes(doorSound)){
+     doorSound.play().then(()=>setAudioState("Playing · engine + heavy door creak")).catch(err=>{setAudioState("Door audio blocked");say("The rear-door recording was blocked: "+err.message,true);});
+    }
+   },3200);
+   window.__tiknationHearseTimers=[timer];
+   return Promise.resolve(true);
+  }catch(err){setAudioState("Hearse audio error");say("Hearse sound error: "+err.message,true);return Promise.resolve(false);}
+ }
  if(gift.style==="storm"){
   try{
    // This real outdoor thunderclap is started directly from the tap gesture.
