@@ -520,6 +520,8 @@ function renderHauntedHearseGift(gift,opts,overlay){
    const road=new THREE.Mesh(new THREE.PlaneGeometry(90,8),mat(0x202728,.32,.24));road.rotation.x=-Math.PI/2;road.position.set(0,.002,0);road.receiveShadow=true;world.add(road);
    for(let i=-8;i<=8;i++){const line=new THREE.Mesh(new THREE.BoxGeometry(1.25,.008,.045),mat(0x69736d,.05,.8));line.position.set(i*5,.012,0);world.add(line);}
    const car=new THREE.Group();world.add(car);
+   const carShadow=new THREE.Mesh(new THREE.CircleGeometry(1,48),new THREE.MeshBasicMaterial({color:0x020505,transparent:true,opacity:.62,depthWrite:false}));
+   carShadow.rotation.x=-Math.PI/2;carShadow.scale.set(3.55,1.08,1);carShadow.position.set(0,.018,0);world.add(carShadow);
    function box(parent,w,h,d,material,x,y,z,bevel){const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
    function cylinder(parent,r1,r2,depth,material,x,y,z,rx,ry,rz){const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,depth,32),material);mesh.position.set(x,y,z);mesh.rotation.set(rx||0,ry||0,rz||0);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
    function rod(parent,a,b,r,material){const p1=new THREE.Vector3(a[0],a[1],a[2]),p2=new THREE.Vector3(b[0],b[1],b[2]),delta=new THREE.Vector3().subVectors(p2,p1);const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r,r,delta.length(),10),material);mesh.position.copy(p1).add(p2).multiplyScalar(.5);mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());mesh.castShadow=true;parent.add(mesh);return mesh;}
@@ -584,7 +586,7 @@ function renderHauntedHearseGift(gift,opts,overlay){
     cylinder(wheel,.37,.37,.34,mat(0x77827b,.86,.26),0,0,z>0?.19:-.19,Math.PI/2,0,0);
     cylinder(wheel,.25,.25,.36,chrome,0,0,z>0?.22:-.22,Math.PI/2,0,0);
     cylinder(wheel,.105,.105,.38,mat(0x3d4842,.9,.2),0,0,z>0?.24:-.24,Math.PI/2,0,0);
-    for(let k=0;k<10;k++){const a=k*Math.PI/5;rod(wheel,[Math.cos(a)*.12,Math.sin(a)*.12,z>0?.245:-.245],[Math.cos(a)*.31,Math.sin(a)*.31,z>0?.245:-.245],.018,chrome);}
+    for(let k=0;k<12;k++){const a=k*Math.PI/6;rod(wheel,[Math.cos(a)*.105,Math.sin(a)*.105,z>0?.252:-.252],[Math.cos(a)*.32,Math.sin(a)*.32,z>0?.252:-.252],.032,chrome);}
     const ring=new THREE.Mesh(new THREE.TorusGeometry(.34,.025,8,36),chrome);ring.position.z=z>0?.2:-.2;wheel.add(ring);
    }
    // Mirrors, handles, coach badges and small bright details.
@@ -629,8 +631,8 @@ function renderHauntedHearseGift(gift,opts,overlay){
    function animate(){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(animate);const dt=Math.min(.05,clock.getDelta());elapsed+=dt;
     const drive=Math.min(1,Math.max(0,(elapsed-.8)/18.5));const eased=drive*drive*(3-2*drive);car.position.x=-4.4+eased*7.2;car.position.y=0;
     car.rotation.y=Math.sin(elapsed*.8)*.006;
-    const travelled=car.position.x-previousCarX;wheels.forEach(w=>w.rotation.z-=travelled/.55);previousCarX=car.position.x;
-    camera.position.x=car.position.x+11.8;camera.position.y=6.0;camera.position.z=14.0;camera.lookAt(car.position.x,1.05,0);
+    const travelled=car.position.x-previousCarX;const wheelAngle=(car.position.x+4.4)/.55;wheels.forEach(w=>w.rotation.z=-wheelAngle);previousCarX=car.position.x;
+    camera.position.x=car.position.x+11.8;camera.position.y=6.0;camera.position.z=14.0;camera.lookAt(car.position.x,1.05,0);carShadow.position.x=car.position.x;
     const open=Math.max(0,Math.min(1,(elapsed-21.0)/2.0));if(doorL)doorL.rotation.y=-open*.95;if(doorR)doorR.rotation.y=open*.95;
     if(ghost){ghost.visible=elapsed>25.0;ghost.children.forEach(m=>{m.material.opacity=ghost.visible ? .48+.12*Math.sin(elapsed*2) : 0;});ghost.position.y=1.45+Math.sin(elapsed*1.25)*.08;}
     const stormCycle=elapsed%8.5;const flash=stormCycle>0.0&&stormCycle<.18?Math.sin(stormCycle/.18*Math.PI):stormCycle>0.34&&stormCycle<.48?Math.sin((stormCycle-.34)/.14*Math.PI)*.62:0;lightning.intensity=flash*3.8;stormFlash.intensity=flash*20;
