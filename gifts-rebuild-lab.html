@@ -64,35 +64,41 @@ function startDragonSound(ctx,base){
 }
 
 function startMeteorShowerSound(ctx,base){
-  // Cinematic descending fire-whooshes, sizzling trails and distant impacts.
-  const duration=3.35,length=Math.floor(ctx.sampleRate*duration);
+  // Longer cinematic meteor storm: continuous atmospheric roar, distinct passes and heavy impacts.
+  const duration=5.4,length=Math.floor(ctx.sampleRate*duration);
   const buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);
-  for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length*.35);
-  const passes=[{at:0,pan:-.65,peak:.12,high:2300,low:260},{at:.42,pan:.45,peak:.105,high:1900,low:220},{at:.93,pan:-.2,peak:.13,high:2600,low:300},{at:1.48,pan:.72,peak:.11,high:2100,low:240},{at:2.02,pan:-.72,peak:.12,high:2400,low:260}];
+  for(let i=0;i<length;i++)data[i]=(Math.random()*2-1);
+  // A sustained fiery atmosphere keeps the sound from becoming one short swish.
+  const bed=ctx.createBufferSource(),bedFilter=ctx.createBiquadFilter(),bedGain=ctx.createGain();
+  bed.buffer=buffer;bedFilter.type="lowpass";bedFilter.frequency.setValueAtTime(720,base);bedFilter.frequency.linearRampToValueAtTime(1150,base+2.2);bedFilter.frequency.exponentialRampToValueAtTime(390,base+5.1);
+  bedGain.gain.setValueAtTime(.0001,base);bedGain.gain.exponentialRampToValueAtTime(.105,base+.65);bedGain.gain.setValueAtTime(.09,base+3.8);bedGain.gain.exponentialRampToValueAtTime(.0001,base+5.25);
+  bed.connect(bedFilter);bedFilter.connect(bedGain);bedGain.connect(ctx.destination);bed.start(base);bed.stop(base+5.3);
+  // Seven separate meteors sweep across the stereo field with longer, descending flame trails.
+  const passes=[{at:.12,pan:-.8,peak:.19,high:3100,low:420},{at:.72,pan:.7,peak:.17,high:2700,low:350},{at:1.35,pan:-.35,peak:.2,high:3400,low:390},{at:2.02,pan:.85,peak:.18,high:2900,low:330},{at:2.72,pan:-.72,peak:.2,high:3200,low:410},{at:3.45,pan:.38,peak:.18,high:2800,low:320},{at:4.08,pan:-.12,peak:.2,high:3300,low:370}];
   passes.forEach(p=>{
     const src=ctx.createBufferSource();src.buffer=buffer;
-    const filter=ctx.createBiquadFilter();filter.type="bandpass";filter.Q.value=.55;
-    filter.frequency.setValueAtTime(p.high,base+p.at);filter.frequency.exponentialRampToValueAtTime(p.low,base+p.at+.72);
-    const gain=ctx.createGain();gain.gain.setValueAtTime(.0001,base+p.at);gain.gain.exponentialRampToValueAtTime(p.peak,base+p.at+.12);gain.gain.exponentialRampToValueAtTime(.0001,base+p.at+.82);
+    const filter=ctx.createBiquadFilter();filter.type="bandpass";filter.Q.value=.42;
+    filter.frequency.setValueAtTime(p.high,base+p.at);filter.frequency.exponentialRampToValueAtTime(p.low,base+p.at+1.05);
+    const gain=ctx.createGain();gain.gain.setValueAtTime(.0001,base+p.at);gain.gain.exponentialRampToValueAtTime(p.peak,base+p.at+.2);gain.gain.setValueAtTime(p.peak*.72,base+p.at+.58);gain.gain.exponentialRampToValueAtTime(.0001,base+p.at+1.18);
     const pan=ctx.createStereoPanner?ctx.createStereoPanner():null;
-    if(pan){pan.pan.setValueAtTime(p.pan,base+p.at);src.connect(filter);filter.connect(gain);gain.connect(pan);pan.connect(ctx.destination);}
+    if(pan){pan.pan.setValueAtTime(p.pan,base+p.at);pan.pan.linearRampToValueAtTime(-p.pan*.55,base+p.at+1.05);src.connect(filter);filter.connect(gain);gain.connect(pan);pan.connect(ctx.destination);}
     else{src.connect(filter);filter.connect(gain);gain.connect(ctx.destination);}
-    src.start(base+p.at);src.stop(base+p.at+.86);
+    src.start(base+p.at);src.stop(base+p.at+1.22);
   });
-  [0.82,1.62,2.43].forEach((at,i)=>{
+  // Three heavy, layered impacts: punchy midrange plus deep cinematic rumble.
+  [1.12,2.82,4.48].forEach((at,i)=>{
     const hit=ctx.createOscillator(),hitGain=ctx.createGain(),sub=ctx.createOscillator(),subGain=ctx.createGain();
-    hit.type="triangle";hit.frequency.setValueAtTime(105-i*8,base+at);hit.frequency.exponentialRampToValueAtTime(38,base+at+.48);
-    hitGain.gain.setValueAtTime(.0001,base+at);hitGain.gain.exponentialRampToValueAtTime(.22,base+at+.018);hitGain.gain.exponentialRampToValueAtTime(.0001,base+at+.62);
-    sub.type="sine";sub.frequency.setValueAtTime(54-i*3,base+at);subGain.gain.setValueAtTime(.0001,base+at);subGain.gain.exponentialRampToValueAtTime(.16,base+at+.025);subGain.gain.exponentialRampToValueAtTime(.0001,base+at+.72);
+    hit.type="triangle";hit.frequency.setValueAtTime(145-i*12,base+at);hit.frequency.exponentialRampToValueAtTime(42,base+at+.82);
+    hitGain.gain.setValueAtTime(.0001,base+at);hitGain.gain.exponentialRampToValueAtTime(.27,base+at+.025);hitGain.gain.exponentialRampToValueAtTime(.0001,base+at+1.05);
+    sub.type="sine";sub.frequency.setValueAtTime(78-i*7,base+at);subGain.gain.setValueAtTime(.0001,base+at);subGain.gain.exponentialRampToValueAtTime(.2,base+at+.035);subGain.gain.exponentialRampToValueAtTime(.0001,base+at+1.2);
     hit.connect(hitGain);hitGain.connect(ctx.destination);sub.connect(subGain);subGain.connect(ctx.destination);
-    hit.start(base+at);hit.stop(base+at+.65);sub.start(base+at);sub.stop(base+at+.75);
+    hit.start(base+at);hit.stop(base+at+1.08);sub.start(base+at);sub.stop(base+at+1.22);
     const crack=ctx.createBufferSource(),crackFilter=ctx.createBiquadFilter(),crackGain=ctx.createGain();
-    crack.buffer=buffer;crackFilter.type="lowpass";crackFilter.frequency.value=850;
-    crackGain.gain.setValueAtTime(.0001,base+at);crackGain.gain.exponentialRampToValueAtTime(.13,base+at+.012);crackGain.gain.exponentialRampToValueAtTime(.0001,base+at+.24);
-    crack.connect(crackFilter);crackFilter.connect(crackGain);crackGain.connect(ctx.destination);crack.start(base+at);crack.stop(base+at+.26);
+    crack.buffer=buffer;crackFilter.type="highpass";crackFilter.frequency.value=1050;
+    crackGain.gain.setValueAtTime(.0001,base+at);crackGain.gain.exponentialRampToValueAtTime(.16,base+at+.012);crackGain.gain.exponentialRampToValueAtTime(.0001,base+at+.42);
+    crack.connect(crackFilter);crackFilter.connect(crackGain);crackGain.connect(ctx.destination);crack.start(base+at);crack.stop(base+at+.44);
   });
 }
-
 function startSoundInGesture(gift){
  if(!soundOn){setAudioState("Muted by toggle");return;}
  const C=window.AudioContext||window.webkitAudioContext;
