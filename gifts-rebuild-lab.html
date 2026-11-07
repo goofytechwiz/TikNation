@@ -46,7 +46,7 @@ main{width:min(100% - 28px,980px);margin:auto;padding:24px 0 56px}header{padding
 (function(){
 "use strict";
 const status=document.getElementById("labStatus"),grid=document.getElementById("giftGrid"),filters=document.getElementById("filters");
-const catalog={...(window.TIKNATION_GIFT_CATALOG||{})};delete catalog.storm_of_the_world;catalog.void_rift={name:"The Void Rift",emoji:"🌀",category:"Epic",cost:100,style:"voidrift",message:"Reality has split open."};catalog.living_tombstones={name:"The Night of the Living Tombstones",emoji:"🪦",category:"Epic",cost:100,style:"livingtombstones",message:"The dead will not stay buried."};catalog.haunted_hearse={name:"The Haunted Hearse",emoji:"🚘",category:"Epic",cost:100,style:"hauntedhearse",message:"Some passengers never arrive."};catalog.carnevil={name:"CARNEVIL",emoji:"🎪",category:"Epic",cost:150,style:"carnevil",message:"Step right up… if you dare."};const engine=window.TikNationGiftEngine;
+const catalog={...(window.TIKNATION_GIFT_CATALOG||{})};delete catalog.storm_of_the_world;catalog.void_rift={name:"The Void Rift",emoji:"🌀",category:"Epic",cost:100,style:"voidrift",message:"Reality has split open."};catalog.living_tombstones={name:"The Night of the Living Tombstones",emoji:"🪦",category:"Epic",cost:100,style:"livingtombstones",message:"The dead will not stay buried."};catalog.haunted_hearse={name:"The Haunted Hearse",emoji:"🚘",category:"Epic",cost:100,style:"hauntedhearse",message:"Some passengers never arrive."};catalog.carnevil={name:"CARNEVIL",emoji:"🎪",category:"Epic",cost:150,style:"carnevil",message:"Step right up… if you dare."};catalog.haunted_carousel={name:"The Haunted Carousel",emoji:"🎠",category:"Epic",cost:150,style:"hauntedcarousel",message:"Round and round… forever."};const engine=window.TikNationGiftEngine;
 let selected="All",soundOn=true,audio=null,lastSound="Not started";
 const entries=Object.entries(catalog),categories=["All",...new Set(entries.map(([,g])=>g.category||"Other"))];
 function say(message,isError){status.textContent=message;status.classList.toggle("error",!!isError);}
@@ -224,7 +224,14 @@ function startSoundInGesture(gift){
  if(gift.style==="dragon"){startDragonSound(ctx,base);setAudioState("Playing · dragon roar + fire blast");return;}
  if(gift.style==="meteor"){startMeteorShowerSound(ctx,base);setAudioState("Playing · meteor whooshes + fiery impacts");return;}
  if(gift.style==="storm"){startStormSound(ctx,base);setAudioState("Playing · wind, rain + rolling thunder");return;}
-  if(gift.style==="carnevil"){startCarnevilSound(ctx,base);setAudioState("Playing · eerie carnival calliope");return;}
+  if(gift.style==="carnevil"){startCarnevilSound(ctx,base);setAudioState("Playing · eerie carnival calliope");return;}if(gift.style==="hauntedcarousel"){
+  const notes=[392,493.88,587.33,523.25,440,349.23,392,293.66,349.23,440,392,329.63,261.63,329.63,392,349.23];
+  notes.forEach((hz,i)=>{const at=base+i*.38,osc=ctx.createOscillator(),reed=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();osc.type="triangle";osc.frequency.value=hz;reed.type="sine";reed.frequency.value=hz*2;f.type="lowpass";f.frequency.value=1800;g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.055,at+.04);g.gain.setValueAtTime(.04,at+.22);g.gain.exponentialRampToValueAtTime(.0001,at+.34);osc.connect(f);reed.connect(f);f.connect(g);g.connect(ctx.destination);osc.start(at);reed.start(at);osc.stop(at+.36);reed.stop(at+.36);});
+  [0,2.9,5.8].forEach((offset,i)=>{const at=base+offset,o=ctx.createOscillator(),g=ctx.createGain();o.type="sine";o.frequency.value=[880,1046.5,784][i];g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.035,at+.02);g.gain.exponentialRampToValueAtTime(.0001,at+1.1);o.connect(g);g.connect(ctx.destination);o.start(at);o.stop(at+1.12);});
+  const noise=ctx.createBuffer(1,Math.floor(ctx.sampleRate*7),ctx.sampleRate),d=noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+  const src=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();src.buffer=noise;filter.type="lowpass";filter.frequency.value=260;gain.gain.setValueAtTime(.0001,base);gain.gain.exponentialRampToValueAtTime(.045,base+.8);gain.gain.setValueAtTime(.035,base+5.8);gain.gain.exponentialRampToValueAtTime(.0001,base+6.9);src.connect(filter);filter.connect(gain);gain.connect(ctx.destination);src.start(base);src.stop(base+7);
+  setAudioState("Playing · eerie carousel waltz + mechanical rumble");return;
+ }
  if(gift.style==="voidrift"){startVoidRiftSound();return;}if(gift.style==="livingtombstones"){
   try{
    const oldSet=window.__tiknationTombstoneAudio||[];
