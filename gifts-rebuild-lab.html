@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090817"><title>TikNation · Gifts Rebuild Lab</title>
-<script src="./gift-engine.js?v=storm-recorded-audio-20261107e"></script>
-<script src="./gifts.js?v=storm-recorded-audio-20261107e"></script>
+<script src="./gift-engine.js?v=storm-recorded-sync-20261107f"></script>
+<script src="./gifts.js?v=storm-recorded-sync-20261107f"></script>
 <style>
 :root{color-scheme:dark;--bg:#090817;--panel:#151329;--line:#393257;--cyan:#7eeaff;--violet:#b49aff;--muted:#c4bfd8}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#29204e 0,transparent 55%),var(--bg);color:#fff;font:16px/1.5 system-ui,sans-serif}
@@ -112,17 +112,19 @@ function startStormSound(ctx,base){
  thunder(base+.7,1,4.9);thunder(base+4.5,.5,2.6);
 }
 function startSoundInGesture(gift){
- if(!soundOn){setAudioState("Muted by toggle");return;}
+ if(!soundOn){setAudioState("Muted by toggle");return Promise.resolve(false);}
  if(gift.style==="storm"){
   try{
    const previous=window.__tiknationStormTrack;
    if(previous){previous.pause();previous.currentTime=0;}
    const track=new Audio("https://sfxjar.com/audio/0740.mp3");
    track.preload="auto";track.volume=.9;window.__tiknationStormTrack=track;
-   track.play().then(()=>setAudioState("Playing · real recorded rain + thunder")).catch(err=>{setAudioState("Storm recording unavailable");say("The external storm recording could not play: "+err.message,true);});
-   window.setTimeout(()=>{if(window.__tiknationStormTrack===track){track.pause();track.currentTime=0;}},7800);
-  }catch(err){setAudioState("Storm recording unavailable");say("Storm recording error: "+err.message,true);}
-  return;
+   return track.play().then(()=>{
+    setAudioState("Playing · real recorded rain + thunder");
+    window.setTimeout(()=>{if(window.__tiknationStormTrack===track){track.pause();track.currentTime=0;}},7800);
+    return true;
+   }).catch(err=>{setAudioState("Storm recording unavailable");say("The external storm recording could not play: "+err.message,true);return false;});
+  }catch(err){setAudioState("Storm recording unavailable");say("Storm recording error: "+err.message,true);return Promise.resolve(false);}
  }
  const C=window.AudioContext||window.webkitAudioContext;if(!C){setAudioState("Unsupported");say("Web Audio is unavailable. Animation preview still works.",true);return;}
  try{if(!audio||audio.state==="closed")audio=new C();const ctx=audio;const resume=ctx.state==="suspended"?ctx.resume():Promise.resolve();
@@ -134,10 +136,11 @@ function startSoundInGesture(gift){
  if(ctx.state==="running")schedule();else resume.then(schedule).catch(err=>{setAudioState("Resume failed");say("Audio resume failed: "+err.message,true);});
  }catch(err){setAudioState("Error");say("Audio error: "+err.message,true);}
 }
-function preview(code,gift){
+async function preview(code,gift){
  try{
-  // Crucially, start audio before any asynchronous work and before calling the renderer.
-  startSoundInGesture(gift);
+  // For the recorded storm, wait until playback actually starts before launching the visual.
+  if(gift.style==="storm")await startSoundInGesture(gift);
+  else startSoundInGesture(gift);
   if(!engine||typeof engine.show!=="function")throw new Error("Animation engine did not load.");
   const result=engine.show(gift,{meta:"TIKNATION GIFTS REBUILD LAB · LOCAL PREVIEW",duration:7800});
   if(result!==true&&!(result&&result.isConnected))throw new Error("Animation engine did not accept this preview.");
