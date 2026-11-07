@@ -509,7 +509,7 @@ function renderHauntedHearseGift(gift,opts,overlay){
    renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
    renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
    const world=new THREE.Scene();world.background=new THREE.Color(0x080e12);world.fog=new THREE.FogExp2(0x101a1c,.035);
-   const camera=new THREE.PerspectiveCamera(34,scene.clientWidth/scene.clientHeight,.1,120);camera.position.set(8.1,4.5,9.8);camera.lookAt(0,1.15,0);
+   const camera=new THREE.PerspectiveCamera(34,scene.clientWidth/scene.clientHeight,.1,120);camera.position.set(12.2,6.2,14.2);camera.lookAt(0,1.1,0);
    const hemi=new THREE.HemisphereLight(0xc9d9d0,0x111713,2.0);world.add(hemi);
    const moon=new THREE.DirectionalLight(0xd9e7e0,3.2);moon.position.set(-4,9,5);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);moon.shadow.camera.left=-10;moon.shadow.camera.right=10;moon.shadow.camera.top=10;moon.shadow.camera.bottom=-10;world.add(moon);
    const rim=new THREE.PointLight(0x88b99e,42,15);rim.position.set(-4,3,-3);world.add(rim);
@@ -517,8 +517,8 @@ function renderHauntedHearseGift(gift,opts,overlay){
    const mat=(color,metalness,roughness)=>new THREE.MeshStandardMaterial({color,metalness:metalness||0,roughness:roughness===undefined ? .55 : roughness});
    const paint=mat(0x293b35,.78,.28),paintLight=mat(0x66766b,.72,.3),burgundy=mat(0x3a2027,.62,.31),chrome=mat(0xc4d0c9,.88,.2),rubber=mat(0x090c0d,.08,.82),glass= new THREE.MeshPhysicalMaterial({color:0x29453e,metalness:.45,roughness:.12,transparent:true,opacity:.82,clearcoat:1}),interior=mat(0x080e0d,.2,.65),lamp= new THREE.MeshStandardMaterial({color:0xfff0c2,emissive:0xd7bb78,emissiveIntensity:1.7});
    const ground=new THREE.Mesh(new THREE.PlaneGeometry(100,100),mat(0x11191a,.12,.92));ground.rotation.x=-Math.PI/2;ground.position.y=-.03;ground.receiveShadow=true;world.add(ground);
-   const road=new THREE.Mesh(new THREE.PlaneGeometry(8,90),mat(0x202728,.32,.24));road.rotation.x=-Math.PI/2;road.position.set(0,.002,0);road.receiveShadow=true;world.add(road);
-   for(let i=-4;i<=4;i++){const line=new THREE.Mesh(new THREE.BoxGeometry(.045,.008,1.25),mat(0x69736d,.05,.8));line.position.set(i%2===0?-.12:.12,.012,i*5);world.add(line);}
+   const road=new THREE.Mesh(new THREE.PlaneGeometry(90,8),mat(0x202728,.32,.24));road.rotation.x=-Math.PI/2;road.position.set(0,.002,0);road.receiveShadow=true;world.add(road);
+   for(let i=-8;i<=8;i++){const line=new THREE.Mesh(new THREE.BoxGeometry(1.25,.008,.045),mat(0x69736d,.05,.8));line.position.set(i*5,.012,0);world.add(line);}
    const car=new THREE.Group();world.add(car);
    function box(parent,w,h,d,material,x,y,z,bevel){const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
    function cylinder(parent,r1,r2,depth,material,x,y,z,rx,ry,rz){const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,depth,32),material);mesh.position.set(x,y,z);mesh.rotation.set(rx||0,ry||0,rz||0);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
@@ -624,13 +624,13 @@ function renderHauntedHearseGift(gift,opts,overlay){
    const ghostBody=new THREE.Mesh(new THREE.ConeGeometry(.34,1.2,10),ghostMat);ghostBody.position.y=.3;ghost.add(ghostBody);
    const ghostHead=new THREE.Mesh(new THREE.SphereGeometry(.22,16,12),ghostMat);ghostHead.position.y=1.03;ghost.add(ghostHead);
    const loading=scene.querySelector(".hearse-loading");if(loading)loading.remove();
-   resizeHandler=()=>{if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight),aspect=width/height;renderer.setSize(width,height,false);camera.aspect=aspect;if(aspect<.82){camera.fov=38;camera.position.set(8.0,4.35,9.5);}else{camera.fov=34;camera.position.set(8.1,4.5,9.8);}camera.lookAt(0,1.15,0);camera.updateProjectionMatrix();};resizeHandler();window.addEventListener("resize",resizeHandler);
+   resizeHandler=()=>{if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight),aspect=width/height;renderer.setSize(width,height,false);camera.aspect=aspect;if(aspect<.82){camera.fov=43;camera.position.set(12.8,7.0,15.2);}else{camera.fov=39;camera.position.set(11.8,6.0,14.0);}camera.lookAt(0,1.1,0);camera.updateProjectionMatrix();};resizeHandler();window.addEventListener("resize",resizeHandler);
    const clock=new THREE.Clock();let elapsed=0;
    function animate(){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(animate);const dt=Math.min(.05,clock.getDelta());elapsed+=dt;
     const drive=Math.min(1,Math.max(0,(elapsed-.8)/18.5));const eased=drive*drive*(3-2*drive);car.position.x=-4.4+eased*7.2;car.position.y=Math.sin(elapsed*5.2)*.018;
     car.rotation.y=Math.sin(elapsed*.8)*.012;
     wheels.forEach(w=>w.rotation.z=-(elapsed*2.25));
-    camera.position.x=8.0+car.position.x*.28;camera.lookAt(car.position.x*.28,1.15,0);
+    camera.position.x=car.position.x+11.8;camera.position.y=6.0;camera.position.z=14.0;camera.lookAt(car.position.x,1.05,0);
     const open=Math.max(0,Math.min(1,(elapsed-21.0)/2.0));if(doorL)doorL.rotation.y=-open*.95;if(doorR)doorR.rotation.y=open*.95;
     if(ghost){ghost.visible=elapsed>25.0;ghost.children.forEach(m=>{m.material.opacity=ghost.visible ? .48+.12*Math.sin(elapsed*2) : 0;});ghost.position.y=1.45+Math.sin(elapsed*1.25)*.08;}
     const stormCycle=elapsed%8.5;const flash=stormCycle>0.0&&stormCycle<.18?Math.sin(stormCycle/.18*Math.PI):stormCycle>0.34&&stormCycle<.48?Math.sin((stormCycle-.34)/.14*Math.PI)*.62:0;lightning.intensity=flash*3.8;stormFlash.intensity=flash*20;
