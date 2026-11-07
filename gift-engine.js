@@ -486,7 +486,7 @@ function renderHauntedHearseGift(gift,opts,overlay){
  overlay.appendChild(scene);document.body.appendChild(overlay);
  if(typeof opts.onSound==="function"){try{opts.onSound();}catch(_){}}
  let alive=true,renderer=null,raf=0,resizeHandler=null,doorL=null,doorR=null,car=null,ghost=null;
- const duration=Math.max(9000,Number(opts.duration)||10500);
+ const duration=Math.max(29000,Number(opts.duration)||30000);
  const cleanup=()=>{alive=false;if(raf)cancelAnimationFrame(raf);if(resizeHandler)window.removeEventListener("resize",resizeHandler);if(renderer){renderer.dispose();if(renderer.domElement.parentNode)renderer.domElement.remove();}if(overlay.isConnected)overlay.remove();};
  const finish=()=>{if(!alive)return;overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(cleanup,850);};
  const timer=setTimeout(finish,duration);
@@ -509,7 +509,7 @@ function renderHauntedHearseGift(gift,opts,overlay){
    renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
    renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
    const world=new THREE.Scene();world.background=new THREE.Color(0x080e12);world.fog=new THREE.FogExp2(0x101a1c,.035);
-   const camera=new THREE.PerspectiveCamera(34,scene.clientWidth/scene.clientHeight,.1,100);camera.position.set(8.8,5.3,10.5);camera.lookAt(0,1.05,0);
+   const camera=new THREE.PerspectiveCamera(34,scene.clientWidth/scene.clientHeight,.1,120);camera.position.set(8.1,4.5,9.8);camera.lookAt(0,1.15,0);
    const hemi=new THREE.HemisphereLight(0xc9d9d0,0x111713,2.0);world.add(hemi);
    const moon=new THREE.DirectionalLight(0xd9e7e0,3.2);moon.position.set(-4,9,5);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);moon.shadow.camera.left=-10;moon.shadow.camera.right=10;moon.shadow.camera.top=10;moon.shadow.camera.bottom=-10;world.add(moon);
    const rim=new THREE.PointLight(0x88b99e,42,15);rim.position.set(-4,3,-3);world.add(rim);
@@ -624,15 +624,15 @@ function renderHauntedHearseGift(gift,opts,overlay){
    const ghostBody=new THREE.Mesh(new THREE.ConeGeometry(.34,1.2,10),ghostMat);ghostBody.position.y=.3;ghost.add(ghostBody);
    const ghostHead=new THREE.Mesh(new THREE.SphereGeometry(.22,16,12),ghostMat);ghostHead.position.y=1.03;ghost.add(ghostHead);
    const loading=scene.querySelector(".hearse-loading");if(loading)loading.remove();
-   resizeHandler=()=>{if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight),aspect=width/height;renderer.setSize(width,height,false);camera.aspect=aspect;if(aspect<.82){camera.fov=48;camera.position.set(10.8,7.5,14.5);}else{camera.fov=34;camera.position.set(8.8,5.3,10.5);}camera.lookAt(0,1.05,0);camera.updateProjectionMatrix();};resizeHandler();window.addEventListener("resize",resizeHandler);
+   resizeHandler=()=>{if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight),aspect=width/height;renderer.setSize(width,height,false);camera.aspect=aspect;if(aspect<.82){camera.fov=38;camera.position.set(8.0,4.35,9.5);}else{camera.fov=34;camera.position.set(8.1,4.5,9.8);}camera.lookAt(0,1.15,0);camera.updateProjectionMatrix();};resizeHandler();window.addEventListener("resize",resizeHandler);
    const clock=new THREE.Clock();let elapsed=0;
    function animate(){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(animate);const dt=Math.min(.05,clock.getDelta());elapsed+=dt;
-    const drive=Math.min(1,Math.max(0,(elapsed-.4)/13.5));const eased=drive*drive*(3-2*drive);car.position.x=-6.2+eased*10.2;car.position.y=Math.sin(elapsed*5.2)*.018;
+    const drive=Math.min(1,Math.max(0,(elapsed-.8)/18.5));const eased=drive*drive*(3-2*drive);car.position.x=-4.4+eased*7.2;car.position.y=Math.sin(elapsed*5.2)*.018;
     car.rotation.y=Math.sin(elapsed*.8)*.012;
     wheels.forEach(w=>w.rotation.z=-(elapsed*2.25));
-    camera.position.x=8.8+Math.max(0,drive-.6)*.35;
-    const open=Math.max(0,Math.min(1,(elapsed-15.4)/1.8));if(doorL)doorL.rotation.y=-open*.95;if(doorR)doorR.rotation.y=open*.95;
-    if(ghost){ghost.visible=elapsed>18.2;ghost.children.forEach(m=>{m.material.opacity=ghost.visible ? .48+.12*Math.sin(elapsed*2) : 0;});ghost.position.y=1.45+Math.sin(elapsed*1.25)*.08;}
+    camera.position.x=8.0+car.position.x*.28;camera.lookAt(car.position.x*.28,1.15,0);
+    const open=Math.max(0,Math.min(1,(elapsed-21.0)/2.0));if(doorL)doorL.rotation.y=-open*.95;if(doorR)doorR.rotation.y=open*.95;
+    if(ghost){ghost.visible=elapsed>25.0;ghost.children.forEach(m=>{m.material.opacity=ghost.visible ? .48+.12*Math.sin(elapsed*2) : 0;});ghost.position.y=1.45+Math.sin(elapsed*1.25)*.08;}
     const stormCycle=elapsed%8.5;const flash=stormCycle>0.0&&stormCycle<.18?Math.sin(stormCycle/.18*Math.PI):stormCycle>0.34&&stormCycle<.48?Math.sin((stormCycle-.34)/.14*Math.PI)*.62:0;lightning.intensity=flash*3.8;stormFlash.intensity=flash*20;
     const rainAttr=rainGeometry.attributes.position;for(let i=0;i<rainCount;i++){const j=i*3;rainPositions[j+1]-=rainSpeeds[i]*dt;rainPositions[j]-=dt*1.1;if(rainPositions[j+1]<0){rainPositions[j+1]=8+Math.random()*4;rainPositions[j]=-12+Math.random()*24;rainPositions[j+2]=-10+Math.random()*20;}}rainAttr.needsUpdate=true;
     fogs.forEach((f,i)=>{f.position.x+=dt*(.13+(i%5)*.055);if(f.position.x>12)f.position.x=-12;f.material.opacity=.045+.035*Math.sin(elapsed*1.1+i);});
