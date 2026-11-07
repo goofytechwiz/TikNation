@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090817"><title>TikNation · Gifts Rebuild Lab</title>
-<script src="./gift-engine.js?v=haunted-hearse-rebuilt-wheel-roll-20261107n"></script>
+<script src="./gift-engine.js?v=haunted-hearse-engine-wheel-sync-20261107o"></script>
 <script src="./gifts.js?v=storm-recorded-sync-20261107f"></script>
 <style>
 :root{color-scheme:dark;--bg:#090817;--panel:#151329;--line:#393257;--cyan:#7eeaff;--violet:#b49aff;--muted:#c4bfd8}
@@ -147,6 +147,8 @@ function startSoundInGesture(gift){
    (window.__tiknationHearseTimers||[]).forEach(clearTimeout);
    (window.__tiknationHearseAudio||[]).forEach(a=>{try{a.pause();a.currentTime=0;}catch(_){}});
    const engineSound=new Audio("https://bigsoundbank.com/UPLOAD/mp3/1571.mp3");
+   window.__tiknationHearseEngineEnded=false;
+   engineSound.addEventListener("ended",()=>{window.__tiknationHearseEngineEnded=true;},{once:true});
    const doorSound=new Audio("https://bigsoundbank.com/UPLOAD/mp3/1160.mp3");
    window.__tiknationHearseAudio=[engineSound,doorSound];
    [engineSound,doorSound].forEach(a=>{a.preload="auto";a.volume=.95;});
