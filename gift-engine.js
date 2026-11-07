@@ -605,7 +605,13 @@ function renderHauntedHearseGift(gift,opts,overlay){
    box(world,21,.09,.09,chrome,0,.7,-3.8);
    // A few volumetric-looking fog banks stay low on the wet road.
    const fogMat=new THREE.MeshBasicMaterial({color:0x9aafa6,transparent:true,opacity:.055,depthWrite:false});
-   const fogs=[];for(let i=0;i<18;i++){const fog=new THREE.Mesh(new THREE.SphereGeometry(1,12,8),fogMat);fog.scale.set(1.2+Math.random()*1.8,.12,.5+Math.random()*.8);fog.position.set(-8+Math.random()*16,.2+Math.random()*.25,-2+Math.random()*4);world.add(fog);fogs.push(fog);}
+   const fogs=[];for(let i=0;i<34;i++){const fog=new THREE.Mesh(new THREE.SphereGeometry(1,16,10),fogMat);fog.scale.set(1.5+Math.random()*2.8,.16+Math.random()*.08,.7+Math.random()*1.1);fog.position.set(-10+Math.random()*20,.16+Math.random()*.35,-4+Math.random()*8);world.add(fog);fogs.push(fog);}
+   const fogSheets=[];for(let i=0;i<7;i++){const layer=new THREE.Mesh(new THREE.PlaneGeometry(9,2.5),new THREE.MeshBasicMaterial({color:0x9aaea5,transparent:true,opacity:.055,depthWrite:false,side:THREE.DoubleSide}));layer.rotation.x=-Math.PI/2;layer.position.set(-7+i*2.3,.22+(i%3)*.08,-1.5+(i%2)*2);world.add(layer);fogSheets.push(layer);}
+   // Weathered grave markers and iron lanterns beside the road.
+   const stone=mat(0x39413d,.08,.92),stoneEdge=mat(0x68716b,.22,.72),lanternGlass=new THREE.MeshStandardMaterial({color:0xffdca1,emissive:0xff9c43,emissiveIntensity:1.8});
+   const graveGroups=[];
+   for(let i=0;i<12;i++){const side=i%2===0?-1:1,x=-9+Math.floor(i/2)*3.1,z=side*(4.4+(i%3)*.65);const grave=new THREE.Group();grave.position.set(x,0,z);world.add(grave);const base=box(grave,.72,.18,.28,stone,0,.12,0);const head=new THREE.Mesh(new THREE.BoxGeometry(.58,.9,.18),stone);head.position.set(0,.63,0);head.castShadow=true;head.rotation.z=(i%2?-.06:.06);grave.add(head);const cap=new THREE.Mesh(new THREE.SphereGeometry(.29,12,8,0,Math.PI*2,0,Math.PI/2),stoneEdge);cap.scale.set(1,.72,.55);cap.position.set(0,1.08,0);grave.add(cap);graveGroups.push(grave);}
+   const lanterns=[];for(let i=0;i<5;i++){const side=i%2===0?-1:1,x=-7+i*3.3,z=side*3.5;const post=box(world,.09,1.5,.09,chrome,x,.75,z);const cage=box(world,.28,.34,.28,interior,x,1.58,z);box(world,.18,.22,.18,lanternGlass,x,1.58,z);const light=new THREE.PointLight(0xffad63,3.5,5);light.position.set(x,1.65,z);world.add(light);lanterns.push(light);}
    ghost=new THREE.Group();ghost.position.set(-2.75,1.5,0);car.add(ghost);
    const ghostMat=new THREE.MeshStandardMaterial({color:0xc8ded0,transparent:true,opacity:0,roughness:1,emissive:0x294738,emissiveIntensity:.5});
    const ghostBody=new THREE.Mesh(new THREE.ConeGeometry(.34,1.2,10),ghostMat);ghostBody.position.y=.3;ghost.add(ghostBody);
@@ -614,12 +620,16 @@ function renderHauntedHearseGift(gift,opts,overlay){
    resizeHandler=()=>{if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight),aspect=width/height;renderer.setSize(width,height,false);camera.aspect=aspect;if(aspect<.82){camera.fov=48;camera.position.set(10.8,7.5,14.5);}else{camera.fov=34;camera.position.set(8.8,5.3,10.5);}camera.lookAt(0,1.05,0);camera.updateProjectionMatrix();};resizeHandler();window.addEventListener("resize",resizeHandler);
    const clock=new THREE.Clock();let elapsed=0;
    function animate(){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(animate);const dt=Math.min(.05,clock.getDelta());elapsed+=dt;
-    const arrival=Math.min(1,Math.max(0,(elapsed-.3)/2.3));car.position.x=-1.05+(1-Math.pow(1-arrival,3))*1.05;car.position.y=Math.sin(elapsed*1.7)*.012;
-    car.rotation.y=Math.sin(elapsed*.28)*.025;
-    wheels.forEach(w=>w.rotation.z=-(elapsed*1.6));
+    const drive=Math.min(1,Math.max(0,(elapsed-.25)/4.7));const eased=drive*drive*(3-2*drive);car.position.x=-4.25+eased*4.35;car.position.y=Math.sin(elapsed*5.2)*.018;
+    car.rotation.y=Math.sin(elapsed*.8)*.012;
+    wheels.forEach(w=>w.rotation.z=-(elapsed*2.25));
+    camera.position.x=8.8+Math.max(0,drive-.55)*1.0;
     const open=Math.max(0,Math.min(1,(elapsed-3.1)/1.35));if(doorL)doorL.rotation.y=-open*.95;if(doorR)doorR.rotation.y=open*.95;
     if(ghost){ghost.visible=elapsed>4.5;ghost.children.forEach(m=>{m.material.opacity=ghost.visible ? .48+.12*Math.sin(elapsed*2) : 0;});ghost.position.y=1.45+Math.sin(elapsed*1.25)*.08;}
-    fogs.forEach((f,i)=>{f.position.x+=dt*(.1+(i%4)*.035);if(f.position.x>10)f.position.x=-10;f.material.opacity=.035+.02*Math.sin(elapsed*1.4+i);});
+    fogs.forEach((f,i)=>{f.position.x+=dt*(.13+(i%5)*.055);if(f.position.x>12)f.position.x=-12;f.material.opacity=.045+.035*Math.sin(elapsed*1.1+i);});
+    fogSheets.forEach((f,i)=>{f.position.x+=dt*(i%2?.16:-.12);if(f.position.x>12)f.position.x=-12;if(f.position.x< -12)f.position.x=12;f.material.opacity=.035+.025*Math.sin(elapsed*.9+i);});
+    lanterns.forEach((light,i)=>{light.intensity=2.1+Math.max(0,Math.sin(elapsed*3.4+i*2.1))*2.2;});
+    graveGroups.forEach((grave,i)=>{grave.rotation.y=Math.sin(elapsed*.35+i)*.018;});
     rim.intensity=36+Math.sin(elapsed*1.8)*7;renderer.render(world,camera);
    }
    animate();
