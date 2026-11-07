@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090817"><title>TikNation · Gifts Rebuild Lab</title>
-<script src="./gift-engine.js?v=storm-rebuild-20261107d"></script>
-<script src="./gifts.js?v=storm-rebuild-20261107d"></script>
+<script src="./gift-engine.js?v=storm-recorded-audio-20261107e"></script>
+<script src="./gifts.js?v=storm-recorded-audio-20261107e"></script>
 <style>
 :root{color-scheme:dark;--bg:#090817;--panel:#151329;--line:#393257;--cyan:#7eeaff;--violet:#b49aff;--muted:#c4bfd8}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#29204e 0,transparent 55%),var(--bg);color:#fff;font:16px/1.5 system-ui,sans-serif}
@@ -113,6 +113,17 @@ function startStormSound(ctx,base){
 }
 function startSoundInGesture(gift){
  if(!soundOn){setAudioState("Muted by toggle");return;}
+ if(gift.style==="storm"){
+  try{
+   const previous=window.__tiknationStormTrack;
+   if(previous){previous.pause();previous.currentTime=0;}
+   const track=new Audio("https://sfxjar.com/audio/0740.mp3");
+   track.preload="auto";track.volume=.9;window.__tiknationStormTrack=track;
+   track.play().then(()=>setAudioState("Playing · real recorded rain + thunder")).catch(err=>{setAudioState("Storm recording unavailable");say("The external storm recording could not play: "+err.message,true);});
+   window.setTimeout(()=>{if(window.__tiknationStormTrack===track){track.pause();track.currentTime=0;}},7800);
+  }catch(err){setAudioState("Storm recording unavailable");say("Storm recording error: "+err.message,true);}
+  return;
+ }
  const C=window.AudioContext||window.webkitAudioContext;if(!C){setAudioState("Unsupported");say("Web Audio is unavailable. Animation preview still works.",true);return;}
  try{if(!audio||audio.state==="closed")audio=new C();const ctx=audio;const resume=ctx.state==="suspended"?ctx.resume():Promise.resolve();
  const schedule=()=>{if(ctx.state!=="running"){setAudioState("Blocked · "+ctx.state);return;}const base=ctx.currentTime+.025;
