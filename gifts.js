@@ -1,41 +1,13 @@
 const TIKNATION_GIFT_CATALOG = {
-  heart_pulse: { name: "Heart Pulse", emoji: "💗", category: "Musical", cost: 5, sound: [523, 659, 784, 988], style: "pulse", message: "A little love, carried by a warm melody." },
-  melody_note: { name: "Melody Note", emoji: "🎵", category: "Musical", cost: 5, sound: [659, 784, 988], style: "notes", message: "A tiny melody for your world." },
-  symphony: { name: "Symphony", emoji: "🎼", category: "Musical", cost: 50, sound: [523, 659, 784, 1047], style: "grand", message: "A little grand finale." },
-  mystic_portal: { name: "Mystic Portal", emoji: "🌀", category: "Magical", cost: 25, sound: [392, 587, 784], style: "portal", message: "Open a doorway to wonder." },
-  dragon_spirit: { name: "Dragon Spirit", emoji: "🐉", category: "Magical", cost: 75, sound: [196, 293, 392, 587], style: "dragon", message: "Unleash a legendary spirit." },
-  galaxy_gift: { name: "Galaxy Gift", emoji: "🌌", category: "Magical", cost: 100, sound: [220, 330, 440, 660, 880], style: "galaxy", message: "A whole galaxy, just for you." },
-  thunder_clap: { name: "Thunder Clap", emoji: "⚡", category: "Special Effects", cost: 25, sound: [196, 392, 587, 784], style: "burst", message: "A lightning-charged moment!" },
-  prism_wave: { name: "Prism Wave", emoji: "🌈", category: "Visual Effects", cost: 50, sound: [523, 659, 880, 1047, 1319], style: "prism", message: "A wave of color across your world." },
-  mystery_reveal: { name: "Mystery Reveal", emoji: "🎁", category: "Surprises", cost: 25, sound: [392, 523, 784, 1047], style: "surprise", message: "Surprise! What wonder will appear next." },
-  creator_crown: { name: "Creator’s Crown", emoji: "👑", category: "Legendary", cost: 50, sound: [523, 659, 784], style: "crown", message: "Celebrate the creator." },
-  infinity_crystal: { name: "Infinity Crystal", emoji: "💎", category: "Legendary", cost: 150, sound: [392, 523, 659, 784, 1047], style: "infinity", message: "A gift beyond the ordinary." }
-,
-  dragon_ball: { name: "Dragon Ball", emoji: "🔮", category: "Magical", cost: 75, sound: [294, 440, 587, 880], style: "dragon", message: "A mysterious dragon orb erupts with golden energy." },
-  changing_face: { name: "Changing Face", emoji: "🎭", category: "Surprises", cost: 25, sound: [659, 784, 523, 880], style: "surprise", message: "A face-changing mask spins through a magical transformation." },
-  clouds_of_mystery: { name: "Clouds of Mystery", emoji: "☁️", category: "Magical", cost: 50, sound: [392, 523, 659, 784, 988], style: "clouds", message: "Mystic clouds swirl across the live stage." },
-  hammer_of_pain: { name: "Hammer of Pain", emoji: "🔨", category: "Special Effects", cost: 50, sound: [110, 82, 55, 73], style: "hammer", message: "A giant cartoon hammer slams down with a comic shockwave." },
-  thunder_ass: { name: "Thunder Ass", emoji: "⚡🍑", category: "Special Effects", cost: 69, sound: [196, 392, 196, 587], style: "thunderass", message: "A silly thunderclap and peach-shaped lightning burst across the screen." },
-  storm_of_the_world: { name: "Storm of the World", emoji: "🌪️", category: "Special Effects", cost: 100, sound: [110, 165, 220, 330, 165], style: "storm", message: "A massive storm sweeps across the live stage." },
-  lightning_bolts_of_doom: { name: "Lightning Bolts of Doom", emoji: "⚡💀", category: "Special Effects", cost: 125, sound: [880, 440, 988, 494, 1175], style: "lightning", message: "Crackling bolts strike in a dramatic finale." },
-  book_of_death: { name: "Book of Death", emoji: "📕☠️", category: "Legendary", cost: 150, sound: [196, 147, 110, 73], style: "book", message: "A cursed book opens and releases shadowy magic." },
-  dream_makers: { name: "The Dream Makers", emoji: "✨🧚", category: "Magical", cost: 100, sound: [523, 659, 784, 1047, 1319], style: "dreammakers", message: "A team of dream makers appears and builds a glowing dream." },
-  phoenix_rebirth: { name: "Phoenix Rebirth", emoji: "🔥🪽", category: "Legendary", cost: 175, sound: [392, 523, 659, 784, 1047, 1319], style: "phoenix", message: "A phoenix rises from glowing flames." },
-  treasure_explosion: { name: "Treasure Explosion", emoji: "💎💰", category: "Legendary", cost: 150, sound: [587, 740, 988, 1175, 1480], style: "treasure", message: "A treasure chest bursts open with sparkling riches." },
-  meteor_mayhem: { name: "Meteor Mayhem", emoji: "☄️", category: "Special Effects", cost: 125, sound: [880, 440, 220, 110, 55], style: "meteor", message: "A spectacular shower of blazing meteors tears across the live screen." },
-  portal_party: { name: "Portal Party", emoji: "🌀🎉", category: "Magical", cost: 100, sound: [392, 587, 784, 1175, 1568], style: "portalparty", message: "A colorful portal opens with a burst of energy." },
-  blast_from_my_ass: { name: "Blast from My Ass", emoji: "💨🍑", category: "Special Effects", cost: 69, sound: [110, 73, 55, 82], style: "blastass", message: "A ridiculous cartoon smoke blast fills the screen." },
-  asshole_of_death: { name: "The Asshole of Death", emoji: "☠️🍑", category: "Legendary", cost: 199, sound: [73, 55, 41, 110], style: "deathass", message: "A cursed portal erupts and launches a cartoon skeleton." },
-  golden_throne: { name: "The Golden Throne", emoji: "🚽👑", category: "Legendary", cost: 125, sound: [392, 523, 659, 784], style: "throne", message: "A golden throne crashes in with a royal fanfare." },
-  chicken_of_doom: { name: "Chicken of Doom", emoji: "🐔💀", category: "Special Effects", cost: 75, sound: [784, 392, 784, 988], style: "chicken", message: "A furious chicken storms across the stage in a feather frenzy." },
-  cheesepocalypse: { name: "The Cheesepocalypse", emoji: "🧀☄️", category: "Special Effects", cost: 99, sound: [330, 440, 554, 659, 440], style: "cheese", message: "A giant cheese meteor crashes in a cheesy explosion." },
-  dragons_revenge: { name: "The Dragon's Revenge", emoji: "🐉🔥", category: "Legendary", cost: 200, sound: [196, 293, 392, 587, 784], style: "dragonrevenge", message: "The dragon returns with a fiery entrance and energy blast." },
-  stinky_fart_or_death: { name: "Stinky Fart or Death", emoji: "💨💀", category: "Special Effects", cost: 69, sound: [110, 73, 55, 82], style: "stinkdeath", message: "Toxic green stink clouds burst across the stage before a dramatic skull appears." },
-  madafaka_rattle: { name: "Madafaka Rattle", emoji: "🦴🖕", category: "Special Effects", cost: 69, sound: [180, 95, 210, 80, 240, 100], style: "rattlebone", message: "A skeletal middle finger snaps upright with a loud, comic bone-rattling shake." },
-  toxic_cloud: { name: "Toxic Cloud", emoji: "☣️💚", category: "Special Effects", cost: 49, sound: [95, 72, 110, 58], style: "toxiccloud", message: "A giant toxic-green cloud rolls across the stage with a swarm of silly buzzing flies." },
-  bone_breaker: { name: "Bone Breaker", emoji: "💀👎", category: "Special Effects", cost: 49, sound: [180, 95, 210, 80, 240], style: "bonebreaker", message: "A skeletal hand rattles into view and delivers the ultimate cartoon thumbs-down." },
-  knockout: { name: "Knockout!", emoji: "🥊💥", category: "Special Effects", cost: 69, sound: [130, 90, 65, 220], style: "knockout", message: "A giant boxing glove flies in with a comic impact and a burst of stars." },
-  cant_breathe: { name: "Can't Breathe", emoji: "😂💀", category: "Special Effects", cost: 69, sound: [660, 880, 740, 988, 660], style: "cantbreathe", message: "A laughing skull shakes with unstoppable laughter and bursts into cartoon tears." }
+  phoenix_rising: {
+    name: "The Phoenix Rising",
+    emoji: "🔥🪽",
+    category: "Legendary",
+    cost: 250,
+    sound: [110, 164, 220, 330],
+    style: "phoenix_rising",
+    message: "From the ashes, a legend takes flight."
+  }
 };
 window.TIKNATION_GIFT_CATALOG = TIKNATION_GIFT_CATALOG;
 
@@ -90,6 +62,48 @@ function playTikNationGiftSound(gift) {
     const context = tikNationGiftAudioContext;
     if (context.state === "suspended") context.resume().catch(() => {});
     const now = context.currentTime;
+
+    if (gift.style === "phoenix_rising") {
+      // A layered cinematic wing rush, rising fire roar and ember crackle.
+      const length = Math.floor(context.sampleRate * 4.8);
+      const buffer = context.createBuffer(1, length, context.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / length);
+      const noise = context.createBufferSource();
+      const filter = context.createBiquadFilter();
+      const gain = context.createGain();
+      noise.buffer = buffer; filter.type = "lowpass";
+      filter.frequency.setValueAtTime(420, now);
+      filter.frequency.exponentialRampToValueAtTime(1750, now + 1.25);
+      filter.frequency.exponentialRampToValueAtTime(360, now + 4.5);
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.linearRampToValueAtTime(0.13, now + 0.45);
+      gain.gain.linearRampToValueAtTime(0.2, now + 1.7);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 4.65);
+      noise.connect(filter); filter.connect(gain); gain.connect(context.destination);
+      noise.start(now); noise.stop(now + 4.7);
+      [0.18, 1.18, 2.28].forEach((delay, index) => {
+        const wing = context.createBufferSource(), wingFilter = context.createBiquadFilter(), wingGain = context.createGain();
+        wing.buffer = buffer; wingFilter.type = "bandpass";
+        wingFilter.frequency.setValueAtTime(680 - index * 80, now + delay);
+        wingFilter.frequency.exponentialRampToValueAtTime(180, now + delay + 0.7);
+        wingGain.gain.setValueAtTime(0.0001, now + delay);
+        wingGain.gain.linearRampToValueAtTime(0.11, now + delay + 0.13);
+        wingGain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 0.78);
+        wing.connect(wingFilter); wingFilter.connect(wingGain); wingGain.connect(context.destination);
+        wing.start(now + delay); wing.stop(now + delay + 0.8);
+      });
+      const roar = context.createOscillator(), roarFilter = context.createBiquadFilter(), roarGain = context.createGain();
+      roar.type = "sawtooth"; roar.frequency.setValueAtTime(78, now + 0.6);
+      roar.frequency.exponentialRampToValueAtTime(38, now + 3.9);
+      roarFilter.type = "lowpass"; roarFilter.frequency.value = 210;
+      roarGain.gain.setValueAtTime(0.0001, now + 0.6);
+      roarGain.gain.linearRampToValueAtTime(0.09, now + 1.0);
+      roarGain.gain.exponentialRampToValueAtTime(0.0001, now + 4.0);
+      roar.connect(roarFilter); roarFilter.connect(roarGain); roarGain.connect(context.destination);
+      roar.start(now + 0.6); roar.stop(now + 4.05);
+      return;
+    }
 
     if (gift.style === "meteor") {
       // A low, filtered roar, rising fire hiss, then a deep cinematic impact.
@@ -287,7 +301,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=meteor-impact-20261107c";
+    script.src = "./gift-engine.js?v=phoenix-rising-20261107a";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
@@ -300,7 +314,7 @@ function showTikNationGiftEffect(gift) {
     engine.show(gift, {
       meta: "TIKNATION GIFT · TEST COINS ONLY",
       onSound: () => playTikNationGiftSound(gift),
-      duration: gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
+      duration: gift.style === "phoenix_rising" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
     });
   }).catch(error => console.error("TikNation gift effect unavailable:", error));
 }
