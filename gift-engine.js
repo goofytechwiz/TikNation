@@ -145,7 +145,7 @@ css += String.raw`
 
 
 /* Chinese celestial dragon: sweeping S-curve flight across the full screen */
-css += String.raw\`
+css += String.raw`
 #tiknation-gift-engine .dragon-v2{position:absolute;inset:0;overflow:hidden;perspective:900px}
 #tiknation-gift-engine .dragon-flight-v2{
  width:min(112vw,1080px)!important;
@@ -174,7 +174,7 @@ css += String.raw\`
 @media(prefers-reduced-motion:reduce){
  #tiknation-gift-engine .dragon-flight-v2,#tiknation-gift-engine .dragon-svg-v5{animation:none!important}
 }
-\`;
+`;
 css += String.raw`
 #tiknation-gift-engine .dragon-svg-v5{display:block;width:100%;height:auto;overflow:visible}
 #tiknation-gift-engine .c5-mane{transform-origin:830px 280px;animation:c5-mane-flow 1.1s ease-in-out infinite alternate}
