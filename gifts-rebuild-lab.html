@@ -17,7 +17,7 @@ window.addEventListener("error",function(event){
  }
 },true);
 </script>
-<script src="./gift-engine.js?v=funhouse-removal-reload-20261107y"
+<script src="./gift-engine.js?v=haunted-carousel-engine-20261107b"
  onload="window.__giftEngineScriptState='Engine file loaded';"
  onerror="window.__giftEngineScriptState='Engine file request failed (check deployment/path)';"></script>
 <script src="./gifts.js?v=storm-recorded-sync-20261107f"></script>
@@ -48,7 +48,7 @@ main{width:min(100% - 28px,980px);margin:auto;padding:24px 0 56px}header{padding
 const status=document.getElementById("labStatus"),grid=document.getElementById("giftGrid"),filters=document.getElementById("filters");
 const catalog={...(window.TIKNATION_GIFT_CATALOG||{})};delete catalog.storm_of_the_world;catalog.void_rift={name:"The Void Rift",emoji:"🌀",category:"Epic",cost:100,style:"voidrift",message:"Reality has split open."};catalog.living_tombstones={name:"The Night of the Living Tombstones",emoji:"🪦",category:"Epic",cost:100,style:"livingtombstones",message:"The dead will not stay buried."};catalog.haunted_hearse={name:"The Haunted Hearse",emoji:"🚘",category:"Epic",cost:100,style:"hauntedhearse",message:"Some passengers never arrive."};catalog.carnevil={name:"CARNEVIL",emoji:"🎪",category:"Epic",cost:150,style:"carnevil",message:"Step right up… if you dare."};catalog.haunted_carousel={name:"The Haunted Carousel",emoji:"🎠",category:"Epic",cost:150,style:"hauntedcarousel",message:"Round and round… forever."};const engine=window.TikNationGiftEngine;
 let selected="All",soundOn=true,audio=null,lastSound="Not started";
-const entries=Object.entries(catalog),categories=["All",...new Set(entries.map(([,g])=>g.category||"Other"))];
+const entries=Object.entries(catalog).sort(([a],[b])=>a==="haunted_carousel"?-1:b==="haunted_carousel"?1:0),categories=["All",...new Set(entries.map(([,g])=>g.category||"Other"))];
 function say(message,isError){status.textContent=message;status.classList.toggle("error",!!isError);}
 function setAudioState(value){lastSound=value;document.getElementById("audioState").textContent=value;}
 function startVoidRiftSound(){
