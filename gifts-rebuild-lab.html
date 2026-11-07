@@ -63,7 +63,6 @@ function startDragonSound(ctx,base){
   flame.connect(flameGain);flameGain.connect(ctx.destination);flame.start(base+1.08);flame.stop(base+2.85);
 }
 
-function startPhoenixRisingSound(ctx,base){ return; }
 function startMeteorShowerSound(ctx,base){
   // Longer cinematic meteor storm: continuous atmospheric roar, distinct passes and heavy impacts.
   const duration=5.4,length=Math.floor(ctx.sampleRate*duration);
@@ -135,7 +134,7 @@ function startSoundInGesture(gift){
     osc.start(at);osc.stop(at+.5);harm.start(at);harm.stop(at+.36);
    });
    }
-   if(gift.style!=="phoenix_rising"&&gift.style!=="dragon"&&gift.style!=="meteor")setAudioState("Playing · "+notes.length+" notes");
+   if(gift.style!=="dragon"&&gift.style!=="meteor")setAudioState("Playing · "+notes.length+" notes");
   };
   if(ctx.state==="running")schedule();
   else resume.then(schedule).catch(err=>{setAudioState("Resume failed");say("Audio resume failed: "+err.message,true);});
