@@ -234,8 +234,7 @@ function startSoundInGesture(gift){
    [659.25,3,1],[587.33,4,1],[523.25,5,1],
    [466.16,6,1],[587.33,7,1],[698.46,8,1],
    [659.25,9,1],[587.33,10,1],[523.25,11,1],
-   [440,12,1],[523.25,13,1],[587.33,14,1],
-   [392,15,2],[349.23,17,1],[392,18,3]
+   [440,12,1],[523.25,13,1],[392,14,1]
   ];
   const playReed=(hz,at,dur,level)=>{
    const out=ctx.createGain(),filter=ctx.createBiquadFilter(),vib=ctx.createOscillator(),depth=ctx.createGain();
@@ -253,7 +252,7 @@ function startSoundInGesture(gift){
   };
   melody.forEach(([hz,step,len])=>playReed(hz,base+step*beat,beat*len*.94,.038));
   // Chord bed, with old fairground organ voicing in a minor key.
-  const chords=[[196,246.94,293.66],[174.61,220,261.63],[146.83,185,220],[164.81,196,246.94],[196,246.94,293.66],[174.61,220,261.63]];
+  const chords=[[196,246.94,293.66],[174.61,220,261.63],[146.83,185,220],[164.81,196,246.94],[196,246.94,293.66]];
   chords.forEach((ch,i)=>ch.forEach((hz,j)=>{
    const at=base+i*bar,osc=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();
    osc.type="triangle";osc.frequency.value=hz*(j===2?2:1);f.type="lowpass";f.frequency.value=720;
@@ -262,18 +261,18 @@ function startSoundInGesture(gift){
    osc.connect(f);f.connect(g);g.connect(ctx.destination);osc.start(at);osc.stop(at+bar);
   }));
   // Deep alternating bass notes and clipped off-beat chord pumps.
-  for(let b=0;b<6;b++){
+  for(let b=0;b<5;b++){
    const at=base+b*bar;
    const bass=ctx.createOscillator(),bg=ctx.createGain(),bf=ctx.createBiquadFilter();
-   bass.type="sine";bass.frequency.value=[98,87.31,73.42,82.41,98,87.31][b];bf.type="lowpass";bf.frequency.value=190;
+   bass.type="sine";bass.frequency.value=[98,87.31,73.42,82.41,98][b];bf.type="lowpass";bf.frequency.value=190;
    bg.gain.setValueAtTime(.0001,at);bg.gain.linearRampToValueAtTime(.12,at+.035);bg.gain.exponentialRampToValueAtTime(.0001,at+.42);
    bass.connect(bf);bf.connect(bg);bg.connect(ctx.destination);bass.start(at);bass.stop(at+.44);
-   const pump=ctx.createOscillator(),pg=ctx.createGain();pump.type="triangle";pump.frequency.value=[196,174.61,146.83,164.81,196,174.61][b];
+   const pump=ctx.createOscillator(),pg=ctx.createGain();pump.type="triangle";pump.frequency.value=[196,174.61,146.83,164.81,196][b];
    pg.gain.setValueAtTime(.0001,at+beat);pg.gain.linearRampToValueAtTime(.025,at+beat+.025);pg.gain.exponentialRampToValueAtTime(.0001,at+beat+.28);
    pump.connect(pg);pg.connect(ctx.destination);pump.start(at+beat);pump.stop(at+beat+.3);
    // A small brass bell on the first beat of each bar.
    const bell=ctx.createOscillator(),bellGain=ctx.createGain(),bellFilter=ctx.createBiquadFilter();
-   bell.type="sine";bell.frequency.value=[784,698.46,587.33,659.25,784,698.46][b];bellFilter.type="highpass";bellFilter.frequency.value=520;
+   bell.type="sine";bell.frequency.value=[784,698.46,587.33,659.25,784][b];bellFilter.type="highpass";bellFilter.frequency.value=520;
    bellGain.gain.setValueAtTime(.0001,at);bellGain.gain.linearRampToValueAtTime(.026,at+.012);bellGain.gain.exponentialRampToValueAtTime(.0001,at+1.05);
    bell.connect(bellFilter);bellFilter.connect(bellGain);bellGain.connect(ctx.destination);bell.start(at);bell.stop(at+1.08);
   }
