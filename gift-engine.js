@@ -579,7 +579,7 @@ function renderHauntedHearseGift(gift,opts,overlay){
    // Wheels with thick tires, stepped alloy rims, hubs and ten visible spokes.
    const wheels=[];
    for(const x of [-2.08,2.12])for(const z of [-1.02,1.02]){
-    const wheel=new THREE.Group();wheel.position.set(x,.58,z);car.add(wheel);wheels.push(wheel);
+    const wheel=new THREE.Group();wheel.position.set(x,.55,z);car.add(wheel);wheels.push(wheel);
     cylinder(wheel,.55,.55,.32,rubber,0,0,0,Math.PI/2,0,0);
     cylinder(wheel,.37,.37,.34,mat(0x77827b,.86,.26),0,0,z>0?.19:-.19,Math.PI/2,0,0);
     cylinder(wheel,.25,.25,.36,chrome,0,0,z>0?.22:-.22,Math.PI/2,0,0);
@@ -625,11 +625,11 @@ function renderHauntedHearseGift(gift,opts,overlay){
    const ghostHead=new THREE.Mesh(new THREE.SphereGeometry(.22,16,12),ghostMat);ghostHead.position.y=1.03;ghost.add(ghostHead);
    const loading=scene.querySelector(".hearse-loading");if(loading)loading.remove();
    resizeHandler=()=>{if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight),aspect=width/height;renderer.setSize(width,height,false);camera.aspect=aspect;if(aspect<.82){camera.fov=43;camera.position.set(12.8,7.0,15.2);}else{camera.fov=39;camera.position.set(11.8,6.0,14.0);}camera.lookAt(0,1.1,0);camera.updateProjectionMatrix();};resizeHandler();window.addEventListener("resize",resizeHandler);
-   const clock=new THREE.Clock();let elapsed=0;
+   const clock=new THREE.Clock();let elapsed=0,previousCarX=car.position.x;
    function animate(){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(animate);const dt=Math.min(.05,clock.getDelta());elapsed+=dt;
-    const drive=Math.min(1,Math.max(0,(elapsed-.8)/18.5));const eased=drive*drive*(3-2*drive);car.position.x=-4.4+eased*7.2;car.position.y=Math.sin(elapsed*5.2)*.018;
-    car.rotation.y=Math.sin(elapsed*.8)*.012;
-    wheels.forEach(w=>w.rotation.z=-(elapsed*2.25));
+    const drive=Math.min(1,Math.max(0,(elapsed-.8)/18.5));const eased=drive*drive*(3-2*drive);car.position.x=-4.4+eased*7.2;car.position.y=0;
+    car.rotation.y=Math.sin(elapsed*.8)*.006;
+    const travelled=car.position.x-previousCarX;wheels.forEach(w=>w.rotation.z-=travelled/.55);previousCarX=car.position.x;
     camera.position.x=car.position.x+11.8;camera.position.y=6.0;camera.position.z=14.0;camera.lookAt(car.position.x,1.05,0);
     const open=Math.max(0,Math.min(1,(elapsed-21.0)/2.0));if(doorL)doorL.rotation.y=-open*.95;if(doorR)doorR.rotation.y=open*.95;
     if(ghost){ghost.visible=elapsed>25.0;ghost.children.forEach(m=>{m.material.opacity=ghost.visible ? .48+.12*Math.sin(elapsed*2) : 0;});ghost.position.y=1.45+Math.sin(elapsed*1.25)*.08;}
