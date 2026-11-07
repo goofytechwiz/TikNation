@@ -111,11 +111,7 @@ function startSoundInGesture(gift){
   const notes=Array.isArray(gift.sound)&&gift.sound.length?gift.sound:[523,659,784,1047];
   const schedule=()=>{
    if(ctx.state!=="running"){setAudioState("Blocked · "+ctx.state);return;}
-   const base=ctx.currentTime+.025;
-   if(gift.style==="phoenix_rising"){
-    startPhoenixRisingSound(ctx,base);
-    setAudioState("Playing · phoenix wings + rising fire roar");
-   }else if(gift.style==="dragon"){
+   const base=ctx.currentTime+.025;else if(gift.style==="dragon"){
     startDragonSound(ctx,base);
     setAudioState("Playing · dragon roar + fire blast");
    }else if(gift.style==="meteor"){
