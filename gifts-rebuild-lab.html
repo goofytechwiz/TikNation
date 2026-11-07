@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090817"><title>TikNation · Gifts Rebuild Lab</title>
-<script src="./gift-engine.js?v=storm-recorded-sync-20261107f"></script>
+<script src="./gift-engine.js?v=storm-lightning-audio-20261107g"></script>
 <script src="./gifts.js?v=storm-recorded-sync-20261107f"></script>
 <style>
 :root{color-scheme:dark;--bg:#090817;--panel:#151329;--line:#393257;--cyan:#7eeaff;--violet:#b49aff;--muted:#c4bfd8}
@@ -111,10 +111,26 @@ function startStormSound(ctx,base){
  }
  thunder(base+.7,1,4.9);thunder(base+4.5,.5,2.6);
 }
+function playStormThunderStrike(){
+ if(!soundOn||!audio||audio.state!=="running")return;
+ const ctx=audio,at=ctx.currentTime+.015;
+ const makeNoise=(seconds)=>{const b=ctx.createBuffer(1,Math.floor(ctx.sampleRate*seconds),ctx.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length*.18);return b;};
+ // A crisp electrical crack at the flash, followed by a deep, spreading thunder roll.
+ const crack=ctx.createBufferSource(),crackFilter=ctx.createBiquadFilter(),crackGain=ctx.createGain();
+ crack.buffer=makeNoise(.42);crackFilter.type="bandpass";crackFilter.frequency.setValueAtTime(2100,at);crackFilter.frequency.exponentialRampToValueAtTime(520,at+.32);crackFilter.Q.value=.65;
+ crackGain.gain.setValueAtTime(.0001,at);crackGain.gain.exponentialRampToValueAtTime(.42,at+.012);crackGain.gain.exponentialRampToValueAtTime(.0001,at+.38);
+ crack.connect(crackFilter);crackFilter.connect(crackGain);crackGain.connect(ctx.destination);crack.start(at);crack.stop(at+.44);
+ const rumble=ctx.createBufferSource(),low=ctx.createBiquadFilter(),rumbleGain=ctx.createGain();
+ rumble.buffer=makeNoise(3.8);low.type="lowpass";low.frequency.setValueAtTime(210,at+.025);low.frequency.exponentialRampToValueAtTime(42,at+3.5);
+ rumbleGain.gain.setValueAtTime(.0001,at+.025);rumbleGain.gain.exponentialRampToValueAtTime(.32,at+.18);rumbleGain.gain.setValueAtTime(.2,at+.72);rumbleGain.gain.exponentialRampToValueAtTime(.0001,at+3.7);
+ rumble.connect(low);low.connect(rumbleGain);rumbleGain.connect(ctx.destination);rumble.start(at+.025);rumble.stop(at+3.82);
+}
 function startSoundInGesture(gift){
  if(!soundOn){setAudioState("Muted by toggle");return Promise.resolve(false);}
  if(gift.style==="storm"){
   try{
+   const C=window.AudioContext||window.webkitAudioContext;
+   if(C){if(!audio||audio.state==="closed")audio=new C();if(audio.state==="suspended")audio.resume().catch(()=>{});}
    const previous=window.__tiknationStormTrack;
    if(previous){previous.pause();previous.currentTime=0;}
    const track=new Audio("https://sfxjar.com/audio/0740.mp3");
@@ -142,7 +158,7 @@ async function preview(code,gift){
   if(gift.style==="storm")await startSoundInGesture(gift);
   else startSoundInGesture(gift);
   if(!engine||typeof engine.show!=="function")throw new Error("Animation engine did not load.");
-  const result=engine.show(gift,{meta:"TIKNATION GIFTS REBUILD LAB · LOCAL PREVIEW",duration:7800});
+  const result=engine.show(gift,{meta:"TIKNATION GIFTS REBUILD LAB · LOCAL PREVIEW",duration:7800,onLightning:gift.style==="storm"?playStormThunderStrike:undefined});
   if(result!==true&&!(result&&result.isConnected))throw new Error("Animation engine did not accept this preview.");
   if(gift.style==="dragon"||gift.style==="dragonrevenge"){
    const overlay=document.getElementById("tiknation-gift-engine");
