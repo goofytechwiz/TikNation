@@ -18,7 +18,7 @@ window.addEventListener("error",function(event){
  }
 },true);
 </script>
-<script src="./gift-engine.js?v=haunted-carousel-rebuild-1794092305115"
+<script src="./gift-engine.js?v=phantom-train-20261107a"
  onload="window.__giftEngineScriptState='Engine file loaded';"
  onerror="window.__giftEngineScriptState='Engine file request failed (check deployment/path)';"></script>
 <script src="./gifts.js?v=storm-recorded-sync-20261107f" onerror="window.__giftCatalogScriptError='Gift catalog script request failed';"></script>
@@ -47,9 +47,9 @@ main{width:min(100% - 28px,980px);margin:auto;padding:24px 0 56px}header{padding
 (function(){
 "use strict";
 const status=document.getElementById("labStatus"),grid=document.getElementById("giftGrid"),filters=document.getElementById("filters");
-const catalog={...(window.TIKNATION_GIFT_CATALOG||{})};delete catalog.storm_of_the_world;catalog.void_rift={name:"The Void Rift",emoji:"🌀",category:"Epic",cost:100,style:"voidrift",message:"Reality has split open."};catalog.living_tombstones={name:"The Night of the Living Tombstones",emoji:"🪦",category:"Epic",cost:100,style:"livingtombstones",message:"The dead will not stay buried."};catalog.haunted_hearse={name:"The Haunted Hearse",emoji:"🚘",category:"Epic",cost:100,style:"hauntedhearse",message:"Some passengers never arrive."};catalog.carnevil={name:"CARNEVIL",emoji:"🎪",category:"Epic",cost:150,style:"carnevil",message:"Step right up… if you dare."};catalog.haunted_carousel={name:"The Haunted Carousel",emoji:"🎠",category:"Epic",cost:150,style:"hauntedcarousel",message:"Round and round… forever."};const engine=window.TikNationGiftEngine;
+const catalog={...(window.TIKNATION_GIFT_CATALOG||{})};delete catalog.storm_of_the_world;catalog.void_rift={name:"The Void Rift",emoji:"🌀",category:"Epic",cost:100,style:"voidrift",message:"Reality has split open."};catalog.living_tombstones={name:"The Night of the Living Tombstones",emoji:"🪦",category:"Epic",cost:100,style:"livingtombstones",message:"The dead will not stay buried."};catalog.haunted_hearse={name:"The Haunted Hearse",emoji:"🚘",category:"Epic",cost:100,style:"hauntedhearse",message:"Some passengers never arrive."};catalog.carnevil={name:"CARNEVIL",emoji:"🎪",category:"Epic",cost:150,style:"carnevil",message:"Step right up… if you dare."};catalog.phantom_train={name:"The Phantom Train",emoji:"🚂",category:"Epic",cost:175,style:"phantomtrain",message:"The last train leaves at midnight."};const engine=window.TikNationGiftEngine;
 let selected="All",soundOn=true,audio=null,lastSound="Not started";
-const entries=Object.entries(catalog).sort(([a],[b])=>a==="haunted_carousel"?-1:b==="haunted_carousel"?1:0),categories=["All",...new Set(entries.map(([,g])=>g.category||"Other"))];
+const entries=Object.entries(catalog),categories=["All",...new Set(entries.map(([,g])=>g.category||"Other"))];
 function say(message,isError){status.textContent=message;status.classList.toggle("error",!!isError);}
 function setAudioState(value){lastSound=value;document.getElementById("audioState").textContent=value;}
 function startVoidRiftSound(){
@@ -225,101 +225,14 @@ function startSoundInGesture(gift){
  if(gift.style==="dragon"){startDragonSound(ctx,base);setAudioState("Playing · dragon roar + fire blast");return;}
  if(gift.style==="meteor"){startMeteorShowerSound(ctx,base);setAudioState("Playing · meteor whooshes + fiery impacts");return;}
  if(gift.style==="storm"){startStormSound(ctx,base);setAudioState("Playing · wind, rain + rolling thunder");return;}
-  if(gift.style==="carnevil"){startCarnevilSound(ctx,base);setAudioState("Playing · eerie carnival calliope");return;}if(gift.style==="hauntedcarousel"){
-  // A darker 3/4 carousel waltz: layered reed organ, music-box bells,
-  // alternating oom-pah bass and a soft mechanical turntable pulse.
-  const bpm=96,beat=60/bpm,bar=beat*3;
-  const melody=[
-   [392,0,1],[523.25,1,1],[587.33,2,1],
-   [659.25,3,1],[587.33,4,1],[523.25,5,1],
-   [466.16,6,1],[587.33,7,1],[698.46,8,1],
-   [659.25,9,1],[587.33,10,1],[523.25,11,1],
-   [440,12,1],[523.25,13,1],[392,14,1]
-  ];
-  const playReed=(hz,at,dur,level)=>{
-   const out=ctx.createGain(),filter=ctx.createBiquadFilter(),vib=ctx.createOscillator(),depth=ctx.createGain();
-   filter.type="lowpass";filter.frequency.value=2450;filter.Q.value=.7;
-   out.gain.setValueAtTime(.0001,at);out.gain.linearRampToValueAtTime(level,at+.045);
-   out.gain.setValueAtTime(level*.78,at+Math.max(.06,dur*.55));
-   out.gain.exponentialRampToValueAtTime(.0001,at+dur);
-   const partials=[[1,1],[2,.34],[3,.13],[4,.045]];
-   partials.forEach(([mult,amp])=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type="sawtooth";o.frequency.value=hz*mult;g.gain.value=amp;o.connect(g);g.connect(filter);o.start(at);o.stop(at+dur+.02);});
-   vib.type="sine";vib.frequency.value=5.2;depth.gain.value=hz*.0022;vib.connect(depth);
-   // Gentle pitch movement makes the reed sound less like a bare synthesizer.
-   const carrier=ctx.createOscillator();carrier.type="sine";carrier.frequency.value=hz;depth.connect(carrier.frequency);
-   const cg=ctx.createGain();cg.gain.value=.00001;carrier.connect(cg);cg.connect(filter);carrier.start(at);carrier.stop(at+dur+.02);
-   vib.start(at);vib.stop(at+dur+.02);filter.connect(out);out.connect(ctx.destination);
-  };
-  melody.forEach(([hz,step,len])=>playReed(hz,base+step*beat,beat*len*.94,.038));
-  // Chord bed, with old fairground organ voicing in a minor key.
-  const chords=[[196,246.94,293.66],[174.61,220,261.63],[146.83,185,220],[164.81,196,246.94],[196,246.94,293.66]];
-  chords.forEach((ch,i)=>ch.forEach((hz,j)=>{
-   const at=base+i*bar,osc=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();
-   osc.type="triangle";osc.frequency.value=hz*(j===2?2:1);f.type="lowpass";f.frequency.value=720;
-   g.gain.setValueAtTime(.0001,at);g.gain.linearRampToValueAtTime(.012,at+.22);
-   g.gain.setValueAtTime(.009,at+bar*.72);g.gain.exponentialRampToValueAtTime(.0001,at+bar*.98);
-   osc.connect(f);f.connect(g);g.connect(ctx.destination);osc.start(at);osc.stop(at+bar);
-  }));
-  // Deep alternating bass notes and clipped off-beat chord pumps.
-  for(let b=0;b<5;b++){
-   const at=base+b*bar;
-   const bass=ctx.createOscillator(),bg=ctx.createGain(),bf=ctx.createBiquadFilter();
-   bass.type="sine";bass.frequency.value=[98,87.31,73.42,82.41,98][b];bf.type="lowpass";bf.frequency.value=190;
-   bg.gain.setValueAtTime(.0001,at);bg.gain.linearRampToValueAtTime(.12,at+.035);bg.gain.exponentialRampToValueAtTime(.0001,at+.42);
-   bass.connect(bf);bf.connect(bg);bg.connect(ctx.destination);bass.start(at);bass.stop(at+.44);
-   const pump=ctx.createOscillator(),pg=ctx.createGain();pump.type="triangle";pump.frequency.value=[196,174.61,146.83,164.81,196][b];
-   pg.gain.setValueAtTime(.0001,at+beat);pg.gain.linearRampToValueAtTime(.025,at+beat+.025);pg.gain.exponentialRampToValueAtTime(.0001,at+beat+.28);
-   pump.connect(pg);pg.connect(ctx.destination);pump.start(at+beat);pump.stop(at+beat+.3);
-   // A small brass bell on the first beat of each bar.
-   const bell=ctx.createOscillator(),bellGain=ctx.createGain(),bellFilter=ctx.createBiquadFilter();
-   bell.type="sine";bell.frequency.value=[784,698.46,587.33,659.25,784][b];bellFilter.type="highpass";bellFilter.frequency.value=520;
-   bellGain.gain.setValueAtTime(.0001,at);bellGain.gain.linearRampToValueAtTime(.026,at+.012);bellGain.gain.exponentialRampToValueAtTime(.0001,at+1.05);
-   bell.connect(bellFilter);bellFilter.connect(bellGain);bellGain.connect(ctx.destination);bell.start(at);bell.stop(at+1.08);
-  }
-  // Subtle rotating mechanism: soft tick and low wooden wheel creak.
-  const tickBuffer=ctx.createBuffer(1,Math.floor(ctx.sampleRate*.035),ctx.sampleRate),td=tickBuffer.getChannelData(0);
-  for(let i=0;i<td.length;i++)td[i]=(Math.random()*2-1)*(1-i/td.length);
-  for(let i=0;i<24;i++){
-   const at=base+i*beat*.5,src=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();
-   src.buffer=tickBuffer;f.type="bandpass";f.frequency.value=1250;f.Q.value=.8;
-   g.gain.value=.012;src.connect(f);f.connect(g);g.connect(ctx.destination);src.start(at);
-  }
-  setAudioState("Playing · haunted calliope waltz, brass bells + carousel mechanism");return;
- }
-if(gift.style==="voidrift"){startVoidRiftSound();return;}if(gift.style==="livingtombstones"){
-  try{
-   const oldSet=window.__tiknationTombstoneAudio||[];
-   (window.__tiknationTombstoneTimers||[]).forEach(clearTimeout);
-   oldSet.forEach(a=>{try{a.pause();a.currentTime=0;}catch(_){}});
-   const wind=new Audio("https://bigsoundbank.com/UPLOAD/mp3/1450.mp3");
-   const zombie=new Audio("https://bigsoundbank.com/UPLOAD/mp3/2108.mp3");
-   const stone=new Audio("https://bigsoundbank.com/UPLOAD/mp3/580.mp3");
-   window.__tiknationTombstoneAudio=[wind,zombie,stone];
-   wind.loop=false;wind.volume=.3;zombie.volume=1;stone.volume=.78;
-   [wind,zombie,stone].forEach(a=>{a.preload="auto";});
-   const timers=[];
-   const stopAll=()=>window.__tiknationTombstoneAudio?.forEach(a=>{try{a.pause();a.currentTime=0;}catch(_){}});
-   zombie.addEventListener("error",()=>{setAudioState("Zombie recording failed to load");say("The zombie recording could not load. Please tell me this exact status.",true);},{once:true});
-   const windStart=wind.play();
-   const zombieStart=zombie.play();
-   Promise.allSettled([windStart,zombieStart]).then(results=>{
-    if(results[1].status==="rejected"){setAudioState("Zombie playback blocked");say("The browser blocked the zombie recording: "+results[1].reason.message,true);}
-    else setAudioState("Playing · cemetery wind + zombie groan");
-   });
-   timers.push(window.setTimeout(()=>{if(window.__tiknationTombstoneAudio?.includes(stone))stone.play().catch(err=>{setAudioState("Stone sound blocked");say("The stone sound was blocked: "+err.message,true);});},1550));
-   timers.push(window.setTimeout(stopAll,6900));
-   window.__tiknationTombstoneTimers=timers;
-   return Promise.resolve(true);
-  }catch(err){setAudioState("Tombstone audio error");say("Tombstone sound error: "+err.message,true);return Promise.resolve(false);}
- }
- const notes=Array.isArray(gift.sound)&&gift.sound.length?gift.sound:[523,659,784,1047];notes.forEach((raw,i)=>{const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22,osc=ctx.createOscillator(),gain=ctx.createGain();osc.type="triangle";osc.frequency.setValueAtTime(hz,at);gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.14,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.48);osc.connect(gain);gain.connect(ctx.destination);osc.start(at);osc.stop(at+.5);});setAudioState("Playing · "+notes.length+" notes");};
+  if(gift.style==="carnevil"){startCarnevilSound(ctx,base);setAudioState("Playing · eerie carnival calliope");return;}const notes=Array.isArray(gift.sound)&&gift.sound.length?gift.sound:[523,659,784,1047];notes.forEach((raw,i)=>{const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22,osc=ctx.createOscillator(),gain=ctx.createGain();osc.type="triangle";osc.frequency.setValueAtTime(hz,at);gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.14,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.48);osc.connect(gain);gain.connect(ctx.destination);osc.start(at);osc.stop(at+.5);});setAudioState("Playing · "+notes.length+" notes");};
  if(ctx.state==="running")schedule();else resume.then(schedule).catch(err=>{setAudioState("Resume failed");say("Audio resume failed: "+err.message,true);});
  }catch(err){setAudioState("Error");say("Audio error: "+err.message,true);}
 }
 async function preview(code,gift){
  try{
-  // Pin the carousel preview to its dedicated renderer, independent of catalog defaults.
-  const previewGift=code==="haunted_carousel"?{...gift,name:"The Haunted Carousel",emoji:"🎠",style:"hauntedcarousel"}:gift;
+  // Each preview uses the selected isolated-lab gift definition.
+  const previewGift=gift;
   // For the recorded storm, wait until playback actually starts before launching the visual.
   if(previewGift.style==="storm")await startSoundInGesture(previewGift);
   else startSoundInGesture(previewGift);
