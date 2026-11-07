@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090817"><title>TikNation · Gifts Rebuild Lab</title>
-<script src="./gift-engine.js?v=meteor-shower-20261107"></script>
+<script src="./gift-engine.js?v=meteor-shower-20261107b"></script>
 <script src="./gifts.js?v=rebuild-20261106"></script>
 <style>
 :root{color-scheme:dark;--bg:#090817;--panel:#151329;--line:#393257;--cyan:#7eeaff;--violet:#b49aff;--muted:#c4bfd8}
@@ -62,6 +62,37 @@ function startDragonSound(ctx,base){
   flameGain.gain.setValueAtTime(.0001,base+1.08);flameGain.gain.exponentialRampToValueAtTime(.075,base+1.25);flameGain.gain.exponentialRampToValueAtTime(.0001,base+2.8);
   flame.connect(flameGain);flameGain.connect(ctx.destination);flame.start(base+1.08);flame.stop(base+2.85);
 }
+
+function startMeteorShowerSound(ctx,base){
+  // Cinematic descending fire-whooshes, sizzling trails and distant impacts.
+  const duration=3.35,length=Math.floor(ctx.sampleRate*duration);
+  const buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);
+  for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length*.35);
+  const passes=[{at:0,pan:-.65,peak:.12,high:2300,low:260},{at:.42,pan:.45,peak:.105,high:1900,low:220},{at:.93,pan:-.2,peak:.13,high:2600,low:300},{at:1.48,pan:.72,peak:.11,high:2100,low:240},{at:2.02,pan:-.72,peak:.12,high:2400,low:260}];
+  passes.forEach(p=>{
+    const src=ctx.createBufferSource();src.buffer=buffer;
+    const filter=ctx.createBiquadFilter();filter.type="bandpass";filter.Q.value=.55;
+    filter.frequency.setValueAtTime(p.high,base+p.at);filter.frequency.exponentialRampToValueAtTime(p.low,base+p.at+.72);
+    const gain=ctx.createGain();gain.gain.setValueAtTime(.0001,base+p.at);gain.gain.exponentialRampToValueAtTime(p.peak,base+p.at+.12);gain.gain.exponentialRampToValueAtTime(.0001,base+p.at+.82);
+    const pan=ctx.createStereoPanner?ctx.createStereoPanner():null;
+    if(pan){pan.pan.setValueAtTime(p.pan,base+p.at);src.connect(filter);filter.connect(gain);gain.connect(pan);pan.connect(ctx.destination);}
+    else{src.connect(filter);filter.connect(gain);gain.connect(ctx.destination);}
+    src.start(base+p.at);src.stop(base+p.at+.86);
+  });
+  [0.82,1.62,2.43].forEach((at,i)=>{
+    const hit=ctx.createOscillator(),hitGain=ctx.createGain(),sub=ctx.createOscillator(),subGain=ctx.createGain();
+    hit.type="triangle";hit.frequency.setValueAtTime(105-i*8,base+at);hit.frequency.exponentialRampToValueAtTime(38,base+at+.48);
+    hitGain.gain.setValueAtTime(.0001,base+at);hitGain.gain.exponentialRampToValueAtTime(.22,base+at+.018);hitGain.gain.exponentialRampToValueAtTime(.0001,base+at+.62);
+    sub.type="sine";sub.frequency.setValueAtTime(54-i*3,base+at);subGain.gain.setValueAtTime(.0001,base+at);subGain.gain.exponentialRampToValueAtTime(.16,base+at+.025);subGain.gain.exponentialRampToValueAtTime(.0001,base+at+.72);
+    hit.connect(hitGain);hitGain.connect(ctx.destination);sub.connect(subGain);subGain.connect(ctx.destination);
+    hit.start(base+at);hit.stop(base+at+.65);sub.start(base+at);sub.stop(base+at+.75);
+    const crack=ctx.createBufferSource(),crackFilter=ctx.createBiquadFilter(),crackGain=ctx.createGain();
+    crack.buffer=buffer;crackFilter.type="lowpass";crackFilter.frequency.value=850;
+    crackGain.gain.setValueAtTime(.0001,base+at);crackGain.gain.exponentialRampToValueAtTime(.13,base+at+.012);crackGain.gain.exponentialRampToValueAtTime(.0001,base+at+.24);
+    crack.connect(crackFilter);crackFilter.connect(crackGain);crackGain.connect(ctx.destination);crack.start(base+at);crack.stop(base+at+.26);
+  });
+}
+
 function startSoundInGesture(gift){
  if(!soundOn){setAudioState("Muted by toggle");return;}
  const C=window.AudioContext||window.webkitAudioContext;
@@ -78,8 +109,11 @@ function startSoundInGesture(gift){
    if(gift.style==="dragon"){
     startDragonSound(ctx,base);
     setAudioState("Playing · dragon roar + fire blast");
+   }else if(gift.style==="meteor"){
+    startMeteorShowerSound(ctx,base);
+    setAudioState("Playing · meteor whooshes + fiery impacts");
    }
-   if(gift.style!=="dragon"&&gift.style!=="dragonrevenge"){
+   if(gift.style!=="dragon"&&gift.style!=="dragonrevenge"&&gift.style!=="meteor"){
    notes.forEach((raw,i)=>{
     const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22;
     const osc=ctx.createOscillator(),gain=ctx.createGain(),harm=ctx.createOscillator(),hg=ctx.createGain();
