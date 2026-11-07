@@ -514,7 +514,7 @@ function renderHauntedHearseGift(gift,opts,overlay){
    const moon=new THREE.DirectionalLight(0xd9e7e0,3.2);moon.position.set(-4,9,5);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);moon.shadow.camera.left=-10;moon.shadow.camera.right=10;moon.shadow.camera.top=10;moon.shadow.camera.bottom=-10;world.add(moon);
    const rim=new THREE.PointLight(0x88b99e,42,15);rim.position.set(-4,3,-3);world.add(rim);
    const headGlow=new THREE.PointLight(0xe6f3dc,18,8);headGlow.position.set(4,1.7,0);world.add(headGlow);
-   const mat=(color,metalness,roughness)=>new THREE.MeshStandardMaterial({color,metalness:metalness||0,roughness:roughness===undefined?.55:roughness});
+   const mat=(color,metalness,roughness)=>new THREE.MeshStandardMaterial({color,metalness:metalness||0,roughness:roughness===undefined ? .55 : roughness});
    const paint=mat(0x293b35,.78,.28),paintLight=mat(0x66766b,.72,.3),burgundy=mat(0x3a2027,.62,.31),chrome=mat(0xc4d0c9,.88,.2),rubber=mat(0x090c0d,.08,.82),glass= new THREE.MeshPhysicalMaterial({color:0x29453e,metalness:.45,roughness:.12,transparent:true,opacity:.82,clearcoat:1}),interior=mat(0x080e0d,.2,.65),lamp= new THREE.MeshStandardMaterial({color:0xfff0c2,emissive:0xd7bb78,emissiveIntensity:1.7});
    const ground=new THREE.Mesh(new THREE.PlaneGeometry(100,100),mat(0x11191a,.12,.92));ground.rotation.x=-Math.PI/2;ground.position.y=-.03;ground.receiveShadow=true;world.add(ground);
    const road=new THREE.Mesh(new THREE.PlaneGeometry(8,90),mat(0x202728,.16,.75));road.rotation.x=-Math.PI/2;road.position.set(0,.002,0);road.receiveShadow=true;world.add(road);
@@ -618,7 +618,7 @@ function renderHauntedHearseGift(gift,opts,overlay){
     car.rotation.y=Math.sin(elapsed*.28)*.025;
     wheels.forEach(w=>w.rotation.z=-(elapsed*1.6));
     const open=Math.max(0,Math.min(1,(elapsed-3.1)/1.35));if(doorL)doorL.rotation.y=-open*.95;if(doorR)doorR.rotation.y=open*.95;
-    if(ghost){ghost.visible=elapsed>4.5;ghost.children.forEach(m=>{m.material.opacity=ghost.visible?.48+.12*Math.sin(elapsed*2):0;});ghost.position.y=1.45+Math.sin(elapsed*1.25)*.08;}
+    if(ghost){ghost.visible=elapsed>4.5;ghost.children.forEach(m=>{m.material.opacity=ghost.visible ? .48+.12*Math.sin(elapsed*2) : 0;});ghost.position.y=1.45+Math.sin(elapsed*1.25)*.08;}
     fogs.forEach((f,i)=>{f.position.x+=dt*(.1+(i%4)*.035);if(f.position.x>10)f.position.x=-10;f.material.opacity=.035+.02*Math.sin(elapsed*1.4+i);});
     rim.intensity=36+Math.sin(elapsed*1.8)*7;renderer.render(world,camera);
    }
