@@ -428,56 +428,67 @@ function renderVoidRiftGift(gift,opts,overlay){
 
 function renderCarnevilGift(gift,opts,overlay){
  const scene=document.createElement("div");scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#050307;isolation:isolate";
- scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(0,0,0,.88)),radial-gradient(ellipse at 50% 55%,transparent 20%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:5%;left:0;right:0;text-align:center;color:#ead9c8;font:1000 clamp(34px,7vw,58px)/.95 Georgia,serif;letter-spacing:.2em;text-shadow:0 3px 12px #000,0 0 22px #a52a35">CARNEVIL<div style="font:700 10px system-ui;letter-spacing:.34em;margin-top:10px;color:#c5a49b">THE MIDWAY NEVER CLOSES</div></div>';
- overlay.appendChild(scene);document.body.appendChild(overlay);
- const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start;
- const bulbs=Array.from({length:54},(_,i)=>({p:i/54,phase:Math.random()*6.28})),fog=Array.from({length:50},()=>({x:Math.random(),y:.57+Math.random()*.38,r:18+Math.random()*65,v:5+Math.random()*15,a:.025+Math.random()*.055}));
- function resize(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}resize();window.addEventListener("resize",resize);
- function line(x1,y1,x2,y2,color,width){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
- function frame(now){
-  if(!alive||!overlay.isConnected)return;const t=(now-start)/1000,dt=Math.min(.05,(now-last)/1000);last=now;ctx.clearRect(0,0,w,h);
-  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#080a12");sky.addColorStop(.48,"#24121b");sky.addColorStop(1,"#050507");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
-  const moon=ctx.createRadialGradient(w*.78,h*.16,2,w*.78,h*.16,h*.23);moon.addColorStop(0,"rgba(231,218,203,.36)");moon.addColorStop(.28,"rgba(177,115,127,.12)");moon.addColorStop(1,"transparent");ctx.fillStyle=moon;ctx.fillRect(0,0,w,h);
-  // Distant tree line and layered midway silhouettes
-  ctx.fillStyle="#09080d";for(let i=0;i<15;i++){const x=i*w/14,ht=h*(.08+(i%4)*.025);ctx.beginPath();ctx.moveTo(x-28,h*.64);ctx.lineTo(x,h*.64-ht);ctx.lineTo(x+31,h*.64);ctx.fill();}
-  ctx.fillStyle="#100b10";ctx.fillRect(0,h*.67,w,h*.33);
-  // Ferris wheel with metal rim, spokes, cross braces and hanging gondolas
-  const fx=w*.79,fy=h*.48,fr=Math.min(w,h)*.19,rot=t*.13;
-  ctx.save();ctx.translate(fx,fy);ctx.strokeStyle="#62505a";ctx.lineWidth=6;ctx.beginPath();ctx.arc(0,0,fr,0,Math.PI*2);ctx.stroke();ctx.strokeStyle="#251d27";ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,fr-7,0,Math.PI*2);ctx.stroke();
-  for(let i=0;i<16;i++){const a=rot+i*Math.PI/8,x=Math.cos(a)*fr,y=Math.sin(a)*fr;line(0,0,x,y,"#65515a",1.8);ctx.save();ctx.translate(x,y);ctx.rotate(-rot);ctx.fillStyle=i%2?"#8d2532":"#b58d60";ctx.fillRect(-6,-3,12,10);ctx.strokeStyle="#d0b48d";ctx.lineWidth=1;ctx.strokeRect(-6,-3,12,10);ctx.restore();}
-  line(-fr*.55,fr*.95,0,0,"#51424a",7);line(fr*.55,fr*.95,0,0,"#51424a",7);line(-fr*.55,fr*.95,fr*.55,fr*.95,"#51424a",5);ctx.restore();
-  // Big top: broad curved canvas panels, seams, scalloped valance and guy ropes
-  const tx=w*.42,ty=h*.68,tw=Math.min(w*.62,570),th=Math.min(h*.47,310);
-  ctx.save();ctx.beginPath();ctx.moveTo(tx-tw*.52,ty-th*.52);ctx.quadraticCurveTo(tx,ty-th*1.12,tx+tw*.52,ty-th*.52);ctx.lineTo(tx+tw*.57,ty);ctx.lineTo(tx-tw*.57,ty);ctx.closePath();ctx.clip();
-  for(let i=0;i<10;i++){const x=tx-tw*.55+i*tw/5;ctx.fillStyle=i%2?"#741522":"#b5a18c";ctx.beginPath();ctx.moveTo(tx,ty-th);ctx.quadraticCurveTo(x+tw*.08,ty-th*.78,x,ty);ctx.lineTo(x+tw/5,ty);ctx.quadraticCurveTo(x+tw*.14,ty-th*.78,tx,ty-th);ctx.closePath();ctx.fill();}
-  const shade=ctx.createLinearGradient(0,ty-th,0,ty);shade.addColorStop(0,"rgba(0,0,0,.04)");shade.addColorStop(1,"rgba(0,0,0,.48)");ctx.fillStyle=shade;ctx.fillRect(tx-tw,ty-th*1.2,tw*2,th*1.3);ctx.restore();
-  ctx.strokeStyle="#d0b88f";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(tx-tw*.54,ty-th*.52);ctx.quadraticCurveTo(tx,ty-th*1.12,tx+tw*.54,ty-th*.52);ctx.stroke();
-  // scalloped entrance valance
-  for(let i=0;i<13;i++){const x=tx-tw*.52+i*tw/12;ctx.fillStyle=i%2?"#7e1825":"#b8a58f";ctx.beginPath();ctx.moveTo(x,ty-th*.52);ctx.quadraticCurveTo(x+tw/24,ty-th*.45,x+tw/12,ty-th*.52);ctx.lineTo(x+tw/12,ty-th*.47);ctx.quadraticCurveTo(x+tw/24,ty-th*.39,x,ty-th*.47);ctx.fill();}
-  // Entrance, deep black interior and velvet curtains
-  ctx.fillStyle="#050407";ctx.beginPath();ctx.moveTo(tx-tw*.17,ty);ctx.lineTo(tx-tw*.15,ty-th*.43);ctx.quadraticCurveTo(tx,ty-th*.52,tx+tw*.15,ty-th*.43);ctx.lineTo(tx+tw*.17,ty);ctx.fill();
-  ctx.fillStyle="#701321";ctx.beginPath();ctx.moveTo(tx-tw*.17,ty-th*.44);ctx.quadraticCurveTo(tx-tw*.1,ty-th*.16,tx,ty);ctx.lineTo(tx,ty-th*.44);ctx.fill();ctx.beginPath();ctx.moveTo(tx+tw*.17,ty-th*.44);ctx.quadraticCurveTo(tx+tw*.1,ty-th*.16,tx,ty);ctx.lineTo(tx,ty-th*.44);ctx.fill();
-  // ticket booth and funhouse frontage
-  const booth=(x,y,ww,hh)=>{ctx.fillStyle="#171016";ctx.fillRect(x,y,ww,hh);ctx.fillStyle="#7d1a28";ctx.fillRect(x,y,ww,hh*.2);ctx.strokeStyle="#aa8c72";ctx.lineWidth=2;ctx.strokeRect(x,y,ww,hh);ctx.fillStyle="#e4b66f";ctx.font="bold 9px Georgia";ctx.textAlign="center";ctx.fillText("TICKETS",x+ww/2,y+hh*.15);ctx.fillStyle="#070609";ctx.fillRect(x+ww*.18,y+hh*.38,ww*.64,hh*.42);};
-  booth(w*.06,h*.56,w*.16,h*.18);booth(w*.59,h*.57,w*.13,h*.17);
-  // string lights converge toward the big top
-  for(let strand=0;strand<3;strand++){const y0=h*(.24+strand*.055);ctx.strokeStyle="rgba(105,83,77,.8)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,y0);ctx.quadraticCurveTo(w*.5,y0+h*.18,w,y0+h*.02);ctx.stroke();for(let i=0;i<18;i++){const x=w*i/17,y=y0+Math.sin((x/w)*Math.PI)*h*.18;const glow=.35+.65*Math.max(0,Math.sin(t*3.2-i*.7-strand));ctx.fillStyle="rgba(255,197,124,"+glow+")";ctx.shadowColor="#ffb75f";ctx.shadowBlur=7*glow;ctx.beginPath();ctx.arc(x,y,1.7+glow,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;}}
-  // Sinister clown mask, not a flat stick silhouette; briefly visible in the tent doorway
-  const reveal=Math.max(0,Math.min(1,(t-4.2)/1.4));if(reveal>0){const x=tx,y=ty-th*.26;ctx.save();ctx.globalAlpha=reveal*(.82+.12*Math.sin(t*1.7));ctx.shadowColor="#a82b37";ctx.shadowBlur=20;
-   ctx.fillStyle="#08070a";ctx.beginPath();ctx.ellipse(x,y+24,35,54,0,0,Math.PI*2);ctx.fill();
-   ctx.fillStyle="#d5c7b3";ctx.beginPath();ctx.ellipse(x,y,22,29,0,0,Math.PI*2);ctx.fill();
-   ctx.fillStyle="#771522";ctx.beginPath();ctx.moveTo(x-22,y-8);ctx.lineTo(x-37,y-25);ctx.lineTo(x-18,y-20);ctx.lineTo(x,y-31);ctx.lineTo(x+18,y-20);ctx.lineTo(x+37,y-25);ctx.lineTo(x+22,y-8);ctx.fill();
-   ctx.fillStyle="#1a0b10";ctx.beginPath();ctx.ellipse(x-9,y-2,5,7,0,0,Math.PI*2);ctx.ellipse(x+9,y-2,5,7,0,0,Math.PI*2);ctx.fill();
-   ctx.fillStyle="#a3132a";ctx.beginPath();ctx.arc(x,y+10,4,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#5c0c1b";ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y+17,10,.15,Math.PI-.15);ctx.stroke();ctx.restore();}
-  // fog drifts across the foreground
-  fog.forEach(f=>{f.x-=f.v*dt/w;if(f.x<-.1)f.x=1.1;const g=ctx.createRadialGradient(f.x*w,f.y*h,0,f.x*w,f.y*h,f.r*4);g.addColorStop(0,"rgba(191,174,173,"+f.a+")");g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(f.x*w-f.r*4,f.y*h-f.r*4,f.r*8,f.r*8);});
-  if(Math.sin(t*1.7)>0.997){ctx.fillStyle="rgba(215,202,220,.09)";ctx.fillRect(0,0,w,h);}
-  raf=requestAnimationFrame(frame);
- }
- raf=requestAnimationFrame(frame);const duration=Math.max(22000,Number(opts.duration)||25000);
- setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .9s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),930);}},duration);return overlay;
+ scene.innerHTML='<div style="position:absolute;z-index:8;inset:0;pointer-events:none;background:linear-gradient(transparent 45%,rgba(0,0,0,.78)),radial-gradient(ellipse at 50% 48%,transparent 25%,rgba(0,0,0,.68) 100%)"></div><div style="position:absolute;z-index:9;bottom:4.5%;left:0;right:0;text-align:center;color:#ead9c8;font:1000 clamp(32px,7vw,56px)/.95 Georgia,serif;letter-spacing:.2em;text-shadow:0 3px 12px #000,0 0 22px #a52a35">CARNEVIL<div style="font:700 10px system-ui;letter-spacing:.34em;margin-top:10px;color:#c5a49b">THE MIDWAY NEVER CLOSES</div></div>';
+ overlay.appendChild(scene);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound();}catch(_){}}
+ let alive=true,renderer=null,raf=0,resizeHandler=null;const duration=Math.max(22000,Number(opts.duration)||25000);
+ const cleanup=()=>{alive=false;if(raf)cancelAnimationFrame(raf);if(resizeHandler)window.removeEventListener("resize",resizeHandler);if(renderer){renderer.dispose();if(renderer.domElement.parentNode)renderer.domElement.remove();}if(overlay.isConnected)overlay.remove();};
+ const finish=()=>{if(!alive)return;overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(cleanup,850);};const timer=setTimeout(finish,duration);
+ function fail(msg){scene.insertAdjacentHTML("afterbegin",'<div style="position:absolute;z-index:7;inset:0;display:grid;place-items:center;color:#e8b7b7;font:700 12px system-ui;text-align:center;padding:24px">'+msg+'</div>');}
+ function loadThree(done){if(window.THREE){done();return;}const existing=document.querySelector('script[data-tiknation-three="160"]');if(existing){existing.addEventListener("load",done,{once:true});existing.addEventListener("error",()=>fail("THE CARNIVAL ENGINE COULD NOT LOAD."),{once:true});return;}const script=document.createElement("script");script.src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js";script.async=true;script.dataset.tiknationThree="160";script.onload=done;script.onerror=()=>fail("THE CARNIVAL ENGINE COULD NOT LOAD.");document.head.appendChild(script);}
+ loadThree(()=>{
+  if(!alive||!overlay.isConnected)return;try{
+   const T=window.THREE,world=new T.Scene();world.background=new T.Color(0x08070b);world.fog=new T.FogExp2(0x171016,.035);
+   const camera=new T.PerspectiveCamera(43,1,.1,100);camera.position.set(0,7.4,18);camera.lookAt(0,3.1,0);
+   const canvas=document.createElement("canvas");canvas.style.cssText="position:absolute;inset:0;width:100%;height:100%;display:block";scene.insertBefore(canvas,scene.firstChild);
+   renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:"high-performance"});renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.6));renderer.setSize(scene.clientWidth,scene.clientHeight,false);renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
+   const mat=(color,rough=.8,metal=0)=>new T.MeshStandardMaterial({color,roughness:rough,metalness:metal});
+   const ground=new T.Mesh(new T.PlaneGeometry(100,100),mat(0x100d12));ground.rotation.x=-Math.PI/2;ground.position.y=-.08;world.add(ground);
+   world.add(new T.HemisphereLight(0x9aa6c4,0x160a10,1.1));const moon=new T.DirectionalLight(0xb6c3d7,2.1);moon.position.set(-7,13,8);moon.castShadow=true;world.add(moon);
+   const red=mat(0x791725),cream=mat(0xc4b49a),dark=mat(0x130b12),gold=mat(0xb58a53,.35,.65),steel=mat(0x46434a,.35,.8);
+   // Weathered big-top: alternating canvas panels on a true conical roof.
+   const tent=new T.Group();tent.position.set(-2.8,0,-2);world.add(tent);
+   const base=new T.Mesh(new T.CylinderGeometry(4.35,4.65,3.15,12,1,true),red);base.position.y=1.58;base.castShadow=true;base.receiveShadow=true;tent.add(base);
+   for(let i=0;i<12;i++){const a=i*Math.PI/6;const panel=new T.Mesh(new T.CylinderGeometry(4.37,4.68,3.13,1,1,true,0,Math.PI/6),i%2?cream:red);panel.rotation.y=a;panel.position.y=1.58;tent.add(panel);}
+   const roof=new T.Mesh(new T.ConeGeometry(4.65,3.1,12,1,true),cream);roof.position.y=4.7;roof.castShadow=true;tent.add(roof);
+   for(let i=0;i<12;i++){const a=i*Math.PI/6;const seam=new T.Mesh(new T.CylinderGeometry(.025,.025,3.1,5),gold);seam.position.set(Math.cos(a)*4.55,4.7+1.55,Math.sin(a)*4.55);tent.add(seam);}
+   const peak=new T.Mesh(new T.SphereGeometry(.24,12,8),gold);peak.position.y=6.28;tent.add(peak);
+   // Black entrance with heavy red velvet curtains and brass framing.
+   const entrance=new T.Mesh(new T.BoxGeometry(2.15,2.55,.16),dark);entrance.position.set(-2.8,1.27,2.68);world.add(entrance);
+   for(const x of [-3.78,-1.82]){const post=new T.Mesh(new T.CylinderGeometry(.07,.09,2.9,10),gold);post.position.set(x,1.42,2.8);world.add(post);}
+   const lintel=new T.Mesh(new T.BoxGeometry(2.2,.14,.18),gold);lintel.position.set(-2.8,2.78,2.8);world.add(lintel);
+   for(const x of [-3.48,-2.12]){const curtain=new T.Mesh(new T.BoxGeometry(.62,2.35,.12),red);curtain.position.set(x,1.2,2.9);curtain.rotation.z=x< -2.8?-.12:.12;world.add(curtain);}
+   // Ferris wheel with metal structure, cross braces and hanging gondolas.
+   const wheel=new T.Group();wheel.position.set(5.1,4.2,-3.1);world.add(wheel);
+   for(const z of [-.12,.12]){const rim=new T.Mesh(new T.TorusGeometry(2.85,.09,10,72),steel);rim.position.z=z;wheel.add(rim);}
+   for(let i=0;i<16;i++){const a=i*Math.PI/8;const spoke=new T.Mesh(new T.CylinderGeometry(.035,.035,5.7,6),steel);spoke.position.set(Math.cos(a)*1.42,Math.sin(a)*1.42,0);spoke.rotation.z=a-Math.PI/2;wheel.add(spoke);
+    const gondola=new T.Group();const cabin=new T.Mesh(new T.BoxGeometry(.55,.48,.45),i%2?red:dark);cabin.position.y=-.28;gondola.add(cabin);const roofCap=new T.Mesh(new T.BoxGeometry(.64,.08,.5),gold);roofCap.position.y=-.02;gondola.add(roofCap);gondola.position.set(Math.cos(a)*2.85,Math.sin(a)*2.85,0);wheel.add(gondola);}
+   for(const x of [-1.1,1.1]){const leg=new T.Mesh(new T.CylinderGeometry(.09,.15,4.3,8),steel);leg.position.set(x,-2.1,0);leg.rotation.z=x<0?-.27:.27;wheel.add(leg);}
+   // Ticket kiosk and crooked funhouse frontage.
+   function booth(x,z,w,h,sign){const g=new T.Group();g.position.set(x,0,z);world.add(g);const body=new T.Mesh(new T.BoxGeometry(w,h,w*.55),dark);body.position.y=h/2;body.castShadow=true;g.add(body);const awning=new T.Mesh(new T.ConeGeometry(w*.72,.72,4),red);awning.position.y=h+.3;awning.rotation.y=Math.PI/4;g.add(awning);const board=new T.Mesh(new T.BoxGeometry(w*.9,.34,.12),gold);board.position.set(0,h*.78,w*.29);g.add(board);const post=new T.Mesh(new T.BoxGeometry(w*.72,.22,.13),cream);post.position.set(0,h*.78+.02,w*.37);g.add(post);return g;}
+   booth(-7,1.1,2.35,2.2);booth(1.1,-1.5,2.1,2.0);
+   const fun=new T.Group();fun.position.set(8,0,-1.6);world.add(fun);const facade=new T.Mesh(new T.BoxGeometry(4.2,4.5,.55),dark);facade.position.y=2.25;facade.castShadow=true;fun.add(facade);
+   for(let i=0;i<5;i++){const stripe=new T.Mesh(new T.BoxGeometry(.72,4.45,.58),i%2?red:cream);stripe.position.set(-1.68+i*.84,2.25,.02);fun.add(stripe);}
+   const marquee=new T.Mesh(new T.BoxGeometry(4.5,.58,.72),gold);marquee.position.set(0,4.75,.05);fun.add(marquee);
+   const marqueeFace=new T.Mesh(new T.BoxGeometry(4.2,.36,.76),red);marqueeFace.position.set(0,4.75,.1);fun.add(marqueeFace);
+   const bulbs=[];for(let i=0;i<26;i++){const a=new T.Mesh(new T.SphereGeometry(.075,8,6),mat(0xffd18a,.2));a.position.set(-2.0+(i%14)*.31,i<14?4.75:4.25,.5);fun.add(a);bulbs.push(a);}
+   // Hanging strings of warm carnival bulbs.
+   const bulbs2=[];for(let strand=0;strand<3;strand++){const cable=new T.Mesh(new T.TorusGeometry(7.1,.018,4,64,Math.PI),steel);cable.rotation.z=Math.PI; cable.position.set(0,8.2-strand*.65,-2);world.add(cable);for(let i=0;i<18;i++){const a=Math.PI+i*Math.PI/17;const b=new T.Mesh(new T.SphereGeometry(.07,8,6),mat(0xffc47b,.25));b.position.set(Math.cos(a)*7.1,8.2-strand*.65-Math.sin(a)*.9,-2);world.add(b);bulbs2.push(b);}}
+   // Clown apparition hidden inside the big-top doorway; it slowly emerges.
+   const clown=new T.Group();clown.position.set(-2.8,.4,2.2);world.add(clown);const face=new T.Mesh(new T.SphereGeometry(.48,24,18),mat(0xd8c9b4,.85));face.scale.set(.78,1.15,.48);face.position.y=1.45;clown.add(face);
+   const hood=new T.Mesh(new T.ConeGeometry(.72,.85,8),red);hood.position.y=2.25;clown.add(hood);
+   for(const x of [-.18,.18]){const eye=new T.Mesh(new T.SphereGeometry(.065,10,8),mat(0x090609));eye.position.set(x,1.54,.39);clown.add(eye);const cheek=new T.Mesh(new T.SphereGeometry(.11,12,8),red);cheek.position.set(x*1.9,1.24,.34);clown.add(cheek);}
+   const nose=new T.Mesh(new T.SphereGeometry(.12,12,8),red);nose.position.set(0,1.36,.43);clown.add(nose);
+   const mouth=new T.Mesh(new T.TorusGeometry(.17,.025,6,24,Math.PI),dark);mouth.position.set(0,1.12,.42);mouth.rotation.z=Math.PI;clown.add(mouth);clown.scale.setScalar(.001);
+   // Drifting ground fog and intermittent searchlights.
+   const fogMat=new T.MeshBasicMaterial({color:0xb8aab4,transparent:true,opacity:.075,depthWrite:false});const fogs=[];for(let i=0;i<16;i++){const f=new T.Mesh(new T.CircleGeometry(1,24),fogMat.clone());f.rotation.x=-Math.PI/2;f.scale.set(1.5+Math.random()*2,.5+Math.random(),1);f.position.set(-10+Math.random()*20,.035+i*.001,-1+Math.random()*8);world.add(f);fogs.push(f);}
+   const beams=[];for(const x of [-8,7]){const light=new T.SpotLight(0xb9c8e8,95,28,Math.PI/8,.55,1.4);light.position.set(x,8,-4);light.target.position.set(x*.4,0,0);world.add(light,light.target);beams.push(light);}
+   resizeHandler=()=>{if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight);renderer.setSize(width,height,false);camera.aspect=width/height;camera.fov=width/height<.8?49:43;camera.position.set(width/height<.8?0:0,width/height<.8?8.5:7.4,width/height<.8?22:18);camera.lookAt(0,3.1,0);camera.updateProjectionMatrix();};resizeHandler();window.addEventListener("resize",resizeHandler);
+   const clock=new T.Clock();let elapsed=0;function animate(){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(animate);const dt=Math.min(.05,clock.getDelta());elapsed+=dt;wheel.rotation.z=-elapsed*.17;clown.scale.setScalar(Math.max(.001,Math.min(1,(elapsed-5)/2)));clown.position.y=.4+Math.sin(elapsed*1.2)*.035;bulbs.forEach((b,i)=>{const v=.35+.65*Math.max(0,Math.sin(elapsed*4+i));b.material.emissive=new T.Color(0xff9a4d);b.material.emissiveIntensity=v*1.5;});bulbs2.forEach((b,i)=>{const v=.3+.7*Math.max(0,Math.sin(elapsed*3.2+i*.7));b.material.emissive=new T.Color(0xffb36b);b.material.emissiveIntensity=v*1.3;});fogs.forEach((f,i)=>{f.position.x+=dt*(.18+i%4*.07);if(f.position.x>12)f.position.x=-12;f.material.opacity=.04+.035*Math.sin(elapsed+i);});beams.forEach((b,i)=>{b.target.position.x=Math.sin(elapsed*.6+i*2)*5;b.target.position.z=Math.cos(elapsed*.45+i)*3;});renderer.render(world,camera);}
+   animate();
+  }catch(err){fail("THE CARNIVAL COULD NOT BE RENDERED. PLEASE REOPEN THE PREVIEW.");}
+ });
+ return overlay;
 }
-
 
 function renderHauntedHearseGift(gift,opts,overlay){
  const scene=document.createElement("div");
