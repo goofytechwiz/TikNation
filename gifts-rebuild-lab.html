@@ -50,7 +50,7 @@ function startVoidRiftSound(){
  impact.addEventListener("error",()=>{setAudioState("Impact sound failed to load");say("The cinematic impact file failed to load. Please tell me this status.",true);},{once:true});
  const play=(a)=>a.play().catch(err=>{setAudioState("Sound playback blocked");say("The browser blocked a Void Rift sound: "+err.message,true);});
  play(opening);
- timers.push(setTimeout(()=>{play(impact);play(collapse);},5100));
+ timers.push(setTimeout(()=>{play(impact);play(collapse);timers.push(setTimeout(()=>{try{impact.pause();}catch(_){}},4200));},5100));
  window.__tiknationVoidRiftTimers=timers;
  setAudioState("Playing · portal tear + cinematic impact");
 }
