@@ -63,16 +63,7 @@ function startDragonSound(ctx,base){
   flame.connect(flameGain);flameGain.connect(ctx.destination);flame.start(base+1.08);flame.stop(base+2.85);
 }
 
-function startPhoenixRisingSound(ctx,base){
- const duration=4.8,length=Math.floor(ctx.sampleRate*duration),buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);
- for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*(1-i/length);
- const bed=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();
- bed.buffer=buffer;filter.type="lowpass";filter.frequency.setValueAtTime(420,base);filter.frequency.exponentialRampToValueAtTime(1750,base+1.25);filter.frequency.exponentialRampToValueAtTime(360,base+4.5);
- gain.gain.setValueAtTime(.0001,base);gain.gain.linearRampToValueAtTime(.13,base+.45);gain.gain.linearRampToValueAtTime(.2,base+1.7);gain.gain.exponentialRampToValueAtTime(.0001,base+4.65);
- bed.connect(filter);filter.connect(gain);gain.connect(ctx.destination);bed.start(base);bed.stop(base+4.7);
- [0.18,1.18,2.28].forEach((delay,index)=>{const src=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();src.buffer=buffer;f.type="bandpass";f.frequency.setValueAtTime(680-index*80,base+delay);f.frequency.exponentialRampToValueAtTime(180,base+delay+.7);g.gain.setValueAtTime(.0001,base+delay);g.gain.linearRampToValueAtTime(.11,base+delay+.13);g.gain.exponentialRampToValueAtTime(.0001,base+delay+.78);src.connect(f);f.connect(g);g.connect(ctx.destination);src.start(base+delay);src.stop(base+delay+.8);});
- const roar=ctx.createOscillator(),rf=ctx.createBiquadFilter(),rg=ctx.createGain();roar.type="sawtooth";roar.frequency.setValueAtTime(78,base+.6);roar.frequency.exponentialRampToValueAtTime(38,base+3.9);rf.type="lowpass";rf.frequency.value=210;rg.gain.setValueAtTime(.0001,base+.6);rg.gain.linearRampToValueAtTime(.09,base+1);rg.gain.exponentialRampToValueAtTime(.0001,base+4);roar.connect(rf);rf.connect(rg);rg.connect(ctx.destination);roar.start(base+.6);roar.stop(base+4.05);
-}
+function startPhoenixRisingSound(ctx,base){ return; }
 function startMeteorShowerSound(ctx,base){
   // Longer cinematic meteor storm: continuous atmospheric roar, distinct passes and heavy impacts.
   const duration=5.4,length=Math.floor(ctx.sampleRate*duration);
@@ -132,7 +123,7 @@ function startSoundInGesture(gift){
     startMeteorShowerSound(ctx,base);
     setAudioState("Playing · meteor whooshes + fiery impacts");
    }
-   if(gift.style!=="phoenix_rising"&&gift.style!=="dragon"&&gift.style!=="dragonrevenge"&&gift.style!=="meteor"){
+   if(gift.style!=="dragon"&&gift.style!=="dragonrevenge"&&gift.style!=="meteor"){
    notes.forEach((raw,i)=>{
     const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22;
     const osc=ctx.createOscillator(),gain=ctx.createGain(),harm=ctx.createOscillator(),hg=ctx.createGain();
@@ -177,7 +168,7 @@ function renderGifts(){grid.replaceChildren();entries.filter(([,g])=>selected===
 document.getElementById("soundToggle").addEventListener("click",function(){soundOn=!soundOn;this.textContent=soundOn?"🔊 Sound: On":"🔇 Sound: Off";this.setAttribute("aria-pressed",String(soundOn));});
 document.getElementById("giftCount").textContent=String(entries.length);
 document.getElementById("engineState").textContent=engine&&typeof engine.show==="function"?"Loaded":"Missing";
-if(!entries.length)say("Gift catalog failed to load.",true);else if(!engine||typeof engine.show!=="function")say("Catalog loaded, but animation engine is missing.",true);else say("Ready · "+entries.length+" brand-new gift loaded. Tap The Phoenix Rising to preview.");
+if(!entries.length)say("Gift catalog failed to load.",true);else if(!engine||typeof engine.show!=="function")say("Catalog loaded, but animation engine is missing.",true);else say("Ready · "+entries.length+" brand-new gift loaded. Tap Storm of the World to preview.");
 renderFilters();renderGifts();
 })();
 </script></body></html>
