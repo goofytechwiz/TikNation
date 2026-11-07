@@ -507,22 +507,35 @@ function renderHauntedHearseGift(gift,opts,overlay){
   ellipse(0,10,310,35,"rgba(0,0,0,.72)");
   [-190,190].forEach(x=>{ellipse(x,0,47,49,"#020303");ellipse(x,0,39,41,"#171d1c");ellipse(x,0,29,30,"#606966");ellipse(x,0,23,24,"#141a19");ctx.strokeStyle="#a1aaa5";ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,0,19,0,Math.PI*2);ctx.stroke();for(let k=0;k<10;k++){const a=k*Math.PI/5;lineWheel(x+Math.cos(a)*5,Math.sin(a)*5,x+Math.cos(a)*18,Math.sin(a)*18);}ellipse(x,0,6,6,"#a8b0aa");});
   function lineWheel(x1,y1,x2,y2){ctx.strokeStyle="#89938d";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
-  // Long polished black hearse body, lower rocker and chrome highlights
-  const body=ctx.createLinearGradient(0,-205,0,14);body.addColorStop(0,"#3b4541");body.addColorStop(.12,"#151c1a");body.addColorStop(.48,"#050909");body.addColorStop(.76,"#202a26");body.addColorStop(1,"#060908");
-  ctx.fillStyle=body;ctx.strokeStyle="#89958d";ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(-280,-72);ctx.lineTo(-264,-132);ctx.quadraticCurveTo(-254,-160,-218,-164);ctx.lineTo(195,-164);ctx.quadraticCurveTo(242,-158,263,-116);ctx.lineTo(282,-48);ctx.lineTo(270,-14);ctx.quadraticCurveTo(0,2,-274,-12);ctx.closePath();ctx.fill();ctx.stroke();
-  // reflections along long coachwork
-  ctx.strokeStyle="rgba(206,225,215,.28)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-245,-139);ctx.quadraticCurveTo(0,-151,236,-130);ctx.stroke();ctx.strokeStyle="rgba(0,0,0,.7)";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-260,-35);ctx.quadraticCurveTo(0,-21,267,-35);ctx.stroke();
-  // passenger compartment roof and tinted glass
-  ctx.fillStyle="#080d0e";ctx.beginPath();ctx.moveTo(-228,-159);ctx.lineTo(-205,-216);ctx.quadraticCurveTo(-196,-229,-165,-230);ctx.lineTo(145,-230);ctx.quadraticCurveTo(177,-228,198,-204);ctx.lineTo(232,-158);ctx.closePath();ctx.fill();ctx.strokeStyle="#7d8981";ctx.lineWidth=2;ctx.stroke();
-  const glass=ctx.createLinearGradient(0,-226,0,-164);glass.addColorStop(0,"rgba(123,166,157,.38)");glass.addColorStop(1,"rgba(7,13,13,.82)");ctx.fillStyle=glass;ctx.beginPath();ctx.moveTo(-192,-211);ctx.lineTo(-164,-222);ctx.lineTo(143,-222);ctx.lineTo(188,-166);ctx.lineTo(-213,-166);ctx.closePath();ctx.fill();
-  // chrome window dividers and landau-style rear quarter windows
-  ctx.strokeStyle="#9aa59d";ctx.lineWidth=3;[-105,0,105].forEach(x=>{ctx.beginPath();ctx.moveTo(x,-222);ctx.lineTo(x,-165);ctx.stroke();});
-  ctx.strokeStyle="#394640";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-210,-160);ctx.lineTo(225,-160);ctx.stroke();
-  // hood and front grille with vertical chrome bars
-  ctx.fillStyle="#070b0b";ctx.fillRect(-279,-100,28,54);ctx.strokeStyle="#9ca9a0";ctx.lineWidth=2;for(let i=0;i<7;i++){ctx.beginPath();ctx.moveTo(-276+i*4,-96);ctx.lineTo(-276+i*4,-49);ctx.stroke();}
-  // paired glass headlights with housings
-  [-252,252].forEach(x=>{ellipse(x,-110,17,12,"#0a100f");ellipse(x,-110,11,7,"rgba(208,244,222,"+(flicker*.85)+")");});
-  ctx.strokeStyle="#aab4ad";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-230,-62);ctx.lineTo(244,-62);ctx.stroke();
+  // Sculpted coach-built hearse body: long rear quarter, defined fenders and deep lower sill
+  const body=ctx.createLinearGradient(-10,-238,15,18);body.addColorStop(0,"#59635e");body.addColorStop(.08,"#252e2a");body.addColorStop(.25,"#080d0c");body.addColorStop(.58,"#020505");body.addColorStop(.78,"#27312c");body.addColorStop(.91,"#0b100e");body.addColorStop(1,"#030605");
+  ctx.fillStyle=body;ctx.strokeStyle="#9aa69e";ctx.lineWidth=2.4;ctx.beginPath();ctx.moveTo(-292,-72);ctx.lineTo(-280,-125);ctx.quadraticCurveTo(-274,-151,-245,-160);ctx.lineTo(202,-160);ctx.quadraticCurveTo(249,-154,271,-118);ctx.lineTo(291,-58);ctx.lineTo(285,-22);ctx.quadraticCurveTo(180,-5,0,-8);ctx.quadraticCurveTo(-170,-5,-286,-22);ctx.closePath();ctx.fill();ctx.stroke();
+  // Raised front fender and rear wheel arch lips, with dark wheel-well cutouts
+  [-190,190].forEach(x=>{ctx.fillStyle="#020404";ctx.beginPath();ctx.ellipse(x,-3,54,53,0,Math.PI,Math.PI*2);ctx.lineTo(x+54,2);ctx.lineTo(x-54,2);ctx.closePath();ctx.fill();ctx.strokeStyle="rgba(159,174,164,.72)";ctx.lineWidth=3;ctx.beginPath();ctx.arc(x,-1,51,Math.PI,Math.PI*2);ctx.stroke();});
+  // Long coachwork reflections, beltline, chrome sill and lower rocker
+  ctx.strokeStyle="rgba(220,237,226,.42)";ctx.lineWidth=2.4;ctx.beginPath();ctx.moveTo(-263,-139);ctx.quadraticCurveTo(-15,-157,246,-132);ctx.stroke();
+  ctx.strokeStyle="rgba(123,145,133,.7)";ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(-269,-76);ctx.quadraticCurveTo(0,-64,277,-78);ctx.stroke();
+  ctx.strokeStyle="#8d9b92";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-258,-17);ctx.quadraticCurveTo(0,-3,268,-18);ctx.stroke();
+  ctx.strokeStyle="rgba(0,0,0,.82)";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-260,-35);ctx.quadraticCurveTo(0,-21,267,-35);ctx.stroke();
+  // Raised roof, sloped windshield and long hearse side glazing
+  ctx.fillStyle="#050909";ctx.beginPath();ctx.moveTo(-238,-157);ctx.lineTo(-216,-215);ctx.quadraticCurveTo(-206,-238,-174,-239);ctx.lineTo(148,-239);ctx.quadraticCurveTo(184,-237,205,-207);ctx.lineTo(238,-157);ctx.closePath();ctx.fill();ctx.strokeStyle="#a1aca4";ctx.lineWidth=2.4;ctx.stroke();
+  const glass=ctx.createLinearGradient(0,-238,0,-160);glass.addColorStop(0,"rgba(143,178,166,.48)");glass.addColorStop(.38,"rgba(31,52,47,.72)");glass.addColorStop(1,"rgba(3,8,8,.96)");ctx.fillStyle=glass;ctx.beginPath();ctx.moveTo(-205,-215);ctx.lineTo(-175,-231);ctx.lineTo(145,-231);ctx.lineTo(192,-165);ctx.lineTo(-224,-165);ctx.closePath();ctx.fill();
+  // Reflected moon streaks and individually framed landau windows
+  ctx.strokeStyle="rgba(218,235,225,.5)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-192,-222);ctx.lineTo(139,-222);ctx.stroke();
+  ctx.strokeStyle="#9ba9a0";ctx.lineWidth=3;[-112,-4,105].forEach(x=>{ctx.beginPath();ctx.moveTo(x,-229);ctx.lineTo(x,-164);ctx.stroke();});
+  ctx.strokeStyle="#394640";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-220,-158);ctx.lineTo(229,-158);ctx.stroke();
+  // Door seams, chrome handles, side mirror and coach-built trim
+  ctx.strokeStyle="rgba(161,177,166,.8)";ctx.lineWidth=1.5;[-245,-120,10,145,238].forEach(x=>{ctx.beginPath();ctx.moveTo(x,-145);ctx.lineTo(x,-24);ctx.stroke();});
+  ctx.fillStyle="#c0c9c1";[-72,72].forEach(x=>{ctx.fillRect(x,-91,18,3);ctx.fillRect(x+2,-88,3,4);});
+  ctx.fillStyle="#929f96";ctx.beginPath();ctx.ellipse(-235,-166,10,5,-.2,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#87958c";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-235,-166,-246,-151);ctx.stroke();
+  // Front fascia: inset chrome grille, hood ridges, bumper and separate lamp lenses
+  ctx.fillStyle="#050909";ctx.strokeStyle="#aeb9b0";ctx.lineWidth=2.5;ctx.beginPath();ctx.roundRect(-292,-117,34,57,5);ctx.fill();ctx.stroke();
+  for(let i=0;i<8;i++){ctx.strokeStyle="rgba(195,207,198,.88)";ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(-288+i*4.1,-111);ctx.lineTo(-288+i*4.1,-66);ctx.stroke();}
+  ctx.strokeStyle="rgba(184,198,187,.4)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-270,-151);ctx.quadraticCurveTo(-218,-164,-162,-160);ctx.stroke();
+  [-270,270].forEach((x,j)=>{ellipse(x,-111,19,14,"#050909");ellipse(x,-111,14,10,"#303d37");ellipse(x,-111,10,7,"rgba(222,246,230,"+(flicker*.9)+")");ctx.strokeStyle="#b9c5bb";ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,-111,17,12,0,0,Math.PI*2);ctx.stroke();});
+  // Full-width chrome bumper with end caps and license plate
+  ctx.strokeStyle="#c0c9c2";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-298,-49);ctx.quadraticCurveTo(-275,-38,-245,-43);ctx.lineTo(250,-43);ctx.quadraticCurveTo(281,-38,299,-49);ctx.stroke();
+  ctx.fillStyle="#d3d7d1";ctx.fillRect(-28,-49,56,13);ctx.fillStyle="#17201c";ctx.font="bold 7px sans-serif";ctx.textAlign="center";ctx.fillText("KAEVORYN",0,-40);
   // rear double doors hinged outward; doors remain visibly attached to body
   const open=Math.max(0,Math.min(1,(t-3.0)/2));
   ctx.save();ctx.translate(258,-120);ctx.rotate(-open*.8);ctx.fillStyle="#101817";ctx.strokeStyle="#8b9890";ctx.lineWidth=3;ctx.fillRect(0,-52,48,106);ctx.strokeRect(0,-52,48,106);ctx.fillStyle="rgba(116,164,148,.24)";ctx.fillRect(8,-40,31,70);ctx.restore();
