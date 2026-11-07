@@ -139,6 +139,29 @@ function playStormThunderStrike(){
  try{strike.currentTime=0;strike.play().catch(err=>{setAudioState("Thunder playback blocked");say("Thunder could not play: "+err.message,true);});}
  catch(err){setAudioState("Thunder playback error");say("Thunder sound error: "+err.message,true);}
 }
+function startCarnevilSound(ctx,base){
+  // Original eerie midway calliope with warm reed tones and soft bells.
+  const melody=[659.25,783.99,698.46,587.33,523.25,659.25,493.88,523.25,392,493.88,440,392];
+  melody.forEach((hz,i)=>{
+    const at=base+i*.34,dur=.29,voice=ctx.createOscillator(),reed=ctx.createOscillator(),gain=ctx.createGain(),filter=ctx.createBiquadFilter();
+    voice.type="triangle";voice.frequency.setValueAtTime(hz,at);reed.type="sine";reed.frequency.setValueAtTime(hz*2.005,at);
+    filter.type="lowpass";filter.frequency.value=2100;
+    gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.075,at+.035);gain.gain.setValueAtTime(.052,at+.17);gain.gain.exponentialRampToValueAtTime(.0001,at+dur);
+    voice.connect(filter);reed.connect(filter);filter.connect(gain);gain.connect(ctx.destination);voice.start(at);reed.start(at);voice.stop(at+dur);reed.stop(at+dur);
+  });
+  [82.41,98,73.42,65.41].forEach((hz,i)=>{
+    const at=base+i*1.02,osc=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();
+    osc.type="sine";osc.frequency.value=hz;f.type="lowpass";f.frequency.value=170;
+    g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.105,at+.22);g.gain.exponentialRampToValueAtTime(.0001,at+.94);
+    osc.connect(f);f.connect(g);g.connect(ctx.destination);osc.start(at);osc.stop(at+.97);
+  });
+  [1.05,3.1,4.85].forEach((offset,i)=>{
+    const at=base+offset,osc=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();
+    osc.type="sine";osc.frequency.value=[1318.5,1174.7,1568][i];f.type="lowpass";f.frequency.value=2600;
+    g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.035,at+.012);g.gain.exponentialRampToValueAtTime(.0001,at+1.05);
+    osc.connect(f);f.connect(g);g.connect(ctx.destination);osc.start(at);osc.stop(at+1.08);
+  });
+}
 function startSoundInGesture(gift){
  if(!soundOn){setAudioState("Muted by toggle");return Promise.resolve(false);}
  if(gift.style==="hauntedhearse"){
@@ -185,6 +208,7 @@ function startSoundInGesture(gift){
  if(gift.style==="dragon"){startDragonSound(ctx,base);setAudioState("Playing · dragon roar + fire blast");return;}
  if(gift.style==="meteor"){startMeteorShowerSound(ctx,base);setAudioState("Playing · meteor whooshes + fiery impacts");return;}
  if(gift.style==="storm"){startStormSound(ctx,base);setAudioState("Playing · wind, rain + rolling thunder");return;}
+  if(gift.style==="carnevil"){startCarnevilSound(ctx,base);setAudioState("Playing · eerie carnival calliope");return;}
  if(gift.style==="voidrift"){startVoidRiftSound();return;}if(gift.style==="livingtombstones"){
   try{
    const oldSet=window.__tiknationTombstoneAudio||[];
