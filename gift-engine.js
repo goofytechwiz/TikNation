@@ -485,9 +485,9 @@ function renderCarnevilGift(gift,opts,overlay){
    const facade=new T.Mesh(new T.BoxGeometry(5.25,4.35,2.25),wood);facade.position.set(0,2.18,-.05);facade.castShadow=true;facade.receiveShadow=true;fun.add(facade);
    // Narrow side return and a sagging roof give the structure real volume.
    const side=new T.Mesh(new T.BoxGeometry(.16,4.05,2.15),rotten);side.position.set(2.68,2.05,-.08);side.rotation.z=-.012;fun.add(side);
-   const roof=new T.Mesh(new T.BoxGeometry(5.75,.24,2.8),wood);roof.position.set(0,4.42,-.08);roof.rotation.z=-.035;roof.castShadow=true;fun.add(roof);
+   const funRoof=new T.Mesh(new T.BoxGeometry(5.75,.24,2.8),wood);funRoof.position.set(0,4.42,-.08);funRoof.rotation.z=-.035;funRoof.castShadow=true;fun.add(funRoof);
    const roofLip=new T.Mesh(new T.BoxGeometry(5.55,.18,.22),rust);roofLip.position.set(0,4.25,1.12);roofLip.rotation.z=-.035;fun.add(roofLip);
-   const base=new T.Mesh(new T.BoxGeometry(5.5,.28,2.55),rust);base.position.set(0,.15,-.03);fun.add(base);
+   const funBase=new T.Mesh(new T.BoxGeometry(5.5,.28,2.55),rust);funBase.position.set(0,.15,-.03);fun.add(funBase);
    // Peeling, mismatched boards are mounted on the front at slightly different depths.
    for(let i=0;i<13;i++){const w=.27+(i%3)*.08;const board=new T.Mesh(new T.BoxGeometry(w,3.92,.075),i%2?fadedRed:dirtyCream);board.position.set(-2.35+i*.39,2.17,1.105+(i%4)*.008);board.rotation.z=((i%4)-1.5)*.009;fun.add(board);}
    // Exposed structural posts, cross-bracing and missing siding.
