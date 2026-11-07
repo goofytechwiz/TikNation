@@ -164,20 +164,24 @@ function startSoundInGesture(gift){
  if(gift.style==="storm"){startStormSound(ctx,base);setAudioState("Playing · wind, rain + rolling thunder");return;}
  if(gift.style==="voidrift"){startVoidRiftSound();return;}if(gift.style==="livingtombstones"){
   try{
-   // Real field recordings and stone Foley from BigSoundBank (CC0).
    const oldSet=window.__tiknationTombstoneAudio||[];
+   (window.__tiknationTombstoneTimers||[]).forEach(clearTimeout);
    oldSet.forEach(a=>{try{a.pause();a.currentTime=0;}catch(_){}});
    const wind=new Audio("https://bigsoundbank.com/UPLOAD/mp3/1450.mp3");
    const zombie=new Audio("https://bigsoundbank.com/UPLOAD/mp3/2108.mp3");
    const stone=new Audio("https://bigsoundbank.com/UPLOAD/mp3/580.mp3");
    window.__tiknationTombstoneAudio=[wind,zombie,stone];
-   wind.loop=true;wind.volume=.34;zombie.volume=.9;stone.volume=.82;
+   wind.loop=false;wind.volume=.34;zombie.volume=.9;stone.volume=.82;
    [wind,zombie,stone].forEach(a=>{a.preload="auto";});
+   const timers=[];
+   const stopAll=()=>{window.__tiknationTombstoneAudio?.forEach(a=>{try{a.pause();a.currentTime=0;}catch(_){}});};
    const started=wind.play();
    return started.then(()=>{
-    setAudioState("Playing · recorded storm wind; zombie + stone sounds cued");
-    window.setTimeout(()=>{if(window.__tiknationTombstoneAudio?.includes(zombie))zombie.play().catch(()=>{});},1150);
-    window.setTimeout(()=>{if(window.__tiknationTombstoneAudio?.includes(stone))stone.play().catch(()=>{});},2100);
+    setAudioState("Playing · cemetery wind, zombie + stone cues");
+    timers.push(window.setTimeout(()=>{if(window.__tiknationTombstoneAudio?.includes(zombie))zombie.play().catch(()=>{});},900));
+    timers.push(window.setTimeout(()=>{if(window.__tiknationTombstoneAudio?.includes(stone))stone.play().catch(()=>{});},1850));
+    timers.push(window.setTimeout(stopAll,6900));
+    window.__tiknationTombstoneTimers=timers;
     return true;
    }).catch(err=>{setAudioState("Tombstone audio blocked or unavailable");say("The recorded cemetery audio could not start: "+err.message,true);return false;});
   }catch(err){setAudioState("Tombstone audio error");say("Tombstone sound error: "+err.message,true);return Promise.resolve(false);}
