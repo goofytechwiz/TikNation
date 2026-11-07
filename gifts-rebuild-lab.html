@@ -35,6 +35,33 @@ let selected="All",soundOn=true,audio=null,lastSound="Not started";
 const entries=Object.entries(catalog),categories=["All",...new Set(entries.map(([,g])=>g.category||"Other"))];
 function say(message,isError){status.textContent=message;status.classList.toggle("error",!!isError);}
 function setAudioState(value){lastSound=value;document.getElementById("audioState").textContent=value;}
+function startDragonSound(ctx,base){
+  // A layered, synthesized roar followed by a hot, crackling fire blast.
+  const duration=3.1, length=Math.floor(ctx.sampleRate*duration);
+  const buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);
+  for(let i=0;i<length;i++){const fade=1-i/length;data[i]=(Math.random()*2-1)*fade;}
+  const noise=ctx.createBufferSource();noise.buffer=buffer;
+  const roarFilter=ctx.createBiquadFilter();roarFilter.type="lowpass";roarFilter.frequency.setValueAtTime(520,base);roarFilter.frequency.exponentialRampToValueAtTime(145,base+1.15);
+  const roarGain=ctx.createGain();roarGain.gain.setValueAtTime(.0001,base);roarGain.gain.exponentialRampToValueAtTime(.24,base+.16);roarGain.gain.exponentialRampToValueAtTime(.0001,base+1.35);
+  noise.connect(roarFilter);roarFilter.connect(roarGain);roarGain.connect(ctx.destination);noise.start(base);noise.stop(base+1.4);
+
+  const growl=ctx.createOscillator(),growlGain=ctx.createGain(),growlFilter=ctx.createBiquadFilter();
+  growl.type="sawtooth";growl.frequency.setValueAtTime(118,base);growl.frequency.exponentialRampToValueAtTime(48,base+1.25);
+  growlFilter.type="lowpass";growlFilter.frequency.value=260;
+  growlGain.gain.setValueAtTime(.0001,base);growlGain.gain.exponentialRampToValueAtTime(.12,base+.12);growlGain.gain.exponentialRampToValueAtTime(.0001,base+1.3);
+  growl.connect(growlFilter);growlFilter.connect(growlGain);growlGain.connect(ctx.destination);growl.start(base);growl.stop(base+1.35);
+
+  const fire=ctx.createBufferSource();fire.buffer=buffer;
+  const fireFilter=ctx.createBiquadFilter();fireFilter.type="bandpass";fireFilter.Q.value=.65;
+  fireFilter.frequency.setValueAtTime(1500,base+1.05);fireFilter.frequency.exponentialRampToValueAtTime(420,base+2.85);
+  const fireGain=ctx.createGain();fireGain.gain.setValueAtTime(.0001,base+1.05);fireGain.gain.exponentialRampToValueAtTime(.34,base+1.22);fireGain.gain.setValueAtTime(.22,base+1.75);fireGain.gain.exponentialRampToValueAtTime(.0001,base+2.95);
+  fire.connect(fireFilter);fireFilter.connect(fireGain);fireGain.connect(ctx.destination);fire.start(base+1.05);fire.stop(base+3.05);
+
+  const flame=ctx.createOscillator(),flameGain=ctx.createGain();
+  flame.type="sawtooth";flame.frequency.setValueAtTime(190,base+1.08);flame.frequency.exponentialRampToValueAtTime(62,base+2.8);
+  flameGain.gain.setValueAtTime(.0001,base+1.08);flameGain.gain.exponentialRampToValueAtTime(.075,base+1.25);flameGain.gain.exponentialRampToValueAtTime(.0001,base+2.8);
+  flame.connect(flameGain);flameGain.connect(ctx.destination);flame.start(base+1.08);flame.stop(base+2.85);
+}
 function startSoundInGesture(gift){
  if(!soundOn){setAudioState("Muted by toggle");return;}
  const C=window.AudioContext||window.webkitAudioContext;
@@ -42,23 +69,27 @@ function startSoundInGesture(gift){
  try{
   if(!audio||audio.state==="closed")audio=new C();
   const ctx=audio;
-  // resume() is invoked synchronously while the gift button's user activation is active.
+  // Resume synchronously inside the tap, before starting the animation.
   const resume=ctx.state==="suspended"?ctx.resume():Promise.resolve();
   const notes=Array.isArray(gift.sound)&&gift.sound.length?gift.sound:[523,659,784,1047];
   const schedule=()=>{
    if(ctx.state!=="running"){setAudioState("Blocked · "+ctx.state);return;}
    const base=ctx.currentTime+.025;
+   if(gift.style==="dragon"){
+    startDragonSound(ctx,base);
+    setAudioState("Playing · dragon roar + fire blast");
+   }
    notes.forEach((raw,i)=>{
     const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22;
     const osc=ctx.createOscillator(),gain=ctx.createGain(),harm=ctx.createOscillator(),hg=ctx.createGain();
     osc.type="triangle";osc.frequency.setValueAtTime(hz,at);
-    gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.22,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.48);
+    gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.14,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.48);
     harm.type="sine";harm.frequency.setValueAtTime(hz*2,at);
-    hg.gain.setValueAtTime(.0001,at);hg.gain.exponentialRampToValueAtTime(.055,at+.02);hg.gain.exponentialRampToValueAtTime(.0001,at+.34);
+    hg.gain.setValueAtTime(.0001,at);hg.gain.exponentialRampToValueAtTime(.04,at+.02);hg.gain.exponentialRampToValueAtTime(.0001,at+.34);
     osc.connect(gain);gain.connect(ctx.destination);harm.connect(hg);hg.connect(ctx.destination);
     osc.start(at);osc.stop(at+.5);harm.start(at);harm.stop(at+.36);
    });
-   setAudioState("Playing · "+notes.length+" notes");
+   if(gift.style!=="dragon")setAudioState("Playing · "+notes.length+" notes");
   };
   if(ctx.state==="running")schedule();
   else resume.then(schedule).catch(err=>{setAudioState("Resume failed");say("Audio resume failed: "+err.message,true);});
