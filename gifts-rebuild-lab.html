@@ -285,7 +285,7 @@ async function preview(code,gift){
    }
   }
   say("Preview launched: "+(previewGift.name||code)+" · dedicated renderer selected. No coins spent.");
- }catch(err){say("Preview failed for "+(previewGift.name||code)+": +err.message,true);console.error(err);}
+ }catch(err){say("Preview failed for "+((gift&&gift.name)||code)+": "+err.message,true);console.error(err);}
 }
 function renderFilters(){filters.replaceChildren();categories.forEach(category=>{const b=document.createElement("button");b.type="button";b.className="filter";b.textContent=category;b.setAttribute("aria-pressed",String(selected===category));b.addEventListener("click",()=>{selected=category;renderFilters();renderGifts();});filters.appendChild(b);});}
 function renderGifts(){grid.replaceChildren();entries.filter(([,g])=>selected==="All"||g.category===selected).forEach(([code,gift])=>{const b=document.createElement("button");b.type="button";b.className="gift";const emoji=document.createElement("span");emoji.className="emoji";emoji.textContent=gift.emoji||"🎁";const name=document.createElement("strong");name.textContent=gift.name||code;const cat=document.createElement("span");cat.className="category";cat.textContent=gift.category||"Gift";const cost=document.createElement("span");cost.className="cost";cost.textContent="Local preview · "+Number(gift.cost||0)+" test coins";b.append(emoji,name,cat,cost);b.addEventListener("click",()=>preview(code,gift));grid.appendChild(b);});}
