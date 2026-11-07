@@ -474,28 +474,51 @@ function renderCarnevilGift(gift,opts,overlay){
    // Ticket kiosk and crooked funhouse frontage.
    function booth(x,z,w,h,sign){const g=new T.Group();g.position.set(x,0,z);world.add(g);const body=new T.Mesh(new T.BoxGeometry(w,h,w*.55),dark);body.position.y=h/2;body.castShadow=true;g.add(body);const awning=new T.Mesh(new T.ConeGeometry(w*.72,.72,4),red);awning.position.y=h+.3;awning.rotation.y=Math.PI/4;g.add(awning);const board=new T.Mesh(new T.BoxGeometry(w*.9,.34,.12),gold);board.position.set(0,h*.78,w*.29);g.add(board);const post=new T.Mesh(new T.BoxGeometry(w*.72,.22,.13),cream);post.position.set(0,h*.78+.02,w*.37);g.add(post);return g;}
    booth(-7,1.1,2.35,2.2);booth(1.1,-1.5,2.1,2.0);
-   // Abandoned funhouse: warped frontage, torn striped paint, broken mirrors and a crooked sign.
-   const fun=new T.Group();fun.position.set(8,0,-1.6);fun.rotation.z=-.035;world.add(fun);
-   const weathered=mat(0x51413d),peeling=mat(0x8b6d58),blackGlass=new T.MeshStandardMaterial({color:0x090b12,roughness:.18,metalness:.72});
-   const facade=new T.Mesh(new T.BoxGeometry(4.5,4.65,.62),weathered);facade.position.y=2.32;facade.castShadow=true;fun.add(facade);
-   for(let i=0;i<6;i++){const stripe=new T.Mesh(new T.BoxGeometry(.7,4.58,.66),i%2?mat(0x4d1820):mat(0x786b5c));stripe.position.set(-1.75+i*.7,2.32,.035);stripe.rotation.z=(i%2?1:-1)*(.012+(i%3)*.012);fun.add(stripe);}
-   // Cracked, dark mirror panels on the front wall.
-   for(let i=0;i<3;i++){const mirror=new T.Mesh(new T.BoxGeometry(.82,1.7,.075),blackGlass);mirror.position.set(-1.35+i*1.35,2.55,.39);mirror.rotation.z=(i-1)*.07;fun.add(mirror);
-    const crack=new T.Mesh(new T.BufferGeometry().setFromPoints([new T.Vector3(-.28,.7,.44),new T.Vector3(-.06,.2,.44),new T.Vector3(-.2,-.05,.44),new T.Vector3(.19,-.68,.44)]),new T.LineBasicMaterial({color:0xb9c0c2,transparent:true,opacity:.8}));crack.position.x=-1.35+i*1.35;crack.position.y=2.55;fun.add(crack);}
-   // Main crooked entrance with a partly collapsed striped arch.
-   const door=new T.Mesh(new T.BoxGeometry(1.18,2.5,.16),mat(0x050609));door.position.set(0,1.3,.47);door.rotation.z=-.045;fun.add(door);
-   for(const x of [-.72,.72]){const frame=new T.Mesh(new T.BoxGeometry(.16,2.85,.2),peeling);frame.position.set(x,1.42,.52);frame.rotation.z=x<0?-.06:.04;fun.add(frame);}
-   const arch=new T.Mesh(new T.BoxGeometry(1.65,.18,.22),gold);arch.position.set(0,2.83,.52);arch.rotation.z=-.05;fun.add(arch);
-   // Bent roofline and a hanging, damaged sign.
-   const sign=new T.Group();sign.position.set(0,4.65,.15);sign.rotation.z=-.12;fun.add(sign);
-   const marquee=new T.Mesh(new T.BoxGeometry(4.7,.78,.34),mat(0x211316));marquee.castShadow=true;sign.add(marquee);
-   const signFace=new T.Mesh(new T.BoxGeometry(4.45,.58,.08),mat(0x71313a));signFace.position.z=.2;sign.add(signFace);
-   const signCanvas=document.createElement("canvas");signCanvas.width=1024;signCanvas.height=180;const signCtx=signCanvas.getContext("2d");signCtx.fillStyle="#39151b";signCtx.fillRect(0,0,1024,180);signCtx.font="900 112px Georgia";signCtx.textAlign="center";signCtx.fillStyle="#d0b98c";signCtx.fillText("FUN HOUSE",512,126);signCtx.strokeStyle="#201014";signCtx.lineWidth=8;signCtx.strokeText("FUN HOUSE",512,126);
-   const signTex=new T.CanvasTexture(signCanvas);signTex.colorSpace=T.SRGBColorSpace;const signText=new T.Mesh(new T.PlaneGeometry(4.3,.52),new T.MeshBasicMaterial({map:signTex,transparent:true}));signText.position.set(0,0,.255);sign.add(signText);
-   // Loose boards, broken trim, hanging cable and scattered debris.
-   const boards=[];for(let i=0;i<5;i++){const plank=new T.Mesh(new T.BoxGeometry(.13,.9+(i%2)*.45,.09),peeling);plank.position.set(-1.75+i*.82,.8+(i%3)*.55,.58);plank.rotation.z=(i%2?-.38:.3);fun.add(plank);boards.push(plank);}
-   const cable=new T.Mesh(new T.TorusGeometry(.48,.025,5,24,Math.PI),steel);cable.position.set(1.8,3.65,.25);cable.rotation.z=Math.PI/2;fun.add(cable);
-   const bulbs=[];for(let i=0;i<20;i++){const bulb=new T.Mesh(new T.SphereGeometry(.065,8,6),mat(0x66584a,.35));bulb.position.set(-2.12+(i%10)*.47,i<10?4.66:4.18,.43);fun.add(bulb);bulbs.push(bulb);}
+   // Abandoned funhouse: rebuild as a small, physically layered derelict attraction.
+   const fun=new T.Group();fun.position.set(8,0,-1.6);fun.rotation.z=-.025;world.add(fun);
+   const wood=new T.MeshStandardMaterial({color:0x392d29,roughness:.96});
+   const rotten=new T.MeshStandardMaterial({color:0x665047,roughness:1});
+   const fadedRed=new T.MeshStandardMaterial({color:0x592b30,roughness:.95});
+   const dirtyCream=new T.MeshStandardMaterial({color:0x8a7a65,roughness:1});
+   const rust=new T.MeshStandardMaterial({color:0x49352e,roughness:.9,metalness:.18});
+   const blackGlass=new T.MeshStandardMaterial({color:0x080b10,roughness:.28,metalness:.42});
+   const facade=new T.Mesh(new T.BoxGeometry(5.25,4.35,2.25),wood);facade.position.set(0,2.18,-.05);facade.castShadow=true;facade.receiveShadow=true;fun.add(facade);
+   // Narrow side return and a sagging roof give the structure real volume.
+   const side=new T.Mesh(new T.BoxGeometry(.16,4.05,2.15),rotten);side.position.set(2.68,2.05,-.08);side.rotation.z=-.012;fun.add(side);
+   const roof=new T.Mesh(new T.BoxGeometry(5.75,.24,2.8),wood);roof.position.set(0,4.42,-.08);roof.rotation.z=-.035;roof.castShadow=true;fun.add(roof);
+   const roofLip=new T.Mesh(new T.BoxGeometry(5.55,.18,.22),rust);roofLip.position.set(0,4.25,1.12);roofLip.rotation.z=-.035;fun.add(roofLip);
+   const base=new T.Mesh(new T.BoxGeometry(5.5,.28,2.55),rust);base.position.set(0,.15,-.03);fun.add(base);
+   // Peeling, mismatched boards are mounted on the front at slightly different depths.
+   for(let i=0;i<13;i++){const w=.27+(i%3)*.08;const board=new T.Mesh(new T.BoxGeometry(w,3.92,.075),i%2?fadedRed:dirtyCream);board.position.set(-2.35+i*.39,2.17,1.105+(i%4)*.008);board.rotation.z=((i%4)-1.5)*.009;fun.add(board);}
+   // Exposed structural posts, cross-bracing and missing siding.
+   for(const x of [-2.52,-1.72,1.72,2.52]){const post=new T.Mesh(new T.BoxGeometry(.17,4.15,.18),rotten);post.position.set(x,2.18,1.2);post.rotation.z=x===-1.72?-.025:.012;post.castShadow=true;fun.add(post);}
+   for(const x of [-2.05,2.08]){const brace=new T.Mesh(new T.BoxGeometry(.13,2.15,.14),rust);brace.position.set(x,2.55,1.24);brace.rotation.z=x<0?-.62:.58;fun.add(brace);}
+   // Deep, blackened mirror windows with heavy timber surrounds and fractured panes.
+   for(let i=0;i<3;i++){const x=-1.72+i*1.72;const frame=new T.Mesh(new T.BoxGeometry(1.18,1.78,.22),rust);frame.position.set(x,2.8,1.25);fun.add(frame);
+    const pane=new T.Mesh(new T.BoxGeometry(.98,1.56,.07),blackGlass);pane.position.set(x,2.8,1.38);fun.add(pane);
+    const mullion=new T.Mesh(new T.BoxGeometry(.07,1.56,.09),wood);mullion.position.set(x,2.8,1.43);fun.add(mullion);
+    const sill=new T.Mesh(new T.BoxGeometry(1.34,.14,.38),rotten);sill.position.set(x,1.88,1.38);sill.rotation.z=(i-1)*.035;fun.add(sill);
+    const crackPts=[[-.42,.66],[-.12,.19],[-.25,-.08],[.19,-.55],[.34,-.72]];
+    const crackGeo=new T.BufferGeometry().setFromPoints(crackPts.map(([px,py])=>new T.Vector3(x+px,2.8+py,1.435)));
+    fun.add(new T.Line(crackGeo,new T.LineBasicMaterial({color:0x9b9b91,transparent:true,opacity:.5})));
+   }
+   // Recessed entrance tunnel, crooked door leaf and battered frame.
+   const entry=new T.Mesh(new T.BoxGeometry(1.38,2.68,.18),new T.MeshStandardMaterial({color:0x020305,roughness:1}));entry.position.set(0,1.48,1.25);fun.add(entry);
+   const tunnelTop=new T.Mesh(new T.BoxGeometry(1.62,.2,.72),wood);tunnelTop.position.set(0,2.86,1.48);fun.add(tunnelTop);
+   for(const x of [-.82,.82]){const jamb=new T.Mesh(new T.BoxGeometry(.2,2.95,.34),rotten);jamb.position.set(x,1.48,1.4);jamb.rotation.z=x<0?-.035:.055;fun.add(jamb);}
+   const hangingDoor=new T.Mesh(new T.BoxGeometry(.62,2.45,.1),rust);hangingDoor.position.set(-.35,1.35,1.39);hangingDoor.rotation.z=-.045;fun.add(hangingDoor);
+   for(let i=0;i<4;i++){const slat=new T.Mesh(new T.BoxGeometry(.12,.58,.09),rotten);slat.position.set(-.35+(i%2)*.22,.55+Math.floor(i/2)*.72,1.46);slat.rotation.z=(i%2?-.16:.12);fun.add(slat);}
+   // A warped, rain-stained sign hangs from corroded brackets.
+   const sign=new T.Group();sign.position.set(0,4.72,.9);sign.rotation.z=-.095;fun.add(sign);
+   for(const x of [-1.65,1.65]){const chain=new T.Mesh(new T.CylinderGeometry(.025,.025,.48,6),rust);chain.position.set(x,.25,0);chain.rotation.z=x<0?-.08:.1;sign.add(chain);}
+   const board=new T.Mesh(new T.BoxGeometry(4.25,.7,.18),wood);board.castShadow=true;sign.add(board);
+   const signFace=new T.Mesh(new T.BoxGeometry(4.05,.52,.07),fadedRed);signFace.position.z=.13;sign.add(signFace);
+   const signCanvas=document.createElement("canvas");signCanvas.width=1024;signCanvas.height=180;const signCtx=signCanvas.getContext("2d");signCtx.fillStyle="#3c2424";signCtx.fillRect(0,0,1024,180);signCtx.font="900 108px Georgia";signCtx.textAlign="center";signCtx.fillStyle="#b7a78b";signCtx.fillText("FUN HOUSE",512,124);signCtx.strokeStyle="#211719";signCtx.lineWidth=7;signCtx.strokeText("FUN HOUSE",512,124);
+   const signTex=new T.CanvasTexture(signCanvas);signTex.colorSpace=T.SRGBColorSpace;const signText=new T.Mesh(new T.PlaneGeometry(3.95,.46),new T.MeshBasicMaterial({map:signTex,transparent:true}));signText.position.set(0,0,.18);sign.add(signText);
+   // Splintered boards, hanging wire and debris at the foot of the wall.
+   for(let i=0;i<8;i++){const plank=new T.Mesh(new T.BoxGeometry(.12+(.03*(i%3)),.65+(i%3)*.38,.1),i%2?rotten:wood);plank.position.set(-2.2+i*.62,.38+(i%2)*.28,1.42);plank.rotation.z=(i%2?-.42:.31);fun.add(plank);}
+   const cable=new T.Mesh(new T.TorusGeometry(.52,.022,5,28,Math.PI),rust);cable.position.set(2.08,3.55,1.18);cable.rotation.z=Math.PI/2;fun.add(cable);
+   const bulbs=[];for(let i=0;i<12;i++){const bulb=new T.Mesh(new T.SphereGeometry(.052,8,6),new T.MeshStandardMaterial({color:0x28201c,emissive:0x160b08,roughness:.8}));bulb.position.set(-2.02+i*.37,4.02+(i%2)*.015,1.34);fun.add(bulb);bulbs.push(bulb);}
    // Hanging strings of warm carnival bulbs.
    const bulbs2=[];for(let strand=0;strand<3;strand++){const cable=new T.Mesh(new T.TorusGeometry(7.1,.018,4,64,Math.PI),steel);cable.rotation.z=Math.PI; cable.position.set(0,8.2-strand*.65,-2);world.add(cable);for(let i=0;i<18;i++){const a=Math.PI+i*Math.PI/17;const b=new T.Mesh(new T.SphereGeometry(.07,8,6),mat(0xffc47b,.25));b.position.set(Math.cos(a)*7.1,8.2-strand*.65-Math.sin(a)*.9,-2);world.add(b);bulbs2.push(b);}}
    // Clown apparition hidden inside the big-top doorway; it slowly emerges.
