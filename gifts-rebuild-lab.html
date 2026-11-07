@@ -12,15 +12,16 @@ window.addEventListener("error",function(event){
   window.__giftEngineScriptState="Script request failed: "+target.src;
   return;
  }
- if(event.message&&(!event.filename||/gift-engine\.js/.test(event.filename))){
+ if(event.message){
   window.__giftEngineRuntimeError=event.message+" ("+(event.filename||"unknown file")+":"+event.lineno+")";
+  window.setTimeout(function(){const status=document.getElementById("labStatus");if(status&&status.textContent.indexOf("Checking gift catalog")===0){status.textContent="Preview startup error: "+window.__giftEngineRuntimeError;status.classList.add("error");}},0);
  }
 },true);
 </script>
 <script src="./gift-engine.js?v=haunted-carousel-engine-20261107c"
  onload="window.__giftEngineScriptState='Engine file loaded';"
  onerror="window.__giftEngineScriptState='Engine file request failed (check deployment/path)';"></script>
-<script src="./gifts.js?v=storm-recorded-sync-20261107f"></script>
+<script src="./gifts.js?v=storm-recorded-sync-20261107f" onerror="window.__giftCatalogScriptError='Gift catalog script request failed';"></script>
 <style>
 :root{color-scheme:dark;--bg:#090817;--panel:#151329;--line:#393257;--cyan:#7eeaff;--violet:#b49aff;--muted:#c4bfd8}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#29204e 0,transparent 55%),var(--bg);color:#fff;font:16px/1.5 system-ui,sans-serif}
