@@ -486,8 +486,11 @@ function renderCinematicGift(gift,opts,overlay){
   #tiknation-gift-engine[data-style=meteor] .cinema-art{z-index:3;width:min(82vw,560px);animation:meteor-flight 2.05s cubic-bezier(.18,.72,.2,1) both;filter:drop-shadow(0 0 26px #ff7a22) drop-shadow(0 18px 28px #000b)}
   #tiknation-gift-engine[data-style=meteor] .cinema-object{animation:meteor-spin 2.1s ease-in-out both}
   #tiknation-gift-engine[data-style=meteor] .meteor-flames{filter:drop-shadow(0 0 13px #ff4a12)}
+  #tiknation-gift-engine[data-style=meteor] .meteor-shower-streak{position:absolute;z-index:2;left:var(--sx);top:var(--sy);width:var(--len);height:var(--thick);border-radius:50%;transform:rotate(var(--angle));transform-origin:left center;opacity:0;background:linear-gradient(90deg,transparent 0%,rgba(255,72,20,.12) 22%,#ff6b25 67%,#ffe3a0 91%,#fff 100%);filter:drop-shadow(0 0 7px #ff742b);animation:meteor-shower-flight var(--dur) linear var(--delay) both;pointer-events:none}
+  #tiknation-gift-engine[data-style=meteor] .meteor-shower-streak:after{content:"";position:absolute;right:-3px;top:50%;width:var(--head);height:var(--head);border-radius:50%;transform:translateY(-50%);background:#fff5c9;box-shadow:0 0 8px 3px #ffcf72,0 0 20px 7px #ff6725}
   #tiknation-gift-engine[data-style=meteor] .meteor-spark{position:absolute;z-index:2;left:var(--sx);top:var(--sy);width:var(--size);height:var(--size);border-radius:50%;background:radial-gradient(circle,#fff8ce 0 18%,#ffbd55 35%,#ff4c16 70%,transparent 100%);box-shadow:0 0 12px #ff8b35;opacity:0;animation:meteor-ember var(--dur) ease-out var(--delay) both;pointer-events:none}
   #tiknation-gift-engine[data-style=meteor] .meteor-dust{position:absolute;z-index:2;left:50%;top:59%;width:32vw;height:9vh;border-radius:50%;background:radial-gradient(ellipse,rgba(255,112,43,.48),rgba(100,65,61,.18) 48%,transparent 72%);filter:blur(12px);opacity:0;animation:meteor-dust 2.2s 1.55s ease-out both}
+  @keyframes meteor-shower-flight{0%{opacity:0;transform:translate3d(0,0,0) rotate(var(--angle)) scaleX(.45)}12%{opacity:1}72%{opacity:.9}100%{opacity:0;transform:translate3d(var(--dx),var(--dy),0) rotate(var(--angle)) scaleX(1.1)}}
   @keyframes meteor-ember{0%{opacity:0;transform:translate(0,0) scale(.2)}15%{opacity:1}100%{opacity:0;transform:translate(var(--ex),var(--ey)) scale(.05)}}
   @keyframes meteor-dust{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}25%{opacity:.9}100%{opacity:0;transform:translate(-50%,-20%) scale(2.8)}}
   #tiknation-gift-engine[data-style=meteor] .cinema-stage:before{height:34px;filter:blur(10px);box-shadow:0 0 28px #ff5b1e}
@@ -497,10 +500,26 @@ function renderCinematicGift(gift,opts,overlay){
   @keyframes meteor-flight{0%{opacity:0;transform:translate(-70vw,-55vh) rotate(18deg) scale(.35)}18%{opacity:1}72%{transform:translate(5vw,3vh) rotate(8deg) scale(1.12)}100%{opacity:1;transform:translate(0,0) rotate(0) scale(1.08)}}
   @keyframes meteor-spin{0%{transform:rotate(-38deg) scale(.7)}65%{transform:rotate(20deg) scale(1.08)}100%{transform:rotate(0) scale(1)}}
   @keyframes meteor-impact{0%{opacity:0;transform:translate(-50%,-50%) scale(.12)}18%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(2.1)}}
-  @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=meteor] .cinema-art,#tiknation-gift-engine[data-style=meteor] .meteor-stage:before,#tiknation-gift-engine[data-style=meteor] .meteor-stage:after{animation:none!important;opacity:1}}
+  @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=meteor] .cinema-art,#tiknation-gift-engine[data-style=meteor] .meteor-stage:before,#tiknation-gift-engine[data-style=meteor] .meteor-stage:after,#tiknation-gift-engine[data-style=meteor] .meteor-shower-streak{animation:none!important;opacity:1}}
   `;
   const reducedMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(!reducedMotion){
+   const showerPaths=[
+    [3,-8,17,1.35,18,56,68],[22,-12,31,1.55,42,48,78],[47,-9,24,1.2,64,42,72],
+    [73,-15,39,1.7,88,35,82],[91,4,22,1.25,25,38,72],[12,22,34,1.8,112,52,68],
+    [58,9,19,1.15,136,35,72],[82,26,28,1.55,158,32,76],[34,-18,43,1.9,184,46,82],
+    [5,42,20,1.3,205,36,66],[68,38,35,1.65,228,40,80],[43,16,16,1.1,252,44,62],
+    [95,48,25,1.45,276,30,74],[18,55,30,1.7,298,48,78],[54,52,22,1.3,322,35,68],
+    [78,60,38,1.8,345,28,84],[30,34,18,1.2,368,42,64],[62,-5,32,1.6,392,50,78]
+   ];
+   showerPaths.forEach(([x,y,len,dur,delay,dx,dy],i)=>{
+    const streak=document.createElement("i");streak.className="meteor-shower-streak";
+    streak.style.setProperty("--sx",x+"%");streak.style.setProperty("--sy",y+"%");
+    streak.style.setProperty("--len",len+"vw");streak.style.setProperty("--thick",(i%4===0?6:3+i%3)+"px");
+    streak.style.setProperty("--head",(i%3===0?11:7)+"px");streak.style.setProperty("--angle",(24+(i%4)*7)+"deg");
+    streak.style.setProperty("--dur",dur+"s");streak.style.setProperty("--delay",(delay/1000)+"s");
+    streak.style.setProperty("--dx",dx+"vw");streak.style.setProperty("--dy",dy+"vh");world.appendChild(streak);
+   });
    for(let i=0;i<24;i++){const spark=document.createElement("i");spark.className="meteor-spark";const angle=(Math.PI*2*i)/24;const distance=90+(i%6)*22;spark.style.setProperty("--sx",(34+(i%7)*5)+"%");spark.style.setProperty("--sy",(42+(i%5)*5)+"%");spark.style.setProperty("--size",(4+(i%4)*2)+"px");spark.style.setProperty("--ex",(Math.cos(angle)*distance)+"px");spark.style.setProperty("--ey",(Math.sin(angle)*distance)+"px");spark.style.setProperty("--dur",(1.0+(i%4)*.22)+"s");spark.style.setProperty("--delay",(1.35+(i%6)*.035)+"s");world.appendChild(spark);}
    const dust=document.createElement("i");dust.className="meteor-dust";world.appendChild(dust);
   }
