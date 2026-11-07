@@ -425,108 +425,118 @@ function renderVoidRiftGift(gift,opts,overlay){
 
 
 
+
 function renderCarnevilGift(gift,opts,overlay){
  const scene=document.createElement("div");scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#050307;isolation:isolate";
- scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(0,0,0,.9)),radial-gradient(ellipse at 50% 55%,transparent 20%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:6%;left:0;right:0;text-align:center;color:#f1d9c5;font:1000 clamp(36px,8vw,64px)/.95 Georgia,serif;letter-spacing:.2em;text-shadow:0 3px 12px #000,0 0 24px #e52c28">CARNEVIL<div style="font:700 10px system-ui;letter-spacing:.34em;margin-top:11px;color:#d7aaa0">STEP RIGHT UP… IF YOU DARE</div></div>';
+ scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(0,0,0,.88)),radial-gradient(ellipse at 50% 55%,transparent 20%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:5%;left:0;right:0;text-align:center;color:#ead9c8;font:1000 clamp(34px,7vw,58px)/.95 Georgia,serif;letter-spacing:.2em;text-shadow:0 3px 12px #000,0 0 22px #a52a35">CARNEVIL<div style="font:700 10px system-ui;letter-spacing:.34em;margin-top:10px;color:#c5a49b">THE MIDWAY NEVER CLOSES</div></div>';
  overlay.appendChild(scene);document.body.appendChild(overlay);
  const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start;
- const bulbs=Array.from({length:38},(_,i)=>({p:i/38,phase:Math.random()*6.28}));
- const fog=Array.from({length:36},()=>({x:Math.random(),y:.55+Math.random()*.4,r:18+Math.random()*65,v:5+Math.random()*17,a:.025+Math.random()*.06}));
+ const bulbs=Array.from({length:54},(_,i)=>({p:i/54,phase:Math.random()*6.28})),fog=Array.from({length:50},()=>({x:Math.random(),y:.57+Math.random()*.38,r:18+Math.random()*65,v:5+Math.random()*15,a:.025+Math.random()*.055}));
  function resize(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}resize();window.addEventListener("resize",resize);
  function line(x1,y1,x2,y2,color,width){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
  function frame(now){
   if(!alive||!overlay.isConnected)return;const t=(now-start)/1000,dt=Math.min(.05,(now-last)/1000);last=now;ctx.clearRect(0,0,w,h);
-  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#090611");sky.addColorStop(.55,"#25101b");sky.addColorStop(1,"#050407");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
-  // storm-lit moon and distant carnival skyline
-  const moon=ctx.createRadialGradient(w*.77,h*.17,2,w*.77,h*.17,h*.2);moon.addColorStop(0,"rgba(231,213,196,.4)");moon.addColorStop(.28,"rgba(177,115,127,.13)");moon.addColorStop(1,"transparent");ctx.fillStyle=moon;ctx.fillRect(0,0,w,h);
-  ctx.fillStyle="#0a080d";ctx.fillRect(0,h*.66,w,h*.34);
-  // Ferris wheel, turning slowly in the distance
-  const fx=w*.79,fy=h*.56,fr=Math.min(w,h)*.17,rot=t*.22;
-  ctx.save();ctx.translate(fx,fy);ctx.strokeStyle="#4a343d";ctx.lineWidth=5;ctx.beginPath();ctx.arc(0,0,fr,0,Math.PI*2);ctx.stroke();
-  for(let i=0;i<12;i++){const a=rot+i*Math.PI/6;line(0,0,Math.cos(a)*fr,Math.sin(a)*fr,"#57404a",2);const x=Math.cos(a)*fr,y=Math.sin(a)*fr;ctx.fillStyle=i%2?"#a72a37":"#d9a65c";ctx.fillRect(x-5,y-5,10,10);}
-  line(-fr*.5,fr*.95,0,0,"#4b3740",5);line(fr*.5,fr*.95,0,0,"#4b3740",5);ctx.restore();
-  // Big top tent with alternating faded red and bone-white stripes
-  const tx=w*.43,ty=h*.65,tw=Math.min(w*.58,500),th=Math.min(h*.45,290);
-  ctx.fillStyle="#10080c";ctx.beginPath();ctx.moveTo(tx-tw*.55,ty);ctx.lineTo(tx-tw*.5,ty-th*.54);ctx.lineTo(tx,ty-th);ctx.lineTo(tx+tw*.5,ty-th*.54);ctx.lineTo(tx+tw*.55,ty);ctx.closePath();ctx.fill();
-  ctx.save();ctx.beginPath();ctx.moveTo(tx-tw*.5,ty-th*.54);ctx.lineTo(tx,ty-th);ctx.lineTo(tx+tw*.5,ty-th*.54);ctx.lineTo(tx+tw*.55,ty);ctx.lineTo(tx-tw*.55,ty);ctx.closePath();ctx.clip();
-  for(let i=0;i<12;i++){const x=tx-tw*.58+i*tw/6;ctx.fillStyle=i%2?"#8e1827":"#c6b6a0";ctx.beginPath();ctx.moveTo(tx,ty-th);ctx.lineTo(x,ty-th*.54);ctx.lineTo(x+tw/6,ty+10);ctx.lineTo(tx,ty+10);ctx.closePath();ctx.fill();}
-  ctx.restore();ctx.strokeStyle="#d2b28c";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(tx-tw*.53,ty-th*.54);ctx.lineTo(tx,ty-th);ctx.lineTo(tx+tw*.53,ty-th*.54);ctx.stroke();
-  // Entrance curtains
-  ctx.fillStyle="#17080e";ctx.fillRect(tx-tw*.16,ty-th*.4,tw*.32,th*.4);ctx.fillStyle="#9f1c2b";ctx.beginPath();ctx.moveTo(tx-tw*.16,ty-th*.4);ctx.quadraticCurveTo(tx-tw*.05,ty-th*.16,tx,ty);ctx.lineTo(tx,ty-th*.4);ctx.closePath();ctx.fill();ctx.beginPath();ctx.moveTo(tx+tw*.16,ty-th*.4);ctx.quadraticCurveTo(tx+tw*.05,ty-th*.16,tx,ty);ctx.lineTo(tx,ty-th*.4);ctx.closePath();ctx.fill();
-  // Marquee bulbs blink in a travelling pattern
-  bulbs.forEach((b,i)=>{const a=b.p*Math.PI*2,x=tx+Math.cos(a)*tw*.42,y=ty-th*.51+Math.sin(a)*th*.47;const glow=.25+.75*Math.max(0,Math.sin(t*5-b.phase));ctx.fillStyle="rgba(255,204,126,"+glow+")";ctx.shadowColor="#ffb85c";ctx.shadowBlur=8*glow;ctx.beginPath();ctx.arc(x,y,2.1+glow,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;});
-  // Tall striped midway poles and hanging pennants
-  for(let i=0;i<7;i++){const x=w*(.08+i*.13);line(x,h*.72,x,h*(.42+(i%3)*.035),"#38232a",3);ctx.fillStyle=i%2?"#9f1d2c":"#c4a27b";ctx.beginPath();ctx.moveTo(x,h*(.42+(i%3)*.035));ctx.lineTo(x+25,h*(.47+(i%3)*.035));ctx.lineTo(x,h*(.49+(i%3)*.035));ctx.fill();}
-  // Clown silhouette stands in front of the funhouse for a brief reveal
-  const reveal=Math.max(0,Math.min(1,(t-4.1)/1.2));if(reveal>0){const x=w*.19,y=h*.72;ctx.save();ctx.globalAlpha=reveal*(.8+.2*Math.sin(t*2));ctx.fillStyle="#050306";ctx.shadowColor="#b51f36";ctx.shadowBlur=18;ctx.beginPath();ctx.arc(x,y-48,17,0,Math.PI*2);ctx.fill();ctx.fillRect(x-15,y-31,30,65);ctx.beginPath();ctx.moveTo(x-15,y-20);ctx.lineTo(x-39,y+18);ctx.lineTo(x-31,y+22);ctx.lineTo(x,y-3);ctx.lineTo(x+31,y+22);ctx.lineTo(x+39,y+18);ctx.lineTo(x+15,y-20);ctx.fill();ctx.fillStyle="#b51f36";ctx.beginPath();ctx.arc(x-6,y-51,2.5,0,Math.PI*2);ctx.arc(x+6,y-51,2.5,0,Math.PI*2);ctx.fill();ctx.restore();}
-  // low drifting fog
+  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#080a12");sky.addColorStop(.48,"#24121b");sky.addColorStop(1,"#050507");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+  const moon=ctx.createRadialGradient(w*.78,h*.16,2,w*.78,h*.16,h*.23);moon.addColorStop(0,"rgba(231,218,203,.36)");moon.addColorStop(.28,"rgba(177,115,127,.12)");moon.addColorStop(1,"transparent");ctx.fillStyle=moon;ctx.fillRect(0,0,w,h);
+  // Distant tree line and layered midway silhouettes
+  ctx.fillStyle="#09080d";for(let i=0;i<15;i++){const x=i*w/14,ht=h*(.08+(i%4)*.025);ctx.beginPath();ctx.moveTo(x-28,h*.64);ctx.lineTo(x,h*.64-ht);ctx.lineTo(x+31,h*.64);ctx.fill();}
+  ctx.fillStyle="#100b10";ctx.fillRect(0,h*.67,w,h*.33);
+  // Ferris wheel with metal rim, spokes, cross braces and hanging gondolas
+  const fx=w*.79,fy=h*.48,fr=Math.min(w,h)*.19,rot=t*.13;
+  ctx.save();ctx.translate(fx,fy);ctx.strokeStyle="#62505a";ctx.lineWidth=6;ctx.beginPath();ctx.arc(0,0,fr,0,Math.PI*2);ctx.stroke();ctx.strokeStyle="#251d27";ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,fr-7,0,Math.PI*2);ctx.stroke();
+  for(let i=0;i<16;i++){const a=rot+i*Math.PI/8,x=Math.cos(a)*fr,y=Math.sin(a)*fr;line(0,0,x,y,"#65515a",1.8);ctx.save();ctx.translate(x,y);ctx.rotate(-rot);ctx.fillStyle=i%2?"#8d2532":"#b58d60";ctx.fillRect(-6,-3,12,10);ctx.strokeStyle="#d0b48d";ctx.lineWidth=1;ctx.strokeRect(-6,-3,12,10);ctx.restore();}
+  line(-fr*.55,fr*.95,0,0,"#51424a",7);line(fr*.55,fr*.95,0,0,"#51424a",7);line(-fr*.55,fr*.95,fr*.55,fr*.95,"#51424a",5);ctx.restore();
+  // Big top: broad curved canvas panels, seams, scalloped valance and guy ropes
+  const tx=w*.42,ty=h*.68,tw=Math.min(w*.62,570),th=Math.min(h*.47,310);
+  ctx.save();ctx.beginPath();ctx.moveTo(tx-tw*.52,ty-th*.52);ctx.quadraticCurveTo(tx,ty-th*1.12,tx+tw*.52,ty-th*.52);ctx.lineTo(tx+tw*.57,ty);ctx.lineTo(tx-tw*.57,ty);ctx.closePath();ctx.clip();
+  for(let i=0;i<10;i++){const x=tx-tw*.55+i*tw/5;ctx.fillStyle=i%2?"#741522":"#b5a18c";ctx.beginPath();ctx.moveTo(tx,ty-th);ctx.quadraticCurveTo(x+tw*.08,ty-th*.78,x,ty);ctx.lineTo(x+tw/5,ty);ctx.quadraticCurveTo(x+tw*.14,ty-th*.78,tx,ty-th);ctx.closePath();ctx.fill();}
+  const shade=ctx.createLinearGradient(0,ty-th,0,ty);shade.addColorStop(0,"rgba(0,0,0,.04)");shade.addColorStop(1,"rgba(0,0,0,.48)");ctx.fillStyle=shade;ctx.fillRect(tx-tw,ty-th*1.2,tw*2,th*1.3);ctx.restore();
+  ctx.strokeStyle="#d0b88f";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(tx-tw*.54,ty-th*.52);ctx.quadraticCurveTo(tx,ty-th*1.12,tx+tw*.54,ty-th*.52);ctx.stroke();
+  // scalloped entrance valance
+  for(let i=0;i<13;i++){const x=tx-tw*.52+i*tw/12;ctx.fillStyle=i%2?"#7e1825":"#b8a58f";ctx.beginPath();ctx.moveTo(x,ty-th*.52);ctx.quadraticCurveTo(x+tw/24,ty-th*.45,x+tw/12,ty-th*.52);ctx.lineTo(x+tw/12,ty-th*.47);ctx.quadraticCurveTo(x+tw/24,ty-th*.39,x,ty-th*.47);ctx.fill();}
+  // Entrance, deep black interior and velvet curtains
+  ctx.fillStyle="#050407";ctx.beginPath();ctx.moveTo(tx-tw*.17,ty);ctx.lineTo(tx-tw*.15,ty-th*.43);ctx.quadraticCurveTo(tx,ty-th*.52,tx+tw*.15,ty-th*.43);ctx.lineTo(tx+tw*.17,ty);ctx.fill();
+  ctx.fillStyle="#701321";ctx.beginPath();ctx.moveTo(tx-tw*.17,ty-th*.44);ctx.quadraticCurveTo(tx-tw*.1,ty-th*.16,tx,ty);ctx.lineTo(tx,ty-th*.44);ctx.fill();ctx.beginPath();ctx.moveTo(tx+tw*.17,ty-th*.44);ctx.quadraticCurveTo(tx+tw*.1,ty-th*.16,tx,ty);ctx.lineTo(tx,ty-th*.44);ctx.fill();
+  // ticket booth and funhouse frontage
+  const booth=(x,y,ww,hh)=>{ctx.fillStyle="#171016";ctx.fillRect(x,y,ww,hh);ctx.fillStyle="#7d1a28";ctx.fillRect(x,y,ww,hh*.2);ctx.strokeStyle="#aa8c72";ctx.lineWidth=2;ctx.strokeRect(x,y,ww,hh);ctx.fillStyle="#e4b66f";ctx.font="bold 9px Georgia";ctx.textAlign="center";ctx.fillText("TICKETS",x+ww/2,y+hh*.15);ctx.fillStyle="#070609";ctx.fillRect(x+ww*.18,y+hh*.38,ww*.64,hh*.42);};
+  booth(w*.06,h*.56,w*.16,h*.18);booth(w*.59,h*.57,w*.13,h*.17);
+  // string lights converge toward the big top
+  for(let strand=0;strand<3;strand++){const y0=h*(.24+strand*.055);ctx.strokeStyle="rgba(105,83,77,.8)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,y0);ctx.quadraticCurveTo(w*.5,y0+h*.18,w,y0+h*.02);ctx.stroke();for(let i=0;i<18;i++){const x=w*i/17,y=y0+Math.sin((x/w)*Math.PI)*h*.18;const glow=.35+.65*Math.max(0,Math.sin(t*3.2-i*.7-strand));ctx.fillStyle="rgba(255,197,124,"+glow+")";ctx.shadowColor="#ffb75f";ctx.shadowBlur=7*glow;ctx.beginPath();ctx.arc(x,y,1.7+glow,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;}}
+  // Sinister clown mask, not a flat stick silhouette; briefly visible in the tent doorway
+  const reveal=Math.max(0,Math.min(1,(t-4.2)/1.4));if(reveal>0){const x=tx,y=ty-th*.26;ctx.save();ctx.globalAlpha=reveal*(.82+.12*Math.sin(t*1.7));ctx.shadowColor="#a82b37";ctx.shadowBlur=20;
+   ctx.fillStyle="#08070a";ctx.beginPath();ctx.ellipse(x,y+24,35,54,0,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle="#d5c7b3";ctx.beginPath();ctx.ellipse(x,y,22,29,0,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle="#771522";ctx.beginPath();ctx.moveTo(x-22,y-8);ctx.lineTo(x-37,y-25);ctx.lineTo(x-18,y-20);ctx.lineTo(x,y-31);ctx.lineTo(x+18,y-20);ctx.lineTo(x+37,y-25);ctx.lineTo(x+22,y-8);ctx.fill();
+   ctx.fillStyle="#1a0b10";ctx.beginPath();ctx.ellipse(x-9,y-2,5,7,0,0,Math.PI*2);ctx.ellipse(x+9,y-2,5,7,0,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle="#a3132a";ctx.beginPath();ctx.arc(x,y+10,4,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#5c0c1b";ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y+17,10,.15,Math.PI-.15);ctx.stroke();ctx.restore();}
+  // fog drifts across the foreground
   fog.forEach(f=>{f.x-=f.v*dt/w;if(f.x<-.1)f.x=1.1;const g=ctx.createRadialGradient(f.x*w,f.y*h,0,f.x*w,f.y*h,f.r*4);g.addColorStop(0,"rgba(191,174,173,"+f.a+")");g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(f.x*w-f.r*4,f.y*h-f.r*4,f.r*8,f.r*8);});
-  // occasional lightning flash
   if(Math.sin(t*1.7)>0.997){ctx.fillStyle="rgba(215,202,220,.09)";ctx.fillRect(0,0,w,h);}
   raf=requestAnimationFrame(frame);
  }
- raf=requestAnimationFrame(frame);const duration=Math.max(8500,Number(opts.duration)||10000);
+ raf=requestAnimationFrame(frame);const duration=Math.max(9000,Number(opts.duration)||10500);
  setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .9s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),930);}},duration);return overlay;
 }
 
+
 function renderHauntedHearseGift(gift,opts,overlay){
- const scene=document.createElement("div");
- scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#030609;isolation:isolate";
- scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(0,0,0,.88)),radial-gradient(ellipse at 50% 55%,transparent 18%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:7%;left:0;right:0;text-align:center;color:#d9e7e1;font:1000 clamp(27px,6vw,48px)/1 Georgia,serif;letter-spacing:.16em;text-shadow:0 2px 10px #000,0 0 24px #7aa99b">THE HAUNTED HEARSE<div style="font:700 10px system-ui;letter-spacing:.32em;margin-top:10px;color:#9ab9b0">SOME PASSENGERS NEVER ARRIVE</div></div>';
+ const scene=document.createElement("div");scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#030609;isolation:isolate";
+ scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(0,0,0,.88)),radial-gradient(ellipse at 50% 55%,transparent 18%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:6%;left:0;right:0;text-align:center;color:#d9e7e1;font:1000 clamp(26px,5.8vw,46px)/1 Georgia,serif;letter-spacing:.15em;text-shadow:0 2px 10px #000,0 0 24px #7aa99b">THE HAUNTED HEARSE<div style="font:700 10px system-ui;letter-spacing:.32em;margin-top:10px;color:#9ab9b0">SOME PASSENGERS NEVER ARRIVE</div></div>';
  overlay.appendChild(scene);document.body.appendChild(overlay);
- const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");
- let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start;
- const motes=Array.from({length:54},()=>({x:Math.random(),y:.48+Math.random()*.5,r:2+Math.random()*13,v:7+Math.random()*19,a:.025+Math.random()*.055}));
- function resize(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
- resize();window.addEventListener("resize",resize);
+ const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start;
+ const mist=Array.from({length:60},()=>({x:Math.random(),y:.52+Math.random()*.46,r:14+Math.random()*55,v:5+Math.random()*18,a:.02+Math.random()*.06}));
+ function resize(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}resize();window.addEventListener("resize",resize);
  function ellipse(x,y,rx,ry,color){ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill();}
  function frame(now){
-  if(!alive||!overlay.isConnected)return;
-  const t=(now-start)/1000,dt=Math.min(.05,(now-last)/1000);last=now;ctx.clearRect(0,0,w,h);
-  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#050a10");sky.addColorStop(.62,"#17201f");sky.addColorStop(1,"#030605");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
-  const moon=ctx.createRadialGradient(w*.78,h*.18,2,w*.78,h*.18,h*.22);moon.addColorStop(0,"rgba(208,228,220,.45)");moon.addColorStop(.3,"rgba(119,160,147,.12)");moon.addColorStop(1,"transparent");ctx.fillStyle=moon;ctx.fillRect(0,0,w,h);
-  // Distant cemetery silhouettes
-  ctx.fillStyle="#080e0d";for(let i=0;i<9;i++){const x=w*i/8;ctx.fillRect(x,h*.55,5,h*.2);ctx.beginPath();ctx.moveTo(x-25,h*.57);ctx.lineTo(x+2,h*.39+(i%3)*12);ctx.lineTo(x+28,h*.57);ctx.fill();}
-  // Wet road and fog
-  const road=ctx.createLinearGradient(0,h*.66,0,h);road.addColorStop(0,"#151b19");road.addColorStop(1,"#030505");ctx.fillStyle=road;ctx.beginPath();ctx.moveTo(w*.18,h*.62);ctx.lineTo(w*.82,h*.62);ctx.lineTo(w*1.12,h);ctx.lineTo(-w*.12,h);ctx.fill();
-  motes.forEach(m=>{m.x-=m.v*dt/w;if(m.x<-.08)m.x=1.08;const g=ctx.createRadialGradient(m.x*w,m.y*h,0,m.x*w,m.y*h,m.r*4);g.addColorStop(0,"rgba(172,199,188,"+m.a+")");g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(m.x*w-m.r*4,m.y*h-m.r*4,m.r*8,m.r*8);});
-  const bob=Math.sin(t*2.1)*2,scale=Math.min(w/760,1.25),cx=w*.5,base=h*.72+bob;
-  ctx.save();ctx.translate(cx,base);ctx.scale(scale,scale);
-  // Headlight beams behind vehicle
-  const flicker=.76+Math.sin(t*17)*.08+Math.sin(t*5)*.06;
-  ctx.save();ctx.globalAlpha=flicker*.17;ctx.fillStyle="#c8f1d9";ctx.beginPath();ctx.moveTo(-245,-92);ctx.lineTo(-520,-260);ctx.lineTo(-500,-10);ctx.closePath();ctx.fill();ctx.beginPath();ctx.moveTo(245,-92);ctx.lineTo(520,-260);ctx.lineTo(500,-10);ctx.closePath();ctx.fill();ctx.restore();
-  // Wheels
-  [-170,164].forEach(x=>{ellipse(x,4,48,48,"#020303");ellipse(x,4,30,30,"#303a39");ellipse(x,4,18,18,"#0a0e0e");ellipse(x,4,7,7,"#82918a");});
-  // Long hearse chassis and cabin
-  const body=ctx.createLinearGradient(0,-185,0,8);body.addColorStop(0,"#303b39");body.addColorStop(.2,"#101817");body.addColorStop(.8,"#050909");body.addColorStop(1,"#202a27");
-  ctx.fillStyle=body;ctx.strokeStyle="#77857e";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-270,-70);ctx.lineTo(-248,-132);ctx.quadraticCurveTo(-232,-153,-185,-156);ctx.lineTo(180,-156);ctx.quadraticCurveTo(231,-152,252,-111);ctx.lineTo(273,-45);ctx.lineTo(255,-8);ctx.lineTo(-265,-8);ctx.closePath();ctx.fill();ctx.stroke();
-  // Roof and hearse windows
-  ctx.fillStyle="#090f11";ctx.beginPath();ctx.moveTo(-220,-151);ctx.lineTo(-190,-205);ctx.quadraticCurveTo(-178,-218,-145,-218);ctx.lineTo(153,-218);ctx.lineTo(215,-151);ctx.closePath();ctx.fill();ctx.strokeStyle="#62766e";ctx.stroke();
-  ctx.fillStyle="rgba(106,161,151,.22)";ctx.fillRect(-175,-199,88,43);ctx.fillRect(-76,-199,91,43);ctx.fillRect(25,-199,88,43);
-  ctx.strokeStyle="#84968d";ctx.lineWidth=3;ctx.strokeRect(-175,-199,88,43);ctx.strokeRect(-76,-199,91,43);ctx.strokeRect(25,-199,88,43);
-  // Hood, grille, chrome details
-  ctx.fillStyle="#080d0d";ctx.fillRect(-270,-91,35,47);ctx.fillStyle="#77857f";for(let i=0;i<6;i++)ctx.fillRect(-266+i*5,-88,2,40);
-  ctx.fillStyle="rgba(205,244,218,"+(flicker*.75)+")";ellipse(-251,-105,13,9,"rgba(199,244,216,"+(flicker*.7)+")");ellipse(250,-105,13,9,"rgba(199,244,216,"+(flicker*.7)+")");
-  ctx.strokeStyle="#a4b2aa";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-210,-67);ctx.lineTo(230,-67);ctx.stroke();
-  // Rear doors open slowly after the hearse arrives
-  const open=Math.max(0,Math.min(1,(t-3.1)/1.8));
-  ctx.save();ctx.translate(255,-118);ctx.rotate(-open*.92);ctx.fillStyle="#101918";ctx.strokeStyle="#85948c";ctx.lineWidth=3;ctx.fillRect(0,-53,48,112);ctx.strokeRect(0,-53,48,112);ctx.fillStyle="rgba(120,191,164,.24)";ctx.fillRect(8,-42,31,72);ctx.restore();
-  ctx.save();ctx.translate(255,-118);ctx.rotate(open*.92);ctx.fillStyle="#0b1110";ctx.strokeStyle="#85948c";ctx.lineWidth=3;ctx.fillRect(-48,-53,48,112);ctx.strokeRect(-48,-53,48,112);ctx.restore();
-  // Green spectral glow from the open rear
-  if(open>.05){const glow=ctx.createRadialGradient(250,-110,4,250,-110,180);glow.addColorStop(0,"rgba(157,255,193,"+(.48*open)+")");glow.addColorStop(.45,"rgba(77,177,130,"+(.19*open)+")");glow.addColorStop(1,"transparent");ctx.fillStyle=glow;ctx.fillRect(50,-300,430,400);}
-  // Ghostly passenger appears in the doorway
-  if(t>5){const a=Math.min(1,(t-5)/1.4);ctx.save();ctx.globalAlpha=a*(.78+Math.sin(t*3)*.1);ctx.fillStyle="#b9e8d4";ctx.shadowColor="#75ffc0";ctx.shadowBlur=32;ellipse(254,-186,22,25,"rgba(202,255,226,.72)");ctx.beginPath();ctx.moveTo(232,-163);ctx.quadraticCurveTo(211,-128,220,-72);ctx.quadraticCurveTo(246,-52,278,-72);ctx.quadraticCurveTo(291,-127,276,-163);ctx.closePath();ctx.fill();ctx.restore();}
-  // Cemetery plate
-  ctx.fillStyle="#b9c7c0";ctx.font="bold 11px Georgia";ctx.textAlign="center";ctx.fillText("LAST RIDE",0,-20);
-  ctx.restore();
-  raf=requestAnimationFrame(frame);
+  if(!alive||!overlay.isConnected)return;const t=(now-start)/1000,dt=Math.min(.05,(now-last)/1000);last=now;ctx.clearRect(0,0,w,h);
+  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#040911");sky.addColorStop(.55,"#182322");sky.addColorStop(1,"#030505");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+  const moon=ctx.createRadialGradient(w*.78,h*.17,2,w*.78,h*.17,h*.22);moon.addColorStop(0,"rgba(208,228,220,.38)");moon.addColorStop(.3,"rgba(119,160,147,.1)");moon.addColorStop(1,"transparent");ctx.fillStyle=moon;ctx.fillRect(0,0,w,h);
+  // tree line and old iron cemetery fence
+  ctx.fillStyle="#080e0d";for(let i=0;i<10;i++){const x=i*w/9;ctx.beginPath();ctx.moveTo(x-35,h*.66);ctx.lineTo(x,h*(.39+(i%3)*.035));ctx.lineTo(x+38,h*.66);ctx.fill();}
+  for(let i=0;i<25;i++){const x=i*w/24;ctx.fillStyle="#111a18";ctx.fillRect(x,h*.64,2,h*.12);ctx.beginPath();ctx.moveTo(x-4,h*.64);ctx.lineTo(x+1,h*.61);ctx.lineTo(x+6,h*.64);ctx.fill();}ctx.fillRect(0,h*.68,w,3);
+  // wet asphalt with reflections
+  const road=ctx.createLinearGradient(0,h*.62,0,h);road.addColorStop(0,"#1b2321");road.addColorStop(.42,"#0c1110");road.addColorStop(1,"#030505");ctx.fillStyle=road;ctx.beginPath();ctx.moveTo(w*.19,h*.61);ctx.lineTo(w*.81,h*.61);ctx.lineTo(w*1.1,h);ctx.lineTo(-w*.1,h);ctx.fill();
+  for(let i=0;i<12;i++){const x=w*(.25+i*.045);ctx.strokeStyle="rgba(166,190,179,"+(0.025+((i%3)*.012))+")";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,h*.7);ctx.lineTo(x+(x-w*.5)*.5,h);ctx.stroke();}
+  mist.forEach(m=>{m.x-=m.v*dt/w;if(m.x<-.08)m.x=1.08;const g=ctx.createRadialGradient(m.x*w,m.y*h,0,m.x*w,m.y*h,m.r*4);g.addColorStop(0,"rgba(172,199,188,"+m.a+")");g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(m.x*w-m.r*4,m.y*h-m.r*4,m.r*8,m.r*8);});
+  const arrival=Math.max(0,Math.min(1,(t-.5)/2.2)),bob=Math.sin(t*1.3)*.8,scale=Math.min(w/760,1.22),cx=w*.5,base=h*.73+bob;
+  ctx.save();ctx.translate(cx,base);ctx.scale(scale*(.82+.18*arrival),scale*(.82+.18*arrival));
+  const flicker=.83+Math.sin(t*17)*.055+Math.sin(t*5.2)*.035;
+  // broad soft headlight beams
+  ctx.save();ctx.globalAlpha=flicker*.15;const beam=ctx.createLinearGradient(-250,-100,-530,20);beam.addColorStop(0,"rgba(219,244,224,.8)");beam.addColorStop(1,"rgba(219,244,224,0)");ctx.fillStyle=beam;ctx.beginPath();ctx.moveTo(-250,-112);ctx.lineTo(-540,-280);ctx.lineTo(-500,28);ctx.closePath();ctx.fill();ctx.beginPath();ctx.moveTo(250,-112);ctx.lineTo(540,-280);ctx.lineTo(500,28);ctx.closePath();ctx.fill();ctx.restore();
+  // cast shadow and four detailed wheels
+  ellipse(0,10,310,35,"rgba(0,0,0,.72)");
+  [-190,190].forEach(x=>{ellipse(x,0,47,49,"#020303");ellipse(x,0,39,41,"#171d1c");ellipse(x,0,29,30,"#606966");ellipse(x,0,23,24,"#141a19");ctx.strokeStyle="#a1aaa5";ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,0,19,0,Math.PI*2);ctx.stroke();for(let k=0;k<10;k++){const a=k*Math.PI/5;lineWheel(x+Math.cos(a)*5,Math.sin(a)*5,x+Math.cos(a)*18,Math.sin(a)*18);}ellipse(x,0,6,6,"#a8b0aa");});
+  function lineWheel(x1,y1,x2,y2){ctx.strokeStyle="#89938d";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+  // Long polished black hearse body, lower rocker and chrome highlights
+  const body=ctx.createLinearGradient(0,-205,0,14);body.addColorStop(0,"#3b4541");body.addColorStop(.12,"#151c1a");body.addColorStop(.48,"#050909");body.addColorStop(.76,"#202a26");body.addColorStop(1,"#060908");
+  ctx.fillStyle=body;ctx.strokeStyle="#89958d";ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(-280,-72);ctx.lineTo(-264,-132);ctx.quadraticCurveTo(-254,-160,-218,-164);ctx.lineTo(195,-164);ctx.quadraticCurveTo(242,-158,263,-116);ctx.lineTo(282,-48);ctx.lineTo(270,-14);ctx.quadraticCurveTo(0,2,-274,-12);ctx.closePath();ctx.fill();ctx.stroke();
+  // reflections along long coachwork
+  ctx.strokeStyle="rgba(206,225,215,.28)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-245,-139);ctx.quadraticCurveTo(0,-151,236,-130);ctx.stroke();ctx.strokeStyle="rgba(0,0,0,.7)";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-260,-35);ctx.quadraticCurveTo(0,-21,267,-35);ctx.stroke();
+  // passenger compartment roof and tinted glass
+  ctx.fillStyle="#080d0e";ctx.beginPath();ctx.moveTo(-228,-159);ctx.lineTo(-205,-216);ctx.quadraticCurveTo(-196,-229,-165,-230);ctx.lineTo(145,-230);ctx.quadraticCurveTo(177,-228,198,-204);ctx.lineTo(232,-158);ctx.closePath();ctx.fill();ctx.strokeStyle="#7d8981";ctx.lineWidth=2;ctx.stroke();
+  const glass=ctx.createLinearGradient(0,-226,0,-164);glass.addColorStop(0,"rgba(123,166,157,.38)");glass.addColorStop(1,"rgba(7,13,13,.82)");ctx.fillStyle=glass;ctx.beginPath();ctx.moveTo(-192,-211);ctx.lineTo(-164,-222);ctx.lineTo(143,-222);ctx.lineTo(188,-166);ctx.lineTo(-213,-166);ctx.closePath();ctx.fill();
+  // chrome window dividers and landau-style rear quarter windows
+  ctx.strokeStyle="#9aa59d";ctx.lineWidth=3;[-105,0,105].forEach(x=>{ctx.beginPath();ctx.moveTo(x,-222);ctx.lineTo(x,-165);ctx.stroke();});
+  ctx.strokeStyle="#394640";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-210,-160);ctx.lineTo(225,-160);ctx.stroke();
+  // hood and front grille with vertical chrome bars
+  ctx.fillStyle="#070b0b";ctx.fillRect(-279,-100,28,54);ctx.strokeStyle="#9ca9a0";ctx.lineWidth=2;for(let i=0;i<7;i++){ctx.beginPath();ctx.moveTo(-276+i*4,-96);ctx.lineTo(-276+i*4,-49);ctx.stroke();}
+  // paired glass headlights with housings
+  [-252,252].forEach(x=>{ellipse(x,-110,17,12,"#0a100f");ellipse(x,-110,11,7,"rgba(208,244,222,"+(flicker*.85)+")");});
+  ctx.strokeStyle="#aab4ad";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-230,-62);ctx.lineTo(244,-62);ctx.stroke();
+  // rear double doors hinged outward; doors remain visibly attached to body
+  const open=Math.max(0,Math.min(1,(t-3.0)/2));
+  ctx.save();ctx.translate(258,-120);ctx.rotate(-open*.8);ctx.fillStyle="#101817";ctx.strokeStyle="#8b9890";ctx.lineWidth=3;ctx.fillRect(0,-52,48,106);ctx.strokeRect(0,-52,48,106);ctx.fillStyle="rgba(116,164,148,.24)";ctx.fillRect(8,-40,31,70);ctx.restore();
+  ctx.save();ctx.translate(258,-120);ctx.rotate(open*.8);ctx.fillStyle="#0b1110";ctx.strokeStyle="#8b9890";ctx.lineWidth=3;ctx.fillRect(-48,-52,48,106);ctx.strokeRect(-48,-52,48,106);ctx.restore();
+  // warm interior lamp and spectral green spill once the doors part
+  if(open>.04){const glow=ctx.createRadialGradient(250,-120,3,250,-120,190);glow.addColorStop(0,"rgba(171,255,205,"+(.5*open)+")");glow.addColorStop(.38,"rgba(72,169,124,"+(.2*open)+")");glow.addColorStop(1,"transparent");ctx.fillStyle=glow;ctx.fillRect(55,-330,450,430);}
+  // figure is seen as a distant shrouded passenger, not a cartoon ghost
+  if(t>5){const a=Math.min(1,(t-5)/1.4);ctx.save();ctx.globalAlpha=a*(.72+Math.sin(t*1.7)*.06);ctx.fillStyle="rgba(190,220,204,.62)";ctx.shadowColor="#8af0bd";ctx.shadowBlur=24;ellipse(255,-190,18,24,"rgba(196,224,207,.65)");ctx.beginPath();ctx.moveTo(240,-169);ctx.quadraticCurveTo(224,-136,231,-86);ctx.quadraticCurveTo(254,-71,277,-86);ctx.quadraticCurveTo(283,-136,270,-169);ctx.closePath();ctx.fill();ctx.restore();}
+  ctx.fillStyle="#c0c9c2";ctx.font="bold 10px Georgia";ctx.textAlign="center";ctx.fillText("LAST RIDE",0,-25);
+  ctx.restore();raf=requestAnimationFrame(frame);
  }
- raf=requestAnimationFrame(frame);
- const duration=Math.max(8500,Number(opts.duration)||10000);
- setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .9s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),930);}},duration);
- return overlay;
+ raf=requestAnimationFrame(frame);const duration=Math.max(9000,Number(opts.duration)||10500);
+ setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .9s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),930);}},duration);return overlay;
 }
-
 function renderLivingTombstonesGift(gift,opts,overlay){
  const scene=document.createElement("div");scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#05080b;isolation:isolate";
  scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.78)),radial-gradient(ellipse,transparent 28%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:7%;left:0;right:0;text-align:center;color:#d7ded4;font:1000 clamp(22px,5.8vw,44px)/1.1 Georgia,serif;letter-spacing:.1em;text-shadow:0 2px 8px #000,0 0 18px #8aa08c">THE NIGHT OF THE LIVING TOMBSTONES<div style="font:700 10px system-ui;letter-spacing:.28em;margin-top:9px;color:#a6b6a7">THE DEAD WILL NOT STAY BURIED</div></div>';
