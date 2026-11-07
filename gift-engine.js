@@ -423,6 +423,65 @@ function renderVoidRiftGift(gift,opts,overlay){
  return overlay;
 }
 
+
+function renderHauntedHearseGift(gift,opts,overlay){
+ const scene=document.createElement("div");
+ scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#030609;isolation:isolate";
+ scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(0,0,0,.88)),radial-gradient(ellipse at 50% 55%,transparent 18%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:7%;left:0;right:0;text-align:center;color:#d9e7e1;font:1000 clamp(27px,6vw,48px)/1 Georgia,serif;letter-spacing:.16em;text-shadow:0 2px 10px #000,0 0 24px #7aa99b">THE HAUNTED HEARSE<div style="font:700 10px system-ui;letter-spacing:.32em;margin-top:10px;color:#9ab9b0">SOME PASSENGERS NEVER ARRIVE</div></div>';
+ overlay.appendChild(scene);document.body.appendChild(overlay);
+ const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");
+ let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start;
+ const motes=Array.from({length:54},()=>({x:Math.random(),y:.48+Math.random()*.5,r:2+Math.random()*13,v:7+Math.random()*19,a:.025+Math.random()*.055}));
+ function resize(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
+ resize();window.addEventListener("resize",resize);
+ function ellipse(x,y,rx,ry,color){ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill();}
+ function frame(now){
+  if(!alive||!overlay.isConnected)return;
+  const t=(now-start)/1000,dt=Math.min(.05,(now-last)/1000);last=now;ctx.clearRect(0,0,w,h);
+  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#050a10");sky.addColorStop(.62,"#17201f");sky.addColorStop(1,"#030605");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+  const moon=ctx.createRadialGradient(w*.78,h*.18,2,w*.78,h*.18,h*.22);moon.addColorStop(0,"rgba(208,228,220,.45)");moon.addColorStop(.3,"rgba(119,160,147,.12)");moon.addColorStop(1,"transparent");ctx.fillStyle=moon;ctx.fillRect(0,0,w,h);
+  // Distant cemetery silhouettes
+  ctx.fillStyle="#080e0d";for(let i=0;i<9;i++){const x=w*i/8;ctx.fillRect(x,h*.55,5,h*.2);ctx.beginPath();ctx.moveTo(x-25,h*.57);ctx.lineTo(x+2,h*.39+(i%3)*12);ctx.lineTo(x+28,h*.57);ctx.fill();}
+  // Wet road and fog
+  const road=ctx.createLinearGradient(0,h*.66,0,h);road.addColorStop(0,"#151b19");road.addColorStop(1,"#030505");ctx.fillStyle=road;ctx.beginPath();ctx.moveTo(w*.18,h*.62);ctx.lineTo(w*.82,h*.62);ctx.lineTo(w*1.12,h);ctx.lineTo(-w*.12,h);ctx.fill();
+  motes.forEach(m=>{m.x-=m.v*dt/w;if(m.x<-.08)m.x=1.08;const g=ctx.createRadialGradient(m.x*w,m.y*h,0,m.x*w,m.y*h,m.r*4);g.addColorStop(0,"rgba(172,199,188,"+m.a+")");g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(m.x*w-m.r*4,m.y*h-m.r*4,m.r*8,m.r*8);});
+  const bob=Math.sin(t*2.1)*2,scale=Math.min(w/760,1.25),cx=w*.5,base=h*.72+bob;
+  ctx.save();ctx.translate(cx,base);ctx.scale(scale,scale);
+  // Headlight beams behind vehicle
+  const flicker=.76+Math.sin(t*17)*.08+Math.sin(t*5)*.06;
+  ctx.save();ctx.globalAlpha=flicker*.17;ctx.fillStyle="#c8f1d9";ctx.beginPath();ctx.moveTo(-245,-92);ctx.lineTo(-520,-260);ctx.lineTo(-500,-10);ctx.closePath();ctx.fill();ctx.beginPath();ctx.moveTo(245,-92);ctx.lineTo(520,-260);ctx.lineTo(500,-10);ctx.closePath();ctx.fill();ctx.restore();
+  // Wheels
+  [-170,164].forEach(x=>{ellipse(x,4,48,48,"#020303");ellipse(x,4,30,30,"#303a39");ellipse(x,4,18,18,"#0a0e0e");ellipse(x,4,7,7,"#82918a");});
+  // Long hearse chassis and cabin
+  const body=ctx.createLinearGradient(0,-185,0,8);body.addColorStop(0,"#303b39");body.addColorStop(.2,"#101817");body.addColorStop(.8,"#050909");body.addColorStop(1,"#202a27");
+  ctx.fillStyle=body;ctx.strokeStyle="#77857e";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-270,-70);ctx.lineTo(-248,-132);ctx.quadraticCurveTo(-232,-153,-185,-156);ctx.lineTo(180,-156);ctx.quadraticCurveTo(231,-152,252,-111);ctx.lineTo(273,-45);ctx.lineTo(255,-8);ctx.lineTo(-265,-8);ctx.closePath();ctx.fill();ctx.stroke();
+  // Roof and hearse windows
+  ctx.fillStyle="#090f11";ctx.beginPath();ctx.moveTo(-220,-151);ctx.lineTo(-190,-205);ctx.quadraticCurveTo(-178,-218,-145,-218);ctx.lineTo(153,-218);ctx.lineTo(215,-151);ctx.closePath();ctx.fill();ctx.strokeStyle="#62766e";ctx.stroke();
+  ctx.fillStyle="rgba(106,161,151,.22)";ctx.fillRect(-175,-199,88,43);ctx.fillRect(-76,-199,91,43);ctx.fillRect(25,-199,88,43);
+  ctx.strokeStyle="#84968d";ctx.lineWidth=3;ctx.strokeRect(-175,-199,88,43);ctx.strokeRect(-76,-199,91,43);ctx.strokeRect(25,-199,88,43);
+  // Hood, grille, chrome details
+  ctx.fillStyle="#080d0d";ctx.fillRect(-270,-91,35,47);ctx.fillStyle="#77857f";for(let i=0;i<6;i++)ctx.fillRect(-266+i*5,-88,2,40);
+  ctx.fillStyle="rgba(205,244,218,"+(flicker*.75)+")";ellipse(-251,-105,13,9,"rgba(199,244,216,"+(flicker*.7)+")");ellipse(250,-105,13,9,"rgba(199,244,216,"+(flicker*.7)+")");
+  ctx.strokeStyle="#a4b2aa";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-210,-67);ctx.lineTo(230,-67);ctx.stroke();
+  // Rear doors open slowly after the hearse arrives
+  const open=Math.max(0,Math.min(1,(t-3.1)/1.8));
+  ctx.save();ctx.translate(255,-118);ctx.rotate(-open*.92);ctx.fillStyle="#101918";ctx.strokeStyle="#85948c";ctx.lineWidth=3;ctx.fillRect(0,-53,48,112);ctx.strokeRect(0,-53,48,112);ctx.fillStyle="rgba(120,191,164,.24)";ctx.fillRect(8,-42,31,72);ctx.restore();
+  ctx.save();ctx.translate(255,-118);ctx.rotate(open*.92);ctx.fillStyle="#0b1110";ctx.strokeStyle="#85948c";ctx.lineWidth=3;ctx.fillRect(-48,-53,48,112);ctx.strokeRect(-48,-53,48,112);ctx.restore();
+  // Green spectral glow from the open rear
+  if(open>.05){const glow=ctx.createRadialGradient(250,-110,4,250,-110,180);glow.addColorStop(0,"rgba(157,255,193,"+(.48*open)+")");glow.addColorStop(.45,"rgba(77,177,130,"+(.19*open)+")");glow.addColorStop(1,"transparent");ctx.fillStyle=glow;ctx.fillRect(50,-300,430,400);}
+  // Ghostly passenger appears in the doorway
+  if(t>5){const a=Math.min(1,(t-5)/1.4);ctx.save();ctx.globalAlpha=a*(.78+Math.sin(t*3)*.1);ctx.fillStyle="#b9e8d4";ctx.shadowColor="#75ffc0";ctx.shadowBlur=32;ellipse(254,-186,22,25,"rgba(202,255,226,.72)");ctx.beginPath();ctx.moveTo(232,-163);ctx.quadraticCurveTo(211,-128,220,-72);ctx.quadraticCurveTo(246,-52,278,-72);ctx.quadraticCurveTo(291,-127,276,-163);ctx.closePath();ctx.fill();ctx.restore();}
+  // Cemetery plate
+  ctx.fillStyle="#b9c7c0";ctx.font="bold 11px Georgia";ctx.textAlign="center";ctx.fillText("LAST RIDE",0,-20);
+  ctx.restore();
+  raf=requestAnimationFrame(frame);
+ }
+ raf=requestAnimationFrame(frame);
+ const duration=Math.max(8500,Number(opts.duration)||10000);
+ setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .9s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),930);}},duration);
+ return overlay;
+}
+
 function renderLivingTombstonesGift(gift,opts,overlay){
  const scene=document.createElement("div");scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#05080b;isolation:isolate";
  scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.78)),radial-gradient(ellipse,transparent 28%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:7%;left:0;right:0;text-align:center;color:#d7ded4;font:1000 clamp(22px,5.8vw,44px)/1.1 Georgia,serif;letter-spacing:.1em;text-shadow:0 2px 8px #000,0 0 18px #8aa08c">THE NIGHT OF THE LIVING TOMBSTONES<div style="font:700 10px system-ui;letter-spacing:.28em;margin-top:9px;color:#a6b6a7">THE DEAD WILL NOT STAY BURIED</div></div>';
@@ -459,7 +518,7 @@ function renderLivingTombstonesGift(gift,opts,overlay){
  setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),830);}},duration);return overlay;
 }
 
-function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
+function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
 
 /* Cinematic object renderer: custom shaded vector artwork replaces emoji-only gift posters. */
 function renderCinematicGift(gift,opts,overlay){
