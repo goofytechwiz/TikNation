@@ -63,7 +63,7 @@ function playTikNationGiftSound(gift) {
     if (context.state === "suspended") context.resume().catch(() => {});
     const now = context.currentTime;
 
-    if (gift.style === "phoenix_rising") {
+    if (gift.style === "storm_of_the_world") {
       // A layered cinematic wing rush, rising fire roar and ember crackle.
       const length = Math.floor(context.sampleRate * 4.8);
       const buffer = context.createBuffer(1, length, context.sampleRate);
@@ -314,7 +314,7 @@ function showTikNationGiftEffect(gift) {
     engine.show(gift, {
       meta: "TIKNATION GIFT · TEST COINS ONLY",
       onSound: () => playTikNationGiftSound(gift),
-      duration: gift.style === "phoenix_rising" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
+      duration: gift.style === "storm_of_the_world" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
     });
   }).catch(error => console.error("TikNation gift effect unavailable:", error));
 }
