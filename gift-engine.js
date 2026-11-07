@@ -731,7 +731,99 @@ function renderLivingTombstonesGift(gift,opts,overlay){
  return overlay;
 }
 
-function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
+
+function renderHauntedCarouselGift(gift,opts,overlay){
+ const scene=document.createElement("div");
+ scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#030509;isolation:isolate";
+ const canvas=document.createElement("canvas");
+ canvas.style.cssText="position:absolute;inset:0;width:100%;height:100%;display:block";
+ scene.appendChild(canvas);
+ const title=document.createElement("div");
+ title.style.cssText="position:absolute;z-index:5;left:3%;right:3%;bottom:6%;text-align:center;color:#f1dfc2;font:900 clamp(22px,5.5vw,46px)/1.1 Georgia,serif;letter-spacing:.14em;text-shadow:0 3px 12px #000,0 0 22px #b78b4b";
+ title.innerHTML="THE HAUNTED CAROUSEL<span style='display:block;margin-top:9px;color:#c5a98a;font:700 10px system-ui;letter-spacing:.28em'>ROUND AND ROUND · FOREVER</span>";
+ scene.appendChild(title);overlay.appendChild(scene);document.body.appendChild(overlay);
+ const ctx=canvas.getContext("2d");let w=0,h=0,dpr=1,raf=0,alive=true;
+ const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ const motes=Array.from({length:48},(_,i)=>({x:Math.random(),y:Math.random(),r:1+Math.random()*2.5,s:.025+Math.random()*.07,p:Math.random()*6.28}));
+ function resize(){dpr=Math.min(1.8,window.devicePixelRatio||1);w=scene.clientWidth||innerWidth;h=scene.clientHeight||innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}
+ resize();window.addEventListener("resize",resize);
+ const ellipse=(x,y,rx,ry,fill,stroke)=>{ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke();}};
+ function horse(x,y,scale,angle,t,eyeOn){
+  ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.scale(scale,scale);
+  ctx.shadowColor="#000";ctx.shadowBlur=9;ctx.shadowOffsetY=5;
+  const coat=ctx.createLinearGradient(-28,-36,28,35);coat.addColorStop(0,"#d8c7a3");coat.addColorStop(.35,"#8d785e");coat.addColorStop(1,"#342b25");
+  // carved body, neck and head
+  ctx.fillStyle=coat;ctx.strokeStyle="#211b18";ctx.lineWidth=3;
+  ctx.beginPath();ctx.ellipse(0,0,31,14,-.12,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.moveTo(17,-6);ctx.quadraticCurveTo(26,-34,39,-43);ctx.quadraticCurveTo(48,-47,49,-34);ctx.lineTo(39,-14);ctx.lineTo(25,4);ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.ellipse(47,-42,10,7,-.2,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.moveTo(42,-48);ctx.lineTo(39,-62);ctx.lineTo(49,-52);ctx.moveTo(50,-47);ctx.lineTo(58,-59);ctx.lineTo(57,-45);ctx.stroke();
+  // flowing mane and tail
+  ctx.strokeStyle="#241915";ctx.lineWidth=6;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(29,-16);ctx.quadraticCurveTo(43,-27,39,-42);ctx.moveTo(-28,-2);ctx.quadraticCurveTo(-48,-15,-45,-29);ctx.stroke();
+  // four legs with subtle galloping motion
+  const swing=Math.sin(t*3.4+scale*4)*5;
+  ctx.strokeStyle="#4b3b2c";ctx.lineWidth=5;ctx.beginPath();
+  ctx.moveTo(-18,7);ctx.lineTo(-22+swing,31);ctx.lineTo(-27+swing,38);
+  ctx.moveTo(-5,8);ctx.lineTo(-3-swing,30);ctx.lineTo(2-swing,38);
+  ctx.moveTo(17,7);ctx.lineTo(19-swing,29);ctx.lineTo(25-swing,37);
+  ctx.moveTo(26,1);ctx.lineTo(32+swing,26);ctx.lineTo(37+swing,34);ctx.stroke();
+  ctx.strokeStyle="#d1b77e";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-20,12);ctx.lineTo(-21,28);ctx.moveTo(18,12);ctx.lineTo(20,27);ctx.stroke();
+  // brass saddle and carved harness
+  ctx.fillStyle="#8b1e25";ctx.beginPath();ctx.ellipse(1,-11,17,8,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#d6b66d";ctx.lineWidth=2;ctx.stroke();
+  ctx.strokeStyle="#d8c08a";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(26,-23);ctx.lineTo(46,-30);ctx.lineTo(52,-36);ctx.stroke();
+  if(eyeOn){ctx.shadowColor="#ff372c";ctx.shadowBlur=18;ctx.fillStyle="#ff3128";ctx.beginPath();ctx.arc(51,-43,3.1,0,Math.PI*2);ctx.fill();}
+  ctx.restore();
+ }
+ function draw(now){
+  if(!alive||!overlay.isConnected)return;
+  const t=(now-start)/1000,night=t>7.1&&t<8.15,blackout=t>6.75&&t<7.55;
+  ctx.clearRect(0,0,w,h);
+  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#080d18");sky.addColorStop(.52,"#16141a");sky.addColorStop(1,"#030407");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+  // distant midway silhouettes and a cold moon
+  ellipse(w*.78,h*.18,w*.12,h*.12,"rgba(167,178,188,.08)");
+  ctx.fillStyle="#08090c";ctx.beginPath();ctx.moveTo(0,h*.61);ctx.lineTo(w*.12,h*.52);ctx.lineTo(w*.2,h*.61);ctx.lineTo(w*.36,h*.5);ctx.lineTo(w*.49,h*.62);ctx.lineTo(w*.7,h*.53);ctx.lineTo(w*.86,h*.62);ctx.lineTo(w,h*.54);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
+  // low rolling mist
+  for(let i=0;i<9;i++){const x=((i*.17+t*.025)%1.3-.15)*w,y=h*(.72+(i%3)*.065);const fog=ctx.createRadialGradient(x,y,0,x,y,Math.max(40,w*.18));fog.addColorStop(0,"rgba(175,183,188,.12)");fog.addColorStop(1,"transparent");ctx.fillStyle=fog;ctx.fillRect(x-w*.2,y-h*.13,w*.4,h*.26);}
+  const cx=w*.5,cy=h*.48,scale=Math.min(w/420,h/520),spin=reduced?0:t*.72;
+  // shadowed carousel platform and brass rim
+  ctx.save();ctx.translate(cx,cy+h*.13);ctx.scale(1.18,.34);
+  ellipse(0,0,w*.31/1.18,h*.12/0.34,"#08090b","#5e4a37");ctx.restore();
+  ctx.save();ctx.translate(cx,cy+h*.12);ctx.scale(1.18,.34);ellipse(0,0,w*.29/1.18,h*.105/.34,"#211b1a","#a7895a");ellipse(0,-5,w*.27/1.18,h*.085/.34,"#4b3428","#d4b779");ctx.restore();
+  // canopy roof: scalloped lower edge and striped, aged panels
+  const topY=cy-h*.27,rx=Math.min(w*.34,230*scale),ry=Math.min(h*.095,65*scale);
+  ctx.save();ctx.translate(cx,topY);
+  ctx.fillStyle="#2a161c";ctx.strokeStyle="#9c7b4d";ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(-rx,ry*.45);ctx.quadraticCurveTo(0,-ry*2.35,rx,ry*.45);ctx.lineTo(rx,ry*.9);for(let i=12;i>=0;i--){const x=-rx+i*(rx*2/12);ctx.quadraticCurveTo(x+rx/12,ry*1.55,x,ry*.9);}ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.save();ctx.beginPath();ctx.moveTo(-rx,ry*.45);ctx.quadraticCurveTo(0,-ry*2.35,rx,ry*.45);ctx.lineTo(rx,ry*.9);ctx.lineTo(-rx,ry*.9);ctx.closePath();ctx.clip();
+  for(let i=0;i<12;i++){const x=-rx+i*rx/6;ctx.fillStyle=i%2?"rgba(189,158,108,.3)":"rgba(115,27,35,.65)";ctx.beginPath();ctx.moveTo(0,-ry*2.2);ctx.lineTo(x,ry*1.2);ctx.lineTo(x+rx/6,ry*1.2);ctx.closePath();ctx.fill();}
+  ctx.restore();
+  // scallops and warm bulbs
+  for(let i=0;i<24;i++){const a=Math.PI+i*Math.PI/23,x=Math.cos(a)*rx,y=ry*.85+Math.sin(a)*ry*.23;ctx.fillStyle=blackout?"#161216":(i%2?"#ffcf83":"#e5a85d");ctx.shadowColor="#ffc36c";ctx.shadowBlur=blackout?0:12;ellipse(x,y,3.2*scale,3.2*scale,ctx.fillStyle);}
+  ctx.shadowBlur=0;ctx.restore();
+  // central ornate pole, collars and finial
+  ctx.fillStyle="#927345";ctx.fillRect(cx-5*scale,topY-ry*.5,10*scale,(cy+h*.1)-(topY-ry*.5));
+  ctx.fillStyle="#d4b779";for(let y=topY-ry*.35;y<cy+h*.08;y+=38*scale){ellipse(cx,y,9*scale,4*scale,"#d4b779","#4c3925");}
+  ellipse(cx,topY-ry*.85,11*scale,11*scale,"#d8ba79","#6e512f");
+  // suspension poles and horses rotate around the carousel, with depth order
+  const riders=[];for(let i=0;i<8;i++){const a=spin+i*Math.PI/4;const depth=Math.sin(a);const x=cx+Math.cos(a)*rx*.73;const y=cy+depth*h*.055+Math.abs(Math.cos(a))*h*.015;const sc=(.62+(.38*(depth+1)/2))*scale;riders.push({x,y,sc,a,depth});}
+  riders.sort((a,b)=>a.depth-b.depth);
+  riders.forEach((r,i)=>{ctx.save();ctx.strokeStyle="#b99558";ctx.lineWidth=2*scale;ctx.beginPath();ctx.moveTo(r.x,topY+ry*.35);ctx.lineTo(r.x,r.y-35*r.sc);ctx.stroke();horse(r.x,r.y,r.sc,Math.sin(spin+i)*.035,t,night&&i===4);ctx.restore();});
+  // canopy shadow and floor reflections
+  ctx.fillStyle="rgba(0,0,0,.24)";ctx.fillRect(cx-rx,cy-h*.05,rx*2,h*.19);
+  if(!blackout){const glow=ctx.createRadialGradient(cx,cy,2,cx,cy,Math.max(w,h)*.5);glow.addColorStop(0,"rgba(218,163,86,.11)");glow.addColorStop(1,"transparent");ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);}
+  motes.forEach(m=>{m.x+=m.s*(reduced?0:1);if(m.x>1.1)m.x=-.1;const a=.12+.16*Math.sin(t*2+m.p);ctx.fillStyle="rgba(204,191,166,"+a+")";ctx.beginPath();ctx.arc(m.x*w,m.y*h,m.r,0,Math.PI*2);ctx.fill();});
+  if(blackout){ctx.fillStyle="rgba(0,0,0,.76)";ctx.fillRect(0,0,w,h);}
+  if(night){ctx.fillStyle="rgba(0,0,0,.18)";ctx.fillRect(0,0,w,h);}
+  raf=requestAnimationFrame(draw);
+ }
+ const start=performance.now();raf=requestAnimationFrame(draw);
+ const duration=Math.max(9000,Number(opts.duration)||9800);
+ const cleanup=()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected)overlay.remove();};
+ setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .65s ease";overlay.style.opacity="0";setTimeout(cleanup,680);}},duration);
+ return overlay;
+}
+
+function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(gift.style==="hauntedcarousel")return renderHauntedCarouselGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
 
 /* Cinematic object renderer: custom shaded vector artwork replaces emoji-only gift posters. */
 function renderCinematicGift(gift,opts,overlay){
