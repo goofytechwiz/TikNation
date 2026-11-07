@@ -633,9 +633,9 @@ function renderHauntedHearseGift(gift,opts,overlay){
    resizeHandler=()=>{if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight),aspect=width/height;renderer.setSize(width,height,false);camera.aspect=aspect;if(aspect<.82){camera.fov=43;camera.position.set(12.8,7.0,15.2);}else{camera.fov=39;camera.position.set(11.8,6.0,14.0);}camera.lookAt(0,1.1,0);camera.updateProjectionMatrix();};resizeHandler();window.addEventListener("resize",resizeHandler);
    const clock=new THREE.Clock();let elapsed=0,previousCarX=car.position.x,wheelSpin=0;
    function animate(){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(animate);const dt=Math.min(.05,clock.getDelta());elapsed+=dt;
-    const drive=Math.min(1,Math.max(0,(elapsed-.8)/18.5));const eased=drive*drive*(3-2*drive);car.position.x=-4.4+eased*7.2;car.position.y=0;
+    const drive=Math.min(1,Math.max(0,(elapsed-.8)/18.5));const engineEnded=window.__tiknationHearseEngineEnded===true;const eased=drive*drive*(3-2*drive);if(!engineEnded)car.position.x=-4.4+eased*7.2;car.position.y=0;
     car.rotation.y=Math.sin(elapsed*.8)*.006;
-    const travelled=car.position.x-previousCarX;const rolling=drive>0&&drive<1?Math.max(Math.abs(travelled)/.55,dt*9):0;wheelSpin-=rolling;wheels.forEach(w=>{w.rotation.set(0,0,wheelSpin);});previousCarX=car.position.x;
+    const travelled=car.position.x-previousCarX;const rolling=!engineEnded&&drive>0&&drive<1?Math.abs(travelled)/.55:0;wheelSpin-=rolling;wheels.forEach(w=>{w.rotation.set(0,0,wheelSpin);});previousCarX=car.position.x;
     // Keep the camera planted so the hearse visibly travels through the cemetery instead of being locked in the center of frame.
     camera.position.x=11.8;camera.position.y=6.0;camera.position.z=14.0;camera.lookAt(0,1.05,0);carShadow.position.x=car.position.x;
     const open=Math.max(0,Math.min(1,(elapsed-21.0)/2.0));if(doorL)doorL.rotation.y=-open*.95;if(doorR)doorR.rotation.y=open*.95;
