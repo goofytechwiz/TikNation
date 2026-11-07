@@ -17,7 +17,7 @@ window.addEventListener("error",function(event){
  }
 },true);
 </script>
-<script src="./gift-engine.js?v=haunted-carousel-engine-20261107b"
+<script src="./gift-engine.js?v=haunted-carousel-engine-20261107c"
  onload="window.__giftEngineScriptState='Engine file loaded';"
  onerror="window.__giftEngineScriptState='Engine file request failed (check deployment/path)';"></script>
 <script src="./gifts.js?v=storm-recorded-sync-20261107f"></script>
@@ -264,13 +264,15 @@ function startSoundInGesture(gift){
 }
 async function preview(code,gift){
  try{
+  // Pin the carousel preview to its dedicated renderer, independent of catalog defaults.
+  const previewGift=code==="haunted_carousel"?{...gift,name:"The Haunted Carousel",emoji:"🎠",style:"hauntedcarousel"}:gift;
   // For the recorded storm, wait until playback actually starts before launching the visual.
-  if(gift.style==="storm")await startSoundInGesture(gift);
-  else startSoundInGesture(gift);
+  if(previewGift.style==="storm")await startSoundInGesture(previewGift);
+  else startSoundInGesture(previewGift);
   if(!engine||typeof engine.show!=="function")throw new Error("Animation engine did not load.");
-  const result=engine.show(gift,{meta:"TIKNATION GIFTS REBUILD LAB · LOCAL PREVIEW",duration:7800,onLightning:gift.style==="storm"?playStormThunderStrike:undefined});
+  const result=engine.show(previewGift,{meta:"TIKNATION GIFTS REBUILD LAB · LOCAL PREVIEW",duration:9800,onLightning:previewGift.style==="storm"?playStormThunderStrike:undefined});
   if(result!==true&&!(result&&result.isConnected))throw new Error("Animation engine did not accept this preview.");
-  if(gift.style==="dragon"||gift.style==="dragonrevenge"){
+  if(previewGift.style==="dragon"||previewGift.style==="dragonrevenge"){
    const overlay=document.getElementById("tiknation-gift-engine");
    const far=overlay&&overlay.querySelector(".dragon-wing-far"),near=overlay&&overlay.querySelector(".dragon-wing-near");
    if(far&&typeof far.animate==="function"){
@@ -282,8 +284,8 @@ async function preview(code,gift){
     near.animate([{transform:"rotate(15deg) scaleY(1.08)"},{transform:"rotate(-14deg) scaleY(.9)"}],{duration:560,direction:"alternate",iterations:Infinity,easing:"ease-in-out"});
    }
   }
-  say("Preview launched: "+(gift.name||code)+". Sound and animation were started separately; no coins spent.");
- }catch(err){say("Preview failed for "+(gift.name||code)+": "+err.message,true);console.error(err);}
+  say("Preview launched: "+(previewGift.name||code)+" · dedicated renderer selected. No coins spent.");
+ }catch(err){say("Preview failed for "+(previewGift.name||code)+": +err.message,true);console.error(err);}
 }
 function renderFilters(){filters.replaceChildren();categories.forEach(category=>{const b=document.createElement("button");b.type="button";b.className="filter";b.textContent=category;b.setAttribute("aria-pressed",String(selected===category));b.addEventListener("click",()=>{selected=category;renderFilters();renderGifts();});filters.appendChild(b);});}
 function renderGifts(){grid.replaceChildren();entries.filter(([,g])=>selected==="All"||g.category===selected).forEach(([code,gift])=>{const b=document.createElement("button");b.type="button";b.className="gift";const emoji=document.createElement("span");emoji.className="emoji";emoji.textContent=gift.emoji||"🎁";const name=document.createElement("strong");name.textContent=gift.name||code;const cat=document.createElement("span");cat.className="category";cat.textContent=gift.category||"Gift";const cost=document.createElement("span");cost.className="cost";cost.textContent="Local preview · "+Number(gift.cost||0)+" test coins";b.append(emoji,name,cat,cost);b.addEventListener("click",()=>preview(code,gift));grid.appendChild(b);});}
