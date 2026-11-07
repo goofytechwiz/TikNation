@@ -91,6 +91,52 @@ function playTikNationGiftSound(gift) {
     if (context.state === "suspended") context.resume().catch(() => {});
     const now = context.currentTime;
 
+    if (gift.style === "meteor") {
+      // A low, filtered roar, rising fire hiss, then a deep cinematic impact.
+      const boom = context.createOscillator();
+      const boomGain = context.createGain();
+      const boomFilter = context.createBiquadFilter();
+      boom.type = "sawtooth";
+      boom.frequency.setValueAtTime(92, now);
+      boom.frequency.exponentialRampToValueAtTime(31, now + 1.45);
+      boomFilter.type = "lowpass";
+      boomFilter.frequency.setValueAtTime(190, now);
+      boomFilter.frequency.exponentialRampToValueAtTime(72, now + 1.5);
+      boomGain.gain.setValueAtTime(0.0001, now);
+      boomGain.gain.linearRampToValueAtTime(0.13, now + 0.12);
+      boomGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.65);
+      boom.connect(boomFilter); boomFilter.connect(boomGain); boomGain.connect(context.destination);
+      boom.start(now); boom.stop(now + 1.7);
+
+      const fire = context.createOscillator();
+      const fireGain = context.createGain();
+      const fireFilter = context.createBiquadFilter();
+      fire.type = "sawtooth";
+      fire.frequency.setValueAtTime(520, now);
+      fire.frequency.exponentialRampToValueAtTime(125, now + 1.8);
+      fireFilter.type = "lowpass";
+      fireFilter.frequency.setValueAtTime(1500, now);
+      fireFilter.frequency.exponentialRampToValueAtTime(260, now + 1.9);
+      fireGain.gain.setValueAtTime(0.0001, now);
+      fireGain.gain.linearRampToValueAtTime(0.035, now + 0.2);
+      fireGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.95);
+      fire.connect(fireFilter); fireFilter.connect(fireGain); fireGain.connect(context.destination);
+      fire.start(now); fire.stop(now + 2);
+
+      [1.42, 1.49, 1.57].forEach((delay, index) => {
+        const crack = context.createOscillator();
+        const crackGain = context.createGain();
+        crack.type = "square";
+        crack.frequency.setValueAtTime([170, 115, 78][index], now + delay);
+        crackGain.gain.setValueAtTime(0.0001, now + delay);
+        crackGain.gain.linearRampToValueAtTime([0.07, 0.055, 0.04][index], now + delay + 0.015);
+        crackGain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 0.2);
+        crack.connect(crackGain); crackGain.connect(context.destination);
+        crack.start(now + delay); crack.stop(now + delay + 0.22);
+      });
+      return;
+    }
+
     if (gift.style === "storm") {
       [0, 0.38, 1.85, 2.15].forEach((delay, index) => {
         const oscillator = context.createOscillator();
