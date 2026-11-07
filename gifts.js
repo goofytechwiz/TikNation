@@ -22,7 +22,7 @@ const TIKNATION_GIFT_CATALOG = {
   dream_makers: { name: "The Dream Makers", emoji: "✨🧚", category: "Magical", cost: 100, sound: [523, 659, 784, 1047, 1319], style: "dreammakers", message: "A team of dream makers appears and builds a glowing dream." },
   phoenix_rebirth: { name: "Phoenix Rebirth", emoji: "🔥🪽", category: "Legendary", cost: 175, sound: [392, 523, 659, 784, 1047, 1319], style: "phoenix", message: "A phoenix rises from glowing flames." },
   treasure_explosion: { name: "Treasure Explosion", emoji: "💎💰", category: "Legendary", cost: 150, sound: [587, 740, 988, 1175, 1480], style: "treasure", message: "A treasure chest bursts open with sparkling riches." },
-  meteor_mayhem: { name: "Meteor Mayhem", emoji: "☄️", category: "Special Effects", cost: 125, sound: [880, 440, 220, 110, 55], style: "meteor", message: "A blazing meteor streaks across the live screen." },
+  meteor_mayhem: { name: "Meteor Mayhem", emoji: "☄️", category: "Special Effects", cost: 125, sound: [880, 440, 220, 110, 55], style: "meteor", message: "A spectacular shower of blazing meteors tears across the live screen." },
   portal_party: { name: "Portal Party", emoji: "🌀🎉", category: "Magical", cost: 100, sound: [392, 587, 784, 1175, 1568], style: "portalparty", message: "A colorful portal opens with a burst of energy." },
   blast_from_my_ass: { name: "Blast from My Ass", emoji: "💨🍑", category: "Special Effects", cost: 69, sound: [110, 73, 55, 82], style: "blastass", message: "A ridiculous cartoon smoke blast fills the screen." },
   asshole_of_death: { name: "The Asshole of Death", emoji: "☠️🍑", category: "Legendary", cost: 199, sound: [73, 55, 41, 110], style: "deathass", message: "A cursed portal erupts and launches a cartoon skeleton." },
@@ -287,7 +287,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=meteor-mayhem-effects-20261107";
+    script.src = "./gift-engine.js?v=meteor-shower-20261107";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
