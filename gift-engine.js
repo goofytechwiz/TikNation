@@ -517,13 +517,19 @@ function renderHauntedHearseGift(gift,opts,overlay){
   ctx.strokeStyle="rgba(123,145,133,.7)";ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(-269,-76);ctx.quadraticCurveTo(0,-64,277,-78);ctx.stroke();
   ctx.strokeStyle="#8d9b92";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-258,-17);ctx.quadraticCurveTo(0,-3,268,-18);ctx.stroke();
   ctx.strokeStyle="rgba(0,0,0,.82)";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-260,-35);ctx.quadraticCurveTo(0,-21,267,-35);ctx.stroke();
-  // Raised roof, sloped windshield and long hearse side glazing
-  ctx.fillStyle="#050909";ctx.beginPath();ctx.moveTo(-238,-157);ctx.lineTo(-216,-215);ctx.quadraticCurveTo(-206,-238,-174,-239);ctx.lineTo(148,-239);ctx.quadraticCurveTo(184,-237,205,-207);ctx.lineTo(238,-157);ctx.closePath();ctx.fill();ctx.strokeStyle="#a1aca4";ctx.lineWidth=2.4;ctx.stroke();
-  const glass=ctx.createLinearGradient(0,-238,0,-160);glass.addColorStop(0,"rgba(143,178,166,.48)");glass.addColorStop(.38,"rgba(31,52,47,.72)");glass.addColorStop(1,"rgba(3,8,8,.96)");ctx.fillStyle=glass;ctx.beginPath();ctx.moveTo(-205,-215);ctx.lineTo(-175,-231);ctx.lineTo(145,-231);ctx.lineTo(192,-165);ctx.lineTo(-224,-165);ctx.closePath();ctx.fill();
-  // Reflected moon streaks and individually framed landau windows
-  ctx.strokeStyle="rgba(218,235,225,.5)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-192,-222);ctx.lineTo(139,-222);ctx.stroke();
-  ctx.strokeStyle="#9ba9a0";ctx.lineWidth=3;[-112,-4,105].forEach(x=>{ctx.beginPath();ctx.moveTo(x,-229);ctx.lineTo(x,-164);ctx.stroke();});
-  ctx.strokeStyle="#394640";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-220,-158);ctx.lineTo(229,-158);ctx.stroke();
+  // Raised rear funeral coach roof makes the silhouette unmistakably a hearse
+  ctx.fillStyle="#26312b";ctx.strokeStyle="#d0d9d0";ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(-238,-157);ctx.lineTo(-216,-214);ctx.quadraticCurveTo(-206,-237,-174,-239);ctx.lineTo(-4,-239);ctx.lineTo(18,-252);ctx.quadraticCurveTo(30,-264,55,-264);ctx.lineTo(207,-264);ctx.quadraticCurveTo(239,-261,250,-236);ctx.lineTo(270,-157);ctx.closePath();ctx.fill();ctx.stroke();
+  const glass=ctx.createLinearGradient(0,-240,0,-158);glass.addColorStop(0,"rgba(176,205,190,.78)");glass.addColorStop(.35,"rgba(67,93,81,.9)");glass.addColorStop(1,"rgba(11,19,16,.98)");
+  ctx.fillStyle=glass;ctx.beginPath();ctx.moveTo(-205,-215);ctx.lineTo(-175,-231);ctx.lineTo(-12,-231);ctx.lineTo(-12,-165);ctx.lineTo(-224,-165);ctx.closePath();ctx.fill();
+  ctx.strokeStyle="#d1d9d1";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-12,-231);ctx.lineTo(-12,-163);ctx.stroke();
+  // Large rear coffin-compartment window with visible curtains
+  ctx.fillStyle="rgba(91,123,105,.96)";ctx.beginPath();ctx.moveTo(12,-248);ctx.lineTo(199,-248);ctx.quadraticCurveTo(219,-246,227,-226);ctx.lineTo(246,-166);ctx.lineTo(12,-166);ctx.closePath();ctx.fill();ctx.strokeStyle="#e0e5dc";ctx.lineWidth=3;ctx.stroke();
+  ctx.fillStyle="rgba(7,13,10,.78)";ctx.beginPath();ctx.moveTo(20,-238);ctx.quadraticCurveTo(42,-221,57,-238);ctx.quadraticCurveTo(76,-219,94,-238);ctx.quadraticCurveTo(114,-220,132,-238);ctx.lineTo(132,-169);ctx.lineTo(20,-169);ctx.closePath();ctx.fill();
+  ctx.strokeStyle="rgba(236,241,230,.8)";ctx.lineWidth=3;[30,70,110,150,190].forEach(x=>{ctx.beginPath();ctx.moveTo(x,-244);ctx.lineTo(x,-168);ctx.stroke();});
+  // Hearse landau bars and bright raised roof edge
+  ctx.strokeStyle="#f0f2e9";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(25,-258);ctx.lineTo(25,-166);ctx.moveTo(213,-258);ctx.lineTo(238,-166);ctx.stroke();
+  ctx.strokeStyle="#e0e8de";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(18,-265);ctx.lineTo(207,-265);ctx.quadraticCurveTo(242,-262,253,-231);ctx.stroke();
   // Door seams, chrome handles, side mirror and coach-built trim
   ctx.strokeStyle="rgba(161,177,166,.8)";ctx.lineWidth=1.5;[-245,-120,10,145,238].forEach(x=>{ctx.beginPath();ctx.moveTo(x,-145);ctx.lineTo(x,-24);ctx.stroke();});
   ctx.fillStyle="#c0c9c1";[-72,72].forEach(x=>{ctx.fillRect(x,-91,18,3);ctx.fillRect(x+2,-88,3,4);});
