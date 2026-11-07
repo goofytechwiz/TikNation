@@ -474,7 +474,7 @@ function renderCarnevilGift(gift,opts,overlay){
   if(Math.sin(t*1.7)>0.997){ctx.fillStyle="rgba(215,202,220,.09)";ctx.fillRect(0,0,w,h);}
   raf=requestAnimationFrame(frame);
  }
- raf=requestAnimationFrame(frame);const duration=Math.max(9000,Number(opts.duration)||10500);
+ raf=requestAnimationFrame(frame);const duration=Math.max(22000,Number(opts.duration)||25000);
  setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .9s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),930);}},duration);return overlay;
 }
 
@@ -517,7 +517,7 @@ function renderHauntedHearseGift(gift,opts,overlay){
    const mat=(color,metalness,roughness)=>new THREE.MeshStandardMaterial({color,metalness:metalness||0,roughness:roughness===undefined ? .55 : roughness});
    const paint=mat(0x293b35,.78,.28),paintLight=mat(0x66766b,.72,.3),burgundy=mat(0x3a2027,.62,.31),chrome=mat(0xc4d0c9,.88,.2),rubber=mat(0x090c0d,.08,.82),glass= new THREE.MeshPhysicalMaterial({color:0x29453e,metalness:.45,roughness:.12,transparent:true,opacity:.82,clearcoat:1}),interior=mat(0x080e0d,.2,.65),lamp= new THREE.MeshStandardMaterial({color:0xfff0c2,emissive:0xd7bb78,emissiveIntensity:1.7});
    const ground=new THREE.Mesh(new THREE.PlaneGeometry(100,100),mat(0x11191a,.12,.92));ground.rotation.x=-Math.PI/2;ground.position.y=-.03;ground.receiveShadow=true;world.add(ground);
-   const road=new THREE.Mesh(new THREE.PlaneGeometry(8,90),mat(0x202728,.16,.75));road.rotation.x=-Math.PI/2;road.position.set(0,.002,0);road.receiveShadow=true;world.add(road);
+   const road=new THREE.Mesh(new THREE.PlaneGeometry(8,90),mat(0x202728,.32,.24));road.rotation.x=-Math.PI/2;road.position.set(0,.002,0);road.receiveShadow=true;world.add(road);
    for(let i=-4;i<=4;i++){const line=new THREE.Mesh(new THREE.BoxGeometry(.045,.008,1.25),mat(0x69736d,.05,.8));line.position.set(i%2===0?-.12:.12,.012,i*5);world.add(line);}
    const car=new THREE.Group();world.add(car);
    function box(parent,w,h,d,material,x,y,z,bevel){const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
@@ -604,6 +604,13 @@ function renderHauntedHearseGift(gift,opts,overlay){
    for(let i=0;i<22;i++){const x=-10+i*.95;box(world,.055,.85,.055,chrome,x,.43,-3.8);const spike=new THREE.Mesh(new THREE.ConeGeometry(.075,.18,6),chrome);spike.position.set(x,.94,-3.8);world.add(spike);}
    box(world,21,.09,.09,chrome,0,.7,-3.8);
    // A few volumetric-looking fog banks stay low on the wet road.
+   // Distant storm flashes and a falling rain field.
+   const lightning=new THREE.DirectionalLight(0xdcecff,0);lightning.position.set(-5,10,-8);world.add(lightning);
+   const rainCount=520,rainGeometry=new THREE.BufferGeometry(),rainPositions=new Float32Array(rainCount*3),rainSpeeds=new Float32Array(rainCount);
+   for(let i=0;i<rainCount;i++){rainPositions[i*3]=-12+Math.random()*24;rainPositions[i*3+1]=Math.random()*11;rainPositions[i*3+2]=-10+Math.random()*20;rainSpeeds[i]=7+Math.random()*7;}
+   rainGeometry.setAttribute("position",new THREE.BufferAttribute(rainPositions,3));
+   const rain=new THREE.Points(rainGeometry,new THREE.PointsMaterial({color:0xbacbd4,size:.035,transparent:true,opacity:.58,depthWrite:false}));world.add(rain);
+   const stormFlash=new THREE.PointLight(0xc9dcff,0,45);stormFlash.position.set(-7,7,-12);world.add(stormFlash);
    const fogMat=new THREE.MeshBasicMaterial({color:0x9aafa6,transparent:true,opacity:.055,depthWrite:false});
    const fogs=[];for(let i=0;i<34;i++){const fog=new THREE.Mesh(new THREE.SphereGeometry(1,16,10),fogMat);fog.scale.set(1.5+Math.random()*2.8,.16+Math.random()*.08,.7+Math.random()*1.1);fog.position.set(-10+Math.random()*20,.16+Math.random()*.35,-4+Math.random()*8);world.add(fog);fogs.push(fog);}
    const fogSheets=[];for(let i=0;i<7;i++){const layer=new THREE.Mesh(new THREE.PlaneGeometry(9,2.5),new THREE.MeshBasicMaterial({color:0x9aaea5,transparent:true,opacity:.055,depthWrite:false,side:THREE.DoubleSide}));layer.rotation.x=-Math.PI/2;layer.position.set(-7+i*2.3,.22+(i%3)*.08,-1.5+(i%2)*2);world.add(layer);fogSheets.push(layer);}
@@ -620,12 +627,14 @@ function renderHauntedHearseGift(gift,opts,overlay){
    resizeHandler=()=>{if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight),aspect=width/height;renderer.setSize(width,height,false);camera.aspect=aspect;if(aspect<.82){camera.fov=48;camera.position.set(10.8,7.5,14.5);}else{camera.fov=34;camera.position.set(8.8,5.3,10.5);}camera.lookAt(0,1.05,0);camera.updateProjectionMatrix();};resizeHandler();window.addEventListener("resize",resizeHandler);
    const clock=new THREE.Clock();let elapsed=0;
    function animate(){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(animate);const dt=Math.min(.05,clock.getDelta());elapsed+=dt;
-    const drive=Math.min(1,Math.max(0,(elapsed-.25)/4.7));const eased=drive*drive*(3-2*drive);car.position.x=-4.25+eased*4.35;car.position.y=Math.sin(elapsed*5.2)*.018;
+    const drive=Math.min(1,Math.max(0,(elapsed-.4)/13.5));const eased=drive*drive*(3-2*drive);car.position.x=-6.2+eased*10.2;car.position.y=Math.sin(elapsed*5.2)*.018;
     car.rotation.y=Math.sin(elapsed*.8)*.012;
     wheels.forEach(w=>w.rotation.z=-(elapsed*2.25));
-    camera.position.x=8.8+Math.max(0,drive-.55)*1.0;
-    const open=Math.max(0,Math.min(1,(elapsed-3.1)/1.35));if(doorL)doorL.rotation.y=-open*.95;if(doorR)doorR.rotation.y=open*.95;
-    if(ghost){ghost.visible=elapsed>4.5;ghost.children.forEach(m=>{m.material.opacity=ghost.visible ? .48+.12*Math.sin(elapsed*2) : 0;});ghost.position.y=1.45+Math.sin(elapsed*1.25)*.08;}
+    camera.position.x=8.8+Math.max(0,drive-.6)*.35;
+    const open=Math.max(0,Math.min(1,(elapsed-15.4)/1.8));if(doorL)doorL.rotation.y=-open*.95;if(doorR)doorR.rotation.y=open*.95;
+    if(ghost){ghost.visible=elapsed>18.2;ghost.children.forEach(m=>{m.material.opacity=ghost.visible ? .48+.12*Math.sin(elapsed*2) : 0;});ghost.position.y=1.45+Math.sin(elapsed*1.25)*.08;}
+    const stormCycle=elapsed%8.5;const flash=stormCycle>0.0&&stormCycle<.18?Math.sin(stormCycle/.18*Math.PI):stormCycle>0.34&&stormCycle<.48?Math.sin((stormCycle-.34)/.14*Math.PI)*.62:0;lightning.intensity=flash*3.8;stormFlash.intensity=flash*20;
+    const rainAttr=rainGeometry.attributes.position;for(let i=0;i<rainCount;i++){const j=i*3;rainPositions[j+1]-=rainSpeeds[i]*dt;rainPositions[j]-=dt*1.1;if(rainPositions[j+1]<0){rainPositions[j+1]=8+Math.random()*4;rainPositions[j]=-12+Math.random()*24;rainPositions[j+2]=-10+Math.random()*20;}}rainAttr.needsUpdate=true;
     fogs.forEach((f,i)=>{f.position.x+=dt*(.13+(i%5)*.055);if(f.position.x>12)f.position.x=-12;f.material.opacity=.045+.035*Math.sin(elapsed*1.1+i);});
     fogSheets.forEach((f,i)=>{f.position.x+=dt*(i%2?.16:-.12);if(f.position.x>12)f.position.x=-12;if(f.position.x< -12)f.position.x=12;f.material.opacity=.035+.025*Math.sin(elapsed*.9+i);});
     lanterns.forEach((light,i)=>{light.intensity=2.1+Math.max(0,Math.sin(elapsed*3.4+i*2.1))*2.2;});
