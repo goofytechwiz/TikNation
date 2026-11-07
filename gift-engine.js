@@ -588,6 +588,9 @@ function renderHauntedHearseGift(gift,opts,overlay){
     cylinder(wheel,.105,.105,.38,mat(0x3d4842,.9,.2),0,0,z>0?.24:-.24,Math.PI/2,0,0);
     for(let k=0;k<12;k++){const a=k*Math.PI/6;rod(wheel,[Math.cos(a)*.105,Math.sin(a)*.105,z>0?.252:-.252],[Math.cos(a)*.32,Math.sin(a)*.32,z>0?.252:-.252],.032,chrome);}
     const ring=new THREE.Mesh(new THREE.TorusGeometry(.34,.025,8,36),chrome);ring.position.z=z>0?.2:-.2;wheel.add(ring);
+    // A bright valve marker makes the wheel's rotation unmistakable in the preview.
+    const valve=new THREE.Mesh(new THREE.SphereGeometry(.065,12,10),new THREE.MeshStandardMaterial({color:0xffc45b,emissive:0xff8a24,emissiveIntensity:2.2,roughness:.25}));
+    valve.position.set(.30,0,z>0?.285:-.285);wheel.add(valve);
    }
    // Mirrors, handles, coach badges and small bright details.
    for(const side of [-1,1]){
@@ -631,7 +634,7 @@ function renderHauntedHearseGift(gift,opts,overlay){
    function animate(){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(animate);const dt=Math.min(.05,clock.getDelta());elapsed+=dt;
     const drive=Math.min(1,Math.max(0,(elapsed-.8)/18.5));const eased=drive*drive*(3-2*drive);car.position.x=-4.4+eased*7.2;car.position.y=0;
     car.rotation.y=Math.sin(elapsed*.8)*.006;
-    const travelled=car.position.x-previousCarX;wheelSpin-=travelled/.55;wheels.forEach(w=>w.rotation.z=wheelSpin);previousCarX=car.position.x;
+    const travelled=car.position.x-previousCarX;wheelSpin-=Math.max(travelled/.55,dt*4.8);wheels.forEach(w=>w.rotation.z=wheelSpin);previousCarX=car.position.x;
     // Keep the camera planted so the hearse visibly travels through the cemetery instead of being locked in the center of frame.
     camera.position.x=11.8;camera.position.y=6.0;camera.position.z=14.0;camera.lookAt(0,1.05,0);carShadow.position.x=car.position.x;
     const open=Math.max(0,Math.min(1,(elapsed-21.0)/2.0));if(doorL)doorL.rotation.y=-open*.95;if(doorR)doorR.rotation.y=open*.95;
