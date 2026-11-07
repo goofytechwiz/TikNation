@@ -732,100 +732,8 @@ function renderLivingTombstonesGift(gift,opts,overlay){
 }
 
 
-function renderHauntedCarouselGift(gift,opts,overlay){
- const scene=document.createElement("div");
- scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#030509;isolation:isolate";
- const canvas=document.createElement("canvas");
- canvas.style.cssText="position:absolute;inset:0;width:100%;height:100%;display:block";
- scene.appendChild(canvas);
- const title=document.createElement("div");
- title.style.cssText="position:absolute;z-index:5;left:3%;right:3%;bottom:6%;text-align:center;color:#f1dfc2;font:900 clamp(22px,5.5vw,46px)/1.1 Georgia,serif;letter-spacing:.14em;text-shadow:0 3px 12px #000,0 0 22px #b78b4b";
- title.innerHTML="THE HAUNTED CAROUSEL<span style='display:block;margin-top:9px;color:#c5a98a;font:700 10px system-ui;letter-spacing:.28em'>ROUND AND ROUND · FOREVER</span>";
- scene.appendChild(title);overlay.appendChild(scene);document.body.appendChild(overlay);
- const ctx=canvas.getContext("2d");let w=0,h=0,dpr=1,raf=0,alive=true;
- const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
- const motes=Array.from({length:48},(_,i)=>({x:Math.random(),y:Math.random(),r:1+Math.random()*2.5,s:.025+Math.random()*.07,p:Math.random()*6.28}));
- function resize(){dpr=Math.min(1.8,window.devicePixelRatio||1);w=scene.clientWidth||innerWidth;h=scene.clientHeight||innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}
- resize();window.addEventListener("resize",resize);
- const ellipse=(x,y,rx,ry,fill,stroke)=>{ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke();}};
- function horse(x,y,scale,angle,t,eyeOn){
-  ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.scale(scale,scale);
-  ctx.shadowColor="#000";ctx.shadowBlur=9;ctx.shadowOffsetY=5;
-  const coat=ctx.createLinearGradient(-28,-36,28,35);coat.addColorStop(0,"#d8c7a3");coat.addColorStop(.35,"#8d785e");coat.addColorStop(1,"#342b25");
-  // carved body, neck and head
-  ctx.fillStyle=coat;ctx.strokeStyle="#211b18";ctx.lineWidth=3;
-  ctx.beginPath();ctx.ellipse(0,0,31,14,-.12,0,Math.PI*2);ctx.fill();ctx.stroke();
-  ctx.beginPath();ctx.moveTo(17,-6);ctx.quadraticCurveTo(26,-34,39,-43);ctx.quadraticCurveTo(48,-47,49,-34);ctx.lineTo(39,-14);ctx.lineTo(25,4);ctx.closePath();ctx.fill();ctx.stroke();
-  ctx.beginPath();ctx.ellipse(47,-42,10,7,-.2,0,Math.PI*2);ctx.fill();ctx.stroke();
-  ctx.beginPath();ctx.moveTo(42,-48);ctx.lineTo(39,-62);ctx.lineTo(49,-52);ctx.moveTo(50,-47);ctx.lineTo(58,-59);ctx.lineTo(57,-45);ctx.stroke();
-  // flowing mane and tail
-  ctx.strokeStyle="#241915";ctx.lineWidth=6;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(29,-16);ctx.quadraticCurveTo(43,-27,39,-42);ctx.moveTo(-28,-2);ctx.quadraticCurveTo(-48,-15,-45,-29);ctx.stroke();
-  // four legs with subtle galloping motion
-  const swing=Math.sin(t*2.15+scale*4)*2.2;
-  ctx.strokeStyle="#4b3b2c";ctx.lineWidth=5;ctx.beginPath();
-  ctx.moveTo(-18,7);ctx.lineTo(-22+swing,31);ctx.lineTo(-27+swing,38);
-  ctx.moveTo(-5,8);ctx.lineTo(-3-swing,30);ctx.lineTo(2-swing,38);
-  ctx.moveTo(17,7);ctx.lineTo(19-swing,29);ctx.lineTo(25-swing,37);
-  ctx.moveTo(26,1);ctx.lineTo(32+swing,26);ctx.lineTo(37+swing,34);ctx.stroke();
-  ctx.strokeStyle="#d1b77e";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-20,12);ctx.lineTo(-21,28);ctx.moveTo(18,12);ctx.lineTo(20,27);ctx.stroke();
-  // brass saddle and carved harness
-  ctx.fillStyle="#8b1e25";ctx.beginPath();ctx.ellipse(1,-11,17,8,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#d6b66d";ctx.lineWidth=2;ctx.stroke();
-  ctx.strokeStyle="#d8c08a";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(26,-23);ctx.lineTo(46,-30);ctx.lineTo(52,-36);ctx.stroke();
-  if(eyeOn){ctx.shadowColor="#ff372c";ctx.shadowBlur=18;ctx.fillStyle="#ff3128";ctx.beginPath();ctx.arc(51,-43,3.1,0,Math.PI*2);ctx.fill();}
-  ctx.restore();
- }
- function draw(now){
-  if(!alive||!overlay.isConnected)return;
-  const t=(now-start)/1000,night=t>7.1&&t<8.15,blackout=t>6.75&&t<7.55;
-  ctx.clearRect(0,0,w,h);
-  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#080d18");sky.addColorStop(.52,"#16141a");sky.addColorStop(1,"#030407");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
-  // distant midway silhouettes and a cold moon
-  ellipse(w*.78,h*.18,w*.12,h*.12,"rgba(167,178,188,.08)");
-  ctx.fillStyle="#08090c";ctx.beginPath();ctx.moveTo(0,h*.61);ctx.lineTo(w*.12,h*.52);ctx.lineTo(w*.2,h*.61);ctx.lineTo(w*.36,h*.5);ctx.lineTo(w*.49,h*.62);ctx.lineTo(w*.7,h*.53);ctx.lineTo(w*.86,h*.62);ctx.lineTo(w,h*.54);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
-  // low rolling mist
-  for(let i=0;i<9;i++){const x=((i*.17+t*.025)%1.3-.15)*w,y=h*(.72+(i%3)*.065);const fog=ctx.createRadialGradient(x,y,0,x,y,Math.max(40,w*.18));fog.addColorStop(0,"rgba(175,183,188,.12)");fog.addColorStop(1,"transparent");ctx.fillStyle=fog;ctx.fillRect(x-w*.2,y-h*.13,w*.4,h*.26);}
-  const cx=w*.5,cy=h*.48,scale=Math.min(w/420,h/520),spin=reduced?0:-t*.58;
-  // shadowed carousel platform and brass rim
-  ctx.save();ctx.translate(cx,cy+h*.13);ctx.scale(1.18,.34);
-  ellipse(0,0,w*.31/1.18,h*.12/0.34,"#08090b","#5e4a37");ctx.restore();
-  ctx.save();ctx.translate(cx,cy+h*.12);ctx.scale(1.18,.34);ellipse(0,0,w*.29/1.18,h*.105/.34,"#211b1a","#a7895a");ellipse(0,-5,w*.27/1.18,h*.085/.34,"#4b3428","#d4b779");ctx.restore();
-  // canopy roof: scalloped lower edge and striped, aged panels
-  const topY=cy-h*.27,rx=Math.min(w*.34,230*scale),ry=Math.min(h*.095,65*scale);
-  ctx.save();ctx.translate(cx,topY);
-  ctx.fillStyle="#2a161c";ctx.strokeStyle="#9c7b4d";ctx.lineWidth=3;
-  ctx.beginPath();ctx.moveTo(-rx,ry*.45);ctx.quadraticCurveTo(0,-ry*2.35,rx,ry*.45);ctx.lineTo(rx,ry*.9);for(let i=12;i>=0;i--){const x=-rx+i*(rx*2/12);ctx.quadraticCurveTo(x+rx/12,ry*1.55,x,ry*.9);}ctx.closePath();ctx.fill();ctx.stroke();
-  ctx.save();ctx.beginPath();ctx.moveTo(-rx,ry*.45);ctx.quadraticCurveTo(0,-ry*2.35,rx,ry*.45);ctx.lineTo(rx,ry*.9);ctx.lineTo(-rx,ry*.9);ctx.closePath();ctx.clip();
-  for(let i=0;i<12;i++){const x=-rx+i*rx/6;ctx.fillStyle=i%2?"rgba(189,158,108,.3)":"rgba(115,27,35,.65)";ctx.beginPath();ctx.moveTo(0,-ry*2.2);ctx.lineTo(x,ry*1.2);ctx.lineTo(x+rx/6,ry*1.2);ctx.closePath();ctx.fill();}
-  ctx.restore();
-  // scallops and warm bulbs
-  for(let i=0;i<24;i++){const a=Math.PI+i*Math.PI/23,x=Math.cos(a)*rx,y=ry*.85+Math.sin(a)*ry*.23;ctx.fillStyle=blackout?"#161216":(i%2?"#ffcf83":"#e5a85d");ctx.shadowColor="#ffc36c";ctx.shadowBlur=blackout?0:12;ellipse(x,y,3.2*scale,3.2*scale,ctx.fillStyle);}
-  ctx.shadowBlur=0;ctx.restore();
-  // central ornate pole, collars and finial
-  ctx.fillStyle="#927345";ctx.fillRect(cx-5*scale,topY-ry*.5,10*scale,(cy+h*.1)-(topY-ry*.5));
-  ctx.fillStyle="#d4b779";for(let y=topY-ry*.35;y<cy+h*.08;y+=38*scale){ellipse(cx,y,9*scale,4*scale,"#d4b779","#4c3925");}
-  ellipse(cx,topY-ry*.85,11*scale,11*scale,"#d8ba79","#6e512f");
-  // suspension poles and horses rotate around the carousel, with depth order
-  const riders=[];for(let i=0;i<8;i++){const a=spin+i*Math.PI/4;const depth=Math.sin(a);const x=cx+Math.cos(a)*rx*.73;const bob=reduced?0:Math.sin(t*2.15+i*.7)*h*.009;const y=cy+depth*h*.055+Math.abs(Math.cos(a))*h*.015+bob;const sc=(.62+(.38*(depth+1)/2))*scale;riders.push({x,y,sc,a,depth});}
-  riders.sort((a,b)=>a.depth-b.depth);
-  // Brass suspension ring and hangers: every pole visibly joins the canopy to a horse.
-   ctx.save();ctx.strokeStyle="#b99558";ctx.lineWidth=3*scale;ctx.beginPath();ctx.ellipse(cx,cy-h*.045,rx*.73,h*.035,0,0,Math.PI*2);ctx.stroke();ctx.restore();
-   riders.forEach((r,i)=>{ctx.save();ctx.strokeStyle="#d0ad6d";ctx.lineWidth=2.6*scale;ctx.beginPath();ctx.moveTo(r.x,topY+ry*.82);ctx.lineTo(r.x,r.y-5*r.sc);ctx.stroke();ctx.fillStyle="#d7bb80";ellipse(r.x,topY+ry*.82,3.2*scale,3.2*scale,"#d7bb80","#634b2c");horse(r.x,r.y,r.sc,r.a+Math.PI/2,t,night&&i===4);ctx.restore();});
-  // canopy shadow and floor reflections
-  ctx.fillStyle="rgba(0,0,0,.24)";ctx.fillRect(cx-rx,cy-h*.05,rx*2,h*.19);
-  if(!blackout){const glow=ctx.createRadialGradient(cx,cy,2,cx,cy,Math.max(w,h)*.5);glow.addColorStop(0,"rgba(218,163,86,.11)");glow.addColorStop(1,"transparent");ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);}
-  motes.forEach(m=>{m.x+=m.s*(reduced?0:1);if(m.x>1.1)m.x=-.1;const a=.12+.16*Math.sin(t*2+m.p);ctx.fillStyle="rgba(204,191,166,"+a+")";ctx.beginPath();ctx.arc(m.x*w,m.y*h,m.r,0,Math.PI*2);ctx.fill();});
-  if(blackout){ctx.fillStyle="rgba(0,0,0,.76)";ctx.fillRect(0,0,w,h);}
-  if(night){ctx.fillStyle="rgba(0,0,0,.18)";ctx.fillRect(0,0,w,h);}
-  raf=requestAnimationFrame(draw);
- }
- const start=performance.now();raf=requestAnimationFrame(draw);
- const duration=Math.max(9000,Number(opts.duration)||9800);
- const cleanup=()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected)overlay.remove();};
- setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .65s ease";overlay.style.opacity="0";setTimeout(cleanup,680);}},duration);
- return overlay;
-}
 
-function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};if(gift.name==="The Haunted Carousel"||gift.emoji==="🎠"&&gift.style==="hauntedcarousel")gift={...gift,style:"hauntedcarousel"};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(gift.style==="hauntedcarousel")return renderHauntedCarouselGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
+function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
 
 /* Cinematic object renderer: custom shaded vector artwork replaces emoji-only gift posters. */
 function renderCinematicGift(gift,opts,overlay){
@@ -840,6 +748,7 @@ function renderCinematicGift(gift,opts,overlay){
  galaxy:'<circle r="67" fill="url(#metal)" stroke="#fff" stroke-width="4"/><ellipse rx="112" ry="34" transform="rotate(-25)" fill="none" stroke="#d8caff" stroke-width="11"/><circle cx="78" cy="-47" r="19" fill="#fff1b5"/><circle cx="-82" cy="48" r="11" fill="#9feaff"/>',
  burst:'<path d="M15-112L-48-12L-4-12L-32 104L58-26L15-26L48-112Z" fill="url(#metal)" stroke="#fff" stroke-width="6" stroke-linejoin="round"/>',
  prism:'<path d="M0-112L83-38L56 77L0 112L-56 77L-83-38Z" fill="url(#metal)" stroke="#fff" stroke-width="5"/><path d="M0-112V112M-83-38L0 15L83-38M-56 77L0 15L56 77" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="4"/>',
+ phantomtrain:'<g class="phantom-train"><path d="M-145 42H145" stroke="#8b9cae" stroke-width="8" stroke-linecap="round"/><path d="M-135 52H145" stroke="#39495b" stroke-width="4"/><g class="train-car"><rect x="43" y="-38" width="105" height="70" rx="9" fill="#14243a" stroke="#a9c9d8" stroke-width="6"/><rect x="55" y="-25" width="24" height="24" rx="3" fill="#d8f5ff"/><rect x="88" y="-25" width="24" height="24" rx="3" fill="#d8f5ff"/><rect x="121" y="-25" width="17" height="24" rx="3" fill="#d8f5ff"/><circle cx="69" cy="39" r="13" fill="#111820" stroke="#aab8c4" stroke-width="5"/><circle cx="127" cy="39" r="13" fill="#111820" stroke="#aab8c4" stroke-width="5"/></g><g class="train-engine"><path d="M-137 14H48L34 45H-118Z" fill="#17263b" stroke="#b8d0dc" stroke-width="6"/><path d="M-90-48H-20V15H-104V-23Z" fill="#233b52" stroke="#c1d5dd" stroke-width="6"/><rect x="-84" y="-38" width="23" height="24" fill="#e7fbff"/><rect x="-53" y="-38" width="22" height="24" fill="#e7fbff"/><path d="M-91-53H-17L-27-67H-81Z" fill="#9ab4c4" stroke="#d8e5e9" stroke-width="4"/><path d="M-64-70V-110H-38L-34-70Z" fill="#111d2c" stroke="#c0d5df" stroke-width="6"/><path d="M-47-112Q-82-145-57-166Q-28-184-48-205Q-5-183-27-151Q-11-127-47-112Z" fill="#c5e8f0" opacity=".65" class="phantom-smoke"/><path d="M-137 10L-164 42H-117Z" fill="#8fa9b9" stroke="#dbe9ed" stroke-width="5"/><circle cx="-91" cy="45" r="14" fill="#101820" stroke="#c5d2da" stroke-width="5"/><circle cx="-27" cy="45" r="14" fill="#101820" stroke="#c5d2da" stroke-width="5"/><circle cx="27" cy="45" r="14" fill="#101820" stroke="#c5d2da" stroke-width="5"/><circle cx="-138" cy="-2" r="13" fill="#fff2b8" stroke="#ffe8a1" stroke-width="5"/></g></g>',
  surprise:'<path d="M-78-35H78V78H-78Z" fill="url(#metal)" stroke="#fff0cf" stroke-width="6"/><path d="M-91-57H91V-27H-91Z" fill="#d8b7ff" stroke="#fff" stroke-width="5"/><path d="M-12-57Q-80-125-55-138Q-20-150 0-57Q20-150 55-138Q80-125 12-57" fill="none" stroke="#fff0ce" stroke-width="13"/>',
  crown:'<path d="M-100-57L-55-5L-24-78L15-5L66-83L100-57L78 65H-78Z" fill="url(#metal)" stroke="#fff1b4" stroke-width="6"/><path d="M-68 34H68M-55-5L-24 48L15-5L42 48L66-83" fill="none" stroke="#fff" stroke-opacity=".65" stroke-width="4"/>',
  infinity:'<path d="M0 0C-70-100-142-52-105 12C-72 70-18 17 0 0C70-100 142-52 105 12C72 70 18 17 0 0Z" fill="none" stroke="url(#metal)" stroke-width="24" stroke-linecap="round"/><path d="M-85-36Q-44-70 0 0Q44 70 85 36" fill="none" stroke="#fff" stroke-width="4"/>',
@@ -869,10 +778,13 @@ function renderCinematicGift(gift,opts,overlay){
  cantbreathe:'<circle cy="-28" r="68" fill="url(#metal)" stroke="#fff" stroke-width="6"/><circle cx="-25" cy="-35" r="13" fill="#14151e"/><circle cx="25" cy="-35" r="13" fill="#14151e"/><path d="M-32 9Q0 45 32 9" fill="none" stroke="#14151e" stroke-width="10" stroke-linecap="round"/><path d="M-45 55Q-68 84-45 105M45 55Q68 84 45 105" fill="none" stroke="#9eeaff" stroke-width="8"/>'
  };
  const colors={drum:["#fff1e3","#b53a45","#34101a"],heart:["#fff0ed","#d71932","#610817"],fire:["#fff4a8","#ff6a22","#72180f"],cosmic:["#f2e7ff","#9875ff","#272052"],gold:["#fff3b0","#dca63c","#704013"],ice:["#efffff","#65cde9","#174365"],magic:["#fff1ff","#b88bff","#44206e"],party:["#fff0ce","#fa79c9","#50204d"],shadow:["#f4ffc7","#9aaa69","#1a3029"],impact:["#fff0c5","#e78c42","#5c2118"],prism:["#ffffff","#9de8ff","#57358a"],stormlight:["#ffffff","#a8dfff","#283c61"]};
- const col=colors[({heartbeat:"drum",pulse:"heart",notes:"party",grand:"gold",spark:"magic",portal:"cosmic",dragon:"fire",galaxy:"cosmic",burst:"stormlight",prism:"prism",surprise:"gold",crown:"gold",infinity:"cosmic",clouds:"ice",hammer:"impact",thunderass:"stormlight",storm:"stormlight",lightning:"stormlight",book:"shadow",dreammakers:"magic",phoenix:"fire",treasure:"gold",meteor:"impact",raccoon:"party",portalparty:"prism",blastass:"impact",deathass:"shadow",throne:"gold",chicken:"fire",cheese:"gold",skeleton:"shadow",dragonrevenge:"fire",stinkdeath:"shadow",rattlebone:"shadow",toxiccloud:"shadow",bonebreaker:"shadow",knockout:"impact",cantbreathe:"party"})[style]||"magic"];
+ const col=colors[({phantomtrain:"ice",heartbeat:"drum",pulse:"heart",notes:"party",grand:"gold",spark:"magic",portal:"cosmic",dragon:"fire",galaxy:"cosmic",burst:"stormlight",prism:"prism",surprise:"gold",crown:"gold",infinity:"cosmic",clouds:"ice",hammer:"impact",thunderass:"stormlight",storm:"stormlight",lightning:"stormlight",book:"shadow",dreammakers:"magic",phoenix:"fire",treasure:"gold",meteor:"impact",raccoon:"party",portalparty:"prism",blastass:"impact",deathass:"shadow",throne:"gold",chicken:"fire",cheese:"gold",skeleton:"shadow",dragonrevenge:"fire",stinkdeath:"shadow",rattlebone:"shadow",toxiccloud:"shadow",bonebreaker:"shadow",knockout:"impact",cantbreathe:"party"})[style]||"magic"];
  const markup=art[style]||art.spark;
  const svg='<svg viewBox="-180 -180 360 360" role="img" aria-label="'+String(gift.name||"Gift").replace(/[&<>"']/g,"")+'" class="cinema-art"><defs><linearGradient id="metal" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="'+col[0]+'"/><stop offset=".3" stop-color="'+col[1]+'"/><stop offset=".68" stop-color="'+col[2]+'"/><stop offset="1" stop-color="#080b13"/></linearGradient><radialGradient id="shine"><stop stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient><filter id="depth" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="10"/></filter><radialGradient id="drumhead" cx=".35" cy=".28" r=".8"><stop stop-color="#f4e9d9"/><stop offset=".58" stop-color="#cfc0ae"/><stop offset="1" stop-color="#75675f"/></radialGradient><linearGradient id="heart-flesh" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffb0b7"/><stop offset=".28" stop-color="#ed2945"/><stop offset=".68" stop-color="#a9082a"/><stop offset="1" stop-color="#4b0618"/></linearGradient></defs><ellipse cx="0" cy="128" rx="92" ry="13" fill="'+col[1]+'" opacity=".4" filter="url(#depth)"/><g class="cinema-object">'+markup+'</g><ellipse cx="-35" cy="-75" rx="48" ry="24" fill="url(#shine)" opacity=".55" transform="rotate(-28 -35 -75)"/></svg>';
  const world=document.createElement("div");world.className="cinema-stage";world.innerHTML=svg;
+ if(style==="phantomtrain"){
+  const trainStyle=document.createElement("style");trainStyle.textContent='#tiknation-gift-engine[data-style=phantomtrain]{background:radial-gradient(ellipse at 50% 75%,#1a2d40 0%,#080f1b 55%,#02050b 100%)!important}#tiknation-gift-engine[data-style=phantomtrain] .cinema-art{width:min(94vw,650px);overflow:visible;filter:drop-shadow(0 18px 24px #000c)}#tiknation-gift-engine[data-style=phantomtrain] .cinema-object{animation:phantom-train-arrive 7.5s cubic-bezier(.18,.72,.24,1) both!important;transform-origin:center}#tiknation-gift-engine[data-style=phantomtrain] .train-engine,#tiknation-gift-engine[data-style=phantomtrain] .train-car{transform-box:fill-box;transform-origin:center;animation:phantom-train-rumble .22s ease-in-out infinite alternate}#tiknation-gift-engine[data-style=phantomtrain] .train-car{animation-delay:-.11s}#tiknation-gift-engine[data-style=phantomtrain] .train-engine circle,#tiknation-gift-engine[data-style=phantomtrain] .train-car circle{transform-box:fill-box;transform-origin:center;animation:phantom-wheel-spin .8s linear infinite}#tiknation-gift-engine[data-style=phantomtrain] .phantom-smoke{transform-box:fill-box;transform-origin:bottom center;animation:phantom-smoke-rise 2.1s ease-out infinite}@keyframes phantom-train-arrive{0%{opacity:0;transform:translateX(-65vw) scale(.72)}20%{opacity:1}75%{transform:translateX(0) scale(1.04)}100%{opacity:1;transform:translateX(0) scale(1)}}@keyframes phantom-train-rumble{from{translate:0 -1px}to{translate:0 2px}}@keyframes phantom-wheel-spin{to{rotate:360deg}}@keyframes phantom-smoke-rise{0%{opacity:.1;transform:translateY(14px) scale(.65)}55%{opacity:.75}100%{opacity:0;transform:translateY(-32px) scale(1.35)}}@media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=phantomtrain] .cinema-object,#tiknation-gift-engine[data-style=phantomtrain] .train-engine,#tiknation-gift-engine[data-style=phantomtrain] .train-car,#tiknation-gift-engine[data-style=phantomtrain] .phantom-smoke{animation:none!important}}';document.head.appendChild(trainStyle);
+ }
  const obj=world.querySelector(".cinema-object");
  const title=document.createElement("div");title.className="cinema-title";title.textContent=gift.name||"TikNation Gift";
  const msg=document.createElement("small");msg.textContent=gift.message||"A gift has arrived.";title.appendChild(msg);world.appendChild(title);
