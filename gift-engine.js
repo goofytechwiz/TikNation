@@ -480,86 +480,152 @@ function renderCarnevilGift(gift,opts,overlay){
 
 
 function renderHauntedHearseGift(gift,opts,overlay){
- const scene=document.createElement("div");scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#030609;isolation:isolate";
- scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(0,0,0,.88)),radial-gradient(ellipse at 50% 55%,transparent 18%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:6%;left:0;right:0;text-align:center;color:#d9e7e1;font:1000 clamp(26px,5.8vw,46px)/1 Georgia,serif;letter-spacing:.15em;text-shadow:0 2px 10px #000,0 0 24px #7aa99b">THE HAUNTED HEARSE<div style="font:700 10px system-ui;letter-spacing:.32em;margin-top:10px;color:#9ab9b0">SOME PASSENGERS NEVER ARRIVE</div></div>';
+ const scene=document.createElement("div");
+ scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#05080b;isolation:isolate";
+ scene.innerHTML='<div class="hearse-loading" style="position:absolute;inset:0;display:grid;place-items:center;color:#d6e0dc;font:700 13px system-ui;letter-spacing:.18em">PREPARING THE FINAL RIDE…</div><div style="position:absolute;z-index:8;inset:0;pointer-events:none;background:linear-gradient(transparent 48%,rgba(0,0,0,.62) 78%,#020405),radial-gradient(ellipse at 50% 52%,transparent 25%,rgba(0,0,0,.55) 100%)"></div><div style="position:absolute;z-index:9;bottom:5.5%;left:0;right:0;text-align:center;color:#e2e7e0;font:1000 clamp(23px,5.2vw,44px)/1 Georgia,serif;letter-spacing:.13em;text-shadow:0 2px 12px #000,0 0 22px #789b8b">THE HAUNTED HEARSE<div style="font:700 10px system-ui;letter-spacing:.3em;margin-top:10px;color:#b5c4ba">SOME PASSENGERS NEVER ARRIVE</div></div>';
  overlay.appendChild(scene);document.body.appendChild(overlay);
- const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start;
- const mist=Array.from({length:60},()=>({x:Math.random(),y:.52+Math.random()*.46,r:14+Math.random()*55,v:5+Math.random()*18,a:.02+Math.random()*.06}));
- function resize(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}resize();window.addEventListener("resize",resize);
- function ellipse(x,y,rx,ry,color){ctx.fillStyle=color;ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill();}
- function frame(now){
-  if(!alive||!overlay.isConnected)return;const t=(now-start)/1000,dt=Math.min(.05,(now-last)/1000);last=now;ctx.clearRect(0,0,w,h);
-  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#040911");sky.addColorStop(.55,"#182322");sky.addColorStop(1,"#030505");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
-  const moon=ctx.createRadialGradient(w*.78,h*.17,2,w*.78,h*.17,h*.22);moon.addColorStop(0,"rgba(208,228,220,.38)");moon.addColorStop(.3,"rgba(119,160,147,.1)");moon.addColorStop(1,"transparent");ctx.fillStyle=moon;ctx.fillRect(0,0,w,h);
-  // tree line and old iron cemetery fence
-  ctx.fillStyle="#080e0d";for(let i=0;i<10;i++){const x=i*w/9;ctx.beginPath();ctx.moveTo(x-35,h*.66);ctx.lineTo(x,h*(.39+(i%3)*.035));ctx.lineTo(x+38,h*.66);ctx.fill();}
-  for(let i=0;i<25;i++){const x=i*w/24;ctx.fillStyle="#111a18";ctx.fillRect(x,h*.64,2,h*.12);ctx.beginPath();ctx.moveTo(x-4,h*.64);ctx.lineTo(x+1,h*.61);ctx.lineTo(x+6,h*.64);ctx.fill();}ctx.fillRect(0,h*.68,w,3);
-  // wet asphalt with reflections
-  const road=ctx.createLinearGradient(0,h*.62,0,h);road.addColorStop(0,"#1b2321");road.addColorStop(.42,"#0c1110");road.addColorStop(1,"#030505");ctx.fillStyle=road;ctx.beginPath();ctx.moveTo(w*.19,h*.61);ctx.lineTo(w*.81,h*.61);ctx.lineTo(w*1.1,h);ctx.lineTo(-w*.1,h);ctx.fill();
-  for(let i=0;i<12;i++){const x=w*(.25+i*.045);ctx.strokeStyle="rgba(166,190,179,"+(0.025+((i%3)*.012))+")";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,h*.7);ctx.lineTo(x+(x-w*.5)*.5,h);ctx.stroke();}
-  mist.forEach(m=>{m.x-=m.v*dt/w;if(m.x<-.08)m.x=1.08;const g=ctx.createRadialGradient(m.x*w,m.y*h,0,m.x*w,m.y*h,m.r*4);g.addColorStop(0,"rgba(172,199,188,"+m.a+")");g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(m.x*w-m.r*4,m.y*h-m.r*4,m.r*8,m.r*8);});
-  const arrival=Math.max(0,Math.min(1,(t-.5)/2.2)),bob=Math.sin(t*1.3)*.8,scale=Math.min(w/760,1.22),cx=w*.5,base=h*.73+bob;
-  ctx.save();ctx.translate(cx,base);ctx.scale(scale*(.82+.18*arrival),scale*(.82+.18*arrival));
-  const flicker=.83+Math.sin(t*17)*.055+Math.sin(t*5.2)*.035;
-  // broad soft headlight beams
-  ctx.save();ctx.globalAlpha=flicker*.15;const beam=ctx.createLinearGradient(-250,-100,-530,20);beam.addColorStop(0,"rgba(219,244,224,.8)");beam.addColorStop(1,"rgba(219,244,224,0)");ctx.fillStyle=beam;ctx.beginPath();ctx.moveTo(-250,-112);ctx.lineTo(-540,-280);ctx.lineTo(-500,28);ctx.closePath();ctx.fill();ctx.beginPath();ctx.moveTo(250,-112);ctx.lineTo(540,-280);ctx.lineTo(500,28);ctx.closePath();ctx.fill();ctx.restore();
-  // cast shadow and four detailed wheels
-  ellipse(0,10,310,35,"rgba(0,0,0,.72)");
-  [-190,190].forEach(x=>{ellipse(x,0,47,49,"#020303");ellipse(x,0,39,41,"#171d1c");ellipse(x,0,29,30,"#606966");ellipse(x,0,23,24,"#141a19");ctx.strokeStyle="#a1aaa5";ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,0,19,0,Math.PI*2);ctx.stroke();for(let k=0;k<10;k++){const a=k*Math.PI/5;lineWheel(x+Math.cos(a)*5,Math.sin(a)*5,x+Math.cos(a)*18,Math.sin(a)*18);}ellipse(x,0,6,6,"#a8b0aa");});
-  function lineWheel(x1,y1,x2,y2){ctx.strokeStyle="#89938d";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
-  // Distinctive vintage funeral coach body: metallic two-tone finish, not a stretch-limo slab
-  const body=ctx.createLinearGradient(-15,-245,20,18);body.addColorStop(0,"#aeb8b0");body.addColorStop(.055,"#53635a");body.addColorStop(.16,"#29372f");body.addColorStop(.32,"#111a16");body.addColorStop(.52,"#39483f");body.addColorStop(.7,"#17231d");body.addColorStop(.86,"#647168");body.addColorStop(1,"#121a16");
-  ctx.fillStyle=body;ctx.strokeStyle="#c4cec5";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-294,-72);ctx.lineTo(-280,-125);ctx.quadraticCurveTo(-274,-151,-245,-160);ctx.lineTo(204,-160);ctx.quadraticCurveTo(251,-154,272,-118);ctx.lineTo(294,-58);ctx.lineTo(286,-20);ctx.quadraticCurveTo(180,-4,0,-8);ctx.quadraticCurveTo(-174,-4,-287,-20);ctx.closePath();ctx.fill();ctx.stroke();
-  // Wide brushed-silver coachbuilt side panel and pinstripe catch the moonlight
-  const silver=ctx.createLinearGradient(0,-105,0,-20);silver.addColorStop(0,"#d4d9d2");silver.addColorStop(.22,"#87948a");silver.addColorStop(.5,"#46544b");silver.addColorStop(.82,"#b1bbb1");silver.addColorStop(1,"#344138");
-  ctx.fillStyle=silver;ctx.beginPath();ctx.moveTo(-6,-104);ctx.quadraticCurveTo(118,-113,270,-100);ctx.lineTo(284,-55);ctx.quadraticCurveTo(150,-42,-6,-48);ctx.closePath();ctx.fill();
-  ctx.strokeStyle="#e1e7df";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-4,-104);ctx.quadraticCurveTo(130,-113,272,-100);ctx.stroke();
-  ctx.strokeStyle="rgba(245,248,239,.72)";ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(-258,-77);ctx.quadraticCurveTo(-100,-69,270,-79);ctx.stroke();
-  // Raised front fender and rear wheel arch lips, with dark wheel-well cutouts
-  [-190,190].forEach(x=>{ctx.fillStyle="#020404";ctx.beginPath();ctx.ellipse(x,-3,54,53,0,Math.PI,Math.PI*2);ctx.lineTo(x+54,2);ctx.lineTo(x-54,2);ctx.closePath();ctx.fill();ctx.strokeStyle="rgba(159,174,164,.72)";ctx.lineWidth=3;ctx.beginPath();ctx.arc(x,-1,51,Math.PI,Math.PI*2);ctx.stroke();});
-  // Long coachwork reflections, beltline, chrome sill and lower rocker
-  ctx.strokeStyle="rgba(220,237,226,.42)";ctx.lineWidth=2.4;ctx.beginPath();ctx.moveTo(-263,-139);ctx.quadraticCurveTo(-15,-157,246,-132);ctx.stroke();
-  ctx.strokeStyle="rgba(123,145,133,.7)";ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(-269,-76);ctx.quadraticCurveTo(0,-64,277,-78);ctx.stroke();
-  ctx.strokeStyle="#8d9b92";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-258,-17);ctx.quadraticCurveTo(0,-3,268,-18);ctx.stroke();
-  ctx.strokeStyle="rgba(0,0,0,.82)";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-260,-35);ctx.quadraticCurveTo(0,-21,267,-35);ctx.stroke();
-  // Raised rear funeral coach roof makes the silhouette unmistakably a hearse
-  ctx.fillStyle="#536259";ctx.strokeStyle="#e0e7df";ctx.lineWidth=4;
-  ctx.beginPath();ctx.moveTo(-238,-157);ctx.lineTo(-216,-214);ctx.quadraticCurveTo(-206,-237,-174,-239);ctx.lineTo(-4,-239);ctx.lineTo(18,-252);ctx.quadraticCurveTo(30,-264,55,-264);ctx.lineTo(207,-264);ctx.quadraticCurveTo(239,-261,250,-236);ctx.lineTo(270,-157);ctx.closePath();ctx.fill();ctx.stroke();
-  const glass=ctx.createLinearGradient(0,-240,0,-158);glass.addColorStop(0,"rgba(176,205,190,.78)");glass.addColorStop(.35,"rgba(67,93,81,.9)");glass.addColorStop(1,"rgba(11,19,16,.98)");
-  ctx.fillStyle=glass;ctx.beginPath();ctx.moveTo(-205,-215);ctx.lineTo(-175,-231);ctx.lineTo(-12,-231);ctx.lineTo(-12,-165);ctx.lineTo(-224,-165);ctx.closePath();ctx.fill();
-  ctx.strokeStyle="#d1d9d1";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-12,-231);ctx.lineTo(-12,-163);ctx.stroke();
-  // Large rear coffin-compartment window with visible curtains
-  ctx.fillStyle="rgba(131,157,139,.98)";ctx.beginPath();ctx.moveTo(12,-248);ctx.lineTo(199,-248);ctx.quadraticCurveTo(219,-246,227,-226);ctx.lineTo(246,-166);ctx.lineTo(12,-166);ctx.closePath();ctx.fill();ctx.strokeStyle="#e0e5dc";ctx.lineWidth=3;ctx.stroke();
-  ctx.fillStyle="rgba(12,20,15,.84)";ctx.beginPath();ctx.moveTo(20,-238);ctx.quadraticCurveTo(42,-221,57,-238);ctx.quadraticCurveTo(76,-219,94,-238);ctx.quadraticCurveTo(114,-220,132,-238);ctx.lineTo(132,-169);ctx.lineTo(20,-169);ctx.closePath();ctx.fill();
-  ctx.strokeStyle="rgba(245,248,239,.95)";ctx.lineWidth=3;[30,70,110,150,190].forEach(x=>{ctx.beginPath();ctx.moveTo(x,-244);ctx.lineTo(x,-168);ctx.stroke();});
-  // Hearse landau bars and bright raised roof edge
-  ctx.strokeStyle="#f5f6ed";ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(25,-258);ctx.lineTo(25,-166);ctx.moveTo(213,-258);ctx.lineTo(238,-166);ctx.stroke();
-  ctx.strokeStyle="#f2f5eb";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(18,-265);ctx.lineTo(207,-265);ctx.quadraticCurveTo(242,-262,253,-231);ctx.stroke();
-  // Door seams, chrome handles, side mirror and coach-built trim
-  ctx.strokeStyle="rgba(161,177,166,.8)";ctx.lineWidth=1.5;[-245,-120,10,145,238].forEach(x=>{ctx.beginPath();ctx.moveTo(x,-145);ctx.lineTo(x,-24);ctx.stroke();});
-  ctx.fillStyle="#c0c9c1";[-72,72].forEach(x=>{ctx.fillRect(x,-91,18,3);ctx.fillRect(x+2,-88,3,4);});
-  ctx.fillStyle="#929f96";ctx.beginPath();ctx.ellipse(-235,-166,10,5,-.2,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#87958c";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-235,-166,-246,-151);ctx.stroke();
-  // Front fascia: inset chrome grille, hood ridges, bumper and separate lamp lenses
-  ctx.fillStyle="#050909";ctx.strokeStyle="#aeb9b0";ctx.lineWidth=2.5;ctx.beginPath();ctx.roundRect(-292,-117,34,57,5);ctx.fill();ctx.stroke();
-  for(let i=0;i<8;i++){ctx.strokeStyle="rgba(195,207,198,.88)";ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(-288+i*4.1,-111);ctx.lineTo(-288+i*4.1,-66);ctx.stroke();}
-  ctx.strokeStyle="rgba(184,198,187,.4)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-270,-151);ctx.quadraticCurveTo(-218,-164,-162,-160);ctx.stroke();
-  [-270,270].forEach((x,j)=>{ellipse(x,-111,19,14,"#050909");ellipse(x,-111,14,10,"#303d37");ellipse(x,-111,10,7,"rgba(222,246,230,"+(flicker*.9)+")");ctx.strokeStyle="#b9c5bb";ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,-111,17,12,0,0,Math.PI*2);ctx.stroke();});
-  // Full-width chrome bumper with end caps and license plate
-  ctx.strokeStyle="#c0c9c2";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-298,-49);ctx.quadraticCurveTo(-275,-38,-245,-43);ctx.lineTo(250,-43);ctx.quadraticCurveTo(281,-38,299,-49);ctx.stroke();
-  ctx.fillStyle="#d3d7d1";ctx.fillRect(-28,-49,56,13);ctx.fillStyle="#17201c";ctx.font="bold 7px sans-serif";ctx.textAlign="center";ctx.fillText("KAEVORYN",0,-40);
-  // rear double doors hinged outward; doors remain visibly attached to body
-  const open=Math.max(0,Math.min(1,(t-3.0)/2));
-  ctx.save();ctx.translate(258,-120);ctx.rotate(-open*.8);ctx.fillStyle="#101817";ctx.strokeStyle="#8b9890";ctx.lineWidth=3;ctx.fillRect(0,-52,48,106);ctx.strokeRect(0,-52,48,106);ctx.fillStyle="rgba(116,164,148,.24)";ctx.fillRect(8,-40,31,70);ctx.restore();
-  ctx.save();ctx.translate(258,-120);ctx.rotate(open*.8);ctx.fillStyle="#0b1110";ctx.strokeStyle="#8b9890";ctx.lineWidth=3;ctx.fillRect(-48,-52,48,106);ctx.strokeRect(-48,-52,48,106);ctx.restore();
-  // warm interior lamp and spectral green spill once the doors part
-  if(open>.04){const glow=ctx.createRadialGradient(250,-120,3,250,-120,190);glow.addColorStop(0,"rgba(171,255,205,"+(.5*open)+")");glow.addColorStop(.38,"rgba(72,169,124,"+(.2*open)+")");glow.addColorStop(1,"transparent");ctx.fillStyle=glow;ctx.fillRect(55,-330,450,430);}
-  // figure is seen as a distant shrouded passenger, not a cartoon ghost
-  if(t>5){const a=Math.min(1,(t-5)/1.4);ctx.save();ctx.globalAlpha=a*(.72+Math.sin(t*1.7)*.06);ctx.fillStyle="rgba(190,220,204,.62)";ctx.shadowColor="#8af0bd";ctx.shadowBlur=24;ellipse(255,-190,18,24,"rgba(196,224,207,.65)");ctx.beginPath();ctx.moveTo(240,-169);ctx.quadraticCurveTo(224,-136,231,-86);ctx.quadraticCurveTo(254,-71,277,-86);ctx.quadraticCurveTo(283,-136,270,-169);ctx.closePath();ctx.fill();ctx.restore();}
-  ctx.fillStyle="#c0c9c2";ctx.font="bold 10px Georgia";ctx.textAlign="center";ctx.fillText("LAST RIDE",0,-25);
-  ctx.restore();raf=requestAnimationFrame(frame);
+ if(typeof opts.onSound==="function"){try{opts.onSound();}catch(_){}}
+ let alive=true,renderer=null,raf=0,resizeHandler=null,doorL=null,doorR=null,car=null,ghost=null;
+ const duration=Math.max(9000,Number(opts.duration)||10500);
+ const cleanup=()=>{alive=false;if(raf)cancelAnimationFrame(raf);if(resizeHandler)window.removeEventListener("resize",resizeHandler);if(renderer){renderer.dispose();if(renderer.domElement.parentNode)renderer.domElement.remove();}if(overlay.isConnected)overlay.remove();};
+ const finish=()=>{if(!alive)return;overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(cleanup,850);};
+ const timer=setTimeout(finish,duration);
+ function fail(message){const loading=scene.querySelector(".hearse-loading");if(loading){loading.textContent=message;loading.style.color="#ffb7b7";loading.style.letterSpacing=".04em";loading.style.padding="24px";loading.style.textAlign="center";} }
+ function loadThree(done){
+  if(window.THREE){done();return;}
+  const existing=document.querySelector('script[data-tiknation-three="160"]');
+  if(existing){existing.addEventListener("load",done,{once:true});existing.addEventListener("error",()=>fail("THE 3D ENGINE COULD NOT LOAD. CHECK YOUR CONNECTION."),{once:true});return;}
+  const script=document.createElement("script");script.src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js";script.async=true;script.dataset.tiknationThree="160";
+  script.onload=done;script.onerror=()=>fail("THE 3D ENGINE COULD NOT LOAD. CHECK YOUR CONNECTION.");document.head.appendChild(script);
  }
- raf=requestAnimationFrame(frame);const duration=Math.max(9000,Number(opts.duration)||10500);
- setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .9s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),930);}},duration);return overlay;
+ loadThree(()=>{
+  if(!alive||!overlay.isConnected)return;
+  try{
+   const THREE=window.THREE;
+   const canvas=document.createElement("canvas");canvas.style.cssText="position:absolute;inset:0;width:100%;height:100%;display:block";
+   scene.insertBefore(canvas,scene.firstChild);
+   renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:"high-performance"});
+   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));renderer.setSize(scene.clientWidth,scene.clientHeight,false);
+   renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+   renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
+   const world=new THREE.Scene();world.background=new THREE.Color(0x080e12);world.fog=new THREE.FogExp2(0x101a1c,.035);
+   const camera=new THREE.PerspectiveCamera(34,scene.clientWidth/scene.clientHeight,.1,100);camera.position.set(8.8,5.3,10.5);camera.lookAt(0,1.05,0);
+   const hemi=new THREE.HemisphereLight(0xc9d9d0,0x111713,2.0);world.add(hemi);
+   const moon=new THREE.DirectionalLight(0xd9e7e0,3.2);moon.position.set(-4,9,5);moon.castShadow=true;moon.shadow.mapSize.set(1024,1024);moon.shadow.camera.left=-10;moon.shadow.camera.right=10;moon.shadow.camera.top=10;moon.shadow.camera.bottom=-10;world.add(moon);
+   const rim=new THREE.PointLight(0x88b99e,42,15);rim.position.set(-4,3,-3);world.add(rim);
+   const headGlow=new THREE.PointLight(0xe6f3dc,18,8);headGlow.position.set(4,1.7,0);world.add(headGlow);
+   const mat=(color,metalness,roughness)=>new THREE.MeshStandardMaterial({color,metalness:metalness||0,roughness:roughness===undefined?.55:roughness});
+   const paint=mat(0x293b35,.78,.28),paintLight=mat(0x66766b,.72,.3),burgundy=mat(0x3a2027,.62,.31),chrome=mat(0xc4d0c9,.88,.2),rubber=mat(0x090c0d,.08,.82),glass= new THREE.MeshPhysicalMaterial({color:0x29453e,metalness:.45,roughness:.12,transparent:true,opacity:.82,clearcoat:1}),interior=mat(0x080e0d,.2,.65),lamp= new THREE.MeshStandardMaterial({color:0xfff0c2,emissive:0xd7bb78,emissiveIntensity:1.7});
+   const ground=new THREE.Mesh(new THREE.PlaneGeometry(100,100),mat(0x11191a,.12,.92));ground.rotation.x=-Math.PI/2;ground.position.y=-.03;ground.receiveShadow=true;world.add(ground);
+   const road=new THREE.Mesh(new THREE.PlaneGeometry(8,90),mat(0x202728,.16,.75));road.rotation.x=-Math.PI/2;road.position.set(0,.002,0);road.receiveShadow=true;world.add(road);
+   for(let i=-4;i<=4;i++){const line=new THREE.Mesh(new THREE.BoxGeometry(.045,.008,1.25),mat(0x69736d,.05,.8));line.position.set(i%2===0?-.12:.12,.012,i*5);world.add(line);}
+   const car=new THREE.Group();world.add(car);
+   function box(parent,w,h,d,material,x,y,z,bevel){const mesh=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
+   function cylinder(parent,r1,r2,depth,material,x,y,z,rx,ry,rz){const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,depth,32),material);mesh.position.set(x,y,z);mesh.rotation.set(rx||0,ry||0,rz||0);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
+   function rod(parent,a,b,r,material){const p1=new THREE.Vector3(a[0],a[1],a[2]),p2=new THREE.Vector3(b[0],b[1],b[2]),delta=new THREE.Vector3().subVectors(p2,p1);const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r,r,delta.length(),10),material);mesh.position.copy(p1).add(p2).multiplyScalar(.5);mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());mesh.castShadow=true;parent.add(mesh);return mesh;}
+   // Long coach-built chassis, broad hood and a separate raised rear funeral compartment.
+   box(car,6.15,.38,1.94,interior,0,.79,0);
+   box(car,6.35,.16,2.04,chrome,0,.93,0);
+   box(car,6.18,.63,1.98,paint,0,1.22,0);
+   box(car,1.85,.56,2.02,paintLight,2.08,1.54,0);
+   box(car,1.72,.13,2.04,chrome,2.12,1.84,0);
+   // Passenger cabin with a sloped front screen and distinct front doors.
+   box(car,2.0,1.02,1.83,paintLight,.28,2.02,0);
+   box(car,1.88,.12,1.9,chrome,.28,2.58,0);
+   box(car,.08,.77,1.72,glass,1.29,2.08,0);
+   box(car,.08,.78,1.72,glass,-.72,2.08,0);
+   // Hearse-specific high roof and coffin compartment: taller than the passenger cabin.
+   box(car,2.35,1.34,1.9,burgundy,-1.75,2.18,0);
+   box(car,2.5,.15,2.04,chrome,-1.73,2.88,0);
+   box(car,2.34,.12,1.96,paintLight,-1.75,2.79,0);
+   // Deep side glass panels, curtain folds and polished landau bars on both sides.
+   for(const side of [-1,1]){
+    const z=side* .972;
+    box(car,1.72,.82,.025,glass,-1.78,2.28,z);
+    box(car,.12,.9,.045,chrome,-2.66,2.28,z);
+    box(car,.12,.9,.045,chrome,-.9,2.28,z);
+    for(let k=0;k<5;k++){const curtain=box(car,.035,.64,.03,mat(0x101d19,.1,.9),-2.42+k*.29,2.28,z+side*.025);curtain.position.x=-2.42+k*.29;}
+    rod(car,[-2.58,2.84,z+side*.055],[-.96,2.84,z+side*.055],.025,chrome);
+    rod(car,[-2.55,1.78,z+side*.055],[-.99,1.78,z+side*.055],.022,chrome);
+    box(car,.9,.72,.035,glass,.27,2.13,z);
+    box(car,.055,.82,.06,chrome,-.22,2.12,z+side*.03);
+    box(car,.055,.82,.06,chrome,.76,2.12,z+side*.03);
+    box(car,.035,.78,.04,chrome,.27,2.12,z+side*.035);
+    box(car,.05,.08,.09,chrome,-.02,1.92,z+side*.055);
+    // Landau bars on the rear quarter and a fine bright coach line.
+    rod(car,[-2.56,1.73,z+side*.06],[-2.48,2.76,z+side*.06],.022,chrome);
+    rod(car,[-1.0,1.73,z+side*.06],[-1.08,2.76,z+side*.06],.022,chrome);
+    rod(car,[-2.9,1.02,z+side*.045],[2.92,1.02,z+side*.045],.018,chrome);
+   }
+   // Rear compartment interior and a visible coffin silhouette behind the tall glass.
+   box(car,.82,.2,1.05,interior,-1.82,1.83,0);
+   box(car,1.08,.2,.48,mat(0x4b4d42,.35,.55),-1.88,1.98,0);
+   // Rear double doors mounted at the back end; their hinges swing outward.
+   const rear=new THREE.Group();rear.position.set(-3.12,1.78,0);car.add(rear);
+   doorL=new THREE.Group();doorL.position.z=-.49;rear.add(doorL);
+   const leftPanel=box(doorL,.09,1.55,.96,paint,-.02,.2,-.48);leftPanel.material=paintLight;
+   box(doorL,.035,.82,.68,glass,-.075,.25,-.48);
+   doorR=new THREE.Group();doorR.position.z=.49;rear.add(doorR);
+   box(doorR,.09,1.55,.96,paint,-.02,.2,.48,0);
+   box(doorR,.035,.82,.68,glass,-.075,.25,.48);
+   // Rear sill, bumper and front fascia.
+   box(car,.16,.17,2.12,chrome,-3.18,.93,0);
+   box(car,.13,.15,2.13,chrome,3.13,1.0,0);
+   box(car,.08,.68,1.0,interior,3.13,1.43,0);
+   for(let i=0;i<13;i++)box(car,.025,.55,.035,chrome,3.18,1.43,-.44+i*.073);
+   for(const z of [-.72,.72]){cylinder(car,.18,.18,.1,lamp,3.22,1.57,z,0,0,Math.PI/2);const beam=new THREE.SpotLight(0xe8f2d8,18,12,.32,.5,1.4);beam.position.set(3.35,1.62,z);beam.target.position.set(8,.15,z*1.8);car.add(beam,beam.target);}
+   // Long hood ridges and separate chrome grille surround.
+   for(const z of [-.55,-.28,0,.28,.55])rod(car,[[1.35,1.84,z],[2.8,1.84,z]][0],[ [1.35,1.84,z],[2.8,1.84,z]][1],.012,chrome);
+   // Wheels with thick tires, stepped alloy rims, hubs and ten visible spokes.
+   const wheels=[];
+   for(const x of [-2.08,2.12])for(const z of [-1.02,1.02]){
+    const wheel=new THREE.Group();wheel.position.set(x,.58,z);car.add(wheel);wheels.push(wheel);
+    cylinder(wheel,.55,.55,.32,rubber,0,0,0,Math.PI/2,0,0);
+    cylinder(wheel,.37,.37,.34,mat(0x77827b,.86,.26),0,0,z>0?.19:-.19,Math.PI/2,0,0);
+    cylinder(wheel,.25,.25,.36,chrome,0,0,z>0?.22:-.22,Math.PI/2,0,0);
+    cylinder(wheel,.105,.105,.38,mat(0x3d4842,.9,.2),0,0,z>0?.24:-.24,Math.PI/2,0,0);
+    for(let k=0;k<10;k++){const a=k*Math.PI/5;rod(wheel,[Math.cos(a)*.12,Math.sin(a)*.12,z>0?.245:-.245],[Math.cos(a)*.31,Math.sin(a)*.31,z>0?.245:-.245],.018,chrome);}
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(.34,.025,8,36),chrome);ring.position.z=z>0?.2:-.2;wheel.add(ring);
+   }
+   // Mirrors, handles, coach badges and small bright details.
+   for(const side of [-1,1]){
+    const z=side*1.04;rod(car,[[1.08,2.23,z],[1.18,2.48,z+side*.14]][0],[[1.08,2.23,z],[1.18,2.48,z+side*.14]][1],.025,chrome);
+    box(car,.22,.08,.08,chrome,-.15,1.96,z);
+    box(car,.1,.06,.07,chrome,.92,1.96,z);
+   }
+   // Tall rear coach window at the back, framed like a funeral coach rather than a limo.
+   box(car,.035,.98,1.28,glass,-2.96,2.25,0);
+   box(car,.06,1.08,.055,chrome,-2.99,2.25,-.68);
+   box(car,.06,1.08,.055,chrome,-2.99,2.25,.68);
+   box(car,.06,.055,1.38,chrome,-2.99,2.79,0);
+   // Cemetery approach: crooked bare trees, iron fence, distant lamps and ground mist.
+   const bark=mat(0x111817,.05,.95);
+   for(let i=0;i<13;i++){const x=-12+i*2;const trunk=box(world,.16,2.5,.16,bark,x,1.1,-5.8-(i%3)*.5);trunk.rotation.z=(i%2?-.12:.12);rod(world,[x,1.9,-5.8],[x+(i%2?-.7:.7),2.8,-5.8],.055,bark);}
+   for(let i=0;i<22;i++){const x=-10+i*.95;box(world,.055,.85,.055,chrome,x,.43,-3.8);const spike=new THREE.Mesh(new THREE.ConeGeometry(.075,.18,6),chrome);spike.position.set(x,.94,-3.8);world.add(spike);}
+   box(world,21,.09,.09,chrome,0,.7,-3.8);
+   // A few volumetric-looking fog banks stay low on the wet road.
+   const fogMat=new THREE.MeshBasicMaterial({color:0x9aafa6,transparent:true,opacity:.055,depthWrite:false});
+   const fogs=[];for(let i=0;i<18;i++){const fog=new THREE.Mesh(new THREE.SphereGeometry(1,12,8),fogMat);fog.scale.set(1.2+Math.random()*1.8,.12,.5+Math.random()*.8);fog.position.set(-8+Math.random()*16,.2+Math.random()*.25,-2+Math.random()*4);world.add(fog);fogs.push(fog);}
+   ghost=new THREE.Group();ghost.position.set(-2.75,1.5,0);car.add(ghost);
+   const ghostMat=new THREE.MeshStandardMaterial({color:0xc8ded0,transparent:true,opacity:0,roughness:1,emissive:0x294738,emissiveIntensity:.5});
+   const ghostBody=new THREE.Mesh(new THREE.ConeGeometry(.34,1.2,10),ghostMat);ghostBody.position.y=.3;ghost.add(ghostBody);
+   const ghostHead=new THREE.Mesh(new THREE.SphereGeometry(.22,16,12),ghostMat);ghostHead.position.y=1.03;ghost.add(ghostHead);
+   const loading=scene.querySelector(".hearse-loading");if(loading)loading.remove();
+   resizeHandler=()=>{if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight);renderer.setSize(width,height,false);camera.aspect=width/height;camera.updateProjectionMatrix();};window.addEventListener("resize",resizeHandler);
+   const clock=new THREE.Clock();let elapsed=0;
+   function animate(){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(animate);const dt=Math.min(.05,clock.getDelta());elapsed+=dt;
+    const arrival=Math.min(1,Math.max(0,(elapsed-.3)/2.3));car.position.x=-1.05+(1-Math.pow(1-arrival,3))*1.05;car.position.y=Math.sin(elapsed*1.7)*.012;
+    car.rotation.y=Math.sin(elapsed*.28)*.025;
+    wheels.forEach(w=>w.rotation.z=-(elapsed*1.6));
+    const open=Math.max(0,Math.min(1,(elapsed-3.1)/1.35));if(doorL)doorL.rotation.y=-open*.95;if(doorR)doorR.rotation.y=open*.95;
+    if(ghost){ghost.visible=elapsed>4.5;ghost.children.forEach(m=>{m.material.opacity=ghost.visible?.48+.12*Math.sin(elapsed*2):0;});ghost.position.y=1.45+Math.sin(elapsed*1.25)*.08;}
+    fogs.forEach((f,i)=>{f.position.x+=dt*(.1+(i%4)*.035);if(f.position.x>10)f.position.x=-10;f.material.opacity=.035+.02*Math.sin(elapsed*1.4+i);});
+    rim.intensity=36+Math.sin(elapsed*1.8)*7;renderer.render(world,camera);
+   }
+   animate();
+  }catch(error){fail("3D HEARSE ERROR: "+(error&&error.message?error.message:"RENDER FAILED"));}
+ });
+ return overlay;
 }
 function renderLivingTombstonesGift(gift,opts,overlay){
  const scene=document.createElement("div");
