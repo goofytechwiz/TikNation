@@ -553,6 +553,14 @@ const bodySvg=dragon.querySelector("svg");
 const bodyGroup=bodySvg&&bodySvg.querySelector("#c5BodySections");
 if(bodyGroup){
  const ns="http://www.w3.org/2000/svg", sections=[];
+ const backbone=document.createElementNS(ns,"path");
+ backbone.setAttribute("fill","none");
+ backbone.setAttribute("stroke","url(#c5Body)");
+ backbone.setAttribute("stroke-width","54");
+ backbone.setAttribute("stroke-linecap","round");
+ backbone.setAttribute("stroke-linejoin","round");
+ backbone.setAttribute("opacity",".98");
+ bodyGroup.appendChild(backbone);
  for(let i=0;i<42;i++){
   const shell=document.createElementNS(ns,"ellipse");
   shell.setAttribute("fill","url(#c5Body)");
@@ -572,6 +580,8 @@ if(bodyGroup){
  const coilMotion=now=>{
   if(!overlay.isConnected)return;
   const t=(now-startAt)/1000, phase=t*1.05;
+  const spinePoints=sections.map(({u})=>{const e=Math.sin(Math.PI*u),w=phase+u*Math.PI*2.25;return [94+770*u+Math.sin(w*1.45)*48*e,430-160*u+Math.sin(w)*112*e];});
+  backbone.setAttribute("d",spinePoints.map((p,i)=>(i?"L":"M")+p[0].toFixed(2)+" "+p[1].toFixed(2)).join(" "));
   sections.forEach(({shell,scales,u})=>{
    const envelope=Math.sin(Math.PI*u);
    const wave=phase+u*Math.PI*2.25;
