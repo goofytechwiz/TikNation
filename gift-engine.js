@@ -517,7 +517,7 @@ function renderCinematicGift(gift,opts,overlay){
     streak.style.setProperty("--sx",x+"%");streak.style.setProperty("--sy",y+"%");
     streak.style.setProperty("--len",len+"vw");streak.style.setProperty("--thick",(i%4===0?6:3+i%3)+"px");
     streak.style.setProperty("--head",(i%3===0?11:7)+"px");streak.style.setProperty("--angle",(24+(i%4)*7)+"deg");
-    streak.style.setProperty("--dur",dur+"s");streak.style.setProperty("--delay",(delay/1000)+"s");
+    streak.style.setProperty("--dur",dur+"s");streak.style.setProperty("--delay",(delay/100)+"s");
     streak.style.setProperty("--dx",dx+"vw");streak.style.setProperty("--dy",dy+"vh");world.appendChild(streak);
    });
    for(let i=0;i<24;i++){const spark=document.createElement("i");spark.className="meteor-spark";const angle=(Math.PI*2*i)/24;const distance=90+(i%6)*22;spark.style.setProperty("--sx",(34+(i%7)*5)+"%");spark.style.setProperty("--sy",(42+(i%5)*5)+"%");spark.style.setProperty("--size",(4+(i%4)*2)+"px");spark.style.setProperty("--ex",(Math.cos(angle)*distance)+"px");spark.style.setProperty("--ey",(Math.sin(angle)*distance)+"px");spark.style.setProperty("--dur",(1.0+(i%4)*.22)+"s");spark.style.setProperty("--delay",(1.35+(i%6)*.035)+"s");world.appendChild(spark);}
