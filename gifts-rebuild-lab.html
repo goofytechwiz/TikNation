@@ -171,19 +171,21 @@ function startSoundInGesture(gift){
    const zombie=new Audio("https://bigsoundbank.com/UPLOAD/mp3/2108.mp3");
    const stone=new Audio("https://bigsoundbank.com/UPLOAD/mp3/580.mp3");
    window.__tiknationTombstoneAudio=[wind,zombie,stone];
-   wind.loop=false;wind.volume=.34;zombie.volume=.9;stone.volume=.82;
+   wind.loop=false;wind.volume=.3;zombie.volume=1;stone.volume=.78;
    [wind,zombie,stone].forEach(a=>{a.preload="auto";});
    const timers=[];
-   const stopAll=()=>{window.__tiknationTombstoneAudio?.forEach(a=>{try{a.pause();a.currentTime=0;}catch(_){}});};
-   const started=wind.play();
-   return started.then(()=>{
-    setAudioState("Playing · cemetery wind, zombie + stone cues");
-    timers.push(window.setTimeout(()=>{if(window.__tiknationTombstoneAudio?.includes(zombie))zombie.play().catch(()=>{});},900));
-    timers.push(window.setTimeout(()=>{if(window.__tiknationTombstoneAudio?.includes(stone))stone.play().catch(()=>{});},1850));
-    timers.push(window.setTimeout(stopAll,6900));
-    window.__tiknationTombstoneTimers=timers;
-    return true;
-   }).catch(err=>{setAudioState("Tombstone audio blocked or unavailable");say("The recorded cemetery audio could not start: "+err.message,true);return false;});
+   const stopAll=()=>window.__tiknationTombstoneAudio?.forEach(a=>{try{a.pause();a.currentTime=0;}catch(_){}});
+   zombie.addEventListener("error",()=>{setAudioState("Zombie recording failed to load");say("The zombie recording could not load. Please tell me this exact status.",true);},{once:true});
+   const windStart=wind.play();
+   const zombieStart=zombie.play();
+   Promise.allSettled([windStart,zombieStart]).then(results=>{
+    if(results[1].status==="rejected"){setAudioState("Zombie playback blocked");say("The browser blocked the zombie recording: "+results[1].reason.message,true);}
+    else setAudioState("Playing · cemetery wind + zombie groan");
+   });
+   timers.push(window.setTimeout(()=>{if(window.__tiknationTombstoneAudio?.includes(stone))stone.play().catch(err=>{setAudioState("Stone sound blocked");say("The stone sound was blocked: "+err.message,true);});},1550));
+   timers.push(window.setTimeout(stopAll,6900));
+   window.__tiknationTombstoneTimers=timers;
+   return Promise.resolve(true);
   }catch(err){setAudioState("Tombstone audio error");say("Tombstone sound error: "+err.message,true);return Promise.resolve(false);}
  }
  const notes=Array.isArray(gift.sound)&&gift.sound.length?gift.sound:[523,659,784,1047];notes.forEach((raw,i)=>{const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22,osc=ctx.createOscillator(),gain=ctx.createGain();osc.type="triangle";osc.frequency.setValueAtTime(hz,at);gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.14,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.48);osc.connect(gain);gain.connect(ctx.destination);osc.start(at);osc.stop(at+.5);});setAudioState("Playing · "+notes.length+" notes");};
