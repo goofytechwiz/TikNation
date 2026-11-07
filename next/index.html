@@ -50,6 +50,30 @@ main{display:block;min-height:auto;padding:22px 18px 54px}
 
 /* Home feed search */
 .home-search-wrap{width:min(100%,980px);margin:0 auto 12px;display:flex;gap:9px;align-items:center;padding:10px 13px;border:1px solid #ffffff24;border-radius:16px;background:#10142cbb}.home-search-wrap span{color:#82f6e8;font-size:17px}.home-search-wrap input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#fff;font:13px system-ui}.home-search-wrap input::placeholder{color:#9691b4}.home-search-wrap:focus-within{border-color:#82f6e899;box-shadow:0 0 0 3px #82f6e812}.home-search-result{width:min(100%,980px);margin:-5px auto 12px;padding:0 4px;color:#aaa5c9;font-size:9px;letter-spacing:.08em}
+
+/* Unified mobile, touch and accessibility polish */
+html{scroll-behavior:smooth;scroll-padding-top:82px}
+body{-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+button,a,[role="button"]{touch-action:manipulation}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,[role="button"]:focus-visible{outline:2px solid var(--cyan,#82f6e8);outline-offset:3px}
+button:disabled,[aria-disabled="true"]{cursor:not-allowed;opacity:.55}
+img,video,canvas{max-width:100%}
+.tn-dock{grid-template-columns:repeat(7,minmax(64px,1fr));overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#82f6e866 transparent;scroll-snap-type:x proximity}
+.tn-dock a{scroll-snap-align:center;min-width:64px;min-height:50px;font-size:8px;white-space:nowrap}
+@media(max-width:640px){
+ header{padding-left:15px;padding-right:15px}
+ .back,.action{min-height:40px;display:inline-flex;align-items:center;justify-content:center}
+ main{max-width:calc(100% - 28px)}
+}
+@media(max-width:390px){
+ .tn-dock{width:calc(100% - 18px);bottom:calc(7px + env(safe-area-inset-bottom,0px));gap:3px;padding:6px}
+ .tn-dock a{min-width:62px;min-height:48px;font-size:8px}
+ .tn-dock a .tn-icon{font-size:18px}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+}
+
 </style>
 </head>
 <body>
