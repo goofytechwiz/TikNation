@@ -424,6 +424,51 @@ function renderVoidRiftGift(gift,opts,overlay){
 }
 
 
+
+function renderCarnevilGift(gift,opts,overlay){
+ const scene=document.createElement("div");scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#050307;isolation:isolate";
+ scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(0,0,0,.9)),radial-gradient(ellipse at 50% 55%,transparent 20%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:6%;left:0;right:0;text-align:center;color:#f1d9c5;font:1000 clamp(36px,8vw,64px)/.95 Georgia,serif;letter-spacing:.2em;text-shadow:0 3px 12px #000,0 0 24px #e52c28">CARNEVIL<div style="font:700 10px system-ui;letter-spacing:.34em;margin-top:11px;color:#d7aaa0">STEP RIGHT UP… IF YOU DARE</div></div>';
+ overlay.appendChild(scene);document.body.appendChild(overlay);
+ const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start;
+ const bulbs=Array.from({length:38},(_,i)=>({p:i/38,phase:Math.random()*6.28}));
+ const fog=Array.from({length:36},()=>({x:Math.random(),y:.55+Math.random()*.4,r:18+Math.random()*65,v:5+Math.random()*17,a:.025+Math.random()*.06}));
+ function resize(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}resize();window.addEventListener("resize",resize);
+ function line(x1,y1,x2,y2,color,width){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+ function frame(now){
+  if(!alive||!overlay.isConnected)return;const t=(now-start)/1000,dt=Math.min(.05,(now-last)/1000);last=now;ctx.clearRect(0,0,w,h);
+  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#090611");sky.addColorStop(.55,"#25101b");sky.addColorStop(1,"#050407");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+  // storm-lit moon and distant carnival skyline
+  const moon=ctx.createRadialGradient(w*.77,h*.17,2,w*.77,h*.17,h*.2);moon.addColorStop(0,"rgba(231,213,196,.4)");moon.addColorStop(.28,"rgba(177,115,127,.13)");moon.addColorStop(1,"transparent");ctx.fillStyle=moon;ctx.fillRect(0,0,w,h);
+  ctx.fillStyle="#0a080d";ctx.fillRect(0,h*.66,w,h*.34);
+  // Ferris wheel, turning slowly in the distance
+  const fx=w*.79,fy=h*.56,fr=Math.min(w,h)*.17,rot=t*.22;
+  ctx.save();ctx.translate(fx,fy);ctx.strokeStyle="#4a343d";ctx.lineWidth=5;ctx.beginPath();ctx.arc(0,0,fr,0,Math.PI*2);ctx.stroke();
+  for(let i=0;i<12;i++){const a=rot+i*Math.PI/6;line(0,0,Math.cos(a)*fr,Math.sin(a)*fr,"#57404a",2);const x=Math.cos(a)*fr,y=Math.sin(a)*fr;ctx.fillStyle=i%2?"#a72a37":"#d9a65c";ctx.fillRect(x-5,y-5,10,10);}
+  line(-fr*.5,fr*.95,0,0,"#4b3740",5);line(fr*.5,fr*.95,0,0,"#4b3740",5);ctx.restore();
+  // Big top tent with alternating faded red and bone-white stripes
+  const tx=w*.43,ty=h*.65,tw=Math.min(w*.58,500),th=Math.min(h*.45,290);
+  ctx.fillStyle="#10080c";ctx.beginPath();ctx.moveTo(tx-tw*.55,ty);ctx.lineTo(tx-tw*.5,ty-th*.54);ctx.lineTo(tx,ty-th);ctx.lineTo(tx+tw*.5,ty-th*.54);ctx.lineTo(tx+tw*.55,ty);ctx.closePath();ctx.fill();
+  ctx.save();ctx.beginPath();ctx.moveTo(tx-tw*.5,ty-th*.54);ctx.lineTo(tx,ty-th);ctx.lineTo(tx+tw*.5,ty-th*.54);ctx.lineTo(tx+tw*.55,ty);ctx.lineTo(tx-tw*.55,ty);ctx.closePath();ctx.clip();
+  for(let i=0;i<12;i++){const x=tx-tw*.58+i*tw/6;ctx.fillStyle=i%2?"#8e1827":"#c6b6a0";ctx.beginPath();ctx.moveTo(tx,ty-th);ctx.lineTo(x,ty-th*.54);ctx.lineTo(x+tw/6,ty+10);ctx.lineTo(tx,ty+10);ctx.closePath();ctx.fill();}
+  ctx.restore();ctx.strokeStyle="#d2b28c";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(tx-tw*.53,ty-th*.54);ctx.lineTo(tx,ty-th);ctx.lineTo(tx+tw*.53,ty-th*.54);ctx.stroke();
+  // Entrance curtains
+  ctx.fillStyle="#17080e";ctx.fillRect(tx-tw*.16,ty-th*.4,tw*.32,th*.4);ctx.fillStyle="#9f1c2b";ctx.beginPath();ctx.moveTo(tx-tw*.16,ty-th*.4);ctx.quadraticCurveTo(tx-tw*.05,ty-th*.16,tx,ty);ctx.lineTo(tx,ty-th*.4);ctx.closePath();ctx.fill();ctx.beginPath();ctx.moveTo(tx+tw*.16,ty-th*.4);ctx.quadraticCurveTo(tx+tw*.05,ty-th*.16,tx,ty);ctx.lineTo(tx,ty-th*.4);ctx.closePath();ctx.fill();
+  // Marquee bulbs blink in a travelling pattern
+  bulbs.forEach((b,i)=>{const a=b.p*Math.PI*2,x=tx+Math.cos(a)*tw*.42,y=ty-th*.51+Math.sin(a)*th*.47;const glow=.25+.75*Math.max(0,Math.sin(t*5-b.phase));ctx.fillStyle="rgba(255,204,126,"+glow+")";ctx.shadowColor="#ffb85c";ctx.shadowBlur=8*glow;ctx.beginPath();ctx.arc(x,y,2.1+glow,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;});
+  // Tall striped midway poles and hanging pennants
+  for(let i=0;i<7;i++){const x=w*(.08+i*.13);line(x,h*.72,x,h*(.42+(i%3)*.035),"#38232a",3);ctx.fillStyle=i%2?"#9f1d2c":"#c4a27b";ctx.beginPath();ctx.moveTo(x,h*(.42+(i%3)*.035));ctx.lineTo(x+25,h*(.47+(i%3)*.035));ctx.lineTo(x,h*(.49+(i%3)*.035));ctx.fill();}
+  // Clown silhouette stands in front of the funhouse for a brief reveal
+  const reveal=Math.max(0,Math.min(1,(t-4.1)/1.2));if(reveal>0){const x=w*.19,y=h*.72;ctx.save();ctx.globalAlpha=reveal*(.8+.2*Math.sin(t*2));ctx.fillStyle="#050306";ctx.shadowColor="#b51f36";ctx.shadowBlur=18;ctx.beginPath();ctx.arc(x,y-48,17,0,Math.PI*2);ctx.fill();ctx.fillRect(x-15,y-31,30,65);ctx.beginPath();ctx.moveTo(x-15,y-20);ctx.lineTo(x-39,y+18);ctx.lineTo(x-31,y+22);ctx.lineTo(x,y-3);ctx.lineTo(x+31,y+22);ctx.lineTo(x+39,y+18);ctx.lineTo(x+15,y-20);ctx.fill();ctx.fillStyle="#b51f36";ctx.beginPath();ctx.arc(x-6,y-51,2.5,0,Math.PI*2);ctx.arc(x+6,y-51,2.5,0,Math.PI*2);ctx.fill();ctx.restore();}
+  // low drifting fog
+  fog.forEach(f=>{f.x-=f.v*dt/w;if(f.x<-.1)f.x=1.1;const g=ctx.createRadialGradient(f.x*w,f.y*h,0,f.x*w,f.y*h,f.r*4);g.addColorStop(0,"rgba(191,174,173,"+f.a+")");g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(f.x*w-f.r*4,f.y*h-f.r*4,f.r*8,f.r*8);});
+  // occasional lightning flash
+  if(Math.sin(t*1.7)>0.997){ctx.fillStyle="rgba(215,202,220,.09)";ctx.fillRect(0,0,w,h);}
+  raf=requestAnimationFrame(frame);
+ }
+ raf=requestAnimationFrame(frame);const duration=Math.max(8500,Number(opts.duration)||10000);
+ setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .9s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),930);}},duration);return overlay;
+}
+
 function renderHauntedHearseGift(gift,opts,overlay){
  const scene=document.createElement("div");
  scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#030609;isolation:isolate";
@@ -518,7 +563,7 @@ function renderLivingTombstonesGift(gift,opts,overlay){
  setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),830);}},duration);return overlay;
 }
 
-function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
+function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
 
 /* Cinematic object renderer: custom shaded vector artwork replaces emoji-only gift posters. */
 function renderCinematicGift(gift,opts,overlay){
