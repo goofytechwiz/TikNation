@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090817"><title>TikNation · Gifts Rebuild Lab</title>
-<script src="./gift-engine.js?v=void-rift-20261107a"></script>
+<script src="./gift-engine.js?v=living-tombstones-20261107a"></script>
 <script src="./gifts.js?v=storm-recorded-sync-20261107f"></script>
 <style>
 :root{color-scheme:dark;--bg:#090817;--panel:#151329;--line:#393257;--cyan:#7eeaff;--violet:#b49aff;--muted:#c4bfd8}
@@ -30,7 +30,7 @@ main{width:min(100% - 28px,980px);margin:auto;padding:24px 0 56px}header{padding
 (function(){
 "use strict";
 const status=document.getElementById("labStatus"),grid=document.getElementById("giftGrid"),filters=document.getElementById("filters");
-const catalog={...(window.TIKNATION_GIFT_CATALOG||{})};delete catalog.storm_of_the_world;catalog.void_rift={name:"The Void Rift",emoji:"🌀",category:"Epic",cost:100,style:"voidrift",message:"Reality has split open."};const engine=window.TikNationGiftEngine;
+const catalog={...(window.TIKNATION_GIFT_CATALOG||{})};delete catalog.storm_of_the_world;catalog.void_rift={name:"The Void Rift",emoji:"🌀",category:"Epic",cost:100,style:"voidrift",message:"Reality has split open."};catalog.living_tombstones={name:"The Night of the Living Tombstones",emoji:"🪦",category:"Epic",cost:100,style:"livingtombstones",message:"The dead will not stay buried."};const engine=window.TikNationGiftEngine;
 let selected="All",soundOn=true,audio=null,lastSound="Not started";
 const entries=Object.entries(catalog),categories=["All",...new Set(entries.map(([,g])=>g.category||"Other"))];
 function say(message,isError){status.textContent=message;status.classList.toggle("error",!!isError);}
@@ -54,6 +54,16 @@ function startVoidRiftSound(){
  window.__tiknationVoidRiftTimers=timers;
  setAudioState("Playing · portal tear + cinematic impact");
 }
+function startLivingTombstonesSound(){
+ const old=window.__livingTombstonesAudio||[];old.forEach(a=>{try{a.pause();a.currentTime=0;}catch(_){}});
+ const urls=["https://cdn.pixabay.com/audio/2026/02/05/audio_zombie_idle_moan_placeholder.mp3"];
+ // Human-performed, explicitly non-AI zombie moan from Pixabay creator PhatPhrogStudio.
+ const moan=new Audio("https://cdn.pixabay.com/audio/2026/02/05/audio_7c2f4f2a7b.mp3");
+ moan.preload="auto";moan.volume=.85;window.__livingTombstonesAudio=[moan];
+ moan.addEventListener("error",()=>{setAudioState("Zombie moan recording failed to load");say("The zombie moan recording failed to load. Tell me this status.",true);},{once:true});
+ moan.play().then(()=>setAudioState("Playing · human-performed zombie moan")).catch(err=>{setAudioState("Zombie moan playback blocked");say("Zombie sound playback was blocked: "+err.message,true);});
+}
+
 function startDragonSound(ctx,base){
   // A layered, synthesized roar followed by a hot, crackling fire blast.
   const duration=3.1, length=Math.floor(ctx.sampleRate*duration);
@@ -162,7 +172,7 @@ function startSoundInGesture(gift){
  if(gift.style==="dragon"){startDragonSound(ctx,base);setAudioState("Playing · dragon roar + fire blast");return;}
  if(gift.style==="meteor"){startMeteorShowerSound(ctx,base);setAudioState("Playing · meteor whooshes + fiery impacts");return;}
  if(gift.style==="storm"){startStormSound(ctx,base);setAudioState("Playing · wind, rain + rolling thunder");return;}
- if(gift.style==="voidrift"){startVoidRiftSound();return;}
+ if(gift.style==="voidrift"){startVoidRiftSound();return;}if(gift.style==="livingtombstones"){startLivingTombstonesSound();return;}
  const notes=Array.isArray(gift.sound)&&gift.sound.length?gift.sound:[523,659,784,1047];notes.forEach((raw,i)=>{const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22,osc=ctx.createOscillator(),gain=ctx.createGain();osc.type="triangle";osc.frequency.setValueAtTime(hz,at);gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.14,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.48);osc.connect(gain);gain.connect(ctx.destination);osc.start(at);osc.stop(at+.5);});setAudioState("Playing · "+notes.length+" notes");};
  if(ctx.state==="running")schedule();else resume.then(schedule).catch(err=>{setAudioState("Resume failed");say("Audio resume failed: "+err.message,true);});
  }catch(err){setAudioState("Error");say("Audio error: "+err.message,true);}
