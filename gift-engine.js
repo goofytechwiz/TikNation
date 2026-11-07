@@ -538,41 +538,71 @@ function renderHauntedHearseGift(gift,opts,overlay){
  setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .9s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),930);}},duration);return overlay;
 }
 function renderLivingTombstonesGift(gift,opts,overlay){
- const scene=document.createElement("div");scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#05080b;isolation:isolate";
- scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.78)),radial-gradient(ellipse,transparent 28%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:7%;left:0;right:0;text-align:center;color:#d7ded4;font:1000 clamp(22px,5.8vw,44px)/1.1 Georgia,serif;letter-spacing:.1em;text-shadow:0 2px 8px #000,0 0 18px #8aa08c">THE NIGHT OF THE LIVING TOMBSTONES<div style="font:700 10px system-ui;letter-spacing:.28em;margin-top:9px;color:#a6b6a7">THE DEAD WILL NOT STAY BURIED</div></div>';
+ const scene=document.createElement("div");
+ scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#05080b;isolation:isolate";
+ scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(0,0,0,.82)),radial-gradient(ellipse,transparent 24%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:7%;left:0;right:0;text-align:center;color:#d7ded4;font:1000 clamp(22px,5.8vw,44px)/1.1 Georgia,serif;letter-spacing:.1em;text-shadow:0 2px 8px #000,0 0 18px #8aa08c">THE NIGHT OF THE LIVING TOMBSTONES<div style="font:700 10px system-ui;letter-spacing:.28em;margin-top:9px;color:#a6b6a7">THE DEAD WILL NOT STAY BURIED</div></div>';
  overlay.appendChild(scene);document.body.appendChild(overlay);
- const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start;
+ const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");
+ let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start;
  const rand=(a,b)=>a+Math.random()*(b-a),stones=[],mist=[];
  function resize(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
  resize();window.addEventListener("resize",resize);
- for(let i=0;i<18;i++){const depth=i/18,scale=.35+depth*.95;stones.push({x:rand(-.04,1.04)*w,y:h*(.48+depth*.37),s:scale,tilt:rand(-.08,.08),shape:i%4,crack:rand(0,1),rise:rand(0,1)});}
- for(let i=0;i<42;i++)mist.push({x:rand(0,w),y:rand(h*.48,h),r:rand(25,100),speed:rand(8,28),a:rand(.025,.09)});
- function grave(x,y,s,stone,t){
-  ctx.save();ctx.translate(x,y);ctx.rotate(stone.tilt+Math.sin(t*.45+stone.rise)*.012);ctx.scale(s,s);
-  const ww=stone.shape===0?39:stone.shape===1?34:stone.shape===2?31:42,hh=stone.shape===0?82:stone.shape===1?94:stone.shape===2?70:86;
-  ctx.beginPath();if(stone.shape===0){ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh+17);ctx.quadraticCurveTo(-ww/2,-hh,0,-hh);ctx.quadraticCurveTo(ww/2,-hh,ww/2,-hh+17);}else if(stone.shape===1){ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh+12);ctx.quadraticCurveTo(-ww/2,-hh,0,-hh+4);ctx.quadraticCurveTo(ww/2,-hh,ww/2,-hh+12);}else{ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh);ctx.lineTo(ww/2,-hh);ctx.lineTo(ww/2,0);}ctx.closePath();
-  const g=ctx.createLinearGradient(-ww/2,-hh,ww/2,0);g.addColorStop(0,"#18201e");g.addColorStop(.5,"#59615a");g.addColorStop(1,"#171d1a");ctx.fillStyle=g;ctx.strokeStyle="#899188";ctx.lineWidth=1.6;ctx.fill();ctx.stroke();
-  ctx.fillStyle="rgba(4,8,7,.7)";ctx.fillRect(-ww*.31,-hh*.72,ww*.62,2);ctx.fillRect(-ww*.22,-hh*.61,ww*.44,1.5);
-  ctx.strokeStyle="rgba(15,20,18,.8)";ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(0,-hh*.86);ctx.lineTo(-4,-hh*.68);ctx.lineTo(3,-hh*.52);ctx.lineTo(-2,-hh*.31);ctx.stroke();
+ for(let i=0;i<16;i++){const depth=i/15,scale=.42+depth*.9;stones.push({x:rand(.025,.975)*w,baseY:h*(.53+depth*.32),s:scale,phase:rand(0,Math.PI*2),delay:1.1+rand(0,2.1),shape:i%5,crack:rand(0,1),rock:rand(.026,.052),tone:rand(0,1)});}
+ for(let i=0;i<38;i++)mist.push({x:rand(0,w),y:rand(h*.5,h),r:rand(28,105),speed:rand(6,19),a:rand(.025,.075)});
+ function grave(st,t){
+  const ww=st.shape===0?43:st.shape===1?38:st.shape===2?35:st.shape===3?46:40;
+  const hh=st.shape===0?91:st.shape===1?105:st.shape===2?78:st.shape===3?88:96;
+  const wake=Math.max(0,Math.min(1,(t-st.delay)/.9));
+  const rock=Math.sin(Math.max(0,t-st.delay)*3.2+st.phase)*st.rock*wake;
+  ctx.save();
+  // The pivot is fixed at the foot of the stone: rotation only, never screen-space travel.
+  ctx.translate(st.x,st.baseY);ctx.rotate(rock);ctx.scale(st.s,st.s);
+  ctx.globalAlpha=.72;
+  ctx.fillStyle="#020504";ctx.beginPath();ctx.ellipse(0,2,ww*.72,8,0,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=1;
+  ctx.beginPath();
+  if(st.shape===0){ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh+19);ctx.quadraticCurveTo(-ww/2,-hh+2,-ww*.18,-hh);ctx.quadraticCurveTo(ww*.2,-hh-3,ww/2,-hh+18);ctx.lineTo(ww/2,0);}
+  else if(st.shape===1){ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh+12);ctx.quadraticCurveTo(-ww*.4,-hh-4,0,-hh+2);ctx.quadraticCurveTo(ww*.42,-hh-2,ww/2,-hh+13);ctx.lineTo(ww/2,0);}
+  else if(st.shape===2){ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh);ctx.lineTo(ww/2,-hh);ctx.lineTo(ww/2,0);}
+  else if(st.shape===3){ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh+8);ctx.lineTo(-ww*.25,-hh);ctx.lineTo(ww*.25,-hh);ctx.lineTo(ww/2,-hh+8);ctx.lineTo(ww/2,0);}
+  else{ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh+16);ctx.quadraticCurveTo(-ww/2,-hh+4,0,-hh+5);ctx.quadraticCurveTo(ww/2,-hh+4,ww/2,-hh+16);ctx.lineTo(ww/2,0);}
+  ctx.closePath();
+  const stone=ctx.createLinearGradient(-ww/2,-hh,ww/2,0);
+  stone.addColorStop(0,st.tone>.5?"#252b29":"#1a211f");stone.addColorStop(.28,"#555c55");stone.addColorStop(.55,"#343b36");stone.addColorStop(1,"#111714");
+  ctx.fillStyle=stone;ctx.fill();
+  ctx.strokeStyle="rgba(157,165,151,.48)";ctx.lineWidth=1.1;ctx.stroke();
+  // chipped edge and darker bevel
+  ctx.strokeStyle="rgba(5,9,7,.82)";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-ww/2+3,-5);ctx.lineTo(-ww/2+3,-hh+20);ctx.lineTo(-ww*.2,-hh+5);ctx.stroke();
+  ctx.strokeStyle="rgba(190,192,174,.17)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(ww/2-3,-8);ctx.lineTo(ww/2-3,-hh+20);ctx.stroke();
+  // weathering, lichen and age streaks
+  for(let k=0;k<7;k++){const px=-ww*.4+((k*37+st.shape*11)%70)/70*ww*.8,py=-hh*.82+((k*19+st.shape*7)%60)/60*hh*.66;ctx.fillStyle=k%2?"rgba(113,129,98,.16)":"rgba(3,8,6,.2)";ctx.beginPath();ctx.ellipse(px,py,2+(k%3),5+(k%4)*2,-.3,0,Math.PI*2);ctx.fill();}
+  ctx.strokeStyle="rgba(8,13,10,.9)";ctx.lineWidth=1.35;ctx.beginPath();ctx.moveTo(-ww*.1,-hh*.91);ctx.lineTo(-ww*.02,-hh*.72);ctx.lineTo(-ww*.16,-hh*.59);ctx.lineTo(-ww*.09,-hh*.43);ctx.stroke();
+  // worn inscription panel and subtle carved lettering
+  ctx.fillStyle="rgba(5,10,8,.28)";ctx.fillRect(-ww*.31,-hh*.69,ww*.62,hh*.27);
+  ctx.strokeStyle="rgba(177,184,165,.19)";ctx.lineWidth=.8;ctx.strokeRect(-ww*.31,-hh*.69,ww*.62,hh*.27);
+  ctx.fillStyle="rgba(194,197,177,.45)";ctx.textAlign="center";ctx.font="bold 8px Georgia";ctx.fillText(st.shape%2?"REST IN PEACE":"R.I.P.",0,-hh*.56);
+  ctx.fillStyle="rgba(6,10,8,.55)";ctx.fillRect(-ww*.23,-hh*.48,ww*.46,1);
   ctx.restore();
  }
- function tree(x,y,s,t){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.strokeStyle="#111916";ctx.lineCap="round";ctx.lineWidth=13;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(5,-220);ctx.lineTo(-24,-280);ctx.moveTo(3,-170);ctx.lineTo(65,-225);ctx.lineTo(82,-273);ctx.moveTo(0,-130);ctx.lineTo(-74,-181);ctx.lineTo(-94,-224);ctx.moveTo(8,-205);ctx.lineTo(52,-250);ctx.stroke();ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-24,-280);ctx.lineTo(-54,-306);ctx.moveTo(82,-273);ctx.lineTo(111,-296);ctx.moveTo(-94,-224);ctx.lineTo(-124,-237);ctx.stroke();ctx.restore();}
- function frame(now){if(!alive||!overlay.isConnected)return;const t=(now-start)/1000,dt=Math.min(.04,(now-last)/1000);last=now;ctx.clearRect(0,0,w,h);
-  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#070c13");sky.addColorStop(.52,"#18212a");sky.addColorStop(1,"#080d0c");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
-  const moon=ctx.createRadialGradient(w*.78,h*.19,2,w*.78,h*.19,h*.18);moon.addColorStop(0,"rgba(218,228,214,.5)");moon.addColorStop(.25,"rgba(154,174,161,.14)");moon.addColorStop(1,"transparent");ctx.fillStyle=moon;ctx.fillRect(0,0,w,h);
-  tree(w*.08,h*.77,Math.max(.55,w/1000),t);tree(w*.92,h*.76,Math.max(.6,w/950),t);
-  ctx.fillStyle="#0b100e";ctx.beginPath();ctx.moveTo(0,h*.65);ctx.quadraticCurveTo(w*.5,h*.53,w,h*.66);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
-  stones.sort((a,b)=>a.y-b.y).forEach((st,i)=>{const wake=Math.max(0,Math.min(1,(t-(2.1+st.rise*1.4))/.9));if(wake>0){st.tilt=Math.sin(t*5+i)*.035*wake;st.lift=wake*(1-Math.exp(-Math.max(0,t-(2.1+st.rise*1.4))*1.5))*Math.min(46,st.s*40);}grave(st.x,st.y-(st.lift||0),st.s,st,t);});
-  // Tombstones heave upward from the soil; no body parts or hands appear.
-  stones.forEach((st,i)=>{const onset=1.35+st.rise*1.8,progress=Math.max(0,Math.min(1,(t-onset)/1.35));if(progress<=0)return;const lift=(1-Math.pow(1-progress,2))*Math.min(52,st.s*43);st.tilt=Math.sin(t*3.1+i*1.7)*.055*progress;ctx.save();ctx.globalAlpha=.9;ctx.strokeStyle="rgba(133,151,133,"+(.22*progress)+")";ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(st.x,st.y+4,st.s*31,st.s*(7+lift*.12),0,0,Math.PI*2);ctx.stroke();ctx.restore();});
-  mist.forEach(m=>{m.x-=m.speed*dt;if(m.x<-m.r)m.x=w+m.r;const g=ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,m.r);g.addColorStop(0,"rgba(181,196,185,"+m.a+")");g.addColorStop(1,"transparent");ctx.fillStyle=g;ctx.fillRect(m.x-m.r,m.y-m.r,m.r*2,m.r*2);});
+ function tree(x,y,s){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.strokeStyle="#101713";ctx.lineCap="round";ctx.lineWidth=13;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(5,-220);ctx.lineTo(-24,-280);ctx.moveTo(3,-170);ctx.lineTo(65,-225);ctx.lineTo(82,-273);ctx.moveTo(0,-130);ctx.lineTo(-74,-181);ctx.lineTo(-94,-224);ctx.moveTo(8,-205);ctx.lineTo(52,-250);ctx.stroke();ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-24,-280);ctx.lineTo(-54,-306);ctx.moveTo(82,-273);ctx.lineTo(111,-296);ctx.moveTo(-94,-224);ctx.lineTo(-124,-237);ctx.stroke();ctx.restore();}
+ function frame(now){
+  if(!alive||!overlay.isConnected)return;
+  const t=(now-start)/1000,dt=Math.min(.04,(now-last)/1000);last=now;ctx.clearRect(0,0,w,h);
+  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#070c13");sky.addColorStop(.5,"#172029");sky.addColorStop(1,"#080d0b");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+  const moon=ctx.createRadialGradient(w*.78,h*.19,2,w*.78,h*.19,h*.18);moon.addColorStop(0,"rgba(218,228,214,.48)");moon.addColorStop(.25,"rgba(154,174,161,.13)");moon.addColorStop(1,"transparent");ctx.fillStyle=moon;ctx.fillRect(0,0,w,h);
+  tree(w*.08,h*.78,Math.max(.55,w/1000));tree(w*.92,h*.77,Math.max(.6,w/950));
+  ctx.fillStyle="#0b100e";ctx.beginPath();ctx.moveTo(0,h*.65);ctx.quadraticCurveTo(w*.5,h*.54,w,h*.66);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
+  // distant graves first, then larger foreground stones; all keep their base coordinates.
+  stones.slice().sort((a,b)=>a.baseY-b.baseY).forEach(st=>grave(st,t));
+  mist.forEach(m=>{m.x-=m.speed*dt;if(m.x<-m.r)m.x=w+m.r;const fog=ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,m.r);fog.addColorStop(0,"rgba(181,196,185,"+m.a+")");fog.addColorStop(1,"transparent");ctx.fillStyle=fog;ctx.fillRect(m.x-m.r,m.y-m.r,m.r*2,m.r*2);});
   if(t>4.5&&t<5.1){ctx.fillStyle="rgba(174,195,177,"+(Math.sin(t*38)*.025)+")";ctx.fillRect(0,0,w,h);}
   raf=requestAnimationFrame(frame);
  }
- raf=requestAnimationFrame(frame);const duration=Math.max(7000,Number(opts.duration)||8500);
- setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),830);}},duration);return overlay;
+ raf=requestAnimationFrame(frame);
+ const duration=Math.max(7000,Number(opts.duration)||7800);
+ setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .55s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),580);}},duration);
+ return overlay;
 }
-
 
 function renderAbandonedFunhouseGift(gift,opts,overlay){
  const canvas=document.createElement("canvas");canvas.className="cinema-funhouse-canvas";canvas.setAttribute("role","img");canvas.setAttribute("aria-label","A cursed abandoned funhouse with a slowly opening door and a shadow behind warped glass");
