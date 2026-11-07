@@ -226,14 +226,68 @@ function startSoundInGesture(gift){
  if(gift.style==="meteor"){startMeteorShowerSound(ctx,base);setAudioState("Playing · meteor whooshes + fiery impacts");return;}
  if(gift.style==="storm"){startStormSound(ctx,base);setAudioState("Playing · wind, rain + rolling thunder");return;}
   if(gift.style==="carnevil"){startCarnevilSound(ctx,base);setAudioState("Playing · eerie carnival calliope");return;}if(gift.style==="hauntedcarousel"){
-  const notes=[392,493.88,587.33,523.25,440,349.23,392,293.66,349.23,440,392,329.63,261.63,329.63,392,349.23];
-  notes.forEach((hz,i)=>{const at=base+i*.38,osc=ctx.createOscillator(),reed=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();osc.type="triangle";osc.frequency.value=hz;reed.type="sine";reed.frequency.value=hz*2;f.type="lowpass";f.frequency.value=1800;g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.055,at+.04);g.gain.setValueAtTime(.04,at+.22);g.gain.exponentialRampToValueAtTime(.0001,at+.34);osc.connect(f);reed.connect(f);f.connect(g);g.connect(ctx.destination);osc.start(at);reed.start(at);osc.stop(at+.36);reed.stop(at+.36);});
-  [0,2.9,5.8].forEach((offset,i)=>{const at=base+offset,o=ctx.createOscillator(),g=ctx.createGain();o.type="sine";o.frequency.value=[880,1046.5,784][i];g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.035,at+.02);g.gain.exponentialRampToValueAtTime(.0001,at+1.1);o.connect(g);g.connect(ctx.destination);o.start(at);o.stop(at+1.12);});
-  const noise=ctx.createBuffer(1,Math.floor(ctx.sampleRate*7),ctx.sampleRate),d=noise.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
-  const src=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();src.buffer=noise;filter.type="lowpass";filter.frequency.value=260;gain.gain.setValueAtTime(.0001,base);gain.gain.exponentialRampToValueAtTime(.045,base+.8);gain.gain.setValueAtTime(.035,base+5.8);gain.gain.exponentialRampToValueAtTime(.0001,base+6.9);src.connect(filter);filter.connect(gain);gain.connect(ctx.destination);src.start(base);src.stop(base+7);
-  setAudioState("Playing · eerie carousel waltz + mechanical rumble");return;
+  // A darker 3/4 carousel waltz: layered reed organ, music-box bells,
+  // alternating oom-pah bass and a soft mechanical turntable pulse.
+  const bpm=96,beat=60/bpm,bar=beat*3;
+  const melody=[
+   [392,0,1],[523.25,1,1],[587.33,2,1],
+   [659.25,3,1],[587.33,4,1],[523.25,5,1],
+   [466.16,6,1],[587.33,7,1],[698.46,8,1],
+   [659.25,9,1],[587.33,10,1],[523.25,11,1],
+   [440,12,1],[523.25,13,1],[587.33,14,1],
+   [392,15,2],[349.23,17,1],[392,18,3]
+  ];
+  const playReed=(hz,at,dur,level)=>{
+   const out=ctx.createGain(),filter=ctx.createBiquadFilter(),vib=ctx.createOscillator(),depth=ctx.createGain();
+   filter.type="lowpass";filter.frequency.value=2450;filter.Q.value=.7;
+   out.gain.setValueAtTime(.0001,at);out.gain.linearRampToValueAtTime(level,at+.045);
+   out.gain.setValueAtTime(level*.78,at+Math.max(.06,dur*.55));
+   out.gain.exponentialRampToValueAtTime(.0001,at+dur);
+   const partials=[[1,1],[2,.34],[3,.13],[4,.045]];
+   partials.forEach(([mult,amp])=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type="sawtooth";o.frequency.value=hz*mult;g.gain.value=amp;o.connect(g);g.connect(filter);o.start(at);o.stop(at+dur+.02);});
+   vib.type="sine";vib.frequency.value=5.2;depth.gain.value=hz*.0022;vib.connect(depth);
+   // Gentle pitch movement makes the reed sound less like a bare synthesizer.
+   const carrier=ctx.createOscillator();carrier.type="sine";carrier.frequency.value=hz;depth.connect(carrier.frequency);
+   const cg=ctx.createGain();cg.gain.value=.00001;carrier.connect(cg);cg.connect(filter);carrier.start(at);carrier.stop(at+dur+.02);
+   vib.start(at);vib.stop(at+dur+.02);filter.connect(out);out.connect(ctx.destination);
+  };
+  melody.forEach(([hz,step,len])=>playReed(hz,base+step*beat,beat*len*.94,.038));
+  // Chord bed, with old fairground organ voicing in a minor key.
+  const chords=[[196,246.94,293.66],[174.61,220,261.63],[146.83,185,220],[164.81,196,246.94],[196,246.94,293.66],[174.61,220,261.63]];
+  chords.forEach((ch,i)=>ch.forEach((hz,j)=>{
+   const at=base+i*bar,osc=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();
+   osc.type="triangle";osc.frequency.value=hz*(j===2?2:1);f.type="lowpass";f.frequency.value=720;
+   g.gain.setValueAtTime(.0001,at);g.gain.linearRampToValueAtTime(.012,at+.22);
+   g.gain.setValueAtTime(.009,at+bar*.72);g.gain.exponentialRampToValueAtTime(.0001,at+bar*.98);
+   osc.connect(f);f.connect(g);g.connect(ctx.destination);osc.start(at);osc.stop(at+bar);
+  }));
+  // Deep alternating bass notes and clipped off-beat chord pumps.
+  for(let b=0;b<6;b++){
+   const at=base+b*bar;
+   const bass=ctx.createOscillator(),bg=ctx.createGain(),bf=ctx.createBiquadFilter();
+   bass.type="sine";bass.frequency.value=[98,87.31,73.42,82.41,98,87.31][b];bf.type="lowpass";bf.frequency.value=190;
+   bg.gain.setValueAtTime(.0001,at);bg.gain.linearRampToValueAtTime(.12,at+.035);bg.gain.exponentialRampToValueAtTime(.0001,at+.42);
+   bass.connect(bf);bf.connect(bg);bg.connect(ctx.destination);bass.start(at);bass.stop(at+.44);
+   const pump=ctx.createOscillator(),pg=ctx.createGain();pump.type="triangle";pump.frequency.value=[196,174.61,146.83,164.81,196,174.61][b];
+   pg.gain.setValueAtTime(.0001,at+beat);pg.gain.linearRampToValueAtTime(.025,at+beat+.025);pg.gain.exponentialRampToValueAtTime(.0001,at+beat+.28);
+   pump.connect(pg);pg.connect(ctx.destination);pump.start(at+beat);pump.stop(at+beat+.3);
+   // A small brass bell on the first beat of each bar.
+   const bell=ctx.createOscillator(),bellGain=ctx.createGain(),bellFilter=ctx.createBiquadFilter();
+   bell.type="sine";bell.frequency.value=[784,698.46,587.33,659.25,784,698.46][b];bellFilter.type="highpass";bellFilter.frequency.value=520;
+   bellGain.gain.setValueAtTime(.0001,at);bellGain.gain.linearRampToValueAtTime(.026,at+.012);bellGain.gain.exponentialRampToValueAtTime(.0001,at+1.05);
+   bell.connect(bellFilter);bellFilter.connect(bellGain);bellGain.connect(ctx.destination);bell.start(at);bell.stop(at+1.08);
+  }
+  // Subtle rotating mechanism: soft tick and low wooden wheel creak.
+  const tickBuffer=ctx.createBuffer(1,Math.floor(ctx.sampleRate*.035),ctx.sampleRate),td=tickBuffer.getChannelData(0);
+  for(let i=0;i<td.length;i++)td[i]=(Math.random()*2-1)*(1-i/td.length);
+  for(let i=0;i<24;i++){
+   const at=base+i*beat*.5,src=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();
+   src.buffer=tickBuffer;f.type="bandpass";f.frequency.value=1250;f.Q.value=.8;
+   g.gain.value=.012;src.connect(f);f.connect(g);g.connect(ctx.destination);src.start(at);
+  }
+  setAudioState("Playing · haunted calliope waltz, brass bells + carousel mechanism");return;
  }
- if(gift.style==="voidrift"){startVoidRiftSound();return;}if(gift.style==="livingtombstones"){
+if(gift.style==="voidrift"){startVoidRiftSound();return;}if(gift.style==="livingtombstones"){
   try{
    const oldSet=window.__tiknationTombstoneAudio||[];
    (window.__tiknationTombstoneTimers||[]).forEach(clearTimeout);
