@@ -172,7 +172,7 @@ css += String.raw`
  to{transform:rotate(1.2deg) scaleY(1.015) skewY(.4deg)}
 }
 @media(prefers-reduced-motion:reduce){
- #tiknation-gift-engine .dragon-flight-v2,#tiknation-gift-engine .dragon-svg-v5{animation:none!important}
+ #tiknation-gift-engine .dragon-flight-v2,#tiknation-gift-engine .dragon-svg-v5,#tiknation-gift-engine .c5-tail{animation:none!important}
 }
 `;
 css += String.raw`
@@ -180,6 +180,9 @@ css += String.raw`
 #tiknation-gift-engine .c5-mane{transform-origin:830px 280px;animation:c5-mane-flow 1.1s ease-in-out infinite alternate}
 #tiknation-gift-engine .c5-whiskers{transform-origin:1000px 300px;animation:c5-whisker-flow .8s ease-in-out infinite alternate}
 #tiknation-gift-engine .c5-breath{transform-origin:1018px 300px;animation:c5-breath .3s ease-in-out infinite alternate}
+#tiknation-gift-engine .c5-tail{transform-box:fill-box;transform-origin:12% 50%;animation:c5-tail-flow 1.45s ease-in-out infinite alternate}
+#tiknation-gift-engine .dragon-svg-v5{transform-origin:50% 50%}
+@keyframes c5-tail-flow{from{transform:rotate(-5deg) translateY(-3px)}to{transform:rotate(7deg) translateY(4px)}}
 @keyframes c5-mane-flow{from{transform:translateY(-4px) rotate(-1deg)}to{transform:translateY(5px) rotate(2deg)}}
 @keyframes c5-whisker-flow{from{transform:rotate(-3deg)}to{transform:rotate(4deg)}}
 @keyframes c5-breath{from{opacity:.65;transform:scaleX(.72)}to{opacity:1;transform:scaleX(1.18)}}
@@ -490,14 +493,15 @@ if(gift.style==="dragon"||gift.style==="dragonrevenge"){const world=document.cre
  <radialGradient id="c5Eye"><stop stop-color="#fffbd0"/><stop offset=".35" stop-color="#ffcf45"/><stop offset="1" stop-color="#e33b18"/></radialGradient>
  <pattern id="c5Scales" width="22" height="18" patternUnits="userSpaceOnUse"><path d="M1 2Q11 15 21 2M-10 10Q0 23 10 10M12 10Q22 23 32 10" fill="none" stroke="#fff0b1" stroke-opacity=".35" stroke-width="2.5"/></pattern>
  <filter id="c5Glow" x="-40%" y="-60%" width="180%" height="220%"><feGaussianBlur stdDeviation="10"/></filter>
+ <filter id="c5Undulate" x="-12%" y="-18%" width="124%" height="136%"><feTurbulence type="fractalNoise" baseFrequency=".007 .016" numOctaves="2" seed="8" result="wave"><animate attributeName="baseFrequency" values=".006 .014;.012 .022;.006 .014" dur="2.1s" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="wave" scale="8" xChannelSelector="R" yChannelSelector="G"/></filter>
 </defs>
 <!-- long, flowing serpentine body -->
-<path d="M72 508 C165 620 274 592 318 500 C355 420 300 357 371 326 C446 292 520 372 585 342 C665 305 628 226 714 204 C775 188 818 230 866 267" fill="none" stroke="#102d29" stroke-width="105" stroke-linecap="round"/>
-<path d="M72 508 C165 620 274 592 318 500 C355 420 300 357 371 326 C446 292 520 372 585 342 C665 305 628 226 714 204 C775 188 818 230 866 267" fill="none" stroke="url(#c5Body)" stroke-width="88" stroke-linecap="round"/>
-<path d="M72 508 C165 620 274 592 318 500 C355 420 300 357 371 326 C446 292 520 372 585 342 C665 305 628 226 714 204 C775 188 818 230 866 267" fill="none" stroke="url(#c5Scales)" stroke-width="78" stroke-linecap="round"/>
+<path d="M72 508 C165 620 274 592 318 500 C355 420 300 357 371 326 C446 292 520 372 585 342 C665 305 628 226 714 204 C775 188 818 230 866 267" filter="url(#c5Undulate)" fill="none" stroke="#102d29" stroke-width="105" stroke-linecap="round"/>
+<path d="M72 508 C165 620 274 592 318 500 C355 420 300 357 371 326 C446 292 520 372 585 342 C665 305 628 226 714 204 C775 188 818 230 866 267" filter="url(#c5Undulate)" fill="none" stroke="url(#c5Body)" stroke-width="88" stroke-linecap="round"/>
+<path d="M72 508 C165 620 274 592 318 500 C355 420 300 357 371 326 C446 292 520 372 585 342 C665 305 628 226 714 204 C775 188 818 230 866 267" filter="url(#c5Undulate)" fill="none" stroke="url(#c5Scales)" stroke-width="78" stroke-linecap="round"/>
 <path d="M82 526 C178 603 268 564 291 493 C319 421 282 378 362 350 C438 324 512 394 585 365 C658 336 645 260 718 231" fill="none" stroke="url(#c5Belly)" stroke-width="22" stroke-linecap="round" opacity=".9"/>
 <!-- flowing tail tuft -->
-<path d="M91 514Q42 476 24 420Q73 449 112 474Q67 414 78 365Q122 420 144 478Q159 432 202 407Q184 477 137 526Z" fill="url(#c5Mane)" stroke="#783c27" stroke-width="6"/>
+<path class="c5-tail" d="M91 514Q42 476 24 420Q73 449 112 474Q67 414 78 365Q122 420 144 478Q159 432 202 407Q184 477 137 526Z" fill="url(#c5Mane)" stroke="#783c27" stroke-width="6"/>
 <!-- four agile legs with curved claws -->
 <g fill="url(#c5Body)" stroke="#704522" stroke-width="8" stroke-linejoin="round">
  <path d="M302 472Q270 500 264 548L222 578Q208 598 235 607L294 590L328 526Z"/>
