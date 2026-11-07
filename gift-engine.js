@@ -375,7 +375,54 @@ function renderStormWorld(gift,opts,overlay){
  if(typeof opts.onSound==="function"){try{opts.onSound()}catch(error){console.warn("Storm sound unavailable",error);}}
  const duration=Math.max(6000,Number(opts.duration)||7800);setTimeout(()=>{alive=false;cancelAnimationFrame(raf);if(resizeHandler)window.removeEventListener("resize",resizeHandler);if(overlay.isConnected){overlay.style.transition="opacity .65s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),680);}},duration);return overlay;
 }
-function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
+function renderVoidRiftGift(gift,opts,overlay){
+ const scene=document.createElement("div");
+ scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#02030a;isolation:isolate";
+ scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 48%,transparent 5%,rgba(0,0,0,.28) 48%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;left:0;right:0;bottom:9%;text-align:center;color:#f1eaff;font:1000 clamp(25px,6vw,48px)/1.1 system-ui;letter-spacing:.16em;text-shadow:0 0 22px #a98aff,0 3px 10px #000">THE VOID RIFT<div style="font-size:clamp(10px,2vw,14px);letter-spacing:.25em;margin-top:10px;color:#c7b6ff">REALITY HAS SPLIT OPEN</div></div>';
+ overlay.appendChild(scene);document.body.appendChild(overlay);
+ const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");
+ let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start,particles=[];
+ const rand=(a,b)=>a+Math.random()*(b-a);
+ function resize(){dpr=Math.min(2,window.devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
+ resize();window.addEventListener("resize",resize);
+ for(let i=0;i<190;i++){const a=rand(0,Math.PI*2),r=rand(90,Math.max(w,h)*.7);particles.push({a,r,size:rand(.6,3.2),speed:rand(.3,1.3),tone:Math.random()});}
+ function frame(now){
+  if(!alive||!overlay.isConnected)return;
+  const t=(now-start)/1000,dt=Math.min(.04,(now-last)/1000);last=now;
+  ctx.clearRect(0,0,w,h);
+  const cx=w*.5,cy=h*.46,open=Math.min(1,t/.95),collapse=Math.max(0,Math.min(1,(t-4.5)/1.05)),burst=Math.max(0,Math.min(1,(t-5.25)/.9));
+  const pulse=1+Math.sin(t*2.1)*.025,rx=Math.min(w*.235,185)*pulse*(1-collapse*.72),ry=Math.min(h*.34,265)*pulse*(1-collapse*.72);
+  const bg=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(w,h)*.78);bg.addColorStop(0,"rgba(35,22,76,.38)");bg.addColorStop(.48,"rgba(8,9,24,.5)");bg.addColorStop(1,"#010207");ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+  // Dust and fractured debris spiral toward the tear, then fly outward with the release.
+  for(const p of particles){
+   p.a+=dt*(.38+p.speed*.38);p.r=Math.max(8,p.r-dt*(25+p.speed*48)*(1-collapse)+dt*burst*620);
+   const x=cx+Math.cos(p.a)*p.r,y=cy+Math.sin(p.a)*p.r*.78;
+   ctx.save();ctx.translate(x,y);ctx.rotate(p.a+t);ctx.fillStyle=p.tone>.72?"rgba(198,174,255,.9)":"rgba(116,151,210,.7)";ctx.shadowColor="#a78bff";ctx.shadowBlur=12;
+   ctx.fillRect(-p.size*1.7,-p.size*.55,p.size*3.4,p.size*1.1);ctx.restore();
+   if(p.r<10||p.r>Math.max(w,h)*.9){p.a=rand(0,Math.PI*2);p.r=rand(Math.max(w,h)*.42,Math.max(w,h)*.72);}
+  }
+  // Luminous fracture rim with jagged edges and a deep, lightless center.
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(Math.sin(t*.31)*.035);
+  for(let layer=0;layer<4;layer++){
+   ctx.beginPath();const count=150;
+   for(let i=0;i<=count;i++){const a=i/count*Math.PI*2;const jag=1+Math.sin(a*17+t*1.4+layer)*.035+Math.sin(a*39-t*.8)*.018;const x=Math.cos(a)*rx*jag,y=Math.sin(a)*ry*jag;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}
+   ctx.closePath();ctx.strokeStyle=["rgba(203,178,255,.92)","rgba(126,91,220,.72)","rgba(74,128,255,.36)","rgba(236,221,255,.22)"][layer];ctx.lineWidth=[2.2,8,19,34][layer];ctx.shadowColor="#a17bff";ctx.shadowBlur=[18,28,38,48][layer];ctx.stroke();
+  }
+  const hole=ctx.createRadialGradient(0,0,2,0,0,Math.max(rx,ry)*.78);hole.addColorStop(0,"#000");hole.addColorStop(.58,"#03020b");hole.addColorStop(.84,"rgba(8,5,22,.9)");hole.addColorStop(1,"rgba(8,5,22,0)");ctx.fillStyle=hole;ctx.beginPath();ctx.ellipse(0,0,rx*.99,ry*.99,0,0,Math.PI*2);ctx.fill();
+  // Fine fracture filaments flicker around the perimeter.
+  ctx.globalCompositeOperation="lighter";for(let i=0;i<22;i++){const a=i/22*Math.PI*2+Math.sin(t+i)*.025;const x=Math.cos(a)*rx*.92,y=Math.sin(a)*ry*.92;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+Math.cos(a+.45)*rand(12,38),y+Math.sin(a+.45)*rand(12,38));ctx.strokeStyle="rgba(185,157,255,.48)";ctx.lineWidth=1.2;ctx.stroke();}
+  ctx.restore();
+  // Collapse then a wide, fast shockwave.
+  if(t>4.5){ctx.save();ctx.globalCompositeOperation="lighter";ctx.beginPath();ctx.ellipse(cx,cy,rx+burst*w*.72,ry+burst*h*.52,0,0,Math.PI*2);ctx.strokeStyle="rgba(198,179,255,"+(1-burst)*.85+")";ctx.lineWidth=12*(1-burst)+1;ctx.shadowColor="#a78bff";ctx.shadowBlur=34;ctx.stroke();ctx.restore();}
+  if(t>5.2&&t<6.3){ctx.fillStyle="rgba(194,174,255,"+Math.max(0,.18*(1-burst))+")";ctx.fillRect(0,0,w,h);}
+  raf=requestAnimationFrame(frame);
+ }
+ raf=requestAnimationFrame(frame);
+ const duration=Math.max(6500,Number(opts.duration)||8200);
+ setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .7s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),730);}},duration);
+ return overlay;
+}
+function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
 
 /* Cinematic object renderer: custom shaded vector artwork replaces emoji-only gift posters. */
 function renderCinematicGift(gift,opts,overlay){
