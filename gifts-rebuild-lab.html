@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090817"><title>TikNation · Gifts Rebuild Lab</title>
-<script src="./gift-engine.js?v=living-tombstones-no-hands-20261107c"></script>
+<script src="./gift-engine.js?v=living-tombstones-recorded-audio-20261107d"></script>
 <script src="./gifts.js?v=storm-recorded-sync-20261107f"></script>
 <style>
 :root{color-scheme:dark;--bg:#090817;--panel:#151329;--line:#393257;--cyan:#7eeaff;--violet:#b49aff;--muted:#c4bfd8}
@@ -162,7 +162,26 @@ function startSoundInGesture(gift){
  if(gift.style==="dragon"){startDragonSound(ctx,base);setAudioState("Playing · dragon roar + fire blast");return;}
  if(gift.style==="meteor"){startMeteorShowerSound(ctx,base);setAudioState("Playing · meteor whooshes + fiery impacts");return;}
  if(gift.style==="storm"){startStormSound(ctx,base);setAudioState("Playing · wind, rain + rolling thunder");return;}
- if(gift.style==="voidrift"){startVoidRiftSound();return;}if(gift.style==="livingtombstones"){setAudioState("Sound not added yet · sourcing a verified recording");return;}
+ if(gift.style==="voidrift"){startVoidRiftSound();return;}if(gift.style==="livingtombstones"){
+  try{
+   // Real field recordings and stone Foley from BigSoundBank (CC0).
+   const oldSet=window.__tiknationTombstoneAudio||[];
+   oldSet.forEach(a=>{try{a.pause();a.currentTime=0;}catch(_){}});
+   const wind=new Audio("https://bigsoundbank.com/UPLOAD/mp3/1450.mp3");
+   const zombie=new Audio("https://bigsoundbank.com/UPLOAD/mp3/2108.mp3");
+   const stone=new Audio("https://bigsoundbank.com/UPLOAD/mp3/580.mp3");
+   window.__tiknationTombstoneAudio=[wind,zombie,stone];
+   wind.loop=true;wind.volume=.34;zombie.volume=.9;stone.volume=.82;
+   [wind,zombie,stone].forEach(a=>{a.preload="auto";});
+   const started=wind.play();
+   return started.then(()=>{
+    setAudioState("Playing · recorded storm wind; zombie + stone sounds cued");
+    window.setTimeout(()=>{if(window.__tiknationTombstoneAudio?.includes(zombie))zombie.play().catch(()=>{});},1150);
+    window.setTimeout(()=>{if(window.__tiknationTombstoneAudio?.includes(stone))stone.play().catch(()=>{});},2100);
+    return true;
+   }).catch(err=>{setAudioState("Tombstone audio blocked or unavailable");say("The recorded cemetery audio could not start: "+err.message,true);return false;});
+  }catch(err){setAudioState("Tombstone audio error");say("Tombstone sound error: "+err.message,true);return Promise.resolve(false);}
+ }
  const notes=Array.isArray(gift.sound)&&gift.sound.length?gift.sound:[523,659,784,1047];notes.forEach((raw,i)=>{const hz=Math.max(65,Math.min(1760,Number(raw)||523)),at=base+i*.22,osc=ctx.createOscillator(),gain=ctx.createGain();osc.type="triangle";osc.frequency.setValueAtTime(hz,at);gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.14,at+.025);gain.gain.exponentialRampToValueAtTime(.0001,at+.48);osc.connect(gain);gain.connect(ctx.destination);osc.start(at);osc.stop(at+.5);});setAudioState("Playing · "+notes.length+" notes");};
  if(ctx.state==="running")schedule();else resume.then(schedule).catch(err=>{setAudioState("Resume failed");say("Audio resume failed: "+err.message,true);});
  }catch(err){setAudioState("Error");say("Audio error: "+err.message,true);}
