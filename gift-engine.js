@@ -761,7 +761,7 @@ function renderHauntedCarouselGift(gift,opts,overlay){
   // flowing mane and tail
   ctx.strokeStyle="#241915";ctx.lineWidth=6;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(29,-16);ctx.quadraticCurveTo(43,-27,39,-42);ctx.moveTo(-28,-2);ctx.quadraticCurveTo(-48,-15,-45,-29);ctx.stroke();
   // four legs with subtle galloping motion
-  const swing=Math.sin(t*3.4+scale*4)*5;
+  const swing=Math.sin(t*2.15+scale*4)*2.2;
   ctx.strokeStyle="#4b3b2c";ctx.lineWidth=5;ctx.beginPath();
   ctx.moveTo(-18,7);ctx.lineTo(-22+swing,31);ctx.lineTo(-27+swing,38);
   ctx.moveTo(-5,8);ctx.lineTo(-3-swing,30);ctx.lineTo(2-swing,38);
@@ -784,7 +784,7 @@ function renderHauntedCarouselGift(gift,opts,overlay){
   ctx.fillStyle="#08090c";ctx.beginPath();ctx.moveTo(0,h*.61);ctx.lineTo(w*.12,h*.52);ctx.lineTo(w*.2,h*.61);ctx.lineTo(w*.36,h*.5);ctx.lineTo(w*.49,h*.62);ctx.lineTo(w*.7,h*.53);ctx.lineTo(w*.86,h*.62);ctx.lineTo(w,h*.54);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
   // low rolling mist
   for(let i=0;i<9;i++){const x=((i*.17+t*.025)%1.3-.15)*w,y=h*(.72+(i%3)*.065);const fog=ctx.createRadialGradient(x,y,0,x,y,Math.max(40,w*.18));fog.addColorStop(0,"rgba(175,183,188,.12)");fog.addColorStop(1,"transparent");ctx.fillStyle=fog;ctx.fillRect(x-w*.2,y-h*.13,w*.4,h*.26);}
-  const cx=w*.5,cy=h*.48,scale=Math.min(w/420,h/520),spin=reduced?0:t*.72;
+  const cx=w*.5,cy=h*.48,scale=Math.min(w/420,h/520),spin=reduced?0:-t*.58;
   // shadowed carousel platform and brass rim
   ctx.save();ctx.translate(cx,cy+h*.13);ctx.scale(1.18,.34);
   ellipse(0,0,w*.31/1.18,h*.12/0.34,"#08090b","#5e4a37");ctx.restore();
@@ -805,7 +805,7 @@ function renderHauntedCarouselGift(gift,opts,overlay){
   ctx.fillStyle="#d4b779";for(let y=topY-ry*.35;y<cy+h*.08;y+=38*scale){ellipse(cx,y,9*scale,4*scale,"#d4b779","#4c3925");}
   ellipse(cx,topY-ry*.85,11*scale,11*scale,"#d8ba79","#6e512f");
   // suspension poles and horses rotate around the carousel, with depth order
-  const riders=[];for(let i=0;i<8;i++){const a=spin+i*Math.PI/4;const depth=Math.sin(a);const x=cx+Math.cos(a)*rx*.73;const y=cy+depth*h*.055+Math.abs(Math.cos(a))*h*.015;const sc=(.62+(.38*(depth+1)/2))*scale;riders.push({x,y,sc,a,depth});}
+  const riders=[];for(let i=0;i<8;i++){const a=spin+i*Math.PI/4;const depth=Math.sin(a);const x=cx+Math.cos(a)*rx*.73;const bob=reduced?0:Math.sin(t*2.15+i*.7)*h*.009;const y=cy+depth*h*.055+Math.abs(Math.cos(a))*h*.015+bob;const sc=(.62+(.38*(depth+1)/2))*scale;riders.push({x,y,sc,a,depth});}
   riders.sort((a,b)=>a.depth-b.depth);
   riders.forEach((r,i)=>{ctx.save();ctx.strokeStyle="#b99558";ctx.lineWidth=2*scale;ctx.beginPath();ctx.moveTo(r.x,topY+ry*.35);ctx.lineTo(r.x,r.y-35*r.sc);ctx.stroke();horse(r.x,r.y,r.sc,Math.sin(spin+i)*.035,t,night&&i===4);ctx.restore();});
   // canopy shadow and floor reflections
