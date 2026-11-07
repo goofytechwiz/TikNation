@@ -1,4 +1,13 @@
 const TIKNATION_GIFT_CATALOG = {
+  phantom_train: {
+    name: "The Phantom Train",
+    emoji: "🚂",
+    category: "Legendary",
+    cost: 175,
+    sound: [110, 165, 220],
+    style: "phantomtrain",
+    message: "The last train leaves at midnight."
+  },
   storm_of_the_world: {
     name: "Storm of the World",
     emoji: "⛈️",
@@ -62,6 +71,78 @@ function playTikNationGiftSound(gift) {
     const context = tikNationGiftAudioContext;
     if (context.state === "suspended") context.resume().catch(() => {});
     const now = context.currentTime;
+
+    if (gift.style === "phantomtrain") {
+      // Steam pressure, wheel-and-rail rhythm, a distant whistle and a crossing bell.
+      const duration = 8.2;
+      const length = Math.floor(context.sampleRate * duration);
+      const buffer = context.createBuffer(1, length, context.sampleRate);
+      const samples = buffer.getChannelData(0);
+      for (let i = 0; i < length; i++) samples[i] = (Math.random() * 2 - 1) * (0.65 + 0.35 * Math.sin(i / context.sampleRate * 2.1));
+
+      const steam = context.createBufferSource();
+      const steamFilter = context.createBiquadFilter();
+      const steamGain = context.createGain();
+      steam.buffer = buffer;
+      steamFilter.type = "lowpass";
+      steamFilter.frequency.setValueAtTime(260, now);
+      steamFilter.frequency.linearRampToValueAtTime(1150, now + 1.8);
+      steamFilter.frequency.exponentialRampToValueAtTime(380, now + 7.8);
+      steamGain.gain.setValueAtTime(0.0001, now);
+      steamGain.gain.linearRampToValueAtTime(0.16, now + 0.45);
+      steamGain.gain.setValueAtTime(0.12, now + 4.8);
+      steamGain.gain.exponentialRampToValueAtTime(0.0001, now + 8.0);
+      steam.connect(steamFilter); steamFilter.connect(steamGain); steamGain.connect(context.destination);
+      steam.start(now); steam.stop(now + 8.1);
+
+      // Rolling iron wheels and rail joints: uneven paired clacks, gradually accelerating.
+      for (let i = 0; i < 18; i++) {
+        const at = now + 0.45 + i * (0.34 - Math.min(i, 12) * 0.009);
+        const clack = context.createOscillator();
+        const clackGain = context.createGain();
+        const clackFilter = context.createBiquadFilter();
+        clack.type = "triangle";
+        clack.frequency.setValueAtTime(92 + (i % 3) * 18, at);
+        clack.frequency.exponentialRampToValueAtTime(38, at + 0.13);
+        clackFilter.type = "lowpass"; clackFilter.frequency.value = 230;
+        clackGain.gain.setValueAtTime(0.0001, at);
+        clackGain.gain.linearRampToValueAtTime(0.075, at + 0.012);
+        clackGain.gain.exponentialRampToValueAtTime(0.0001, at + 0.17);
+        clack.connect(clackFilter); clackFilter.connect(clackGain); clackGain.connect(context.destination);
+        clack.start(at); clack.stop(at + 0.18);
+      }
+
+      // A single distant steam whistle, with a breathy harmonic rather than a musical loop.
+      [440, 660].forEach((frequency, index) => {
+        const whistle = context.createOscillator();
+        const whistleGain = context.createGain();
+        const whistleFilter = context.createBiquadFilter();
+        whistle.type = "sine";
+        whistle.frequency.setValueAtTime(frequency, now + 2.2);
+        whistle.frequency.linearRampToValueAtTime(frequency * 1.045, now + 3.0);
+        whistle.frequency.linearRampToValueAtTime(frequency * 0.91, now + 4.3);
+        whistleFilter.type = "lowpass"; whistleFilter.frequency.value = 1500;
+        whistleGain.gain.setValueAtTime(0.0001, now + 2.2);
+        whistleGain.gain.linearRampToValueAtTime(index ? 0.018 : 0.042, now + 2.65);
+        whistleGain.gain.setValueAtTime(index ? 0.015 : 0.034, now + 3.6);
+        whistleGain.gain.exponentialRampToValueAtTime(0.0001, now + 4.55);
+        whistle.connect(whistleFilter); whistleFilter.connect(whistleGain); whistleGain.connect(context.destination);
+        whistle.start(now + 2.2); whistle.stop(now + 4.6);
+      });
+
+      // One small crossing bell at the end of the approach.
+      [784, 1175].forEach((frequency, index) => {
+        const bell = context.createOscillator();
+        const bellGain = context.createGain();
+        bell.type = "sine"; bell.frequency.setValueAtTime(frequency, now + 6.0);
+        bellGain.gain.setValueAtTime(0.0001, now + 6.0);
+        bellGain.gain.linearRampToValueAtTime(index ? 0.018 : 0.035, now + 6.025);
+        bellGain.gain.exponentialRampToValueAtTime(0.0001, now + 7.1);
+        bell.connect(bellGain); bellGain.connect(context.destination);
+        bell.start(now + 6.0); bell.stop(now + 7.15);
+      });
+      return;
+    }
 
     if (gift.style === "storm_of_the_world") {
       // A layered cinematic wing rush, rising fire roar and ember crackle.
@@ -301,7 +382,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=storm-rebuild-20261107a";
+    script.src = "./gift-engine.js?v=phantom-train-connected-20261107a";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
@@ -314,7 +395,7 @@ function showTikNationGiftEffect(gift) {
     engine.show(gift, {
       meta: "TIKNATION GIFT · TEST COINS ONLY",
       onSound: () => playTikNationGiftSound(gift),
-      duration: gift.style === "storm_of_the_world" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
+      duration: gift.style === "phantomtrain" ? 11000 : gift.style === "storm_of_the_world" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
     });
   }).catch(error => console.error("TikNation gift effect unavailable:", error));
 }
