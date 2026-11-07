@@ -486,6 +486,10 @@ function renderCinematicGift(gift,opts,overlay){
   #tiknation-gift-engine[data-style=meteor] .cinema-art{z-index:3;width:min(82vw,560px);animation:meteor-flight 2.05s cubic-bezier(.18,.72,.2,1) both;filter:drop-shadow(0 0 26px #ff7a22) drop-shadow(0 18px 28px #000b)}
   #tiknation-gift-engine[data-style=meteor] .cinema-object{animation:meteor-spin 2.1s ease-in-out both}
   #tiknation-gift-engine[data-style=meteor] .meteor-flames{filter:drop-shadow(0 0 13px #ff4a12)}
+  #tiknation-gift-engine[data-style=meteor] .meteor-spark{position:absolute;z-index:2;left:var(--sx);top:var(--sy);width:var(--size);height:var(--size);border-radius:50%;background:radial-gradient(circle,#fff8ce 0 18%,#ffbd55 35%,#ff4c16 70%,transparent 100%);box-shadow:0 0 12px #ff8b35;opacity:0;animation:meteor-ember var(--dur) ease-out var(--delay) both;pointer-events:none}
+  #tiknation-gift-engine[data-style=meteor] .meteor-dust{position:absolute;z-index:2;left:50%;top:59%;width:32vw;height:9vh;border-radius:50%;background:radial-gradient(ellipse,rgba(255,112,43,.48),rgba(100,65,61,.18) 48%,transparent 72%);filter:blur(12px);opacity:0;animation:meteor-dust 2.2s 1.55s ease-out both}
+  @keyframes meteor-ember{0%{opacity:0;transform:translate(0,0) scale(.2)}15%{opacity:1}100%{opacity:0;transform:translate(var(--ex),var(--ey)) scale(.05)}}
+  @keyframes meteor-dust{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}25%{opacity:.9}100%{opacity:0;transform:translate(-50%,-20%) scale(2.8)}}
   #tiknation-gift-engine[data-style=meteor] .cinema-stage:before{height:34px;filter:blur(10px);box-shadow:0 0 28px #ff5b1e}
   #tiknation-gift-engine[data-style=meteor] .cinema-title{z-index:5;text-shadow:0 0 16px #ff8b36,0 3px 14px #000}
   #tiknation-gift-engine[data-style=meteor] .cinema-title small{color:#ffe0b6}
@@ -495,6 +499,11 @@ function renderCinematicGift(gift,opts,overlay){
   @keyframes meteor-impact{0%{opacity:0;transform:translate(-50%,-50%) scale(.12)}18%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(2.1)}}
   @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=meteor] .cinema-art,#tiknation-gift-engine[data-style=meteor] .meteor-stage:before,#tiknation-gift-engine[data-style=meteor] .meteor-stage:after{animation:none!important;opacity:1}}
   `;
+  const reducedMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(!reducedMotion){
+   for(let i=0;i<24;i++){const spark=document.createElement("i");spark.className="meteor-spark";const angle=(Math.PI*2*i)/24;const distance=90+(i%6)*22;spark.style.setProperty("--sx",(34+(i%7)*5)+"%");spark.style.setProperty("--sy",(42+(i%5)*5)+"%");spark.style.setProperty("--size",(4+(i%4)*2)+"px");spark.style.setProperty("--ex",(Math.cos(angle)*distance)+"px");spark.style.setProperty("--ey",(Math.sin(angle)*distance)+"px");spark.style.setProperty("--dur",(1.0+(i%4)*.22)+"s");spark.style.setProperty("--delay",(1.35+(i%6)*.035)+"s");world.appendChild(spark);}
+   const dust=document.createElement("i");dust.className="meteor-dust";world.appendChild(dust);
+  }
  }
  const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
  if(!reduced){for(let i=0;i<10;i++){const mote=document.createElement("i");mote.className="cinema-mote";mote.style.setProperty("--mx",(Math.cos(i*2.4)*42)+"vw");mote.style.setProperty("--my",(Math.sin(i*2.4)*34)+"vh");mote.style.setProperty("--wait",(i*.19)+"s");world.appendChild(mote);}}
