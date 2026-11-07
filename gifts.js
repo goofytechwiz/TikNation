@@ -1,12 +1,12 @@
 const TIKNATION_GIFT_CATALOG = {
-  phoenix_rising: {
-    name: "The Phoenix Rising",
-    emoji: "🔥🪽",
-    category: "Legendary",
-    cost: 250,
-    sound: [110, 164, 220, 330],
-    style: "phoenix_rising",
-    message: "From the ashes, a legend takes flight."
+  storm_of_the_world: {
+    name: "Storm of the World",
+    emoji: "⛈️",
+    category: "Epic",
+    cost: 100,
+    sound: [55, 82, 110, 165],
+    style: "storm",
+    message: "The sky has awakened."
   }
 };
 window.TIKNATION_GIFT_CATALOG = TIKNATION_GIFT_CATALOG;
@@ -301,7 +301,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=phoenix-rising-20261107d";
+    script.src = "./gift-engine.js?v=storm-rebuild-20261107a";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
