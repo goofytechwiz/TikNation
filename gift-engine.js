@@ -503,23 +503,25 @@ function renderCinematicGift(gift,opts,overlay){
   @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=meteor] .cinema-art,#tiknation-gift-engine[data-style=meteor] .meteor-stage:before,#tiknation-gift-engine[data-style=meteor] .meteor-stage:after,#tiknation-gift-engine[data-style=meteor] .meteor-shower-streak{animation:none!important;opacity:1}}
   `;
   const reducedMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const showerPaths=[
+   [3,-8,17,1.35,18,56,68],[22,-12,31,1.55,42,48,78],[47,-9,24,1.2,64,42,72],
+   [73,-15,39,1.7,88,35,82],[91,4,22,1.25,25,38,72],[12,22,34,1.8,112,52,68],
+   [58,9,19,1.15,136,35,72],[82,26,28,1.55,158,32,76],[34,-18,43,1.9,184,46,82],
+   [5,42,20,1.3,205,36,66],[68,38,35,1.65,228,40,80],[43,16,16,1.1,252,44,62],
+   [95,48,25,1.45,276,30,74],[18,55,30,1.7,298,48,78],[54,52,22,1.3,322,35,68],
+   [78,60,38,1.8,345,28,84],[30,34,18,1.2,368,42,64],[62,-5,32,1.6,392,50,78]
+  ];
+  showerPaths.forEach(([x,y,len,dur,delay,dx,dy],i)=>{
+   const streak=document.createElement("i");streak.className="meteor-shower-streak";
+   streak.style.setProperty("--sx",x+"%");streak.style.setProperty("--sy",y+"%");
+   streak.style.setProperty("--len",len+"vw");streak.style.setProperty("--thick",(i%4===0?6:3+i%3)+"px");
+   streak.style.setProperty("--head",(i%3===0?11:7)+"px");streak.style.setProperty("--angle",(24+(i%4)*7)+"deg");
+   streak.style.setProperty("--dur",dur+"s");streak.style.setProperty("--delay",(delay/100)+"s");
+   streak.style.setProperty("--dx",dx+"vw");streak.style.setProperty("--dy",dy+"vh");
+   if(reducedMotion){streak.style.opacity="1";streak.style.animation="none";}
+   world.appendChild(streak);
+  });
   if(!reducedMotion){
-   const showerPaths=[
-    [3,-8,17,1.35,18,56,68],[22,-12,31,1.55,42,48,78],[47,-9,24,1.2,64,42,72],
-    [73,-15,39,1.7,88,35,82],[91,4,22,1.25,25,38,72],[12,22,34,1.8,112,52,68],
-    [58,9,19,1.15,136,35,72],[82,26,28,1.55,158,32,76],[34,-18,43,1.9,184,46,82],
-    [5,42,20,1.3,205,36,66],[68,38,35,1.65,228,40,80],[43,16,16,1.1,252,44,62],
-    [95,48,25,1.45,276,30,74],[18,55,30,1.7,298,48,78],[54,52,22,1.3,322,35,68],
-    [78,60,38,1.8,345,28,84],[30,34,18,1.2,368,42,64],[62,-5,32,1.6,392,50,78]
-   ];
-   showerPaths.forEach(([x,y,len,dur,delay,dx,dy],i)=>{
-    const streak=document.createElement("i");streak.className="meteor-shower-streak";
-    streak.style.setProperty("--sx",x+"%");streak.style.setProperty("--sy",y+"%");
-    streak.style.setProperty("--len",len+"vw");streak.style.setProperty("--thick",(i%4===0?6:3+i%3)+"px");
-    streak.style.setProperty("--head",(i%3===0?11:7)+"px");streak.style.setProperty("--angle",(24+(i%4)*7)+"deg");
-    streak.style.setProperty("--dur",dur+"s");streak.style.setProperty("--delay",(delay/100)+"s");
-    streak.style.setProperty("--dx",dx+"vw");streak.style.setProperty("--dy",dy+"vh");world.appendChild(streak);
-   });
    for(let i=0;i<24;i++){const spark=document.createElement("i");spark.className="meteor-spark";const angle=(Math.PI*2*i)/24;const distance=90+(i%6)*22;spark.style.setProperty("--sx",(34+(i%7)*5)+"%");spark.style.setProperty("--sy",(42+(i%5)*5)+"%");spark.style.setProperty("--size",(4+(i%4)*2)+"px");spark.style.setProperty("--ex",(Math.cos(angle)*distance)+"px");spark.style.setProperty("--ey",(Math.sin(angle)*distance)+"px");spark.style.setProperty("--dur",(1.0+(i%4)*.22)+"s");spark.style.setProperty("--delay",(1.35+(i%6)*.035)+"s");world.appendChild(spark);}
    const dust=document.createElement("i");dust.className="meteor-dust";world.appendChild(dust);
   }
