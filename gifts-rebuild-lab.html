@@ -18,10 +18,10 @@ window.addEventListener("error",function(event){
  }
 },true);
 </script>
-<script src="./gift-engine.js?v=phantom-train-20261107a"
+<script src="./gift-engine.js?v=phantom-train-20261107b"
  onload="window.__giftEngineScriptState='Engine file loaded';"
  onerror="window.__giftEngineScriptState='Engine file request failed (check deployment/path)';"></script>
-<script src="./gifts.js?v=storm-recorded-sync-20261107f" onerror="window.__giftCatalogScriptError='Gift catalog script request failed';"></script>
+<script src="./gifts.js?v=phantom-train-20261107b" onerror="window.__giftCatalogScriptError='Gift catalog script request failed';"></script>
 <style>
 :root{color-scheme:dark;--bg:#090817;--panel:#151329;--line:#393257;--cyan:#7eeaff;--violet:#b49aff;--muted:#c4bfd8}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#29204e 0,transparent 55%),var(--bg);color:#fff;font:16px/1.5 system-ui,sans-serif}
@@ -47,7 +47,7 @@ main{width:min(100% - 28px,980px);margin:auto;padding:24px 0 56px}header{padding
 (function(){
 "use strict";
 const status=document.getElementById("labStatus"),grid=document.getElementById("giftGrid"),filters=document.getElementById("filters");
-const catalog={...(window.TIKNATION_GIFT_CATALOG||{})};delete catalog.storm_of_the_world;catalog.void_rift={name:"The Void Rift",emoji:"🌀",category:"Epic",cost:100,style:"voidrift",message:"Reality has split open."};catalog.living_tombstones={name:"The Night of the Living Tombstones",emoji:"🪦",category:"Epic",cost:100,style:"livingtombstones",message:"The dead will not stay buried."};catalog.haunted_hearse={name:"The Haunted Hearse",emoji:"🚘",category:"Epic",cost:100,style:"hauntedhearse",message:"Some passengers never arrive."};catalog.carnevil={name:"CARNEVIL",emoji:"🎪",category:"Epic",cost:150,style:"carnevil",message:"Step right up… if you dare."};catalog.phantom_train={name:"The Phantom Train",emoji:"🚂",category:"Epic",cost:175,style:"phantomtrain",message:"The last train leaves at midnight."};const engine=window.TikNationGiftEngine;
+const catalog={...(window.TIKNATION_GIFT_CATALOG||{})};for(const key of Object.keys(catalog)){const item=catalog[key]||{};if(key==="haunted_carousel"||key==="hauntedcarousel"||item.style==="hauntedcarousel"||item.name==="The Haunted Carousel")delete catalog[key];}delete catalog.storm_of_the_world;catalog.void_rift={name:"The Void Rift",emoji:"🌀",category:"Epic",cost:100,style:"voidrift",message:"Reality has split open."};catalog.living_tombstones={name:"The Night of the Living Tombstones",emoji:"🪦",category:"Epic",cost:100,style:"livingtombstones",message:"The dead will not stay buried."};catalog.haunted_hearse={name:"The Haunted Hearse",emoji:"🚘",category:"Epic",cost:100,style:"hauntedhearse",message:"Some passengers never arrive."};catalog.carnevil={name:"CARNEVIL",emoji:"🎪",category:"Epic",cost:150,style:"carnevil",message:"Step right up… if you dare."};catalog.phantom_train={name:"The Phantom Train",emoji:"🚂",category:"Epic",cost:175,style:"phantomtrain",message:"The last train leaves at midnight."};const engine=window.TikNationGiftEngine;
 let selected="All",soundOn=true,audio=null,lastSound="Not started";
 const entries=Object.entries(catalog),categories=["All",...new Set(entries.map(([,g])=>g.category||"Other"))];
 function say(message,isError){status.textContent=message;status.classList.toggle("error",!!isError);}
