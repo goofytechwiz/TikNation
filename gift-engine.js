@@ -143,6 +143,38 @@ css += String.raw`
 `;
 
 
+
+/* Chinese celestial dragon: sweeping S-curve flight across the full screen */
+css += String.raw\`
+#tiknation-gift-engine .dragon-v2{position:absolute;inset:0;overflow:hidden;perspective:900px}
+#tiknation-gift-engine .dragon-flight-v2{
+ width:min(112vw,1080px)!important;
+ left:50%!important;top:45%!important;
+ animation:c5-serpentine-flight 6.4s cubic-bezier(.42,0,.24,1) both!important;
+ will-change:transform,opacity;
+ filter:drop-shadow(0 16px 24px rgba(0,0,0,.55)) drop-shadow(0 0 22px rgba(245,190,77,.38))!important
+}
+#tiknation-gift-engine .dragon-svg-v5{
+ animation:c5-body-glide 1.65s ease-in-out infinite alternate;
+ transform-origin:50% 50%
+}
+@keyframes c5-serpentine-flight{
+ 0%{opacity:0;transform:translate3d(-155vw,24vh,0) rotate(13deg) scale(.62)}
+ 9%{opacity:1;transform:translate3d(-105vw,16vh,0) rotate(8deg) scale(.72)}
+ 25%{opacity:1;transform:translate3d(-54vw,-8vh,0) rotate(-5deg) scale(.88)}
+ 43%{opacity:1;transform:translate3d(-8vw,-19vh,0) rotate(-12deg) scale(1)}
+ 59%{opacity:1;transform:translate3d(38vw,-5vh,0) rotate(7deg) scale(.94)}
+ 77%{opacity:1;transform:translate3d(91vw,15vh,0) rotate(15deg) scale(.78)}
+ 100%{opacity:0;transform:translate3d(160vw,-8vh,0) rotate(-4deg) scale(.64)}
+}
+@keyframes c5-body-glide{
+ from{transform:rotate(-1.2deg) scaleY(.985) skewY(-.4deg)}
+ to{transform:rotate(1.2deg) scaleY(1.015) skewY(.4deg)}
+}
+@media(prefers-reduced-motion:reduce){
+ #tiknation-gift-engine .dragon-flight-v2,#tiknation-gift-engine .dragon-svg-v5{animation:none!important}
+}
+\`;
 css += String.raw`
 #tiknation-gift-engine .dragon-svg-v5{display:block;width:100%;height:auto;overflow:visible}
 #tiknation-gift-engine .c5-mane{transform-origin:830px 280px;animation:c5-mane-flow 1.1s ease-in-out infinite alternate}
