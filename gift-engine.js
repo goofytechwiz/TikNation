@@ -428,11 +428,10 @@ function renderLivingTombstonesGift(gift,opts,overlay){
  scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.78)),radial-gradient(ellipse,transparent 28%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:7%;left:0;right:0;text-align:center;color:#d7ded4;font:1000 clamp(22px,5.8vw,44px)/1.1 Georgia,serif;letter-spacing:.1em;text-shadow:0 2px 8px #000,0 0 18px #8aa08c">THE NIGHT OF THE LIVING TOMBSTONES<div style="font:700 10px system-ui;letter-spacing:.28em;margin-top:9px;color:#a6b6a7">THE DEAD WILL NOT STAY BURIED</div></div>';
  overlay.appendChild(scene);document.body.appendChild(overlay);
  const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start;
- const rand=(a,b)=>a+Math.random()*(b-a),stones=[],hands=[],mist=[];
+ const rand=(a,b)=>a+Math.random()*(b-a),stones=[],mist=[];
  function resize(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
  resize();window.addEventListener("resize",resize);
  for(let i=0;i<18;i++){const depth=i/18,scale=.35+depth*.95;stones.push({x:rand(-.04,1.04)*w,y:h*(.48+depth*.37),s:scale,tilt:rand(-.08,.08),shape:i%4,crack:rand(0,1),rise:rand(0,1)});}
- for(let i=0;i<8;i++)hands.push({x:rand(.05,.95)*w,y:h*rand(.62,.9),phase:rand(0,6.28),side:i%2?1:-1});
  for(let i=0;i<42;i++)mist.push({x:rand(0,w),y:rand(h*.48,h),r:rand(25,100),speed:rand(8,28),a:rand(.025,.09)});
  function grave(x,y,s,stone,t){
   ctx.save();ctx.translate(x,y);ctx.rotate(stone.tilt+Math.sin(t*.45+stone.rise)*.012);ctx.scale(s,s);
