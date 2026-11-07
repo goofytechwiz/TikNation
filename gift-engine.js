@@ -143,6 +143,16 @@ css += String.raw`
 `;
 
 
+css += String.raw`
+#tiknation-gift-engine .dragon-svg-v5{display:block;width:100%;height:auto;overflow:visible}
+#tiknation-gift-engine .c5-mane{transform-origin:830px 280px;animation:c5-mane-flow 1.1s ease-in-out infinite alternate}
+#tiknation-gift-engine .c5-whiskers{transform-origin:1000px 300px;animation:c5-whisker-flow .8s ease-in-out infinite alternate}
+#tiknation-gift-engine .c5-breath{transform-origin:1018px 300px;animation:c5-breath .3s ease-in-out infinite alternate}
+@keyframes c5-mane-flow{from{transform:translateY(-4px) rotate(-1deg)}to{transform:translateY(5px) rotate(2deg)}}
+@keyframes c5-whisker-flow{from{transform:rotate(-3deg)}to{transform:rotate(4deg)}}
+@keyframes c5-breath{from{opacity:.65;transform:scaleX(.72)}to{opacity:1;transform:scaleX(1.18)}}
+`;
+
 function install(){if(document.getElementById("tiknation-gift-engine-style"))return;const s=document.createElement("style");s.id="tiknation-gift-engine-style";s.textContent=css;document.head.appendChild(s)}
 
 
@@ -439,72 +449,74 @@ function renderCinematicGift(gift,opts,overlay){
 }
 
 const worlds={heartbeat:["heart","💓","❤️","💗","💓"],pulse:["magic","💗","💓","✨","💗"],notes:["party","🎵","🎶","🎼","🎵"],grand:["prism","🎼","🎻","🎺","🎶"],spark:["magic","✨","✦","✧","💫"],portal:["cosmic","🌀","✦","🪄","🌀"],dragon:["fire","🐉","🔥","💥","🐲"],galaxy:["cosmic","🌌","🪐","⭐","🌠"],burst:["stormlight","⚡","💥","✨","⚡"],prism:["prism","🌈","💎","✨","🌈"],surprise:["magic","🎁","❔","✨","🎉"],crown:["gold","👑","✨","💎","👑"],infinity:["cosmic","💎","♾️","✨","💠"],clouds:["ice","☁️","🌫️","✨","☁️"],hammer:["impact","🔨","💥","⭐","🔨"],thunderass:["stormlight","⚡","🍑","💥","⚡"],lightning:["stormlight","⚡","💀","⚡","🌩️"],book:["shadow","📕","☠️","🌫️","📖"],dreammakers:["magic","🧚","✨","🌟","🪄"],phoenix:["fire","🪽","🔥","🌅","🪽"],treasure:["gold","💰","💎","🪙","🏆"],meteor:["impact","☄️","🔥","💥","🌠"],raccoon:["party","🦝","🪩","🎵","🦝"],portalparty:["prism","🌀","🎉","✨","🌀"],blastass:["impact","💨","🍑","💥","💨"],deathass:["shadow","☠️","💀","🌑","☠️"],throne:["gold","👑","🚽","✨","🏆"],chicken:["fire","🐔","💥","🪶","🐓"],cheese:["gold","🧀","☄️","💥","🧀"],skeleton:["party","💀","🪩","🎶","💀"],dragonrevenge:["fire","🐉","🔥","💥","🐲"],stinkdeath:["shadow","💨","💀","☣️","💨"],rattlebone:["shadow","🦴","💀","⚡","🦴"],toxiccloud:["shadow","☣️","💚","🪰","☣️"],bonebreaker:["impact","💀","🦴","👎","💀"],knockout:["impact","🥊","💥","⭐","🥊"],cantbreathe:["party","😂","💀","💧","😂"]};
-if(gift.style==="dragon"||gift.style==="dragonrevenge"){const world=document.createElement("div");world.className="dragon-v2";const dragon=document.createElement("div");dragon.className="dragon-flight-v2";dragon.innerHTML=`<svg class="dragon-svg-v4" viewBox="0 0 1100 700" role="img" aria-label="A detailed fire-breathing dragon">
+if(gift.style==="dragon"||gift.style==="dragonrevenge"){const world=document.createElement("div");world.className="dragon-v2";const dragon=document.createElement("div");dragon.className="dragon-flight-v2";dragon.innerHTML=`<svg class="dragon-svg-v5" viewBox="0 0 1100 700" role="img" aria-label="A long, golden and jade Chinese celestial dragon with antler horns, whiskers, flowing mane, four clawed legs and a serpentine body">
 <defs>
- <linearGradient id="d4Armor" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#d6d8ad"/><stop offset=".16" stop-color="#849b78"/><stop offset=".42" stop-color="#405f4c"/><stop offset=".72" stop-color="#203b35"/><stop offset="1" stop-color="#091b22"/></linearGradient>
- <linearGradient id="d4Under" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e4d6a9"/><stop offset=".45" stop-color="#8d9270"/><stop offset="1" stop-color="#34443b"/></linearGradient>
- <linearGradient id="d4Wing" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#839779"/><stop offset=".32" stop-color="#405d4b"/><stop offset=".72" stop-color="#172c30"/><stop offset="1" stop-color="#08151d"/></linearGradient>
- <linearGradient id="d4Fire" x1="0" y1="0" x2="1" y2=".15"><stop stop-color="#fffbd0"/><stop offset=".18" stop-color="#ffe58a"/><stop offset=".43" stop-color="#ff9c32"/><stop offset=".72" stop-color="#ef3c16"/><stop offset="1" stop-color="#7d120b" stop-opacity="0"/></linearGradient>
- <radialGradient id="d4Eye"><stop stop-color="#fff7a0"/><stop offset=".3" stop-color="#ffb629"/><stop offset="1" stop-color="#e14a10"/></radialGradient>
- <pattern id="d4Scales" width="22" height="17" patternUnits="userSpaceOnUse"><path d="M1 2Q11 14 21 2M-10 10Q0 22 10 10M12 10Q22 22 32 10" fill="none" stroke="#d0d4a7" stroke-opacity=".22" stroke-width="2"/></pattern>
- <filter id="d4Shadow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="17"/></filter>
- <filter id="d4FireGlow" x="-50%" y="-80%" width="200%" height="260%"><feGaussianBlur stdDeviation="13"/></filter>
+ <linearGradient id="c5Body" x1="0" y1="0" x2=".2" y2="1"><stop stop-color="#fff0a2"/><stop offset=".22" stop-color="#dcae42"/><stop offset=".48" stop-color="#9a5a22"/><stop offset=".72" stop-color="#315d4c"/><stop offset="1" stop-color="#15352f"/></linearGradient>
+ <linearGradient id="c5Belly" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff0bf"/><stop offset="1" stop-color="#bd8851"/></linearGradient>
+ <linearGradient id="c5Mane" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff3a6"/><stop offset=".5" stop-color="#e85a25"/><stop offset="1" stop-color="#a51e22"/></linearGradient>
+ <linearGradient id="c5Horn" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff5c6"/><stop offset="1" stop-color="#9b6a38"/></linearGradient>
+ <radialGradient id="c5Eye"><stop stop-color="#fffbd0"/><stop offset=".35" stop-color="#ffcf45"/><stop offset="1" stop-color="#e33b18"/></radialGradient>
+ <pattern id="c5Scales" width="22" height="18" patternUnits="userSpaceOnUse"><path d="M1 2Q11 15 21 2M-10 10Q0 23 10 10M12 10Q22 23 32 10" fill="none" stroke="#fff0b1" stroke-opacity=".35" stroke-width="2.5"/></pattern>
+ <filter id="c5Glow" x="-40%" y="-60%" width="180%" height="220%"><feGaussianBlur stdDeviation="10"/></filter>
 </defs>
-
-<!-- far wing: broad leathery membrane and long finger bones -->
-<g class="dragon-wing dragon-wing-far">
- <path d="M492 365Q394 84 176 34Q222 174 82 230Q225 205 293 350Q352 280 492 405Z" fill="url(#d4Wing)" stroke="#a3b18b" stroke-width="8"/>
- <path d="M485 390L176 34M405 344L82 230M354 331L222 174M293 350L175 287" fill="none" stroke="#b0bd94" stroke-width="9" stroke-linecap="round"/>
- <path d="M176 34Q247 114 293 350M82 230Q194 238 293 350M222 174Q272 227 354 331" fill="none" stroke="#0b1b20" stroke-width="5" opacity=".75"/>
- <path d="M176 34Q222 174 82 230Q225 205 293 350Q352 280 492 405Z" fill="url(#d4Scales)" opacity=".55"/>
+<!-- long, flowing serpentine body -->
+<path d="M72 508 C165 620 274 592 318 500 C355 420 300 357 371 326 C446 292 520 372 585 342 C665 305 628 226 714 204 C775 188 818 230 866 267" fill="none" stroke="#102d29" stroke-width="105" stroke-linecap="round"/>
+<path d="M72 508 C165 620 274 592 318 500 C355 420 300 357 371 326 C446 292 520 372 585 342 C665 305 628 226 714 204 C775 188 818 230 866 267" fill="none" stroke="url(#c5Body)" stroke-width="88" stroke-linecap="round"/>
+<path d="M72 508 C165 620 274 592 318 500 C355 420 300 357 371 326 C446 292 520 372 585 342 C665 305 628 226 714 204 C775 188 818 230 866 267" fill="none" stroke="url(#c5Scales)" stroke-width="78" stroke-linecap="round"/>
+<path d="M82 526 C178 603 268 564 291 493 C319 421 282 378 362 350 C438 324 512 394 585 365 C658 336 645 260 718 231" fill="none" stroke="url(#c5Belly)" stroke-width="22" stroke-linecap="round" opacity=".9"/>
+<!-- flowing tail tuft -->
+<path d="M91 514Q42 476 24 420Q73 449 112 474Q67 414 78 365Q122 420 144 478Q159 432 202 407Q184 477 137 526Z" fill="url(#c5Mane)" stroke="#783c27" stroke-width="6"/>
+<!-- four agile legs with curved claws -->
+<g fill="url(#c5Body)" stroke="#704522" stroke-width="8" stroke-linejoin="round">
+ <path d="M302 472Q270 500 264 548L222 578Q208 598 235 607L294 590L328 526Z"/>
+ <path d="M424 345Q399 377 407 422L380 461Q379 484 405 477L456 438L463 378Z"/>
+ <path d="M622 321Q655 347 664 391L705 414Q716 434 689 444L635 421L601 369Z"/>
+ <path d="M748 223Q781 247 785 286L824 309Q837 331 809 340L759 316L728 272Z"/>
 </g>
-<!-- long tail -->
-<path d="M365 450Q255 528 160 473Q100 440 65 394Q135 510 250 526Q330 538 418 475" fill="none" stroke="#172f2d" stroke-width="43" stroke-linecap="round"/>
-<path d="M365 450Q255 528 160 473Q100 440 65 394" fill="none" stroke="#819777" stroke-width="7" stroke-linecap="round"/>
-<path d="M67 394l-39-37 15 55-31 22 61-7Z" fill="#9aab87"/>
-<!-- near wing -->
-<g class="dragon-wing dragon-wing-near">
- <path d="M486 373Q448 72 640 24Q597 166 827 130Q684 226 719 390Q612 315 486 430Z" fill="url(#d4Wing)" stroke="#c0c49a" stroke-width="10"/>
- <path d="M492 404L640 24M536 370L827 130M606 358L741 174M719 390L680 249" fill="none" stroke="#c3c6a0" stroke-width="10" stroke-linecap="round"/>
- <path d="M640 24Q597 166 827 130Q684 226 719 390Q612 315 486 430Z" fill="url(#d4Scales)" opacity=".72"/>
- <path d="M640 24Q597 166 827 130M536 370Q610 248 827 130M606 358Q650 259 741 174" fill="none" stroke="#102329" stroke-width="5" opacity=".8"/>
+<g fill="#fff0c2" stroke="#6b472c" stroke-width="4">
+ <path d="M222 578l-26 25 34-7 16 17 11-29Z"/><path d="M380 461l-19 26 32-9 15 16 12-30Z"/>
+ <path d="M689 435l-8 29 31-14 18 8 1-28Z"/><path d="M809 331l-4 27 28-15 18 8-2-27Z"/>
 </g>
-<!-- powerful torso -->
-<path d="M305 399Q365 319 485 324Q602 302 706 376Q759 417 704 492Q632 550 475 529Q346 515 285 455Z" fill="url(#d4Armor)" stroke="#b5bd96" stroke-width="8"/>
-<path d="M305 399Q365 319 485 324Q602 302 706 376Q759 417 704 492Q632 550 475 529Q346 515 285 455Z" fill="url(#d4Scales)" opacity=".85"/>
-<path d="M343 435Q477 500 685 428Q652 524 500 544Q382 528 343 435Z" fill="url(#d4Under)" opacity=".9"/>
-<path d="M380 448Q486 491 642 451M397 476Q500 514 618 479M424 501Q512 526 588 502" fill="none" stroke="#e1d3a8" stroke-width="5" opacity=".58"/>
-<!-- rear and front legs, joints and hooked claws -->
-<g fill="url(#d4Armor)" stroke="#b2bd96" stroke-width="7">
- <path d="M390 481Q350 510 337 566L303 600Q300 618 332 620L397 595L434 520Z"/>
- <path d="M625 474Q668 500 681 554L720 582Q727 602 694 607L626 583L590 516Z"/>
- <path d="M508 482Q484 530 495 574L464 603Q464 624 495 620L553 598L565 527Z"/>
+<!-- mane and flame-like fur along the neck -->
+<g class="c5-mane" fill="url(#c5Mane)" stroke="#71372b" stroke-width="5" stroke-linejoin="round">
+ <path d="M735 246Q690 190 705 127Q739 160 755 196Q759 129 814 91Q802 154 809 204Q851 153 906 159Q867 207 867 246Z"/>
+ <path d="M775 292Q716 291 683 249Q739 254 774 265Q736 219 746 176Q785 220 812 252Z"/>
+ <path d="M842 309Q861 352 835 397Q824 354 821 330Q798 370 755 378Q782 337 792 305Z"/>
 </g>
-<g fill="#d7d0ad" stroke="#596e55" stroke-width="4"><path d="M304 600l-20 24 35-8 14 14 13-28Z"/><path d="M695 585l-9 30 32-15 19 9 3-29Z"/><path d="M464 603l-17 26 33-10 17 11 9-31Z"/></g>
-<!-- neck sweeps forward -->
-<path d="M592 389Q652 297 716 252Q774 209 850 237Q893 253 915 298Q875 326 822 310Q778 365 710 433L654 455Z" fill="url(#d4Armor)" stroke="#c1c49b" stroke-width="9"/>
-<path d="M632 382Q701 291 764 264Q822 242 872 270" fill="none" stroke="#d1d0a5" stroke-width="7" opacity=".55"/>
-<path d="M653 388Q725 323 790 296Q844 278 882 298" fill="none" stroke="url(#d4Scales)" stroke-width="30"/>
-<!-- horns, brow, skull and jaw -->
-<path d="M784 246Q752 178 781 125Q795 190 832 220Z" fill="#d8d0a9" stroke="#5d7259" stroke-width="8"/>
-<path d="M839 242Q850 169 909 143Q873 211 883 263Z" fill="#d8d0a9" stroke="#5d7259" stroke-width="8"/>
-<path d="M807 244Q855 205 920 231Q968 246 991 286L957 327Q906 349 850 316L814 291Z" fill="url(#d4Armor)" stroke="#c4c9a0" stroke-width="9"/>
-<path d="M846 297Q912 320 986 291L1004 319Q967 365 897 351Q860 337 846 297Z" fill="url(#d4Under)" stroke="#65795e" stroke-width="7"/>
-<path d="M867 314Q922 335 981 315" fill="none" stroke="#182b27" stroke-width="8"/>
-<path d="M898 324l13 23 12-18M940 322l12 22 12-24" fill="#f0e4c4" stroke="#65765a" stroke-width="3"/>
-<path d="M830 255Q868 213 926 240L945 263Q896 245 856 276Z" fill="#1b302d"/>
-<ellipse cx="906" cy="266" rx="17" ry="11" fill="url(#d4Eye)"/><ellipse cx="910" cy="266" rx="4" ry="10" fill="#101614"/>
-<path d="M969 285l17 4M965 296l16 4" stroke="#111d1b" stroke-width="6" stroke-linecap="round"/>
-<path d="M841 287l-15 13M850 298l-14 12" stroke="#b7c49a" stroke-width="4"/>
-<!-- back spines -->
-<g fill="#d7d0a9" stroke="#566e57" stroke-width="4"><path d="M353 354l-8-43 34 35Z"/><path d="M405 331l4-47 28 43Z"/><path d="M465 322l17-48 18 52Z"/><path d="M526 322l27-42 10 52Z"/><path d="M585 339l32-38 3 54Z"/><path d="M644 363l35-28-8 49Z"/></g>
-<!-- fire breath, layered hot core and turbulent flame -->
-<g class="dragon-flame-v4">
- <path d="M984 283Q1040 222 1100 260Q1055 285 1097 306Q1041 324 982 300Z" fill="#ff4b16" opacity=".9" filter="url(#d4FireGlow)"/>
- <path class="dragon-breath" d="M979 284Q1034 244 1100 269Q1063 286 1098 300Q1040 315 979 297Z" fill="url(#d4Fire)"/>
- <path d="M979 287Q1030 270 1074 282Q1042 292 1080 297Q1025 303 979 292Z" fill="#fff2ad" opacity=".9"/>
+<!-- Chinese dragon head, long muzzle and jade scales -->
+<path d="M780 234Q819 182 889 187Q956 187 1000 236L1040 280Q1027 316 985 332Q930 349 868 319L818 289Z" fill="url(#c5Body)" stroke="#704522" stroke-width="9"/>
+<path d="M850 290Q922 326 1017 294L1030 316Q986 369 912 354Q863 339 850 290Z" fill="url(#c5Belly)" stroke="#80512e" stroke-width="6"/>
+<path d="M872 245Q929 213 989 248L1005 275Q944 258 891 282Z" fill="#254d3e" stroke="#d5b45e" stroke-width="5"/>
+<ellipse cx="949" cy="258" rx="18" ry="13" fill="url(#c5Eye)"/><ellipse cx="953" cy="258" rx="4" ry="12" fill="#151b17"/>
+<path d="M1003 287l24 1M997 301l25 1" stroke="#30231c" stroke-width="6" stroke-linecap="round"/>
+<path d="M904 315l12 23 12-19M951 322l12 22 13-22" fill="#fff2d2" stroke="#78502e" stroke-width="3"/>
+<!-- branching antler horns -->
+<g fill="none" stroke="url(#c5Horn)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M865 203Q837 157 853 103Q876 137 881 165Q896 112 943 90Q923 142 903 178"/>
+ <path d="M930 194Q938 143 982 116Q970 158 954 188"/>
 </g>
-</svg>`;;const title=document.createElement("div");title.className="dragon-title-v2";title.textContent=gift.name||"DRAGON SPIRIT";const sub=document.createElement("small");sub.textContent="THE FIRE AWAKENS";title.appendChild(sub);world.appendChild(dragon);world.appendChild(title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const dragonDuration=Math.max(5000,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},dragonDuration);return overlay;}return renderCinematicGift(gift,opts,overlay);const scene=worlds[gift.style];if(scene){const world=document.createElement("div");world.className="gift-world";world.dataset.world=scene[0];const halo=document.createElement("div");halo.className="world-halo";const ground=document.createElement("div");ground.className="world-ground";const beam=document.createElement("div");beam.className="world-beam";const hero=document.createElement("div");hero.className="world-hero";hero.textContent=scene[1];const left=document.createElement("div");left.className="world-side left";left.textContent=scene[2];const right=document.createElement("div");right.className="world-side right";right.textContent=scene[3];const title=document.createElement("div");title.className="world-title";title.textContent=gift.name||"TikNation Gift";const message=document.createElement("span");message.className="world-message";message.textContent=gift.message||"A gift has arrived.";title.appendChild(message);world.append(halo,ground,beam,left,right,hero);
+<!-- long whiskers -->
+<g class="c5-whiskers" fill="none" stroke="#f5d58c" stroke-width="7" stroke-linecap="round">
+ <path d="M1000 298Q1056 290 1080 245Q1068 309 1020 326"/>
+ <path d="M991 315Q1054 343 1077 388Q1030 371 1007 342"/>
+ <path d="M918 286Q880 270 851 285Q882 294 899 305"/>
+</g>
+<!-- nostrils, brow and beard -->
+<path d="M1012 273l14-7M1015 283l15-4" stroke="#35251d" stroke-width="6" stroke-linecap="round"/>
+<path d="M895 229Q938 197 978 226" fill="none" stroke="#f4d27e" stroke-width="8" stroke-linecap="round"/>
+<path d="M926 350Q912 390 883 410Q934 397 951 362Q963 405 997 419Q984 377 964 347Z" fill="url(#c5Mane)" stroke="#783c27" stroke-width="5"/>
+<!-- golden dorsal whisker/spines -->
+<g fill="#f3d37b" stroke="#81512d" stroke-width="3">
+ <path d="M290 458l-7-34 27 25Z"/><path d="M348 365l7-35 20 35Z"/><path d="M435 344l16-34 13 42Z"/>
+ <path d="M530 365l23-30 8 41Z"/><path d="M623 313l27-30 2 43Z"/><path d="M708 231l27-30-4 40Z"/>
+</g>
+<!-- warm breath glow from the mouth -->
+<g class="c5-breath">
+ <path d="M1022 292Q1062 260 1095 280Q1065 295 1095 313Q1056 326 1020 304Z" fill="#ff5b20" opacity=".9" filter="url(#c5Glow)"/>
+ <path d="M1018 294Q1062 275 1097 290Q1065 299 1096 306Q1054 314 1018 301Z" fill="#ffcf59"/>
+ <path d="M1018 297Q1055 289 1080 297L1088 301Q1051 306 1018 300Z" fill="#fff6c7"/>
+</g>
+</svg>`;;;const title=document.createElement("div");title.className="dragon-title-v2";title.textContent=gift.name||"DRAGON SPIRIT";const sub=document.createElement("small");sub.textContent="THE FIRE AWAKENS";title.appendChild(sub);world.appendChild(dragon);world.appendChild(title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const dragonDuration=Math.max(5000,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},dragonDuration);return overlay;}return renderCinematicGift(gift,opts,overlay);const scene=worlds[gift.style];if(scene){const world=document.createElement("div");world.className="gift-world";world.dataset.world=scene[0];const halo=document.createElement("div");halo.className="world-halo";const ground=document.createElement("div");ground.className="world-ground";const beam=document.createElement("div");beam.className="world-beam";const hero=document.createElement("div");hero.className="world-hero";hero.textContent=scene[1];const left=document.createElement("div");left.className="world-side left";left.textContent=scene[2];const right=document.createElement("div");right.className="world-side right";right.textContent=scene[3];const title=document.createElement("div");title.className="world-title";title.textContent=gift.name||"TikNation Gift";const message=document.createElement("span");message.className="world-message";message.textContent=gift.message||"A gift has arrived.";title.appendChild(message);world.append(halo,ground,beam,left,right,hero);
 const motionStart=Date.now();let motionTimer=0;function animateWorld(){if(!overlay.isConnected){if(motionTimer)clearInterval(motionTimer);return;}const t=(Date.now()-motionStart)/1000;const entry=Math.min(1,(Date.now()-motionStart)/950);const ease=1-Math.pow(1-entry,3);hero.style.opacity=String(ease);hero.style.transform="translate(-50%,calc(-50% + "+((1-ease)*150+Math.sin(t*1.8)*10)+"px)) scale("+(0.25+ease*.82+Math.sin(t*2.1)*.07)+") rotate("+((1-ease)*-24+Math.sin(t*1.4)*5)+"deg)";halo.style.transform="rotate("+((t*42)%360)+"deg) scale("+(1+Math.sin(t*1.7)*.09)+")";ground.style.transform="scale("+(1.05+Math.sin(t*2.4)*.22)+")";ground.style.opacity=String(.58+Math.sin(t*2.4)*.2);beam.style.transform="rotate("+Math.sin(t*1.35)*27+"deg)";beam.style.opacity=String(.5+Math.sin(t*1.35)*.35);left.style.transform="translateY("+Math.sin(t*1.8)*38+"px) rotate("+Math.sin(t*1.5)*15+"deg) scale("+(1+Math.sin(t*1.8)*.12)+")";right.style.transform="translateY("+Math.sin(t*1.55+2)*42+"px) rotate("+Math.sin(t*1.3+2)*15+"deg) scale("+(1+Math.sin(t*1.55+2)*.12)+")";} for(let i=0;i<18;i++){const p=document.createElement("span");p.className="world-particle";p.textContent=[scene[4],"✦","•","✧"][i%4];p.style.setProperty("--x",((i%2?1:-1)*(70+(i%6)*34))+"px");p.style.setProperty("--delay",(i*.11)+"s");world.appendChild(p);try{p.animate([{opacity:0,transform:"translate(-50%,20vh) scale(.2)"},{opacity:1,offset:.18},{opacity:0,transform:"translate(calc(-50% + "+((i%2?1:-1)*(70+(i%6)*34))+"px),-65vh) scale(1.1)"}],{duration:2800,delay:i*110,iterations:Infinity,easing:"ease-out"});}catch(_){}}world.appendChild(title);overlay.appendChild(world);document.body.appendChild(overlay);animateWorld();motionTimer=setInterval(animateWorld,32);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const sceneDuration=Math.max(4000,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},sceneDuration);return overlay;}const stage=document.createElement("div");stage.className="stage";const ring=document.createElement("div");ring.className="ring";const hero=document.createElement("div");hero.className="hero";hero.textContent=gift.emoji||"🎁";hero.setAttribute("aria-hidden","true");const title=document.createElement("div");title.className="title";title.textContent=gift.name||"TikNation Gift";const message=document.createElement("div");message.className="message";message.textContent=gift.message||"A gift has arrived.";const meta=document.createElement("div");meta.className="meta";meta.textContent=opts.meta||"TIKNATION LIVE · GIFT RECEIVED";stage.append(ring,hero,title,message,meta);if(!window.matchMedia||!window.matchMedia("(prefers-reduced-motion: reduce)").matches){const symbols=["✦","✧","✶","•","✷","⋆"];for(let i=0;i<28;i++){const p=document.createElement("span");const a=Math.PI*2*i/28,d=110+(i%5)*42;p.className="particle";p.textContent=symbols[i%symbols.length];p.style.setProperty("--dx",Math.cos(a)*d+"px");p.style.setProperty("--dy",Math.sin(a)*d+"px");p.style.setProperty("--delay",(i%7)*.035+"s");stage.appendChild(p)}}overlay.appendChild(stage);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const duration=Math.max(1800,Number(opts.duration)||4300);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .35s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),380)}},duration);return overlay}
 const giftQueue=[];let giftPlaying=false;
 function playNextGift(){const item=giftQueue.shift();if(!item){giftPlaying=false;return;}giftPlaying=true;const duration=Math.max(4500,Number(item.opts&&item.opts.duration)||6500);try{renderGift(item.gift,item.opts);}catch(error){console.error("Gift animation failed:",error);}setTimeout(()=>{giftPlaying=false;playNextGift();},duration+600);}
