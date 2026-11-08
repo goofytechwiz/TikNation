@@ -739,101 +739,120 @@ function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{
 
 /* Cinematic object renderer: custom shaded vector artwork replaces emoji-only gift posters. */
 
+
 function renderGhostShipGift(gift,opts,overlay){
- const styleId="tiknation-flying-dutchman-cinematic-v2";
+ const styleId="tiknation-flying-dutchman-cinematic-v3";
  let style=document.getElementById(styleId);
  if(!style){style=document.createElement("style");style.id=styleId;document.head.appendChild(style);}
  style.textContent=String.raw`
- #tiknation-gift-engine[data-style=ghostship]{position:fixed!important;inset:0!important;display:block!important;overflow:hidden!important;padding:0!important;background:#03070b!important}
- #tiknation-gift-engine[data-style=ghostship] .fd2-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 72% 16%,#8c9b9b 0,#394b50 15%,#172b34 43%,#07121a 75%,#020609 100%);perspective:1100px}
- #tiknation-gift-engine[data-style=ghostship] .fd2-moon{position:absolute;right:13%;top:7%;width:clamp(65px,12vw,135px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 32% 28%,#f5f3d9 0,#c3d0c1 43%,#667e7a 72%,#263c40 100%);box-shadow:0 0 35px 12px #b8dfd655,0 0 110px 40px #a7d2ce22;opacity:.72}
- #tiknation-gift-engine[data-style=ghostship] .fd2-svg{position:absolute;width:100%;height:100%;inset:0;overflow:visible}
- #tiknation-gift-engine[data-style=ghostship] .fd2-ship{transform-origin:50% 60%;animation:fd2-arrive 2.1s cubic-bezier(.18,.8,.2,1) both,fd2-heave 5s ease-in-out 2.1s infinite}
- #tiknation-gift-engine[data-style=ghostship] .fd2-sail{transform-box:fill-box;transform-origin:50% 0%;animation:fd2-sail 3.6s ease-in-out infinite alternate}
- #tiknation-gift-engine[data-style=ghostship] .fd2-sail:nth-of-type(2n){animation-delay:-1.4s}
- #tiknation-gift-engine[data-style=ghostship] .fd2-rope{stroke-dasharray:8 5;animation:fd2-rig 8s linear infinite}
- #tiknation-gift-engine[data-style=ghostship] .fd2-lantern{filter:url(#fd2-glow);animation:fd2-lamp 1.8s ease-in-out infinite alternate}
- #tiknation-gift-engine[data-style=ghostship] .fd2-fog{animation:fd2-fog 18s linear infinite}
- #tiknation-gift-engine[data-style=ghostship] .fd2-title{position:absolute;z-index:5;left:3%;right:3%;bottom:5%;text-align:center;color:#e3eee7;font:1000 clamp(21px,5vw,45px)/1.1 system-ui;letter-spacing:.15em;text-shadow:0 2px 5px #000,0 0 24px #9ac8b8}
- #tiknation-gift-engine[data-style=ghostship] .fd2-title small{display:block;margin-top:8px;color:#bdd0c7;font-size:clamp(9px,1.8vw,13px);letter-spacing:.24em}
- @keyframes fd2-arrive{from{opacity:0;transform:translate3d(28vw,12vh,-300px) scale(.58) rotateY(-16deg)}to{opacity:1;transform:translate3d(0,0,0) scale(1) rotateY(-5deg)}}
- @keyframes fd2-heave{0%,100%{translate:0 0;rotate:-.4deg}50%{translate:0 -9px;rotate:.5deg}}
- @keyframes fd2-sail{from{transform:skewX(-2deg) scaleX(.98)}to{transform:skewX(3deg) scaleX(1.025)}}
- @keyframes fd2-rig{to{stroke-dashoffset:-104}}
- @keyframes fd2-lamp{from{opacity:.55}to{opacity:1}}
- @keyframes fd2-fog{from{transform:translateX(-3%)}to{transform:translateX(4%)}}
- @media(max-width:650px){#tiknation-gift-engine[data-style=ghostship] .fd2-svg{width:150%;left:-25%}#tiknation-gift-engine[data-style=ghostship] .fd2-title{bottom:4%;letter-spacing:.1em}}
- @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=ghostship] .fd2-ship,#tiknation-gift-engine[data-style=ghostship] .fd2-sail,#tiknation-gift-engine[data-style=ghostship] .fd2-rope,#tiknation-gift-engine[data-style=ghostship] .fd2-fog{animation:none!important}}
+ #tiknation-gift-engine[data-style=ghostship]{position:fixed!important;inset:0!important;display:block!important;overflow:hidden!important;padding:0!important;background:#020609!important}
+ #tiknation-gift-engine[data-style=ghostship] .fd3-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 76% 17%,#87918a 0,#3b4a49 13%,#17272b 39%,#091319 70%,#020609 100%);perspective:1300px}
+ #tiknation-gift-engine[data-style=ghostship] .fd3-moon{position:absolute;right:13%;top:7%;width:clamp(58px,10vw,116px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 28%,#f4f0d9,#b5bcb0 48%,#596b67 78%,#263a3b);box-shadow:0 0 28px 9px #d7e0cf55,0 0 105px 36px #a6c7c022;opacity:.68}
+ #tiknation-gift-engine[data-style=ghostship] .fd3-svg{position:absolute;width:100%;height:100%;inset:0;overflow:visible}
+ #tiknation-gift-engine[data-style=ghostship] .fd3-ship{transform-origin:52% 60%;animation:fd3-arrive 2.4s cubic-bezier(.16,.78,.2,1) both,fd3-heave 6s ease-in-out 2.4s infinite}
+ #tiknation-gift-engine[data-style=ghostship] .fd3-sail{transform-box:fill-box;transform-origin:50% 0%;animation:fd3-canvas 4.8s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=ghostship] .fd3-sail:nth-of-type(2n){animation-delay:-1.7s}
+ #tiknation-gift-engine[data-style=ghostship] .fd3-rope{stroke-dasharray:13 7;animation:fd3-rig 12s linear infinite}
+ #tiknation-gift-engine[data-style=ghostship] .fd3-lamp{filter:url(#fd3-glow);animation:fd3-lamp 2.1s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=ghostship] .fd3-mist{animation:fd3-mist 22s linear infinite}
+ #tiknation-gift-engine[data-style=ghostship] .fd3-title{position:absolute;z-index:5;left:3%;right:3%;bottom:4%;text-align:center;color:#e4e8dc;font:1000 clamp(20px,4.7vw,43px)/1.1 system-ui;letter-spacing:.14em;text-shadow:0 3px 8px #000,0 0 26px #a8c6b2}
+ #tiknation-gift-engine[data-style=ghostship] .fd3-title small{display:block;margin-top:8px;color:#b9c9bd;font-size:clamp(9px,1.7vw,13px);letter-spacing:.23em}
+ @keyframes fd3-arrive{from{opacity:0;transform:translate3d(24vw,9vh,-360px) scale(.62) rotateY(-18deg)}to{opacity:1;transform:translate3d(0,0,0) scale(1) rotateY(-7deg)}}
+ @keyframes fd3-heave{0%,100%{translate:0 0;rotate:-.35deg}50%{translate:0 -7px;rotate:.45deg}}
+ @keyframes fd3-canvas{from{transform:skewX(-1.5deg) scaleX(.985)}to{transform:skewX(2deg) scaleX(1.018)}}
+ @keyframes fd3-rig{to{stroke-dashoffset:-160}}
+ @keyframes fd3-lamp{from{opacity:.45}to{opacity:1}}
+ @keyframes fd3-mist{from{transform:translateX(-4%)}to{transform:translateX(5%)}}
+ @media(max-width:650px){#tiknation-gift-engine[data-style=ghostship] .fd3-svg{width:145%;left:-22.5%}#tiknation-gift-engine[data-style=ghostship] .fd3-title{bottom:3%;letter-spacing:.09em}}
+ @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=ghostship] .fd3-ship,#tiknation-gift-engine[data-style=ghostship] .fd3-sail,#tiknation-gift-engine[data-style=ghostship] .fd3-rope,#tiknation-gift-engine[data-style=ghostship] .fd3-mist{animation:none!important}}
  `;
- const world=document.createElement("div");world.className="fd2-world";
+ const world=document.createElement("div");world.className="fd3-world";
  world.innerHTML=`
- <div class="fd2-moon"></div>
- <svg class="fd2-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A towering, barnacle-encrusted ghost galleon with three torn sails">
+ <div class="fd3-moon"></div>
+ <svg class="fd3-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A towering, ancient ghost galleon with weather-beaten black timber, torn sails and a haunted stern castle">
  <defs>
-  <linearGradient id="fd2-hull" x1="0" y1="0" x2=".2" y2="1"><stop stop-color="#9ca58c"/><stop offset=".14" stop-color="#526b5b"/><stop offset=".38" stop-color="#263f3d"/><stop offset=".72" stop-color="#101f27"/><stop offset="1" stop-color="#03090e"/></linearGradient>
-  <linearGradient id="fd2-side" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a2a18a"/><stop offset=".22" stop-color="#52645a"/><stop offset=".65" stop-color="#1c3434"/><stop offset="1" stop-color="#07131a"/></linearGradient>
-  <linearGradient id="fd2-sailcloth" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d5d5c3"/><stop offset=".35" stop-color="#8f9b8e"/><stop offset=".72" stop-color="#536c65"/><stop offset="1" stop-color="#243c3a"/></linearGradient>
-  <linearGradient id="fd2-wood" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#101b1b"/><stop offset=".25" stop-color="#786f58"/><stop offset=".52" stop-color="#b0a17d"/><stop offset=".8" stop-color="#4c594b"/><stop offset="1" stop-color="#111b1d"/></linearGradient>
-  <radialGradient id="fd2-green"><stop stop-color="#d6ffb0"/><stop offset=".25" stop-color="#91d89b"/><stop offset="1" stop-color="#3b765e" stop-opacity="0"/></radialGradient>
-  <filter id="fd2-glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  <filter id="fd2-shadow"><feGaussianBlur stdDeviation="16"/></filter>
-  <pattern id="fd2-planks" width="42" height="19" patternUnits="userSpaceOnUse"><path d="M0 18H42M21 0V18" stroke="#07151a" stroke-width="2" opacity=".65"/><path d="M2 3H18M24 13H39" stroke="#a1a187" stroke-width="1" opacity=".2"/></pattern>
-  <clipPath id="fd2-hull-clip"><path d="M120 474Q250 452 380 465L690 448Q824 425 952 390L1082 355L1050 497Q1012 574 910 614Q720 678 495 649Q300 625 185 568Z"/></clipPath>
+  <linearGradient id="fd3-hull" x1="0" y1="0" x2=".15" y2="1"><stop stop-color="#a7a18b"/><stop offset=".12" stop-color="#59645a"/><stop offset=".34" stop-color="#2b3b37"/><stop offset=".72" stop-color="#101d22"/><stop offset="1" stop-color="#03080d"/></linearGradient>
+  <linearGradient id="fd3-hullside" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a69c7e"/><stop offset=".18" stop-color="#65705d"/><stop offset=".48" stop-color="#293b36"/><stop offset=".82" stop-color="#101c22"/><stop offset="1" stop-color="#050a0f"/></linearGradient>
+  <linearGradient id="fd3-deck" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#8b8065"/><stop offset="1" stop-color="#1b2928"/></linearGradient>
+  <linearGradient id="fd3-sailcloth" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e0dfc9"/><stop offset=".23" stop-color="#aeb6a5"/><stop offset=".56" stop-color="#687a70"/><stop offset="1" stop-color="#263b37"/></linearGradient>
+  <linearGradient id="fd3-shadow-sail" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#152522" stop-opacity=".7"/><stop offset=".5" stop-color="#d4d3bd" stop-opacity=".05"/><stop offset="1" stop-color="#0b1717" stop-opacity=".72"/></linearGradient>
+  <linearGradient id="fd3-wood" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#111a19"/><stop offset=".28" stop-color="#796f56"/><stop offset=".52" stop-color="#b2a27e"/><stop offset=".76" stop-color="#4b594c"/><stop offset="1" stop-color="#11191b"/></linearGradient>
+  <radialGradient id="fd3-green"><stop stop-color="#e0ffbd"/><stop offset=".22" stop-color="#9bdc9a"/><stop offset="1" stop-color="#4d906d" stop-opacity="0"/></radialGradient>
+  <filter id="fd3-glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="fd3-soft"><feGaussianBlur stdDeviation="18"/></filter>
+  <filter id="fd3-grain"><feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="2" seed="8"/><feColorMatrix values=".25 0 0 0 .2 .25 0 0 0 .2 .25 0 0 0 .2 0 0 0 .14 0"/></filter>
+  <pattern id="fd3-planks" width="58" height="22" patternUnits="userSpaceOnUse"><path d="M0 21H58M29 0V21" stroke="#071114" stroke-width="2.5" opacity=".8"/><path d="M3 5H25M33 15H55" stroke="#c0b18d" stroke-width="1" opacity=".22"/></pattern>
+  <clipPath id="fd3-hullclip"><path d="M105 470Q260 435 420 456L720 447Q900 420 1090 350L1060 498Q1025 575 914 615Q710 680 480 648Q270 620 160 560Z"/></clipPath>
  </defs>
- <g class="fd2-fog" fill="#b9c8c2" opacity=".35" filter="url(#fd2-shadow)"><ellipse cx="270" cy="380" rx="290" ry="54"/><ellipse cx="850" cy="315" rx="360" ry="70"/><ellipse cx="650" cy="540" rx="460" ry="62"/></g>
- <g class="fd2-ship">
-  <ellipse cx="605" cy="668" rx="475" ry="42" fill="#000" opacity=".7" filter="url(#fd2-shadow)"/>
-  <g stroke="#1b2b2b" stroke-width="8" stroke-linejoin="round">
-   <path d="M790 470L800 355L836 325L839 270L885 240L928 265L933 315L981 339L1000 454Z" fill="url(#fd2-side)"/>
-   <path d="M816 366L820 313L853 287L855 241L891 213L924 238L925 286L965 312L970 397Z" fill="#536456" stroke="#a0a188" stroke-width="4"/>
-   <path d="M839 273L841 220L871 190L901 202L931 232L930 278Z" fill="#657364" stroke="#c0b596" stroke-width="4"/>
-   <path d="M865 210L870 175L895 146L918 178L918 218Z" fill="#354b47" stroke="#b7ad8e" stroke-width="4"/>
-   <path d="M881 153L896 111L913 153Z" fill="#b1a78b" stroke="#354b42" stroke-width="5"/>
-   <path d="M805 385L976 385M814 425L988 425M833 332L963 332M843 290L950 290" fill="none" stroke="#c1b18c" stroke-width="7"/>
-   <path d="M806 359L988 359M820 314L967 314M840 269L939 269" fill="none" stroke="#101d20" stroke-width="5"/>
+ <g class="fd3-mist" fill="#bfcac0" opacity=".27" filter="url(#fd3-soft)"><ellipse cx="260" cy="350" rx="300" ry="47"/><ellipse cx="880" cy="300" rx="380" ry="64"/><ellipse cx="650" cy="550" rx="480" ry="48"/></g>
+ <g class="fd3-ship">
+  <ellipse cx="600" cy="670" rx="480" ry="36" fill="#000" opacity=".72" filter="url(#fd3-soft)"/>
+  <!-- Stern castle: stacked galleries, carved rails and lantern windows -->
+  <g stroke-linejoin="round">
+   <path d="M780 474L794 353L827 330L830 271L870 241L873 197L910 176L946 218L951 270L991 302L1010 449Z" fill="url(#fd3-hullside)" stroke="#182724" stroke-width="10"/>
+   <path d="M808 366L812 312L845 284L847 239L882 210L922 229L929 283L968 313L975 408Z" fill="#526052" stroke="#b4a889" stroke-width="4"/>
+   <path d="M836 286L839 229L870 196L906 202L938 239L939 294Z" fill="#657060" stroke="#d0c2a0" stroke-width="4"/>
+   <path d="M862 211L866 172L895 139L925 174L928 222Z" fill="#344843" stroke="#c0b18e" stroke-width="4"/>
+   <path d="M881 153L897 111L916 153Z" fill="#c3b38e" stroke="#263d37" stroke-width="5"/>
+   <path d="M800 385L1001 385M810 427L1007 427M820 338L980 338M840 293L951 293M852 251L941 251" fill="none" stroke="#c4b38d" stroke-width="7"/>
+   <path d="M799 365L1004 365M815 316L986 316M837 273L956 273" fill="none" stroke="#172522" stroke-width="5"/>
+   <path d="M816 397l18 12 18-12 18 12 18-12 18 12 18-12 18 12 18-12 18 12 18-12 18 12" fill="none" stroke="#b2a17e" stroke-width="3" opacity=".8"/>
   </g>
-  <g fill="#0b171a" stroke="#b3a783" stroke-width="4">
-   <path d="M826 389v-23q10-18 20 0v23zM858 389v-23q10-18 20 0v23zM890 389v-23q10-18 20 0v23zM922 389v-23q10-18 20 0v23zM954 389v-23q10-18 20 0v23z"/>
-   <path d="M838 338v-19q9-15 18 0v19zM871 338v-19q9-15 18 0v19zM904 338v-19q9-15 18 0v19zM937 338v-19q9-15 18 0v19z"/>
-   <path d="M858 285v-18q8-13 16 0v18zM890 285v-18q8-13 16 0v18zM921 285v-18q8-13 16 0v18z"/>
+  <g fill="#081311" stroke="#c4b18a" stroke-width="4">
+   <path d="M824 387v-25q10-20 20 0v25zM858 387v-25q10-20 20 0v25zM892 387v-25q10-20 20 0v25zM926 387v-25q10-20 20 0v25zM960 387v-25q10-20 20 0v25z"/>
+   <path d="M838 338v-21q9-17 18 0v21zM872 338v-21q9-17 18 0v21zM906 338v-21q9-17 18 0v21zM940 338v-21q9-17 18 0v21z"/>
+   <path d="M859 286v-19q8-15 16 0v19zM892 286v-19q8-15 16 0v19zM924 286v-19q8-15 16 0v19z"/>
   </g>
-  <g class="fd2-lantern" fill="#baffaa"><circle cx="837" cy="374" r="7"/><circle cx="870" cy="374" r="7"/><circle cx="903" cy="374" r="7"/><circle cx="936" cy="374" r="7"/><circle cx="854" cy="323" r="6"/><circle cx="887" cy="323" r="6"/><circle cx="920" cy="323" r="6"/></g>
-  <path d="M120 474Q250 452 380 465L690 448Q824 425 952 390L1082 355L1050 497Q1012 574 910 614Q720 678 495 649Q300 625 185 568Z" fill="url(#fd2-hull)" stroke="#b3ad8e" stroke-width="9"/>
-  <path d="M130 478Q350 465 560 476Q820 466 1068 376L1040 496Q975 567 900 591Q690 649 500 624Q294 603 180 553Z" fill="url(#fd2-planks)" opacity=".9" clip-path="url(#fd2-hull-clip)"/>
-  <path d="M155 493Q390 475 595 488Q820 475 1058 390M176 523Q398 516 610 526Q832 513 1048 431M205 552Q424 555 650 558Q850 548 1027 476M252 583Q465 598 685 594Q861 584 997 526" fill="none" stroke="#a5a487" stroke-width="5" opacity=".55"/>
-  <path d="M125 476Q350 453 560 466Q825 450 1080 358" fill="none" stroke="#d4c5a0" stroke-width="12"/>
-  <g fill="#02090d" stroke="#9d997c" stroke-width="5"><ellipse cx="300" cy="502" rx="19" ry="13"/><ellipse cx="380" cy="505" rx="19" ry="13"/><ellipse cx="460" cy="506" rx="19" ry="13"/><ellipse cx="540" cy="507" rx="19" ry="13"/><ellipse cx="620" cy="500" rx="19" ry="13"/><ellipse cx="700" cy="488" rx="19" ry="13"/><ellipse cx="780" cy="468" rx="19" ry="13"/></g>
-  <g stroke="url(#fd2-wood)" stroke-linecap="round"><path d="M340 477L360 92M590 463L596 42M820 438L837 125" stroke-width="24"/><path d="M330 280L392 283M299 365L415 365M285 438L425 438M535 205L655 205M512 310L675 310M500 400L687 400M787 258L889 258M774 341L900 341M764 407L914 407" stroke-width="13"/></g>
-  <g fill="none" stroke="#b4b19a" stroke-width="3" opacity=".7" class="fd2-rope"><path d="M360 92L130 475M360 92L590 463M596 42L340 477M596 42L820 438M837 125L590 463M837 125L1080 358M340 280L596 42L820 258M299 365L596 205L900 341"/><path d="M360 92L360 477M596 42L596 463M837 125L837 438" stroke-dasharray="3 6"/></g>
-  <g class="fd2-sail" stroke="#d3d2bd" stroke-width="4" stroke-linejoin="round">
-   <path d="M353 112Q296 123 260 167L272 266L295 250L306 276L324 256L341 278L357 258L375 276L392 251L405 267L402 155Z" fill="url(#fd2-sailcloth)"/>
-   <path d="M589 65Q507 77 462 129L468 244L490 221L506 251L526 226L544 253L564 229L583 250L606 227L627 248L647 221L650 109Z" fill="url(#fd2-sailcloth)"/>
-   <path d="M830 146Q770 160 738 205L742 300L760 280L776 302L794 282L810 305L829 281L846 299L865 274L882 289L883 182Z" fill="url(#fd2-sailcloth)"/>
+  <g class="fd3-lamp" fill="#caffad"><circle cx="834" cy="374" r="6"/><circle cx="868" cy="374" r="6"/><circle cx="902" cy="374" r="6"/><circle cx="936" cy="374" r="6"/><circle cx="970" cy="374" r="6"/><circle cx="847" cy="327" r="5"/><circle cx="881" cy="327" r="5"/><circle cx="915" cy="327" r="5"/><circle cx="949" cy="327" r="5"/></g>
+  <!-- Main hull, visible curved bow and deep stern -->
+  <path d="M105 470Q260 435 420 456L720 447Q900 420 1090 350L1060 498Q1025 575 914 615Q710 680 480 648Q270 620 160 560Z" fill="url(#fd3-hull)" stroke="#c0b28f" stroke-width="9"/>
+  <path d="M112 477Q340 450 560 472Q840 463 1080 365L1054 498Q985 575 900 592Q700 646 485 623Q280 601 170 551Z" fill="url(#fd3-planks)" opacity=".9" clip-path="url(#fd3-hullclip)"/>
+  <path d="M128 489Q350 462 570 483Q840 470 1075 385M160 520Q390 505 615 529Q850 514 1058 430M192 550Q420 550 650 560Q860 548 1035 478M250 583Q470 594 690 595Q875 580 1007 526" fill="none" stroke="#c0b28d" stroke-width="4" opacity=".48"/>
+  <path d="M112 472Q355 440 575 462Q850 444 1088 356" fill="none" stroke="#e0d0a9" stroke-width="11"/>
+  <path d="M165 559Q340 623 515 640Q755 667 923 612" fill="none" stroke="#050b0f" stroke-width="16" opacity=".75"/>
+  <g fill="#03090d" stroke="#a79d7e" stroke-width="5"><ellipse cx="285" cy="499" rx="18" ry="12"/><ellipse cx="365" cy="500" rx="18" ry="12"/><ellipse cx="445" cy="503" rx="18" ry="12"/><ellipse cx="525" cy="504" rx="18" ry="12"/><ellipse cx="605" cy="499" rx="18" ry="12"/><ellipse cx="685" cy="490" rx="18" ry="12"/><ellipse cx="765" cy="474" rx="18" ry="12"/></g>
+  <g fill="none" stroke="#172724" stroke-width="5" opacity=".9"><path d="M280 490l-4 18m84-18l-4 18m84-18l-4 18m84-17l-4 18m84-19l-4 18m84-27l-4 18m84-42l-4 18"/></g>
+  <!-- Weathered deck and three mast structures -->
+  <path d="M178 462Q430 429 650 445Q850 428 1000 389L1012 427Q830 478 635 477Q405 470 180 500Z" fill="url(#fd3-deck)" stroke="#172724" stroke-width="6"/>
+  <g stroke="url(#fd3-wood)" stroke-linecap="round"><path d="M350 468L365 83M590 456L598 34M815 431L840 112" stroke-width="24"/><path d="M325 265L400 268M299 356L420 356M285 431L435 431M532 190L662 190M510 300L680 300M498 395L695 395M790 245L900 245M775 333L915 333M760 408L930 408" stroke-width="14"/></g>
+  <g fill="none" stroke="#c2b99f" stroke-width="3" opacity=".78" class="fd3-rope"><path d="M365 83L115 470M365 83L590 456M598 34L350 468M598 34L815 431M840 112L590 456M840 112L1090 350M350 265L598 34L840 245M299 356L598 190L915 333"/><path d="M365 83L365 468M598 34L598 456M840 112L840 431" stroke-dasharray="4 7"/></g>
+  <!-- Torn, stained, heavy canvas with seams, holes and shredded hems -->
+  <g class="fd3-sail" stroke="#d6d5c2" stroke-width="3.5" stroke-linejoin="round">
+   <path d="M358 104Q302 115 267 157L272 257L286 248L298 271L315 253L330 276L347 255L363 278L379 254L394 270L402 246L397 146Z" fill="url(#fd3-sailcloth)"/>
+   <path d="M358 104L358 260M278 159Q330 177 397 146M274 209Q331 224 400 203" fill="none" stroke="#42574e" stroke-width="2" opacity=".7"/>
+   <path d="M594 53Q508 68 466 116L470 235L485 219L501 247L518 225L535 253L553 228L571 252L588 229L607 250L624 226L642 247L653 218L650 95Z" fill="url(#fd3-sailcloth)"/>
+   <path d="M594 53L594 235M470 128Q550 147 650 112M470 183Q554 202 651 171" fill="none" stroke="#42574e" stroke-width="2" opacity=".7"/>
+   <path d="M835 130Q776 144 743 188L747 291L761 278L776 301L793 280L809 305L826 282L842 301L858 276L875 290L888 267L884 169Z" fill="url(#fd3-sailcloth)"/>
+   <path d="M835 130L835 289M747 203Q808 220 885 187M747 251Q811 268 887 238" fill="none" stroke="#42574e" stroke-width="2" opacity=".7"/>
   </g>
-  <g fill="none" stroke="#263b37" stroke-width="7" opacity=".8"><path d="M282 182L385 249M307 144L368 258M483 149L629 220M513 111L603 245M753 220L866 275M777 184L841 294"/></g>
-  <g fill="none" stroke="#a9b4a2" stroke-width="5" stroke-linecap="round"><path d="M273 264L260 322L279 300L285 344M322 260L311 319L328 300L337 345M385 255L399 309L387 300L405 331M479 244L470 315L492 291L497 343M548 246L553 322L570 301L575 350M629 226L648 293L631 282L658 326M751 298L740 351L760 334L767 372M818 302L830 359L847 338L852 376"/></g>
-  <g stroke="#b8b79a" stroke-width="6" stroke-linejoin="round">
-   <path d="M190 487L70 405L20 389L85 432L38 440L115 465L70 480L182 522Z" fill="#64796a"/>
-   <path d="M75 419Q34 392 46 365Q64 382 78 379Q95 350 113 367Q118 389 101 405L139 435Z" fill="#a4aa8d"/>
-   <path d="M67 381L49 346L84 370L104 344L111 383" fill="#c0b99b"/><path d="M50 397Q76 408 100 395" fill="none" stroke="#162d2c" stroke-width="9"/>
-   <circle cx="77" cy="388" r="5" fill="#c9ffae" class="fd2-lantern"/>
-   <path d="M188 478L12 320L-22 305L35 352L5 354L188 502" fill="#687d6b"/>
+  <g fill="#1a2926" opacity=".72"><path d="M308 154l22 8-8 20-20-9zM365 197l17 4-6 17-19-5zM512 118l25 8-10 24-24-9zM575 170l19 6-7 19-18-7zM780 191l20 8-8 19-20-8zM843 230l18 7-7 18-18-7z"/></g>
+  <g fill="none" stroke="#aeb8a5" stroke-width="5" stroke-linecap="round"><path d="M273 255L259 322L280 300L285 345M322 257L311 321L329 301L338 348M386 255L402 309L389 300L406 335M478 236L469 315L491 292L497 345M547 250L552 323L570 302L576 351M626 230L648 294L632 282L659 327M756 290L741 352L761 334L768 375M820 299L833 359L849 339L855 379"/></g>
+  <!-- Figurehead: long sea-dragon prow, clearly attached to the bow -->
+  <g stroke="#c1b18e" stroke-width="6" stroke-linejoin="round">
+   <path d="M178 480L76 413L18 397L82 440L42 448L119 471L78 489L180 525Z" fill="#536c5e"/>
+   <path d="M77 423Q35 396 49 366Q66 379 82 383Q99 348 118 369Q124 393 103 410L142 442Z" fill="#a7a98d"/>
+   <path d="M65 385L47 348L84 374L106 345L113 388" fill="#c3b994"/><path d="M51 402Q77 412 103 398" fill="none" stroke="#182d2b" stroke-width="9"/>
+   <path d="M91 405L121 417L101 432" fill="none" stroke="#243a35" stroke-width="8"/>
+   <circle cx="79" cy="388" r="5" fill="#d6ffb8" class="fd3-lamp"/>
   </g>
-  <g fill="#718879" stroke="#263d37" stroke-width="3"><path d="M176 512q-18 22-5 43q20-6 23-26q19 20 35 4q-5-23-28-25q18-20 1-34q-23 4-26 26z"/><path d="M280 553q-20 25-5 45q18-7 22-26q16 20 34 5q-4-22-27-27q18-19 0-34q-21 5-24 37z"/><path d="M465 585q-23 25-8 47q20-7 25-27q17 20 35 2q-6-24-29-28q17-20-1-35q-22 6-22 41z"/><path d="M690 579q-19 24-6 42q20-5 25-24q18 19 34 2q-4-22-28-26q17-20-1-35q-21 6-24 41z"/><path d="M880 548q-20 24-6 43q18-6 23-24q17 17 33 0q-4-21-27-25q17-20 0-35q-20 5-23 41z"/></g>
-  <g fill="#a7a88b" stroke="#344b40" stroke-width="2"><ellipse cx="220" cy="530" rx="12" ry="8"/><ellipse cx="250" cy="551" rx="9" ry="7"/><ellipse cx="344" cy="566" rx="13" ry="8"/><ellipse cx="408" cy="580" rx="10" ry="7"/><ellipse cx="535" cy="593" rx="13" ry="9"/><ellipse cx="612" cy="600" rx="9" ry="7"/><ellipse cx="757" cy="575" rx="13" ry="8"/><ellipse cx="828" cy="562" rx="10" ry="7"/><ellipse cx="947" cy="515" rx="12" ry="8"/></g>
-  <g fill="none" stroke="#9caf89" stroke-width="8" stroke-linecap="round" opacity=".8"><path d="M205 547q-28 45-5 73m27-63q-9 39 15 58m109-43q-20 39-4 61m183-29q-12 36 9 56m148-74q-20 35-3 55m151-94q-7 34 17 49"/></g>
-  <g fill="none" stroke="#303d3d" stroke-width="8"><path d="M150 490q90 76 180 65t190 30q120 29 245-8t225-79"/><path d="M175 469q110 72 215 55t210 26q130 23 260-23"/></g>
-  <g fill="url(#fd2-green)" opacity=".85"><circle cx="302" cy="504" r="35"/><circle cx="462" cy="507" r="35"/><circle cx="622" cy="499" r="35"/><circle cx="782" cy="466" r="35"/></g>
-  <g fill="#c8ffad" class="fd2-lantern"><circle cx="302" cy="504" r="5"/><circle cx="462" cy="507" r="5"/><circle cx="622" cy="499" r="5"/><circle cx="782" cy="466" r="5"/></g>
+  <!-- Hanging kelp, corroded chains and barnacled ribs -->
+  <g fill="#718775" stroke="#273e37" stroke-width="3"><path d="M180 510q-20 25-5 45q19-6 23-27q17 21 35 4q-6-23-29-26q18-20 0-35q-21 4-24 39z"/><path d="M283 550q-21 25-6 46q20-7 24-27q16 21 34 4q-5-23-28-27q18-19 0-35q-22 6-24 39z"/><path d="M470 583q-22 26-7 48q20-8 24-28q17 21 35 3q-5-23-29-28q18-19 0-35q-21 6-23 40z"/><path d="M700 578q-20 24-6 43q20-6 25-25q17 20 34 2q-5-22-28-26q17-20-1-35q-21 6-24 41z"/><path d="M890 543q-20 24-6 43q19-6 24-25q16 18 33 0q-5-22-28-26q17-20 0-35q-20 5-23 43z"/></g>
+  <g fill="#b5ad8e" stroke="#425748" stroke-width="2"><ellipse cx="215" cy="532" rx="12" ry="8"/><ellipse cx="250" cy="552" rx="9" ry="7"/><ellipse cx="345" cy="566" rx="13" ry="8"/><ellipse cx="412" cy="581" rx="10" ry="7"/><ellipse cx="540" cy="594" rx="13" ry="9"/><ellipse cx="620" cy="600" rx="9" ry="7"/><ellipse cx="760" cy="576" rx="13" ry="8"/><ellipse cx="833" cy="560" rx="10" ry="7"/><ellipse cx="950" cy="514" rx="12" ry="8"/></g>
+  <g fill="none" stroke="#a7b391" stroke-width="7" stroke-linecap="round" opacity=".75"><path d="M205 548q-28 45-5 73m27-63q-9 39 15 58m109-43q-20 39-4 61m183-29q-12 36 9 56m148-74q-20 35-3 55m151-94q-7 34 17 49"/></g>
+  <g fill="none" stroke="#202f2d" stroke-width="7"><path d="M150 490q90 76 180 65t190 30q120 29 245-8t225-79"/><path d="M175 469q110 72 215 55t210 26q130 23 260-23"/></g>
+  <g fill="url(#fd3-green)" opacity=".85"><circle cx="285" cy="499" r="34"/><circle cx="445" cy="503" r="34"/><circle cx="605" cy="499" r="34"/><circle cx="765" cy="474" r="34"/></g>
+  <g class="fd3-lamp" fill="#d3ffb5"><circle cx="285" cy="499" r="5"/><circle cx="445" cy="503" r="5"/><circle cx="605" cy="499" r="5"/><circle cx="765" cy="474" r="5"/></g>
+  <path d="M110 472Q350 444 570 463Q850 447 1087 358" fill="none" stroke="#e3d5b1" stroke-width="3" opacity=".8"/>
+  <rect x="0" y="0" width="1200" height="800" filter="url(#fd3-grain)" opacity=".16" pointer-events="none"/>
  </g>
- <g class="fd2-fog" fill="#c7d4ca" opacity=".16" filter="url(#fd2-shadow)"><ellipse cx="210" cy="600" rx="330" ry="35"/><ellipse cx="930" cy="570" rx="340" ry="42"/></g>
- <g fill="#c5e4cf" opacity=".65"><circle cx="174" cy="245" r="2"/><circle cx="235" cy="318" r="3"/><circle cx="1040" cy="230" r="2"/><circle cx="968" cy="190" r="3"/><circle cx="420" cy="282" r="2"/><circle cx="718" cy="350" r="2"/></g>
+ <g class="fd3-mist" fill="#c7d4ca" opacity=".13" filter="url(#fd3-soft)"><ellipse cx="200" cy="600" rx="330" ry="35"/><ellipse cx="940" cy="566" rx="340" ry="42"/></g>
+ <g fill="#d2e1d1" opacity=".58"><circle cx="174" cy="245" r="2"/><circle cx="235" cy="318" r="3"/><circle cx="1040" cy="230" r="2"/><circle cx="968" cy="190" r="3"/><circle cx="420" cy="282" r="2"/><circle cx="718" cy="350" r="2"/></g>
  </svg>
- <div class="fd2-title">THE FLYING DUTCHMAN<small>THE CURSED GALLEON · LOST BETWEEN WORLDS</small></div>`;
+ <div class="fd3-title">THE FLYING DUTCHMAN<small>THE CURSED GALLEON · LOST BETWEEN WORLDS</small></div>`;
  overlay.appendChild(world);document.body.appendChild(overlay);
  const duration=Math.max(8000,Number(opts.duration)||10000);
  if(typeof opts.onSound==="function"){try{opts.onSound();}catch(e){console.warn("Ghost ship sound unavailable",e);}}
- setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .65s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),680);}},duration);
+ setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .7s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),720);}},duration);
  return overlay;
 }
 function renderCinematicGift(gift,opts,overlay){
