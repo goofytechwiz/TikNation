@@ -743,6 +743,28 @@ function playLiveGiftSound(event, gift) {
   }
 }
 window.__tikNationPlayGiftSound=playLiveGiftSound;
+function showLiveGiftCelebration(event) {
+  const gift = LIVE_GIFT_CATALOG[event?.gift_code];
+  if (!gift) return;
+  document.querySelectorAll(".live-gift-celebration[data-runtime-overlay='true']").forEach(node => node.remove());
+  const overlay = document.createElement("div");
+  overlay.className = "live-gift-celebration live-gift-code-" + String(event.gift_code || "").replace(/[^a-z0-9_-]/gi, "");
+  overlay.dataset.runtimeOverlay = "true";
+  overlay.setAttribute("role", "status");
+  overlay.setAttribute("aria-live", "polite");
+  const card = document.createElement("div");
+  card.className = "live-gift-celebration-card";
+  const emoji = document.createElement("span");
+  emoji.textContent = gift.emoji || "🎁";
+  const title = document.createElement("strong");
+  title.textContent = gift.name || "A gift";
+  const sender = document.createElement("small");
+  sender.textContent = (event.sender_name || "A TikNation member") + " sent a gift";
+  card.append(emoji, title, sender);
+  overlay.append(card);
+  document.body.append(overlay);
+  window.setTimeout(() => overlay.remove(), 4200);
+}
 function renderLiveGiftEvent(event) {
   const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
   showLiveGiftCelebration(event);
