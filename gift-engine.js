@@ -674,7 +674,7 @@ function renderLivingTombstonesGift(gift,opts,overlay){
  const rand=(a,b)=>a+Math.random()*(b-a),stones=[],mist=[];
  function resize(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
  resize();window.addEventListener("resize",resize);
- for(let i=0;i<16;i++){const depth=i/15,scale=.42+depth*.9;stones.push({x:rand(.025,.975)*w,baseY:h*(.53+depth*.32),s:scale,phase:rand(0,Math.PI*2),delay:1.1+rand(0,2.1),shape:i%5,crack:rand(0,1),rock:rand(.026,.052),tone:rand(0,1)});}
+ for(let i=0;i<16;i++){const depth=i/15,scale=.42+depth*.9;stones.push({x:rand(.025,.975)*w,baseY:h*(.65+depth*.25),s:scale,phase:rand(0,Math.PI*2),delay:1.1+rand(0,2.1),shape:i%5,crack:rand(0,1),rock:rand(.026,.052),tone:rand(0,1)});}
  for(let i=0;i<38;i++)mist.push({x:rand(0,w),y:rand(h*.5,h),r:rand(28,105),speed:rand(6,19),a:rand(.025,.075)});
  function grave(st,t){
   const ww=st.shape===0?43:st.shape===1?38:st.shape===2?35:st.shape===3?46:40;
@@ -683,7 +683,7 @@ function renderLivingTombstonesGift(gift,opts,overlay){
   const rock=Math.sin(Math.max(0,t-st.delay)*3.2+st.phase)*st.rock*wake;
   ctx.save();
   // The pivot is fixed at the foot of the stone: rotation only, never screen-space travel.
-  ctx.translate(st.x,st.baseY-wake*28*st.s);ctx.rotate(rock);ctx.scale(st.s,st.s);
+  ctx.translate(st.x,st.baseY+(1-wake)*28*st.s);ctx.rotate(rock);ctx.scale(st.s,st.s);
   ctx.globalAlpha=.72;
   ctx.fillStyle="#020504";ctx.beginPath();ctx.ellipse(0,2,ww*.72,8,0,0,Math.PI*2);ctx.fill();
   ctx.globalAlpha=1;
