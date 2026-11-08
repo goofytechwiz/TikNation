@@ -1,14 +1,4 @@
-const TIKNATION_GIFT_CATALOG = {
-  storm_of_the_world: {
-    name: "The Ghost Ship",
-    emoji: "🚢",
-    category: "Legendary",
-    cost: 100,
-    sound: [58, 74, 98, 147],
-    style: "ghostship",
-    message: "The lost fleet has returned."
-  },
-};
+const TIKNATION_GIFT_CATALOG = {};
 window.TIKNATION_GIFT_CATALOG = TIKNATION_GIFT_CATALOG;
 
 let tikNationGiftAudioContext = null;
