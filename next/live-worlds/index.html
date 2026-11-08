@@ -37,7 +37,6 @@ footer{text-align:center;color:#777393;font-size:9px;letter-spacing:.1em;margin-
 .live-gift-preview button:active{transform:scale(.98)}
 .live-gift-status{min-height:16px;margin-top:10px;color:#8cf7ef;font-size:10px}
 
-.gift-gallery-count{color:#8cf7ef;font-size:10px;letter-spacing:.16em;font-weight:850;margin:12px 0}.gift-gallery-categories{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 16px}.gift-gallery-categories button{border:1px solid #ffffff2b;border-radius:99px;padding:9px 12px;background:#ffffff09;color:#eee8ff;font-size:9px;font-weight:800;cursor:pointer}.gift-gallery-categories button[aria-pressed=true]{border-color:#8cf7ef;background:#8cf7ef18;color:#8cf7ef}.gift-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.gift-gallery-card{position:relative;z-index:1;pointer-events:auto;touch-action:manipulation;min-width:0;min-height:112px;text-align:left;padding:12px;border:1px solid #ffffff22;border-radius:15px;background:linear-gradient(145deg,#ffffff12,#ffffff04);color:#f7f3ff;cursor:pointer}.gift-gallery-card:hover,.gift-gallery-card:focus-visible{border-color:#8cf7ef99;box-shadow:0 0 22px #8cf7ef18;outline:none}.gift-gallery-card .gift-emoji{display:block;font-size:25px;margin-bottom:7px}.gift-gallery-card strong{display:block;font-size:11px;line-height:1.3}.gift-gallery-card small{display:block;color:#a9a2c7;font-size:8px;letter-spacing:.08em;margin-top:6px}@media(max-width:560px){.gift-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gift-gallery-card{min-height:105px;padding:10px}}
 /* Shared TikNation app navigation */
 body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
 .tn-dock{position:fixed;z-index:12;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:8px;border:1px solid #ffffff2b;border-radius:22px;background:linear-gradient(110deg,#10152beF,#211a3def 55%,#102a34ef);box-shadow:0 14px 48px #000b,0 0 28px #82f6e81c;backdrop-filter:blur(20px)}
@@ -93,12 +92,10 @@ img,video,canvas{max-width:100%}
 <div><div class="eyebrow" id="roomTag">WORLD 01 · CONNECTION</div><h2 id="roomTitle">A little light, shared.</h2><p id="roomCopy">The Dream Lounge is a softer kind of LIVE space. Picture creator-led conversations, expressive reactions, and small moments that make viewers feel included—not just counted.</p></div>
 <div class="actions"><button type="button" id="pulse">SEND A LIGHT PULSE ✧</button><button type="button" class="primary" id="enter">PREVIEW THIS WORLD →</button></div>
 </section>
-<section class="live-lobby" aria-labelledby="lobbyTitle"><div class="lobby-head"><div><div class="eyebrow">THE LIVE LOBBY</div><h2 id="lobbyTitle">Find the room. Feel the moment.</h2><p>Meet the creator concepts, catch the room vibe, and imagine how LIVE can feel more social.</p></div><span class="preview-tag">ROOM CONCEPTS · NOT LIVE</span></div><div class="host-rail"><article class="host-card"><span class="host-avatar">T</span><div><strong>TikNationStudio</strong><small>FOUNDER SPOTLIGHT · CREATOR CONCEPT</small></div><span class="host-label">FEATURED</span></article><article class="host-card"><span class="host-avatar">M</span><div><strong>MattOnLive</strong><small>CREATOR SPOTLIGHT · ROOM CONCEPT</small></div><span class="host-label">SPOTLIGHT</span></article></div><div class="lobby-columns"><section class="lobby-panel" aria-label="Sample room conversation"><h3>Room conversation</h3><div class="chat-sample"><div class="chat-line"><b>DreamerOne</b> This atmosphere is incredible ✨</div><div class="chat-line"><b>NovaCreates</b> What would you build here?</div><div class="chat-line"><b>Starbound</b> Saving this idea for our next creative night!</div></div><p class="lobby-note">Illustrative sample chat only. These are not real messages or connected accounts.</p></section><section class="lobby-panel" aria-label="Local room reactions"><h3>How is the vibe?</h3><div class="vibe-actions" role="group" aria-label="Choose a room reaction"><button type="button" data-vibe="✨ MAGIC">✨ MAGIC</button><button type="button" data-vibe="💜 LOVE IT">💜 LOVE IT</button><button type="button" data-vibe="🔥 ENERGY">🔥 ENERGY</button></div><p class="lobby-note">Try a reaction. It stays on this screen and is not sent to a broadcaster.</p><div class="lobby-status" id="vibeStatus" role="status">YOUR REACTION WILL APPEAR HERE</div></section></div></section><section class="live-poll" id="liveRoomPoll" aria-labelledby="livePollTitle"><h3 id="livePollTitle">Shape the next LIVE world</h3><p>Which room feature would make you want to stay longer?</p><div class="live-poll-options" role="group" aria-label="Choose a room feature"><button type="button" data-poll="Interactive audience games">✦ Interactive audience games</button><button type="button" data-poll="Creator Q&A moments">◉ Creator Q&amp;A moments</button><button type="button" data-poll="Music and visual stages">♫ Music and visual stages</button><button type="button" data-poll="Cozy group conversations">⌘ Cozy group conversations</button></div><div class="live-poll-status" id="livePollStatus" role="status" aria-live="polite">CHOOSE ONE · LOCAL PREVIEW POLL</div><div class="live-poll-note">Your choice is stored only in this browser. It is not sent to a creator or broadcast.</div></section><section class="live-gift-preview gift-gallery" aria-labelledby="giftGalleryTitle"><div class="eyebrow">THE COMPLETE TIKNATION COLLECTION · 42 GIFTS</div><h2 id="giftGalleryTitle">Choose a gift. Change the room.</h2><p>Browse the full collection across six categories. Tap any gift to preview its animation here. These are free visual previews: no coins are spent and no live gift is sent.</p><div class="gift-gallery-count" id="giftGalleryCount">LOADING THE GIFT COLLECTION…</div><div class="gift-gallery-categories" id="giftGalleryCategories" aria-label="Gift categories"></div><div class="gift-gallery-grid" id="giftGalleryGrid" aria-live="polite"></div><div class="live-gift-status" id="giftGalleryStatus" role="status" aria-live="polite">42 GIFTS · FREE PREVIEW · NO COINS SPENT</div></section>
+<section class="live-lobby" aria-labelledby="lobbyTitle"><div class="lobby-head"><div><div class="eyebrow">THE LIVE LOBBY</div><h2 id="lobbyTitle">Find the room. Feel the moment.</h2><p>Meet the creator concepts, catch the room vibe, and imagine how LIVE can feel more social.</p></div><span class="preview-tag">ROOM CONCEPTS · NOT LIVE</span></div><div class="host-rail"><article class="host-card"><span class="host-avatar">T</span><div><strong>TikNationStudio</strong><small>FOUNDER SPOTLIGHT · CREATOR CONCEPT</small></div><span class="host-label">FEATURED</span></article><article class="host-card"><span class="host-avatar">M</span><div><strong>MattOnLive</strong><small>CREATOR SPOTLIGHT · ROOM CONCEPT</small></div><span class="host-label">SPOTLIGHT</span></article></div><div class="lobby-columns"><section class="lobby-panel" aria-label="Sample room conversation"><h3>Room conversation</h3><div class="chat-sample"><div class="chat-line"><b>DreamerOne</b> This atmosphere is incredible ✨</div><div class="chat-line"><b>NovaCreates</b> What would you build here?</div><div class="chat-line"><b>Starbound</b> Saving this idea for our next creative night!</div></div><p class="lobby-note">Illustrative sample chat only. These are not real messages or connected accounts.</p></section><section class="lobby-panel" aria-label="Local room reactions"><h3>How is the vibe?</h3><div class="vibe-actions" role="group" aria-label="Choose a room reaction"><button type="button" data-vibe="✨ MAGIC">✨ MAGIC</button><button type="button" data-vibe="💜 LOVE IT">💜 LOVE IT</button><button type="button" data-vibe="🔥 ENERGY">🔥 ENERGY</button></div><p class="lobby-note">Try a reaction. It stays on this screen and is not sent to a broadcaster.</p><div class="lobby-status" id="vibeStatus" role="status">YOUR REACTION WILL APPEAR HERE</div></section></div></section><section class="live-poll" id="liveRoomPoll" aria-labelledby="livePollTitle"><h3 id="livePollTitle">Shape the next LIVE world</h3><p>Which room feature would make you want to stay longer?</p><div class="live-poll-options" role="group" aria-label="Choose a room feature"><button type="button" data-poll="Interactive audience games">✦ Interactive audience games</button><button type="button" data-poll="Creator Q&A moments">◉ Creator Q&amp;A moments</button><button type="button" data-poll="Music and visual stages">♫ Music and visual stages</button><button type="button" data-poll="Cozy group conversations">⌘ Cozy group conversations</button></div><div class="live-poll-status" id="livePollStatus" role="status" aria-live="polite">CHOOSE ONE · LOCAL PREVIEW POLL</div><div class="live-poll-note">Your choice is stored only in this browser. It is not sent to a creator or broadcast.</div></section>
 <div class="status" id="status" role="status">CONCEPT SPACE · NO CAMERA, MICROPHONE, OR LIVE BROADCAST IS ACTIVE</div>
 <footer>AN EXPERIMENT IN WHAT LIVE COULD BECOME · EXISTING TIKNATION LIVE IS UNCHANGED</footer>
 </main>
-<script src="../../gift-engine.js?v=live-worlds-gallery-cinematic-5"></script>
-<script src="../../gifts.js?v=full-catalog-restore-2"></script>
 <script>
 const rooms={
 dream:{tag:'WORLD 01 · CONNECTION',name:'THE DREAM LOUNGE',hint:'A soft glow for shared moments',title:'A little light, shared.',copy:'The Dream Lounge is a softer kind of LIVE space. Picture creator-led conversations, expressive reactions, and small moments that make viewers feel included—not just counted.',status:'DREAM LOUNGE SELECTED · IMAGINED FEATURES ONLY'},
@@ -113,32 +110,6 @@ function sparkle(){const p=document.createElement('span');p.textContent='✦';p.
 document.getElementById('pulse').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent='✧ YOUR LIGHT PULSE HAS CROSSED THE '+rooms[active].name+' · VISUAL DEMO'});
 const portalButton=document.getElementById('portal');if(portalButton)portalButton.addEventListener('click',()=>{sparkle();document.getElementById('status').textContent='THE GATE RESPONDED · THIS IS A VISUAL INTERACTION, NOT A LIVE ROOM'});
 document.getElementById('enter').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent=rooms[active].name+' · YOU ARE PREVIEWING THE CONCEPT, NOT JOINING A BROADCAST'});
-const giftCatalog=window.TIKNATION_GIFT_CATALOG||{};
-const giftCategories=['All','Musical','Magical','Special Effects','Visual Effects','Legendary','Surprises'];
-let selectedGiftCategory='All';
-function renderGiftGallery(){
- const grid=document.getElementById('giftGalleryGrid'),tabs=document.getElementById('giftGalleryCategories'),count=document.getElementById('giftGalleryCount');
- if(!grid||!tabs)return;
- const entries=Object.entries(giftCatalog).filter(([,gift])=>selectedGiftCategory==='All'||gift.category===selectedGiftCategory);
- count.textContent=Object.keys(giftCatalog).length+' GIFTS · '+giftCategories.slice(1).filter(c=>Object.values(giftCatalog).some(g=>g.category===c)).length+' CATEGORIES';
- tabs.innerHTML=giftCategories.map(category=>'<button type="button" data-gift-category="'+category+'" aria-pressed="'+(selectedGiftCategory===category)+'">'+category+'</button>').join('');
- tabs.querySelectorAll('[data-gift-category]').forEach(button=>button.addEventListener('click',()=>{selectedGiftCategory=button.dataset.giftCategory;renderGiftGallery()}));
- grid.innerHTML=entries.map(([code,gift])=>'<button type="button" class="gift-gallery-card" data-gallery-gift="'+code+'"><span class="gift-emoji">'+gift.emoji+'</span><strong>'+gift.name+'</strong><small>'+gift.category.toUpperCase()+' · '+Number(gift.cost).toLocaleString()+' TEST COINS</small></button>').join('');
- grid.querySelectorAll('[data-gallery-gift]').forEach(button=>button.addEventListener('click',()=>{
-  const code=button.dataset.galleryGift,gift=giftCatalog[code],status=document.getElementById('giftGalleryStatus');
-  if(!gift){status.textContent='GIFT DATA NOT FOUND · RELOAD THE PAGE';return;}
-  status.textContent='PLAYING · '+gift.name.toUpperCase()+' · FREE PREVIEW';
-  const duration=['ghostship','infernal_castle','meteor','phoenix','dragon','dragonrevenge','fingerdeath'].includes(gift.style)?8500:6200;
-  const engine=window.TikNationGiftEngine;
-  if(!engine||typeof engine.show!=='function'){
-   status.textContent='ANIMATION ENGINE DID NOT LOAD · REFRESH AND TRY AGAIN';
-   return;
-  }
-  const played=engine.show(gift,{meta:'TIKNATION GIFT GALLERY · FREE PREVIEW',duration});
-  if(!played)status.textContent='GIFT ANIMATION COULD NOT START · TAP AGAIN';
- }));
-}
-renderGiftGallery();;
 </script><nav class="tn-dock" aria-label="TikNation main navigation">
 <a href="../" data-dock="home"><span class="tn-icon" aria-hidden="true">⌂</span>HOME</a>
 <a href="../discover/" data-dock="discover"><span class="tn-icon" aria-hidden="true">✧</span>DISCOVER</a>
@@ -150,40 +121,4 @@ renderGiftGallery();;
 </nav>
 <script>(function(){const p=location.pathname;const map=[['discover','/discover/'],['live','/live-worlds/'],['create','/create/'],['community','/community/'],['profile','/profile/'],['settings','/settings/'],['home','/realms/']];let active=map.find(x=>p.includes(x[1]));if(p.includes('/creator-showcase/')||p.includes('/creator-studio/'))active=['profile','/profile/'];if(active){const a=document.querySelector('[data-dock="'+active[0]+'"]');if(a)a.setAttribute('aria-current','page')}})();</script><script>
 (()=>{const key='tiknation-live-room-poll-v1',buttons=[...document.querySelectorAll('[data-poll]')],status=document.getElementById('livePollStatus');if(!buttons.length||!status)return;let choice='';try{choice=localStorage.getItem(key)||''}catch(e){}function render(){buttons.forEach(b=>{const selected=b.dataset.poll===choice;b.setAttribute('aria-pressed',String(selected));b.disabled=!!choice;b.textContent=(selected?'✓ ':'')+b.dataset.poll});status.textContent=choice?'YOUR LOCAL PREVIEW VOTE: '+choice.toUpperCase():'CHOOSE ONE · LOCAL PREVIEW POLL'}buttons.forEach(b=>b.addEventListener('click',()=>{if(choice)return;choice=b.dataset.poll;try{localStorage.setItem(key,choice)}catch(e){}render()}));render()})();
-</script><script>
-/* Independent gift click controller: works even if another LIVE Worlds script fails. */
-(function(){
-  if(window.__tnGiftGalleryClickFix)return;
-  window.__tnGiftGalleryClickFix=true;
-  function loadEngine(){
-    if(window.TikNationGiftEngine&&typeof window.TikNationGiftEngine.show==="function")return Promise.resolve(window.TikNationGiftEngine);
-    return new Promise((resolve,reject)=>{
-      const script=document.createElement("script");
-      script.src="../../gift-engine.js?v=gift-gallery-independent-controller-7";
-      script.onload=()=>window.TikNationGiftEngine&&typeof window.TikNationGiftEngine.show==="function"?resolve(window.TikNationGiftEngine):reject(new Error("Gift animation engine did not initialize."));
-      script.onerror=()=>reject(new Error("Gift animation engine could not load."));
-      document.head.appendChild(script);
-    });
-  }
-  document.addEventListener("click",function(event){
-    const target=event.target;
-    const button=target&&target.closest?target.closest("[data-gallery-gift]"):null;
-    if(!button)return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    const catalog=window.TIKNATION_GIFT_CATALOG||{};
-    const gift=catalog[button.getAttribute("data-gallery-gift")];
-    const status=document.getElementById("giftGalleryStatus");
-    if(!gift){if(status)status.textContent="GIFT DATA NOT FOUND · REFRESH THE PAGE";return;}
-    if(status)status.textContent="PREPARING FULL ANIMATION · "+gift.name.toUpperCase();
-    loadEngine().then(engine=>{
-      const duration=["ghostship","infernal_castle","meteor","phoenix","dragon","dragonrevenge","fingerdeath"].includes(gift.style)?8500:6200;
-      const started=engine.show(gift,{meta:"TIKNATION GIFT GALLERY · FREE PREVIEW",duration});
-      if(status)status.textContent=started?"ANIMATION PLAYING · "+gift.name.toUpperCase()+" · FREE PREVIEW":"ANIMATION COULD NOT START · TAP AGAIN";
-    }).catch(error=>{
-      if(status)status.textContent="ANIMATION ERROR · "+error.message;
-    });
-  },true);
-})();
-</script>
-</body></html>
+</script></body></html>
