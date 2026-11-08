@@ -94,6 +94,7 @@ img,video,canvas{max-width:100%}
 <div class="status" id="status" role="status">CONCEPT SPACE · NO CAMERA, MICROPHONE, OR LIVE BROADCAST IS ACTIVE</div>
 <footer>AN EXPERIMENT IN WHAT LIVE COULD BECOME · EXISTING TIKNATION LIVE IS UNCHANGED</footer>
 </main>
+<script src="../../gift-engine.js?v=live-worlds-gift-engine-1"></script>
 <script>
 const rooms={
 dream:{tag:'WORLD 01 · CONNECTION',name:'THE DREAM LOUNGE',hint:'A soft glow for shared moments',title:'A little light, shared.',copy:'The Dream Lounge is a softer kind of LIVE space. Picture creator-led conversations, expressive reactions, and small moments that make viewers feel included—not just counted.',status:'DREAM LOUNGE SELECTED · IMAGINED FEATURES ONLY'},
@@ -110,6 +111,11 @@ document.getElementById('portal').addEventListener('click',()=>{sparkle();docume
 document.getElementById('enter').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent=rooms[active].name+' · YOU ARE PREVIEWING THE CONCEPT, NOT JOINING A BROADCAST'});
 document.getElementById('fingerDeathPreview').addEventListener('click',()=>{
  const status=document.getElementById('fingerDeathStatus');
+ if(window.TikNationGiftEngine&&typeof window.TikNationGiftEngine.show==='function'){
+  const played=window.TikNationGiftEngine.show({id:'fingerdeath-preview',name:'FINGER OF DEATH',style:'fingerdeath',emoji:'💀'},{duration:8500,senderName:'TIKNATION PREVIEW'});
+  if(played){status.textContent='CINEMATIC GIFT ENGINE ACTIVE · FREE PREVIEW · NO COINS SPENT';return;}
+ }
+ status.textContent='USING BUILT-IN PREVIEW · FREE · NO COINS SPENT';
  const prior=document.getElementById('fodStandalonePreview');if(prior)prior.remove();
  const overlay=document.createElement('div');overlay.id='fodStandalonePreview';
  overlay.innerHTML=`<div class="fod-scene" role="dialog" aria-label="Anatomically detailed skeletal hand"><div class="fod-runes">✦　ᛟ　✧　ᚷ　✦</div><svg class="fod-hand" viewBox="0 0 420 560" role="img" aria-label="An anatomically arranged skeletal hand with one raised finger and three curled fingers">
