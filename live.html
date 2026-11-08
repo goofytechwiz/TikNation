@@ -693,12 +693,19 @@ function playLiveGiftSound(event, gift) {
       oscillator.connect(gain); gain.connect(ctx.destination);
       oscillator.start(at); oscillator.stop(at + duration + 0.02);
     };
-    if (code === "storm_of_the_world") {
-      playNoiseSweep(now, 3.8, 0.19, 180, 48);
-      playNoiseSweep(now + 0.45, 2.6, 0.13, 720, 110);
-      playNoiseSweep(now + 2.1, 1.25, 0.2, 1250, 75);
-      softTone(now + 0.35, 48, 3.6, 0.11, "sawtooth");
-      softTone(now + 2.05, 62, 1.8, 0.09, "triangle");
+    if (gift.style === "ghostship" || code === "storm_of_the_world") {
+      // Ghost Ship: rigging wind, timber groans, bell and cannon reports.
+      playNoiseSweep(now, 6.0, 0.24, 320, 180);
+      playNoiseSweep(now + 0.25, 3.8, 0.17, 850, 150);
+      [0.55, 2.65, 5.15].forEach((delay, index) => {
+        softTone(now + delay, [92, 76, 84][index], 0.9, 0.16, "sawtooth");
+        softTone(now + delay, [138, 112, 126][index], 0.7, 0.07, "triangle");
+      });
+      [1.05, 1.42].forEach((delay, index) => softTone(now + delay, index ? 622 : 784, 1.65, 0.12, "sine"));
+      [1.8, 4.7].forEach((delay, index) => {
+        playNoiseSweep(now + delay, 1.15, 0.32, 950, 90);
+        softTone(now + delay, index ? 68 : 82, 1.25, 0.3, "sawtooth");
+      });
       return;
     }
     if (code === "heart_pulse") {
@@ -738,6 +745,7 @@ function playLiveGiftSound(event, gift) {
 function renderLiveGiftEvent(event) {
   const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
   showLiveGiftCelebration(event);
+  playLiveGiftSound(event,gift);
   const feed=$("liveGiftFeed");if(!feed)return;
   const empty=feed.querySelector(".small");if(empty)feed.innerHTML="";
   const row=document.createElement("div");row.className="live-gift-feed-item";const strong=document.createElement("strong");strong.textContent=event.sender_name||"TikNation member";
