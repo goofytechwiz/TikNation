@@ -1,4 +1,4 @@
-const CACHE_NAME = "tiknation-shell-v19-wheel-direction-correction";
+const CACHE_NAME = "tiknation-shell-v20-phantom-train-rebuild";
 const APP_SHELL = [
   "./",
   "./index.html",
