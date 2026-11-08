@@ -1,4 +1,4 @@
-const CACHE_NAME = "tiknation-shell-v41-galleon-rebuild";
+const CACHE_NAME = "tiknation-shell-v42-ghostship-audio";
 const APP_SHELL = [
   "./",
   "./index.html",
