@@ -737,85 +737,22 @@ function renderLivingTombstonesGift(gift,opts,overlay){
 
 function renderPhoenixGift(gift,opts,overlay){
  const css=document.createElement("style");
- css.textContent="@keyframes phRise{0%{transform:translateY(90px) scale(.82);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}@keyframes phFlight{0%,100%{transform:translate(0,0) rotate(-2deg)}50%{transform:translate(0,-22px) rotate(2deg)}}@keyframes phWing{0%,100%{transform:rotate(-8deg) scaleY(.88)}50%{transform:rotate(12deg) scaleY(1.08)}}@keyframes phWingFar{0%,100%{transform:rotate(10deg) scaleY(.92)}50%{transform:rotate(-10deg) scaleY(1.05)}}@keyframes phTail{0%,100%{transform:skewY(0deg) scaleX(1)}50%{transform:skewY(-5deg) scaleX(1.04)}}@keyframes phFlame{0%,100%{opacity:.72;transform:scaleY(.94)}50%{opacity:1;transform:scaleY(1.08)}}@keyframes phEmber{0%{transform:translate(0,35px) scale(.3);opacity:0}15%{opacity:1}100%{transform:translate(var(--drift),-340px) scale(0);opacity:0}}#tiknation-gift-engine.phoenix{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 48% 58%,#7b2609bb,#180812f5 53%,#020208 100%);color:#fff;font-family:system-ui,sans-serif}#tiknation-gift-engine.phoenix .ph-scene{position:relative;width:min(98vw,980px);height:min(92vh,760px);display:grid;place-items:center;animation:phRise 1s ease-out both}#tiknation-gift-engine.phoenix .ph-flight{width:100%;height:85%;overflow:visible;animation:phFlight 3s ease-in-out infinite;filter:drop-shadow(0 0 22px #ff5b12)}#tiknation-gift-engine.phoenix .ph-wing-near{transform-box:fill-box;transform-origin:52% 85%;animation:phWing 1.15s ease-in-out infinite}#tiknation-gift-engine.phoenix .ph-wing-far{transform-box:fill-box;transform-origin:50% 90%;animation:phWingFar 1.15s ease-in-out infinite}#tiknation-gift-engine.phoenix .ph-tail{transform-origin:340px 390px;animation:phTail 2s ease-in-out infinite}#tiknation-gift-engine.phoenix .ph-flame{transform-origin:center;animation:phFlame 1.1s ease-in-out infinite}#tiknation-gift-engine.phoenix .ph-ember{position:absolute;left:var(--left);bottom:5%;width:var(--size);height:var(--size);border-radius:50%;background:#ffe9a0;box-shadow:0 0 15px 5px #ff6416;animation:phEmber var(--dur) ease-out var(--delay) infinite}#tiknation-gift-engine.phoenix .ph-caption{position:absolute;bottom:1%;left:0;right:0;text-align:center;text-shadow:0 2px 14px #000;font-weight:900;letter-spacing:.2em;font-size:clamp(17px,3vw,27px);color:#ffe4a4}#tiknation-gift-engine.phoenix .ph-caption small{display:block;margin-top:8px;font-size:10px;letter-spacing:.3em;color:#ffb46b}@media(prefers-reduced-motion:reduce){#tiknation-gift-engine.phoenix *{animation:none!important}}";
+ css.textContent="@keyframes phLift{from{opacity:0;transform:translateY(70px) scale(.8)}to{opacity:1;transform:none}}@keyframes phFloat{50%{transform:translateY(-14px)}}@keyframes phFlapL{50%{transform:rotate(7deg)}}@keyframes phFlapR{50%{transform:rotate(-7deg)}}@keyframes phFire{50%{opacity:1;transform:scaleY(1.12)}}@keyframes phAsh{0%{opacity:0;transform:translateY(25px)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),-260px) scale(.2)}}#tiknation-gift-engine.phoenix{position:fixed!important;inset:0!important;z-index:2147483000!important;display:grid!important;place-items:center!important;overflow:hidden!important;background:radial-gradient(ellipse at 50% 60%,#78300b,#210d18 50%,#03040a)!important}#tiknation-gift-engine.phoenix .ph-scene{position:relative;width:min(100vw,1050px);height:min(92vh,760px);display:grid;place-items:center;animation:phLift 1s ease-out both}#tiknation-gift-engine.phoenix .ph-bird{width:100%;height:86%;overflow:visible;animation:phFloat 3s ease-in-out infinite;filter:drop-shadow(0 10px 25px #f65b16)}#tiknation-gift-engine.phoenix .ph-left{transform-box:fill-box;transform-origin:95% 80%;animation:phFlapL 1.5s ease-in-out infinite}#tiknation-gift-engine.phoenix .ph-right{transform-box:fill-box;transform-origin:5% 80%;animation:phFlapR 1.5s ease-in-out infinite}#tiknation-gift-engine.phoenix .ph-tail{transform-box:fill-box;transform-origin:50% 0;animation:phFire 1s ease-in-out infinite}#tiknation-gift-engine.phoenix .ph-ash{position:absolute;bottom:4%;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;background:#ffdb83;box-shadow:0 0 13px 4px #ff5715;animation:phAsh var(--t) ease-out var(--d) infinite}#tiknation-gift-engine.phoenix .ph-caption{position:absolute;bottom:1%;left:0;right:0;text-align:center;color:#ffe4a4;font:900 clamp(18px,3vw,28px) system-ui;letter-spacing:.18em;text-shadow:0 2px 12px #000}#tiknation-gift-engine.phoenix .ph-caption small{display:block;margin-top:7px;font-size:10px;letter-spacing:.25em;color:#ffb46b}@media(prefers-reduced-motion:reduce){#tiknation-gift-engine.phoenix *{animation:none!important}}";
  document.head.appendChild(css);overlay.className="phoenix";overlay.dataset.style="phoenix";
  const scene=document.createElement("div");scene.className="ph-scene";
- const svg=`<svg class="ph-flight" viewBox="0 0 900 650" role="img" aria-label="A lifelike great phoenix with a powerful eagle-like body, layered individual red and gold flight feathers, hooked beak, talons and long streaming tail plumes">
- <defs>
-  <linearGradient id="phBody" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffe8a0"/><stop offset=".22" stop-color="#c77a27"/><stop offset=".55" stop-color="#8d2117"/><stop offset="1" stop-color="#260b13"/></linearGradient>
-  <linearGradient id="phFeather" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#fff0ae"/><stop offset=".18" stop-color="#ffb83e"/><stop offset=".48" stop-color="#d94719"/><stop offset=".82" stop-color="#801321"/><stop offset="1" stop-color="#310b19"/></linearGradient>
-  <linearGradient id="phFlightFeather" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffd879"/><stop offset=".25" stop-color="#f36a22"/><stop offset=".7" stop-color="#a51e20"/><stop offset="1" stop-color="#390d1c"/></linearGradient>
-  <radialGradient id="phChest"><stop stop-color="#ffe4a0"/><stop offset=".42" stop-color="#d78a35"/><stop offset="1" stop-color="#641522"/></radialGradient>
-  <filter id="phBloom"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
- </defs>
- <ellipse cx="465" cy="365" rx="265" ry="185" fill="#ff5b12" opacity=".12" filter="url(#phBloom)"/>
- <!-- far wing: long primaries fan outward with individually sculpted vanes -->
- <g class="ph-wing-far" stroke="#6b1820" stroke-width="3" stroke-linejoin="round">
-  <path fill="#67131e" d="M451 345C405 260 330 132 221 45C300 65 402 137 495 278C548 164 650 77 790 37C735 157 650 286 558 382Z"/>
-  <g fill="url(#phFlightFeather)">
-   <path d="M465 337Q340 142 240 65Q354 115 490 330Q454 190 395 94Q492 173 525 338Z"/>
-   <path d="M493 340Q528 157 630 86Q568 202 540 353Z"/>
-   <path d="M515 350Q640 167 770 55Q697 242 552 377Z"/>
-   <path d="M532 359Q690 245 804 143Q706 307 561 389Z"/>
-  </g>
-  <g fill="none" stroke="#ffc15c" stroke-width="3" opacity=".8">
-   <path d="M472 338Q355 150 240 65M500 342Q468 175 395 94M526 350Q562 195 630 86M545 366Q687 202 770 55"/>
-  </g>
- </g>
- <!-- near wing: broad shoulder, layered coverts and long separated primaries -->
- <g class="ph-wing-near" stroke="#68121c" stroke-width="3" stroke-linejoin="round">
-  <path fill="#65111d" d="M455 366C345 285 212 260 58 286C168 332 250 399 323 467C210 438 125 483 67 570C218 544 354 502 484 437Z"/>
-  <g fill="url(#phFeather)">
-   <path d="M458 390Q258 280 75 292Q246 326 469 414Z"/>
-   <path d="M451 405Q259 333 94 382Q270 380 476 431Z"/>
-   <path d="M445 419Q260 391 82 510Q280 438 479 450Z"/>
-   <path d="M448 433Q320 445 204 582Q355 492 487 463Z"/>
-   <path d="M458 442Q380 475 330 612Q425 506 494 472Z"/>
-   <path d="M467 443Q430 495 430 615Q480 520 505 478Z"/>
-  </g>
-  <g fill="none" stroke="#ffd17a" stroke-width="3" opacity=".85">
-   <path d="M458 410Q258 280 75 292M458 424Q259 333 94 382M462 440Q260 391 82 510M469 451Q320 445 204 582M480 461Q380 475 330 612"/>
-  </g>
- </g>
- <!-- long separate tail feathers, not a single flame shape -->
- <g class="ph-tail" stroke="#5a1019" stroke-width="3" stroke-linejoin="round">
-  <path fill="url(#phFlightFeather)" d="M394 423Q266 438 128 590Q246 525 337 519Q279 582 264 636Q374 570 411 473Z"/>
-  <path fill="url(#phFeather)" d="M403 426Q322 469 288 621Q366 551 426 511Q402 575 421 632Q473 537 445 452Z"/>
-  <path fill="url(#phFlightFeather)" d="M416 428Q390 500 438 630Q462 548 507 516Q493 580 536 618Q554 516 453 431Z"/>
-  <path fill="none" stroke="#ffd16a" stroke-width="5" d="M390 438Q274 514 150 580M408 447Q345 520 305 603M428 447Q425 533 449 611M440 444Q482 510 521 598"/>
- </g>
- <!-- torso and neck -->
- <g filter="url(#phBloom)">
-  <path d="M346 362Q374 319 438 312Q506 300 557 345Q592 381 624 396Q575 442 508 459Q438 474 379 433Q343 408 346 362Z" fill="url(#phBody)" stroke="#5a1518" stroke-width="8"/>
-  <path d="M384 359Q430 326 479 347Q523 367 541 414Q486 455 428 433Q393 415 384 359Z" fill="url(#phChest)" opacity=".95"/>
-  <!-- overlapping breast and shoulder feathers -->
-  <g fill="url(#phFeather)" stroke="#76201b" stroke-width="3">
-   <path d="M377 357Q405 337 432 354Q421 382 390 389Z"/><path d="M405 347Q438 331 463 354Q449 384 419 386Z"/>
-   <path d="M438 345Q470 333 492 360Q474 386 448 383Z"/><path d="M468 354Q503 345 520 375Q500 397 475 391Z"/>
-   <path d="M390 389Q420 369 447 392Q430 421 402 421Z"/><path d="M425 389Q455 369 480 394Q461 423 435 422Z"/>
-   <path d="M460 393Q490 376 513 401Q491 426 467 425Z"/>
-  </g>
-  <!-- long arched neck -->
-  <path d="M504 355Q536 297 577 267Q609 246 641 265Q655 286 633 317Q609 347 578 378L548 398Z" fill="url(#phBody)" stroke="#6e1a19" stroke-width="7"/>
-  <path d="M550 344Q585 284 625 274" fill="none" stroke="#ffe09a" stroke-width="8" opacity=".8"/>
-  <!-- head, hooked raptor beak and crest -->
-  <path d="M600 253Q622 222 660 228Q696 236 706 264Q694 290 664 301L632 292Q603 279 600 253Z" fill="url(#phFeather)" stroke="#5b1718" stroke-width="7"/>
-  <path d="M683 260Q728 257 756 282Q734 286 724 310Q705 299 686 291Z" fill="#d9a33c" stroke="#4a2114" stroke-width="6"/>
-  <path d="M755 282Q742 293 724 310Q730 285 713 276" fill="none" stroke="#3c160f" stroke-width="7"/>
-  <ellipse cx="670" cy="257" rx="7" ry="9" fill="#1b0b0b"/><circle cx="672" cy="254" r="2.5" fill="#fff2b5"/>
-  <path d="M615 235Q592 190 612 151Q638 183 635 220Q654 178 690 171Q674 216 646 244" fill="#c93418" stroke="#ffbf56" stroke-width="6"/>
-  <path d="M624 239Q612 197 584 181Q594 221 613 252M646 230Q657 183 691 151Q684 203 659 246" fill="#ef5a1b" stroke="#ffce6b" stroke-width="5"/>
-  <!-- legs and curled talons -->
-  <path d="M480 441L478 490M528 441L535 486" stroke="#d49a43" stroke-width="13" stroke-linecap="round"/>
-  <path d="M478 488L459 504Q445 520 460 527L479 512L490 531Q506 537 506 519L491 493M535 485L520 503Q509 520 525 526L542 510L554 527Q570 529 567 512L548 489" fill="none" stroke="#d9a64e" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
- </g>
- <path d="M354 382Q294 357 251 333M368 398Q306 391 260 379" fill="none" stroke="#ffdf9a" stroke-width="5" opacity=".5"/>
+ const svg=`<svg class="ph-bird" viewBox="0 0 1000 700" role="img" aria-label="A majestic phoenix firebird with eagle head, hooked beak, raised feathered wings, golden breast, talons and long red gold tail feathers">
+ <defs><linearGradient id="pf" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff1b4"/><stop offset=".2" stop-color="#ffc04c"/><stop offset=".5" stop-color="#e64a1d"/><stop offset=".82" stop-color="#94162a"/><stop offset="1" stop-color="#380b20"/></linearGradient><linearGradient id="pb" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe6a0"/><stop offset=".4" stop-color="#d17a2d"/><stop offset="1" stop-color="#6c1421"/></linearGradient><filter id="pg"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+ <ellipse cx="500" cy="370" rx="330" ry="240" fill="#ff741d" opacity=".12" filter="url(#pg)"/>
+ <g class="ph-right" stroke="#681522" stroke-width="4" stroke-linejoin="round"><path d="M520 360Q600 190 825 52Q758 250 615 405Z" fill="#701522"/><g fill="url(#pf)"><path d="M545 355Q566 166 655 54Q635 232 578 375Z"/><path d="M560 362Q650 145 755 50Q710 250 594 390Z"/><path d="M578 375Q730 190 870 115Q790 310 615 405Z"/><path d="M595 389Q780 275 925 235Q790 370 625 420Z"/><path d="M610 400Q810 345 955 355Q795 425 640 438Z"/></g></g>
+ <g class="ph-left" stroke="#681522" stroke-width="4" stroke-linejoin="round"><path d="M480 360Q400 190 175 52Q242 250 385 405Z" fill="#701522"/><g fill="url(#pf)"><path d="M455 355Q434 166 345 54Q365 232 422 375Z"/><path d="M440 362Q350 145 245 50Q290 250 406 390Z"/><path d="M422 375Q270 190 130 115Q210 310 385 405Z"/><path d="M405 389Q220 275 75 235Q210 370 375 420Z"/><path d="M390 400Q190 345 45 355Q205 425 360 438Z"/></g></g>
+ <g class="ph-tail" stroke="#65131d" stroke-width="4" stroke-linejoin="round"><path d="M430 435Q280 490 145 635Q300 575 405 525Q340 610 355 675Q455 590 470 470Z" fill="url(#pf)"/><path d="M470 440Q390 510 420 670Q480 575 540 545Q515 625 560 675Q590 560 500 455Z" fill="url(#pf)"/><path d="M500 440Q520 510 635 635Q600 545 675 510Q650 595 720 635Q710 515 525 435Z" fill="url(#pf)"/></g>
+ <g filter="url(#pg)"><path d="M365 365Q420 300 510 320Q595 340 625 405Q565 465 485 478Q395 470 350 415Z" fill="url(#pb)" stroke="#64171c" stroke-width="9"/><g fill="url(#pf)" stroke="#74201b" stroke-width="3"><path d="M375 365Q410 335 445 360L400 405Z"/><path d="M420 345Q455 325 485 355L440 395Z"/><path d="M465 347Q500 330 530 365L485 405Z"/><path d="M390 400Q430 375 460 405L410 440Z"/><path d="M440 395Q480 370 510 405L460 445Z"/><path d="M490 400Q530 380 555 415L510 448Z"/></g><path d="M540 365Q570 300 625 270Q660 250 685 275Q690 305 660 335L590 400Z" fill="url(#pb)" stroke="#64171c" stroke-width="8"/><path d="M630 255Q655 220 695 235Q730 250 720 280Q700 310 660 302Q630 285 630 255Z" fill="url(#pf)" stroke="#64171c" stroke-width="7"/><path d="M710 265Q765 260 800 290Q772 297 755 326Q730 310 710 294Z" fill="#dba443" stroke="#4a2114" stroke-width="6"/><path d="M799 290Q782 310 755 326Q762 298 740 284" fill="none" stroke="#32130e" stroke-width="7"/><ellipse cx="691" cy="259" rx="7" ry="9" fill="#160909"/><circle cx="693" cy="256" r="2.5" fill="#fff2b5"/><path d="M650 238Q625 188 649 143Q677 183 671 222Q699 179 739 177Q718 220 685 249" fill="#c93418" stroke="#ffbf56" stroke-width="6"/><path d="M475 455L464 505M530 455L535 502" stroke="#d49a43" stroke-width="13" stroke-linecap="round"/><path d="M464 503L443 521Q430 539 447 543L469 526L481 547Q500 551 497 531L480 508M535 501L518 521Q506 540 524 544L545 527L559 546Q578 547 574 527L551 505" fill="none" stroke="#d9a64e" stroke-width="9" stroke-linecap="round"/></g>
  </svg>`;
  scene.insertAdjacentHTML("beforeend",svg);
- for(let i=0;i<42;i++){const e=document.createElement("i");e.className="ph-ember";e.style.setProperty("--left",(5+(i*37)%90)+"%");e.style.setProperty("--size",(3+(i%5)*2)+"px");e.style.setProperty("--dur",(2+(i%6)*.42)+"s");e.style.setProperty("--delay",(-i*.16)+"s");e.style.setProperty("--drift",((i%2?1:-1)*(20+(i%7)*12))+"px");scene.appendChild(e);}
- const cap=document.createElement("div");cap.className="ph-caption";cap.textContent=gift.name||"THE PHOENIX REBIRTH";const small=document.createElement("small");small.textContent=opts.meta||"TIKNATION LIVE · LEGENDARY GIFT";cap.appendChild(small);scene.appendChild(cap);overlay.appendChild(scene);document.body.appendChild(overlay);
+ for(let i=0;i<42;i++){const e=document.createElement("i");e.className="ph-ash";e.style.setProperty("--x",(4+(i*37)%92)+"%");e.style.setProperty("--s",(3+i%5*2)+"px");e.style.setProperty("--t",(2+i%6*.4)+"s");e.style.setProperty("--d",(-i*.15)+"s");e.style.setProperty("--dx",((i%2?1:-1)*(20+i%7*12))+"px");scene.appendChild(e);}
+ const cap=document.createElement("div");cap.className="ph-caption";cap.textContent=gift.name||"PHOENIX REBIRTH";const small=document.createElement("small");small.textContent=opts.meta||"TIKNATION LIVE · LEGENDARY GIFT";cap.appendChild(small);scene.appendChild(cap);overlay.appendChild(scene);document.body.appendChild(overlay);
  if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}
- const duration=Math.max(6500,Number(opts.duration)||8500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .6s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),620);}},duration);return overlay;
+ const duration=Math.max(7000,Number(opts.duration)||9000);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .6s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),620)}},duration);return overlay;
 }
 function renderInfernalCastleGift(gift,opts,overlay){
  const css=document.createElement("style");
