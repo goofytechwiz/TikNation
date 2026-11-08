@@ -63,13 +63,14 @@ async function refreshPublicGiftBalance() {
   }
 }
 
-function playTikNationGiftSound(gift) {
+async function playTikNationGiftSound(gift) {
   try {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     if (!AudioContextClass) return;
     if (!tikNationGiftAudioContext) tikNationGiftAudioContext = new AudioContextClass();
     const context = tikNationGiftAudioContext;
-    if (context.state === "suspended") context.resume().catch(() => {});
+    if (context.state === "suspended") await context.resume();
+    if (context.state !== "running") return;
     const now = context.currentTime;
 
     if (gift.style === "phantomtrain") {
@@ -398,7 +399,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=phantom-train-overlay-fix-20261108c";
+    script.src = "./gift-engine.js?v=phantom-train-audio-wheel-fix-20261108d";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
