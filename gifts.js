@@ -12,6 +12,7 @@ const TIKNATION_GIFT_CATALOG = {
   dragon_spirit: { name: "Dragon Spirit", emoji: "🐉", category: "Legendary", cost: 75, style: "dragon", sound: "dragon", message: "A mighty dragon takes flight." },
   dragon_ball: { name: "Dragon Ball", emoji: "🔮", category: "Magical", cost: 75, style: "dragon", sound: "dragon", message: "A mysterious dragon orb appears." },
   disco_raccoon: { name: "Disco Raccoon", emoji: "🦝", category: "Surprises", cost: 75, style: "raccoon", sound: "raccoon", message: "The dance floor belongs to the raccoon." },
+  skeleton_disco: { name: "Skeleton Disco", emoji: "🕺", category: "Surprises", cost: 100, style: "skeleton", sound: "skeleton", message: "The skeleton takes over the dance floor." },
   chicken_of_doom: { name: "Chicken of Doom", emoji: "🐔", category: "Surprises", cost: 75, style: "stinkdeath", sound: "doom", message: "The chicken has arrived." },
   galaxy_gift: { name: "Galaxy Gift", emoji: "🌌", category: "Magical", cost: 100, style: "galaxy", sound: "galaxy", message: "A galaxy unfolds around the creator." },
   dream_makers: { name: "Dream Makers", emoji: "💫", category: "Magical", cost: 100, style: "voidrift", sound: "dream", message: "A dream takes shape." },
