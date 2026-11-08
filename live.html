@@ -778,7 +778,8 @@ function renderLiveGiftEvent(event) {
   } else {
     showLiveGiftCelebration(event);
   }
-  playLiveGiftSound(event,gift);
+  if(gift.style==="meteor" && typeof playTikNationGiftSound==="function") playTikNationGiftSound(gift);
+  else playLiveGiftSound(event,gift);
   const feed=$("liveGiftFeed");if(!feed)return;
   const empty=feed.querySelector(".small");if(empty)feed.innerHTML="";
   const row=document.createElement("div");row.className="live-gift-feed-item";const strong=document.createElement("strong");strong.textContent=event.sender_name||"TikNation member";
