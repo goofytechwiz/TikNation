@@ -822,15 +822,16 @@ function renderHauntedLighthouseGift(gift,opts,overlay){
    const foamMat=new T.MeshBasicMaterial({color:0xc8f4ff,transparent:true,opacity:.58,depthWrite:false});
    const foamRings=[];
    for(let i=0;i<4;i++){const ring=new T.Mesh(new T.TorusGeometry(5.85+i*.48,.045,6,120),foamMat.clone());ring.rotation.x=Math.PI/2;ring.position.y=-.03+i*.012;world.add(ring);foamRings.push(ring);}
-   // Long broken whitecaps give the sea visible rolling wave crests.
+   // Short, irregular foam crests sit on the moving wave faces (not straight stripes).
    const whitecaps=[];
-   for(let row=0;row<13;row++){
-    const count=96,positions=new Float32Array(count*3),geo=new T.BufferGeometry();
-    for(let j=0;j<count;j++){const x=-78+j*(156/(count-1));positions[j*3]=x;positions[j*3+1]=-.02;positions[j*3+2]=-34+row*5.7;}
-    geo.setAttribute("position",new T.BufferAttribute(positions,3));
-    const line=new T.Line(geo,new T.LineBasicMaterial({color:row%3===0?0xe3faff:0x83c9dc,transparent:true,opacity:row%3===0?.52:.24,depthWrite:false}));world.add(line);whitecaps.push({line,row,count});
+   for(let row=0;row<15;row++){
+    for(let seg=0;seg<11;seg++){
+     const count=13,start=-76+seg*14.8+(Math.random()-.5)*5,length=2.2+Math.random()*5.2,z0=-35+row*5.1+(Math.random()-.5)*2.2;
+     const geo=new T.BufferGeometry(),positions=new Float32Array(count*3);geo.setAttribute("position",new T.BufferAttribute(positions,3));
+     const line=new T.Line(geo,new T.LineBasicMaterial({color:Math.random()>.55?0xe7fbff:0x9bd8e8,transparent:true,opacity:.24+Math.random()*.34,depthWrite:false}));world.add(line);whitecaps.push({line,count,start,length,z0,phase:Math.random()*6.28});
+    }
    }
-   const waveHeight=(x,z,t)=>Math.sin(x*.105+t*1.15+z*.045)*.31+Math.sin(z*.16-t*1.42)*.2+Math.cos((x+z)*.075+t*.72)*.13;
+   const waveHeight=(x,z,t)=>Math.sin(x*.105+t*1.15+z*.045)*.58+Math.sin(z*.16-t*1.42)*.34+Math.cos((x+z)*.075+t*.72)*.22+Math.sin(x*.24+z*.13-t*1.9)*.09;
    const fogs=[];
    for(let i=0;i<18;i++){const f=new T.Mesh(new T.SphereGeometry(1,12,8),new T.MeshBasicMaterial({color:0xb6cbd6,transparent:true,opacity:.055,depthWrite:false}));f.scale.set(2.4+(i%5)*.6,.16+(i%3)*.08,1.1+(i%4)*.4);f.position.set(-10+(i%9)*2.5,.05+(i%4)*.09,-6+(i%7)*2.1);world.add(f);fogs.push(f);}
    const starsGeo=new T.BufferGeometry(),starPoints=[];
@@ -905,7 +906,7 @@ function renderHauntedLighthouseGift(gift,opts,overlay){
      const arr=waterPositions;
      for(let i=0;i<arr.count;i++){const x=arr.getX(i),z=arr.getY(i);arr.setZ(i,waveHeight(x,z,elapsed));}
      arr.needsUpdate=true;waterGeometry.computeVertexNormals();
-     whitecaps.forEach(({line,row,count})=>{const p=line.geometry.attributes.position;const z0=-34+row*5.7;for(let j=0;j<count;j++){const x=-78+j*(156/(count-1)),z=z0+Math.sin(x*.055+elapsed*.48+row)*.8;p.setXYZ(j,x,waveHeight(x,z,elapsed)+.035,z);}p.needsUpdate=true;});
+     whitecaps.forEach(({line,count,start,length,z0,phase})=>{const p=line.geometry.attributes.position;for(let j=0;j<count;j++){const u=j/(count-1),x=start+u*length,z=z0+Math.sin(x*.055+elapsed*.48+phase)*.62+Math.sin(u*Math.PI)*.22;p.setXYZ(j,x,waveHeight(x,z,elapsed)+.065,z);}p.needsUpdate=true;});
      waterMat.roughness=.18+.06*(.5+.5*Math.sin(elapsed*1.7));
      fogs.forEach((f,i)=>{f.position.x+=dt*(.12+(i%4)*.035);if(f.position.x>13)f.position.x=-13;f.material.opacity=.035+.025*(.5+.5*Math.sin(elapsed*.6+i));});
      foamRings.forEach((r,i)=>{r.rotation.z=elapsed*(.12+i*.04);r.scale.setScalar(1+.055*Math.sin(elapsed*1.3+i));});
