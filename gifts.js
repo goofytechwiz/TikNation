@@ -405,7 +405,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=ghostship-galleon-20261108b";
+    script.src = "./gift-engine.js?v=finger-of-death-v1";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
