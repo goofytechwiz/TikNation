@@ -135,6 +135,17 @@ async function playTikNationGiftSound(gift) {
         bellGain.gain.setValueAtTime(0.0001,now+delay);bellGain.gain.linearRampToValueAtTime(0.035,now+delay+0.025);bellGain.gain.exponentialRampToValueAtTime(0.0001,now+delay+1.25);
         bell.connect(bellFilter);bellFilter.connect(bellGain);bellGain.connect(context.destination);bell.start(now+delay);bell.stop(now+delay+1.3);
       });
+      // Sharp rain hiss and a brief, layered lightning crack.
+      const rainNoise=context.createBufferSource(),rainBuffer=context.createBuffer(1,Math.floor(context.sampleRate*4.5),context.sampleRate),rainData=rainBuffer.getChannelData(0);
+      for(let i=0;i<rainData.length;i++)rainData[i]=(Math.random()*2-1)*(.35+.65*Math.random());
+      const rainFilter=context.createBiquadFilter(),rainGain=context.createGain();rainNoise.buffer=rainBuffer;rainFilter.type="highpass";rainFilter.frequency.value=1250;
+      rainGain.gain.setValueAtTime(.0001,now);rainGain.gain.linearRampToValueAtTime(.018,now+.6);rainGain.gain.exponentialRampToValueAtTime(.0001,now+4.45);
+      rainNoise.connect(rainFilter);rainFilter.connect(rainGain);rainGain.connect(context.destination);rainNoise.start(now);rainNoise.stop(now+4.5);
+      const crack=context.createOscillator(),crackGain=context.createGain(),crackFilter=context.createBiquadFilter();
+      crack.type="sawtooth";crack.frequency.setValueAtTime(1800,now+2.8);crack.frequency.exponentialRampToValueAtTime(90,now+3.25);
+      crackFilter.type="lowpass";crackFilter.frequency.setValueAtTime(3200,now+2.8);crackFilter.frequency.exponentialRampToValueAtTime(220,now+3.35);
+      crackGain.gain.setValueAtTime(.0001,now+2.8);crackGain.gain.linearRampToValueAtTime(.045,now+2.83);crackGain.gain.exponentialRampToValueAtTime(.0001,now+3.4);
+      crack.connect(crackFilter);crackFilter.connect(crackGain);crackGain.connect(context.destination);crack.start(now+2.8);crack.stop(now+3.45);
       return;
     }
 
@@ -347,7 +358,7 @@ function showTikNationGiftEffect(gift) {
     engine.show(gift, {
       meta: "TIKNATION GIFT · TEST COINS ONLY",
       onSound: () => playTikNationGiftSound(gift),
-      duration: gift.style === "hauntedlighthouse" ? 24000 : gift.style === "storm_of_the_world" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
+      duration: gift.style === "hauntedlighthouse" ? 28000 : gift.style === "storm_of_the_world" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
     });
   }).catch(error => console.error("TikNation gift effect unavailable:", error));
 }
