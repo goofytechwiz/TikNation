@@ -736,223 +736,57 @@ function renderLivingTombstonesGift(gift,opts,overlay){
 
 
 function renderHauntedLighthouseGift(gift,opts,overlay){
- const scene=document.createElement("div");
- scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#06101d;isolation:isolate";
- scene.innerHTML='<div class="lighthouse-loading" style="position:absolute;inset:0;display:grid;place-items:center;color:#d8efff;font:800 12px system-ui;letter-spacing:.22em">THE LIGHTHOUSE IS EMERGING…</div><div style="position:absolute;z-index:8;inset:0;pointer-events:none;background:linear-gradient(transparent 42%,rgba(0,0,0,.35) 70%,rgba(0,0,0,.9)),radial-gradient(ellipse at 50% 48%,transparent 24%,rgba(0,0,0,.52) 100%)"></div><div style="position:absolute;z-index:9;bottom:5%;left:0;right:0;text-align:center;color:#f0f5ff;font:1000 clamp(22px,5.4vw,46px)/1 Georgia,serif;letter-spacing:.15em;text-shadow:0 2px 12px #000,0 0 25px #83dfff">THE HAUNTED LIGHTHOUSE<div style="font:800 10px system-ui;letter-spacing:.3em;margin-top:10px;color:#a9dff3">WHEN THE BEACON TURNS, THE SEA ANSWERS</div></div>';
- overlay.appendChild(scene);document.body.appendChild(overlay);
+ const scene=document.createElement("div"),canvas=document.createElement("canvas");
+ scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#06101d";
+ canvas.style.cssText="position:absolute;inset:0;width:100%;height:100%;display:block";
+ canvas.setAttribute("role","img");canvas.setAttribute("aria-label","Lighthouse in a violent storm with crashing ocean waves");
+ scene.appendChild(canvas);
+ const title=document.createElement("div");
+ title.style.cssText="position:absolute;z-index:5;bottom:5%;left:0;right:0;text-align:center;color:#f0f5ff;font:1000 clamp(22px,5.4vw,46px)/1 Georgia,serif;letter-spacing:.15em;text-shadow:0 2px 12px #000,0 0 25px #83dfff;pointer-events:none";
+ title.innerHTML='THE HAUNTED LIGHTHOUSE<div style="font:800 10px system-ui;letter-spacing:.3em;margin-top:10px;color:#a9dff3">WHEN THE BEACON TURNS, THE SEA ANSWERS</div>';
+ scene.appendChild(title);overlay.appendChild(scene);document.body.appendChild(overlay);
  if(typeof opts.onSound==="function"){try{opts.onSound();}catch(_){}}
- let alive=true,renderer=null,raf=0,resizeHandler=null;
+ const ctx=canvas.getContext("2d");if(!ctx){scene.style.background="linear-gradient(#071426 40%,#063448)";return overlay;}
+ let alive=true,raf=0,t=0,last=0,flash=0,nextFlash=3.2,W=1,H=1,D=1;
  const reduced=!!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
  const duration=Math.max(18000,Number(opts.duration)||24000);
- function cleanup(){
-  if(!alive)return;alive=false;
-  if(raf)cancelAnimationFrame(raf);
-  if(resizeHandler)window.removeEventListener("resize",resizeHandler);
-  if(renderer){renderer.dispose();if(renderer.domElement&&renderer.domElement.parentNode)renderer.domElement.remove();}
-  if(overlay.isConnected)overlay.remove();
+ function resize(){const r=scene.getBoundingClientRect();W=Math.max(1,r.width);H=Math.max(1,r.height);D=Math.min(window.devicePixelRatio||1,1.5);canvas.width=Math.round(W*D);canvas.height=Math.round(H*D);ctx.setTransform(D,0,0,D,0,0);}
+ function wave(y,amp,phase,freq){ctx.beginPath();ctx.moveTo(0,y);for(let x=0;x<=W+8;x+=8)ctx.lineTo(x,y+Math.sin(x*freq+phase)*amp+Math.sin(x*freq*.43-phase*1.4)*amp*.4);}
+ function draw(time){
+  const cx=W*.5,portrait=W/H<.78,sea=H*(portrait?.61:.58),base=sea+H*.09,top=sea-H*(portrait?.36:.42),towerW=Math.max(24,W*.052);
+  let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#030918");g.addColorStop(.55,"#20394e");g.addColorStop(1,"#020a14");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  // Churning clouds and moonlit mist
+  for(let i=0;i<14;i++){let x=((i*151-time*11)%(W+260)+W+260)%(W+260)-130,y=H*(.08+(i%5)*.07),r=W*(.12+(i%3)*.035);g=ctx.createRadialGradient(x,y,2,x,y,r);g.addColorStop(0,"rgba(8,17,30,.94)");g.addColorStop(.7,"rgba(35,53,69,.42)");g.addColorStop(1,"rgba(8,17,30,0)");ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(x,y,r,r*.3,0,0,Math.PI*2);ctx.fill();}
+  g=ctx.createLinearGradient(0,sea-40,0,sea+90);g.addColorStop(0,"rgba(154,197,211,.18)");g.addColorStop(1,"rgba(8,27,42,0)");ctx.fillStyle=g;ctx.fillRect(0,sea-40,W,130);
+  // Island silhouette
+  ctx.beginPath();ctx.moveTo(cx-W*.2,base+H*.05);ctx.lineTo(cx-W*.15,base-H*.04);ctx.lineTo(cx-W*.09,base-H*.085);ctx.lineTo(cx,base-H*.12);ctx.lineTo(cx+W*.11,base-H*.07);ctx.lineTo(cx+W*.2,base+H*.05);ctx.closePath();
+  g=ctx.createLinearGradient(cx-W*.16,base-H*.1,cx+W*.15,base);g.addColorStop(0,"#6c7880");g.addColorStop(.3,"#303c48");g.addColorStop(1,"#101a25");ctx.fillStyle=g;ctx.fill();
+  // Tower
+  ctx.beginPath();ctx.moveTo(cx-towerW*.65,base);ctx.lineTo(cx-towerW*.4,top+H*.08);ctx.lineTo(cx+towerW*.4,top+H*.08);ctx.lineTo(cx+towerW*.65,base);ctx.closePath();
+  g=ctx.createLinearGradient(cx-towerW,0,cx+towerW,0);g.addColorStop(0,"#435360");g.addColorStop(.28,"#eee9d8");g.addColorStop(.7,"#aeb9b9");g.addColorStop(1,"#344553");ctx.fillStyle=g;ctx.fill();
+  for(const yy of [.34,.65]){let y=top+H*yy;ctx.fillStyle="#963b3d";ctx.fillRect(cx-towerW*(.42+yy*.1),y,towerW*(.84+yy*.2),H*.018);}
+  const ly=top+H*.045,lw=towerW*.92;ctx.fillStyle="#273a48";ctx.fillRect(cx-lw*.6,ly,lw*1.2,H*.045);ctx.shadowColor="#ffe2a0";ctx.shadowBlur=28;ctx.fillStyle="#ffe5a2";ctx.fillRect(cx-lw*.42,ly+H*.008,lw*.84,H*.032);ctx.shadowBlur=0;
+  ctx.fillStyle="#85383d";ctx.beginPath();ctx.moveTo(cx-lw*.8,ly);ctx.lineTo(cx,ly-H*.045);ctx.lineTo(cx+lw*.8,ly);ctx.closePath();ctx.fill();
+  ctx.save();ctx.translate(cx,ly+H*.02);ctx.rotate(time*.5);g=ctx.createLinearGradient(0,0,W*.5,0);g.addColorStop(0,"rgba(222,245,255,.3)");g.addColorStop(1,"rgba(200,235,255,0)");ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-H*.012);ctx.lineTo(W*.48,-H*.08);ctx.lineTo(W*.48,H*.08);ctx.lineTo(0,H*.012);ctx.closePath();ctx.fill();ctx.restore();
+  // Seven overlapping swells with visible rolling crests
+  for(let layer=0;layer<7;layer++){
+   const y=sea+H*(.045+layer*.055),amp=H*(.027+layer*.007),phase=time*(1.05+layer*.18)+layer*1.7,freq=.011+layer*.0015;
+   wave(y,amp,phase,freq);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();g=ctx.createLinearGradient(0,y-amp,0,H);g.addColorStop(0,layer%2?"#326b7a":"#1b5065");g.addColorStop(.38,"#0b3045");g.addColorStop(1,"#010812");ctx.fillStyle=g;ctx.fill();
+   wave(y-amp*.24,amp*.72,phase,freq);ctx.strokeStyle=layer%2?"rgba(206,239,241,.72)":"rgba(116,194,208,.58)";ctx.lineWidth=Math.max(2,H*(.003+layer*.0005));ctx.stroke();
+   for(let j=0;j<15;j++){let x=((j*83+layer*47+time*(20+layer*7))%(W+80))-40,yy=y+Math.sin(x*freq+phase)*amp;ctx.strokeStyle="rgba(229,248,248,"+(.25+(j%4)*.13)+")";ctx.lineWidth=Math.max(1,H*.0028);ctx.beginPath();ctx.moveTo(x,yy);ctx.quadraticCurveTo(x+W*.018,yy-H*.012,x+W*.04,yy+H*.003);ctx.stroke();}
+  }
+  // Explosive surf impacts on both sides of the island
+  for(const side of [-1,1]){let x=cx+side*W*.15;for(let k=0;k<5;k++){ctx.beginPath();ctx.ellipse(x,base+H*.02-k*H*.01,W*(.035+k*.012),H*(.016+k*.006),side*.1,Math.PI*1.08,Math.PI*1.92);ctx.strokeStyle="rgba(220,246,249,"+(.65-k*.07)+")";ctx.lineWidth=Math.max(2,W*.003);ctx.stroke();}for(let k=0;k<22;k++){let px=x+Math.sin(k*12.7+time*2.5)*W*.05,py=base-H*(.01+((k*7+time*2)%25)/500);ctx.fillStyle="rgba(222,244,247,.7)";ctx.beginPath();ctx.arc(px,py,Math.max(1,W*.0018),0,Math.PI*2);ctx.fill();}}
+  // Slanted rain
+  ctx.strokeStyle="rgba(195,226,239,.28)";ctx.lineWidth=1;for(let i=0;i<130;i++){let x=(i*79+time*155)%(W+35)-15,y=(i*137+time*390)%(H+30)-15;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-W*.01,y+H*.035);ctx.stroke();}
+  if(time>nextFlash){flash=.2;nextFlash=time+4+Math.random()*4;}
+  if(flash>0){ctx.fillStyle="rgba(190,225,255,"+(flash*.55)+")";ctx.fillRect(0,0,W,H);ctx.strokeStyle="#e6f7ff";ctx.lineWidth=Math.max(2,W*.003);ctx.beginPath();let x=W*.72,y=H*.06;ctx.moveTo(x,y);for(let i=0;i<8;i++){x+=(Math.random()-.5)*W*.06;y+=H*.05;ctx.lineTo(x,y);}ctx.stroke();flash-=.025;}
+  g=ctx.createRadialGradient(cx,H*.5,H*.12,cx,H*.5,Math.max(W,H)*.72);g.addColorStop(.4,"rgba(0,0,0,0)");g.addColorStop(1,"rgba(0,0,0,.58)");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
  }
- function finish(){if(!alive)return;overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(cleanup,850);}
- const timer=setTimeout(finish,duration);
- function fallback(message){
-  if(!alive)return;
-  scene.innerHTML='<style>.lh-fallback{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#071426,#1b3145 55%,#07111e)}.lh-fallback svg{position:absolute;width:100%;height:100%;inset:0}.lh-fallback .beam{transform-origin:50% 40%;animation:lh-sweep 5s ease-in-out infinite alternate}.lh-fallback .waves{animation:lh-wave 3s ease-in-out infinite alternate}.lh-fallback .mist{animation:lh-mist 8s ease-in-out infinite alternate}@keyframes lh-sweep{to{transform:rotate(38deg)}}@keyframes lh-wave{to{transform:translateX(-5%) scaleY(1.12)}}@keyframes lh-mist{to{transform:translateX(8%);opacity:.7}}@media(prefers-reduced-motion:reduce){.lh-fallback *{animation:none!important}}</style><div class="lh-fallback"><svg viewBox="0 0 900 650" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A lighthouse on a rocky island above a stormy sea"><defs><linearGradient id="lhSky" x2="0" y2="1"><stop stop-color="#081326"/><stop offset="1" stop-color="#31475c"/></linearGradient><linearGradient id="lhTower" x2="1" y2="0"><stop stop-color="#5c6c7b"/><stop offset=".35" stop-color="#f0e7d2"/><stop offset=".72" stop-color="#b7b9b3"/><stop offset="1" stop-color="#455363"/></linearGradient><linearGradient id="lhSea" x2="0" y2="1"><stop stop-color="#31566a"/><stop offset="1" stop-color="#020913"/></linearGradient></defs><rect width="900" height="650" fill="url(#lhSky)"/><path d="M0 430Q130 390 260 440T520 420T900 435V650H0Z" fill="url(#lhSea)"/><g class="beam"><path d="M450 160L65 260L450 290Z" fill="#c8f1ff" opacity=".19"/><path d="M450 160L820 250L450 290Z" fill="#c8f1ff" opacity=".11"/></g><g class="mist" fill="#b6cbd3" opacity=".25"><ellipse cx="160" cy="420" rx="240" ry="34"/><ellipse cx="690" cy="450" rx="300" ry="42"/></g><path d="M275 460L320 395L360 372L414 350L476 370L535 400L605 463Z" fill="#222b34" stroke="#5b6770" stroke-width="8"/><path d="M397 374L418 160L482 160L503 374Z" fill="url(#lhTower)" stroke="#d9e2e2" stroke-width="5"/><path d="M407 282H493L488 312H412Z" fill="#a33e3c"/><path d="M413 210H487L483 237H417Z" fill="#a33e3c"/><rect x="411" y="139" width="78" height="28" fill="#344a5b" stroke="#d8e4e6" stroke-width="5"/><rect x="421" y="108" width="58" height="34" fill="#f6d88b" opacity=".75" stroke="#e9f4f5" stroke-width="5"/><path d="M408 108L450 75L492 108Z" fill="#9b393b" stroke="#f1d9b4" stroke-width="5"/><circle cx="450" cy="91" r="8" fill="#ffe8a9"/><g fill="#ffdf93"><rect x="428" y="245" width="15" height="25" rx="3"/><rect x="457" y="245" width="15" height="25" rx="3"/><rect x="435" y="325" width="14" height="22" rx="3"/></g><g class="waves" fill="none" stroke="#9ed7e7" stroke-width="8" opacity=".6"><path d="M0 475Q95 440 190 475T380 475T570 475T760 475T950 475"/><path d="M-30 530Q70 495 170 530T370 530T570 530T770 530T970 530" stroke-width="5"/></g><path d="M585 45L560 125L602 106L575 180" fill="none" stroke="#dff8ff" stroke-width="8" opacity=".0" class="lh-lightning"/></svg></div>';
-  const loading=scene.querySelector(".lighthouse-loading");
-  if(loading)loading.textContent=message||"THE SEA IS RESTLESS";
- }
- function loadThree(done){
-  if(window.THREE){done();return;}
-  const existing=document.querySelector('script[data-tiknation-three="160"]');
-  if(existing){existing.addEventListener("load",done,{once:true});existing.addEventListener("error",()=>fallback("THE BEACON STILL SHINES"),{once:true});return;}
-  const script=document.createElement("script");script.src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js";script.async=true;script.dataset.tiknationThree="160";
-  script.onload=done;script.onerror=()=>fallback("THE BEACON STILL SHINES");document.head.appendChild(script);
- }
- loadThree(()=>{
-  if(!alive||!overlay.isConnected)return;
-  try{
-   const T=window.THREE;
-   const world=new T.Scene();world.background=new T.Color(0x071322);world.fog=new T.FogExp2(0x0b1a2a,.018);
-   const camera=new T.PerspectiveCamera(43,1,.1,180);
-   const canvas=document.createElement("canvas");canvas.style.cssText="position:absolute;inset:0;width:100%;height:100%;display:block";
-   scene.insertBefore(canvas,scene.firstChild);
-   renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:"low-power"});
-   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));renderer.setSize(scene.clientWidth,scene.clientHeight,false);
-   renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
-   const mat=(color,roughness=.78,metalness=0,extra={})=>new T.MeshStandardMaterial(Object.assign({color,roughness,metalness},extra));
-   world.add(new T.HemisphereLight(0x9dbbd3,0x10131b,1.45));
-   const moon=new T.DirectionalLight(0x9fc9e7,2.15);moon.position.set(-9,16,8);world.add(moon);
-   const moonGlow=new T.PointLight(0x7ebce8,22,55,2);moonGlow.position.set(-11,11,-15);world.add(moonGlow);
-   // Mobile-safe animated storm ocean: CPU-deformed geometry avoids fragile custom shader compilation.
-   const waterGeometry=new T.PlaneGeometry(180,180,112,112);
-   const waterPositions=waterGeometry.attributes.position;
-   const waterBase=new Float32Array(waterPositions.array);
-   const waterMat=new T.MeshPhongMaterial({color:0x063448,specular:0x9bcbd8,shininess:92,emissive:0x00131d,emissiveIntensity:.42,side:T.DoubleSide});
-   const water=new T.Mesh(waterGeometry,waterMat);
-   water.rotation.x=-Math.PI/2;water.position.y=-.34;water.receiveShadow=true;world.add(water);
-   const foamGroup=new T.Group();world.add(foamGroup);
-   const foamMats=[new T.MeshBasicMaterial({color:0xc7e8ed,transparent:true,opacity:.46,depthWrite:false,side:T.DoubleSide}),new T.MeshBasicMaterial({color:0x8fc8d5,transparent:true,opacity:.32,depthWrite:false,side:T.DoubleSide})];
-   const foamStreaks=[];
-   for(let i=0;i<34;i++){
-    const length=1.2+Math.random()*3.8;
-    const streak=new T.Mesh(new T.PlaneGeometry(length,.12+Math.random()*.18),foamMats[i%2]);
-    streak.rotation.x=-Math.PI/2;
-    streak.position.set((Math.random()-.5)*46,-.12,(Math.random()-.5)*42);
-    streak.rotation.z=(Math.random()-.5)*.32;
-    foamGroup.add(streak);
-    foamStreaks.push({mesh:streak,phase:Math.random()*Math.PI*2,speed:.45+Math.random()*.6,drift:.3+Math.random()*.8});
-   }
-   function updateStormWater(time){
-    const p=waterPositions.array;
-    for(let i=0;i<p.length;i+=3){
-     const x=waterBase[i],y=waterBase[i+1];
-     p[i+2]=Math.sin(x*.105+y*.022+time*1.18)*1.18
-      +Math.sin(x*-.045+y*.105-time*1.46)*.72
-      +Math.sin(x*.072+y*.069+time*2.05)*.34
-      +Math.sin(x*-.095+y*.018-time*2.65)*.16
-      +Math.sin(x*.62+y*.41-time*3.2)*.07;
-    }
-    waterPositions.needsUpdate=true;
-    waterGeometry.computeVertexNormals();
-    foamStreaks.forEach(item=>{
-     const m=item.mesh;
-     m.position.x+=Math.sin(time*item.speed+item.phase)*.012*item.drift;
-     m.position.z+=Math.cos(time*item.speed*.7+item.phase)*.009*item.drift;
-     m.scale.y=.72+.28*Math.sin(time*1.8+item.phase);
-     m.position.y=.02+Math.sin(time*1.1+item.phase)*.08;
-    });
-   }
-   const island=new T.Mesh(new T.CylinderGeometry(5.15,7.2,2.1,16,3),mat(0x29313a,1,0));island.position.set(0,.48,0);island.scale.set(1.12,1,1);island.castShadow=true;island.receiveShadow=true;world.add(island);
-   const rockMats=[mat(0x333943,1),mat(0x4b5359,.95),mat(0x202832,1)];
-   for(let i=0;i<24;i++){
-    const a=i/24*Math.PI*2,r=4.5+(i%4)*.48;
-    const rock=new T.Mesh(new T.DodecahedronGeometry(.8+(i%5)*.17,0),rockMats[i%rockMats.length]);
-    rock.position.set(Math.cos(a)*r,.45+(i%3)*.18,Math.sin(a)*r);rock.scale.set(1.15,.75,1);rock.rotation.set(i*.31,i*.77,i*.19);world.add(rock);
-   }
-   const footing=new T.Mesh(new T.CylinderGeometry(1.72,1.95,.75,32),mat(0x59616a,.9));footing.position.y=1.48;world.add(footing);
-   const tower=new T.Mesh(new T.CylinderGeometry(1.02,1.48,7.8,40,1),mat(0xd8d8cb,.52,.08));tower.position.y=5.72;tower.castShadow=true;tower.receiveShadow=true;world.add(tower);
-   const stripeMat=mat(0x963d3b,.58,.08);
-   for(const y of [3.25,6.1]){
-    const ring=new T.Mesh(new T.TorusGeometry(y<4?1.29:1.12,.12,10,48),stripeMat);ring.rotation.x=Math.PI/2;ring.position.y=y;world.add(ring);
-   }
-   const baseBand=new T.Mesh(new T.TorusGeometry(1.46,.1,10,48),mat(0x69747a,.65,.22));baseBand.rotation.x=Math.PI/2;baseBand.position.y=2.12;world.add(baseBand);
-   const windowMat=mat(0xffd98b,.22,.05,{emissive:0xffa83d,emissiveIntensity:1.3});
-   for(const [y,x] of [[3.8,-.35],[5.7,.42],[7.4,-.2]]){
-    const w=new T.Mesh(new T.BoxGeometry(.27,.55,.08),windowMat);w.position.set(x,y,1.23);w.rotation.y=x*.12;world.add(w);
-    const frame=new T.Mesh(new T.BoxGeometry(.39,.68,.1),mat(0x343d45,.6,.35));frame.position.set(x,y,1.2);world.add(frame);frame.position.z=1.18;
-    w.position.z=1.245;
-   }
-   const balcony=new T.Mesh(new T.TorusGeometry(1.16,.075,10,64),mat(0x303b43,.38,.72));balcony.rotation.x=Math.PI/2;balcony.position.y=9.55;world.add(balcony);
-   const railTop=new T.Mesh(new T.TorusGeometry(1.22,.035,8,64),mat(0x89979b,.35,.72));railTop.rotation.x=Math.PI/2;railTop.position.y=9.9;world.add(railTop);
-   for(let i=0;i<32;i++){const a=i/32*Math.PI*2;const post=new T.Mesh(new T.CylinderGeometry(.025,.025,.36,6),mat(0x829096,.38,.75));post.position.set(Math.cos(a)*1.2,9.73,Math.sin(a)*1.2);world.add(post);}
-   const lantern=new T.Mesh(new T.CylinderGeometry(.91,1.02,1.15,24,1,true),mat(0x83cfe8,.18,.12,{transparent:true,opacity:.23,side:T.DoubleSide,depthWrite:false}));lantern.position.y=10.48;world.add(lantern);
-   const lanternBase=new T.Mesh(new T.CylinderGeometry(1.02,1.02,.13,32),mat(0x343e46,.4,.7));lanternBase.position.y=9.95;world.add(lanternBase);
-   const lanternRoof=new T.Mesh(new T.ConeGeometry(1.22,.82,12),mat(0x8c3737,.48,.18));lanternRoof.position.y=11.45;world.add(lanternRoof);
-   const finial=new T.Mesh(new T.SphereGeometry(.12,12,8),mat(0xf3d39a,.24,.6));finial.position.y=11.9;world.add(finial);
-   for(let i=0;i<12;i++){const a=i/12*Math.PI*2;const mullion=new T.Mesh(new T.CylinderGeometry(.025,.025,1.12,6),mat(0xc1d6df,.3,.55));mullion.position.set(Math.cos(a)*.94,10.48,Math.sin(a)*.94);world.add(mullion);}
-   const beacon=new T.Mesh(new T.SphereGeometry(.28,20,16),new T.MeshBasicMaterial({color:0xfff1c4}));beacon.position.set(0,10.5,0);world.add(beacon);
-   const beaconGlow=new T.PointLight(0xffe6ad,7,18,2);beaconGlow.position.set(0,10.5,0);world.add(beaconGlow);
-   const beamPivot=new T.Group();beamPivot.position.set(0,10.5,0);world.add(beamPivot);
-   const beam=new T.Mesh(new T.ConeGeometry(5.5,36,36,1,true),new T.MeshBasicMaterial({color:0xc9efff,transparent:true,opacity:.105,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending}));beam.rotation.x=Math.PI/2;beam.position.z=-18;beamPivot.add(beam);
-   const beamCore=new T.Mesh(new T.CylinderGeometry(.12,.55,30,20,1,true),new T.MeshBasicMaterial({color:0xe5f7ff,transparent:true,opacity:.13,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending}));beamCore.rotation.x=Math.PI/2;beamCore.position.z=-15;beamPivot.add(beamCore);
-   const spot=new T.SpotLight(0xd7f2ff,260,48,.19,.62,1.1);spot.position.set(0,10.5,0);spot.target.position.set(0,10.5,-34);world.add(spot,spot.target);
-
-   const fogs=[];
-   for(let i=0;i<18;i++){const f=new T.Mesh(new T.SphereGeometry(1,12,8),new T.MeshBasicMaterial({color:0xb6cbd6,transparent:true,opacity:.055,depthWrite:false}));f.scale.set(2.4+(i%5)*.6,.16+(i%3)*.08,1.1+(i%4)*.4);f.position.set(-10+(i%9)*2.5,.05+(i%4)*.09,-6+(i%7)*2.1);world.add(f);fogs.push(f);}
-   const starsGeo=new T.BufferGeometry(),starPoints=[];
-   for(let i=0;i<150;i++)starPoints.push((Math.random()-.5)*90,8+Math.random()*28,-35-Math.random()*35);
-   starsGeo.setAttribute("position",new T.Float32BufferAttribute(starPoints,3));
-   const stars=new T.Points(starsGeo,new T.PointsMaterial({color:0xc8e7ff,size:.12,transparent:true,opacity:.72}));world.add(stars);
-   const lightningGroup=new T.Group();world.add(lightningGroup);
-   const lightningMat=new T.LineBasicMaterial({color:0xd8f4ff,transparent:true,opacity:.95});
-   for(let boltIndex=0;boltIndex<2;boltIndex++){
-    const x=(boltIndex===0?1:-1)*(7+Math.random()*5),z=-9-boltIndex*8;
-    const pts=[new T.Vector3(x,15,z)];
-    let px=x,py=15;
-    for(let j=0;j<7;j++){px+=(Math.random()-.5)*2.1;py-=1.3+Math.random()*1.2;pts.push(new T.Vector3(px,py,z));}
-    const line=new T.Line(new T.BufferGeometry().setFromPoints(pts),lightningMat.clone());line.visible=false;lightningGroup.add(line);
-   }
-   const flashLight=new T.PointLight(0xbfeaff,0,65,1.5);flashLight.position.set(0,13,-5);world.add(flashLight);
-   // Storm atmosphere: rain, sea spray, seabirds, and a distant ship.
-   const rainCount=260,rainPositions=new Float32Array(rainCount*3),rainSpeeds=[];
-   for(let i=0;i<rainCount;i++){
-    rainPositions[i*3]=(Math.random()-.5)*48;
-    rainPositions[i*3+1]=Math.random()*28+2;
-    rainPositions[i*3+2]=(Math.random()-.5)*42-5;
-    rainSpeeds.push(8+Math.random()*8);
-   }
-   const rainGeo=new T.BufferGeometry();rainGeo.setAttribute("position",new T.BufferAttribute(rainPositions,3));
-   const rain=new T.Points(rainGeo,new T.PointsMaterial({color:0xb9d9e8,size:.075,transparent:true,opacity:.42,depthWrite:false}));world.add(rain);
-   const sprayCount=95,sprayPositions=new Float32Array(sprayCount*3),sprayVelocities=[];
-   for(let i=0;i<sprayCount;i++){
-    const a=Math.random()*Math.PI*2,r=5.5+Math.random()*2.8;
-    sprayPositions[i*3]=Math.cos(a)*r;sprayPositions[i*3+1]=Math.random()*.4;sprayPositions[i*3+2]=Math.sin(a)*r;
-    sprayVelocities.push({x:(Math.random()-.5)*1.7,y:.5+Math.random()*2.5,z:(Math.random()-.5)*1.7});
-   }
-   const sprayGeo=new T.BufferGeometry();sprayGeo.setAttribute("position",new T.BufferAttribute(sprayPositions,3));
-   const spray=new T.Points(sprayGeo,new T.PointsMaterial({color:0xd5f6ff,size:.16,transparent:true,opacity:.72,depthWrite:false}));world.add(spray);
-   const gulls=[];
-   const gullMat=new T.LineBasicMaterial({color:0x172a38,transparent:true,opacity:.82});
-   for(let i=0;i<5;i++){
-    const g=new T.Group();
-    const left=new T.Line(new T.BufferGeometry().setFromPoints([new T.Vector3(-.55,0,0),new T.Vector3(0,.18,0)]),gullMat);
-    const right=new T.Line(new T.BufferGeometry().setFromPoints([new T.Vector3(0,.18,0),new T.Vector3(.55,0,0)]),gullMat);
-    g.add(left,right);g.position.set(-15+i*5,7+i%3*2,-10-i*2);g.scale.setScalar(.45+i*.1);world.add(g);
-    gulls.push(g);
-   }
-   const ship=new T.Group();
-   const hull=new T.Mesh(new T.BoxGeometry(3.8,.55,1.05),mat(0x18232c,.6,.28));hull.position.y=.2;ship.add(hull);
-   const deck=new T.Mesh(new T.BoxGeometry(2.1,.42,.82),mat(0x39434a,.75));deck.position.set(-.15,.62,0);ship.add(deck);
-   const mast=new T.Mesh(new T.CylinderGeometry(.035,.045,2.3,8),mat(0x303d47,.55,.3));mast.position.set(.45,1.8,0);ship.add(mast);
-   const sail=new T.Mesh(new T.PlaneGeometry(1.15,1.45),new T.MeshStandardMaterial({color:0x9eabb1,roughness:.95,side:T.DoubleSide}));sail.position.set(.95,1.75,0);sail.rotation.y=Math.PI/2;ship.add(sail);
-   const shipLamp=new T.PointLight(0xffbd69,1.5,7,2);shipLamp.position.set(-.9,.9,.2);ship.add(shipLamp);
-   ship.position.set(-23,-.05,-15);ship.rotation.y=-.12;world.add(ship);
-   const cloudLayers=[];
-   for(let i=0;i<7;i++){
-    const cloud=new T.Mesh(new T.SphereGeometry(1,12,8),new T.MeshBasicMaterial({color:0x101e2b,transparent:true,opacity:.22,depthWrite:false}));
-    cloud.scale.set(7+Math.random()*5,1.3+Math.random(),3);
-    cloud.position.set(-22+i*7,15+Math.random()*5,-23-Math.random()*8);world.add(cloud);cloudLayers.push(cloud);
-   }
-
-   resizeHandler=()=>{
-    if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight),portrait=width/height<.8;
-    renderer.setSize(width,height,false);camera.aspect=width/height;camera.fov=portrait?49:43;
-    camera.position.set(0,portrait?13.2:10.8,portrait?30:24);camera.lookAt(0,4.6,0);camera.updateProjectionMatrix();
-   };
-   resizeHandler();window.addEventListener("resize",resizeHandler);
-   const clock=new T.Clock();let elapsed=0,nextStrike=2.6,flashUntil=0;
-   function animate(){
-    if(!alive||!overlay.isConnected)return;
-    raf=requestAnimationFrame(animate);
-    const dt=Math.min(.05,clock.getDelta());elapsed+=dt;
-    if(!reduced){
-     const a=elapsed*.72;beamPivot.rotation.y=a;
-     spot.target.position.set(Math.sin(a)*34,10.5,-Math.cos(a)*34);
-     updateStormWater(elapsed);
-     fogs.forEach((f,i)=>{f.position.x+=dt*(.12+(i%4)*.035);if(f.position.x>13)f.position.x=-13;f.material.opacity=.035+.025*(.5+.5*Math.sin(elapsed*.6+i));});
-
-     const rp=rainGeo.attributes.position;
-     for(let i=0;i<rainCount;i++){
-      const k=i*3;rp.array[k]-=dt*1.7;rp.array[k+1]-=dt*rainSpeeds[i];rp.array[k+2]+=dt*.8;
-      if(rp.array[k+1]<-.5){rp.array[k]=(Math.random()-.5)*48;rp.array[k+1]=25+Math.random()*7;rp.array[k+2]=(Math.random()-.5)*42-5;}
-     }rp.needsUpdate=true;
-     const sp=sprayGeo.attributes.position;
-     for(let i=0;i<sprayCount;i++){
-      const k=i*3,v=sprayVelocities[i];sp.array[k]+=v.x*dt;sp.array[k+1]+=v.y*dt;sp.array[k+2]+=v.z*dt;
-      v.y-=1.15*dt;
-      if(sp.array[k+1]<-.05){const a=Math.random()*Math.PI*2,r=5.5+Math.random()*2.8;sp.array[k]=Math.cos(a)*r;sp.array[k+1]=.05;sp.array[k+2]=Math.sin(a)*r;v.x=(Math.random()-.5)*1.7;v.y=.7+Math.random()*2.4;v.z=(Math.random()-.5)*1.7;}
-     }sp.needsUpdate=true;
-     gulls.forEach((g,i)=>{g.position.x+=dt*(1.15+i*.13);g.position.y+=Math.sin(elapsed*3+i)*dt*.55;if(g.position.x>23)g.position.x=-23;});
-     ship.position.x+=dt*.62;if(ship.position.x>24)ship.position.x=-24;
-     cloudLayers.forEach((c,i)=>{c.position.x+=dt*(.16+i*.018);if(c.position.x>24)c.position.x=-24;});
-
-     if(elapsed>nextStrike){lightningGroup.children.forEach(line=>line.visible=true);flashUntil=elapsed+.16;flashLight.intensity=8;nextStrike=elapsed+3.2+Math.random()*3.4;}
-     if(elapsed>flashUntil){lightningGroup.children.forEach(line=>line.visible=false);flashLight.intensity=Math.max(0,flashLight.intensity-dt*32);}
-    }
-    renderer.render(world,camera);
-   }
-   animate();
-   const loading=scene.querySelector(".lighthouse-loading");if(loading)loading.remove();
-  }catch(error){fallback("THE BEACON STILL SHINES");}
- });
+ function frame(now){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(frame);let dt=Math.min(.05,(now-last)/1000||0);last=now;if(!reduced)t+=dt;draw(t);}
+ function cleanup(){if(!alive)return;alive=false;if(raf)cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected)overlay.remove();}
+ resize();window.addEventListener("resize",resize);raf=requestAnimationFrame(frame);
+ setTimeout(()=>{if(!alive)return;overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(cleanup,850);},duration);
  return overlay;
 }
 
