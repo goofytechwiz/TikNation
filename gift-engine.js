@@ -740,49 +740,100 @@ function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{
 /* Cinematic object renderer: custom shaded vector artwork replaces emoji-only gift posters. */
 
 function renderGhostShipGift(gift,opts,overlay){
- const id="tiknation-flying-dutchman-style";let style=document.getElementById(id);
- if(!style){style=document.createElement("style");style.id=id;document.head.appendChild(style);}
- style.textContent="#tiknation-gift-engine[data-style=ghostship]{position:fixed!important;inset:0!important;z-index:2147483647!important;display:block!important;overflow:hidden!important;pointer-events:none!important;background:#050a13!important}#tiknation-gift-engine[data-style=ghostship] .fd-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 72% 20%,#aeb9c0 0%,#536171 14%,#1b293b 42%,#050b15 100%)}#tiknation-gift-engine[data-style=ghostship] canvas{position:absolute;inset:0;width:100%;height:100%;display:block}#tiknation-gift-engine[data-style=ghostship] .fd-moon{position:absolute;right:12%;top:8%;width:clamp(75px,15vw,150px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#d9e1df 45%,#8799a2 73%,transparent 76%);box-shadow:0 0 55px 18px #d5e8f355;opacity:.72}#tiknation-gift-engine[data-style=ghostship] .fd-title{position:absolute;z-index:4;bottom:7%;left:3%;right:3%;text-align:center;font:1000 clamp(22px,5.5vw,48px)/1.1 system-ui;letter-spacing:.15em;color:#e9f3ed;text-shadow:0 2px 4px #000,0 0 22px #a8d8c7}#tiknation-gift-engine[data-style=ghostship] .fd-title small{display:block;margin-top:8px;font-size:clamp(9px,2vw,13px);letter-spacing:.24em;color:#b7d2cd}";
- const world=document.createElement("div");world.className="fd-world";world.innerHTML='<div class="fd-moon"></div><canvas aria-label="Animated haunted galleon inspired by the Flying Dutchman"></canvas><div class="fd-title">THE FLYING DUTCHMAN<small>THE DAMNED SHIP HAS RETURNED</small></div>';overlay.appendChild(world);document.body.appendChild(overlay);
- const canvas=world.querySelector("canvas"),ctx=canvas.getContext("2d");if(!ctx)return overlay;
- let w=0,h=0,raf=0,alive=true;const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
- function resize(){const d=Math.min(2,window.devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);ctx.setTransform(d,0,0,d,0,0);}
- function line(p,c,l){ctx.beginPath();p.forEach((v,i)=>i?ctx.lineTo(v[0],v[1]):ctx.moveTo(v[0],v[1]));ctx.strokeStyle=c;ctx.lineWidth=l;ctx.stroke();}
- function shape(p,fill,stroke,l){ctx.beginPath();p.forEach((v,i)=>i?ctx.lineTo(v[0],v[1]):ctx.moveTo(v[0],v[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=l||2;ctx.stroke();}}
- function frame(ms){if(!alive||!overlay.isConnected)return;const t=ms/1000;ctx.clearRect(0,0,w,h);
-  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#10192a");sky.addColorStop(.5,"#354352");sky.addColorStop(1,"#080e18");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
-  for(let i=0;i<8;i++){let x=((i*191+t*(i%2?8:-5))%(w+360))-180,y=h*(.13+(i%4)*.105),r=w*(.14+(i%3)*.07),g=ctx.createRadialGradient(x,y,5,x,y,r);g.addColorStop(0,"rgba(180,192,198,.17)");g.addColorStop(1,"rgba(30,42,57,0)");ctx.fillStyle=g;ctx.fillRect(x-r,y-r*.5,r*2,r);}
-  if(!reduced&&Math.sin(t*.5)>.987){ctx.fillStyle="rgba(220,239,248,.12)";ctx.fillRect(0,0,w,h*.75);}
-  const sc=Math.min(w/1000,h/620)*1.02,sw=960*sc,enter=Math.min(1,Math.max(0,(t-.2)/2.6)),ease=1-Math.pow(1-enter,3),sx=(w-sw)/2-(1-ease)*sw*.9,sy=h*.53+Math.sin(t*1.2)*5*sc;
-  ctx.save();ctx.translate(sx,sy);ctx.scale(sc,sc);ctx.shadowColor="#000";ctx.shadowBlur=25;ctx.shadowOffsetY=18;
-  const hull=ctx.createLinearGradient(0,300,0,480);hull.addColorStop(0,"#89907b");hull.addColorStop(.2,"#394a41");hull.addColorStop(.6,"#172a2c");hull.addColorStop(1,"#030a12");
-  shape([[35,342],[125,320],[250,334],[435,345],[620,329],[760,300],[875,264],[940,238],[918,345],[855,402],[755,440],[605,460],[400,458],[230,435],[100,400]],hull,"#b0a98a",7);ctx.shadowBlur=0;ctx.shadowOffsetY=0;
-  for(let k=0;k<5;k++)line([[100+k*4,370+k*15],[260,390+k*14],[440,402+k*12],[630,390+k*9],[820,350+k*4],[900-k*6,305+k*3]],k%2?"#9a9a7b66":"#020a10aa",5);
-  // Root-like growth, barnacles and broken timber.
-  for(let i=0;i<36;i++){let x=105+i*21,y=390+Math.sin(i*.54)*34;line([[x,y],[x-9,y+12],[x-4+(i%5)*3,y+30]],i%2?"#72876d":"#304c42",2+i%3);ctx.fillStyle="#9b9d78";ctx.beginPath();ctx.ellipse(x-4,y+15,3,7,i*.2,0,Math.PI*2);ctx.fill();}
-  shape([[75,334],[260,347],[455,350],[660,331],[880,275],[855,321],[655,369],[440,384],[240,372],[85,356]],"#1a2623","#9f906f",4);
-  for(let i=0;i<10;i++){let x=165+i*70,y=350+Math.sin(i/9*Math.PI)*15;ctx.fillStyle="#03090d";ctx.fillRect(x,y,24,18);ctx.strokeStyle="#a59472";ctx.lineWidth=2;ctx.strokeRect(x,y,24,18);}
-  const m=[{x:280,top:38},{x:515,top:4},{x:750,top:75}];
-  m.forEach((v,i)=>{let g=ctx.createLinearGradient(v.x-8,0,v.x+9,0);g.addColorStop(0,"#101a1b");g.addColorStop(.5,"#a39878");g.addColorStop(1,"#17201e");ctx.fillStyle=g;ctx.fillRect(v.x-7,v.top,14,355-v.top);[v.top+105,v.top+210,v.top+292].forEach((y,j)=>line([[v.x-(j?125:90),y],[v.x+(j?125:90),y]],"#9b9c84",7));line([[v.x,v.top],[v.x-150,350]],"#b6b9a688",2);line([[v.x,v.top],[v.x+155,330]],"#b6b9a688",2);for(let q=0;q<8;q++)line([[v.x-110*q/8,v.top+45+q*30],[v.x+110*q/8,v.top+45+q*30]],"#aab2a455",1);});
-  line([[280,38],[515,4],[750,75],[940,238]],"#c2c2a077",2);
-  // Massive weather-stained sails, tears and moving hems.
-  m.forEach((v,i)=>{let sway=Math.sin(t*1.7+i)*6,L=v.x-(i===1?112:92),R=v.x+(i===1?112:92),T=v.top+52,B=v.top+250,g=ctx.createLinearGradient(L,T,R,B);g.addColorStop(0,"#d8d6c4");g.addColorStop(.48,"#829087");g.addColorStop(1,"#293d3b");shape([[L,T],[R+sway,T+5],[R-6+sway,B-18],[R-28,B],[R-51,B-24],[L+25,B-8],[L+7,B-38]],g,"#d2d1bd",3);for(let q=0;q<6;q++)line([[L+15+q*27,T+12],[L+18+q*26,B-25]],"#24353388",2);for(let q=0;q<5;q++)line([[L+10+q*47,B-12],[L+6+q*48+sway,B+15+Math.sin(t*3+q)*6]],"#b6b9a5",3);});
-  // Tall stern castle, glowing windows, lanterns and spectral prow.
-  shape([[680,316],[692,224],[724,198],[724,161],[755,144],[786,164],[786,204],[831,220],[846,296]],"#35443b","#b7a783",5);
-  for(let f=0;f<3;f++){ctx.fillStyle="#101a1b";ctx.fillRect(710+f*3,226-f*34,112-f*4,30);for(let q=0;q<4;q++){ctx.fillStyle="#c3edc4";ctx.shadowColor="#a0ffba";ctx.shadowBlur=13;ctx.fillRect(721+q*24,232-f*34,8,14);ctx.shadowBlur=0;}}
-  for(let i=0;i<6;i++){ctx.fillStyle="#c8f1bd";ctx.shadowColor="#9effba";ctx.shadowBlur=14;ctx.beginPath();ctx.arc(700+i*37,294+Math.sin(i)*7,4,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;}
-  shape([[865,276],[909,236],[949,220],[925,260],[946,279],[906,298],[880,323]],"#728071","#c4c1a4",4);line([[904,256],[1004,205],[1034,212]],"#9d9071",9);shape([[907,255],[936,229],[952,240],[941,260],[960,274],[929,277]],"#d0cfb2","#38443d",3);
-  for(let i=0;i<7;i++){let q=(t*.22+i*.14)%1;ctx.globalAlpha=(1-q)*.22;ctx.fillStyle="#d4e0d4";ctx.beginPath();ctx.ellipse(780+q*160,190-q*105,12+q*25,8+q*18,q*.6,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;
-  if(!reduced&&Math.sin(t*1.65)>.987)line([[660,0],[635,70],[670,91],[641,146]],"#d9f4ff",4);
-  ctx.restore();
-  if(!reduced)for(let i=0;i<32;i++){let x=(i*83+t*(i%2?10:-6))%(w+20),y=(i*47+t*(7+i%4))%(h*.82);ctx.fillStyle=i%3?"rgba(180,211,194,.34)":"rgba(230,239,221,.55)";ctx.beginPath();ctx.arc(x,y,1+i%3*.5,0,Math.PI*2);ctx.fill();}
-  raf=requestAnimationFrame(frame);
- }
- function resize(){const d=Math.min(2,window.devicePixelRatio||1);w=window.innerWidth;h=window.innerHeight;canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);ctx.setTransform(d,0,0,d,0,0);}
- resize();window.addEventListener("resize",resize,{passive:true});raf=requestAnimationFrame(frame);
+ const styleId="tiknation-flying-dutchman-cinematic-v2";
+ let style=document.getElementById(styleId);
+ if(!style){style=document.createElement("style");style.id=styleId;document.head.appendChild(style);}
+ style.textContent=String.raw\`
+ #tiknation-gift-engine[data-style=ghostship]{position:fixed!important;inset:0!important;display:block!important;overflow:hidden!important;padding:0!important;background:#03070b!important}
+ #tiknation-gift-engine[data-style=ghostship] .fd2-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 72% 16%,#8c9b9b 0,#394b50 15%,#172b34 43%,#07121a 75%,#020609 100%);perspective:1100px}
+ #tiknation-gift-engine[data-style=ghostship] .fd2-moon{position:absolute;right:13%;top:7%;width:clamp(65px,12vw,135px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 32% 28%,#f5f3d9 0,#c3d0c1 43%,#667e7a 72%,#263c40 100%);box-shadow:0 0 35px 12px #b8dfd655,0 0 110px 40px #a7d2ce22;opacity:.72}
+ #tiknation-gift-engine[data-style=ghostship] .fd2-svg{position:absolute;width:100%;height:100%;inset:0;overflow:visible}
+ #tiknation-gift-engine[data-style=ghostship] .fd2-ship{transform-origin:50% 60%;animation:fd2-arrive 2.1s cubic-bezier(.18,.8,.2,1) both,fd2-heave 5s ease-in-out 2.1s infinite}
+ #tiknation-gift-engine[data-style=ghostship] .fd2-sail{transform-box:fill-box;transform-origin:50% 0%;animation:fd2-sail 3.6s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=ghostship] .fd2-sail:nth-of-type(2n){animation-delay:-1.4s}
+ #tiknation-gift-engine[data-style=ghostship] .fd2-rope{stroke-dasharray:8 5;animation:fd2-rig 8s linear infinite}
+ #tiknation-gift-engine[data-style=ghostship] .fd2-lantern{filter:url(#fd2-glow);animation:fd2-lamp 1.8s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=ghostship] .fd2-fog{animation:fd2-fog 18s linear infinite}
+ #tiknation-gift-engine[data-style=ghostship] .fd2-title{position:absolute;z-index:5;left:3%;right:3%;bottom:5%;text-align:center;color:#e3eee7;font:1000 clamp(21px,5vw,45px)/1.1 system-ui;letter-spacing:.15em;text-shadow:0 2px 5px #000,0 0 24px #9ac8b8}
+ #tiknation-gift-engine[data-style=ghostship] .fd2-title small{display:block;margin-top:8px;color:#bdd0c7;font-size:clamp(9px,1.8vw,13px);letter-spacing:.24em}
+ @keyframes fd2-arrive{from{opacity:0;transform:translate3d(28vw,12vh,-300px) scale(.58) rotateY(-16deg)}to{opacity:1;transform:translate3d(0,0,0) scale(1) rotateY(-5deg)}}
+ @keyframes fd2-heave{0%,100%{translate:0 0;rotate:-.4deg}50%{translate:0 -9px;rotate:.5deg}}
+ @keyframes fd2-sail{from{transform:skewX(-2deg) scaleX(.98)}to{transform:skewX(3deg) scaleX(1.025)}}
+ @keyframes fd2-rig{to{stroke-dashoffset:-104}}
+ @keyframes fd2-lamp{from{opacity:.55}to{opacity:1}}
+ @keyframes fd2-fog{from{transform:translateX(-3%)}to{transform:translateX(4%)}}
+ @media(max-width:650px){#tiknation-gift-engine[data-style=ghostship] .fd2-svg{width:150%;left:-25%}#tiknation-gift-engine[data-style=ghostship] .fd2-title{bottom:4%;letter-spacing:.1em}}
+ @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=ghostship] .fd2-ship,#tiknation-gift-engine[data-style=ghostship] .fd2-sail,#tiknation-gift-engine[data-style=ghostship] .fd2-rope,#tiknation-gift-engine[data-style=ghostship] .fd2-fog{animation:none!important}}
+ \`;
+ const world=document.createElement("div");world.className="fd2-world";
+ world.innerHTML=\`
+ <div class="fd2-moon"></div>
+ <svg class="fd2-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A towering, barnacle-encrusted ghost galleon with three torn sails">
+ <defs>
+  <linearGradient id="fd2-hull" x1="0" y1="0" x2=".2" y2="1"><stop stop-color="#9ca58c"/><stop offset=".14" stop-color="#526b5b"/><stop offset=".38" stop-color="#263f3d"/><stop offset=".72" stop-color="#101f27"/><stop offset="1" stop-color="#03090e"/></linearGradient>
+  <linearGradient id="fd2-side" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a2a18a"/><stop offset=".22" stop-color="#52645a"/><stop offset=".65" stop-color="#1c3434"/><stop offset="1" stop-color="#07131a"/></linearGradient>
+  <linearGradient id="fd2-sailcloth" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d5d5c3"/><stop offset=".35" stop-color="#8f9b8e"/><stop offset=".72" stop-color="#536c65"/><stop offset="1" stop-color="#243c3a"/></linearGradient>
+  <linearGradient id="fd2-wood" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#101b1b"/><stop offset=".25" stop-color="#786f58"/><stop offset=".52" stop-color="#b0a17d"/><stop offset=".8" stop-color="#4c594b"/><stop offset="1" stop-color="#111b1d"/></linearGradient>
+  <radialGradient id="fd2-green"><stop stop-color="#d6ffb0"/><stop offset=".25" stop-color="#91d89b"/><stop offset="1" stop-color="#3b765e" stop-opacity="0"/></radialGradient>
+  <filter id="fd2-glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="fd2-shadow"><feGaussianBlur stdDeviation="16"/></filter>
+  <pattern id="fd2-planks" width="42" height="19" patternUnits="userSpaceOnUse"><path d="M0 18H42M21 0V18" stroke="#07151a" stroke-width="2" opacity=".65"/><path d="M2 3H18M24 13H39" stroke="#a1a187" stroke-width="1" opacity=".2"/></pattern>
+  <clipPath id="fd2-hull-clip"><path d="M120 474Q250 452 380 465L690 448Q824 425 952 390L1082 355L1050 497Q1012 574 910 614Q720 678 495 649Q300 625 185 568Z"/></clipPath>
+ </defs>
+ <g class="fd2-fog" fill="#b9c8c2" opacity=".35" filter="url(#fd2-shadow)"><ellipse cx="270" cy="380" rx="290" ry="54"/><ellipse cx="850" cy="315" rx="360" ry="70"/><ellipse cx="650" cy="540" rx="460" ry="62"/></g>
+ <g class="fd2-ship">
+  <ellipse cx="605" cy="668" rx="475" ry="42" fill="#000" opacity=".7" filter="url(#fd2-shadow)"/>
+  <g stroke="#1b2b2b" stroke-width="8" stroke-linejoin="round">
+   <path d="M790 470L800 355L836 325L839 270L885 240L928 265L933 315L981 339L1000 454Z" fill="url(#fd2-side)"/>
+   <path d="M816 366L820 313L853 287L855 241L891 213L924 238L925 286L965 312L970 397Z" fill="#536456" stroke="#a0a188" stroke-width="4"/>
+   <path d="M839 273L841 220L871 190L901 202L931 232L930 278Z" fill="#657364" stroke="#c0b596" stroke-width="4"/>
+   <path d="M865 210L870 175L895 146L918 178L918 218Z" fill="#354b47" stroke="#b7ad8e" stroke-width="4"/>
+   <path d="M881 153L896 111L913 153Z" fill="#b1a78b" stroke="#354b42" stroke-width="5"/>
+   <path d="M805 385L976 385M814 425L988 425M833 332L963 332M843 290L950 290" fill="none" stroke="#c1b18c" stroke-width="7"/>
+   <path d="M806 359L988 359M820 314L967 314M840 269L939 269" fill="none" stroke="#101d20" stroke-width="5"/>
+  </g>
+  <g fill="#0b171a" stroke="#b3a783" stroke-width="4">
+   <path d="M826 389v-23q10-18 20 0v23zM858 389v-23q10-18 20 0v23zM890 389v-23q10-18 20 0v23zM922 389v-23q10-18 20 0v23zM954 389v-23q10-18 20 0v23z"/>
+   <path d="M838 338v-19q9-15 18 0v19zM871 338v-19q9-15 18 0v19zM904 338v-19q9-15 18 0v19zM937 338v-19q9-15 18 0v19z"/>
+   <path d="M858 285v-18q8-13 16 0v18zM890 285v-18q8-13 16 0v18zM921 285v-18q8-13 16 0v18z"/>
+  </g>
+  <g class="fd2-lantern" fill="#baffaa"><circle cx="837" cy="374" r="7"/><circle cx="870" cy="374" r="7"/><circle cx="903" cy="374" r="7"/><circle cx="936" cy="374" r="7"/><circle cx="854" cy="323" r="6"/><circle cx="887" cy="323" r="6"/><circle cx="920" cy="323" r="6"/></g>
+  <path d="M120 474Q250 452 380 465L690 448Q824 425 952 390L1082 355L1050 497Q1012 574 910 614Q720 678 495 649Q300 625 185 568Z" fill="url(#fd2-hull)" stroke="#b3ad8e" stroke-width="9"/>
+  <path d="M130 478Q350 465 560 476Q820 466 1068 376L1040 496Q975 567 900 591Q690 649 500 624Q294 603 180 553Z" fill="url(#fd2-planks)" opacity=".9" clip-path="url(#fd2-hull-clip)"/>
+  <path d="M155 493Q390 475 595 488Q820 475 1058 390M176 523Q398 516 610 526Q832 513 1048 431M205 552Q424 555 650 558Q850 548 1027 476M252 583Q465 598 685 594Q861 584 997 526" fill="none" stroke="#a5a487" stroke-width="5" opacity=".55"/>
+  <path d="M125 476Q350 453 560 466Q825 450 1080 358" fill="none" stroke="#d4c5a0" stroke-width="12"/>
+  <g fill="#02090d" stroke="#9d997c" stroke-width="5"><ellipse cx="300" cy="502" rx="19" ry="13"/><ellipse cx="380" cy="505" rx="19" ry="13"/><ellipse cx="460" cy="506" rx="19" ry="13"/><ellipse cx="540" cy="507" rx="19" ry="13"/><ellipse cx="620" cy="500" rx="19" ry="13"/><ellipse cx="700" cy="488" rx="19" ry="13"/><ellipse cx="780" cy="468" rx="19" ry="13"/></g>
+  <g stroke="url(#fd2-wood)" stroke-linecap="round"><path d="M340 477L360 92M590 463L596 42M820 438L837 125" stroke-width="24"/><path d="M330 280L392 283M299 365L415 365M285 438L425 438M535 205L655 205M512 310L675 310M500 400L687 400M787 258L889 258M774 341L900 341M764 407L914 407" stroke-width="13"/></g>
+  <g fill="none" stroke="#b4b19a" stroke-width="3" opacity=".7" class="fd2-rope"><path d="M360 92L130 475M360 92L590 463M596 42L340 477M596 42L820 438M837 125L590 463M837 125L1080 358M340 280L596 42L820 258M299 365L596 205L900 341"/><path d="M360 92L360 477M596 42L596 463M837 125L837 438" stroke-dasharray="3 6"/></g>
+  <g class="fd2-sail" stroke="#d3d2bd" stroke-width="4" stroke-linejoin="round">
+   <path d="M353 112Q296 123 260 167L272 266L295 250L306 276L324 256L341 278L357 258L375 276L392 251L405 267L402 155Z" fill="url(#fd2-sailcloth)"/>
+   <path d="M589 65Q507 77 462 129L468 244L490 221L506 251L526 226L544 253L564 229L583 250L606 227L627 248L647 221L650 109Z" fill="url(#fd2-sailcloth)"/>
+   <path d="M830 146Q770 160 738 205L742 300L760 280L776 302L794 282L810 305L829 281L846 299L865 274L882 289L883 182Z" fill="url(#fd2-sailcloth)"/>
+  </g>
+  <g fill="none" stroke="#263b37" stroke-width="7" opacity=".8"><path d="M282 182L385 249M307 144L368 258M483 149L629 220M513 111L603 245M753 220L866 275M777 184L841 294"/></g>
+  <g fill="none" stroke="#a9b4a2" stroke-width="5" stroke-linecap="round"><path d="M273 264L260 322L279 300L285 344M322 260L311 319L328 300L337 345M385 255L399 309L387 300L405 331M479 244L470 315L492 291L497 343M548 246L553 322L570 301L575 350M629 226L648 293L631 282L658 326M751 298L740 351L760 334L767 372M818 302L830 359L847 338L852 376"/></g>
+  <g stroke="#b8b79a" stroke-width="6" stroke-linejoin="round">
+   <path d="M190 487L70 405L20 389L85 432L38 440L115 465L70 480L182 522Z" fill="#64796a"/>
+   <path d="M75 419Q34 392 46 365Q64 382 78 379Q95 350 113 367Q118 389 101 405L139 435Z" fill="#a4aa8d"/>
+   <path d="M67 381L49 346L84 370L104 344L111 383" fill="#c0b99b"/><path d="M50 397Q76 408 100 395" fill="none" stroke="#162d2c" stroke-width="9"/>
+   <circle cx="77" cy="388" r="5" fill="#c9ffae" class="fd2-lantern"/>
+   <path d="M188 478L12 320L-22 305L35 352L5 354L188 502" fill="#687d6b"/>
+  </g>
+  <g fill="#718879" stroke="#263d37" stroke-width="3"><path d="M176 512q-18 22-5 43q20-6 23-26q19 20 35 4q-5-23-28-25q18-20 1-34q-23 4-26 26z"/><path d="M280 553q-20 25-5 45q18-7 22-26q16 20 34 5q-4-22-27-27q18-19 0-34q-21 5-24 37z"/><path d="M465 585q-23 25-8 47q20-7 25-27q17 20 35 2q-6-24-29-28q17-20-1-35q-22 6-22 41z"/><path d="M690 579q-19 24-6 42q20-5 25-24q18 19 34 2q-4-22-28-26q17-20-1-35q-21 6-24 41z"/><path d="M880 548q-20 24-6 43q18-6 23-24q17 17 33 0q-4-21-27-25q17-20 0-35q-20 5-23 41z"/></g>
+  <g fill="#a7a88b" stroke="#344b40" stroke-width="2"><ellipse cx="220" cy="530" rx="12" ry="8"/><ellipse cx="250" cy="551" rx="9" ry="7"/><ellipse cx="344" cy="566" rx="13" ry="8"/><ellipse cx="408" cy="580" rx="10" ry="7"/><ellipse cx="535" cy="593" rx="13" ry="9"/><ellipse cx="612" cy="600" rx="9" ry="7"/><ellipse cx="757" cy="575" rx="13" ry="8"/><ellipse cx="828" cy="562" rx="10" ry="7"/><ellipse cx="947" cy="515" rx="12" ry="8"/></g>
+  <g fill="none" stroke="#9caf89" stroke-width="8" stroke-linecap="round" opacity=".8"><path d="M205 547q-28 45-5 73m27-63q-9 39 15 58m109-43q-20 39-4 61m183-29q-12 36 9 56m148-74q-20 35-3 55m151-94q-7 34 17 49"/></g>
+  <g fill="none" stroke="#303d3d" stroke-width="8"><path d="M150 490q90 76 180 65t190 30q120 29 245-8t225-79"/><path d="M175 469q110 72 215 55t210 26q130 23 260-23"/></g>
+  <g fill="url(#fd2-green)" opacity=".85"><circle cx="302" cy="504" r="35"/><circle cx="462" cy="507" r="35"/><circle cx="622" cy="499" r="35"/><circle cx="782" cy="466" r="35"/></g>
+  <g fill="#c8ffad" class="fd2-lantern"><circle cx="302" cy="504" r="5"/><circle cx="462" cy="507" r="5"/><circle cx="622" cy="499" r="5"/><circle cx="782" cy="466" r="5"/></g>
+ </g>
+ <g class="fd2-fog" fill="#c7d4ca" opacity=".16" filter="url(#fd2-shadow)"><ellipse cx="210" cy="600" rx="330" ry="35"/><ellipse cx="930" cy="570" rx="340" ry="42"/></g>
+ <g fill="#c5e4cf" opacity=".65"><circle cx="174" cy="245" r="2"/><circle cx="235" cy="318" r="3"/><circle cx="1040" cy="230" r="2"/><circle cx="968" cy="190" r="3"/><circle cx="420" cy="282" r="2"/><circle cx="718" cy="350" r="2"/></g>
+ </svg>
+ <div class="fd2-title">THE FLYING DUTCHMAN<small>THE CURSED GALLEON · LOST BETWEEN WORLDS</small></div>\`;
+ overlay.appendChild(world);document.body.appendChild(overlay);
+ const duration=Math.max(8000,Number(opts.duration)||10000);
  if(typeof opts.onSound==="function"){try{opts.onSound();}catch(e){console.warn("Ghost ship sound unavailable",e);}}
- const duration=Math.max(7000,Number(opts.duration)||9000);
- setTimeout(()=>{alive=false;if(raf)cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .55s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),580);}},duration);
+ setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .65s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),680);}},duration);
  return overlay;
 }
 function renderCinematicGift(gift,opts,overlay){
