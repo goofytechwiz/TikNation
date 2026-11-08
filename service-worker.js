@@ -1,4 +1,4 @@
-const CACHE_NAME = "tiknation-shell-v17-phantom-train-mirrored-wheel-fix";
+const CACHE_NAME = "tiknation-shell-v18-synchronized-running-gear";
 const APP_SHELL = [
   "./",
   "./index.html",
