@@ -112,7 +112,75 @@ document.getElementById('fingerDeathPreview').addEventListener('click',()=>{
  const status=document.getElementById('fingerDeathStatus');
  const prior=document.getElementById('fodStandalonePreview');if(prior)prior.remove();
  const overlay=document.createElement('div');overlay.id='fodStandalonePreview';
- overlay.innerHTML='<div class="fod-scene" role="dialog" aria-label="Anatomically detailed skeletal hand"><div class="fod-runes">✦　ᛟ　✧　ᚷ　✦</div><svg class="fod-hand" viewBox="0 0 420 560" role="img" aria-label="Detailed human skeleton hand with one finger raised"><defs><linearGradient id="boneReal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff8df"/><stop offset=".32" stop-color="#d9d4bd"/><stop offset=".68" stop-color="#a6aaa0"/><stop offset="1" stop-color="#59696b"/></linearGradient><filter id="boneShadow"><feGaussianBlur stdDeviation="3"/></filter></defs><ellipse cx="212" cy="290" rx="145" ry="220" fill="#a9efff" opacity=".09" filter="url(#boneShadow)"/><g stroke="#26363b" stroke-width="15" stroke-linecap="round" fill="none"><path d="M166 407L166 535M254 407L254 535"/></g><path d="M164 410L166 535M254 410L254 535" stroke="url(#boneReal)" stroke-width="36" stroke-linecap="round"/><path d="M180 427L181 524M239 427L240 524" stroke="#657477" stroke-width="3" opacity=".8"/><path d="M145 363Q124 315 140 272Q152 237 179 236L239 236Q279 239 291 277Q306 322 278 391L258 427Q211 450 163 425Z" fill="url(#boneReal)" stroke="#39494d" stroke-width="8"/><path d="M177 252L190 376M211 245L211 393M245 252L234 379" stroke="#657477" stroke-width="8" stroke-linecap="round"/><g fill="url(#boneReal)" stroke="#3e5054" stroke-width="5"><path d="M164 266Q151 236 147 211L143 183Q141 164 155 156Q169 149 180 163L188 185L197 260Z"/><path d="M197 257L194 167L190 93Q189 67 207 55Q226 44 239 62Q247 73 244 96L241 171L239 263Z"/><path d="M241 264L250 207L259 178Q266 158 283 161Q301 164 302 182Q302 192 296 208L279 277Z"/><path d="M279 286L302 260L322 244Q337 232 351 244Q364 258 351 274L329 299L296 333Z"/><path d="M148 305L120 285L99 270Q83 259 70 272Q58 287 73 302L101 330L151 359Z"/></g><g fill="url(#boneReal)" stroke="#536267" stroke-width="4"><ellipse cx="164" cy="165" rx="15" ry="10"/><ellipse cx="209" cy="59" rx="16" ry="10"/><ellipse cx="282" cy="169" rx="14" ry="9"/><ellipse cx="347" cy="250" rx="12" ry="8"/><ellipse cx="72" cy="280" rx="12" ry="8"/></g><g fill="none" stroke="#46585c" stroke-width="4" stroke-linecap="round"><path d="M160 183L169 231M211 82L214 145M279 190L268 232M335 267L306 302M87 295L126 330"/></g><g fill="#202c31" stroke="#8b9992" stroke-width="3"><ellipse cx="173" cy="240" rx="11" ry="7"/><ellipse cx="216" cy="156" rx="11" ry="7"/><ellipse cx="264" cy="236" rx="10" ry="7"/><ellipse cx="309" cy="292" rx="9" ry="6"/><ellipse cx="124" cy="330" rx="10" ry="7"/></g><path d="M211 15V39M199 27H223" stroke="#c8fbff" stroke-width="3" stroke-linecap="round"/><g fill="#f4e9ca" opacity=".75"><circle cx="156" cy="173" r="3"/><circle cx="204" cy="63" r="3"/><circle cx="278" cy="173" r="3"/><circle cx="343" cy="250" r="3"/></g></svg><div class="fod-title">FINGER OF DEATH<small>THE HAND HAS CHOSEN</small></div><div class="fod-close">FREE VISUAL PREVIEW · NO COINS SPENT</div></div>';
+ overlay.innerHTML='<div class="fod-scene" role="dialog" aria-label="Anatomically detailed skeletal hand"><div class="fod-runes">✦　ᛟ　✧　ᚷ　✦</div><svg class="fod-hand" viewBox="0 0 420 560" role="img" aria-label="Anatomically detailed skeletal hand with finger bones, knuckles, palm bones and wrist bones">
+<defs>
+ <linearGradient id="boneReal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff9e8"/><stop offset=".28" stop-color="#e2ddc9"/><stop offset=".62" stop-color="#b5b5a6"/><stop offset="1" stop-color="#657477"/></linearGradient>
+ <linearGradient id="boneEdge" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fffde9"/><stop offset=".5" stop-color="#c5c5b5"/><stop offset="1" stop-color="#788789"/></linearGradient>
+ <filter id="boneShadow"><feGaussianBlur stdDeviation="4"/></filter>
+ <g id="longBone"><path d="M-10 -28Q-16 -36 -12 -45Q-8 -54 0 -51Q8 -54 12 -45Q16 -36 10 -28L8 28Q16 36 12 45Q8 54 0 51Q-8 54 -12 45Q-16 36 -8 28Z" fill="url(#boneReal)" stroke="#536267" stroke-width="3"/><path d="M-3 -35Q-7 -4 -3 34" fill="none" stroke="#fff8df" stroke-width="2" opacity=".65"/><path d="M8 -28Q4 0 7 27" fill="none" stroke="#667779" stroke-width="2" opacity=".65"/></g>
+ <g id="joint"><ellipse rx="14" ry="11" fill="url(#boneEdge)" stroke="#536267" stroke-width="3"/><ellipse rx="5" ry="4" fill="#69787a" opacity=".7"/><path d="M-8 -4Q0 -9 8 -4" fill="none" stroke="#fff8e4" stroke-width="2"/></g>
+</defs>
+<ellipse cx="210" cy="292" rx="150" ry="220" fill="#a9efff" opacity=".07" filter="url(#boneShadow)"/>
+<!-- forearm bones -->
+<path d="M151 405Q143 430 148 462L154 535Q166 548 179 535L180 458Q184 428 190 407Z" fill="url(#boneReal)" stroke="#536267" stroke-width="5"/>
+<path d="M231 405Q239 430 234 462L228 535Q216 548 203 535L202 458Q198 428 192 407Z" fill="url(#boneReal)" stroke="#536267" stroke-width="5"/>
+<path d="M160 432L166 523M220 432L214 523" stroke="#fff9e8" stroke-width="3" opacity=".55"/>
+<!-- carpal cluster: individual wrist bones -->
+<g fill="url(#boneEdge)" stroke="#536267" stroke-width="3">
+ <path d="M145 393Q140 379 153 370Q166 367 174 380L171 400Q157 408 145 393Z"/>
+ <path d="M174 382Q175 367 190 366Q203 373 198 390L184 402Q173 397 174 382Z"/>
+ <path d="M201 382Q204 367 219 370Q232 380 224 396L208 403Q198 397 201 382Z"/>
+ <path d="M228 382Q238 369 251 378Q260 391 248 402L232 402Q222 395 228 382Z"/>
+ <path d="M151 407Q161 396 176 403L181 421Q168 432 154 422Z"/>
+ <path d="M181 405Q192 397 204 407L205 426Q192 435 181 423Z"/>
+ <path d="M207 407Q219 397 232 405L233 423Q220 435 207 426Z"/>
+ <path d="M235 405Q248 396 259 407L256 423Q244 433 232 422Z"/>
+</g>
+<!-- five metacarpals, individually separated -->
+<g fill="none" stroke="#39494d" stroke-width="16" stroke-linecap="round">
+ <path d="M160 392Q145 351 112 318"/><path d="M181 389Q171 337 164 281"/><path d="M207 388Q207 335 207 268"/><path d="M232 389Q247 343 258 287"/><path d="M250 394Q287 365 307 330"/>
+</g>
+<g fill="none" stroke="url(#boneReal)" stroke-width="10" stroke-linecap="round">
+ <path d="M160 392Q145 351 112 318"/><path d="M181 389Q171 337 164 281"/><path d="M207 388Q207 335 207 268"/><path d="M232 389Q247 343 258 287"/><path d="M250 394Q287 365 307 330"/>
+</g>
+<!-- index finger: three distinct phalanges -->
+<g transform="translate(207 0)">
+ <use href="#joint" x="0" y="253"/>
+ <g transform="translate(0 205) rotate(0)"><use href="#longBone" transform="scale(.72 .72)"/></g>
+ <use href="#joint" x="0" y="157"/>
+ <g transform="translate(0 111)"><use href="#longBone" transform="scale(.68 .78)"/></g>
+ <use href="#joint" x="0" y="62"/>
+ <g transform="translate(0 26)"><use href="#longBone" transform="scale(.62 .65)"/></g>
+</g>
+<!-- middle finger curled -->
+<g>
+ <path d="M258 270Q275 235 278 207Q280 189 294 190Q308 192 306 208L298 246Q294 265 279 284" fill="none" stroke="#3c4e52" stroke-width="18" stroke-linecap="round"/>
+ <path d="M258 270Q275 235 278 207Q280 189 294 190Q308 192 306 208L298 246Q294 265 279 284" fill="none" stroke="url(#boneReal)" stroke-width="11" stroke-linecap="round"/>
+ <use href="#joint" x="280" y="207"/><use href="#joint" x="294" y="251"/>
+ <path d="M279 284Q301 283 321 266Q335 254 345 268Q354 282 339 295L306 322" fill="none" stroke="#3c4e52" stroke-width="17" stroke-linecap="round"/>
+ <path d="M279 284Q301 283 321 266Q335 254 345 268Q354 282 339 295L306 322" fill="none" stroke="url(#boneReal)" stroke-width="10" stroke-linecap="round"/>
+ <use href="#joint" x="326" y="272"/>
+</g>
+<!-- ring finger curled -->
+<g>
+ <path d="M235 279Q248 246 248 225Q248 207 263 204Q278 206 276 223L270 255Q266 275 252 294" fill="none" stroke="#3c4e52" stroke-width="16" stroke-linecap="round"/>
+ <path d="M235 279Q248 246 248 225Q248 207 263 204Q278 206 276 223L270 255Q266 275 252 294" fill="none" stroke="url(#boneReal)" stroke-width="10" stroke-linecap="round"/>
+ <use href="#joint" x="250" y="224"/><use href="#joint" x="263" y="267"/>
+</g>
+<!-- little finger curled -->
+<g>
+ <path d="M280 317Q309 305 323 290Q337 278 348 291Q359 306 344 319L316 343" fill="none" stroke="#3c4e52" stroke-width="15" stroke-linecap="round"/>
+ <path d="M280 317Q309 305 323 290Q337 278 348 291Q359 306 344 319L316 343" fill="none" stroke="url(#boneReal)" stroke-width="9" stroke-linecap="round"/>
+ <use href="#joint" x="330" y="294"/>
+</g>
+<!-- thumb: two phalanges and saddle joint -->
+<path d="M151 304Q125 283 105 267Q88 253 75 267Q62 283 79 297L119 332Q136 346 157 348" fill="none" stroke="#3c4e52" stroke-width="19" stroke-linecap="round"/>
+<path d="M151 304Q125 283 105 267Q88 253 75 267Q62 283 79 297L119 332Q136 346 157 348" fill="none" stroke="url(#boneReal)" stroke-width="12" stroke-linecap="round"/>
+<use href="#joint" x="103" y="271"/><use href="#joint" x="139" y="332"/>
+<!-- anatomical joint shadows and subtle bone pores -->
+<g fill="#596a6d" opacity=".48"><circle cx="201" cy="31" r="2"/><circle cx="214" cy="40" r="1.8"/><circle cx="157" cy="186" r="2"/><circle cx="265" cy="211" r="2"/><circle cx="332" cy="285" r="2"/><circle cx="84" cy="279" r="2"/></g>
+<path d="M207 7V28M196 18H218" stroke="#c8fbff" stroke-width="2.5" stroke-linecap="round"/>
+</svg><div class="fod-title">FINGER OF DEATH<small>THE HAND HAS CHOSEN</small></div><div class="fod-close">FREE VISUAL PREVIEW · NO COINS SPENT</div></div>';
  document.body.appendChild(overlay);status.textContent='FINGER OF DEATH SUMMONED · FREE PREVIEW';
  setTimeout(()=>{if(overlay.isConnected){overlay.classList.add('fod-out');setTimeout(()=>overlay.remove(),500)}},8500);
 });;
