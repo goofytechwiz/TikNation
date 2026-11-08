@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09091b">
+<title>TikNation · Gift Animation Test</title>
+<style>
+:root{color-scheme:dark;--ink:#f7f3ff;--muted:#b9b3d5;--cyan:#8cf7ef;--pink:#ff9dcc}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:24px 16px 60px;color:var(--ink);font-family:Inter,system-ui,sans-serif;background:radial-gradient(ellipse at top,#28204e,#09091b 65%)}
+main{max-width:900px;margin:auto}
+a{color:var(--cyan)}
+h1{margin:8px 0;font-size:clamp(28px,6vw,44px)}
+p{color:var(--muted);line-height:1.5}
+#status{position:sticky;top:8px;z-index:5;padding:14px;border:1px solid #8cf7ef66;border-radius:14px;background:#11132bee;color:var(--cyan);font-weight:800;line-height:1.4}
+#grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;margin-top:18px}
+button{min-height:88px;padding:12px;border:1px solid #ffffff28;border-radius:15px;background:linear-gradient(145deg,#25234a,#121326);color:var(--ink);font:inherit;font-weight:750;cursor:pointer;touch-action:manipulation;pointer-events:auto}
+button:active{transform:scale(.97);border-color:var(--cyan)}
+button span{display:block;font-size:28px;margin-bottom:5px}
+.small{font-size:12px;color:var(--muted);font-weight:500}
+</style>
+</head>
+<body>
+<main>
+<a href="./">← Back to LIVE Worlds</a>
+<h1>Gift Animation Test</h1>
+<p>This isolated test loads only the gift catalog and animation engine. Tap any gift once to test its full animation.</p>
+<div id="status" role="status" aria-live="polite">LOADING GIFT SYSTEM…</div>
+<div id="grid"></div>
+</main>
+<script src="../../gifts.js?v=isolated-gift-lab-1"></script>
+<script src="../../gift-engine.js?v=isolated-gift-lab-1"></script>
+<script>
+(function(){
+  const status=document.getElementById("status");
+  const grid=document.getElementById("grid");
+  const catalog=window.TIKNATION_GIFT_CATALOG||{};
+  const keys=Object.keys(catalog);
+  status.textContent=keys.length+" GIFTS FOUND · "+(window.TikNationGiftEngine&&typeof window.TikNationGiftEngine.show==="function"?"ANIMATION ENGINE READY":"ANIMATION ENGINE MISSING");
+  keys.forEach(key=>{
+    const gift=catalog[key];
+    const button=document.createElement("button");
+    button.type="button";
+    button.innerHTML="<span></span><strong></strong><div class='small'></div>";
+    button.querySelector("span").textContent=gift.emoji||"🎁";
+    button.querySelector("strong").textContent=gift.name||key;
+    button.querySelector(".small").textContent=(gift.category||"Gift")+" · "+(gift.cost||0)+" coins";
+    button.addEventListener("click",()=>{
+      status.textContent="TAP RECEIVED · "+(gift.name||key).toUpperCase()+" · STARTING ANIMATION…";
+      const engine=window.TikNationGiftEngine;
+      if(!engine||typeof engine.show!=="function"){status.textContent="ENGINE NOT READY · RELOAD THIS TEST PAGE";return;}
+      try{
+        const started=engine.show(gift,{meta:"TIKNATION GIFT TEST · FREE PREVIEW",duration:6500});
+        status.textContent=started?"ANIMATION STARTED · "+(gift.name||key).toUpperCase():"ENGINE REJECTED THIS GIFT";
+      }catch(error){status.textContent="ANIMATION ERROR · "+error.message;}
+    });
+    grid.appendChild(button);
+  });
+  if(!keys.length)status.textContent="GIFT CATALOG DID NOT LOAD · CHECK THE SCRIPT";
+})();
+</script>
+</body>
+</html>
