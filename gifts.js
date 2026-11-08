@@ -1,12 +1,12 @@
 const TIKNATION_GIFT_CATALOG = {
   storm_of_the_world: {
-    name: "Storm of the World",
-    emoji: "⛈️",
-    category: "Epic",
+    name: "The Ghost Ship",
+    emoji: "🚢",
+    category: "Legendary",
     cost: 100,
-    sound: [55, 82, 110, 165],
-    style: "storm",
-    message: "The sky has awakened."
+    sound: [58, 74, 98, 147],
+    style: "ghostship",
+    message: "The lost fleet has returned."
   },
 };
 window.TIKNATION_GIFT_CATALOG = TIKNATION_GIFT_CATALOG;
@@ -149,6 +149,17 @@ async function playTikNationGiftSound(gift) {
         crack.connect(crackGain); crackGain.connect(context.destination);
         crack.start(now + delay); crack.stop(now + delay + 0.22);
       });
+      return;
+    }
+
+
+    if (gift.style === "ghostship") {
+      // Haunted wind, groaning timber and distant cannon thumps; no animated water.
+      const length = Math.floor(context.sampleRate * 5.2), buffer = context.createBuffer(1, length, context.sampleRate), samples = buffer.getChannelData(0);
+      for (let i=0;i<length;i++) samples[i]=(Math.random()*2-1)*(1-i/length);
+      const wind=context.createBufferSource(),wf=context.createBiquadFilter(),wg=context.createGain();wind.buffer=buffer;wf.type="lowpass";wf.frequency.setValueAtTime(360,now);wf.frequency.exponentialRampToValueAtTime(1100,now+1.4);wf.frequency.exponentialRampToValueAtTime(240,now+5);wg.gain.setValueAtTime(.0001,now);wg.gain.linearRampToValueAtTime(.12,now+.7);wg.gain.exponentialRampToValueAtTime(.0001,now+5.1);wind.connect(wf);wf.connect(wg);wg.connect(context.destination);wind.start(now);wind.stop(now+5.15);
+      [0.65,2.35,4.25].forEach((delay,index)=>{const osc=context.createOscillator(),filter=context.createBiquadFilter(),gain=context.createGain();osc.type="sawtooth";osc.frequency.setValueAtTime(96-index*13,now+delay);osc.frequency.exponentialRampToValueAtTime(42,now+delay+.9);filter.type="lowpass";filter.frequency.value=190;gain.gain.setValueAtTime(.0001,now+delay);gain.gain.linearRampToValueAtTime(.075,now+delay+.12);gain.gain.exponentialRampToValueAtTime(.0001,now+delay+.95);osc.connect(filter);filter.connect(gain);gain.connect(context.destination);osc.start(now+delay);osc.stop(now+delay+1);});
+      [1.8,4.7].forEach((delay,index)=>{const osc=context.createOscillator(),filter=context.createBiquadFilter(),gain=context.createGain();osc.type="triangle";osc.frequency.setValueAtTime(index?68:82,now+delay);osc.frequency.exponentialRampToValueAtTime(29,now+delay+1.1);filter.type="lowpass";filter.frequency.value=150;gain.gain.setValueAtTime(.0001,now+delay);gain.gain.linearRampToValueAtTime(.18,now+delay+.04);gain.gain.exponentialRampToValueAtTime(.0001,now+delay+1.2);osc.connect(filter);filter.connect(gain);gain.connect(context.destination);osc.start(now+delay);osc.stop(now+delay+1.25);});
       return;
     }
 
@@ -302,7 +313,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=gifts-no-lighthouse-20261108";
+    script.src = "./gift-engine.js?v=ghostship-gift-20261108";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
@@ -315,7 +326,7 @@ function showTikNationGiftEffect(gift) {
     engine.show(gift, {
       meta: "TIKNATION GIFT · TEST COINS ONLY",
       onSound: () => playTikNationGiftSound(gift),
-      duration: gift.style === "storm_of_the_world" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
+      duration: gift.style === "ghostship" ? 8800 : gift.style === "storm_of_the_world" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
     });
   }).catch(error => console.error("TikNation gift effect unavailable:", error));
 }
