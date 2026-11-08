@@ -1,4 +1,4 @@
-const CACHE_NAME = "tiknation-shell-v30-lighthouse-mobile-ocean";
+const CACHE_NAME = "tiknation-shell-v31-lighthouse-canvas-rebuild";
 const APP_SHELL = [
   "./",
   "./index.html",
