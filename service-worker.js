@@ -1,4 +1,4 @@
-const CACHE_NAME = "tiknation-shell-v35-stormkeeper-motion";
+const CACHE_NAME = "tiknation-shell-v36-stormkeeper-no-water";
 const APP_SHELL = [
   "./",
   "./index.html",
