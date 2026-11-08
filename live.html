@@ -742,6 +742,7 @@ function playLiveGiftSound(event, gift) {
     console.warn("Gift audio could not be played:", error);
   }
 }
+window.__tikNationPlayGiftSound=playLiveGiftSound;
 function renderLiveGiftEvent(event) {
   const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
   showLiveGiftCelebration(event);
@@ -778,6 +779,7 @@ async function sendLiveGift(giftCode,button) {
       unlockLiveGiftAudio();
       const preview={id:"preview-"+Date.now(),gift_code:giftCode,sender_name:"Creator preview"};
       showLiveGiftCelebration(preview);
+      playLiveGiftSound(preview,gift);
       const feed=$("liveGiftFeed");
       if(feed){const row=document.createElement("div");row.className="live-gift-feed-item";row.textContent="Creator preview · "+gift.emoji+" "+gift.name+" · FREE";feed.prepend(row);}
       setLiveGiftStatus("✨ "+gift.name+" preview · Free, no coins spent.","success");
@@ -1111,6 +1113,7 @@ boot();
     }
     if(!window.TikNationGiftEngine){say("Gift animation engine did not load.");return;}
     window.TikNationGiftEngine.show(gift,{meta:"FREE LOCAL PREVIEW · NO COINS SPENT",duration:4300});
+    if(typeof window.__tikNationPlayGiftSound==="function")window.__tikNationPlayGiftSound({gift_code:code},gift);
     say("Preview started: "+(gift.name||code)+" · Free, no coins spent.");
   });
 })();
