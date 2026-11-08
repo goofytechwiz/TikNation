@@ -154,12 +154,111 @@ async function playTikNationGiftSound(gift) {
 
 
     if (gift.style === "ghostship") {
-      // Haunted wind, groaning timber and distant cannon thumps; no animated water.
-      const length = Math.floor(context.sampleRate * 5.2), buffer = context.createBuffer(1, length, context.sampleRate), samples = buffer.getChannelData(0);
-      for (let i=0;i<length;i++) samples[i]=(Math.random()*2-1)*(1-i/length);
-      const wind=context.createBufferSource(),wf=context.createBiquadFilter(),wg=context.createGain();wind.buffer=buffer;wf.type="lowpass";wf.frequency.setValueAtTime(360,now);wf.frequency.exponentialRampToValueAtTime(1100,now+1.4);wf.frequency.exponentialRampToValueAtTime(240,now+5);wg.gain.setValueAtTime(.0001,now);wg.gain.linearRampToValueAtTime(.12,now+.7);wg.gain.exponentialRampToValueAtTime(.0001,now+5.1);wind.connect(wf);wf.connect(wg);wg.connect(context.destination);wind.start(now);wind.stop(now+5.15);
-      [0.65,2.35,4.25].forEach((delay,index)=>{const osc=context.createOscillator(),filter=context.createBiquadFilter(),gain=context.createGain();osc.type="sawtooth";osc.frequency.setValueAtTime(96-index*13,now+delay);osc.frequency.exponentialRampToValueAtTime(42,now+delay+.9);filter.type="lowpass";filter.frequency.value=190;gain.gain.setValueAtTime(.0001,now+delay);gain.gain.linearRampToValueAtTime(.075,now+delay+.12);gain.gain.exponentialRampToValueAtTime(.0001,now+delay+.95);osc.connect(filter);filter.connect(gain);gain.connect(context.destination);osc.start(now+delay);osc.stop(now+delay+1);});
-      [1.8,4.7].forEach((delay,index)=>{const osc=context.createOscillator(),filter=context.createBiquadFilter(),gain=context.createGain();osc.type="triangle";osc.frequency.setValueAtTime(index?68:82,now+delay);osc.frequency.exponentialRampToValueAtTime(29,now+delay+1.1);filter.type="lowpass";filter.frequency.value=150;gain.gain.setValueAtTime(.0001,now+delay);gain.gain.linearRampToValueAtTime(.18,now+delay+.04);gain.gain.exponentialRampToValueAtTime(.0001,now+delay+1.2);osc.connect(filter);filter.connect(gain);gain.connect(context.destination);osc.start(now+delay);osc.stop(now+delay+1.25);});
+      // Layered haunted-galleon soundscape: rigging wind, timber strain, bell,
+      // chain rattle and two deep cannon reports. No water sounds.
+      const noiseLength = Math.floor(context.sampleRate * 6.4);
+      const noiseBuffer = context.createBuffer(1, noiseLength, context.sampleRate);
+      const noiseData = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < noiseLength; i++) {
+        const fadeIn = Math.min(1, i / (context.sampleRate * 0.65));
+        const fadeOut = Math.max(0, 1 - i / noiseLength);
+        noiseData[i] = (Math.random() * 2 - 1) * fadeIn * fadeOut;
+      }
+
+      // Wind howls through the rigging, swelling as the ship enters.
+      const wind = context.createBufferSource();
+      const windFilter = context.createBiquadFilter();
+      const windGain = context.createGain();
+      wind.buffer = noiseBuffer;
+      windFilter.type = "bandpass";
+      windFilter.frequency.setValueAtTime(310, now);
+      windFilter.frequency.exponentialRampToValueAtTime(920, now + 2.1);
+      windFilter.frequency.exponentialRampToValueAtTime(230, now + 6.1);
+      windFilter.Q.value = 0.55;
+      windGain.gain.setValueAtTime(0.0001, now);
+      windGain.gain.linearRampToValueAtTime(0.095, now + 1.1);
+      windGain.gain.setValueAtTime(0.07, now + 3.6);
+      windGain.gain.exponentialRampToValueAtTime(0.0001, now + 6.25);
+      wind.connect(windFilter); windFilter.connect(windGain); windGain.connect(context.destination);
+      wind.start(now); wind.stop(now + 6.3);
+
+      // Heavy wooden hull and mast groans at different pitches.
+      [0.55, 2.65, 5.35].forEach((delay, index) => {
+        const creak = context.createOscillator();
+        const filter = context.createBiquadFilter();
+        const gain = context.createGain();
+        creak.type = "sawtooth";
+        creak.frequency.setValueAtTime([112, 88, 103][index], now + delay);
+        creak.frequency.linearRampToValueAtTime([69, 54, 62][index], now + delay + 0.8);
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(260, now + delay);
+        filter.frequency.linearRampToValueAtTime(145, now + delay + 0.85);
+        gain.gain.setValueAtTime(0.0001, now + delay);
+        gain.gain.linearRampToValueAtTime(0.045, now + delay + 0.18);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 0.92);
+        creak.connect(filter); filter.connect(gain); gain.connect(context.destination);
+        creak.start(now + delay); creak.stop(now + delay + 0.95);
+      });
+
+      // A distant, hollow ship's bell.
+      [1.05, 1.42].forEach((delay, index) => {
+        const bell = context.createOscillator();
+        const bellGain = context.createGain();
+        const bellFilter = context.createBiquadFilter();
+        bell.type = "sine";
+        bell.frequency.setValueAtTime(index ? 622 : 784, now + delay);
+        bellFilter.type = "lowpass";
+        bellFilter.frequency.value = 1500;
+        bellGain.gain.setValueAtTime(0.0001, now + delay);
+        bellGain.gain.linearRampToValueAtTime(index ? 0.018 : 0.026, now + delay + 0.018);
+        bellGain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 1.7);
+        bell.connect(bellFilter); bellFilter.connect(bellGain); bellGain.connect(context.destination);
+        bell.start(now + delay); bell.stop(now + delay + 1.75);
+      });
+
+      // Two cannon reports aligned with the two on-screen flashes.
+      [1.8, 4.7].forEach((delay, index) => {
+        const boom = context.createOscillator();
+        const boomFilter = context.createBiquadFilter();
+        const boomGain = context.createGain();
+        boom.type = "sawtooth";
+        boom.frequency.setValueAtTime(index ? 74 : 86, now + delay);
+        boom.frequency.exponentialRampToValueAtTime(index ? 27 : 31, now + delay + 1.05);
+        boomFilter.type = "lowpass";
+        boomFilter.frequency.setValueAtTime(180, now + delay);
+        boomFilter.frequency.exponentialRampToValueAtTime(62, now + delay + 1.1);
+        boomGain.gain.setValueAtTime(0.0001, now + delay);
+        boomGain.gain.linearRampToValueAtTime(0.19, now + delay + 0.035);
+        boomGain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 1.25);
+        boom.connect(boomFilter); boomFilter.connect(boomGain); boomGain.connect(context.destination);
+        boom.start(now + delay); boom.stop(now + delay + 1.3);
+
+        const blast = context.createBufferSource();
+        const blastFilter = context.createBiquadFilter();
+        const blastGain = context.createGain();
+        blast.buffer = noiseBuffer;
+        blastFilter.type = "lowpass";
+        blastFilter.frequency.setValueAtTime(1200, now + delay);
+        blastFilter.frequency.exponentialRampToValueAtTime(110, now + delay + 0.75);
+        blastGain.gain.setValueAtTime(0.0001, now + delay);
+        blastGain.gain.linearRampToValueAtTime(0.13, now + delay + 0.025);
+        blastGain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 0.82);
+        blast.connect(blastFilter); blastFilter.connect(blastGain); blastGain.connect(context.destination);
+        blast.start(now + delay); blast.stop(now + delay + 0.85);
+      });
+
+      // Short metallic chain/rigging clanks after the cannon recoil.
+      [2.12, 2.28, 5.02, 5.18].forEach((delay, index) => {
+        const clank = context.createOscillator();
+        const clankGain = context.createGain();
+        clank.type = "square";
+        clank.frequency.setValueAtTime([430, 285, 390, 250][index], now + delay);
+        clankGain.gain.setValueAtTime(0.0001, now + delay);
+        clankGain.gain.linearRampToValueAtTime(0.022, now + delay + 0.012);
+        clankGain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 0.16);
+        clank.connect(clankGain); clankGain.connect(context.destination);
+        clank.start(now + delay); clank.stop(now + delay + 0.17);
+      });
       return;
     }
 
