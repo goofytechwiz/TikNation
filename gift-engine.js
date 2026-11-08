@@ -773,40 +773,52 @@ function renderGhostShipGift(gift,opts,overlay){
  const world=document.createElement("div");world.className="ghost-world";
  world.innerHTML=`
  <div class="ghost-moon"></div><div class="ghost-cloud"></div><div class="ghost-horizon"></div>
- <svg class="ghost-ship" viewBox="0 0 900 570" role="img" aria-label="A haunted pirate ship sailing through night fog">
- <defs><linearGradient id="gh-hull" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#657586"/><stop offset=".2" stop-color="#273849"/><stop offset=".68" stop-color="#0c1724"/><stop offset="1" stop-color="#020710"/></linearGradient><linearGradient id="gh-sail" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d7e4e9"/><stop offset=".45" stop-color="#738b9e"/><stop offset="1" stop-color="#26394c"/></linearGradient><linearGradient id="gh-sail-dark" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a8bbc7"/><stop offset=".5" stop-color="#50677c"/><stop offset="1" stop-color="#172a3c"/></linearGradient><linearGradient id="gh-wood" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#8d7359"/><stop offset=".45" stop-color="#3b302b"/><stop offset="1" stop-color="#120f13"/></linearGradient><filter id="gh-glow"><feGaussianBlur stdDeviation="7"/></filter></defs>
- <g opacity=".55" stroke="#b9d4e4" stroke-width="7" stroke-linecap="round"><path d="M450 60V390M270 115V390M640 155V390"/><path d="M238 120H480M242 220H465M620 160H790"/></g>
- <g class="ghost-sail s2"><path d="M280 124Q354 135 438 128L430 300Q353 278 280 292Z" fill="url(#gh-sail)" stroke="#d9e7ef" stroke-width="5"/><path d="M295 140Q356 150 421 145M294 278Q355 264 420 283" fill="none" stroke="#43586a" stroke-width="4" opacity=".7"/><path d="M352 150L357 271M398 145L399 278" stroke="#526b7d" stroke-width="3" opacity=".6"/></g>
- <g class="ghost-sail s1"><path d="M452 70Q548 82 633 76L620 323Q535 290 452 311Z" fill="url(#gh-sail)" stroke="#dceaf2" stroke-width="5"/><path d="M470 91Q548 105 617 94M466 290Q548 265 606 297" fill="none" stroke="#465d70" stroke-width="4"/><path d="M511 98L509 291M560 98L559 294" stroke="#526c7d" stroke-width="3"/></g>
- <g class="ghost-sail s3"><path d="M646 162Q708 174 773 169L764 325Q702 303 646 319Z" fill="url(#gh-sail-dark)" stroke="#b4c7d3" stroke-width="5"/><path d="M658 181L756 186M657 301L751 304" stroke="#31495e" stroke-width="4"/></g>
- <g fill="none" stroke="#b5c9d6" stroke-width="3" opacity=".65"><path d="M450 60L450 380M270 115L270 384M640 155L640 385M270 118L450 62L640 155L775 169"/></g>
- <g class="ghost-flag" fill="#111b2b" stroke="#8bb9d2" stroke-width="2"><path d="M451 62L521 75L489 91L451 84Z"/><path d="M640 157L702 169L674 184L640 178Z"/></g>
- <g><path d="M140 350Q240 337 333 348Q455 363 564 343Q687 327 824 346L771 435Q717 479 603 488L318 488Q205 466 140 350Z" fill="url(#gh-hull)" stroke="#a7bdc9" stroke-width="7"/><path d="M171 366Q420 393 791 360" fill="none" stroke="#c1d0d8" stroke-width="5" opacity=".5"/><path d="M223 410Q450 448 740 408" fill="none" stroke="#080d15" stroke-width="10" opacity=".8"/><path d="M184 377Q442 408 773 375" fill="none" stroke="#8d7054" stroke-width="5"/><g fill="#050c17" stroke="#91e8ff" stroke-width="4" class="ghost-window"><rect x="292" y="376" width="25" height="36" rx="5"/><rect x="355" y="386" width="25" height="36" rx="5"/><rect x="418" y="389" width="25" height="36" rx="5"/><rect x="481" y="386" width="25" height="36" rx="5"/><rect x="544" y="378" width="25" height="36" rx="5"/><rect x="607" y="368" width="25" height="36" rx="5"/></g><path d="M155 352Q430 337 824 346L788 377Q480 395 185 373Z" fill="url(#gh-wood)" stroke="#b39a78" stroke-width="4"/><g fill="#172435" stroke="#b7cbd7" stroke-width="4"><rect x="225" y="332" width="34" height="35" rx="3"/><rect x="291" y="333" width="34" height="35" rx="3"/><rect x="357" y="337" width="34" height="35" rx="3"/><rect x="423" y="337" width="34" height="35" rx="3"/><rect x="489" y="334" width="34" height="35" rx="3"/><rect x="555" y="331" width="34" height="35" rx="3"/><rect x="621" y="327" width="34" height="35" rx="3"/></g></g>
- <g fill="#8feaff" filter="url(#gh-glow)" opacity=".8"><circle cx="305" cy="394" r="17"/><circle cx="368" cy="404" r="17"/><circle cx="431" cy="407" r="17"/><circle cx="494" cy="404" r="17"/><circle cx="557" cy="396" r="17"/><circle cx="620" cy="386" r="17"/></g>
- <g class="ghost-smoke" fill="#a6c4d8" opacity=".5"><ellipse cx="700" cy="282" rx="18" ry="12"/><ellipse cx="720" cy="262" rx="22" ry="16"/><ellipse cx="746" cy="241" rx="25" ry="18"/></g><path d="M142 351Q485 389 824 346" fill="none" stroke="#d4e1e8" stroke-width="5" opacity=".8"/>
-
- <!-- Fine rigging, weathered plank seams, iron fastenings and sail stitching -->
- <g fill="none" stroke="#c2d0d1" stroke-width="2" opacity=".62">
-  <path d="M270 115L150 353M270 115L330 348M450 60L300 355M450 60L610 350M640 155L520 350M640 155L790 346"/>
-  <path d="M245 124L438 300M280 292L438 128M452 70L620 323M633 78L452 311M646 162L764 325M773 169L646 319"/>
-  <path d="M300 151Q355 160 420 151M298 180Q354 190 420 180M295 210Q355 220 419 210M292 240Q354 249 418 240M289 268Q353 278 417 268"/>
-  <path d="M468 111Q545 124 615 111M466 145Q544 157 614 145M464 180Q542 190 612 180M462 215Q540 225 610 215M460 250Q538 260 608 250M458 285Q536 294 606 285"/>
- </g>
- <g fill="none" stroke="#c1aa8b" stroke-width="2" opacity=".44">
-  <path d="M160 390Q410 421 790 388M177 411Q450 444 778 410M205 437Q455 466 748 437M250 462Q480 487 710 461"/>
-  <path d="M238 382L225 468M300 390L292 490M365 395L360 510M430 400L430 526M500 402L504 535M570 399L580 537M640 395L653 530M710 390L727 516M780 383L800 494"/>
- </g>
- <g fill="#0a111a" stroke="#9caaad" stroke-width="1.5" opacity=".9">
-  <circle cx="205" cy="397" r="3"/><circle cx="258" cy="405" r="3"/><circle cx="322" cy="412" r="3"/><circle cx="386" cy="419" r="3"/><circle cx="451" cy="422" r="3"/><circle cx="516" cy="423" r="3"/><circle cx="581" cy="419" r="3"/><circle cx="646" cy="412" r="3"/><circle cx="711" cy="403" r="3"/><circle cx="776" cy="392" r="3"/>
- </g>
- <g fill="none" stroke="#111c29" stroke-width="5" opacity=".62">
-  <path d="M275 131L275 289M450 67L450 310M640 159L640 318"/>
- </g>
- <g fill="#c7d4d4" opacity=".18">
-  <path d="M300 375Q420 390 535 384L515 393Q407 402 300 375Z"/>
-  <path d="M570 365Q680 369 770 350L748 363Q660 382 570 365Z"/>
- </g>
- </svg><div class="ghost-mist"></div><div class="ghost-cannon-flash"></div><div class="ghost-title">THE GHOST SHIP<small>THE LOST FLEET HAS RETURNED</small></div>`;
+ <svg class="ghost-ship" viewBox="0 0 1100 650" role="img" aria-label="A haunted, weathered wooden sailing galleon">
+<defs>
+<linearGradient id="gh-hull" x1="0" y1="0" x2=".1" y2="1"><stop stop-color="#9a7957"/><stop offset=".2" stop-color="#4b392d"/><stop offset=".6" stop-color="#18212c"/><stop offset="1" stop-color="#030811"/></linearGradient>
+<linearGradient id="gh-sail" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e3dfd0"/><stop offset=".42" stop-color="#a1a69f"/><stop offset="1" stop-color="#344452"/></linearGradient>
+<linearGradient id="gh-deck" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#92704c"/><stop offset="1" stop-color="#211c1b"/></linearGradient>
+<filter id="gh-glow"><feGaussianBlur stdDeviation="7"/></filter>
+<pattern id="gh-planks" width="90" height="22" patternUnits="userSpaceOnUse"><path d="M0 5Q25 1 48 5T90 5M12 15Q39 11 70 15" fill="none" stroke="#d2ad7e" stroke-width="1" opacity=".24"/></pattern>
+</defs>
+<!-- tall masts and dense rigging -->
+<g stroke="#1a2733" stroke-width="13" stroke-linecap="round"><path d="M300 82V475M545 35V470M785 115V448"/></g>
+<g fill="none" stroke="#a9b8bc" stroke-width="2.5" opacity=".68"><path d="M300 82L145 420M300 82L465 420M545 35L355 445M545 35L730 445M785 115L615 450M785 115L965 400"/><path d="M300 82L545 35L785 115M145 420L545 35L965 400"/></g>
+<!-- full, curved sails with seams, folds and ragged edges -->
+<g class="ghost-sail s2"><path d="M306 112Q380 123 457 106L450 320Q380 296 300 326Q314 220 306 112Z" fill="url(#gh-sail)" stroke="#e0ded0" stroke-width="5"/><path d="M320 139Q384 151 445 130M307 299Q380 274 448 301" fill="none" stroke="#475867" stroke-width="5"/><path d="M328 145L331 290M360 151L363 282M394 151L395 280M426 143L425 287" stroke="#65727a" stroke-width="2.5" opacity=".7"/><path d="M306 112L320 143L309 164L323 190L311 215L325 244L312 270L326 297L300 326" fill="none" stroke="#eee9d8" stroke-width="3"/></g>
+<g class="ghost-sail s1"><path d="M550 64Q641 76 735 58L722 359Q638 327 545 359Q561 208 550 64Z" fill="url(#gh-sail)" stroke="#e6e1d3" stroke-width="5"/><path d="M566 91Q642 104 720 83M553 337Q642 302 714 336" fill="none" stroke="#4d5a62" stroke-width="5"/><path d="M575 112L580 316M611 116L613 306M647 118L646 306M683 110L679 316M713 97L700 323" stroke="#6c777b" stroke-width="2.5" opacity=".7"/><path d="M550 64L567 94L555 116L571 140L558 164L574 191L560 219L575 246L561 273L575 300L545 359" fill="none" stroke="#eee9d8" stroke-width="3.5"/></g>
+<g class="ghost-sail s3"><path d="M791 143Q852 151 925 136L911 322Q850 300 782 328Q796 225 791 143Z" fill="url(#gh-sail)" stroke="#cbd0c9" stroke-width="4"/><path d="M800 166Q858 177 913 158M787 309Q851 282 905 307" fill="none" stroke="#435361" stroke-width="4"/><path d="M812 171L814 297M843 169L843 291M875 164L873 296M903 158L895 301" stroke="#6a777d" stroke-width="2"/></g>
+<g fill="none" stroke="#9daaad" stroke-width="5" opacity=".85"><path d="M270 119L477 107M502 73L754 58M758 147L942 135M280 235L470 225M515 225L738 214M755 245L922 237"/></g>
+<g fill="none" stroke="#87979b" stroke-width="1.8" opacity=".65"><path d="M300 82L300 470M545 35L545 465M785 115L785 445M300 82L545 465M545 35L300 470M545 35L785 445M785 115L545 465"/><path d="M280 145H460M278 173H458M276 201H456M520 110H733M518 140H731M516 170H729M514 200H727M760 180H915M758 210H913M756 240H911"/></g>
+<g fill="#172330" stroke="#b39a75" stroke-width="4"><path d="M274 160Q300 144 326 160L322 175H278Z"/><path d="M516 116Q545 99 576 116L572 132H520Z"/><path d="M760 190Q785 175 810 190L806 205H764Z"/></g>
+<g class="ghost-flag" fill="#111c2a" stroke="#a7bdc8" stroke-width="2"><path d="M545 36L638 48L600 67L545 56Z"/><path d="M785 116L853 128L817 146L785 136Z"/></g>
+<!-- stern castle and warm lanterns -->
+<path d="M690 350L704 260L739 239V205L766 191L793 208V247L829 263L842 354Z" fill="url(#gh-deck)" stroke="#b59a78" stroke-width="5"/>
+<path d="M704 289H830V350H696Z" fill="#151d27" stroke="#886d50" stroke-width="4"/><path d="M724 250V215H749V251M770 251V208H794V255" fill="#0b1420" stroke="#c0a27a" stroke-width="4"/>
+<g fill="#ffce80" filter="url(#gh-glow)" opacity=".85"><circle cx="737" cy="290" r="14"/><circle cx="790" cy="290" r="14"/><circle cx="782" cy="232" r="12"/></g>
+<g fill="#f5c77c" stroke="#3b3026" stroke-width="3"><rect x="730" y="281" width="13" height="20" rx="3"/><rect x="783" y="281" width="13" height="20" rx="3"/><rect x="776" y="224" width="12" height="17" rx="3"/></g>
+<!-- sweeping hull with raised bow and stern -->
+<path d="M118 389Q205 367 285 375Q440 397 630 375L747 351L865 332L968 291L944 390Q906 449 844 477Q755 522 625 530L395 527Q245 512 179 465Q137 433 118 389Z" fill="url(#gh-hull)" stroke="#b69b7d" stroke-width="8"/>
+<path d="M139 392Q425 435 671 410Q843 390 955 322" fill="none" stroke="#d7bd96" stroke-width="7" opacity=".8"/>
+<path d="M163 423Q430 470 673 442Q837 424 930 360M192 452Q438 493 672 467Q816 449 893 402M238 481Q450 516 666 491Q785 474 852 438" fill="none" stroke="#090f18" stroke-width="10" opacity=".8"/>
+<path d="M150 404Q426 449 670 422Q836 402 940 337L923 375Q815 433 669 451Q412 480 172 432Z" fill="url(#gh-planks)" opacity=".9"/>
+<g fill="none" stroke="#b08c67" stroke-width="2.5" opacity=".5"><path d="M190 401L207 470M250 411L267 491M315 420L330 505M385 428L398 519M458 433L464 526M532 432L535 526M606 426L608 521M680 414L681 510M751 399L749 491M818 379L815 463M883 354L870 430"/><path d="M174 418Q430 464 675 437Q839 417 930 355M189 445Q434 487 674 461Q821 441 900 389"/></g>
+<!-- gun deck, rails, gunports and cannon muzzles -->
+<path d="M132 376Q424 408 675 385Q830 365 957 312L937 352Q815 407 669 423Q411 448 151 402Z" fill="url(#gh-deck)" stroke="#d2b48b" stroke-width="5"/>
+<path d="M136 371Q425 402 678 380Q838 360 958 308" fill="none" stroke="#ddc59e" stroke-width="8"/>
+<g fill="#111923" stroke="#b69b78" stroke-width="3"><rect x="218" y="349" width="31" height="30" rx="2"/><rect x="291" y="357" width="31" height="30" rx="2"/><rect x="364" y="364" width="31" height="30" rx="2"/><rect x="437" y="367" width="31" height="30" rx="2"/><rect x="510" y="365" width="31" height="30" rx="2"/><rect x="583" y="357" width="31" height="30" rx="2"/><rect x="656" y="347" width="31" height="30" rx="2"/></g>
+<g fill="#060b12" stroke="#b8a080" stroke-width="3"><circle cx="234" cy="364" r="8"/><circle cx="307" cy="372" r="8"/><circle cx="380" cy="379" r="8"/><circle cx="453" cy="382" r="8"/><circle cx="526" cy="380" r="8"/><circle cx="599" cy="372" r="8"/><circle cx="672" cy="362" r="8"/></g>
+<!-- bowsprit, prow and carved figurehead -->
+<path d="M930 322L1052 253L1065 264L958 350" fill="none" stroke="#a88c69" stroke-width="11" stroke-linecap="round"/>
+<path d="M944 339Q978 311 996 277Q1008 260 1024 269Q1006 291 1011 310Q990 332 966 345Z" fill="#bca584" stroke="#e2cba1" stroke-width="4"/>
+<path d="M975 305Q994 288 1013 288" fill="none" stroke="#26323a" stroke-width="5"/>
+<!-- spectral portholes and reflections -->
+<g class="ghost-window" fill="#a8eaff" stroke="#273e50" stroke-width="5"><rect x="275" y="409" width="20" height="29" rx="8"/><rect x="347" y="420" width="20" height="29" rx="8"/><rect x="419" y="427" width="20" height="29" rx="8"/><rect x="491" y="427" width="20" height="29" rx="8"/><rect x="563" y="420" width="20" height="29" rx="8"/><rect x="635" y="407" width="20" height="29" rx="8"/></g>
+<g fill="#a7eaff" filter="url(#gh-glow)" opacity=".72"><ellipse cx="285" cy="423" rx="15" ry="19"/><ellipse cx="357" cy="434" rx="15" ry="19"/><ellipse cx="429" cy="441" rx="15" ry="19"/><ellipse cx="501" cy="441" rx="15" ry="19"/><ellipse cx="573" cy="434" rx="15" ry="19"/><ellipse cx="645" cy="421" rx="15" ry="19"/></g>
+<g fill="#111a24" stroke="#bba17d" stroke-width="2"><circle cx="191" cy="414" r="4"/><circle cx="257" cy="426" r="4"/><circle cx="325" cy="436" r="4"/><circle cx="393" cy="444" r="4"/><circle cx="462" cy="447" r="4"/><circle cx="531" cy="446" r="4"/><circle cx="600" cy="439" r="4"/><circle cx="669" cy="428" r="4"/><circle cx="739" cy="411" r="4"/><circle cx="809" cy="390" r="4"/></g>
+<g class="ghost-smoke" fill="#b5c9d5" opacity=".5"><ellipse cx="850" cy="258" rx="18" ry="13"/><ellipse cx="870" cy="237" rx="23" ry="16"/><ellipse cx="894" cy="212" rx="28" ry="20"/></g>
+<path d="M130 389Q425 435 671 410Q843 390 968 291" fill="none" stroke="#e4e5dd" stroke-width="4" opacity=".72"/>
+</svg><div class="ghost-mist"></div><div class="ghost-cannon-flash"></div><div class="ghost-title">THE GHOST SHIP<small>THE LOST FLEET HAS RETURNED</small></div>`;
  overlay.appendChild(world);document.body.appendChild(overlay);
  const flash=world.querySelector(".ghost-cannon-flash"),reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;let timers=[];
  if(!reduced)[1800,4700].forEach(delay=>timers.push(setTimeout(()=>{if(!overlay.isConnected)return;flash.classList.remove("fire");void flash.offsetWidth;flash.classList.add("fire")},delay)));
