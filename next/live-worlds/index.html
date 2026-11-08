@@ -74,7 +74,36 @@ img,video,canvas{max-width:100%}
 }
 
 
-#tn-gallery-gift-overlay{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:18px;background:radial-gradient(ellipse at center,#392b69ee,#070817f5 75%);animation:tnGiftFade .25s ease-out}#tn-gallery-gift-overlay .tn-preview-orbit{position:relative;width:min(88vw,430px);min-height:330px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;border:1px solid #9df7ef88;border-radius:28px;background:radial-gradient(circle,#8cf7ef24,#17142fee 65%);box-shadow:0 0 65px #8cf7ef55,0 20px 80px #000b;text-align:center;animation:tnGiftRise .65s cubic-bezier(.2,.8,.2,1)}#tn-gallery-gift-overlay .tn-preview-emoji{font-size:clamp(76px,19vw,130px);line-height:1.2;filter:drop-shadow(0 0 24px #b9a4ff);animation:tnGiftFloat 1.8s ease-in-out infinite}#tn-gallery-gift-overlay .tn-preview-name{font:400 clamp(25px,6vw,38px) Georgia,serif;color:#fff}#tn-gallery-gift-overlay small{font:800 9px system-ui;letter-spacing:.16em;color:#8cf7ef}#tn-gallery-gift-overlay button{border:1px solid #ffffff55;border-radius:99px;padding:11px 20px;background:#ffffff12;color:white;font-weight:850;cursor:pointer}@keyframes tnGiftFade{from{opacity:0}to{opacity:1}}@keyframes tnGiftRise{from{opacity:0;transform:translateY(45px) scale(.75)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes tnGiftFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.12)}}</style><style id="fod-standalone-style">#fodStandalonePreview{position:fixed;inset:0;z-index:2147483647;pointer-events:none}.fod-scene{position:absolute;inset:0;overflow:hidden;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 44%,#253b48 0,#101a2b 43%,#03060d 100%);animation:fodFadeIn .55s ease both}.fod-runes{position:absolute;top:14%;color:#9cf7ed;font-size:clamp(18px,5vw,34px);letter-spacing:.5em;text-shadow:0 0 18px #7df8ff;animation:fodRunes 12s linear infinite}.fod-hand{position:relative;z-index:2;width:min(78vw,430px);height:min(70vh,540px);overflow:visible;filter:drop-shadow(0 15px 24px #000) drop-shadow(0 0 20px #8ee8e8aa);animation:fodRise 1s cubic-bezier(.16,1,.3,1) both}.fod-title{position:absolute;z-index:3;bottom:13%;left:5%;right:5%;text-align:center;color:#efffff;font-weight:950;font-size:clamp(22px,5vw,42px);letter-spacing:.12em;text-shadow:0 0 22px #8ee8e8,0 4px 9px #000}.fod-title small{display:block;margin-top:10px;font-size:11px;letter-spacing:.28em;color:#b9d8dd}.fod-close{position:absolute;bottom:5%;font-size:9px;letter-spacing:.2em;color:#9bb8c3}.fod-target{animation:fodTarget 1.6s ease-in-out infinite alternate}#fodStandalonePreview.fod-out{opacity:0;transition:opacity .45s ease}@keyframes fodFadeIn{from{opacity:0}to{opacity:1}}@keyframes fodRise{from{opacity:0;transform:translateY(90px) scale(.7) rotate(-8deg)}to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}@keyframes fodRunes{to{transform:rotate(360deg)}}@keyframes fodTarget{from{opacity:.2;transform:translateY(5px)}to{opacity:1;transform:translateY(-7px)}}@media(orientation:landscape){.fod-hand{height:72vh;width:auto}.fod-title{bottom:8%}.fod-close{bottom:2%}}</style></head>
+#tn-gallery-gift-overlay{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:18px;background:radial-gradient(ellipse at center,#392b69ee,#070817f5 75%);animation:tnGiftFade .25s ease-out}#tn-gallery-gift-overlay .tn-preview-orbit{position:relative;width:min(88vw,430px);min-height:330px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;border:1px solid #9df7ef88;border-radius:28px;background:radial-gradient(circle,#8cf7ef24,#17142fee 65%);box-shadow:0 0 65px #8cf7ef55,0 20px 80px #000b;text-align:center;animation:tnGiftRise .65s cubic-bezier(.2,.8,.2,1)}#tn-gallery-gift-overlay .tn-preview-emoji{font-size:clamp(76px,19vw,130px);line-height:1.2;filter:drop-shadow(0 0 24px #b9a4ff);animation:tnGiftFloat 1.8s ease-in-out infinite}#tn-gallery-gift-overlay .tn-preview-name{font:400 clamp(25px,6vw,38px) Georgia,serif;color:#fff}#tn-gallery-gift-overlay small{font:800 9px system-ui;letter-spacing:.16em;color:#8cf7ef}#tn-gallery-gift-overlay button{border:1px solid #ffffff55;border-radius:99px;padding:11px 20px;background:#ffffff12;color:white;font-weight:850;cursor:pointer}@keyframes tnGiftFade{from{opacity:0}to{opacity:1}}@keyframes tnGiftRise{from{opacity:0;transform:translateY(45px) scale(.75)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes tnGiftFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.12)}}
+/* Phoenix Rebirth: first rebuilt gift, isolated from the old gift catalog */
+.phoenix-gift{max-width:920px;margin:18px auto 24px;padding:22px;border:1px solid #ffb45d66;border-radius:22px;background:radial-gradient(ellipse at 85% 10%,#9b3d2440,transparent 48%),linear-gradient(130deg,#24162b,#17152e 60%,#302039)}
+.phoenix-gift h2{font:400 27px Georgia,serif;margin:7px 0}.phoenix-gift p{max-width:650px;color:#c7bad0;font-size:11px;line-height:1.65;margin:0 0 15px}
+.phoenix-gift button{min-height:46px;border:1px solid #ffd18b;border-radius:99px;padding:12px 20px;background:linear-gradient(105deg,#ffb45d,#ffe6a8,#ff8b65);color:#241323;font-weight:950;letter-spacing:.08em;cursor:pointer;box-shadow:0 0 25px #ff9c4b44}
+.phoenix-gift button:active{transform:scale(.98)}.phoenix-gift-status{min-height:17px;margin-top:12px;color:#ffd49b;font-size:10px;letter-spacing:.06em}
+#phoenixRebirthScene{position:fixed;inset:0;z-index:2147483647;display:none;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 60%,#702c20 0,#21152b 45%,#050711 100%);isolation:isolate}
+#phoenixRebirthScene.is-active{display:grid;animation:phoenixBackdrop .5s ease both}
+#phoenixRebirthScene:before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(ellipse at 50% 85%,transparent 0 20px,#ff9c4430 22px 24px,transparent 26px 44px);animation:phoenixRings 9s linear infinite;opacity:.6}
+.phoenix-art{position:relative;width:min(94vw,760px);height:min(76vh,620px);z-index:1;filter:drop-shadow(0 0 24px #ff8a35aa)}
+.phoenix-art svg{width:100%;height:100%;overflow:visible}
+.phoenix-wing-left{transform-origin:50% 55%;animation:phoenixWingL 1.35s cubic-bezier(.2,.8,.2,1) both}
+.phoenix-wing-right{transform-origin:50% 55%;animation:phoenixWingR 1.35s cubic-bezier(.2,.8,.2,1) both}
+.phoenix-body{transform-origin:50% 65%;animation:phoenixRise 1.5s cubic-bezier(.16,1,.3,1) both}
+.phoenix-tail{transform-origin:50% 75%;animation:phoenixTail 2.2s ease-out both}
+.phoenix-feather{animation:phoenixFlicker 1.8s ease-in-out infinite alternate}
+.phoenix-gift-title{position:absolute;z-index:2;bottom:8%;left:12px;right:12px;text-align:center;color:#fff0cf;font:400 clamp(26px,6vw,46px) Georgia,serif;letter-spacing:.12em;text-shadow:0 0 22px #ff9a40}
+.phoenix-gift-title small{display:block;margin-top:9px;font:800 9px system-ui;letter-spacing:.28em;color:#ffc98a}
+.phoenix-close{position:absolute;z-index:3;right:18px;top:18px;border:1px solid #ffffff66;border-radius:99px;background:#130f1dcc;color:#fff;padding:11px 17px;font-size:10px;font-weight:850;letter-spacing:.12em;cursor:pointer}
+.phoenix-particle{position:absolute;z-index:2;width:5px;height:5px;border-radius:50%;background:#ffe5a1;box-shadow:0 0 12px 4px #ff8b36;animation:phoenixEmber 2.5s ease-out forwards}
+@keyframes phoenixBackdrop{from{opacity:0}to{opacity:1}}
+@keyframes phoenixRings{to{transform:rotate(360deg)}}
+@keyframes phoenixWingL{from{transform:translateY(100px) rotate(35deg) scale(.45);opacity:.1}to{transform:translateY(0) rotate(0) scale(1);opacity:1}}
+@keyframes phoenixWingR{from{transform:translateY(100px) rotate(-35deg) scale(.45);opacity:.1}to{transform:translateY(0) rotate(0) scale(1);opacity:1}}
+@keyframes phoenixRise{from{transform:translateY(170px) scale(.5);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+@keyframes phoenixTail{from{transform:scaleY(.15);opacity:0}to{transform:scaleY(1);opacity:1}}
+@keyframes phoenixFlicker{from{opacity:.72;filter:brightness(.9)}to{opacity:1;filter:brightness(1.3)}}
+@keyframes phoenixEmber{0%{transform:translateY(30px) scale(.3);opacity:0}20%{opacity:1}100%{transform:translateY(-65vh) translateX(var(--drift)) scale(0);opacity:0}}
+@media(prefers-reduced-motion:reduce){.phoenix-wing-left,.phoenix-wing-right,.phoenix-body,.phoenix-tail,.phoenix-feather,#phoenixRebirthScene:before{animation:none!important}}
+</style><style id="fod-standalone-style">#fodStandalonePreview{position:fixed;inset:0;z-index:2147483647;pointer-events:none}.fod-scene{position:absolute;inset:0;overflow:hidden;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 44%,#253b48 0,#101a2b 43%,#03060d 100%);animation:fodFadeIn .55s ease both}.fod-runes{position:absolute;top:14%;color:#9cf7ed;font-size:clamp(18px,5vw,34px);letter-spacing:.5em;text-shadow:0 0 18px #7df8ff;animation:fodRunes 12s linear infinite}.fod-hand{position:relative;z-index:2;width:min(78vw,430px);height:min(70vh,540px);overflow:visible;filter:drop-shadow(0 15px 24px #000) drop-shadow(0 0 20px #8ee8e8aa);animation:fodRise 1s cubic-bezier(.16,1,.3,1) both}.fod-title{position:absolute;z-index:3;bottom:13%;left:5%;right:5%;text-align:center;color:#efffff;font-weight:950;font-size:clamp(22px,5vw,42px);letter-spacing:.12em;text-shadow:0 0 22px #8ee8e8,0 4px 9px #000}.fod-title small{display:block;margin-top:10px;font-size:11px;letter-spacing:.28em;color:#b9d8dd}.fod-close{position:absolute;bottom:5%;font-size:9px;letter-spacing:.2em;color:#9bb8c3}.fod-target{animation:fodTarget 1.6s ease-in-out infinite alternate}#fodStandalonePreview.fod-out{opacity:0;transition:opacity .45s ease}@keyframes fodFadeIn{from{opacity:0}to{opacity:1}}@keyframes fodRise{from{opacity:0;transform:translateY(90px) scale(.7) rotate(-8deg)}to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}@keyframes fodRunes{to{transform:rotate(360deg)}}@keyframes fodTarget{from{opacity:.2;transform:translateY(5px)}to{opacity:1;transform:translateY(-7px)}}@media(orientation:landscape){.fod-hand{height:72vh;width:auto}.fod-title{bottom:8%}.fod-close{bottom:2%}}</style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><nav style="display:flex;gap:8px;align-items:center"><a class="back" href="../profile/">MY PROFILE</a><a class="back" href="../realms/">← THE REALMS</a></nav></header>
 <main>
@@ -93,7 +122,67 @@ img,video,canvas{max-width:100%}
 <div class="actions"><button type="button" id="pulse">SEND A LIGHT PULSE ✧</button><button type="button" class="primary" id="enter">PREVIEW THIS WORLD →</button></div>
 </section>
 <section class="live-lobby" aria-labelledby="lobbyTitle"><div class="lobby-head"><div><div class="eyebrow">THE LIVE LOBBY</div><h2 id="lobbyTitle">Find the room. Feel the moment.</h2><p>Meet the creator concepts, catch the room vibe, and imagine how LIVE can feel more social.</p></div><span class="preview-tag">ROOM CONCEPTS · NOT LIVE</span></div><div class="host-rail"><article class="host-card"><span class="host-avatar">T</span><div><strong>TikNationStudio</strong><small>FOUNDER SPOTLIGHT · CREATOR CONCEPT</small></div><span class="host-label">FEATURED</span></article><article class="host-card"><span class="host-avatar">M</span><div><strong>MattOnLive</strong><small>CREATOR SPOTLIGHT · ROOM CONCEPT</small></div><span class="host-label">SPOTLIGHT</span></article></div><div class="lobby-columns"><section class="lobby-panel" aria-label="Sample room conversation"><h3>Room conversation</h3><div class="chat-sample"><div class="chat-line"><b>DreamerOne</b> This atmosphere is incredible ✨</div><div class="chat-line"><b>NovaCreates</b> What would you build here?</div><div class="chat-line"><b>Starbound</b> Saving this idea for our next creative night!</div></div><p class="lobby-note">Illustrative sample chat only. These are not real messages or connected accounts.</p></section><section class="lobby-panel" aria-label="Local room reactions"><h3>How is the vibe?</h3><div class="vibe-actions" role="group" aria-label="Choose a room reaction"><button type="button" data-vibe="✨ MAGIC">✨ MAGIC</button><button type="button" data-vibe="💜 LOVE IT">💜 LOVE IT</button><button type="button" data-vibe="🔥 ENERGY">🔥 ENERGY</button></div><p class="lobby-note">Try a reaction. It stays on this screen and is not sent to a broadcaster.</p><div class="lobby-status" id="vibeStatus" role="status">YOUR REACTION WILL APPEAR HERE</div></section></div></section><section class="live-poll" id="liveRoomPoll" aria-labelledby="livePollTitle"><h3 id="livePollTitle">Shape the next LIVE world</h3><p>Which room feature would make you want to stay longer?</p><div class="live-poll-options" role="group" aria-label="Choose a room feature"><button type="button" data-poll="Interactive audience games">✦ Interactive audience games</button><button type="button" data-poll="Creator Q&A moments">◉ Creator Q&amp;A moments</button><button type="button" data-poll="Music and visual stages">♫ Music and visual stages</button><button type="button" data-poll="Cozy group conversations">⌘ Cozy group conversations</button></div><div class="live-poll-status" id="livePollStatus" role="status" aria-live="polite">CHOOSE ONE · LOCAL PREVIEW POLL</div><div class="live-poll-note">Your choice is stored only in this browser. It is not sent to a creator or broadcast.</div></section>
-<div class="status" id="status" role="status">CONCEPT SPACE · NO CAMERA, MICROPHONE, OR LIVE BROADCAST IS ACTIVE</div>
+
+<section class="phoenix-gift" aria-labelledby="phoenixGiftHeading">
+  <div class="eyebrow">THE FIRST REBUILT GIFT · TEST ONE</div>
+  <h2 id="phoenixGiftHeading">Phoenix Rebirth</h2>
+  <p>A legendary LIVE gift: a phoenix rises from the embers, spreads its wings, and fills the screen with a burst of golden fire. This first test runs locally on this page; it does not spend coins or send a real gift.</p>
+  <button type="button" id="sendPhoenixGift">✦ SEND PHOENIX REBIRTH</button>
+  <div class="phoenix-gift-status" id="phoenixGiftStatus" role="status" aria-live="polite">READY · TEST GIFT · NO COINS USED</div>
+</section>
+<div id="phoenixRebirthScene" role="dialog" aria-modal="true" aria-label="Phoenix Rebirth gift animation">
+  <button type="button" class="phoenix-close" id="closePhoenixGift">CLOSE ✕</button>
+  <div class="phoenix-art" aria-hidden="true">
+    <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="phGold" x1="0" y1="1" x2="0.8" y2="0"><stop stop-color="#8e271d"/><stop offset=".42" stop-color="#ff7135"/><stop offset=".78" stop-color="#ffc15f"/><stop offset="1" stop-color="#fff2b2"/></linearGradient>
+        <linearGradient id="phBright" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#ff572e"/><stop offset=".6" stop-color="#ffb347"/><stop offset="1" stop-color="#fff4c4"/></linearGradient>
+        <radialGradient id="phCore"><stop stop-color="#fff9cf"/><stop offset=".35" stop-color="#ffc15d"/><stop offset="1" stop-color="#e84b29" stop-opacity="0"/></radialGradient>
+        <filter id="phGlow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <ellipse cx="400" cy="420" rx="175" ry="65" fill="url(#phCore)" opacity=".85"/>
+      <g class="phoenix-tail" fill="none" stroke="url(#phGold)" stroke-linecap="round" filter="url(#phGlow)">
+        <path d="M390 390 Q310 480 255 565 Q350 525 393 440" stroke-width="19"/>
+        <path d="M407 390 Q490 480 550 565 Q455 525 407 440" stroke-width="19"/>
+        <path d="M397 395 Q365 495 375 575 Q405 505 405 430" stroke-width="15"/>
+        <path d="M388 400 Q280 445 205 500 Q315 475 390 430" stroke-width="10"/>
+        <path d="M412 400 Q520 445 595 500 Q485 475 410 430" stroke-width="10"/>
+      </g>
+      <g class="phoenix-wing-left" filter="url(#phGlow)">
+        <path d="M394 305 C300 210 160 105 45 90 C100 145 118 205 25 230 C125 250 165 300 75 350 C190 345 250 380 210 435 C300 405 355 375 400 340Z" fill="url(#phGold)" stroke="#ffcc78" stroke-width="5"/>
+        <g fill="none" stroke="url(#phBright)" stroke-linecap="round">
+          <path d="M380 325 Q220 150 70 108" stroke-width="20"/><path d="M355 337 Q200 220 45 238" stroke-width="18"/><path d="M350 350 Q220 300 92 352" stroke-width="16"/><path d="M365 360 Q270 370 220 425" stroke-width="14"/>
+          <path d="M330 320 Q240 190 160 145" stroke-width="9"/><path d="M300 338 Q190 270 125 270" stroke-width="9"/>
+        </g>
+        <path d="M385 320 Q250 165 90 120 Q220 250 350 355" fill="none" stroke="#fff0b4" stroke-width="3" opacity=".8"/>
+      </g>
+      <g class="phoenix-wing-right" filter="url(#phGlow)">
+        <path d="M406 305 C500 210 640 105 755 90 C700 145 682 205 775 230 C675 250 635 300 725 350 C610 345 550 380 590 435 C500 405 445 375 400 340Z" fill="url(#phGold)" stroke="#ffcc78" stroke-width="5"/>
+        <g fill="none" stroke="url(#phBright)" stroke-linecap="round">
+          <path d="M420 325 Q580 150 730 108" stroke-width="20"/><path d="M445 337 Q600 220 755 238" stroke-width="18"/><path d="M450 350 Q580 300 708 352" stroke-width="16"/><path d="M435 360 Q530 370 580 425" stroke-width="14"/>
+          <path d="M470 320 Q560 190 640 145" stroke-width="9"/><path d="M500 338 Q610 270 675 270" stroke-width="9"/>
+        </g>
+        <path d="M415 320 Q550 165 710 120 Q580 250 450 355" fill="none" stroke="#fff0b4" stroke-width="3" opacity=".8"/>
+      </g>
+      <g class="phoenix-body" filter="url(#phGlow)">
+        <path d="M400 190 C365 225 350 275 370 345 L400 415 L430 345 C450 275 435 225 400 190Z" fill="url(#phGold)" stroke="#ffe0a0" stroke-width="4"/>
+        <path d="M400 214 C375 252 383 306 400 344 C417 306 425 252 400 214Z" fill="#fff1bb" opacity=".9"/>
+        <path d="M375 230 Q330 185 345 150 Q380 172 400 204 Q420 172 455 150 Q470 185 425 230" fill="url(#phBright)" stroke="#ffd88c" stroke-width="4"/>
+        <path d="M382 200 Q365 145 385 110 Q400 145 400 190 Q415 145 435 110 Q445 155 418 202" fill="#ffb64e" stroke="#ffe6a4" stroke-width="3"/>
+        <path d="M383 263 L340 300 L380 290 M417 263 L460 300 L420 290" fill="none" stroke="#fff0bb" stroke-width="9" stroke-linecap="round"/>
+        <path d="M390 180 L400 198 L410 180 L400 208Z" fill="#fffbe0"/>
+        <circle cx="390" cy="218" r="4" fill="#fff"/><circle cx="410" cy="218" r="4" fill="#fff"/>
+        <path d="M392 225 L400 237 L408 225" fill="#fff0b0"/>
+      </g>
+      <g class="phoenix-feather" fill="#ffe3a0" filter="url(#phGlow)">
+        <path d="M255 180 Q220 120 230 65 Q275 120 255 180Z"/><path d="M545 180 Q580 120 570 65 Q525 120 545 180Z"/>
+        <path d="M320 125 Q305 65 330 25 Q355 90 320 125Z"/><path d="M480 125 Q495 65 470 25 Q445 90 480 125Z"/>
+      </g>
+    </svg>
+  </div>
+  <div class="phoenix-gift-title">PHOENIX REBIRTH<small>RISE FROM THE EMBERS</small></div>
+</div>
+\n<div class="status" id="status" role="status">CONCEPT SPACE · NO CAMERA, MICROPHONE, OR LIVE BROADCAST IS ACTIVE</div>
 <footer>AN EXPERIMENT IN WHAT LIVE COULD BECOME · EXISTING TIKNATION LIVE IS UNCHANGED</footer>
 </main>
 <script>
@@ -121,4 +210,17 @@ document.getElementById('enter').addEventListener('click',()=>{sparkle();documen
 </nav>
 <script>(function(){const p=location.pathname;const map=[['discover','/discover/'],['live','/live-worlds/'],['create','/create/'],['community','/community/'],['profile','/profile/'],['settings','/settings/'],['home','/realms/']];let active=map.find(x=>p.includes(x[1]));if(p.includes('/creator-showcase/')||p.includes('/creator-studio/'))active=['profile','/profile/'];if(active){const a=document.querySelector('[data-dock="'+active[0]+'"]');if(a)a.setAttribute('aria-current','page')}})();</script><script>
 (()=>{const key='tiknation-live-room-poll-v1',buttons=[...document.querySelectorAll('[data-poll]')],status=document.getElementById('livePollStatus');if(!buttons.length||!status)return;let choice='';try{choice=localStorage.getItem(key)||''}catch(e){}function render(){buttons.forEach(b=>{const selected=b.dataset.poll===choice;b.setAttribute('aria-pressed',String(selected));b.disabled=!!choice;b.textContent=(selected?'✓ ':'')+b.dataset.poll});status.textContent=choice?'YOUR LOCAL PREVIEW VOTE: '+choice.toUpperCase():'CHOOSE ONE · LOCAL PREVIEW POLL'}buttons.forEach(b=>b.addEventListener('click',()=>{if(choice)return;choice=b.dataset.poll;try{localStorage.setItem(key,choice)}catch(e){}render()}));render()})();
-</script></body></html>
+</script>
+<script>
+(()=> {
+ const send=document.getElementById('sendPhoenixGift'),scene=document.getElementById('phoenixRebirthScene'),close=document.getElementById('closePhoenixGift'),status=document.getElementById('phoenixGiftStatus');
+ if(!send||!scene||!close||!status)return;
+ let emberTimer=null;
+ function closeScene(){scene.classList.remove('is-active');scene.style.display='none';scene.querySelectorAll('.phoenix-particle').forEach(p=>p.remove());if(emberTimer)clearInterval(emberTimer);status.textContent='READY · TEST GIFT · NO COINS USED';send.focus();}
+ function launch(){scene.style.display='grid';scene.classList.remove('is-active');void scene.offsetWidth;scene.classList.add('is-active');status.textContent='PHOENIX REBIRTH IS RISING · LOCAL ANIMATION';scene.querySelectorAll('.phoenix-particle').forEach(p=>p.remove());if(emberTimer)clearInterval(emberTimer);emberTimer=setInterval(()=>{if(!scene.classList.contains('is-active'))return;const p=document.createElement('i');p.className='phoenix-particle';p.style.left=(15+Math.random()*70)+'%';p.style.top=(58+Math.random()*35)+'%';p.style.setProperty('--drift',(Math.random()*100-50)+'px');scene.appendChild(p);setTimeout(()=>p.remove(),2600)},95);}
+ send.addEventListener('click',launch);close.addEventListener('click',closeScene);
+ scene.addEventListener('click',e=>{if(e.target===scene)closeScene()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&scene.classList.contains('is-active'))closeScene()});
+})();
+</script>
+</body></html>
