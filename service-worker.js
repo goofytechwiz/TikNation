@@ -1,4 +1,4 @@
-const CACHE_NAME = "tiknation-shell-v20-phantom-train-rebuild";
+const CACHE_NAME = "tiknation-shell-v21-wheel-groups-synced";
 const APP_SHELL = [
   "./",
   "./index.html",
