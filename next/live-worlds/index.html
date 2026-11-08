@@ -36,6 +36,8 @@ footer{text-align:center;color:#777393;font-size:9px;letter-spacing:.1em;margin-
 .live-gift-preview button{border:1px solid #9cf7ef88;border-radius:999px;padding:12px 18px;background:linear-gradient(110deg,#8cf7ef,#b9a4ff);color:#101326;font-weight:900;cursor:pointer}
 .live-gift-preview button:active{transform:scale(.98)}
 .live-gift-status{min-height:16px;margin-top:10px;color:#8cf7ef;font-size:10px}
+
+.gift-gallery-count{color:#8cf7ef;font-size:10px;letter-spacing:.16em;font-weight:850;margin:12px 0}.gift-gallery-categories{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 16px}.gift-gallery-categories button{border:1px solid #ffffff2b;border-radius:99px;padding:9px 12px;background:#ffffff09;color:#eee8ff;font-size:9px;font-weight:800;cursor:pointer}.gift-gallery-categories button[aria-pressed=true]{border-color:#8cf7ef;background:#8cf7ef18;color:#8cf7ef}.gift-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.gift-gallery-card{min-width:0;min-height:112px;text-align:left;padding:12px;border:1px solid #ffffff22;border-radius:15px;background:linear-gradient(145deg,#ffffff12,#ffffff04);color:#f7f3ff;cursor:pointer}.gift-gallery-card:hover,.gift-gallery-card:focus-visible{border-color:#8cf7ef99;box-shadow:0 0 22px #8cf7ef18;outline:none}.gift-gallery-card .gift-emoji{display:block;font-size:25px;margin-bottom:7px}.gift-gallery-card strong{display:block;font-size:11px;line-height:1.3}.gift-gallery-card small{display:block;color:#a9a2c7;font-size:8px;letter-spacing:.08em;margin-top:6px}@media(max-width:560px){.gift-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gift-gallery-card{min-height:105px;padding:10px}}
 /* Shared TikNation app navigation */
 body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
 .tn-dock{position:fixed;z-index:12;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:8px;border:1px solid #ffffff2b;border-radius:22px;background:linear-gradient(110deg,#10152beF,#211a3def 55%,#102a34ef);box-shadow:0 14px 48px #000b,0 0 28px #82f6e81c;backdrop-filter:blur(20px)}
@@ -90,11 +92,12 @@ img,video,canvas{max-width:100%}
 <div><div class="eyebrow" id="roomTag">WORLD 01 · CONNECTION</div><h2 id="roomTitle">A little light, shared.</h2><p id="roomCopy">The Dream Lounge is a softer kind of LIVE space. Picture creator-led conversations, expressive reactions, and small moments that make viewers feel included—not just counted.</p></div>
 <div class="actions"><button type="button" id="pulse">SEND A LIGHT PULSE ✧</button><button type="button" class="primary" id="enter">PREVIEW THIS WORLD →</button></div>
 </section>
-<section class="live-lobby" aria-labelledby="lobbyTitle"><div class="lobby-head"><div><div class="eyebrow">THE LIVE LOBBY</div><h2 id="lobbyTitle">Find the room. Feel the moment.</h2><p>Meet the creator concepts, catch the room vibe, and imagine how LIVE can feel more social.</p></div><span class="preview-tag">ROOM CONCEPTS · NOT LIVE</span></div><div class="host-rail"><article class="host-card"><span class="host-avatar">T</span><div><strong>TikNationStudio</strong><small>FOUNDER SPOTLIGHT · CREATOR CONCEPT</small></div><span class="host-label">FEATURED</span></article><article class="host-card"><span class="host-avatar">M</span><div><strong>MattOnLive</strong><small>CREATOR SPOTLIGHT · ROOM CONCEPT</small></div><span class="host-label">SPOTLIGHT</span></article></div><div class="lobby-columns"><section class="lobby-panel" aria-label="Sample room conversation"><h3>Room conversation</h3><div class="chat-sample"><div class="chat-line"><b>DreamerOne</b> This atmosphere is incredible ✨</div><div class="chat-line"><b>NovaCreates</b> What would you build here?</div><div class="chat-line"><b>Starbound</b> Saving this idea for our next creative night!</div></div><p class="lobby-note">Illustrative sample chat only. These are not real messages or connected accounts.</p></section><section class="lobby-panel" aria-label="Local room reactions"><h3>How is the vibe?</h3><div class="vibe-actions" role="group" aria-label="Choose a room reaction"><button type="button" data-vibe="✨ MAGIC">✨ MAGIC</button><button type="button" data-vibe="💜 LOVE IT">💜 LOVE IT</button><button type="button" data-vibe="🔥 ENERGY">🔥 ENERGY</button></div><p class="lobby-note">Try a reaction. It stays on this screen and is not sent to a broadcaster.</p><div class="lobby-status" id="vibeStatus" role="status">YOUR REACTION WILL APPEAR HERE</div></section></div></section><section class="live-poll" id="liveRoomPoll" aria-labelledby="livePollTitle"><h3 id="livePollTitle">Shape the next LIVE world</h3><p>Which room feature would make you want to stay longer?</p><div class="live-poll-options" role="group" aria-label="Choose a room feature"><button type="button" data-poll="Interactive audience games">✦ Interactive audience games</button><button type="button" data-poll="Creator Q&A moments">◉ Creator Q&amp;A moments</button><button type="button" data-poll="Music and visual stages">♫ Music and visual stages</button><button type="button" data-poll="Cozy group conversations">⌘ Cozy group conversations</button></div><div class="live-poll-status" id="livePollStatus" role="status" aria-live="polite">CHOOSE ONE · LOCAL PREVIEW POLL</div><div class="live-poll-note">Your choice is stored only in this browser. It is not sent to a creator or broadcast.</div></section><section class="live-gift-preview" aria-labelledby="giftPreviewTitle"><div class="eyebrow">GIFT ENGINE · NEW LIVE EXPERIENCE</div><h2 id="giftPreviewTitle">Finger of Death</h2><p>Preview the skeletal hand animation right here in the current TikNation LIVE Worlds page. This is a free visual preview; it does not spend coins or send a live gift.</p><button type="button" id="fingerDeathPreview">SUMMON FINGER OF DEATH 💀</button><div class="live-gift-status" id="fingerDeathStatus" role="status" aria-live="polite">READY · FREE PREVIEW</div></section>
+<section class="live-lobby" aria-labelledby="lobbyTitle"><div class="lobby-head"><div><div class="eyebrow">THE LIVE LOBBY</div><h2 id="lobbyTitle">Find the room. Feel the moment.</h2><p>Meet the creator concepts, catch the room vibe, and imagine how LIVE can feel more social.</p></div><span class="preview-tag">ROOM CONCEPTS · NOT LIVE</span></div><div class="host-rail"><article class="host-card"><span class="host-avatar">T</span><div><strong>TikNationStudio</strong><small>FOUNDER SPOTLIGHT · CREATOR CONCEPT</small></div><span class="host-label">FEATURED</span></article><article class="host-card"><span class="host-avatar">M</span><div><strong>MattOnLive</strong><small>CREATOR SPOTLIGHT · ROOM CONCEPT</small></div><span class="host-label">SPOTLIGHT</span></article></div><div class="lobby-columns"><section class="lobby-panel" aria-label="Sample room conversation"><h3>Room conversation</h3><div class="chat-sample"><div class="chat-line"><b>DreamerOne</b> This atmosphere is incredible ✨</div><div class="chat-line"><b>NovaCreates</b> What would you build here?</div><div class="chat-line"><b>Starbound</b> Saving this idea for our next creative night!</div></div><p class="lobby-note">Illustrative sample chat only. These are not real messages or connected accounts.</p></section><section class="lobby-panel" aria-label="Local room reactions"><h3>How is the vibe?</h3><div class="vibe-actions" role="group" aria-label="Choose a room reaction"><button type="button" data-vibe="✨ MAGIC">✨ MAGIC</button><button type="button" data-vibe="💜 LOVE IT">💜 LOVE IT</button><button type="button" data-vibe="🔥 ENERGY">🔥 ENERGY</button></div><p class="lobby-note">Try a reaction. It stays on this screen and is not sent to a broadcaster.</p><div class="lobby-status" id="vibeStatus" role="status">YOUR REACTION WILL APPEAR HERE</div></section></div></section><section class="live-poll" id="liveRoomPoll" aria-labelledby="livePollTitle"><h3 id="livePollTitle">Shape the next LIVE world</h3><p>Which room feature would make you want to stay longer?</p><div class="live-poll-options" role="group" aria-label="Choose a room feature"><button type="button" data-poll="Interactive audience games">✦ Interactive audience games</button><button type="button" data-poll="Creator Q&A moments">◉ Creator Q&amp;A moments</button><button type="button" data-poll="Music and visual stages">♫ Music and visual stages</button><button type="button" data-poll="Cozy group conversations">⌘ Cozy group conversations</button></div><div class="live-poll-status" id="livePollStatus" role="status" aria-live="polite">CHOOSE ONE · LOCAL PREVIEW POLL</div><div class="live-poll-note">Your choice is stored only in this browser. It is not sent to a creator or broadcast.</div></section><section class="live-gift-preview gift-gallery" aria-labelledby="giftGalleryTitle"><div class="eyebrow">THE COMPLETE TIKNATION COLLECTION · 42 GIFTS</div><h2 id="giftGalleryTitle">Choose a gift. Change the room.</h2><p>Browse the full collection across six categories. Tap any gift to preview its animation here. These are free visual previews: no coins are spent and no live gift is sent.</p><div class="gift-gallery-count" id="giftGalleryCount">LOADING THE GIFT COLLECTION…</div><div class="gift-gallery-categories" id="giftGalleryCategories" aria-label="Gift categories"></div><div class="gift-gallery-grid" id="giftGalleryGrid" aria-live="polite"></div><div class="live-gift-status" id="giftGalleryStatus" role="status" aria-live="polite">42 GIFTS · FREE PREVIEW · NO COINS SPENT</div></section>
 <div class="status" id="status" role="status">CONCEPT SPACE · NO CAMERA, MICROPHONE, OR LIVE BROADCAST IS ACTIVE</div>
 <footer>AN EXPERIMENT IN WHAT LIVE COULD BECOME · EXISTING TIKNATION LIVE IS UNCHANGED</footer>
 </main>
 <script src="../../gift-engine.js?v=live-worlds-gift-engine-1"></script>
+<script src="../../gifts.js?v=full-catalog-restore-2"></script>
 <script>
 const rooms={
 dream:{tag:'WORLD 01 · CONNECTION',name:'THE DREAM LOUNGE',hint:'A soft glow for shared moments',title:'A little light, shared.',copy:'The Dream Lounge is a softer kind of LIVE space. Picture creator-led conversations, expressive reactions, and small moments that make viewers feel included—not just counted.',status:'DREAM LOUNGE SELECTED · IMAGINED FEATURES ONLY'},
@@ -109,112 +112,25 @@ function sparkle(){const p=document.createElement('span');p.textContent='✦';p.
 document.getElementById('pulse').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent='✧ YOUR LIGHT PULSE HAS CROSSED THE '+rooms[active].name+' · VISUAL DEMO'});
 document.getElementById('portal').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent='THE GATE RESPONDED · THIS IS A VISUAL INTERACTION, NOT A LIVE ROOM'});
 document.getElementById('enter').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent=rooms[active].name+' · YOU ARE PREVIEWING THE CONCEPT, NOT JOINING A BROADCAST'});
-document.getElementById('fingerDeathPreview').addEventListener('click',()=>{
- const status=document.getElementById('fingerDeathStatus');
- if(window.TikNationGiftEngine&&typeof window.TikNationGiftEngine.show==='function'){
-  const played=window.TikNationGiftEngine.show({id:'fingerdeath-preview',name:'FINGER OF DEATH',style:'fingerdeath',emoji:'💀'},{duration:8500,senderName:'TIKNATION PREVIEW'});
-  if(played){status.textContent='CINEMATIC GIFT ENGINE ACTIVE · FREE PREVIEW · NO COINS SPENT';return;}
- }
- status.textContent='USING BUILT-IN PREVIEW · FREE · NO COINS SPENT';
- const prior=document.getElementById('fodStandalonePreview');if(prior)prior.remove();
- const overlay=document.createElement('div');overlay.id='fodStandalonePreview';
- overlay.innerHTML=`<div class="fod-scene" role="dialog" aria-label="Anatomically detailed skeletal hand"><div class="fod-runes">✦　ᛟ　✧　ᚷ　✦</div><svg class="fod-hand" viewBox="0 0 420 560" role="img" aria-label="An anatomically arranged skeletal hand with one raised finger and three curled fingers">
-<defs>
- <linearGradient id="boneReal" x1="0" y1="0" x2="1" y2=".15"><stop stop-color="#fff9e9"/><stop offset=".18" stop-color="#e8e0ca"/><stop offset=".48" stop-color="#c9c1ac"/><stop offset=".78" stop-color="#a09e8f"/><stop offset="1" stop-color="#667477"/></linearGradient>
- <linearGradient id="boneSide" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f8efd9"/><stop offset=".5" stop-color="#c6bfae"/><stop offset="1" stop-color="#737d7c"/></linearGradient>
- <radialGradient id="joint" cx=".32" cy=".22" r=".82"><stop stop-color="#fff8e8"/><stop offset=".55" stop-color="#d3cbb7"/><stop offset="1" stop-color="#788382"/></radialGradient>
- <filter id="boneShadow"><feGaussianBlur stdDeviation="5"/></filter>
- <g id="longBone">
-  <path d="M-11-42C-17-48-17-59-11-65C-5-71 3-67 7-64C15-65 19-57 15-48L10 47C16 54 14 64 7 68C0 72-5 66-9 66C-17 65-19 55-12 47Z" fill="url(#boneReal)" stroke="#566367" stroke-width="2.8"/>
-  <path d="M-7-40C-3-27-4-7-3 17L-3 43" fill="none" stroke="#fff9e8" stroke-width="2.5" opacity=".65"/>
-  <path d="M9-42Q5-15 6 15L5 45" fill="none" stroke="#687477" stroke-width="2" opacity=".55"/>
-  <path d="M-12-51Q0-57 13-50M-13 54Q0 61 12 54" fill="none" stroke="#85887e" stroke-width="1.7" opacity=".65"/>
- </g>
- <g id="jointBone">
-  <path d="M-17-5C-20-15-12-23-4-21C3-25 15-20 17-10C20 0 12 10 5 12C-5 17-16 9-17-5Z" fill="url(#joint)" stroke="#566367" stroke-width="2.7"/>
-  <path d="M-10-12Q-1-18 9-12M-11 3Q-1 10 10 3" fill="none" stroke="#fff8e7" stroke-width="1.7" opacity=".72"/>
- </g>
-</defs>
-<ellipse cx="211" cy="290" rx="150" ry="235" fill="#a9efff" opacity=".07" filter="url(#boneShadow)"/>
-<!-- forearm: radius and ulna -->
-<path d="M151 426C148 451 151 486 153 540Q164 550 177 540L187 454Q190 435 193 418Z" fill="url(#boneReal)" stroke="#566367" stroke-width="4"/>
-<path d="M226 418Q232 439 230 460L222 540Q234 550 247 539L255 455Q258 433 250 420Z" fill="url(#boneReal)" stroke="#566367" stroke-width="4"/>
-<!-- carpal cluster -->
-<g fill="url(#joint)" stroke="#566367" stroke-width="2.8">
- <path d="M145 402Q134 390 143 376Q154 365 168 375L177 394L166 409Z"/>
- <path d="M169 393Q167 377 181 370Q196 367 202 383L198 405L181 411Z"/>
- <path d="M202 383Q205 369 220 373Q234 382 228 400L214 411L199 402Z"/>
- <path d="M230 390Q239 376 252 384Q263 395 252 411L235 414L225 402Z"/>
- <path d="M151 412Q160 399 176 405L184 423Q172 435 157 427Z"/>
- <path d="M181 411Q194 402 207 412L209 431Q195 440 181 429Z"/>
- <path d="M211 411Q225 403 238 412L240 430Q226 440 211 430Z"/>
-</g>
-<!-- palm metacarpals: five distinct rays -->
-<g fill="url(#boneReal)" stroke="#566367" stroke-width="3.5" stroke-linejoin="round">
- <path d="M157 408Q145 377 126 352L104 326Q98 316 107 309Q116 303 124 313L155 346Q177 374 178 407Z"/>
- <path d="M178 408Q171 370 166 336L161 286Q161 274 171 272Q182 271 185 284L193 337Q199 375 195 410Z"/>
- <path d="M198 410Q198 371 200 334L201 286Q202 273 213 273Q224 274 224 287L222 339Q225 376 218 411Z"/>
- <path d="M220 411Q228 374 240 342L257 294Q262 282 273 287Q284 292 279 305L263 356Q252 389 240 417Z"/>
- <path d="M240 414Q260 382 284 359L320 327Q331 319 339 329Q346 339 336 348L301 385Q276 411 254 426Z"/>
-</g>
-<!-- raised index finger: distal, middle and proximal phalanges, aligned as one digit -->
-<g>
- <use href="#jointBone" x="211" y="279"/>
- <use href="#longBone" x="211" y="224" transform="scale(.82 1) translate(46 0)"/>
- <use href="#jointBone" x="211" y="169"/>
- <use href="#longBone" x="211" y="112" transform="scale(.82 1) translate(46 0)"/>
- <use href="#jointBone" x="211" y="57"/>
- <path d="M198 39Q195 26 201 14Q206 4 213 5Q224 6 228 19Q231 30 223 42L219 51Q209 56 200 48Z" fill="url(#boneReal)" stroke="#566367" stroke-width="3"/>
- <path d="M202 17Q207 8 215 9Q223 11 225 20Q218 27 211 27Q205 26 202 17Z" fill="url(#boneSide)" stroke="#697474" stroke-width="1.8"/>
-</g>
-<!-- middle finger bent naturally at the MCP, PIP and DIP joints -->
-<g>
- <use href="#jointBone" x="257" y="290" transform="rotate(18 257 290)"/>
- <path d="M260 295Q275 274 281 251Q284 238 296 239Q308 241 304 255L294 284Q286 306 270 321Z" fill="url(#boneReal)" stroke="#566367" stroke-width="3.5"/>
- <use href="#jointBone" x="298" y="250"/>
- <path d="M286 313Q304 298 325 286Q338 279 346 290Q353 301 341 311L316 330Q299 340 285 327Z" fill="url(#boneReal)" stroke="#566367" stroke-width="3.5"/>
- <use href="#jointBone" x="340" y="300"/>
- <path d="M313 332Q331 318 346 312Q358 308 365 319Q371 331 359 339L337 353Q321 358 311 346Z" fill="url(#boneSide)" stroke="#566367" stroke-width="3.2"/>
-</g>
-<!-- ring finger, tucked behind middle finger -->
-<g>
- <path d="M228 302Q244 278 250 258Q254 245 265 247Q277 250 272 264L260 293Q252 314 237 327Z" fill="url(#boneSide)" stroke="#566367" stroke-width="3.2"/>
- <use href="#jointBone" x="265" y="258"/>
- <path d="M238 324Q256 310 276 302Q289 296 297 307Q304 319 291 328L267 344Q250 350 237 338Z" fill="url(#boneReal)" stroke="#566367" stroke-width="3.2"/>
- <use href="#jointBone" x="291" y="315"/>
- <path d="M266 345Q284 334 298 329Q310 326 316 337Q322 348 311 355L290 367Q274 370 264 359Z" fill="url(#boneSide)" stroke="#566367" stroke-width="3"/>
-</g>
-<!-- little finger, shorter and folded inward -->
-<g>
- <path d="M251 355Q272 343 291 336Q303 331 310 342Q317 353 305 361L279 378Q262 384 250 370Z" fill="url(#boneReal)" stroke="#566367" stroke-width="3.2"/>
- <use href="#jointBone" x="306" y="348"/>
- <path d="M278 378Q297 366 313 362Q325 359 331 370Q337 381 325 388L304 400Q288 403 277 390Z" fill="url(#boneSide)" stroke="#566367" stroke-width="3"/>
-</g>
-<!-- thumb crosses diagonally over the curled fingers, clearly separate from the index -->
-<g>
- <path d="M157 344Q136 326 113 310Q100 301 91 311Q83 322 96 333L133 361Q150 374 169 369Z" fill="url(#boneReal)" stroke="#566367" stroke-width="3.8"/>
- <use href="#jointBone" x="105" y="319" transform="rotate(-48 105 319)"/>
- <path d="M169 369Q153 383 139 379Q126 376 128 364Q132 350 148 348Z" fill="url(#boneSide)" stroke="#566367" stroke-width="3.4"/>
-</g>
-<!-- restrained surface wear: pits, fine grooves and aged mineral staining -->
-<g fill="none" stroke-linecap="round">
- <g stroke="#fff9e8" stroke-width="2" opacity=".34">
-  <path d="M207 64Q204 88 207 120M215 180Q218 202 214 226M168 294Q172 326 181 354M207 294Q207 332 211 363M266 306Q257 333 246 361M117 329Q139 348 156 363M158 444Q161 481 162 514M241 444Q237 480 233 514"/>
- </g>
- <g stroke="#596765" stroke-width="2" opacity=".42">
-  <path d="M201 91l5 4m-4 9l4 3M222 198l-4 5m-1 9l5 3M174 311l-5 5m8 12l5 3M216 312l5 4m-4 12l5 4M255 321l-5 5m-3 10l5 3M132 344l-4 4m12 8l-4 3"/>
- </g>
-</g>
-<g fill="#566361" opacity=".38">
- <ellipse cx="208" cy="18" rx="2.2" ry="3"/><ellipse cx="217" cy="31" rx="1.5" ry="2"/>
- <ellipse cx="166" cy="289" rx="2" ry="1.5"/><ellipse cx="299" cy="249" rx="2" ry="1.5"/>
- <ellipse cx="346" cy="300" rx="2.2" ry="1.5"/><ellipse cx="91" cy="319" rx="2" ry="1.6"/>
- <ellipse cx="181" cy="397" rx="1.8" ry="1.4"/><ellipse cx="228" cy="400" rx="1.8" ry="1.4"/>
-</g>
-</svg><div class="fod-title">FINGER OF DEATH<small>THE HAND HAS CHOSEN</small></div><div class="fod-close">FREE VISUAL PREVIEW · NO COINS SPENT</div></div>`;
- document.body.appendChild(overlay);status.textContent='FINGER OF DEATH SUMMONED · FREE PREVIEW';
- setTimeout(()=>{if(overlay.isConnected){overlay.classList.add('fod-out');setTimeout(()=>overlay.remove(),500)}},8500);
-});;
+const giftCatalog=window.TIKNATION_GIFT_CATALOG||{};
+const giftCategories=['All','Musical','Magical','Special Effects','Visual Effects','Legendary','Surprises'];
+let selectedGiftCategory='All';
+function renderGiftGallery(){
+ const grid=document.getElementById('giftGalleryGrid'),tabs=document.getElementById('giftGalleryCategories'),count=document.getElementById('giftGalleryCount');
+ if(!grid||!tabs)return;
+ const entries=Object.entries(giftCatalog).filter(([,gift])=>selectedGiftCategory==='All'||gift.category===selectedGiftCategory);
+ count.textContent=Object.keys(giftCatalog).length+' GIFTS · '+giftCategories.slice(1).filter(c=>Object.values(giftCatalog).some(g=>g.category===c)).length+' CATEGORIES';
+ tabs.innerHTML=giftCategories.map(category=>'<button type="button" data-gift-category="'+category+'" aria-pressed="'+(selectedGiftCategory===category)+'">'+category+'</button>').join('');
+ tabs.querySelectorAll('[data-gift-category]').forEach(button=>button.addEventListener('click',()=>{selectedGiftCategory=button.dataset.giftCategory;renderGiftGallery()}));
+ grid.innerHTML=entries.map(([code,gift])=>'<button type="button" class="gift-gallery-card" data-gallery-gift="'+code+'"><span class="gift-emoji">'+gift.emoji+'</span><strong>'+gift.name+'</strong><small>'+gift.category.toUpperCase()+' · '+Number(gift.cost).toLocaleString()+' TEST COINS</small></button>').join('');
+ grid.querySelectorAll('[data-gallery-gift]').forEach(button=>button.addEventListener('click',()=>{
+  const code=button.dataset.galleryGift,gift=giftCatalog[code],status=document.getElementById('giftGalleryStatus');
+  let played=false;
+  try{played=Boolean(window.TikNationGiftEngine&&window.TikNationGiftEngine.show&&window.TikNationGiftEngine.show({...gift,id:'gallery-'+code,name:gift.name,emoji:gift.emoji},{duration:['ghostship','infernal_castle','fingerdeath','meteor','phoenix','dragon','dragonrevenge'].includes(gift.style)?8500:6800,senderName:'TIKNATION GIFT GALLERY'}));}catch(error){console.warn('Gift preview unavailable',error)}
+  status.textContent=(played?'ANIMATION PLAYING · ':'PREVIEW READY · ')+gift.name.toUpperCase()+' · FREE · NO COINS SPENT';
+ }));
+}
+renderGiftGallery();;
 </script><nav class="tn-dock" aria-label="TikNation main navigation">
 <a href="../" data-dock="home"><span class="tn-icon" aria-hidden="true">⌂</span>HOME</a>
 <a href="../discover/" data-dock="discover"><span class="tn-icon" aria-hidden="true">✧</span>DISCOVER</a>
