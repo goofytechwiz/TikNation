@@ -74,6 +74,14 @@ img,video,canvas{max-width:100%}
  html{scroll-behavior:auto}
 }
 
+
+/* Home feed creation entry point */
+.home-feed-composer{width:min(100%,980px);margin:0 auto 17px;padding:15px 17px;display:flex;align-items:center;gap:13px;border:1px solid #82f6e84a;border-radius:19px;background:linear-gradient(110deg,#152b3cdd,#211b3ddd);box-shadow:0 12px 32px #0003}
+.home-feed-composer .composer-mark{width:43px;height:43px;flex:0 0 43px;display:grid;place-items:center;border-radius:50%;border:1px solid #82f6e877;background:radial-gradient(circle at 30% 25%,#82f6e855,#b49cff22);color:#a9fff5;font:25px Georgia,serif}
+.home-feed-composer .composer-copy{min-width:0;flex:1}.home-feed-composer strong{display:block;font-size:12px}.home-feed-composer small{display:block;margin-top:4px;color:#aaa5c9;font-size:10px;line-height:1.45}
+.home-feed-composer a{flex:0 0 auto;padding:11px 15px;border:1px solid #82f6e899;border-radius:99px;background:#82f6e815;color:#a9fff5;text-decoration:none;font-size:9px;font-weight:900;letter-spacing:.09em}
+.home-feed-composer a:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+@media(max-width:480px){.home-feed-composer{gap:10px;padding:13px}.home-feed-composer .composer-mark{width:37px;height:37px;flex-basis:37px}.home-feed-composer a{padding:10px 11px;font-size:8px}}
 </style>
 </head>
 <body>
@@ -92,7 +100,7 @@ img,video,canvas{max-width:100%}
 <button class="realm" data-realm="Community"><b>⌘</b>COMMUNITY</button>
 </div>
 </section>
-<label class="home-search-wrap"><span aria-hidden="true">⌕</span><input id="homeFeedSearch" type="search" placeholder="Search creators, worlds and ideas…" autocomplete="off" aria-label="Search the TikNation preview feed"></label><div class="home-search-result" id="homeSearchResult" role="status">EXPLORE THE PREVIEW</div><div class="home-switcher" role="group" aria-label="Filter home feed"><button type="button" data-home-filter="all" aria-pressed="true">FOR YOU</button><button type="button" data-home-filter="creators" aria-pressed="false">CREATORS</button><button type="button" data-home-filter="live" aria-pressed="false">LIVE WORLDS</button><button type="button" data-home-filter="explore" aria-pressed="false">EXPLORE</button></div><div class="home-filter-status" id="homeFilterStatus" role="status">A LITTLE OF EVERYTHING, ALL IN ONE PLACE</div><section class="home-feed" aria-label="TikNation home feed">
+<label class="home-search-wrap"><span aria-hidden="true">⌕</span><input id="homeFeedSearch" type="search" placeholder="Search creators, worlds and ideas…" autocomplete="off" aria-label="Search the TikNation preview feed"></label><div class="home-search-result" id="homeSearchResult" role="status">EXPLORE THE PREVIEW</div><div class="home-switcher" role="group" aria-label="Filter home feed"><button type="button" data-home-filter="all" aria-pressed="true">FOR YOU</button><button type="button" data-home-filter="creators" aria-pressed="false">CREATORS</button><button type="button" data-home-filter="live" aria-pressed="false">LIVE WORLDS</button><button type="button" data-home-filter="explore" aria-pressed="false">EXPLORE</button></div><div class="home-filter-status" id="homeFilterStatus" role="status">A LITTLE OF EVERYTHING, ALL IN ONE PLACE</div><section class="home-feed-composer" id="home-feed-composer" aria-label="Create a post"><span class="composer-mark" aria-hidden="true">＋</span><span class="composer-copy"><strong>What’s happening in your world?</strong><small>Share an idea, a moment, or something you’ve created.</small></span><a href="./create/">START A POST ↗</a></section><section class="home-feed" aria-label="TikNation home feed">
 <div class="feed-heading"><div><div class="eyebrow">YOUR WORLD STARTS HERE</div><h2>Creator moments</h2></div><p>THE COMMUNITY FEED · PREVIEW</p></div>
 <article class="feed-card creator-post" data-home-category="creators">
 <div class="post-art" role="img" aria-label="Abstract glowing portal artwork"><span>YOUR VOICE. YOUR WORLD.</span></div>
@@ -113,7 +121,7 @@ img,video,canvas{max-width:100%}
 <div class="quick-links" data-home-category="explore">
 <a class="quick-link" href="./create/"><b>＋</b><strong>Create something</strong><span>Shape a post or creative idea.</span></a>
 <a class="quick-link" href="./community/"><b>⌘</b><strong>Find your community</strong><span>Explore spaces built around shared interests.</span></a>
-<a class="quick-link" href="./profile/"><b>◈</b><strong>Your creator space</strong><span>Visit your profile and showcase.</span></a><a class="quick-link" href="./infernal-castle/"><b>🏰</b><strong>Infernal Castle</strong><span>Open the animated legendary gift preview.</span></a>
+<a class="quick-link" href="./profile/"><b>◈</b><strong>Your creator space</strong><span>Visit your profile and showcase.</span></a><a class="quick-link" href="./discover/"><b>✧</b><strong>Discover something new</strong><span>Find creators, ideas, and new corners of TikNation.</span></a>
 </div>
 </section></main>
 <footer>YOUR VOICE. YOUR WORLD. &nbsp;·&nbsp; IMAGINATION WITHOUT LIMITS</footer>
