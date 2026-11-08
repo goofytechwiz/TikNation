@@ -740,7 +740,77 @@ function renderPhoenixGift(gift,opts,overlay){
  css.textContent="@keyframes phRise{0%{transform:translateY(90px) scale(.82);opacity:0}100%{transform:translateY(0) scale(1);opacity:1}}@keyframes phFlight{0%,100%{transform:translate(0,0) rotate(-2deg)}50%{transform:translate(0,-22px) rotate(2deg)}}@keyframes phWing{0%,100%{transform:rotate(-8deg) scaleY(.88)}50%{transform:rotate(12deg) scaleY(1.08)}}@keyframes phWingFar{0%,100%{transform:rotate(10deg) scaleY(.92)}50%{transform:rotate(-10deg) scaleY(1.05)}}@keyframes phTail{0%,100%{transform:skewY(0deg) scaleX(1)}50%{transform:skewY(-5deg) scaleX(1.04)}}@keyframes phFlame{0%,100%{opacity:.72;transform:scaleY(.94)}50%{opacity:1;transform:scaleY(1.08)}}@keyframes phEmber{0%{transform:translate(0,35px) scale(.3);opacity:0}15%{opacity:1}100%{transform:translate(var(--drift),-340px) scale(0);opacity:0}}#tiknation-gift-engine.phoenix{position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 48% 58%,#7b2609bb,#180812f5 53%,#020208 100%);color:#fff;font-family:system-ui,sans-serif}#tiknation-gift-engine.phoenix .ph-scene{position:relative;width:min(98vw,980px);height:min(92vh,760px);display:grid;place-items:center;animation:phRise 1s ease-out both}#tiknation-gift-engine.phoenix .ph-flight{width:100%;height:85%;overflow:visible;animation:phFlight 3s ease-in-out infinite;filter:drop-shadow(0 0 22px #ff5b12)}#tiknation-gift-engine.phoenix .ph-wing-near{transform-box:fill-box;transform-origin:52% 85%;animation:phWing 1.15s ease-in-out infinite}#tiknation-gift-engine.phoenix .ph-wing-far{transform-box:fill-box;transform-origin:50% 90%;animation:phWingFar 1.15s ease-in-out infinite}#tiknation-gift-engine.phoenix .ph-tail{transform-origin:340px 390px;animation:phTail 2s ease-in-out infinite}#tiknation-gift-engine.phoenix .ph-flame{transform-origin:center;animation:phFlame 1.1s ease-in-out infinite}#tiknation-gift-engine.phoenix .ph-ember{position:absolute;left:var(--left);bottom:5%;width:var(--size);height:var(--size);border-radius:50%;background:#ffe9a0;box-shadow:0 0 15px 5px #ff6416;animation:phEmber var(--dur) ease-out var(--delay) infinite}#tiknation-gift-engine.phoenix .ph-caption{position:absolute;bottom:1%;left:0;right:0;text-align:center;text-shadow:0 2px 14px #000;font-weight:900;letter-spacing:.2em;font-size:clamp(17px,3vw,27px);color:#ffe4a4}#tiknation-gift-engine.phoenix .ph-caption small{display:block;margin-top:8px;font-size:10px;letter-spacing:.3em;color:#ffb46b}@media(prefers-reduced-motion:reduce){#tiknation-gift-engine.phoenix *{animation:none!important}}";
  document.head.appendChild(css);overlay.className="phoenix";overlay.dataset.style="phoenix";
  const scene=document.createElement("div");scene.className="ph-scene";
- const svg='<svg class="ph-flight" viewBox="0 0 900 650" role="img" aria-label="A soaring mythical phoenix with a long flame-streaming tail, hooked eagle beak and enormous swept wings"><defs><linearGradient id="phGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff6b0"/><stop offset=".28" stop-color="#ffb12b"/><stop offset=".68" stop-color="#ed3b10"/><stop offset="1" stop-color="#6e0b13"/></linearGradient><linearGradient id="phRed" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffdf75"/><stop offset=".35" stop-color="#ff6518"/><stop offset="1" stop-color="#8d1018"/></linearGradient><linearGradient id="phWingGrad" x1="0" y1="1" x2=".8" y2="0"><stop stop-color="#6b0b18"/><stop offset=".42" stop-color="#c51c18"/><stop offset=".76" stop-color="#ff6818"/><stop offset="1" stop-color="#ffe69a"/></linearGradient><filter id="phBloom"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><ellipse cx="470" cy="390" rx="260" ry="170" fill="#ff5b12" opacity=".16" filter="url(#phBloom)"/><g class="ph-tail"><path class="ph-flame" d="M365 395C260 375 190 420 112 530C205 494 235 535 190 608C300 562 326 506 365 430Z" fill="#a71912"/><path class="ph-flame" d="M370 402C265 405 235 475 238 585C296 526 330 535 335 625C386 550 390 475 390 425Z" fill="#ef3512"/><path class="ph-flame" d="M375 410C310 455 320 520 370 610C386 530 425 520 465 575C455 490 420 438 395 410Z" fill="#ff8b19"/><path d="M360 415C250 460 218 510 198 568" fill="none" stroke="#ffe48a" stroke-width="9" stroke-linecap="round" opacity=".9"/><path d="M375 420C315 485 310 535 330 590" fill="none" stroke="#ffd15c" stroke-width="8" stroke-linecap="round"/></g><g class="ph-wing-far"><path d="M450 355C385 260 330 150 260 45C370 90 445 165 500 270C545 165 625 85 760 35C710 155 655 255 555 370Z" fill="#6f101b" stroke="#ff9b31" stroke-width="8"/><g fill="url(#phWingGrad)" stroke="#ffb34b" stroke-width="4"><path d="M466 330Q355 140 278 65Q390 125 510 322Z"/><path d="M480 333Q425 150 390 80Q485 160 530 330Z"/><path d="M505 337Q535 150 625 80Q575 210 540 350Z"/><path d="M530 350Q645 165 750 55Q690 245 555 380Z"/></g></g><g class="ph-wing-near"><path d="M460 365C350 305 245 285 70 300C190 345 270 405 330 470C210 445 145 485 95 555C245 525 355 500 475 435Z" fill="#72101a" stroke="#ffb34b" stroke-width="9"/><g fill="url(#phWingGrad)" stroke="#ffb34b" stroke-width="4"><path d="M450 390Q245 285 88 310Q250 345 460 425Z"/><path d="M440 405Q245 350 112 420Q280 405 465 440Z"/><path d="M435 420Q270 410 112 550Q300 470 470 455Z"/><path d="M440 435Q335 455 260 590Q375 500 480 465Z"/><path d="M455 440Q390 475 365 600Q440 510 490 470Z"/></g></g><g filter="url(#phBloom)"><path d="M355 355C390 315 465 300 530 326C575 344 610 374 642 390C590 425 530 452 465 450C410 448 370 420 345 390Z" fill="url(#phGold)" stroke="#ffd46b" stroke-width="7"/><path d="M500 330C510 270 555 235 605 250C640 260 654 293 638 321L612 355L575 371L540 352Z" fill="url(#phRed)" stroke="#ffc45b" stroke-width="7"/><path d="M620 270Q665 260 704 283L650 300Q685 305 700 328Q655 320 620 310Z" fill="#ffd96a" stroke="#fff0a0" stroke-width="5"/><path d="M604 253Q580 208 600 165Q633 196 628 237Q652 196 686 188Q670 232 642 260" fill="#ff7117" stroke="#ffd56a" stroke-width="6"/><path d="M614 278Q636 266 648 279" fill="none" stroke="#35100b" stroke-width="8" stroke-linecap="round"/><circle cx="635" cy="274" r="5" fill="#fff6c2"/><path d="M420 408Q470 470 540 424" fill="none" stroke="#ffe18b" stroke-width="7" opacity=".75"/><path d="M555 432L565 480L590 462L604 484L616 440" fill="none" stroke="#ffb638" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><path d="M565 480L548 498M590 462L592 492M604 484L622 500" fill="none" stroke="#ffe08a" stroke-width="7" stroke-linecap="round"/></g><path d="M375 370Q320 330 285 290M390 385Q330 370 275 355" fill="none" stroke="#ffdf80" stroke-width="7" opacity=".8"/></svg>';
+ const svg=`<svg class="ph-flight" viewBox="0 0 900 650" role="img" aria-label="A lifelike great phoenix with a powerful eagle-like body, layered individual red and gold flight feathers, hooked beak, talons and long streaming tail plumes">
+ <defs>
+  <linearGradient id="phBody" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#ffe8a0"/><stop offset=".22" stop-color="#c77a27"/><stop offset=".55" stop-color="#8d2117"/><stop offset="1" stop-color="#260b13"/></linearGradient>
+  <linearGradient id="phFeather" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#fff0ae"/><stop offset=".18" stop-color="#ffb83e"/><stop offset=".48" stop-color="#d94719"/><stop offset=".82" stop-color="#801321"/><stop offset="1" stop-color="#310b19"/></linearGradient>
+  <linearGradient id="phFlightFeather" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffd879"/><stop offset=".25" stop-color="#f36a22"/><stop offset=".7" stop-color="#a51e20"/><stop offset="1" stop-color="#390d1c"/></linearGradient>
+  <radialGradient id="phChest"><stop stop-color="#ffe4a0"/><stop offset=".42" stop-color="#d78a35"/><stop offset="1" stop-color="#641522"/></radialGradient>
+  <filter id="phBloom"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ </defs>
+ <ellipse cx="465" cy="365" rx="265" ry="185" fill="#ff5b12" opacity=".12" filter="url(#phBloom)"/>
+ <!-- far wing: long primaries fan outward with individually sculpted vanes -->
+ <g class="ph-wing-far" stroke="#6b1820" stroke-width="3" stroke-linejoin="round">
+  <path fill="#67131e" d="M451 345C405 260 330 132 221 45C300 65 402 137 495 278C548 164 650 77 790 37C735 157 650 286 558 382Z"/>
+  <g fill="url(#phFlightFeather)">
+   <path d="M465 337Q340 142 240 65Q354 115 490 330Q454 190 395 94Q492 173 525 338Z"/>
+   <path d="M493 340Q528 157 630 86Q568 202 540 353Z"/>
+   <path d="M515 350Q640 167 770 55Q697 242 552 377Z"/>
+   <path d="M532 359Q690 245 804 143Q706 307 561 389Z"/>
+  </g>
+  <g fill="none" stroke="#ffc15c" stroke-width="3" opacity=".8">
+   <path d="M472 338Q355 150 240 65M500 342Q468 175 395 94M526 350Q562 195 630 86M545 366Q687 202 770 55"/>
+  </g>
+ </g>
+ <!-- near wing: broad shoulder, layered coverts and long separated primaries -->
+ <g class="ph-wing-near" stroke="#68121c" stroke-width="3" stroke-linejoin="round">
+  <path fill="#65111d" d="M455 366C345 285 212 260 58 286C168 332 250 399 323 467C210 438 125 483 67 570C218 544 354 502 484 437Z"/>
+  <g fill="url(#phFeather)">
+   <path d="M458 390Q258 280 75 292Q246 326 469 414Z"/>
+   <path d="M451 405Q259 333 94 382Q270 380 476 431Z"/>
+   <path d="M445 419Q260 391 82 510Q280 438 479 450Z"/>
+   <path d="M448 433Q320 445 204 582Q355 492 487 463Z"/>
+   <path d="M458 442Q380 475 330 612Q425 506 494 472Z"/>
+   <path d="M467 443Q430 495 430 615Q480 520 505 478Z"/>
+  </g>
+  <g fill="none" stroke="#ffd17a" stroke-width="3" opacity=".85">
+   <path d="M458 410Q258 280 75 292M458 424Q259 333 94 382M462 440Q260 391 82 510M469 451Q320 445 204 582M480 461Q380 475 330 612"/>
+  </g>
+ </g>
+ <!-- long separate tail feathers, not a single flame shape -->
+ <g class="ph-tail" stroke="#5a1019" stroke-width="3" stroke-linejoin="round">
+  <path fill="url(#phFlightFeather)" d="M394 423Q266 438 128 590Q246 525 337 519Q279 582 264 636Q374 570 411 473Z"/>
+  <path fill="url(#phFeather)" d="M403 426Q322 469 288 621Q366 551 426 511Q402 575 421 632Q473 537 445 452Z"/>
+  <path fill="url(#phFlightFeather)" d="M416 428Q390 500 438 630Q462 548 507 516Q493 580 536 618Q554 516 453 431Z"/>
+  <path fill="none" stroke="#ffd16a" stroke-width="5" d="M390 438Q274 514 150 580M408 447Q345 520 305 603M428 447Q425 533 449 611M440 444Q482 510 521 598"/>
+ </g>
+ <!-- torso and neck -->
+ <g filter="url(#phBloom)">
+  <path d="M346 362Q374 319 438 312Q506 300 557 345Q592 381 624 396Q575 442 508 459Q438 474 379 433Q343 408 346 362Z" fill="url(#phBody)" stroke="#5a1518" stroke-width="8"/>
+  <path d="M384 359Q430 326 479 347Q523 367 541 414Q486 455 428 433Q393 415 384 359Z" fill="url(#phChest)" opacity=".95"/>
+  <!-- overlapping breast and shoulder feathers -->
+  <g fill="url(#phFeather)" stroke="#76201b" stroke-width="3">
+   <path d="M377 357Q405 337 432 354Q421 382 390 389Z"/><path d="M405 347Q438 331 463 354Q449 384 419 386Z"/>
+   <path d="M438 345Q470 333 492 360Q474 386 448 383Z"/><path d="M468 354Q503 345 520 375Q500 397 475 391Z"/>
+   <path d="M390 389Q420 369 447 392Q430 421 402 421Z"/><path d="M425 389Q455 369 480 394Q461 423 435 422Z"/>
+   <path d="M460 393Q490 376 513 401Q491 426 467 425Z"/>
+  </g>
+  <!-- long arched neck -->
+  <path d="M504 355Q536 297 577 267Q609 246 641 265Q655 286 633 317Q609 347 578 378L548 398Z" fill="url(#phBody)" stroke="#6e1a19" stroke-width="7"/>
+  <path d="M550 344Q585 284 625 274" fill="none" stroke="#ffe09a" stroke-width="8" opacity=".8"/>
+  <!-- head, hooked raptor beak and crest -->
+  <path d="M600 253Q622 222 660 228Q696 236 706 264Q694 290 664 301L632 292Q603 279 600 253Z" fill="url(#phFeather)" stroke="#5b1718" stroke-width="7"/>
+  <path d="M683 260Q728 257 756 282Q734 286 724 310Q705 299 686 291Z" fill="#d9a33c" stroke="#4a2114" stroke-width="6"/>
+  <path d="M755 282Q742 293 724 310Q730 285 713 276" fill="none" stroke="#3c160f" stroke-width="7"/>
+  <ellipse cx="670" cy="257" rx="7" ry="9" fill="#1b0b0b"/><circle cx="672" cy="254" r="2.5" fill="#fff2b5"/>
+  <path d="M615 235Q592 190 612 151Q638 183 635 220Q654 178 690 171Q674 216 646 244" fill="#c93418" stroke="#ffbf56" stroke-width="6"/>
+  <path d="M624 239Q612 197 584 181Q594 221 613 252M646 230Q657 183 691 151Q684 203 659 246" fill="#ef5a1b" stroke="#ffce6b" stroke-width="5"/>
+  <!-- legs and curled talons -->
+  <path d="M480 441L478 490M528 441L535 486" stroke="#d49a43" stroke-width="13" stroke-linecap="round"/>
+  <path d="M478 488L459 504Q445 520 460 527L479 512L490 531Q506 537 506 519L491 493M535 485L520 503Q509 520 525 526L542 510L554 527Q570 529 567 512L548 489" fill="none" stroke="#d9a64e" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+ </g>
+ <path d="M354 382Q294 357 251 333M368 398Q306 391 260 379" fill="none" stroke="#ffdf9a" stroke-width="5" opacity=".5"/>
+ </svg>`;
  scene.insertAdjacentHTML("beforeend",svg);
  for(let i=0;i<42;i++){const e=document.createElement("i");e.className="ph-ember";e.style.setProperty("--left",(5+(i*37)%90)+"%");e.style.setProperty("--size",(3+(i%5)*2)+"px");e.style.setProperty("--dur",(2+(i%6)*.42)+"s");e.style.setProperty("--delay",(-i*.16)+"s");e.style.setProperty("--drift",((i%2?1:-1)*(20+(i%7)*12))+"px");scene.appendChild(e);}
  const cap=document.createElement("div");cap.className="ph-caption";cap.textContent=gift.name||"THE PHOENIX REBIRTH";const small=document.createElement("small");small.textContent=opts.meta||"TIKNATION LIVE · LEGENDARY GIFT";cap.appendChild(small);scene.appendChild(cap);overlay.appendChild(scene);document.body.appendChild(overlay);
