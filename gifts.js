@@ -1,5 +1,6 @@
 const TIKNATION_GIFT_CATALOG = {
-  infernal_castle: { name: "Infernal Castle", emoji: "🏰", category: "Legendary", cost: 900, style: "infernal_castle", sound: "infernal_castle", message: "The gates of the underworld open." }
+  infernal_castle: { name: "Infernal Castle", emoji: "🏰", category: "Legendary", cost: 900, style: "infernal_castle", sound: "infernal_castle", message: "The gates of the underworld open." },
+  finger_of_death: { name: "Finger of Death", emoji: "💀", category: "Legendary", cost: 250, style: "fingerdeath", sound: "fingerdeath", message: "The skeletal hand rises. One finger marks its target." }
 };
 window.TIKNATION_GIFT_CATALOG = TIKNATION_GIFT_CATALOG;
 
