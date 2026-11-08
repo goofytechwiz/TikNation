@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="./icons/tiknation.svg">
 <title>TikNation Live</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./gift-engine.js?v=flying-dutchman-dispatch-v6"></script>
+<script src="./gift-engine.js?v=flying-dutchman-final-rebuild-v7"></script>
 <script src="./gifts.js?v=flying-dutchman-cinematic-v2"></script>
 <style>
 :root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
@@ -767,7 +767,13 @@ function showLiveGiftCelebration(event) {
 }
 function renderLiveGiftEvent(event) {
   const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
-  showLiveGiftCelebration(event);
+  // Route the Flying Dutchman through its dedicated cinematic renderer in BOTH
+  // creator previews and received live events; the generic card bypassed it.
+  if(gift.style==="ghostship" && window.TikNationGiftEngine?.show){
+    window.TikNationGiftEngine.show(gift,{meta:"THE FLYING DUTCHMAN · LIVE GIFT",duration:10000});
+  } else {
+    showLiveGiftCelebration(event);
+  }
   playLiveGiftSound(event,gift);
   const feed=$("liveGiftFeed");if(!feed)return;
   const empty=feed.querySelector(".small");if(empty)feed.innerHTML="";
