@@ -781,10 +781,65 @@ function renderHauntedLighthouseGift(gift,opts,overlay){
    world.add(new T.HemisphereLight(0x9dbbd3,0x10131b,1.45));
    const moon=new T.DirectionalLight(0x9fc9e7,2.15);moon.position.set(-9,16,8);world.add(moon);
    const moonGlow=new T.PointLight(0x7ebce8,22,55,2);moonGlow.position.set(-11,11,-15);world.add(moonGlow);
-   const waterGeometry=new T.PlaneGeometry(180,180,144,144);
-   const waterMat=new T.MeshPhysicalMaterial({color:0x123e53,roughness:.2,metalness:.22,clearcoat:.9,clearcoatRoughness:.12,emissive:0x031522,emissiveIntensity:.32});
+   // Procedural storm ocean: directional Gerstner swells, fine wind chop,
+   // physically shaded highlights, and broken crest foam (no decorative wave stripes).
+   const waterGeometry=new T.PlaneGeometry(180,180,1,1);
+   const waterMat=new T.ShaderMaterial({
+    uniforms:{uTime:{value:0},uDeep:{value:new T.Color(0x020913)},uMid:{value:new T.Color(0x092b3b)},uLight:{value:new T.Color(0x315b68)}},
+    vertexShader:`uniform float uTime;
+     varying vec3 vWorldPosition; varying vec3 vNormal; varying float vCrest; varying float vHeight;
+     vec3 ocean(vec2 p,float t,out float crest){
+      vec3 q=vec3(p.x,p.y,0.0); crest=0.0;
+      vec2 d1=normalize(vec2(1.0,.22)),d2=normalize(vec2(-.48,1.0)),d3=normalize(vec2(.72,.69)),d4=normalize(vec2(-.95,.18));
+      float a;
+      a=dot(p,d1)*.105+t*1.18; q.xy+=d1*(.34*.72*cos(a)); q.z+=.34*sin(a); crest+=.34*sin(a);
+      a=dot(p,d2)*.17-t*1.46; q.xy+=d2*(.23*.68*cos(a)); q.z+=.23*sin(a); crest+=.23*sin(a);
+      a=dot(p,d3)*.29+t*2.05; q.xy+=d3*(.105*.58*cos(a)); q.z+=.105*sin(a); crest+=.105*sin(a);
+      a=dot(p,d4)*.43-t*2.65; q.xy+=d4*(.045*.5*cos(a)); q.z+=.045*sin(a); crest+=.045*sin(a);
+      q.z+=sin(p.x*.62+p.y*.41-t*3.2)*.025+sin(p.x*1.15-p.y*.83+t*3.8)*.012;
+      crest=crest/.72; return q;
+     }
+     void main(){
+      vec2 p=position.xy; float c,cx,cy;
+      vec3 q=ocean(p,uTime,c);
+      vec3 qx=ocean(p+vec2(.12,0.0),uTime,cx)-q;
+      vec3 qy=ocean(p+vec2(0.0,.12),uTime,cy)-q;
+      vec3 n=normalize(cross(qx,qy));
+      vec4 wp=modelMatrix*vec4(q,1.0); vWorldPosition=wp.xyz;
+      vNormal=normalize(mat3(modelMatrix)*n); vCrest=c; vHeight=q.z;
+      gl_Position=projectionMatrix*viewMatrix*wp;
+     }`,
+    fragmentShader:`uniform float uTime; uniform vec3 uDeep; uniform vec3 uMid; uniform vec3 uLight;
+     varying vec3 vWorldPosition; varying vec3 vNormal; varying float vCrest; varying float vHeight;
+     float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+     float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);}
+     void main(){
+      vec2 p=vWorldPosition.xz;
+      float n1=noise(p*.22+vec2(uTime*.09,-uTime*.14));
+      float n2=noise(p*.78+vec2(-uTime*.28,uTime*.19));
+      float n3=noise(p*2.1+vec2(uTime*.42,uTime*.31));
+      vec3 N=normalize(vNormal+vec3((n2-.5)*.24,(n3-.5)*.10,(n1-.5)*.18));
+      vec3 V=normalize(cameraPosition-vWorldPosition);
+      vec3 L=normalize(vec3(-.38,.82,.42));
+      float diffuse=max(dot(N,L),0.0);
+      float fresnel=pow(1.0-max(dot(N,V),0.0),3.2);
+      vec3 H=normalize(L+V); float spec=pow(max(dot(N,H),0.0),72.0);
+      float depth=mix(.35,1.0,clamp((n1*.55+n2*.3+n3*.15),0.0,1.0));
+      vec3 col=mix(uDeep,uMid,clamp(.32+n1*.52+vHeight*.22,0.0,1.0));
+      col=mix(col,uLight,clamp(diffuse*.20+fresnel*.36,0.0,.48));
+      float crest=smoothstep(.43,.83,vCrest);
+      float broken=noise(p*1.65+vec2(uTime*.32,-uTime*.25))*noise(p*.47-vec2(uTime*.16));
+      float foam=crest*smoothstep(.32,.72,broken)*.78;
+      float islandDist=length(p);
+      float shore=(1.0-smoothstep(6.1,9.0,islandDist))*smoothstep(.12,.52,noise(p*2.8+uTime*.08));
+      foam=max(foam,shore*.78);
+      col=mix(col,vec3(.58,.72,.75),foam);
+      col+=vec3(.48,.69,.78)*spec*(.25+fresnel*.9);
+      col*=depth;
+      gl_FragColor=vec4(col,1.0);
+     }`
+   });
    const water=new T.Mesh(waterGeometry,waterMat);water.rotation.x=-Math.PI/2;water.position.y=-.34;water.receiveShadow=true;world.add(water);
-   const waterPositions=waterGeometry.attributes.position;
    const island=new T.Mesh(new T.CylinderGeometry(5.15,7.2,2.1,16,3),mat(0x29313a,1,0));island.position.set(0,.48,0);island.scale.set(1.12,1,1);island.castShadow=true;island.receiveShadow=true;world.add(island);
    const rockMats=[mat(0x333943,1),mat(0x4b5359,.95),mat(0x202832,1)];
    for(let i=0;i<24;i++){
@@ -819,19 +874,7 @@ function renderHauntedLighthouseGift(gift,opts,overlay){
    const beam=new T.Mesh(new T.ConeGeometry(5.5,36,36,1,true),new T.MeshBasicMaterial({color:0xc9efff,transparent:true,opacity:.105,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending}));beam.rotation.x=Math.PI/2;beam.position.z=-18;beamPivot.add(beam);
    const beamCore=new T.Mesh(new T.CylinderGeometry(.12,.55,30,20,1,true),new T.MeshBasicMaterial({color:0xe5f7ff,transparent:true,opacity:.13,side:T.DoubleSide,depthWrite:false,blending:T.AdditiveBlending}));beamCore.rotation.x=Math.PI/2;beamCore.position.z=-15;beamPivot.add(beamCore);
    const spot=new T.SpotLight(0xd7f2ff,260,48,.19,.62,1.1);spot.position.set(0,10.5,0);spot.target.position.set(0,10.5,-34);world.add(spot,spot.target);
-   const foamMat=new T.MeshBasicMaterial({color:0xc8f4ff,transparent:true,opacity:.58,depthWrite:false});
-   const foamRings=[];
-   for(let i=0;i<4;i++){const ring=new T.Mesh(new T.TorusGeometry(5.85+i*.48,.045,6,120),foamMat.clone());ring.rotation.x=Math.PI/2;ring.position.y=-.03+i*.012;world.add(ring);foamRings.push(ring);}
-   // Short, irregular foam crests sit on the moving wave faces (not straight stripes).
-   const whitecaps=[];
-   for(let row=0;row<15;row++){
-    for(let seg=0;seg<11;seg++){
-     const count=13,start=-76+seg*14.8+(Math.random()-.5)*5,length=2.2+Math.random()*5.2,z0=-35+row*5.1+(Math.random()-.5)*2.2;
-     const geo=new T.BufferGeometry(),positions=new Float32Array(count*3);geo.setAttribute("position",new T.BufferAttribute(positions,3));
-     const line=new T.Line(geo,new T.LineBasicMaterial({color:Math.random()>.55?0xe7fbff:0x9bd8e8,transparent:true,opacity:.24+Math.random()*.34,depthWrite:false}));world.add(line);whitecaps.push({line,count,start,length,z0,phase:Math.random()*6.28});
-    }
-   }
-   const waveHeight=(x,z,t)=>Math.sin(x*.105+t*1.15+z*.045)*.58+Math.sin(z*.16-t*1.42)*.34+Math.cos((x+z)*.075+t*.72)*.22+Math.sin(x*.24+z*.13-t*1.9)*.09;
+
    const fogs=[];
    for(let i=0;i<18;i++){const f=new T.Mesh(new T.SphereGeometry(1,12,8),new T.MeshBasicMaterial({color:0xb6cbd6,transparent:true,opacity:.055,depthWrite:false}));f.scale.set(2.4+(i%5)*.6,.16+(i%3)*.08,1.1+(i%4)*.4);f.position.set(-10+(i%9)*2.5,.05+(i%4)*.09,-6+(i%7)*2.1);world.add(f);fogs.push(f);}
    const starsGeo=new T.BufferGeometry(),starPoints=[];
@@ -903,13 +946,9 @@ function renderHauntedLighthouseGift(gift,opts,overlay){
     if(!reduced){
      const a=elapsed*.72;beamPivot.rotation.y=a;
      spot.target.position.set(Math.sin(a)*34,10.5,-Math.cos(a)*34);
-     const arr=waterPositions;
-     for(let i=0;i<arr.count;i++){const x=arr.getX(i),z=arr.getY(i);arr.setZ(i,waveHeight(x,z,elapsed));}
-     arr.needsUpdate=true;waterGeometry.computeVertexNormals();
-     whitecaps.forEach(({line,count,start,length,z0,phase})=>{const p=line.geometry.attributes.position;for(let j=0;j<count;j++){const u=j/(count-1),x=start+u*length,z=z0+Math.sin(x*.055+elapsed*.48+phase)*.62+Math.sin(u*Math.PI)*.22;p.setXYZ(j,x,waveHeight(x,z,elapsed)+.065,z);}p.needsUpdate=true;});
-     waterMat.roughness=.18+.06*(.5+.5*Math.sin(elapsed*1.7));
+     waterMat.uniforms.uTime.value=elapsed;
      fogs.forEach((f,i)=>{f.position.x+=dt*(.12+(i%4)*.035);if(f.position.x>13)f.position.x=-13;f.material.opacity=.035+.025*(.5+.5*Math.sin(elapsed*.6+i));});
-     foamRings.forEach((r,i)=>{r.rotation.z=elapsed*(.12+i*.04);r.scale.setScalar(1+.055*Math.sin(elapsed*1.3+i));});
+
      const rp=rainGeo.attributes.position;
      for(let i=0;i<rainCount;i++){
       const k=i*3;rp.array[k]-=dt*1.7;rp.array[k+1]-=dt*rainSpeeds[i];rp.array[k+2]+=dt*.8;
