@@ -740,94 +740,51 @@ function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{
 /* Cinematic object renderer: custom shaded vector artwork replaces emoji-only gift posters. */
 
 function renderGhostShipGift(gift,opts,overlay){
- const styleId="tiknation-ghostship-style";let css=document.getElementById(styleId);
- if(!css){css=document.createElement("style");css.id=styleId;document.head.appendChild(css);}
- css.textContent=`
- #tiknation-gift-engine[data-style=ghostship]{position:fixed;inset:0;z-index:2147483647;overflow:hidden;display:grid;place-items:center;pointer-events:none;background:radial-gradient(ellipse at 72% 24%,#46596d 0%,#17283a 26%,#091321 58%,#030711 100%);font-family:system-ui,sans-serif;color:#f0f5ff}
- #tiknation-gift-engine[data-style=ghostship] .ghost-world{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,#080f20 0%,#1a2b40 45%,#080f1c 100%)}
- #tiknation-gift-engine[data-style=ghostship] .ghost-moon{position:absolute;width:clamp(90px,19vw,170px);aspect-ratio:1;border-radius:50%;right:13%;top:9%;background:radial-gradient(circle at 36% 32%,#f5f8ff,#aabdd1 52%,#62758e 76%,transparent 78%);opacity:.72;filter:drop-shadow(0 0 34px #c7e4ff88)}
- #tiknation-gift-engine[data-style=ghostship] .ghost-cloud{position:absolute;inset:0;background:radial-gradient(ellipse at 12% 30%,#8799ad33 0 9%,transparent 29%),radial-gradient(ellipse at 72% 27%,#8da4bd2b 0 12%,transparent 32%),radial-gradient(ellipse at 42% 63%,#b6c8d733 0 8%,transparent 29%);filter:blur(16px);animation:ghost-cloud-drift 9s ease-in-out infinite alternate}
- #tiknation-gift-engine[data-style=ghostship] .ghost-horizon{position:absolute;left:0;right:0;bottom:0;height:35%;background:linear-gradient(180deg,transparent,#050b17 72%),radial-gradient(ellipse at 50% 40%,#8298ad22,transparent 70%)}
- #tiknation-gift-engine[data-style=ghostship] .ghost-ship{position:absolute;width:min(98vw,960px);height:auto;left:50%;top:52%;transform:translate(-50%,-50%);overflow:visible;filter:drop-shadow(0 28px 28px #000d) drop-shadow(0 0 22px #80caff22) contrast(1.12) saturate(.78);animation:ghost-ship-sail 8.4s cubic-bezier(.18,.58,.25,1) both,ghost-ship-rock 5.2s ease-in-out infinite}
- #tiknation-gift-engine[data-style=ghostship] .ghost-sail{transform-box:fill-box;transform-origin:50% 50%;animation:ghost-sail-billow 2.7s ease-in-out infinite alternate}
- #tiknation-gift-engine[data-style=ghostship] .ghost-sail.s2{animation-delay:-.8s}#tiknation-gift-engine[data-style=ghostship] .ghost-sail.s3{animation-delay:-1.4s}
- #tiknation-gift-engine[data-style=ghostship] .ghost-flag{transform-box:fill-box;transform-origin:left center;animation:ghost-flag-wave .7s ease-in-out infinite alternate}
- #tiknation-gift-engine[data-style=ghostship] .ghost-window{filter:drop-shadow(0 0 8px #9fe9ff);animation:ghost-window-pulse 1.7s ease-in-out infinite alternate}
- #tiknation-gift-engine[data-style=ghostship] .ghost-smoke{animation:ghost-smoke-rise 3.2s ease-out infinite;transform-box:fill-box;transform-origin:center}
- #tiknation-gift-engine[data-style=ghostship] .ghost-mist{position:absolute;left:-30%;right:-30%;height:22%;bottom:10%;border-radius:50%;background:radial-gradient(ellipse,#c4e4ff26 0%,#9bb9cf12 38%,transparent 70%);filter:blur(18px);animation:ghost-mist-drift 9s ease-in-out infinite alternate}
- #tiknation-gift-engine[data-style=ghostship] .ghost-title{position:absolute;z-index:8;left:0;right:0;bottom:7%;text-align:center;font-weight:1000;font-size:clamp(22px,5vw,43px);letter-spacing:.16em;text-shadow:0 0 18px #8edcff,0 4px 10px #000}
- #tiknation-gift-engine[data-style=ghostship] .ghost-title small{display:block;margin-top:8px;font-size:clamp(9px,2vw,13px);letter-spacing:.24em;color:#c5e5ff}
- #tiknation-gift-engine[data-style=ghostship] .ghost-cannon-flash{position:absolute;z-index:5;left:50%;top:48%;width:42vw;max-width:340px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff 0,#a9e8ff 8%,#65bfff55 25%,transparent 70%);opacity:0;transform:scale(.2)}
- #tiknation-gift-engine[data-style=ghostship] .ghost-cannon-flash.fire{animation:ghost-cannon-fire .55s ease-out}
- @keyframes ghost-ship-sail{0%{left:-75%;opacity:0;transform:translate(-50%,-43%) scale(.72)}18%{opacity:1}100%{left:50%;transform:translate(-50%,-50%) scale(1)}}
- @keyframes ghost-ship-rock{0%,100%{margin-top:0;rotate:-1deg}50%{margin-top:-9px;rotate:1deg}}
- @keyframes ghost-sail-billow{from{transform:skewY(-2deg) scaleX(.97)}to{transform:skewY(2deg) scaleX(1.035)}}
- @keyframes ghost-flag-wave{from{transform:skewY(-9deg) scaleX(.9)}to{transform:skewY(8deg) scaleX(1.06)}}
- @keyframes ghost-window-pulse{from{opacity:.5}to{opacity:1}}
- @keyframes ghost-cloud-drift{from{transform:translateX(-3%) scale(1)}to{transform:translateX(4%) scale(1.08)}}
- @keyframes ghost-mist-drift{from{transform:translateX(-12%) scaleX(.85);opacity:.35}to{transform:translateX(14%) scaleX(1.2);opacity:.85}}
- @keyframes ghost-smoke-rise{0%{opacity:.55;transform:translateY(0) scale(.5)}100%{opacity:0;transform:translateY(-95px) scale(1.8)}}
- @keyframes ghost-cannon-fire{0%{opacity:0;transform:scale(.15)}18%{opacity:1;transform:scale(1.1)}100%{opacity:0;transform:scale(2.4)}}
- @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=ghostship] *{animation:none!important}}
- `;
- const world=document.createElement("div");world.className="ghost-world";
- world.innerHTML=`
- <div class="ghost-moon"></div><div class="ghost-cloud"></div><div class="ghost-horizon"></div>
- <svg class="ghost-ship" viewBox="0 0 1100 650" role="img" aria-label="A haunted, weathered wooden sailing galleon">
-<defs>
-<linearGradient id="gh-hull" x1="0" y1="0" x2=".1" y2="1"><stop stop-color="#9a7957"/><stop offset=".2" stop-color="#4b392d"/><stop offset=".6" stop-color="#18212c"/><stop offset="1" stop-color="#030811"/></linearGradient>
-<linearGradient id="gh-sail" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e3dfd0"/><stop offset=".42" stop-color="#a1a69f"/><stop offset="1" stop-color="#344452"/></linearGradient>
-<linearGradient id="gh-deck" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#92704c"/><stop offset="1" stop-color="#211c1b"/></linearGradient>
-<filter id="gh-glow"><feGaussianBlur stdDeviation="7"/></filter>
-<pattern id="gh-planks" width="90" height="22" patternUnits="userSpaceOnUse"><path d="M0 5Q25 1 48 5T90 5M12 15Q39 11 70 15" fill="none" stroke="#d2ad7e" stroke-width="1" opacity=".24"/></pattern>
-</defs>
-<!-- tall masts and dense rigging -->
-<g stroke="#1a2733" stroke-width="13" stroke-linecap="round"><path d="M300 82V475M545 35V470M785 115V448"/></g>
-<g fill="none" stroke="#a9b8bc" stroke-width="2.5" opacity=".68"><path d="M300 82L145 420M300 82L465 420M545 35L355 445M545 35L730 445M785 115L615 450M785 115L965 400"/><path d="M300 82L545 35L785 115M145 420L545 35L965 400"/></g>
-<!-- full, curved sails with seams, folds and ragged edges -->
-<g class="ghost-sail s2"><path d="M306 112Q380 123 457 106L450 320Q380 296 300 326Q314 220 306 112Z" fill="url(#gh-sail)" stroke="#e0ded0" stroke-width="5"/><path d="M320 139Q384 151 445 130M307 299Q380 274 448 301" fill="none" stroke="#475867" stroke-width="5"/><path d="M328 145L331 290M360 151L363 282M394 151L395 280M426 143L425 287" stroke="#65727a" stroke-width="2.5" opacity=".7"/><path d="M306 112L320 143L309 164L323 190L311 215L325 244L312 270L326 297L300 326" fill="none" stroke="#eee9d8" stroke-width="3"/></g>
-<g class="ghost-sail s1"><path d="M550 64Q641 76 735 58L722 359Q638 327 545 359Q561 208 550 64Z" fill="url(#gh-sail)" stroke="#e6e1d3" stroke-width="5"/><path d="M566 91Q642 104 720 83M553 337Q642 302 714 336" fill="none" stroke="#4d5a62" stroke-width="5"/><path d="M575 112L580 316M611 116L613 306M647 118L646 306M683 110L679 316M713 97L700 323" stroke="#6c777b" stroke-width="2.5" opacity=".7"/><path d="M550 64L567 94L555 116L571 140L558 164L574 191L560 219L575 246L561 273L575 300L545 359" fill="none" stroke="#eee9d8" stroke-width="3.5"/></g>
-<g class="ghost-sail s3"><path d="M791 143Q852 151 925 136L911 322Q850 300 782 328Q796 225 791 143Z" fill="url(#gh-sail)" stroke="#cbd0c9" stroke-width="4"/><path d="M800 166Q858 177 913 158M787 309Q851 282 905 307" fill="none" stroke="#435361" stroke-width="4"/><path d="M812 171L814 297M843 169L843 291M875 164L873 296M903 158L895 301" stroke="#6a777d" stroke-width="2"/></g>
-<g fill="none" stroke="#9daaad" stroke-width="5" opacity=".85"><path d="M270 119L477 107M502 73L754 58M758 147L942 135M280 235L470 225M515 225L738 214M755 245L922 237"/></g>
-<g fill="none" stroke="#87979b" stroke-width="1.8" opacity=".65"><path d="M300 82L300 470M545 35L545 465M785 115L785 445M300 82L545 465M545 35L300 470M545 35L785 445M785 115L545 465"/><path d="M280 145H460M278 173H458M276 201H456M520 110H733M518 140H731M516 170H729M514 200H727M760 180H915M758 210H913M756 240H911"/></g>
-<g fill="#172330" stroke="#b39a75" stroke-width="4"><path d="M274 160Q300 144 326 160L322 175H278Z"/><path d="M516 116Q545 99 576 116L572 132H520Z"/><path d="M760 190Q785 175 810 190L806 205H764Z"/></g>
-<g class="ghost-flag" fill="#111c2a" stroke="#a7bdc8" stroke-width="2"><path d="M545 36L638 48L600 67L545 56Z"/><path d="M785 116L853 128L817 146L785 136Z"/></g>
-<!-- stern castle and warm lanterns -->
-<path d="M690 350L704 260L739 239V205L766 191L793 208V247L829 263L842 354Z" fill="url(#gh-deck)" stroke="#b59a78" stroke-width="5"/>
-<path d="M704 289H830V350H696Z" fill="#151d27" stroke="#886d50" stroke-width="4"/><path d="M724 250V215H749V251M770 251V208H794V255" fill="#0b1420" stroke="#c0a27a" stroke-width="4"/>
-<g fill="#ffce80" filter="url(#gh-glow)" opacity=".85"><circle cx="737" cy="290" r="14"/><circle cx="790" cy="290" r="14"/><circle cx="782" cy="232" r="12"/></g>
-<g fill="#f5c77c" stroke="#3b3026" stroke-width="3"><rect x="730" y="281" width="13" height="20" rx="3"/><rect x="783" y="281" width="13" height="20" rx="3"/><rect x="776" y="224" width="12" height="17" rx="3"/></g>
-<!-- sweeping hull with raised bow and stern -->
-<path d="M118 389Q205 367 285 375Q440 397 630 375L747 351L865 332L968 291L944 390Q906 449 844 477Q755 522 625 530L395 527Q245 512 179 465Q137 433 118 389Z" fill="url(#gh-hull)" stroke="#b69b7d" stroke-width="8"/>
-<path d="M139 392Q425 435 671 410Q843 390 955 322" fill="none" stroke="#d7bd96" stroke-width="7" opacity=".8"/>
-<path d="M163 423Q430 470 673 442Q837 424 930 360M192 452Q438 493 672 467Q816 449 893 402M238 481Q450 516 666 491Q785 474 852 438" fill="none" stroke="#090f18" stroke-width="10" opacity=".8"/>
-<path d="M150 404Q426 449 670 422Q836 402 940 337L923 375Q815 433 669 451Q412 480 172 432Z" fill="url(#gh-planks)" opacity=".9"/>
-<g fill="none" stroke="#b08c67" stroke-width="2.5" opacity=".5"><path d="M190 401L207 470M250 411L267 491M315 420L330 505M385 428L398 519M458 433L464 526M532 432L535 526M606 426L608 521M680 414L681 510M751 399L749 491M818 379L815 463M883 354L870 430"/><path d="M174 418Q430 464 675 437Q839 417 930 355M189 445Q434 487 674 461Q821 441 900 389"/></g>
-<!-- gun deck, rails, gunports and cannon muzzles -->
-<path d="M132 376Q424 408 675 385Q830 365 957 312L937 352Q815 407 669 423Q411 448 151 402Z" fill="url(#gh-deck)" stroke="#d2b48b" stroke-width="5"/>
-<path d="M136 371Q425 402 678 380Q838 360 958 308" fill="none" stroke="#ddc59e" stroke-width="8"/>
-<g fill="#111923" stroke="#b69b78" stroke-width="3"><rect x="218" y="349" width="31" height="30" rx="2"/><rect x="291" y="357" width="31" height="30" rx="2"/><rect x="364" y="364" width="31" height="30" rx="2"/><rect x="437" y="367" width="31" height="30" rx="2"/><rect x="510" y="365" width="31" height="30" rx="2"/><rect x="583" y="357" width="31" height="30" rx="2"/><rect x="656" y="347" width="31" height="30" rx="2"/></g>
-<g fill="#060b12" stroke="#b8a080" stroke-width="3"><circle cx="234" cy="364" r="8"/><circle cx="307" cy="372" r="8"/><circle cx="380" cy="379" r="8"/><circle cx="453" cy="382" r="8"/><circle cx="526" cy="380" r="8"/><circle cx="599" cy="372" r="8"/><circle cx="672" cy="362" r="8"/></g>
-<!-- bowsprit, prow and carved figurehead -->
-<path d="M930 322L1052 253L1065 264L958 350" fill="none" stroke="#a88c69" stroke-width="11" stroke-linecap="round"/>
-<path d="M944 339Q978 311 996 277Q1008 260 1024 269Q1006 291 1011 310Q990 332 966 345Z" fill="#bca584" stroke="#e2cba1" stroke-width="4"/>
-<path d="M975 305Q994 288 1013 288" fill="none" stroke="#26323a" stroke-width="5"/>
-<!-- spectral portholes and reflections -->
-<g class="ghost-window" fill="#a8eaff" stroke="#273e50" stroke-width="5"><rect x="275" y="409" width="20" height="29" rx="8"/><rect x="347" y="420" width="20" height="29" rx="8"/><rect x="419" y="427" width="20" height="29" rx="8"/><rect x="491" y="427" width="20" height="29" rx="8"/><rect x="563" y="420" width="20" height="29" rx="8"/><rect x="635" y="407" width="20" height="29" rx="8"/></g>
-<g fill="#a7eaff" filter="url(#gh-glow)" opacity=".72"><ellipse cx="285" cy="423" rx="15" ry="19"/><ellipse cx="357" cy="434" rx="15" ry="19"/><ellipse cx="429" cy="441" rx="15" ry="19"/><ellipse cx="501" cy="441" rx="15" ry="19"/><ellipse cx="573" cy="434" rx="15" ry="19"/><ellipse cx="645" cy="421" rx="15" ry="19"/></g>
-<g fill="#111a24" stroke="#bba17d" stroke-width="2"><circle cx="191" cy="414" r="4"/><circle cx="257" cy="426" r="4"/><circle cx="325" cy="436" r="4"/><circle cx="393" cy="444" r="4"/><circle cx="462" cy="447" r="4"/><circle cx="531" cy="446" r="4"/><circle cx="600" cy="439" r="4"/><circle cx="669" cy="428" r="4"/><circle cx="739" cy="411" r="4"/><circle cx="809" cy="390" r="4"/></g>
-<g class="ghost-smoke" fill="#b5c9d5" opacity=".5"><ellipse cx="850" cy="258" rx="18" ry="13"/><ellipse cx="870" cy="237" rx="23" ry="16"/><ellipse cx="894" cy="212" rx="28" ry="20"/></g>
-<path d="M130 389Q425 435 671 410Q843 390 968 291" fill="none" stroke="#e4e5dd" stroke-width="4" opacity=".72"/>
-</svg><div class="ghost-mist"></div><div class="ghost-cannon-flash"></div><div class="ghost-title">THE GHOST SHIP<small>THE LOST FLEET HAS RETURNED</small></div>`;
- overlay.appendChild(world);document.body.appendChild(overlay);
- const flash=world.querySelector(".ghost-cannon-flash"),reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;let timers=[];
- if(!reduced)[1800,4700].forEach(delay=>timers.push(setTimeout(()=>{if(!overlay.isConnected)return;flash.classList.remove("fire");void flash.offsetWidth;flash.classList.add("fire")},delay)));
- if(typeof opts.onSound==="function"){try{opts.onSound()}catch(error){console.warn("Ghost ship audio unavailable",error)}}
- const duration=Math.max(6500,Number(opts.duration)||8800);
- setTimeout(()=>{timers.forEach(clearTimeout);if(overlay.isConnected){overlay.style.transition="opacity .55s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),580)}},duration);
+ const id="tiknation-flying-dutchman-style";let style=document.getElementById(id);
+ if(!style){style=document.createElement("style");style.id=id;document.head.appendChild(style);}
+ style.textContent="#tiknation-gift-engine[data-style=ghostship]{position:fixed!important;inset:0!important;z-index:2147483647!important;display:block!important;overflow:hidden!important;pointer-events:none!important;background:#050a13!important}#tiknation-gift-engine[data-style=ghostship] .fd-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 72% 20%,#aeb9c0 0%,#536171 14%,#1b293b 42%,#050b15 100%)}#tiknation-gift-engine[data-style=ghostship] canvas{position:absolute;inset:0;width:100%;height:100%;display:block}#tiknation-gift-engine[data-style=ghostship] .fd-moon{position:absolute;right:12%;top:8%;width:clamp(75px,15vw,150px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#d9e1df 45%,#8799a2 73%,transparent 76%);box-shadow:0 0 55px 18px #d5e8f355;opacity:.72}#tiknation-gift-engine[data-style=ghostship] .fd-title{position:absolute;z-index:4;bottom:7%;left:3%;right:3%;text-align:center;font:1000 clamp(22px,5.5vw,48px)/1.1 system-ui;letter-spacing:.15em;color:#e9f3ed;text-shadow:0 2px 4px #000,0 0 22px #a8d8c7}#tiknation-gift-engine[data-style=ghostship] .fd-title small{display:block;margin-top:8px;font-size:clamp(9px,2vw,13px);letter-spacing:.24em;color:#b7d2cd}";
+ const world=document.createElement("div");world.className="fd-world";world.innerHTML='<div class="fd-moon"></div><canvas aria-label="Animated haunted galleon inspired by the Flying Dutchman"></canvas><div class="fd-title">THE FLYING DUTCHMAN<small>THE DAMNED SHIP HAS RETURNED</small></div>';overlay.appendChild(world);document.body.appendChild(overlay);
+ const canvas=world.querySelector("canvas"),ctx=canvas.getContext("2d");if(!ctx)return overlay;
+ let w=0,h=0,raf=0,alive=true;const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ function resize(){const d=Math.min(2,window.devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);ctx.setTransform(d,0,0,d,0,0);}
+ function line(p,c,l){ctx.beginPath();p.forEach((v,i)=>i?ctx.lineTo(v[0],v[1]):ctx.moveTo(v[0],v[1]));ctx.strokeStyle=c;ctx.lineWidth=l;ctx.stroke();}
+ function shape(p,fill,stroke,l){ctx.beginPath();p.forEach((v,i)=>i?ctx.lineTo(v[0],v[1]):ctx.moveTo(v[0],v[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=l||2;ctx.stroke();}}
+ function frame(ms){if(!alive||!overlay.isConnected)return;const t=ms/1000;ctx.clearRect(0,0,w,h);
+  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#10192a");sky.addColorStop(.5,"#354352");sky.addColorStop(1,"#080e18");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+  for(let i=0;i<8;i++){let x=((i*191+t*(i%2?8:-5))%(w+360))-180,y=h*(.13+(i%4)*.105),r=w*(.14+(i%3)*.07),g=ctx.createRadialGradient(x,y,5,x,y,r);g.addColorStop(0,"rgba(180,192,198,.17)");g.addColorStop(1,"rgba(30,42,57,0)");ctx.fillStyle=g;ctx.fillRect(x-r,y-r*.5,r*2,r);}
+  if(!reduced&&Math.sin(t*.5)>.987){ctx.fillStyle="rgba(220,239,248,.12)";ctx.fillRect(0,0,w,h*.75);}
+  const sc=Math.min(w/1000,h/620)*1.02,sw=960*sc,enter=Math.min(1,Math.max(0,(t-.2)/2.6)),ease=1-Math.pow(1-enter,3),sx=(w-sw)/2-(1-ease)*sw*.9,sy=h*.53+Math.sin(t*1.2)*5*sc;
+  ctx.save();ctx.translate(sx,sy);ctx.scale(sc,sc);ctx.shadowColor="#000";ctx.shadowBlur=25;ctx.shadowOffsetY=18;
+  const hull=ctx.createLinearGradient(0,300,0,480);hull.addColorStop(0,"#89907b");hull.addColorStop(.2,"#394a41");hull.addColorStop(.6,"#172a2c");hull.addColorStop(1,"#030a12");
+  shape([[35,342],[125,320],[250,334],[435,345],[620,329],[760,300],[875,264],[940,238],[918,345],[855,402],[755,440],[605,460],[400,458],[230,435],[100,400]],hull,"#b0a98a",7);ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+  for(let k=0;k<5;k++)line([[100+k*4,370+k*15],[260,390+k*14],[440,402+k*12],[630,390+k*9],[820,350+k*4],[900-k*6,305+k*3]],k%2?"#9a9a7b66":"#020a10aa",5);
+  // Root-like growth, barnacles and broken timber.
+  for(let i=0;i<36;i++){let x=105+i*21,y=390+Math.sin(i*.54)*34;line([[x,y],[x-9,y+12],[x-4+(i%5)*3,y+30]],i%2?"#72876d":"#304c42",2+i%3);ctx.fillStyle="#9b9d78";ctx.beginPath();ctx.ellipse(x-4,y+15,3,7,i*.2,0,Math.PI*2);ctx.fill();}
+  shape([[75,334],[260,347],[455,350],[660,331],[880,275],[855,321],[655,369],[440,384],[240,372],[85,356]],"#1a2623","#9f906f",4);
+  for(let i=0;i<10;i++){let x=165+i*70,y=350+Math.sin(i/9*Math.PI)*15;ctx.fillStyle="#03090d";ctx.fillRect(x,y,24,18);ctx.strokeStyle="#a59472";ctx.lineWidth=2;ctx.strokeRect(x,y,24,18);}
+  const m=[{x:280,top:38},{x:515,top:4},{x:750,top:75}];
+  m.forEach((v,i)=>{let g=ctx.createLinearGradient(v.x-8,0,v.x+9,0);g.addColorStop(0,"#101a1b");g.addColorStop(.5,"#a39878");g.addColorStop(1,"#17201e");ctx.fillStyle=g;ctx.fillRect(v.x-7,v.top,14,355-v.top);[v.top+105,v.top+210,v.top+292].forEach((y,j)=>line([[v.x-(j?125:90),y],[v.x+(j?125:90),y]],"#9b9c84",7));line([[v.x,v.top],[v.x-150,350]],"#b6b9a688",2);line([[v.x,v.top],[v.x+155,330]],"#b6b9a688",2);for(let q=0;q<8;q++)line([[v.x-110*q/8,v.top+45+q*30],[v.x+110*q/8,v.top+45+q*30]],"#aab2a455",1);});
+  line([[280,38],[515,4],[750,75],[940,238]],"#c2c2a077",2);
+  // Massive weather-stained sails, tears and moving hems.
+  m.forEach((v,i)=>{let sway=Math.sin(t*1.7+i)*6,L=v.x-(i===1?112:92),R=v.x+(i===1?112:92),T=v.top+52,B=v.top+250,g=ctx.createLinearGradient(L,T,R,B);g.addColorStop(0,"#d8d6c4");g.addColorStop(.48,"#829087");g.addColorStop(1,"#293d3b");shape([[L,T],[R+sway,T+5],[R-6+sway,B-18],[R-28,B],[R-51,B-24],[L+25,B-8],[L+7,B-38]],g,"#d2d1bd",3);for(let q=0;q<6;q++)line([[L+15+q*27,T+12],[L+18+q*26,B-25]],"#24353388",2);for(let q=0;q<5;q++)line([[L+10+q*47,B-12],[L+6+q*48+sway,B+15+Math.sin(t*3+q)*6]],"#b6b9a5",3);});
+  // Tall stern castle, glowing windows, lanterns and spectral prow.
+  shape([[680,316],[692,224],[724,198],[724,161],[755,144],[786,164],[786,204],[831,220],[846,296]],"#35443b","#b7a783",5);
+  for(let f=0;f<3;f++){ctx.fillStyle="#101a1b";ctx.fillRect(710+f*3,226-f*34,112-f*4,30);for(let q=0;q<4;q++){ctx.fillStyle="#c3edc4";ctx.shadowColor="#a0ffba";ctx.shadowBlur=13;ctx.fillRect(721+q*24,232-f*34,8,14);ctx.shadowBlur=0;}}
+  for(let i=0;i<6;i++){ctx.fillStyle="#c8f1bd";ctx.shadowColor="#9effba";ctx.shadowBlur=14;ctx.beginPath();ctx.arc(700+i*37,294+Math.sin(i)*7,4,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;}
+  shape([[865,276],[909,236],[949,220],[925,260],[946,279],[906,298],[880,323]],"#728071","#c4c1a4",4);line([[904,256],[1004,205],[1034,212]],"#9d9071",9);shape([[907,255],[936,229],[952,240],[941,260],[960,274],[929,277]],"#d0cfb2","#38443d",3);
+  for(let i=0;i<7;i++){let q=(t*.22+i*.14)%1;ctx.globalAlpha=(1-q)*.22;ctx.fillStyle="#d4e0d4";ctx.beginPath();ctx.ellipse(780+q*160,190-q*105,12+q*25,8+q*18,q*.6,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;
+  if(!reduced&&Math.sin(t*1.65)>.987)line([[660,0],[635,70],[670,91],[641,146]],"#d9f4ff",4);
+  ctx.restore();
+  if(!reduced)for(let i=0;i<32;i++){let x=(i*83+t*(i%2?10:-6))%(w+20),y=(i*47+t*(7+i%4))%(h*.82);ctx.fillStyle=i%3?"rgba(180,211,194,.34)":"rgba(230,239,221,.55)";ctx.beginPath();ctx.arc(x,y,1+i%3*.5,0,Math.PI*2);ctx.fill();}
+  raf=requestAnimationFrame(frame);
+ }
+ function resize(){const d=Math.min(2,window.devicePixelRatio||1);w=window.innerWidth;h=window.innerHeight;canvas.width=Math.round(w*d);canvas.height=Math.round(h*d);ctx.setTransform(d,0,0,d,0,0);}
+ resize();window.addEventListener("resize",resize,{passive:true});raf=requestAnimationFrame(frame);
+ if(typeof opts.onSound==="function"){try{opts.onSound();}catch(e){console.warn("Ghost ship sound unavailable",e);}}
+ const duration=Math.max(7000,Number(opts.duration)||9000);
+ setTimeout(()=>{alive=false;if(raf)cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .55s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),580);}},duration);
  return overlay;
 }
-
 function renderCinematicGift(gift,opts,overlay){
  const style=gift.style||"spark";
  if(style==="phantomtrain")return null;
