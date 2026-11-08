@@ -67,6 +67,35 @@ img,video,canvas{max-width:100%}
 }
 
 
+
+/* Wonder Vault interactive room */
+.wonder-vault{display:none;max-width:920px;margin:18px auto 24px;padding:20px;border:1px solid #b9a4ff66;border-radius:24px;background:radial-gradient(ellipse at 50% 0%,#7654bd35,transparent 55%),linear-gradient(145deg,#17142d,#101a2c)}
+.wonder-vault.is-visible{display:block;animation:vaultAppear .45s ease both}
+.vault-scene{position:relative;min-height:230px;overflow:hidden;display:grid;place-items:center;margin:14px 0 18px;border:1px solid #b9a4ff55;border-radius:20px;background:radial-gradient(ellipse at 50% 70%,#8d6bdb44,transparent 42%),linear-gradient(180deg,#0c1025,#1b1740 65%,#080d1b);perspective:900px}
+.vault-hall{position:absolute;inset:14% 15% 0;transform:rotateX(9deg);transform-style:preserve-3d;border:1px solid #b9a4ff55;border-bottom:0;background:linear-gradient(90deg,#17142c,#302452 48%,#17142c);box-shadow:inset 0 0 45px #a88aff22,0 0 35px #a88aff22}
+.vault-hall:before,.vault-hall:after{content:"";position:absolute;top:0;bottom:0;width:18%;border:1px solid #c8b7ff55;background:repeating-linear-gradient(180deg,#8f78c622 0 3px,transparent 3px 34px);box-shadow:inset 0 0 22px #9c7cff33}
+.vault-hall:before{left:8%;transform:skewY(-8deg)}.vault-hall:after{right:8%;transform:skewY(8deg)}
+.vault-door{position:relative;z-index:1;width:112px;height:154px;border:2px solid #e4ceff;border-radius:56px 56px 5px 5px;background:radial-gradient(ellipse at 50% 55%,#b9a4ff99,#4c367c 48%,#171329 76%);box-shadow:0 0 18px #b9a4ff99,0 0 65px #9c7cff66,inset 0 0 22px #fff5;transform:translateY(12px);transition:transform .5s,filter .5s}
+.vault-door:before{content:"✧";position:absolute;inset:0;display:grid;place-items:center;color:#fff0c4;font-size:46px;text-shadow:0 0 24px #fff,0 0 42px #b9a4ff}
+.vault-scene[data-reveal="crystal"] .vault-door{filter:hue-rotate(48deg) brightness(1.3);transform:translateY(12px) rotateY(12deg) scale(1.08)}
+.vault-scene[data-reveal="crown"] .vault-door{filter:hue-rotate(-30deg) brightness(1.45);transform:translateY(12px) rotateY(-12deg) scale(1.08)}
+.vault-scene[data-reveal="dragon"] .vault-door{filter:hue-rotate(120deg) brightness(1.3);transform:translateY(12px) scale(1.12)}
+.vault-scene[data-effect="starfall"]:after{content:"✦  ·  ✧  ·  ✦  ·  ✧  ·  ✦";position:absolute;inset:0;display:grid;place-items:center;color:#fff0b8;font-size:clamp(22px,5vw,42px);letter-spacing:.4em;text-shadow:0 0 18px #fff,0 0 38px #a78bfa;animation:vaultStars 1.8s ease both;pointer-events:none}
+.vault-scene[data-effect="wave"]:after{content:"";position:absolute;inset:20%;border:2px solid #8cf7ef;border-radius:50%;box-shadow:0 0 28px #8cf7ef,0 0 70px #8cf7ef66;animation:vaultWave 1.2s ease-out both;pointer-events:none}
+.vault-scene[data-effect="portal"] .vault-door{animation:vaultPortal 1.2s ease-in-out both}
+.vault-controls{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vault-group{padding:14px;border:1px solid #ffffff20;border-radius:16px;background:#080d1d99}
+.vault-group h3{margin:0 0 10px;font:400 18px Georgia,serif}
+.vault-options{display:flex;flex-wrap:wrap;gap:8px}
+.vault-options button{min-height:40px;border:1px solid #ffffff38;border-radius:99px;padding:9px 13px;background:#ffffff0b;color:#f5efff;font:800 9px system-ui;cursor:pointer}
+.vault-options button[aria-pressed="true"]{border-color:#c8b7ff;background:#9b7bff30;color:#fff}
+.vault-status{min-height:18px;margin-top:12px;color:#cbbaff;font-size:10px;letter-spacing:.05em}
+@keyframes vaultAppear{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes vaultStars{0%{opacity:0;transform:translateY(-30px)}30%,70%{opacity:1}100%{opacity:0;transform:translateY(35px)}}
+@keyframes vaultWave{from{opacity:0;transform:scale(.25)}to{opacity:0;transform:scale(2.4)}}
+@keyframes vaultPortal{0%,100%{filter:brightness(1)}50%{filter:brightness(2.2) hue-rotate(30deg)}}
+@media(max-width:620px){.vault-controls{grid-template-columns:1fr}.vault-scene{min-height:205px}.vault-hall{inset:12% 8% 0}}
+@media(prefers-reduced-motion:reduce){.wonder-vault.is-visible,.vault-scene[data-effect]:after{animation:none!important}.vault-door{transition:none}}
 </style><style id="fod-standalone-style">#fodStandalonePreview{position:fixed;inset:0;z-index:2147483647;pointer-events:none}.fod-scene{position:absolute;inset:0;overflow:hidden;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 44%,#253b48 0,#101a2b 43%,#03060d 100%);animation:fodFadeIn .55s ease both}.fod-runes{position:absolute;top:14%;color:#9cf7ed;font-size:clamp(18px,5vw,34px);letter-spacing:.5em;text-shadow:0 0 18px #7df8ff;animation:fodRunes 12s linear infinite}.fod-hand{position:relative;z-index:2;width:min(78vw,430px);height:min(70vh,540px);overflow:visible;filter:drop-shadow(0 15px 24px #000) drop-shadow(0 0 20px #8ee8e8aa);animation:fodRise 1s cubic-bezier(.16,1,.3,1) both}.fod-title{position:absolute;z-index:3;bottom:13%;left:5%;right:5%;text-align:center;color:#efffff;font-weight:950;font-size:clamp(22px,5vw,42px);letter-spacing:.12em;text-shadow:0 0 22px #8ee8e8,0 4px 9px #000}.fod-title small{display:block;margin-top:10px;font-size:11px;letter-spacing:.28em;color:#b9d8dd}.fod-close{position:absolute;bottom:5%;font-size:9px;letter-spacing:.2em;color:#9bb8c3}.fod-target{animation:fodTarget 1.6s ease-in-out infinite alternate}#fodStandalonePreview.fod-out{opacity:0;transition:opacity .45s ease}@keyframes fodFadeIn{from{opacity:0}to{opacity:1}}@keyframes fodRise{from{opacity:0;transform:translateY(90px) scale(.7) rotate(-8deg)}to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}@keyframes fodRunes{to{transform:rotate(360deg)}}@keyframes fodTarget{from{opacity:.2;transform:translateY(5px)}to{opacity:1;transform:translateY(-7px)}}@media(orientation:landscape){.fod-hand{height:72vh;width:auto}.fod-title{bottom:8%}.fod-close{bottom:2%}}</style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><nav style="display:flex;gap:8px;align-items:center"><a class="back" href="../profile/">MY PROFILE</a><a class="back" href="../realms/">← THE REALMS</a></nav></header>
@@ -84,6 +113,28 @@ img,video,canvas{max-width:100%}
 <section class="control" aria-live="polite">
 <div><div class="eyebrow" id="roomTag">WORLD 01 · CONNECTION</div><h2 id="roomTitle">A little light, shared.</h2><p id="roomCopy">The Dream Lounge is a softer kind of LIVE space. Picture creator-led conversations, expressive reactions, and small moments that make viewers feel included—not just counted.</p></div>
 <div class="actions"><button type="button" id="pulse">SEND A LIGHT PULSE ✧</button><button type="button" class="primary" id="enter">PREVIEW THIS WORLD →</button></div>
+
+</section>
+<section class="wonder-vault" id="wonderVault" aria-labelledby="wonderVaultTitle">
+  <div class="eyebrow">WORLD 03 · THE WONDER VAULT</div>
+  <h2 id="wonderVaultTitle" style="font:400 29px Georgia,serif;margin:8px 0">The vault is waiting.</h2>
+  <p style="color:#bdb7d6;font-size:11px;line-height:1.6;margin:0">Choose what the room should reveal. These controls are a local concept preview; they do not send effects to a live broadcast yet.</p>
+  <div class="vault-scene" id="vaultScene" data-reveal="none" data-effect="none" aria-label="Interactive 3D-style Wonder Vault chamber">
+    <div class="vault-hall"></div><div class="vault-door"></div>
+  </div>
+  <div class="vault-controls">
+    <div class="vault-group"><h3>Audience chooses the mystery</h3><div class="vault-options" role="group" aria-label="Choose a mystery">
+      <button type="button" data-vault-reveal="crystal" aria-pressed="false">CRYSTAL KEY</button>
+      <button type="button" data-vault-reveal="crown" aria-pressed="false">HOLLOW CROWN</button>
+      <button type="button" data-vault-reveal="dragon" aria-pressed="false">DRAGON EGG</button>
+    </div></div>
+    <div class="vault-group"><h3>Creator controls the magic</h3><div class="vault-options" role="group" aria-label="Choose a room effect">
+      <button type="button" data-vault-effect="portal" aria-pressed="false">OPEN PORTAL</button>
+      <button type="button" data-vault-effect="starfall" aria-pressed="false">STARFALL</button>
+      <button type="button" data-vault-effect="wave" aria-pressed="false">ARCANE WAVE</button>
+    </div></div>
+  </div>
+  <div class="vault-status" id="vaultStatus" role="status" aria-live="polite">THE VAULT IS SEALED · PICK A MYSTERY TO BEGIN</div>
 </section>
 <section class="live-lobby" aria-labelledby="lobbyTitle"><div class="lobby-head"><div><div class="eyebrow">THE LIVE LOBBY</div><h2 id="lobbyTitle">Find the room. Feel the moment.</h2><p>Meet the creator concepts, catch the room vibe, and imagine how LIVE can feel more social.</p></div><span class="preview-tag">ROOM CONCEPTS · NOT LIVE</span></div><div class="host-rail"><article class="host-card"><span class="host-avatar">T</span><div><strong>TikNationStudio</strong><small>FOUNDER SPOTLIGHT · CREATOR CONCEPT</small></div><span class="host-label">FEATURED</span></article><article class="host-card"><span class="host-avatar">M</span><div><strong>MattOnLive</strong><small>CREATOR SPOTLIGHT · ROOM CONCEPT</small></div><span class="host-label">SPOTLIGHT</span></article></div><div class="lobby-columns"><section class="lobby-panel" aria-label="Sample room conversation"><h3>Room conversation</h3><div class="chat-sample"><div class="chat-line"><b>DreamerOne</b> This atmosphere is incredible ✨</div><div class="chat-line"><b>NovaCreates</b> What would you build here?</div><div class="chat-line"><b>Starbound</b> Saving this idea for our next creative night!</div></div><p class="lobby-note">Illustrative sample chat only. These are not real messages or connected accounts.</p></section><section class="lobby-panel" aria-label="Local room reactions"><h3>How is the vibe?</h3><div class="vibe-actions" role="group" aria-label="Choose a room reaction"><button type="button" data-vibe="✨ MAGIC">✨ MAGIC</button><button type="button" data-vibe="💜 LOVE IT">💜 LOVE IT</button><button type="button" data-vibe="🔥 ENERGY">🔥 ENERGY</button></div><p class="lobby-note">Try a reaction. It stays on this screen and is not sent to a broadcaster.</p><div class="lobby-status" id="vibeStatus" role="status">YOUR REACTION WILL APPEAR HERE</div></section></div></section><section class="live-poll" id="liveRoomPoll" aria-labelledby="livePollTitle"><h3 id="livePollTitle">Shape the next LIVE world</h3><p>Which room feature would make you want to stay longer?</p><div class="live-poll-options" role="group" aria-label="Choose a room feature"><button type="button" data-poll="Interactive audience games">✦ Interactive audience games</button><button type="button" data-poll="Creator Q&A moments">◉ Creator Q&amp;A moments</button><button type="button" data-poll="Music and visual stages">♫ Music and visual stages</button><button type="button" data-poll="Cozy group conversations">⌘ Cozy group conversations</button></div><div class="live-poll-status" id="livePollStatus" role="status" aria-live="polite">CHOOSE ONE · LOCAL PREVIEW POLL</div><div class="live-poll-note">Your choice is stored only in this browser. It is not sent to a creator or broadcast.</div></section>
 
@@ -104,7 +155,21 @@ function sparkle(){const p=document.createElement('span');p.textContent='✦';p.
 document.getElementById('pulse').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent='✧ YOUR LIGHT PULSE HAS CROSSED THE '+rooms[active].name+' · VISUAL DEMO'});
 const portalButton=document.getElementById('portal');if(portalButton)portalButton.addEventListener('click',()=>{sparkle();document.getElementById('status').textContent='THE GATE RESPONDED · THIS IS A VISUAL INTERACTION, NOT A LIVE ROOM'});
 document.getElementById('enter').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent=rooms[active].name+' · YOU ARE PREVIEWING THE CONCEPT, NOT JOINING A BROADCAST'});
-</script><nav class="tn-dock" aria-label="TikNation main navigation">
+</script>
+<script>
+(()=> {
+ const panel=document.getElementById('wonderVault'),scene=document.getElementById('vaultScene'),status=document.getElementById('vaultStatus');
+ if(!panel||!scene||!status)return;
+ const names={crystal:'CRYSTAL KEY',crown:'HOLLOW CROWN',dragon:'DRAGON EGG'};
+ const effects={portal:'PORTAL OPENED',starfall:'STARFALL RELEASED',wave:'ARCANE WAVE RELEASED'};
+ const revealButtons=[...panel.querySelectorAll('[data-vault-reveal]')],effectButtons=[...panel.querySelectorAll('[data-vault-effect]')];
+ revealButtons.forEach(b=>b.addEventListener('click',()=>{const value=b.dataset.vaultReveal;scene.dataset.reveal=value;revealButtons.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));status.textContent='THE AUDIENCE CHOSE: '+names[value]+' · THE VAULT HAS RESPONDED'}));
+ effectButtons.forEach(b=>b.addEventListener('click',()=>{const value=b.dataset.vaultEffect;scene.dataset.effect='none';void scene.offsetWidth;scene.dataset.effect=value;effectButtons.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));status.textContent=effects[value]+' · CREATOR PREVIEW ONLY'}));
+ const cards=[...document.querySelectorAll('[data-room]')],choose=()=>{const active=cards.find(c=>c.getAttribute('aria-pressed')==='true');const show=active&&active.dataset.room==='wonder';panel.classList.toggle('is-visible',!!show);panel.setAttribute('aria-hidden',String(!show));};
+ cards.forEach(c=>c.addEventListener('click',()=>requestAnimationFrame(choose)));choose();
+})();
+</script>
+<nav class="tn-dock" aria-label="TikNation main navigation">
 <a href="../" data-dock="home"><span class="tn-icon" aria-hidden="true">⌂</span>HOME</a>
 <a href="../discover/" data-dock="discover"><span class="tn-icon" aria-hidden="true">✧</span>DISCOVER</a>
 <a href="../live-worlds/" data-dock="live"><span class="tn-icon" aria-hidden="true">◉</span>LIVE</a>
