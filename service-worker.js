@@ -1,4 +1,4 @@
-const CACHE_NAME = "tiknation-shell-v32-lighthouse-ocean-rebuild";
+const CACHE_NAME = "tiknation-shell-v33-stormkeeper-svg";
 const APP_SHELL = [
   "./",
   "./index.html",
