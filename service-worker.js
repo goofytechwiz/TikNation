@@ -1,11 +1,9 @@
-const CACHE_NAME = "tiknation-shell-v11";
+const CACHE_NAME = "tiknation-shell-v12-next-home";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./horror-zone.html",
-  "./gift-engine.js",
-  "./gift-engine.js?v=20261104-giftfix2",
-  "./gifts.js?v=20261104-mobilegiftfix",
+  "./next/",
+  "./legacy.html",
   "./manifest.json",
   "./icons/tiknation.svg"
 ];
@@ -31,7 +29,6 @@ self.addEventListener("activate", function (event) {
 self.addEventListener("fetch", function (event) {
   const request = event.request;
   if (request.method !== "GET") return;
-
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
@@ -41,15 +38,15 @@ self.addEventListener("fetch", function (event) {
         if (response && response.ok) {
           const copy = response.clone();
           caches.open(CACHE_NAME).then(function (cache) {
-            cache.put("./index.html", copy);
+            cache.put(request, copy);
           });
         }
         return response;
       }).catch(function () {
         return caches.match(request).then(function (cachedPage) {
           if (cachedPage) return cachedPage;
-          return caches.match("./index.html").then(function (cached) {
-            return cached || caches.match("./");
+          return caches.match("./next/").then(function (home) {
+            return home || caches.match("./index.html");
           });
         });
       })
