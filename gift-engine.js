@@ -744,9 +744,9 @@ function renderPhantomTrainGift(gift,opts,overlay){
  const wheelRotors=[...scene.querySelectorAll(".pt-wheel-rotor")],wheelStart=performance.now();let wheelFrame=0;
  const animateRunningGear=now=>{
   if(!overlay.isConnected){cancelAnimationFrame(wheelFrame);return;}
-  const angle=((now-wheelStart)/340)*Math.PI*2;
-  wheelRotors.forEach(rotor=>rotor.setAttribute("transform","rotate("+((angle*180/Math.PI).toFixed(2))+")"));
-  const point=(x,r)=>({x:x+Math.cos(angle)*r,y:358+Math.sin(angle)*r});
+  const angle=((now-wheelStart)/340)*Math.PI*2,driveAngle=-angle;
+  wheelRotors.forEach((rotor,index)=>{const wheelAngle=index<2?angle:driveAngle;rotor.setAttribute("transform","rotate("+((wheelAngle*180/Math.PI).toFixed(2))+" 0 0)")});
+  const point=(x,r)=>({x:x+Math.cos(driveAngle)*r,y:358+Math.sin(driveAngle)*r});
   const a=point(590,32),b=point(790,32),c=point(970,25);
   const set=(node,p,q)=>{if(node)node.setAttribute("d","M"+p.x.toFixed(2)+" "+p.y.toFixed(2)+"L"+q.x.toFixed(2)+" "+q.y.toFixed(2))};
   set(rodA,a,b);set(rodAShadow,a,b);set(rodB,b,c);set(rodBShadow,b,c);
