@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090817">
+<title>Book of Knowledge & Spooky Genie · TikNation</title>
+<style>
+:root{color-scheme:dark;--violet:#b99aff;--cyan:#9cf8ee;--gold:#e9bd76}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 38%,#28204b 0,#111126 46%,#070812 100%);color:#f5f0ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px clamp(14px,4vw,40px);border-bottom:1px solid #ffffff1c;background:#080914b8}
+.brand{font-weight:950;letter-spacing:.15em;font-size:13px}.brand span{color:var(--cyan)}header a{color:#c8bde5;text-decoration:none;font-size:12px}
+main{width:min(1080px,100%);margin:auto;padding:24px 16px 48px}
+.eyebrow{text-align:center;color:var(--cyan);font-size:10px;font-weight:900;letter-spacing:.28em}
+h1{text-align:center;font:clamp(29px,6vw,52px) Georgia,serif;margin:8px 0;text-shadow:0 0 24px #9c7aff66}
+.intro{text-align:center;color:#c9c2dc;max-width:650px;margin:0 auto 22px;font-size:13px;line-height:1.6}
+.tabs{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:0 0 14px}
+button{font:inherit;cursor:pointer}
+.tabs button,.action{border:1px solid #b99aff66;border-radius:999px;background:#ffffff08;color:#eee7ff;padding:11px 16px;font-size:12px;font-weight:850;letter-spacing:.06em}
+.tabs button[aria-pressed=true]{background:#b99aff24;border-color:#c4aaff;color:#fff;box-shadow:0 0 22px #9c7aff30}
+.stage{position:relative;min-height:450px;height:clamp(450px,62vw,610px);overflow:hidden;border:1px solid #b99aff55;border-radius:24px;background:radial-gradient(ellipse at 50% 68%,#45345e88,transparent 54%),linear-gradient(#101328,#171127 70%,#080a13);box-shadow:0 24px 80px #0009,inset 0 0 60px #9e7cff12}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}.scene.active{display:block}
+.ambient{position:absolute;inset:0;background-image:radial-gradient(circle,#fff 1px,transparent 1.8px),radial-gradient(circle,#bda7ff 1px,transparent 2px);background-size:83px 91px,137px 121px;background-position:0 0,42px 30px;opacity:.32;animation:stars 14s linear infinite}
+.book-wrap{position:absolute;left:50%;top:48%;width:min(78vw,490px);height:330px;transform:translate(-50%,-50%);perspective:900px;filter:drop-shadow(0 24px 26px #000b)}
+.book{position:absolute;left:50%;top:50%;width:88%;height:70%;transform:translate(-50%,-50%) rotateX(12deg) rotateZ(-2deg);transform-style:preserve-3d;animation:bookFloat 4s ease-in-out infinite}
+.book-cover{position:absolute;inset:0;border-radius:14px 18px 18px 14px;background:linear-gradient(110deg,#26131d,#58352d 24%,#281722 52%,#633f30 78%,#24131b);border:5px solid #b58b56;box-shadow:inset 0 0 0 5px #24151e,inset 0 0 35px #000b,12px 12px 0 #140d18,18px 19px 22px #0009}
+.book-cover:before{content:"";position:absolute;inset:13px;border:2px solid #d6b477;border-radius:8px;box-shadow:inset 0 0 0 4px #39212a}
+.book-cover:after{content:"";position:absolute;left:50%;top:50%;width:100px;height:100px;transform:translate(-50%,-50%) rotate(45deg);border:3px solid #d5b16e;box-shadow:0 0 22px #f5ce7b66,inset 0 0 18px #f5ce7b33}
+.book-title{position:absolute;z-index:2;inset:25% 12% auto;text-align:center;color:#f3d79c;font:900 clamp(15px,3.2vw,23px) Georgia,serif;letter-spacing:.12em;text-shadow:0 2px 3px #000}
+.book-sigil{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);font-size:42px;color:#ffe6a8;text-shadow:0 0 20px #ffe6a8;animation:sigilGlow 2s ease-in-out infinite}
+.page-stack{position:absolute;inset:9px 12px 9px 18px;border-radius:4px 9px 9px 4px;background:repeating-linear-gradient(0deg,#e6d7ad 0 2px,#a58b63 2px 3px);transform:translateZ(-8px) translateX(4px);box-shadow:5px 4px 0 #5a3d2e}
+.book-open{position:absolute;left:50%;top:50%;width:90%;height:72%;transform:translate(-50%,-50%) rotateX(12deg);opacity:0;transition:opacity .7s}
+.book-open .spread{position:absolute;inset:0;display:flex;filter:drop-shadow(0 14px 12px #0008)}
+.page{position:relative;width:50%;height:100%;background:linear-gradient(90deg,#bba77c,#f2e5bf 14%,#e7d7ad 100%);border:1px solid #765c42;color:#513d2e;padding:22px 15px;font:12px Georgia,serif;box-shadow:inset 0 0 20px #745b3c44}
+.page:first-child{border-radius:14px 2px 2px 14px}.page:last-child{border-radius:2px 14px 14px 2px}
+.page h3{text-align:center;font-size:15px;margin:3px 0 10px}.runes{font-size:21px;text-align:center;line-height:1.8;color:#7957a3}.page p{line-height:1.45;text-align:center}
+.book-open .turning{position:absolute;z-index:3;right:0;top:0;width:50%;height:100%;transform-origin:left center;background:linear-gradient(90deg,#d9c69a,#f1e4bd);border:1px solid #806344;animation:pageTurn 2.8s ease-in-out infinite;backface-visibility:hidden}
+.book-scene.opened .book{opacity:.16;transform:translate(-50%,-50%) rotateX(12deg) scale(.92)}
+.book-scene.opened .book-open{opacity:1}
+.magic-rings{position:absolute;left:50%;top:49%;width:min(76vw,490px);aspect-ratio:1;border:1px solid #d7baff77;border-radius:50%;transform:translate(-50%,-50%) rotateX(68deg);box-shadow:0 0 30px #b99aff44,inset 0 0 30px #b99aff33;animation:ringSpin 10s linear infinite}
+.magic-rings:before,.magic-rings:after{content:"";position:absolute;inset:12%;border:1px dashed #e7d1ff99;border-radius:50%}.magic-rings:after{inset:26%;border-style:solid;animation:ringSpin 7s linear infinite reverse}
+.genie-scene{background:radial-gradient(ellipse at 50% 70%,#285d70aa,transparent 50%),linear-gradient(#0c1327,#16132d 70%,#080a13)}
+.moon{position:absolute;right:12%;top:10%;width:90px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff,#b4dce8 45%,#5d76a7 75%);box-shadow:0 0 55px #9deeff88}
+.smoke{position:absolute;left:50%;bottom:9%;width:min(76vw,500px);height:78%;transform:translateX(-50%);filter:blur(1px)}
+.smoke i{position:absolute;left:50%;bottom:0;width:42%;height:60%;border-radius:50%;background:radial-gradient(ellipse at 50% 75%,#b6f8eeaa,#5bbdcf66 40%,#9a7aff44 65%,transparent 74%);filter:blur(13px);transform:translateX(-50%);animation:smokeRise 4s ease-in-out infinite}
+.smoke i:nth-child(2){width:60%;height:66%;animation-delay:-1.2s;opacity:.65;transform:translateX(-70%) rotate(-18deg)}
+.smoke i:nth-child(3){width:58%;height:72%;animation-delay:-2.1s;opacity:.55;transform:translateX(-28%) rotate(16deg)}
+.genie{position:absolute;left:50%;top:45%;width:min(56vw,310px);height:390px;transform:translate(-50%,-50%);opacity:0;filter:drop-shadow(0 0 28px #8cf4ff77);animation:genieRise 5.8s ease-in-out infinite}
+.genie .torso{position:absolute;left:23%;top:30%;width:54%;height:48%;border-radius:45% 45% 32% 32%;background:linear-gradient(100deg,#155a6a,#5dd6d1 35%,#1b7384 65%,#12394f);clip-path:polygon(22% 0,78% 0,100% 38%,76% 70%,100% 100%,0 100%,24% 70%,0 38%);box-shadow:inset 0 0 25px #b5fff777}
+.genie .head{position:absolute;left:37%;top:13%;width:26%;height:23%;border-radius:46% 46% 42% 42%;background:linear-gradient(100deg,#176174,#82e8d9 45%,#1a687a);box-shadow:inset -9px -4px 15px #062b48}
+.genie .hood{position:absolute;left:30%;top:8%;width:40%;height:13%;border-radius:70% 70% 8% 8%;background:linear-gradient(#25213f,#70609c);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.eye{position:absolute;top:23%;width:5%;height:3%;background:#f6f4ff;box-shadow:0 0 12px #a7ffff;border-radius:50%}.eye.left{left:43%}.eye.right{right:43%}
+.genie .beard{position:absolute;left:42%;top:31%;width:16%;height:17%;background:linear-gradient(90deg,#161b34,#6d7291,#151b31);clip-path:polygon(0 0,100% 0,50% 100%)}
+.genie .arm{position:absolute;top:37%;width:22%;height:13%;border-radius:50%;background:linear-gradient(#236f7d,#77e6d8,#164c64)}
+.genie .arm.left{left:4%;transform:rotate(24deg);transform-origin:right center;animation:armLeft 2.8s ease-in-out infinite}
+.genie .arm.right{right:4%;transform:rotate(-24deg);transform-origin:left center;animation:armRight 2.8s ease-in-out infinite}
+.genie .tail{position:absolute;left:32%;bottom:0;width:36%;height:32%;border-radius:50%;background:radial-gradient(ellipse at 50% 10%,#61d5d0,#1b7187 65%,transparent 72%);filter:blur(3px);animation:tailSwirl 3s ease-in-out infinite}
+.lamp{position:absolute;left:50%;bottom:8%;width:190px;height:86px;transform:translateX(-50%);filter:drop-shadow(0 0 18px #e4bb67aa);animation:lampHover 3s ease-in-out infinite}
+.lamp svg{width:100%;height:100%;overflow:visible}
+.genie-label{position:absolute;left:0;right:0;bottom:18px;text-align:center;color:#c6faff;font-size:10px;font-weight:900;letter-spacing:.22em;text-shadow:0 0 12px #65efff}
+.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px 0}
+.action.primary{border-color:#d6b878;background:linear-gradient(120deg,#79543b,#4c376b);color:#fff2d0}
+.action.secondary{border-color:#9cefe866;background:#9cefe812}
+.caption{text-align:center;color:#aaa4c1;font-size:11px;line-height:1.6;margin:0 auto;max-width:650px}
+@keyframes stars{to{background-position:0 -190px,42px -240px}}
+@keyframes bookFloat{0%,100%{transform:translate(-50%,-50%) rotateX(12deg) rotateZ(-2deg) translateY(0)}50%{transform:translate(-50%,-50%) rotateX(12deg) rotateZ(1deg) translateY(-12px)}}
+@keyframes sigilGlow{50%{text-shadow:0 0 32px #fff0b5,0 0 55px #f2bd70;transform:translate(-50%,-50%) scale(1.12)}}
+@keyframes pageTurn{0%,18%{transform:rotateY(0)}65%,100%{transform:rotateY(-178deg)}}
+@keyframes ringSpin{to{rotate:360deg}}
+@keyframes genieRise{0%,8%{opacity:0;transform:translate(-50%,-28%) scale(.72)}25%,78%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-66%) scale(1.08)}}
+@keyframes smokeRise{0%,100%{transform:translate(-50%,12%) scale(.8);opacity:.3}50%{transform:translate(-50%,-8%) scale(1.18);opacity:.9}}
+@keyframes armLeft{50%{transform:rotate(-16deg)}}@keyframes armRight{50%{transform:rotate(16deg)}}
+@keyframes tailSwirl{50%{transform:scaleX(1.18) rotate(8deg);filter:blur(5px)}}
+@keyframes lampHover{50%{transform:translate(-50%,-8px) rotate(-2deg)}}
+@media(max-width:560px){.stage{min-height:430px;height:480px}.book-wrap{top:45%;height:270px}.genie{top:43%;height:340px}.lamp{bottom:8%;width:155px}.page{padding:12px 7px;font-size:10px}.page h3{font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:1ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+<header><div class="brand">TIK<span>NATION</span> · GIFT WORKSHOP</div><a href="../">← New TikNation</a></header>
+<main>
+<div class="eyebrow">TWO NEW SUPERNATURAL GIFT CONCEPTS</div>
+<h1>Choose Your Mystery</h1>
+<p class="intro">Explore the animated concepts for the Book of Knowledge and the Spooky Genie. Tap a gift to watch its full entrance.</p>
+<nav class="tabs" aria-label="Gift previews">
+<button type="button" data-scene="book" aria-pressed="true">📖 The Book of Knowledge</button>
+<button type="button" data-scene="genie" aria-pressed="false">🧞 The Spooky Genie</button>
+</nav>
+<section class="stage" aria-label="Animated gift preview stage">
+<div class="scene book-scene active" id="bookScene">
+<div class="ambient"></div><div class="magic-rings"></div>
+<div class="book-wrap"><div class="book" id="book">
+<div class="page-stack"></div><div class="book-cover"></div><div class="book-title">THE BOOK<br>OF KNOWLEDGE</div><div class="book-sigil">✧</div>
+</div><div class="book-open"><div class="spread"><div class="page"><h3>THE ANCIENT LORE</h3><div class="runes">ᚠ ᚢ ᚦ ᚨ ᚱ</div><p>Beyond every question lies a door. Beyond every door, a new wonder.</p></div><div class="page"><h3>THE HIDDEN TRUTH</h3><div class="runes">✦ ☽ ✧ ☉ ✦</div><p>Knowledge awakens. The forgotten stars remember your name.</p></div><div class="turning"></div></div></div></div>
+<div class="genie-label" style="color:#f4d9a2">ANCIENT SECRETS · AWAKEN THE PAGES</div>
+</div>
+<div class="scene genie-scene" id="genieScene">
+<div class="ambient"></div><div class="moon"></div><div class="smoke"><i></i><i></i><i></i></div>
+<div class="genie">
+<div class="hood"></div><div class="head"></div><div class="eye left"></div><div class="eye right"></div><div class="beard"></div><div class="torso"></div><div class="arm left"></div><div class="arm right"></div><div class="tail"></div>
+</div>
+<div class="lamp"><svg viewBox="0 0 220 100" role="img" aria-label="Ornate antique brass genie lamp"><defs><linearGradient id="brass" x2="0" y2="1"><stop stop-color="#fff0a8"/><stop offset=".24" stop-color="#c18a3e"/><stop offset=".55" stop-color="#70431f"/><stop offset=".78" stop-color="#e6b75c"/><stop offset="1" stop-color="#4b2b20"/></linearGradient></defs><path d="M34 52Q25 36 49 28Q83 8 135 31Q165 43 167 58Q143 84 72 81Q39 77 34 52Z" fill="url(#brass)" stroke="#f3d18b" stroke-width="3"/><path d="M132 36Q172 16 204 27Q182 38 166 51" fill="none" stroke="#d9a64e" stroke-width="9" stroke-linecap="round"/><path d="M38 47Q13 38 9 55Q20 66 38 62" fill="none" stroke="#e4b75d" stroke-width="8"/><path d="M62 30Q72 9 91 13Q107 15 112 31" fill="none" stroke="#f2d18a" stroke-width="7"/><path d="M53 83H151" stroke="#e7bb69" stroke-width="7" stroke-linecap="round"/><path d="M81 41Q108 28 138 44" stroke="#ffe3a0" stroke-width="3" fill="none" opacity=".75"/></svg></div>
+<div class="genie-label">THE SPOOKY GENIE · THE LAMP HAS AWAKENED</div>
+</div>
+</section>
+<div class="controls"><button class="action primary" id="replay">↻ REPLAY ENTRANCE</button><button class="action secondary" id="sound">♫ SOUND: OFF</button></div>
+<p class="caption" id="status">Preview animations are ready. Sound starts only when you turn it on.</p>
+</main>
+<script>
+const tabs=[...document.querySelectorAll("[data-scene]")],bookScene=document.getElementById("bookScene"),genieScene=document.getElementById("genieScene"),status=document.getElementById("status"),soundButton=document.getElementById("sound");
+let selected="book",audioContext=null,soundOn=false;
+function choose(name){selected=name;tabs.forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.scene===name)));bookScene.classList.toggle("active",name==="book");genieScene.classList.toggle("active",name==="genie");replay();status.textContent=name==="book"?"The ancient book opens and its enchanted pages turn.":"The brass lamp releases a column of smoke and the spooky genie rises."}
+function replay(){const node=selected==="book"?bookScene:genieScene;node.classList.remove("replay");void node.offsetWidth;node.classList.add("replay");if(selected==="book"){bookScene.classList.remove("opened");setTimeout(()=>bookScene.classList.add("opened"),450)}if(soundOn)playSound(selected)}
+function playSound(kind){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;if(!audioContext)audioContext=new AC();if(audioContext.state==="suspended")audioContext.resume();const t=audioContext.currentTime;const tones=kind==="book"?[392,523.25,659.25,783.99]:[110,146.83,220,164.81];tones.forEach((f,i)=>{const o=audioContext.createOscillator(),g=audioContext.createGain(),filter=audioContext.createBiquadFilter();o.type=kind==="book"?"sine":"triangle";o.frequency.setValueAtTime(f,t+i*.18);if(kind==="genie")o.frequency.exponentialRampToValueAtTime(f*.72,t+i*.18+1.2);filter.type="lowpass";filter.frequency.value=kind==="book"?1800:480;g.gain.setValueAtTime(.0001,t+i*.18);g.gain.linearRampToValueAtTime(kind==="book"?.055:.075,t+i*.18+.06);g.gain.exponentialRampToValueAtTime(.0001,t+i*.18+1.35);o.connect(filter);filter.connect(g);g.connect(audioContext.destination);o.start(t+i*.18);o.stop(t+i*.18+1.4)})}catch(_e){}}
+tabs.forEach(b=>b.addEventListener("click",()=>choose(b.dataset.scene)));
+document.getElementById("replay").addEventListener("click",replay);
+soundButton.addEventListener("click",()=>{soundOn=!soundOn;soundButton.textContent="♫ SOUND: "+(soundOn?"ON":"OFF");if(soundOn)playSound(selected);status.textContent=soundOn?"Gift sound effects enabled.":"Gift sound effects muted."});
+</script>
+</body>
+</html>
