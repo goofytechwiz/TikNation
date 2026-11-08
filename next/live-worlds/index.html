@@ -114,9 +114,9 @@ document.getElementById('fingerDeathPreview').addEventListener('click',()=>{
  const overlay=document.createElement('div');overlay.id='fodStandalonePreview';
  overlay.innerHTML=`<div class="fod-scene" role="dialog" aria-label="Anatomically detailed skeletal hand"><div class="fod-runes">✦　ᛟ　✧　ᚷ　✦</div><svg class="fod-hand" viewBox="0 0 420 560" role="img" aria-label="Skeletal hand with solid anatomical finger, palm and wrist bones">
 <defs>
- <linearGradient id="boneReal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff9e8"/><stop offset=".35" stop-color="#ded8c3"/><stop offset=".72" stop-color="#aeb0a3"/><stop offset="1" stop-color="#657477"/></linearGradient>
+ <linearGradient id="boneReal" x1="0" y1="0" x2="1" y2=".15"><stop stop-color="#fff9e9"/><stop offset=".16" stop-color="#e8e1cc"/><stop offset=".42" stop-color="#c9c2ae"/><stop offset=".68" stop-color="#a6a99d"/><stop offset=".88" stop-color="#777f7b"/><stop offset="1" stop-color="#4d5b5d"/></linearGradient>
  <linearGradient id="boneShade" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fdf5dc"/><stop offset=".55" stop-color="#c7c3b0"/><stop offset="1" stop-color="#788486"/></linearGradient>
- <filter id="boneShadow"><feGaussianBlur stdDeviation="4"/></filter>
+ <filter id="boneShadow"><feGaussianBlur stdDeviation="4"/></filter><filter id="boneSoftShadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2"/></filter>
  <g id="phalanx"><path d="M-13 -31Q-18 -42 -12 -50Q-5 -58 0 -52Q7 -58 13 -49Q18 -41 13 -30L10 28Q17 39 11 48Q5 55 0 50Q-7 56 -12 47Q-17 38 -10 28Z" fill="url(#boneReal)" stroke="#536267" stroke-width="3"/><path d="M-5 -37Q-7 -2 -4 35" fill="none" stroke="#fff9e6" stroke-width="3" opacity=".72"/><path d="M8 -25Q4 0 7 24" fill="none" stroke="#687779" stroke-width="2" opacity=".55"/></g>
  <g id="knuckle"><path d="M-17 -8Q-16 -19 -6 -18L6 -18Q17 -18 17 -7L15 8Q8 17 0 13Q-9 18 -15 8Z" fill="url(#boneShade)" stroke="#536267" stroke-width="3"/><path d="M-8 -9Q0 -14 8 -9" fill="none" stroke="#fff9e8" stroke-width="2"/></g>
 </defs>
@@ -179,8 +179,25 @@ document.getElementById('fingerDeathPreview').addEventListener('click',()=>{
 <use href="#knuckle" x="105" y="297" transform="rotate(-48 105 297)"/>
 <path d="M160 359Q145 373 130 365Q118 357 126 346Q137 335 151 342Z" fill="url(#boneShade)" stroke="#536267" stroke-width="4"/>
 </g>
-<!-- subtle cortical texture and dark recesses -->
-<g fill="#5c6968" opacity=".4"><circle cx="208" cy="19" r="2.5"/><circle cx="160" cy="278" r="2"/><circle cx="270" cy="228" r="2"/><circle cx="326" cy="316" r="2"/><circle cx="89" cy="299" r="2"/></g>
+<!-- fine anatomical surface detail: shallow grooves, pores and old bone mottling -->
+<g fill="none" stroke-linecap="round">
+ <g stroke="#fff9e8" stroke-width="2" opacity=".38">
+  <path d="M205 62Q201 88 205 119M217 164Q221 183 216 209M165 278Q168 313 177 343M205 264Q205 309 208 347M267 278Q256 313 246 343M119 316Q139 337 154 359"/>
+  <path d="M154 425Q160 458 160 486M240 426Q236 462 233 491M188 376Q197 372 202 378M220 378Q228 375 234 383"/>
+ </g>
+ <g stroke="#586765" stroke-width="2.2" opacity=".42">
+  <path d="M198 83l5 4m-4 8l4 3M222 190l-4 5m-1 8l5 3M171 300l-5 5m8 12l5 3M215 293l5 4m-4 12l5 4M257 302l-5 5m-3 10l5 3M133 329l-4 4m12 8l-4 3"/>
+ </g>
+</g>
+<g fill="#566361" opacity=".42">
+ <ellipse cx="207" cy="18" rx="2.2" ry="3.2"/><ellipse cx="215" cy="31" rx="1.4" ry="2.2"/>
+ <ellipse cx="160" cy="278" rx="2.1" ry="1.5"/><ellipse cx="270" cy="228" rx="2.2" ry="1.6"/>
+ <ellipse cx="326" cy="316" rx="2.3" ry="1.7"/><ellipse cx="89" cy="299" rx="2.1" ry="1.6"/>
+ <ellipse cx="180" cy="386" rx="1.8" ry="1.3"/><ellipse cx="226" cy="392" rx="1.8" ry="1.3"/>
+</g>
+<g fill="none" stroke="#fff8e6" stroke-width="1.2" opacity=".25">
+ <path d="M195 39Q210 44 226 38M194 152Q210 158 227 151M148 396Q165 402 177 394M228 399Q246 404 258 395"/>
+</g>
 <path d="M211 0V8M202 4H220" stroke="#c8fbff" stroke-width="2" stroke-linecap="round"/>
 </svg><div class="fod-title">FINGER OF DEATH<small>THE HAND HAS CHOSEN</small></div><div class="fod-close">FREE VISUAL PREVIEW · NO COINS SPENT</div></div>`;
  document.body.appendChild(overlay);status.textContent='FINGER OF DEATH SUMMONED · FREE PREVIEW';
