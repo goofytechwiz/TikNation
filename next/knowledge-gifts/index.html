@@ -1,137 +1,31 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#090817">
-<title>Spooky Genie Gift · TikNation</title>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090817"><title>The Spooky Genie · TikNation</title>
 <style>
-:root{color-scheme:dark;--violet:#b99aff;--cyan:#9cf8ee;--gold:#e9bd76}
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 38%,#28204b 0,#111126 46%,#070812 100%);color:#f5f0ff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px clamp(14px,4vw,40px);border-bottom:1px solid #ffffff1c;background:#080914b8}
-.brand{font-weight:950;letter-spacing:.15em;font-size:13px}.brand span{color:var(--cyan)}header a{color:#c8bde5;text-decoration:none;font-size:12px}
-main{width:min(1080px,100%);margin:auto;padding:24px 16px 48px}
-.eyebrow{text-align:center;color:var(--cyan);font-size:10px;font-weight:900;letter-spacing:.28em}
-h1{text-align:center;font:clamp(29px,6vw,52px) Georgia,serif;margin:8px 0;text-shadow:0 0 24px #9c7aff66}
-.intro{text-align:center;color:#c9c2dc;max-width:650px;margin:0 auto 22px;font-size:13px;line-height:1.6}
-.tabs{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:0 0 14px}
-button{font:inherit;cursor:pointer}
-.tabs button,.action{border:1px solid #b99aff66;border-radius:999px;background:#ffffff08;color:#eee7ff;padding:11px 16px;font-size:12px;font-weight:850;letter-spacing:.06em}
-.tabs button[aria-pressed=true]{background:#b99aff24;border-color:#c4aaff;color:#fff;box-shadow:0 0 22px #9c7aff30}
-.stage{position:relative;min-height:450px;height:clamp(450px,62vw,610px);overflow:hidden;border:1px solid #b99aff55;border-radius:24px;background:radial-gradient(ellipse at 50% 68%,#45345e88,transparent 54%),linear-gradient(#101328,#171127 70%,#080a13);box-shadow:0 24px 80px #0009,inset 0 0 60px #9e7cff12}
-.scene{position:absolute;inset:0;display:none;overflow:hidden}.scene.active{display:block}.book-scene,.tabs button[data-scene="book"]{display:none!important}
-.ambient{position:absolute;inset:0;background-image:radial-gradient(circle,#fff 1px,transparent 1.8px),radial-gradient(circle,#bda7ff 1px,transparent 2px);background-size:83px 91px,137px 121px;background-position:0 0,42px 30px;opacity:.32;animation:stars 14s linear infinite}
-.book-wrap{position:absolute;left:50%;top:48%;width:min(88vw,490px);height:360px;transform:translate(-50%,-50%);perspective:1100px;filter:drop-shadow(0 27px 28px #000c)}
-.book{position:absolute;left:50%;top:50%;width:260px;height:320px;transform:translate(-50%,-50%) rotateY(-18deg) rotateX(8deg) rotateZ(-2deg);transform-style:preserve-3d;animation:bookFloat 4s ease-in-out infinite}
-.page-stack{position:absolute;top:9px;bottom:9px;left:25px;right:-13px;border-radius:3px 8px 8px 3px;background:repeating-linear-gradient(0deg,#f2e6c4 0 2px,#bca77d 2px 3px);transform:translateZ(-9px);box-shadow:7px 5px 0 #493326,11px 8px 0 #21151a}
-.front-board{position:absolute;z-index:4;inset:0;transform:translateZ(7px);transform-origin:left center;transform-style:preserve-3d;backface-visibility:visible}
-.book-cover{position:absolute;inset:0;border-radius:7px 13px 13px 7px;background:linear-gradient(90deg,#160e16 0 10%,#70452e 11%,#3d2023 20%,#6d4931 25%,#392027 32%,#59372b 100%);border:5px solid #bd945c;box-shadow:inset 0 0 0 5px #24151e,inset 0 0 35px #000b,12px 12px 0 #140d18,18px 19px 22px #0009;transform:translateZ(5px)}
-.book-cover:before{content:"";position:absolute;inset:13px;border:2px solid #d6b477;border-radius:5px;box-shadow:inset 0 0 0 4px #39212a}
-.book-cover:after{content:"";position:absolute;left:50%;top:53%;width:112px;height:112px;transform:translate(-50%,-50%);border:3px solid #e4c27c;border-radius:50%;box-shadow:0 0 0 7px #38232a,0 0 0 9px #d5b16e,0 0 28px #f5ce7b88,inset 0 0 22px #f5ce7b44;background:radial-gradient(circle,#d8ad5d22 0 48%,transparent 50%)}
-.book-spine{position:absolute;z-index:6;left:-1px;top:-2px;bottom:-2px;width:39px;border-radius:10px 3px 3px 10px;background:linear-gradient(90deg,#100b12 0%,#39202a 18%,#a87943 32%,#573128 49%,#bd9257 61%,#38202a 83%,#160e17 100%);border:2px solid #d0a365;box-shadow:inset 3px 0 9px #000b,inset -3px 0 8px #0009,3px 0 9px #0008;transform:translateZ(12px)}
-.book-spine:before,.book-spine:after{content:"";position:absolute;left:4px;right:4px;height:7px;border-top:2px solid #f0d08a;border-bottom:2px solid #8b5b35;border-radius:50%;background:linear-gradient(90deg,#4a2926,#d9ae6b,#4a2926);box-shadow:0 0 7px #e5c27c66}
-.book-spine:before{top:24px}.book-spine:after{bottom:24px}
-.book-title{position:absolute;z-index:5;left:18%;right:5%;top:20%;text-align:center;color:#f3d79c;font:900 clamp(14px,3vw,19px) Georgia,serif;letter-spacing:.09em;line-height:1.35;text-shadow:0 2px 3px #000}
-.book-sigil{position:absolute;z-index:5;left:58%;top:54%;transform:translate(-50%,-50%);font-size:45px;color:#ffe6a8;text-shadow:0 0 20px #ffe6a8;animation:sigilGlow 2s ease-in-out infinite}
-.book-scene.opened .front-board{animation:coverOpen 2.1s cubic-bezier(.2,.72,.2,1) forwards}
-@keyframes coverOpen{0%{transform:translateZ(7px) rotateY(0)}100%{transform:translateZ(7px) rotateY(-158deg)}}
-@media(max-width:560px){.book{width:218px;height:270px}.book-wrap{height:300px}}
-.book-open{position:absolute;z-index:8;left:50%;top:50%;width:100%;height:88%;transform:translate(-50%,-50%) rotateX(8deg);opacity:0;visibility:hidden;transition:opacity .7s,visibility .7s;pointer-events:none}
-.book-open .spread{position:absolute;inset:0;display:flex;filter:drop-shadow(0 14px 12px #0008);transform-style:preserve-3d;perspective:1200px}
-.book-open .spread:after{content:"";position:absolute;z-index:12;left:calc(50% - 5px);top:0;bottom:0;width:10px;background:linear-gradient(90deg,#71583c,#f6e7c2 45%,#8c704b);box-shadow:0 0 9px #2c2018aa}
-.page{position:relative;z-index:1;width:50%;height:100%;background:repeating-linear-gradient(to bottom,transparent 0 24px,#9b825a24 25px,#9b825a24 26px),linear-gradient(90deg,#bba77c,#f7ebc9 14%,#eee0b8 100%);border:1px solid #765c42;color:#302318;padding:17px 15px;font:bold 14px Georgia,serif;box-shadow:inset 0 0 20px #745b3c44;text-shadow:0 0 .3px #302318;overflow:hidden}
-.page:first-child{border-radius:14px 2px 2px 14px}.page:nth-child(2){border-radius:2px 14px 14px 2px}
-.page>*{position:relative;z-index:2}.page h3{text-align:center;font-size:17px;margin:3px 0 8px;letter-spacing:.06em;color:#38251a}.runes{font-size:23px;text-align:center;line-height:1.6;color:#68418f}.page .manuscript{font-size:14px;line-height:1.5;text-align:justify;text-indent:12px;margin:9px 0;color:#302318;font-weight:600}.page-mark{text-align:center;color:#805a28;font-size:15px;letter-spacing:.35em;margin-bottom:5px}.page-foot{position:absolute;bottom:12px;left:6px;right:6px;text-align:center;color:#654b2c;font-size:9px;letter-spacing:.12em;border-top:1px solid #a78c604f;padding-top:6px}
-.book-open .turning{position:absolute;z-index:5;left:50%;top:0;width:50%;height:100%;transform-origin:left center;transform:translateX(0) scaleX(1);border:2px solid #806344;border-left:3px solid #a98b5b;border-radius:0 9px 9px 0;background:repeating-linear-gradient(to bottom,transparent 0 24px,#9b825a30 25px,#9b825a30 26px),linear-gradient(100deg,#bca77e 0%,#f4e8c8 13%,#fff3d4 48%,#d9c69a 94%,#9c815b 100%);box-shadow:8px 5px 15px #21170fc9,inset -8px 0 12px #8b704b33;will-change:transform,opacity;animation:pageSweep 5.5s ease-in-out infinite}
-.book-open .turning:before{content:"";position:absolute;inset:8px;border:1px solid #ad9165aa;border-radius:0 5px 5px 0;background:repeating-linear-gradient(to bottom,transparent 0 24px,#8d744d20 25px,#8d744d20 26px);pointer-events:none}
-.book-open .turning:after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(100deg,#e9d9b3,#fff2d3 48%,#bda77d);border-left:2px solid #a58b63;opacity:0;pointer-events:none}
-.book-open .turning.leaf-2{animation-delay:-1.1s;z-index:6}.book-open .turning.leaf-3{animation-delay:-2.2s;z-index:7}.book-open .turning.leaf-4{animation-delay:-3.3s;z-index:8}.book-open .turning.leaf-5{animation-delay:-4.4s;z-index:9}
-.book-scene.opened .book{opacity:.12;transform:translate(-50%,-50%) rotateY(-18deg) rotateX(8deg) scale(.9)}
-.book-scene.opened .book-open{opacity:1;visibility:visible}
-.magic-rings{position:absolute;left:50%;top:49%;width:min(76vw,490px);aspect-ratio:1;border:1px solid #d7baff77;border-radius:50%;transform:translate(-50%,-50%) rotateX(68deg);box-shadow:0 0 30px #b99aff44,inset 0 0 30px #b99aff33;animation:ringSpin 10s linear infinite}
-.magic-rings:before,.magic-rings:after{content:"";position:absolute;inset:12%;border:1px dashed #e7d1ff99;border-radius:50%}.magic-rings:after{inset:26%;border-style:solid;animation:ringSpin 7s linear infinite reverse}
-.genie-scene{background:radial-gradient(ellipse at 50% 70%,#285d70aa,transparent 50%),linear-gradient(#0c1327,#16132d 70%,#080a13)}
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 45%,#29204b,#111126 55%,#070812);color:#f5f0ff;font-family:system-ui,sans-serif}
+header{padding:16px 20px;border-bottom:1px solid #ffffff1c;background:#080914b8;font-size:13px;font-weight:950;letter-spacing:.15em}header span{color:#9cf8ee}header a{float:right;color:#c8bde5;text-decoration:none;font-size:12px;letter-spacing:0}
+main{width:min(900px,100%);margin:auto;padding:28px 16px 45px}.eyebrow{text-align:center;color:#9cf8ee;font-size:10px;font-weight:900;letter-spacing:.28em}h1{text-align:center;font:clamp(32px,6vw,54px) Georgia,serif;margin:9px 0;text-shadow:0 0 24px #9c7aff66}.intro{text-align:center;color:#c9c2dc;max-width:600px;margin:0 auto 22px;font-size:13px;line-height:1.6}
+.stage{position:relative;height:clamp(450px,65vw,610px);min-height:450px;overflow:hidden;border:1px solid #b99aff55;border-radius:24px;background:radial-gradient(ellipse at 50% 70%,#285d7088,transparent 52%),linear-gradient(#0c1327,#16132d 70%,#080a13);box-shadow:0 24px 80px #0009,inset 0 0 60px #9e7cff12}
+.stars{position:absolute;inset:0;background-image:radial-gradient(circle,#fff 1px,transparent 1.8px),radial-gradient(circle,#bda7ff 1px,transparent 2px);background-size:83px 91px,137px 121px;background-position:0 0,42px 30px;opacity:.32;animation:stars 14s linear infinite}
 .moon{position:absolute;right:12%;top:10%;width:90px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff,#b4dce8 45%,#5d76a7 75%);box-shadow:0 0 55px #9deeff88}
-.smoke{position:absolute;left:50%;bottom:9%;width:min(76vw,500px);height:78%;transform:translateX(-50%);filter:blur(1px)}
-.smoke i{position:absolute;left:50%;bottom:0;width:42%;height:60%;border-radius:50%;background:radial-gradient(ellipse at 50% 75%,#b6f8eeaa,#5bbdcf66 40%,#9a7aff44 65%,transparent 74%);filter:blur(13px);transform:translateX(-50%);animation:smokeRise 4s ease-in-out infinite}
-.smoke i:nth-child(2){width:60%;height:66%;animation-delay:-1.2s;opacity:.65;transform:translateX(-70%) rotate(-18deg)}
-.smoke i:nth-child(3){width:58%;height:72%;animation-delay:-2.1s;opacity:.55;transform:translateX(-28%) rotate(16deg)}
-.genie{position:absolute;left:50%;top:45%;width:min(56vw,310px);height:390px;transform:translate(-50%,-50%);opacity:0;filter:drop-shadow(0 0 28px #8cf4ff77);animation:genieRise 5.8s ease-in-out infinite}
-.genie .torso{position:absolute;left:23%;top:30%;width:54%;height:48%;border-radius:45% 45% 32% 32%;background:linear-gradient(100deg,#155a6a,#5dd6d1 35%,#1b7384 65%,#12394f);clip-path:polygon(22% 0,78% 0,100% 38%,76% 70%,100% 100%,0 100%,24% 70%,0 38%);box-shadow:inset 0 0 25px #b5fff777}
-.genie .head{position:absolute;left:37%;top:13%;width:26%;height:23%;border-radius:46% 46% 42% 42%;background:linear-gradient(100deg,#176174,#82e8d9 45%,#1a687a);box-shadow:inset -9px -4px 15px #062b48}
-.genie .hood{position:absolute;left:30%;top:8%;width:40%;height:13%;border-radius:70% 70% 8% 8%;background:linear-gradient(#25213f,#70609c);clip-path:polygon(50% 0,100% 100%,0 100%)}
-.eye{position:absolute;top:23%;width:5%;height:3%;background:#f6f4ff;box-shadow:0 0 12px #a7ffff;border-radius:50%}.eye.left{left:43%}.eye.right{right:43%}
-.genie .beard{position:absolute;left:42%;top:31%;width:16%;height:17%;background:linear-gradient(90deg,#161b34,#6d7291,#151b31);clip-path:polygon(0 0,100% 0,50% 100%)}
-.genie .arm{position:absolute;top:37%;width:22%;height:13%;border-radius:50%;background:linear-gradient(#236f7d,#77e6d8,#164c64)}
-.genie .arm.left{left:4%;transform:rotate(24deg);transform-origin:right center;animation:armLeft 2.8s ease-in-out infinite}
-.genie .arm.right{right:4%;transform:rotate(-24deg);transform-origin:left center;animation:armRight 2.8s ease-in-out infinite}
-.genie .tail{position:absolute;left:32%;bottom:0;width:36%;height:32%;border-radius:50%;background:radial-gradient(ellipse at 50% 10%,#61d5d0,#1b7187 65%,transparent 72%);filter:blur(3px);animation:tailSwirl 3s ease-in-out infinite}
-.lamp{position:absolute;left:50%;bottom:8%;width:190px;height:86px;transform:translateX(-50%);filter:drop-shadow(0 0 18px #e4bb67aa);animation:lampHover 3s ease-in-out infinite}
-.lamp svg{width:100%;height:100%;overflow:visible}
-.genie-label{position:absolute;left:0;right:0;bottom:18px;text-align:center;color:#c6faff;font-size:10px;font-weight:900;letter-spacing:.22em;text-shadow:0 0 12px #65efff}
-.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px 0}
-.action.primary{border-color:#d6b878;background:linear-gradient(120deg,#79543b,#4c376b);color:#fff2d0}
-.action.secondary{border-color:#9cefe866;background:#9cefe812}
-.caption{text-align:center;color:#aaa4c1;font-size:11px;line-height:1.6;margin:0 auto;max-width:650px}
-@keyframes stars{to{background-position:0 -190px,42px -240px}}
-@keyframes bookFloat{0%,100%{transform:translate(-50%,-50%) rotateX(12deg) rotateZ(-2deg) translateY(0)}50%{transform:translate(-50%,-50%) rotateX(12deg) rotateZ(1deg) translateY(-12px)}}
-@keyframes sigilGlow{50%{text-shadow:0 0 32px #fff0b5,0 0 55px #f2bd70;transform:translate(-50%,-50%) scale(1.12)}}
-@keyframes pageSweep{0%,8%{transform:translateX(0) scaleX(1) skewY(0deg);opacity:1;box-shadow:8px 5px 15px #21170fc9}35%{transform:translateX(-22%) scaleX(.78) skewY(-3deg);opacity:1;box-shadow:0 12px 20px #21170fdd}62%{transform:translateX(-100%) scaleX(1) skewY(0deg);opacity:1;box-shadow:-8px 5px 14px #21170f99}78%,100%{transform:translateX(-100%) scaleX(1);opacity:0;box-shadow:none}}
-@keyframes ringSpin{to{rotate:360deg}}
-@keyframes genieRise{0%,8%{opacity:0;transform:translate(-50%,-28%) scale(.72)}25%,78%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-66%) scale(1.08)}}
-@keyframes smokeRise{0%,100%{transform:translate(-50%,12%) scale(.8);opacity:.3}50%{transform:translate(-50%,-8%) scale(1.18);opacity:.9}}
-@keyframes armLeft{50%{transform:rotate(-16deg)}}@keyframes armRight{50%{transform:rotate(16deg)}}
-@keyframes tailSwirl{50%{transform:scaleX(1.18) rotate(8deg);filter:blur(5px)}}
-@keyframes lampHover{50%{transform:translate(-50%,-8px) rotate(-2deg)}}
-@media(max-width:560px){.stage{min-height:430px;height:480px}.book-wrap{top:45%;height:270px}.genie{top:43%;height:340px}.lamp{bottom:8%;width:155px}.book-open{height:94%;width:108%}.page{padding:11px 8px;font-size:12px}.page h3{font-size:13px}.page .manuscript{font-size:12px;line-height:1.42;margin:7px 0}.page-mark{font-size:12px}.page-foot{font-size:7px;bottom:7px}}
+.smoke{position:absolute;left:50%;bottom:9%;width:min(76vw,500px);height:78%;transform:translateX(-50%);filter:blur(1px)}.smoke i{position:absolute;left:50%;bottom:0;width:42%;height:60%;border-radius:50%;background:radial-gradient(ellipse at 50% 75%,#b6f8eeaa,#5bbdcf66 40%,#9a7aff44 65%,transparent 74%);filter:blur(13px);transform:translateX(-50%);animation:smokeRise 4s ease-in-out infinite}.smoke i:nth-child(2){width:60%;height:66%;animation-delay:-1.2s;opacity:.65;transform:translateX(-70%) rotate(-18deg)}.smoke i:nth-child(3){width:58%;height:72%;animation-delay:-2.1s;opacity:.55;transform:translateX(-28%) rotate(16deg)}
+.genie{position:absolute;left:50%;top:45%;width:min(56vw,310px);height:390px;transform:translate(-50%,-50%);opacity:0;filter:drop-shadow(0 0 28px #8cf4ff77);animation:genieRise 5.8s ease-in-out infinite}.torso{position:absolute;left:23%;top:30%;width:54%;height:48%;border-radius:45% 45% 32% 32%;background:linear-gradient(100deg,#155a6a,#5dd6d1 35%,#1b7384 65%,#12394f);clip-path:polygon(22% 0,78% 0,100% 38%,76% 70%,100% 100%,0 100%,24% 70%,0 38%);box-shadow:inset 0 0 25px #b5fff777}.head{position:absolute;left:37%;top:13%;width:26%;height:23%;border-radius:46% 46% 42% 42%;background:linear-gradient(100deg,#176174,#82e8d9 45%,#1a687a);box-shadow:inset -9px -4px 15px #062b48}.hood{position:absolute;left:30%;top:8%;width:40%;height:13%;border-radius:70% 70% 8% 8%;background:linear-gradient(#25213f,#70609c);clip-path:polygon(50% 0,100% 100%,0 100%)}.eye{position:absolute;top:23%;width:5%;height:3%;background:#f6f4ff;box-shadow:0 0 12px #a7ffff;border-radius:50%}.eye.left{left:43%}.eye.right{right:43%}.beard{position:absolute;left:42%;top:31%;width:16%;height:17%;background:linear-gradient(90deg,#161b34,#6d7291,#151b31);clip-path:polygon(0 0,100% 0,50% 100%)}.arm{position:absolute;top:37%;width:22%;height:13%;border-radius:50%;background:linear-gradient(#236f7d,#77e6d8,#164c64)}.arm.left{left:4%;transform:rotate(24deg);transform-origin:right center;animation:armLeft 2.8s ease-in-out infinite}.arm.right{right:4%;transform:rotate(-24deg);transform-origin:left center;animation:armRight 2.8s ease-in-out infinite}.tail{position:absolute;left:32%;bottom:0;width:36%;height:32%;border-radius:50%;background:radial-gradient(ellipse at 50% 10%,#61d5d0,#1b7187 65%,transparent 72%);filter:blur(3px);animation:tailSwirl 3s ease-in-out infinite}
+.lamp{position:absolute;left:50%;bottom:8%;width:190px;height:86px;transform:translateX(-50%);filter:drop-shadow(0 0 18px #e4bb67aa);animation:lampHover 3s ease-in-out infinite}.lamp svg{width:100%;height:100%;overflow:visible}.label{position:absolute;left:0;right:0;bottom:18px;text-align:center;color:#c6faff;font-size:10px;font-weight:900;letter-spacing:.22em;text-shadow:0 0 12px #65efff}
+.controls{display:flex;justify-content:center;gap:10px;margin:16px 0}.action{border:1px solid #d6b878;border-radius:999px;background:linear-gradient(120deg,#79543b,#4c376b);color:#fff2d0;padding:12px 18px;font-weight:850;font-size:12px;cursor:pointer}.caption{text-align:center;color:#aaa4c1;font-size:11px;line-height:1.6}
+@keyframes stars{to{background-position:0 -190px,42px -240px}}@keyframes genieRise{0%,8%{opacity:0;transform:translate(-50%,-28%) scale(.72)}25%,78%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-66%) scale(1.08)}}@keyframes smokeRise{0%,100%{transform:translate(-50%,12%) scale(.8);opacity:.3}50%{transform:translate(-50%,-8%) scale(1.18);opacity:.9}}@keyframes armLeft{50%{transform:rotate(-16deg)}}@keyframes armRight{50%{transform:rotate(16deg)}}@keyframes tailSwirl{50%{transform:scaleX(1.18) rotate(8deg);filter:blur(5px)}}@keyframes lampHover{50%{transform:translate(-50%,-8px) rotate(-2deg)}}
+@media(max-width:560px){.stage{height:480px}.genie{top:43%;height:340px}.lamp{width:155px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:1ms!important;animation-iteration-count:1!important}}
-</style>
-</head>
-<body>
-<header><div class="brand">TIK<span>NATION</span> · GIFT WORKSHOP</div><a href="../">← New TikNation</a></header>
-<main>
-<div class="eyebrow">SUPERNATURAL GIFT PREVIEW</div>
-<h1>The Spooky Genie</h1>
-<p class="intro">An ancient brass lamp awakens. Watch the smoke gather as a mysterious genie rises.</p>
-<nav class="tabs" aria-label="Gift previews">
-
-<button type="button" data-scene="genie" aria-pressed="true">🧞 The Spooky Genie</button>
-</nav>
-<section class="stage" aria-label="Animated gift preview stage">
-<div class="scene book-scene active" id="bookScene">
-<div class="ambient"></div><div class="magic-rings"></div>
-<div class="book-wrap"><div class="book" id="book">
-<div class="page-stack"></div><div class="book-spine"></div><div class="front-board"><div class="book-cover"></div><div class="book-title">THE BOOK<br>OF KNOWLEDGE</div><div class="book-sigil">✧</div></div>
-</div><div class="book-open"><div class="spread"><div class="page"><div class="page-mark">✦ ✧ ✦</div><h3>THE ANCIENT LORE</h3><div class="runes">ᚠ ᚢ ᚦ ᚨ ᚱ</div><p class="manuscript">At the beginning, there was a spark beneath the endless night. From that spark came every star, every dream, and every hidden wonder.</p><p class="manuscript">Seek not only what is known. The greatest secrets wait beyond the final page.</p><div class="page-foot">— THE FIRST CHRONICLE —</div></div><div class="page"><div class="page-mark">☽ ✧ ☾</div><h3>THE HIDDEN TRUTH</h3><div class="runes">✦ ☽ ✧ ☉ ✦</div><p class="manuscript">When the silver moon meets the shadow, the sleeping words shall awaken. Turn the page, and let the old magic find its voice.</p><p class="manuscript">Three keys guard the forgotten library: courage, wonder, and wisdom.</p><div class="page-foot">— THE KEEPER'S SECRET —</div></div><div class="turning leaf-1"></div><div class="turning leaf-2"></div><div class="turning leaf-3"></div><div class="turning leaf-4"></div><div class="turning leaf-5"></div></div></div></div>
-<div class="genie-label" style="color:#f4d9a2">ANCIENT SECRETS · AWAKEN THE PAGES</div>
-</div>
-<div class="scene genie-scene active" id="genieScene">
-<div class="ambient"></div><div class="moon"></div><div class="smoke"><i></i><i></i><i></i></div>
-<div class="genie">
-<div class="hood"></div><div class="head"></div><div class="eye left"></div><div class="eye right"></div><div class="beard"></div><div class="torso"></div><div class="arm left"></div><div class="arm right"></div><div class="tail"></div>
-</div>
+</style></head><body>
+<header>TIK<span>NATION</span> · GIFT PREVIEW<a href="../">← New TikNation</a></header>
+<main><div class="eyebrow">SUPERNATURAL GIFT PREVIEW</div><h1>The Spooky Genie</h1><p class="intro">An ancient brass lamp awakens. Watch the smoke gather as a mysterious genie rises.</p>
+<section class="stage" aria-label="Spooky Genie animation"><div class="stars"></div><div class="moon"></div><div class="smoke"><i></i><i></i><i></i></div>
+<div class="genie" id="genie"><div class="hood"></div><div class="head"></div><div class="eye left"></div><div class="eye right"></div><div class="beard"></div><div class="torso"></div><div class="arm left"></div><div class="arm right"></div><div class="tail"></div></div>
 <div class="lamp"><svg viewBox="0 0 220 100" role="img" aria-label="Ornate antique brass genie lamp"><defs><linearGradient id="brass" x2="0" y2="1"><stop stop-color="#fff0a8"/><stop offset=".24" stop-color="#c18a3e"/><stop offset=".55" stop-color="#70431f"/><stop offset=".78" stop-color="#e6b75c"/><stop offset="1" stop-color="#4b2b20"/></linearGradient></defs><path d="M34 52Q25 36 49 28Q83 8 135 31Q165 43 167 58Q143 84 72 81Q39 77 34 52Z" fill="url(#brass)" stroke="#f3d18b" stroke-width="3"/><path d="M132 36Q172 16 204 27Q182 38 166 51" fill="none" stroke="#d9a64e" stroke-width="9" stroke-linecap="round"/><path d="M38 47Q13 38 9 55Q20 66 38 62" fill="none" stroke="#e4b75d" stroke-width="8"/><path d="M62 30Q72 9 91 13Q107 15 112 31" fill="none" stroke="#f2d18a" stroke-width="7"/><path d="M53 83H151" stroke="#e7bb69" stroke-width="7" stroke-linecap="round"/><path d="M81 41Q108 28 138 44" stroke="#ffe3a0" stroke-width="3" fill="none" opacity=".75"/></svg></div>
-<div class="genie-label">THE SPOOKY GENIE · THE LAMP HAS AWAKENED</div>
-</div>
-</section>
-<div class="controls"><button class="action primary" id="replay">↻ REPLAY ENTRANCE</button><button class="action secondary" id="sound">♫ SOUND: OFF</button></div>
-<p class="caption" id="status">Preview animations are ready. Sound starts only when you turn it on.</p>
-</main>
+<div class="label">THE SPOOKY GENIE · THE LAMP HAS AWAKENED</div></section>
+<div class="controls"><button class="action" id="replay">↻ REPLAY ENTRANCE</button></div><p class="caption" id="status">The genie rises from the lamp. Tap replay to see the entrance again.</p></main>
 <script>
-const tabs=[...document.querySelectorAll("[data-scene]")],bookScene=document.getElementById("bookScene"),genieScene=document.getElementById("genieScene"),status=document.getElementById("status"),soundButton=document.getElementById("sound");
-let selected="genie",audioContext=null,soundOn=false,pageSoundTimer=null;
-function choose(name){selected=name;tabs.forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.scene===name)));bookScene.classList.toggle("active",name==="book");genieScene.classList.toggle("active",name==="genie");stopPageSounds();replay();status.textContent=name==="book"?"The ancient book opens and its enchanted pages turn.":"The brass lamp releases a column of smoke and the spooky genie rises."}
-function replay(){const node=selected==="book"?bookScene:genieScene;node.classList.remove("replay");void node.offsetWidth;node.classList.add("replay");if(selected==="book"){bookScene.classList.remove("opened");setTimeout(()=>{bookScene.classList.add("opened");if(soundOn){startPageSounds()}},500)}else stopPageSounds()}
-function ensureAudio(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;if(!audioContext)audioContext=new AC();if(audioContext.state==="suspended")audioContext.resume();return true}
-function pageRustle(){try{if(!ensureAudio())return;const length=Math.floor(audioContext.sampleRate*.34),buffer=audioContext.createBuffer(1,length,audioContext.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<length;i++){const fade=Math.sin(Math.PI*i/length);data[i]=(Math.random()*2-1)*fade*.55}const source=audioContext.createBufferSource(),filter=audioContext.createBiquadFilter(),gain=audioContext.createGain();source.buffer=buffer;filter.type="bandpass";filter.frequency.value=1250;filter.Q.value=.55;gain.gain.value=.16;source.connect(filter);filter.connect(gain);gain.connect(audioContext.destination);source.start()}catch(_e){}}
-function startPageSounds(){stopPageSounds();pageRustle();pageSoundTimer=setInterval(()=>{if(soundOn&&selected==="book"&&bookScene.classList.contains("opened"))pageRustle();else stopPageSounds()},1550)}
-function stopPageSounds(){if(pageSoundTimer){clearInterval(pageSoundTimer);pageSoundTimer=null}}
-tabs.forEach(b=>b.addEventListener("click",()=>choose(b.dataset.scene)));
-window.addEventListener("load",()=>{status.textContent="The Spooky Genie is ready. Replay the entrance whenever you like."});
+const genie=document.getElementById("genie"),status=document.getElementById("status");
+function replay(){genie.style.animation="none";void genie.offsetWidth;genie.style.animation="genieRise 5.8s ease-in-out infinite";status.textContent="The lamp releases its magic and the genie rises again."}
 document.getElementById("replay").addEventListener("click",replay);
-soundButton.textContent="PAGE SOUND: OFF";
-soundButton.addEventListener("click",()=>{soundOn=!soundOn;soundButton.textContent="SOUND: "+(soundOn?"ON":"OFF");if(soundOn&&selected==="book"&&bookScene.classList.contains("opened"))startPageSounds();else stopPageSounds();status.textContent=soundOn?"Only soft paper page-turn sounds are enabled. No music or melody.":"Page sounds muted."});
-</script>
-</body>
-</html>
+</script></body></html>
