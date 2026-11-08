@@ -743,18 +743,18 @@ function renderGhostShipGift(gift,opts,overlay){
  const styleId="tiknation-ghostship-style";let css=document.getElementById(styleId);
  if(!css){css=document.createElement("style");css.id=styleId;document.head.appendChild(css);}
  css.textContent=`
- #tiknation-gift-engine[data-style=ghostship]{position:fixed;inset:0;z-index:2147483647;overflow:hidden;display:grid;place-items:center;pointer-events:none;background:radial-gradient(ellipse at 50% 42%,#24344a 0%,#101a2b 42%,#030711 100%);font-family:system-ui,sans-serif;color:#f0f5ff}
+ #tiknation-gift-engine[data-style=ghostship]{position:fixed;inset:0;z-index:2147483647;overflow:hidden;display:grid;place-items:center;pointer-events:none;background:radial-gradient(ellipse at 72% 24%,#46596d 0%,#17283a 26%,#091321 58%,#030711 100%);font-family:system-ui,sans-serif;color:#f0f5ff}
  #tiknation-gift-engine[data-style=ghostship] .ghost-world{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,#080f20 0%,#1a2b40 45%,#080f1c 100%)}
  #tiknation-gift-engine[data-style=ghostship] .ghost-moon{position:absolute;width:clamp(90px,19vw,170px);aspect-ratio:1;border-radius:50%;right:13%;top:9%;background:radial-gradient(circle at 36% 32%,#f5f8ff,#aabdd1 52%,#62758e 76%,transparent 78%);opacity:.72;filter:drop-shadow(0 0 34px #c7e4ff88)}
  #tiknation-gift-engine[data-style=ghostship] .ghost-cloud{position:absolute;inset:0;background:radial-gradient(ellipse at 12% 30%,#8799ad33 0 9%,transparent 29%),radial-gradient(ellipse at 72% 27%,#8da4bd2b 0 12%,transparent 32%),radial-gradient(ellipse at 42% 63%,#b6c8d733 0 8%,transparent 29%);filter:blur(16px);animation:ghost-cloud-drift 9s ease-in-out infinite alternate}
  #tiknation-gift-engine[data-style=ghostship] .ghost-horizon{position:absolute;left:0;right:0;bottom:0;height:35%;background:linear-gradient(180deg,transparent,#050b17 72%),radial-gradient(ellipse at 50% 40%,#8298ad22,transparent 70%)}
- #tiknation-gift-engine[data-style=ghostship] .ghost-ship{position:absolute;width:min(94vw,850px);height:auto;left:50%;top:52%;transform:translate(-50%,-50%);overflow:visible;filter:drop-shadow(0 22px 24px #000b) drop-shadow(0 0 28px #80caff35);animation:ghost-ship-sail 8.4s cubic-bezier(.18,.58,.25,1) both,ghost-ship-rock 3.8s ease-in-out infinite}
+ #tiknation-gift-engine[data-style=ghostship] .ghost-ship{position:absolute;width:min(98vw,960px);height:auto;left:50%;top:52%;transform:translate(-50%,-50%);overflow:visible;filter:drop-shadow(0 28px 28px #000d) drop-shadow(0 0 22px #80caff22) contrast(1.12) saturate(.78);animation:ghost-ship-sail 8.4s cubic-bezier(.18,.58,.25,1) both,ghost-ship-rock 5.2s ease-in-out infinite}
  #tiknation-gift-engine[data-style=ghostship] .ghost-sail{transform-box:fill-box;transform-origin:50% 50%;animation:ghost-sail-billow 2.7s ease-in-out infinite alternate}
  #tiknation-gift-engine[data-style=ghostship] .ghost-sail.s2{animation-delay:-.8s}#tiknation-gift-engine[data-style=ghostship] .ghost-sail.s3{animation-delay:-1.4s}
  #tiknation-gift-engine[data-style=ghostship] .ghost-flag{transform-box:fill-box;transform-origin:left center;animation:ghost-flag-wave .7s ease-in-out infinite alternate}
  #tiknation-gift-engine[data-style=ghostship] .ghost-window{filter:drop-shadow(0 0 8px #9fe9ff);animation:ghost-window-pulse 1.7s ease-in-out infinite alternate}
  #tiknation-gift-engine[data-style=ghostship] .ghost-smoke{animation:ghost-smoke-rise 3.2s ease-out infinite;transform-box:fill-box;transform-origin:center}
- #tiknation-gift-engine[data-style=ghostship] .ghost-mist{position:absolute;left:-30%;right:-30%;height:18%;bottom:13%;border-radius:50%;background:radial-gradient(ellipse,#c4e4ff2b,transparent 68%);filter:blur(12px);animation:ghost-mist-drift 7s ease-in-out infinite alternate}
+ #tiknation-gift-engine[data-style=ghostship] .ghost-mist{position:absolute;left:-30%;right:-30%;height:22%;bottom:10%;border-radius:50%;background:radial-gradient(ellipse,#c4e4ff26 0%,#9bb9cf12 38%,transparent 70%);filter:blur(18px);animation:ghost-mist-drift 9s ease-in-out infinite alternate}
  #tiknation-gift-engine[data-style=ghostship] .ghost-title{position:absolute;z-index:8;left:0;right:0;bottom:7%;text-align:center;font-weight:1000;font-size:clamp(22px,5vw,43px);letter-spacing:.16em;text-shadow:0 0 18px #8edcff,0 4px 10px #000}
  #tiknation-gift-engine[data-style=ghostship] .ghost-title small{display:block;margin-top:8px;font-size:clamp(9px,2vw,13px);letter-spacing:.24em;color:#c5e5ff}
  #tiknation-gift-engine[data-style=ghostship] .ghost-cannon-flash{position:absolute;z-index:5;left:50%;top:48%;width:42vw;max-width:340px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff 0,#a9e8ff 8%,#65bfff55 25%,transparent 70%);opacity:0;transform:scale(.2)}
@@ -784,6 +784,28 @@ function renderGhostShipGift(gift,opts,overlay){
  <g><path d="M140 350Q240 337 333 348Q455 363 564 343Q687 327 824 346L771 435Q717 479 603 488L318 488Q205 466 140 350Z" fill="url(#gh-hull)" stroke="#a7bdc9" stroke-width="7"/><path d="M171 366Q420 393 791 360" fill="none" stroke="#c1d0d8" stroke-width="5" opacity=".5"/><path d="M223 410Q450 448 740 408" fill="none" stroke="#080d15" stroke-width="10" opacity=".8"/><path d="M184 377Q442 408 773 375" fill="none" stroke="#8d7054" stroke-width="5"/><g fill="#050c17" stroke="#91e8ff" stroke-width="4" class="ghost-window"><rect x="292" y="376" width="25" height="36" rx="5"/><rect x="355" y="386" width="25" height="36" rx="5"/><rect x="418" y="389" width="25" height="36" rx="5"/><rect x="481" y="386" width="25" height="36" rx="5"/><rect x="544" y="378" width="25" height="36" rx="5"/><rect x="607" y="368" width="25" height="36" rx="5"/></g><path d="M155 352Q430 337 824 346L788 377Q480 395 185 373Z" fill="url(#gh-wood)" stroke="#b39a78" stroke-width="4"/><g fill="#172435" stroke="#b7cbd7" stroke-width="4"><rect x="225" y="332" width="34" height="35" rx="3"/><rect x="291" y="333" width="34" height="35" rx="3"/><rect x="357" y="337" width="34" height="35" rx="3"/><rect x="423" y="337" width="34" height="35" rx="3"/><rect x="489" y="334" width="34" height="35" rx="3"/><rect x="555" y="331" width="34" height="35" rx="3"/><rect x="621" y="327" width="34" height="35" rx="3"/></g></g>
  <g fill="#8feaff" filter="url(#gh-glow)" opacity=".8"><circle cx="305" cy="394" r="17"/><circle cx="368" cy="404" r="17"/><circle cx="431" cy="407" r="17"/><circle cx="494" cy="404" r="17"/><circle cx="557" cy="396" r="17"/><circle cx="620" cy="386" r="17"/></g>
  <g class="ghost-smoke" fill="#a6c4d8" opacity=".5"><ellipse cx="700" cy="282" rx="18" ry="12"/><ellipse cx="720" cy="262" rx="22" ry="16"/><ellipse cx="746" cy="241" rx="25" ry="18"/></g><path d="M142 351Q485 389 824 346" fill="none" stroke="#d4e1e8" stroke-width="5" opacity=".8"/>
+
+ <!-- Fine rigging, weathered plank seams, iron fastenings and sail stitching -->
+ <g fill="none" stroke="#c2d0d1" stroke-width="2" opacity=".62">
+  <path d="M270 115L150 353M270 115L330 348M450 60L300 355M450 60L610 350M640 155L520 350M640 155L790 346"/>
+  <path d="M245 124L438 300M280 292L438 128M452 70L620 323M633 78L452 311M646 162L764 325M773 169L646 319"/>
+  <path d="M300 151Q355 160 420 151M298 180Q354 190 420 180M295 210Q355 220 419 210M292 240Q354 249 418 240M289 268Q353 278 417 268"/>
+  <path d="M468 111Q545 124 615 111M466 145Q544 157 614 145M464 180Q542 190 612 180M462 215Q540 225 610 215M460 250Q538 260 608 250M458 285Q536 294 606 285"/>
+ </g>
+ <g fill="none" stroke="#c1aa8b" stroke-width="2" opacity=".44">
+  <path d="M160 390Q410 421 790 388M177 411Q450 444 778 410M205 437Q455 466 748 437M250 462Q480 487 710 461"/>
+  <path d="M238 382L225 468M300 390L292 490M365 395L360 510M430 400L430 526M500 402L504 535M570 399L580 537M640 395L653 530M710 390L727 516M780 383L800 494"/>
+ </g>
+ <g fill="#0a111a" stroke="#9caaad" stroke-width="1.5" opacity=".9">
+  <circle cx="205" cy="397" r="3"/><circle cx="258" cy="405" r="3"/><circle cx="322" cy="412" r="3"/><circle cx="386" cy="419" r="3"/><circle cx="451" cy="422" r="3"/><circle cx="516" cy="423" r="3"/><circle cx="581" cy="419" r="3"/><circle cx="646" cy="412" r="3"/><circle cx="711" cy="403" r="3"/><circle cx="776" cy="392" r="3"/>
+ </g>
+ <g fill="none" stroke="#111c29" stroke-width="5" opacity=".62">
+  <path d="M275 131L275 289M450 67L450 310M640 159L640 318"/>
+ </g>
+ <g fill="#c7d4d4" opacity=".18">
+  <path d="M300 375Q420 390 535 384L515 393Q407 402 300 375Z"/>
+  <path d="M570 365Q680 369 770 350L748 363Q660 382 570 365Z"/>
+ </g>
  </svg><div class="ghost-mist"></div><div class="ghost-cannon-flash"></div><div class="ghost-title">THE GHOST SHIP<small>THE LOST FLEET HAS RETURNED</small></div>`;
  overlay.appendChild(world);document.body.appendChild(overlay);
  const flash=world.querySelector(".ghost-cannon-flash"),reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;let timers=[];
