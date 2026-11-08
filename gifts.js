@@ -95,6 +95,22 @@ function playTikNationGiftSound(gift) {
       steam.connect(steamFilter); steamFilter.connect(steamGain); steamGain.connect(context.destination);
       steam.start(now); steam.stop(now + 8.1);
 
+      // Low mechanical engine rumble under the steam and wheel rhythm.
+      const engine = context.createOscillator();
+      const engineGain = context.createGain();
+      const engineFilter = context.createBiquadFilter();
+      engine.type = "sawtooth";
+      engine.frequency.setValueAtTime(48, now);
+      engine.frequency.linearRampToValueAtTime(63, now + 3.5);
+      engine.frequency.linearRampToValueAtTime(52, now + 7.6);
+      engineFilter.type = "lowpass"; engineFilter.frequency.value = 105;
+      engineGain.gain.setValueAtTime(0.0001, now);
+      engineGain.gain.linearRampToValueAtTime(0.035, now + 0.7);
+      engineGain.gain.setValueAtTime(0.03, now + 6.8);
+      engineGain.gain.exponentialRampToValueAtTime(0.0001, now + 7.9);
+      engine.connect(engineFilter); engineFilter.connect(engineGain); engineGain.connect(context.destination);
+      engine.start(now); engine.stop(now + 8.0);
+
       // Rolling iron wheels and rail joints: uneven paired clacks, gradually accelerating.
       for (let i = 0; i < 18; i++) {
         const at = now + 0.45 + i * (0.34 - Math.min(i, 12) * 0.009);
@@ -382,7 +398,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=phantom-train-linked-running-gear-20261107b";
+    script.src = "./gift-engine.js?v=phantom-train-right-steam-20261108a";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
