@@ -743,7 +743,7 @@ function renderGhostShipGift(gift,opts,overlay){
  const styleId="tiknation-flying-dutchman-cinematic-v2";
  let style=document.getElementById(styleId);
  if(!style){style=document.createElement("style");style.id=styleId;document.head.appendChild(style);}
- style.textContent=String.raw\`
+ style.textContent=String.raw`
  #tiknation-gift-engine[data-style=ghostship]{position:fixed!important;inset:0!important;display:block!important;overflow:hidden!important;padding:0!important;background:#03070b!important}
  #tiknation-gift-engine[data-style=ghostship] .fd2-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 72% 16%,#8c9b9b 0,#394b50 15%,#172b34 43%,#07121a 75%,#020609 100%);perspective:1100px}
  #tiknation-gift-engine[data-style=ghostship] .fd2-moon{position:absolute;right:13%;top:7%;width:clamp(65px,12vw,135px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 32% 28%,#f5f3d9 0,#c3d0c1 43%,#667e7a 72%,#263c40 100%);box-shadow:0 0 35px 12px #b8dfd655,0 0 110px 40px #a7d2ce22;opacity:.72}
@@ -764,9 +764,9 @@ function renderGhostShipGift(gift,opts,overlay){
  @keyframes fd2-fog{from{transform:translateX(-3%)}to{transform:translateX(4%)}}
  @media(max-width:650px){#tiknation-gift-engine[data-style=ghostship] .fd2-svg{width:150%;left:-25%}#tiknation-gift-engine[data-style=ghostship] .fd2-title{bottom:4%;letter-spacing:.1em}}
  @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=ghostship] .fd2-ship,#tiknation-gift-engine[data-style=ghostship] .fd2-sail,#tiknation-gift-engine[data-style=ghostship] .fd2-rope,#tiknation-gift-engine[data-style=ghostship] .fd2-fog{animation:none!important}}
- \`;
+ `;
  const world=document.createElement("div");world.className="fd2-world";
- world.innerHTML=\`
+ world.innerHTML=`
  <div class="fd2-moon"></div>
  <svg class="fd2-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A towering, barnacle-encrusted ghost galleon with three torn sails">
  <defs>
@@ -829,7 +829,7 @@ function renderGhostShipGift(gift,opts,overlay){
  <g class="fd2-fog" fill="#c7d4ca" opacity=".16" filter="url(#fd2-shadow)"><ellipse cx="210" cy="600" rx="330" ry="35"/><ellipse cx="930" cy="570" rx="340" ry="42"/></g>
  <g fill="#c5e4cf" opacity=".65"><circle cx="174" cy="245" r="2"/><circle cx="235" cy="318" r="3"/><circle cx="1040" cy="230" r="2"/><circle cx="968" cy="190" r="3"/><circle cx="420" cy="282" r="2"/><circle cx="718" cy="350" r="2"/></g>
  </svg>
- <div class="fd2-title">THE FLYING DUTCHMAN<small>THE CURSED GALLEON · LOST BETWEEN WORLDS</small></div>\`;
+ <div class="fd2-title">THE FLYING DUTCHMAN<small>THE CURSED GALLEON · LOST BETWEEN WORLDS</small></div>`;
  overlay.appendChild(world);document.body.appendChild(overlay);
  const duration=Math.max(8000,Number(opts.duration)||10000);
  if(typeof opts.onSound==="function"){try{opts.onSound();}catch(e){console.warn("Ghost ship sound unavailable",e);}}
