@@ -133,52 +133,89 @@ img,video,canvas{max-width:100%}
 <div id="phoenixRebirthScene" role="dialog" aria-modal="true" aria-label="Phoenix Rebirth gift animation">
   <button type="button" class="phoenix-close" id="closePhoenixGift">CLOSE ✕</button>
   <div class="phoenix-art" aria-hidden="true">
-    <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="phGold" x1="0" y1="1" x2="0.8" y2="0"><stop stop-color="#8e271d"/><stop offset=".42" stop-color="#ff7135"/><stop offset=".78" stop-color="#ffc15f"/><stop offset="1" stop-color="#fff2b2"/></linearGradient>
-        <linearGradient id="phBright" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#ff572e"/><stop offset=".6" stop-color="#ffb347"/><stop offset="1" stop-color="#fff4c4"/></linearGradient>
-        <radialGradient id="phCore"><stop stop-color="#fff9cf"/><stop offset=".35" stop-color="#ffc15d"/><stop offset="1" stop-color="#e84b29" stop-opacity="0"/></radialGradient>
-        <filter id="phGlow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-      </defs>
-      <ellipse cx="400" cy="420" rx="175" ry="65" fill="url(#phCore)" opacity=".85"/>
-      <g class="phoenix-tail" fill="none" stroke="url(#phGold)" stroke-linecap="round" filter="url(#phGlow)">
-        <path d="M390 390 Q310 480 255 565 Q350 525 393 440" stroke-width="19"/>
-        <path d="M407 390 Q490 480 550 565 Q455 525 407 440" stroke-width="19"/>
-        <path d="M397 395 Q365 495 375 575 Q405 505 405 430" stroke-width="15"/>
-        <path d="M388 400 Q280 445 205 500 Q315 475 390 430" stroke-width="10"/>
-        <path d="M412 400 Q520 445 595 500 Q485 475 410 430" stroke-width="10"/>
-      </g>
-      <g class="phoenix-wing-left" filter="url(#phGlow)">
-        <path d="M394 305 C300 210 160 105 45 90 C100 145 118 205 25 230 C125 250 165 300 75 350 C190 345 250 380 210 435 C300 405 355 375 400 340Z" fill="url(#phGold)" stroke="#ffcc78" stroke-width="5"/>
-        <g fill="none" stroke="url(#phBright)" stroke-linecap="round">
-          <path d="M380 325 Q220 150 70 108" stroke-width="20"/><path d="M355 337 Q200 220 45 238" stroke-width="18"/><path d="M350 350 Q220 300 92 352" stroke-width="16"/><path d="M365 360 Q270 370 220 425" stroke-width="14"/>
-          <path d="M330 320 Q240 190 160 145" stroke-width="9"/><path d="M300 338 Q190 270 125 270" stroke-width="9"/>
-        </g>
-        <path d="M385 320 Q250 165 90 120 Q220 250 350 355" fill="none" stroke="#fff0b4" stroke-width="3" opacity=".8"/>
-      </g>
-      <g class="phoenix-wing-right" filter="url(#phGlow)">
-        <path d="M406 305 C500 210 640 105 755 90 C700 145 682 205 775 230 C675 250 635 300 725 350 C610 345 550 380 590 435 C500 405 445 375 400 340Z" fill="url(#phGold)" stroke="#ffcc78" stroke-width="5"/>
-        <g fill="none" stroke="url(#phBright)" stroke-linecap="round">
-          <path d="M420 325 Q580 150 730 108" stroke-width="20"/><path d="M445 337 Q600 220 755 238" stroke-width="18"/><path d="M450 350 Q580 300 708 352" stroke-width="16"/><path d="M435 360 Q530 370 580 425" stroke-width="14"/>
-          <path d="M470 320 Q560 190 640 145" stroke-width="9"/><path d="M500 338 Q610 270 675 270" stroke-width="9"/>
-        </g>
-        <path d="M415 320 Q550 165 710 120 Q580 250 450 355" fill="none" stroke="#fff0b4" stroke-width="3" opacity=".8"/>
-      </g>
-      <g class="phoenix-body" filter="url(#phGlow)">
-        <path d="M400 190 C365 225 350 275 370 345 L400 415 L430 345 C450 275 435 225 400 190Z" fill="url(#phGold)" stroke="#ffe0a0" stroke-width="4"/>
-        <path d="M400 214 C375 252 383 306 400 344 C417 306 425 252 400 214Z" fill="#fff1bb" opacity=".9"/>
-        <path d="M375 230 Q330 185 345 150 Q380 172 400 204 Q420 172 455 150 Q470 185 425 230" fill="url(#phBright)" stroke="#ffd88c" stroke-width="4"/>
-        <path d="M382 200 Q365 145 385 110 Q400 145 400 190 Q415 145 435 110 Q445 155 418 202" fill="#ffb64e" stroke="#ffe6a4" stroke-width="3"/>
-        <path d="M383 263 L340 300 L380 290 M417 263 L460 300 L420 290" fill="none" stroke="#fff0bb" stroke-width="9" stroke-linecap="round"/>
-        <path d="M390 180 L400 198 L410 180 L400 208Z" fill="#fffbe0"/>
-        <circle cx="390" cy="218" r="4" fill="#fff"/><circle cx="410" cy="218" r="4" fill="#fff"/>
-        <path d="M392 225 L400 237 L408 225" fill="#fff0b0"/>
-      </g>
-      <g class="phoenix-feather" fill="#ffe3a0" filter="url(#phGlow)">
-        <path d="M255 180 Q220 120 230 65 Q275 120 255 180Z"/><path d="M545 180 Q580 120 570 65 Q525 120 545 180Z"/>
-        <path d="M320 125 Q305 65 330 25 Q355 90 320 125Z"/><path d="M480 125 Q495 65 470 25 Q445 90 480 125Z"/>
-      </g>
-    </svg>
+    <svg viewBox="0 0 1000 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A fiery phoenix with a hooked beak, feathered wings and long tail">
+<defs>
+ <linearGradient id="phFeather" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#541a1b"/><stop offset=".34" stop-color="#a92d20"/><stop offset=".68" stop-color="#f36a28"/><stop offset=".9" stop-color="#ffb84b"/><stop offset="1" stop-color="#fff0b2"/></linearGradient>
+ <linearGradient id="phFlight" x1="0" y1="1" x2=".8" y2="0"><stop stop-color="#6e1d20"/><stop offset=".48" stop-color="#d94222"/><stop offset=".82" stop-color="#ff9b35"/><stop offset="1" stop-color="#ffe7a0"/></linearGradient>
+ <linearGradient id="phBody" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0a4"/><stop offset=".22" stop-color="#ffb13f"/><stop offset=".58" stop-color="#d64722"/><stop offset="1" stop-color="#571b22"/></linearGradient>
+ <radialGradient id="phFire"><stop stop-color="#fffbd0"/><stop offset=".25" stop-color="#ffd36c"/><stop offset=".62" stop-color="#f45b26"/><stop offset="1" stop-color="#7e1e20" stop-opacity="0"/></radialGradient>
+ <filter id="phAura" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="13" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="phSoft"><feGaussianBlur stdDeviation="3"/></filter>
+ </defs>
+ <ellipse cx="500" cy="575" rx="245" ry="92" fill="url(#phFire)" opacity=".8"/>
+ <!-- long individual tail plumes -->
+ <g class="phoenix-tail" stroke-linecap="round" filter="url(#phAura)">
+  <path d="M470 478 C390 560 330 645 235 700 C350 675 445 610 493 500" fill="none" stroke="#9e2a20" stroke-width="31"/>
+  <path d="M485 485 C435 595 430 675 405 735 C485 670 515 575 510 490" fill="none" stroke="#e64d24" stroke-width="26"/>
+  <path d="M515 485 C595 570 665 640 770 695 C660 674 555 605 495 500" fill="none" stroke="#9e2a20" stroke-width="31"/>
+  <path d="M525 475 C620 535 720 565 850 580 C740 610 620 575 515 495" fill="none" stroke="#f17a2b" stroke-width="19"/>
+  <path d="M455 470 C350 510 270 540 145 545 C260 575 380 535 475 490" fill="none" stroke="#f17a2b" stroke-width="18"/>
+  <path d="M470 500 C390 590 330 650 235 700 M510 500 C590 590 670 650 770 695" fill="none" stroke="#ffc35b" stroke-width="5" opacity=".85"/>
+ </g>
+ <!-- left wing: layered, tapered flight feathers -->
+ <g class="phoenix-wing-left" filter="url(#phAura)">
+  <path d="M480 370 C360 265 205 125 35 95 C105 170 125 228 45 260 C145 275 190 320 105 365 C215 365 280 410 235 465 C330 440 405 415 500 405Z" fill="#641e21" stroke="#d84b28" stroke-width="5"/>
+  <g fill="url(#phFeather)" stroke="#702322" stroke-width="3">
+   <path d="M472 390 C340 255 185 135 40 98 C155 200 265 310 472 410Z"/>
+   <path d="M458 397 C310 300 160 255 48 260 C185 335 310 380 458 420Z"/>
+   <path d="M450 408 C310 365 205 360 108 365 C240 430 350 440 460 435Z"/>
+   <path d="M450 420 C335 420 275 450 238 465 C330 480 405 460 470 440Z"/>
+   <path d="M420 370 C300 245 225 190 125 150 C230 270 320 345 450 410Z"/>
+   <path d="M400 390 C285 315 210 290 120 285 C235 360 315 400 450 430Z"/>
+   <path d="M390 410 C300 390 250 395 190 405 C280 450 350 450 455 445Z"/>
+  </g>
+  <g fill="none" stroke="#ffd27b" stroke-width="3" opacity=".72">
+   <path d="M470 395 Q250 190 55 105"/><path d="M455 410 Q230 300 65 270"/><path d="M455 430 Q270 390 125 370"/><path d="M455 440 Q340 440 250 460"/>
+  </g>
+ </g>
+ <!-- right wing -->
+ <g class="phoenix-wing-right" filter="url(#phAura)">
+  <path d="M520 370 C640 265 795 125 965 95 C895 170 875 228 955 260 C855 275 810 320 895 365 C785 365 720 410 765 465 C670 440 595 415 500 405Z" fill="#641e21" stroke="#d84b28" stroke-width="5"/>
+  <g fill="url(#phFeather)" stroke="#702322" stroke-width="3">
+   <path d="M528 390 C660 255 815 135 960 98 C845 200 735 310 528 410Z"/>
+   <path d="M542 397 C690 300 840 255 952 260 C815 335 690 380 542 420Z"/>
+   <path d="M550 408 C690 365 795 360 892 365 C760 430 650 440 540 435Z"/>
+   <path d="M550 420 C665 420 725 450 762 465 C670 480 595 460 530 440Z"/>
+   <path d="M580 370 C700 245 775 190 875 150 C770 270 680 345 550 410Z"/>
+   <path d="M600 390 C715 315 790 290 880 285 C765 360 685 400 550 430Z"/>
+   <path d="M610 410 C700 390 750 395 810 405 C720 450 650 450 545 445Z"/>
+  </g>
+  <g fill="none" stroke="#ffd27b" stroke-width="3" opacity=".72">
+   <path d="M530 395 Q750 190 945 105"/><path d="M545 410 Q770 300 935 270"/><path d="M545 430 Q730 390 875 370"/><path d="M545 440 Q660 440 750 460"/>
+  </g>
+ </g>
+ <!-- torso, breast and shoulders -->
+ <g class="phoenix-body" filter="url(#phAura)">
+  <path d="M500 250 C455 280 430 355 445 430 C455 475 480 515 500 545 C520 515 545 475 555 430 C570 355 545 280 500 250Z" fill="url(#phBody)" stroke="#ffd17b" stroke-width="5"/>
+  <path d="M500 285 C470 335 472 410 500 475 C528 410 530 335 500 285Z" fill="#ffdd83" opacity=".62"/>
+  <g fill="url(#phFeather)" stroke="#8c2b22" stroke-width="2">
+   <path d="M466 335 Q425 360 442 400 Q470 385 480 350Z"/><path d="M534 335 Q575 360 558 400 Q530 385 520 350Z"/>
+   <path d="M460 390 Q420 420 455 448 Q478 425 480 400Z"/><path d="M540 390 Q580 420 545 448 Q522 425 520 400Z"/>
+   <path d="M472 445 Q445 480 480 495 L495 460Z"/><path d="M528 445 Q555 480 520 495 L505 460Z"/>
+  </g>
+  <!-- neck rising into a distinct bird head -->
+  <path d="M485 300 C470 245 468 205 490 175 L520 175 C540 210 530 260 515 310Z" fill="url(#phBody)" stroke="#ffc66c" stroke-width="4"/>
+  <path d="M500 205 C470 165 465 125 490 95 C500 125 505 145 505 175 C520 140 540 125 555 125 C550 165 530 190 515 210Z" fill="url(#phFlight)" stroke="#ffc66c" stroke-width="3"/>
+  <path d="M487 170 C450 145 440 115 455 85 C480 105 492 130 500 160" fill="#f17a2b" stroke="#ffd27b" stroke-width="3"/>
+  <!-- unmistakable hooked beak pointing right -->
+  <path d="M527 190 C555 180 582 184 603 198 C585 205 573 220 563 237 C560 218 548 207 527 205Z" fill="#33202a" stroke="#ffcb68" stroke-width="4"/>
+  <path d="M570 204 Q590 198 602 198 Q584 209 570 222" fill="#f5a43e"/>
+  <path d="M530 183 Q540 177 550 181" fill="none" stroke="#fff2b1" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="535" cy="178" rx="7" ry="5" fill="#fff2a0"/><circle cx="537" cy="178" r="2.5" fill="#24131a"/>
+  <!-- crest plumes -->
+  <path d="M492 140 Q460 85 477 40 Q508 86 502 137Z" fill="url(#phFlight)" stroke="#ffc76d" stroke-width="3"/>
+  <path d="M507 145 Q510 78 548 38 Q548 105 518 153Z" fill="url(#phFlight)" stroke="#ffc76d" stroke-width="3"/>
+  <path d="M480 155 Q430 120 425 75 Q475 95 492 151Z" fill="#bd3924" stroke="#ffb44e" stroke-width="3"/>
+ </g>
+ <!-- sparks and atmospheric flame ribbons -->
+ <g fill="none" stroke-linecap="round" filter="url(#phSoft)" opacity=".85">
+  <path d="M270 570 Q190 490 250 410 Q190 350 235 285" stroke="#ff8b2e" stroke-width="9"/>
+  <path d="M730 570 Q810 490 750 410 Q810 350 765 285" stroke="#ff8b2e" stroke-width="9"/>
+ </g>
+ <g class="phoenix-feather" fill="#ffe7a0" filter="url(#phAura)">
+  <circle cx="340" cy="250" r="5"/><circle cx="650" cy="245" r="4"/><circle cx="300" cy="475" r="5"/><circle cx="700" cy="460" r="5"/>
+ </g>
+</svg>
   </div>
   <div class="phoenix-gift-title">PHOENIX REBIRTH<small>RISE FROM THE EMBERS</small></div>
 </div>
