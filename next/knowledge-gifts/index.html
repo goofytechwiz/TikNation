@@ -28,13 +28,20 @@ segment(hand,[.08,-1.42,.03],[.28,-.48,.04],.12);
 segment(hand,[.2,-1.45,.02],[.73,-.65,.02],.105);
 segment(hand,[-.18,-1.5,.03],[-.82,-.92,.05],.11);
 // Index finger: long, straight, and unmistakably raised.
-const index=[[-.72,-.55,.04],[-.83,.18,.08],[-.86,1.02,.09],[-.88,1.85,.1],[-.9,2.3,.1]];
-for(let i=0;i<index.length-1;i++)segment(hand,index[i],index[i+1],i===2?.105:.12);
+const index=[[-.83,-.48,.08],[-1.08,.12,.12],[-1.25,.78,.14],[-1.34,1.34,.15],[-1.38,1.62,.15]];
+for(let i=0;i<index.length-1;i++)segment(hand,index[i],index[i+1],i===2?.09:.105);
+// Broad, unmistakable palm framework: a transverse knuckle bar and five fan-shaped metacarpals.
+segment(hand,[-1.02,-.42,.12],[.92,-.48,.12],.14);
+segment(hand,[-.83,-.55,.12],[-.92,-1.25,.16],.105);
+segment(hand,[-.42,-.5,.13],[-.36,-1.32,.17],.11);
+segment(hand,[.02,-.5,.13],[.18,-1.34,.17],.11);
+segment(hand,[.46,-.51,.12],[.65,-1.2,.16],.105);
+segment(hand,[.82,-.53,.1],[.98,-.95,.14],.09);
 // Three remaining fingers curl down and inward, with separate phalanges.
 function curled(points,r){for(let i=0;i<points.length-1;i++)segment(hand,points[i],points[i+1],r)}
-curled([[-.22,-.43,.04],[-.18,.12,.05],[.04,.22,.08],[.28,-.02,.12],[.2,-.35,.15]],.115);
-curled([[.28,-.48,.04],[.55,.03,.05],[.8,.02,.08],[.94,-.27,.13],[.75,-.53,.16]],.11);
-curled([[.73,-.65,.02],[1.02,-.2,.02],[1.2,-.22,.08],[1.23,-.48,.13],[1.02,-.66,.16]],.095);
+curled([[-.28,-.42,.15],[-.12,.02,.22],[.2,.13,.28],[.43,-.08,.34],[.27,-.38,.38]],.105);
+curled([[.18,-.46,.15],[.55,-.02,.22],[.86,-.05,.29],[1.02,-.31,.36],[.78,-.55,.4]],.10);
+curled([[.58,-.58,.13],[.94,-.23,.2],[1.2,-.3,.27],[1.25,-.56,.34],[1.02,-.72,.38]],.09);
 // Thumb crosses the lower palm; it is not another upright digit.
 curled([[-.82,-.92,.05],[-1.18,-.55,.1],[-1.28,-.22,.14],[-1.02,-.08,.18],[-.7,-.32,.2]],.12);
 // Carpal cluster and wrist cuff.
