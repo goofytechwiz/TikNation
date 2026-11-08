@@ -736,40 +736,31 @@ function renderLivingTombstonesGift(gift,opts,overlay){
 
 
 function renderHauntedLighthouseGift(gift,opts,overlay){
- const scene=document.createElement("div");
- scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#020914;isolation:isolate";
- const style=document.createElement("style");
- style.textContent=`
- #tiknation-gift-engine .hl-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 52%;transform:scale(1.035);filter:saturate(.9) contrast(1.08) brightness(.78);animation:hl-drift 24s ease-in-out infinite alternate}
- #tiknation-gift-engine .hl-vignette{position:absolute;inset:0;background:linear-gradient(180deg,rgba(1,8,18,.12),transparent 35%,rgba(0,5,14,.22) 72%,rgba(0,3,10,.88)),radial-gradient(ellipse at 60% 22%,transparent 25%,rgba(0,4,12,.4) 100%);pointer-events:none}
- #tiknation-gift-engine .hl-beam{position:absolute;left:59.7%;top:13%;width:75%;height:45%;transform-origin:0 0;clip-path:polygon(0 0,100% 20%,100% 65%,0 0);background:linear-gradient(90deg,rgba(255,239,185,.34),rgba(255,239,185,0));filter:blur(5px);mix-blend-mode:screen;animation:hl-sweep 7s ease-in-out infinite alternate;pointer-events:none}
- #tiknation-gift-engine .hl-flash{position:absolute;inset:0;background:#dceeff;opacity:0;mix-blend-mode:screen;pointer-events:none;animation:hl-lightning 9s steps(1,end) infinite}
- #tiknation-gift-engine .hl-rain{position:absolute;inset:-30%;opacity:.28;pointer-events:none;background-image:repeating-linear-gradient(108deg,transparent 0 34px,rgba(222,242,255,.48) 35px,transparent 37px 72px);background-size:100px 180px;animation:hl-rainfall .65s linear infinite}
- #tiknation-gift-engine .hl-mist{position:absolute;left:-15%;right:-15%;bottom:5%;height:30%;background:linear-gradient(180deg,transparent,rgba(171,220,230,.13),transparent);filter:blur(16px);animation:hl-mist 8s ease-in-out infinite alternate;pointer-events:none}
- #tiknation-gift-engine .hl-title{position:absolute;z-index:5;left:3%;right:3%;bottom:5%;text-align:center;color:#f4fbff;font:1000 clamp(20px,5vw,44px)/1 Georgia,serif;letter-spacing:.12em;text-shadow:0 3px 12px #000,0 0 26px #70dfff;pointer-events:none}
- #tiknation-gift-engine .hl-title small{display:block;margin-top:9px;color:#b8eaff;font:800 10px system-ui;letter-spacing:.25em}
- @keyframes hl-sweep{from{transform:rotate(-13deg);opacity:.25}to{transform:rotate(16deg);opacity:.65}}
- @keyframes hl-rainfall{to{background-position:0 180px}}
- @keyframes hl-lightning{0%,35%,38%,72%,75%,100%{opacity:0}36%,37%,73%{opacity:.22}74%{opacity:.55}}
- @keyframes hl-mist{from{transform:translateX(-3%);opacity:.45}to{transform:translateX(3%);opacity:.9}}
- @keyframes hl-drift{from{transform:scale(1.035) translate3d(-.3%,0,0)}to{transform:scale(1.09) translate3d(.3%,-.3%,0)}}
- @media(prefers-reduced-motion:reduce){#tiknation-gift-engine .hl-photo,#tiknation-gift-engine .hl-beam,#tiknation-gift-engine .hl-flash,#tiknation-gift-engine .hl-rain,#tiknation-gift-engine .hl-mist{animation:none!important}}
- `;
- scene.appendChild(style);
- const photo=document.createElement("img");
- photo.className="hl-photo";
- photo.src="https://raw.githubusercontent.com/goofytechwiz/TikNation/main/stormkeeper-lighthouse.jpg";
- photo.alt="Photorealistic lighthouse standing above a violent storm sea at night";
- photo.decoding="async";
- scene.appendChild(photo);
- ["hl-beam","hl-mist","hl-rain","hl-flash","hl-vignette"].forEach(cls=>{const layer=document.createElement("div");layer.className=cls;scene.appendChild(layer);});
- const title=document.createElement("div");title.className="hl-title";title.textContent=gift.name||"THE HAUNTED LIGHTHOUSE";
- const sub=document.createElement("small");sub.textContent="WHEN THE BEACON TURNS, THE SEA ANSWERS";title.appendChild(sub);scene.appendChild(title);
+ const scene=document.createElement("div");scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#020914;isolation:isolate";
+ const photo=document.createElement("img");photo.src="https://raw.githubusercontent.com/goofytechwiz/TikNation/main/stormkeeper-lighthouse.jpg";photo.alt="Storm lighthouse at night";photo.style.cssText="position:absolute;inset:-5%;width:110%;height:110%;object-fit:cover;filter:saturate(.95) contrast(1.12) brightness(.76);will-change:transform";scene.appendChild(photo);
+ const layer=(css)=>{const d=document.createElement("div");d.style.cssText=css;scene.appendChild(d);return d;};
+ const beam=layer("position:absolute;z-index:2;left:59%;top:12%;width:95%;height:55%;transform-origin:0 0;clip-path:polygon(0 0,100% 4%,100% 96%,0 0);background:linear-gradient(90deg,rgba(255,239,185,.8),rgba(255,239,185,.28) 50%,transparent);filter:blur(3px);mix-blend-mode:screen;will-change:transform,opacity");
+ const sea=layer("position:absolute;z-index:3;left:-20%;right:-20%;bottom:-3%;height:42%;opacity:.85;background:repeating-linear-gradient(174deg,transparent 0 15px,rgba(194,246,250,.85) 16px,rgba(42,151,174,.55) 21px,transparent 27px 47px),linear-gradient(180deg,transparent,rgba(0,20,42,.7));will-change:transform");
+ const foam=layer("position:absolute;z-index:4;left:-25%;right:-25%;bottom:3%;height:22%;background:repeating-linear-gradient(166deg,transparent 0 20px,rgba(245,255,255,.95) 21px,rgba(171,239,244,.7) 25px,transparent 31px 58px);filter:blur(1px);will-change:transform");
+ const rain=layer("position:absolute;z-index:5;inset:-35%;opacity:.58;background-image:repeating-linear-gradient(108deg,transparent 0 22px,rgba(225,244,255,.85) 23px,transparent 25px 47px);background-size:68px 145px;will-change:background-position");
+ const flash=layer("position:absolute;z-index:6;inset:0;background:rgba(218,239,255,.85);opacity:0;mix-blend-mode:screen;pointer-events:none");
+ const mist=layer("position:absolute;z-index:7;left:-20%;right:-20%;bottom:8%;height:28%;background:linear-gradient(180deg,transparent,rgba(180,228,236,.28),transparent);filter:blur(13px);will-change:transform");
+ layer("position:absolute;z-index:8;inset:0;background:linear-gradient(180deg,rgba(0,5,15,.08),transparent 45%,rgba(0,3,12,.3) 75%,rgba(0,3,10,.88)),radial-gradient(ellipse at 55% 30%,transparent 28%,rgba(0,4,12,.42) 100%);pointer-events:none");
+ const title=layer("position:absolute;z-index:9;left:3%;right:3%;bottom:5%;text-align:center;color:#f4fbff;font:1000 clamp(20px,5vw,44px)/1 Georgia,serif;letter-spacing:.12em;text-shadow:0 3px 12px #000,0 0 26px #70dfff;pointer-events:none");title.textContent=gift.name||"THE HAUNTED LIGHTHOUSE";
+ const sub=document.createElement("small");sub.textContent="WHEN THE BEACON TURNS, THE SEA ANSWERS";sub.style.cssText="display:block;margin-top:9px;color:#b8eaff;font:800 10px system-ui;letter-spacing:.25em";title.appendChild(sub);
  overlay.appendChild(scene);document.body.appendChild(overlay);
+ const animations=[];const animate=(el,frames,duration,extra)=>{if(el&&el.animate){try{animations.push(el.animate(frames,Object.assign({duration,iterations:Infinity},extra||{})));}catch(_){}}};
+ animate(photo,[{transform:"scale(1.02) translate(-1.2%,.4%)"},{transform:"scale(1.17) translate(1.4%,-.8%)"}],8500,{direction:"alternate",easing:"ease-in-out"});
+ animate(beam,[{transform:"rotate(-22deg)",opacity:.2},{transform:"rotate(22deg)",opacity:.95}],4300,{direction:"alternate",easing:"ease-in-out"});
+ animate(sea,[{transform:"translateX(-7%) translateY(0)"},{transform:"translateX(7%) translateY(-8px)"}],1700,{direction:"alternate",easing:"ease-in-out"});
+ animate(foam,[{transform:"translateX(8%) translateY(0)"},{transform:"translateX(-8%) translateY(-18px)"}],1100,{direction:"alternate",easing:"ease-in-out"});
+ animate(rain,[{backgroundPosition:"0 0"},{backgroundPosition:"-90px 320px"}],480,{easing:"linear"});
+ animate(mist,[{transform:"translateX(-5%)",opacity:.3},{transform:"translateX(5%)",opacity:.9}],3200,{direction:"alternate",easing:"ease-in-out"});
+ const flashOnce=()=>{if(!scene.isConnected)return;try{flash.animate([{opacity:0},{opacity:.85,offset:.08},{opacity:.08,offset:.15},{opacity:.95,offset:.22},{opacity:0}],{duration:560});}catch(_){}};
+ const flashTimer=setInterval(flashOnce,4200);const firstFlash=setTimeout(flashOnce,850);
  if(typeof opts.onSound==="function"){try{opts.onSound();}catch(_){}}
- let alive=true;const duration=Math.max(18000,Number(opts.duration)||28000);
- const timer=setTimeout(()=>{if(!alive)return;overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(cleanup,850);},duration);
- function cleanup(){if(!alive)return;alive=false;clearTimeout(timer);if(overlay.isConnected)overlay.remove();}
+ let alive=true;const duration=Math.max(18000,Number(opts.duration)||28000);const timer=setTimeout(()=>{if(!alive)return;overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(cleanup,850);},duration);
+ function cleanup(){if(!alive)return;alive=false;clearTimeout(timer);clearTimeout(firstFlash);clearInterval(flashTimer);animations.forEach(a=>{try{a.cancel();}catch(_){}});if(overlay.isConnected)overlay.remove();}
  return overlay;
 }
 function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="hauntedlighthouse")return renderHauntedLighthouseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
