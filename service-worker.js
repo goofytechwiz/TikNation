@@ -1,4 +1,4 @@
-const CACHE_NAME = "tiknation-shell-v21-wheel-groups-synced";
+const CACHE_NAME = "tiknation-shell-v22-gift-removed";
 const APP_SHELL = [
   "./",
   "./index.html",
