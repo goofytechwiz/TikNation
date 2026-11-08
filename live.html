@@ -772,7 +772,7 @@ function renderLiveGiftEvent(event) {
   const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
   // Route the Flying Dutchman through its dedicated cinematic renderer in BOTH
   // creator previews and received live events; the generic card bypassed it.
-  if((gift.style==="ghostship" || gift.style==="meteor" || gift.style==="phoenix" || gift.style==="infernal_castle") && window.TikNationGiftEngine?.show){
+  if((gift.style==="ghostship" || gift.style==="meteor" || gift.style==="infernal_castle") && window.TikNationGiftEngine?.show){
     window.TikNationGiftEngine.show(gift,{
       meta:gift.style==="meteor"?"DRAGON'S METEOR STRIKE · LIVE GIFT":"THE FLYING DUTCHMAN · LIVE GIFT",
       duration:gift.style==="meteor"?7800:10000
@@ -780,7 +780,7 @@ function renderLiveGiftEvent(event) {
   } else {
     showLiveGiftCelebration(event);
   }
-  if((gift.style==="meteor" || gift.style==="phoenix" || gift.style==="infernal_castle") && typeof playTikNationGiftSound==="function") playTikNationGiftSound(gift);
+  if((gift.style==="meteor" || gift.style==="infernal_castle") && typeof playTikNationGiftSound==="function") playTikNationGiftSound(gift);
   else playLiveGiftSound(event,gift);
   const feed=$("liveGiftFeed");if(!feed)return;
   const empty=feed.querySelector(".small");if(empty)feed.innerHTML="";
