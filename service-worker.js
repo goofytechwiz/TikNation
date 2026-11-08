@@ -1,4 +1,4 @@
-const CACHE_NAME = "tiknation-shell-v57-phoenix-bird-redesign-v1";
+const CACHE_NAME = "tiknation-shell-v58-gift-cleanup-v3";
 const APP_SHELL = [
   "./",
   "./index.html",
