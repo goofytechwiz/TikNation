@@ -8,15 +8,6 @@ const TIKNATION_GIFT_CATALOG = {
     style: "storm",
     message: "The sky has awakened."
   },
-  haunted_lighthouse: {
-    name: "The Haunted Lighthouse",
-    emoji: "🗼",
-    category: "Visual Effects",
-    cost: 150,
-    sound: [196, 261.63, 392],
-    style: "hauntedlighthouse",
-    message: "When the beacon turns, the sea answers."
-  }
 };
 window.TIKNATION_GIFT_CATALOG = TIKNATION_GIFT_CATALOG;
 
@@ -112,40 +103,6 @@ async function playTikNationGiftSound(gift) {
       roarGain.gain.exponentialRampToValueAtTime(0.0001, now + 4.0);
       roar.connect(roarFilter); roarFilter.connect(roarGain); roarGain.connect(context.destination);
       roar.start(now + 0.6); roar.stop(now + 4.05);
-      return;
-    }
-
-    if (gift.style === "hauntedlighthouse") {
-      // Filtered ocean wind, a distant thunder roll, and a soft warning bell.
-      const length=Math.floor(context.sampleRate*6.8),buffer=context.createBuffer(1,length,context.sampleRate),samples=buffer.getChannelData(0);
-      for(let i=0;i<length;i++)samples[i]=(Math.random()*2-1)*(0.7+0.3*Math.sin(i/context.sampleRate*1.7));
-      const wind=context.createBufferSource(),windFilter=context.createBiquadFilter(),windGain=context.createGain();
-      wind.buffer=buffer;windFilter.type="lowpass";windFilter.frequency.setValueAtTime(260,now);windFilter.frequency.linearRampToValueAtTime(620,now+2.1);windFilter.frequency.linearRampToValueAtTime(210,now+6.5);
-      windGain.gain.setValueAtTime(0.0001,now);windGain.gain.linearRampToValueAtTime(0.052,now+0.8);windGain.gain.linearRampToValueAtTime(0.038,now+4.8);windGain.gain.exponentialRampToValueAtTime(0.0001,now+6.7);
-      wind.connect(windFilter);windFilter.connect(windGain);windGain.connect(context.destination);wind.start(now);wind.stop(now+6.75);
-      const thunder=context.createOscillator(),thunderFilter=context.createBiquadFilter(),thunderGain=context.createGain();
-      thunder.type="triangle";thunder.frequency.setValueAtTime(64,now+1.1);thunder.frequency.exponentialRampToValueAtTime(29,now+5.3);
-      thunderFilter.type="lowpass";thunderFilter.frequency.setValueAtTime(145,now+1.1);thunderFilter.frequency.exponentialRampToValueAtTime(58,now+5.4);
-      thunderGain.gain.setValueAtTime(0.0001,now+1.1);thunderGain.gain.linearRampToValueAtTime(0.075,now+1.7);thunderGain.gain.exponentialRampToValueAtTime(0.0001,now+5.6);
-      thunder.connect(thunderFilter);thunderFilter.connect(thunderGain);thunderGain.connect(context.destination);thunder.start(now+1.1);thunder.stop(now+5.7);
-      [0,1.05,2.1].forEach((delay,index)=>{
-        const bell=context.createOscillator(),bellGain=context.createGain(),bellFilter=context.createBiquadFilter();
-        bell.type="sine";bell.frequency.setValueAtTime([523.25,392,587.33][index],now+delay);
-        bellFilter.type="lowpass";bellFilter.frequency.value=1600;
-        bellGain.gain.setValueAtTime(0.0001,now+delay);bellGain.gain.linearRampToValueAtTime(0.035,now+delay+0.025);bellGain.gain.exponentialRampToValueAtTime(0.0001,now+delay+1.25);
-        bell.connect(bellFilter);bellFilter.connect(bellGain);bellGain.connect(context.destination);bell.start(now+delay);bell.stop(now+delay+1.3);
-      });
-      // Sharp rain hiss and a brief, layered lightning crack.
-      const rainNoise=context.createBufferSource(),rainBuffer=context.createBuffer(1,Math.floor(context.sampleRate*4.5),context.sampleRate),rainData=rainBuffer.getChannelData(0);
-      for(let i=0;i<rainData.length;i++)rainData[i]=(Math.random()*2-1)*(.35+.65*Math.random());
-      const rainFilter=context.createBiquadFilter(),rainGain=context.createGain();rainNoise.buffer=rainBuffer;rainFilter.type="highpass";rainFilter.frequency.value=1250;
-      rainGain.gain.setValueAtTime(.0001,now);rainGain.gain.linearRampToValueAtTime(.018,now+.6);rainGain.gain.exponentialRampToValueAtTime(.0001,now+4.45);
-      rainNoise.connect(rainFilter);rainFilter.connect(rainGain);rainGain.connect(context.destination);rainNoise.start(now);rainNoise.stop(now+4.5);
-      const crack=context.createOscillator(),crackGain=context.createGain(),crackFilter=context.createBiquadFilter();
-      crack.type="sawtooth";crack.frequency.setValueAtTime(1800,now+2.8);crack.frequency.exponentialRampToValueAtTime(90,now+3.25);
-      crackFilter.type="lowpass";crackFilter.frequency.setValueAtTime(3200,now+2.8);crackFilter.frequency.exponentialRampToValueAtTime(220,now+3.35);
-      crackGain.gain.setValueAtTime(.0001,now+2.8);crackGain.gain.linearRampToValueAtTime(.045,now+2.83);crackGain.gain.exponentialRampToValueAtTime(.0001,now+3.4);
-      crack.connect(crackFilter);crackFilter.connect(crackGain);crackGain.connect(context.destination);crack.start(now+2.8);crack.stop(now+3.45);
       return;
     }
 
@@ -345,7 +302,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=stormkeeper-no-water-20261108";
+    script.src = "./gift-engine.js?v=gifts-no-lighthouse-20261108";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
