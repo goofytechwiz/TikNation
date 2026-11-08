@@ -781,8 +781,8 @@ function renderHauntedLighthouseGift(gift,opts,overlay){
    world.add(new T.HemisphereLight(0x9dbbd3,0x10131b,1.45));
    const moon=new T.DirectionalLight(0x9fc9e7,2.15);moon.position.set(-9,16,8);world.add(moon);
    const moonGlow=new T.PointLight(0x7ebce8,22,55,2);moonGlow.position.set(-11,11,-15);world.add(moonGlow);
-   const waterGeometry=new T.PlaneGeometry(180,180,84,84);waterGeometry.rotateX(-Math.PI/2);
-   const water=new T.Mesh(waterGeometry,mat(0x0c3045,.28,.5,{emissive:0x03111c,emissiveIntensity:.4}));water.position.y=-.34;world.add(water);
+   const waterGeometry=new T.PlaneGeometry(180,180,84,84);
+   const water=new T.Mesh(waterGeometry,mat(0x0c3045,.28,.5,{emissive:0x03111c,emissiveIntensity:.4}));water.rotation.x=-Math.PI/2;water.position.y=-.34;world.add(water);
    const waterPositions=waterGeometry.attributes.position;
    const island=new T.Mesh(new T.CylinderGeometry(5.15,7.2,2.1,16,3),mat(0x29313a,1,0));island.position.set(0,.48,0);island.scale.set(1.12,1,1);island.castShadow=true;island.receiveShadow=true;world.add(island);
    const rockMats=[mat(0x333943,1),mat(0x4b5359,.95),mat(0x202832,1)];
