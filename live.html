@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="./icons/tiknation.svg">
 <title>TikNation Live</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./gift-engine.js?v=ghost-ship-removed-v2"></script>
+<script src="./gift-engine.js?v=phoenix-rebirth-v2"></script>
 <script src="./gifts.js?v=phoenix-rebirth-v1"></script>
 <style>
 :root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
@@ -782,8 +782,8 @@ function renderLiveGiftEvent(event) {
   const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
   // Route the Flying Dutchman through its dedicated cinematic renderer in BOTH
   // creator previews and received live events; the generic card bypassed it.
-  if(gift.style==="ghostship" && window.TikNationGiftEngine?.show){
-    window.TikNationGiftEngine.show(gift,{meta:"THE FLYING DUTCHMAN · LIVE GIFT",duration:10000});
+  if((gift.style==="ghostship" || gift.style==="phoenix") && window.TikNationGiftEngine?.show){
+    window.TikNationGiftEngine.show(gift,{meta:gift.style==="phoenix"?"THE PHOENIX REBIRTH · LIVE GIFT":"THE FLYING DUTCHMAN · LIVE GIFT",duration:gift.style==="phoenix"?8500:10000});
   } else {
     showLiveGiftCelebration(event);
   }
