@@ -16,7 +16,7 @@ h1{text-align:center;font:clamp(30px,6vw,58px) Georgia,serif;margin:0;text-shado
 .moon{position:absolute;width:clamp(85px,13vw,140px);aspect-ratio:1;border-radius:50%;right:13%;top:9%;background:radial-gradient(circle at 38% 35%,#fff2d9,#e6a6a0 48%,#773c61 75%);box-shadow:0 0 65px #ffb1a455;animation:moonPulse 4s ease-in-out infinite}
 .cloud{position:absolute;inset:18% -20% auto;height:22%;background:linear-gradient(90deg,transparent,#a9a0c522,transparent);filter:blur(20px);animation:cloudMove 14s linear infinite}
 .ground{position:absolute;bottom:-5%;left:-5%;width:110%;height:29%;background:linear-gradient(#2a202c,#080a12);clip-path:polygon(0 45%,15% 27%,29% 40%,42% 17%,56% 36%,71% 14%,86% 34%,100% 18%,100% 100%,0 100%)}
-.castle{position:absolute;left:50%;bottom:10%;width:min(94%,900px);height:83%;transform:translateX(-50%);filter:drop-shadow(0 18px 22px #000e);animation:castleRise 2.4s cubic-bezier(.2,.8,.2,1) both,castleSway 6s ease-in-out 2.4s infinite}
+.castle{position:absolute;left:50%;bottom:10%;width:min(94%,900px);height:83%;transform:translateX(-50%);filter:drop-shadow(0 18px 22px #000e);animation:castleRise 2.4s cubic-bezier(.2,.8,.2,1) both}
 .castle svg{width:100%;height:100%;overflow:visible}
 .tower{transform-box:fill-box;transform-origin:50% 100%}.tower.right{animation:none}
 .gate{perspective:500px}.gate-door{transform-box:fill-box;transform-origin:left center;animation:doorSwing 8s ease-in-out infinite}.gate-door.right-door{transform-origin:right center;animation-name:doorSwingRight}.drawbridge{transform-box:fill-box;transform-origin:50% 0%;animation:bridgeDrop 8s ease-in-out infinite}
@@ -27,7 +27,6 @@ h1{text-align:center;font:clamp(30px,6vw,58px) Georgia,serif;margin:0;text-shado
 .controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:18px 0}.controls button{border:1px solid #82f6e877;border-radius:99px;background:#82f6e814;color:#dffffa;padding:12px 19px;font-weight:850;letter-spacing:.08em;cursor:pointer}.controls button:active{transform:scale(.97)}
 .note{text-align:center;color:#aaa1bd;font-size:11px;line-height:1.6}
 @keyframes castleRise{0%{transform:translate(-50%,18%) scale(.78);opacity:0}70%{transform:translate(-50%,-2%) scale(1.03);opacity:1}100%{transform:translate(-50%,0) scale(1)}}
-@keyframes castleSway{0%,100%{translate:0 0;scale:1}50%{translate:0 -10px;scale:1.018}}
 @keyframes doorSwing{0%,12%,100%{transform:rotateY(0)}35%,75%{transform:rotateY(-78deg)}}@keyframes doorSwingRight{0%,12%,100%{transform:rotateY(0)}35%,75%{transform:rotateY(78deg)}}@keyframes bridgeDrop{0%,12%,100%{transform:rotateX(0)}35%,75%{transform:rotateX(52deg)}}
 @keyframes portalSpin{to{rotate:360deg}}@keyframes portalGlow{0%,100%{scale:.86;opacity:.55}50%{scale:1.12;opacity:1}}
 @keyframes moonPulse{50%{box-shadow:0 0 90px #ffb1a477;transform:scale(1.04)}}
@@ -63,20 +62,20 @@ h1{text-align:center;font:clamp(30px,6vw,58px) Georgia,serif;margin:0;text-shado
 <path d="M270 230H530M270 330H530" stroke="#161521" stroke-width="8" opacity=".7"/>
 <!-- central battlements and high keep spire -->
 <path d="M270 170V135H295V155H320V135H345V155H370V135H395V155H420V135H445V155H470V135H495V155H530V185Z" fill="url(#stone)" stroke="#9a8ba5" stroke-width="3"/>
-<path d="M350 145L400 20L450 145Z" fill="url(#roof)" stroke="#b4a3bd" stroke-width="5"/>
+<path d="M350 145L400 20L450 145Z" fill="url(#roof)" stroke="#b4a3bd" stroke-width="5"/><path d="M400 20V145" stroke="#8d7b96" stroke-width="2" opacity=".65"/>
 <path d="M400 20V-4" stroke="#e0d0dd" stroke-width="4"/><path d="M400 20L410 30L400 27L390 30Z" fill="#b49cff"/>
 <path d="M300 185L280 210V430M500 185L520 210V430" fill="none" stroke="#8d8197" stroke-width="9"/>
 <!-- left tower -->
 <g class="tower">
 <path d="M135 445V150H235V445Z" fill="url(#stone)" stroke="#a69bad" stroke-width="4"/>
-<path d="M122 154L185 45L248 154Z" fill="url(#roof)" stroke="#a69bad" stroke-width="4"/>
+<path d="M122 154L185 45L248 154Z" fill="url(#roof)" stroke="#a69bad" stroke-width="4"/><path d="M185 45V154" stroke="#78677f" stroke-width="2" opacity=".55"/>
 <path d="M145 150V126H165V145H185V126H205V145H225V126H240V155" fill="none" stroke="#b5a7bb" stroke-width="5"/>
 <path d="M170 205Q185 180 200 205V265H170Z" fill="#ffb54b" opacity=".9"/><path d="M170 205Q185 180 200 205V265H170Z" fill="#fff0ae" opacity=".4"/>
 </g>
 <!-- right tower -->
 <g class="tower right">
 <path d="M565 445V150H665V445Z" fill="url(#stone)" stroke="#a69bad" stroke-width="4"/>
-<path d="M552 154L615 45L678 154Z" fill="url(#roof)" stroke="#a69bad" stroke-width="4"/>
+<path d="M552 154L615 45L678 154Z" fill="url(#roof)" stroke="#a69bad" stroke-width="4"/><path d="M615 45V154" stroke="#78677f" stroke-width="2" opacity=".55"/>
 <path d="M575 150V126H595V145H615V126H635V145H655V126H670V155" fill="none" stroke="#b5a7bb" stroke-width="5"/>
 <path d="M600 205Q615 180 630 205V265H600Z" fill="#ffb54b" opacity=".9"/>
 </g>
