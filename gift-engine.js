@@ -739,57 +739,61 @@ function renderHauntedLighthouseGift(gift,opts,overlay){
  const scene=document.createElement("div"),canvas=document.createElement("canvas");
  scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#06101d";
  canvas.style.cssText="position:absolute;inset:0;width:100%;height:100%;display:block";
- canvas.setAttribute("role","img");canvas.setAttribute("aria-label","Lighthouse in a violent storm with crashing ocean waves");
+ canvas.setAttribute("role","img");canvas.setAttribute("aria-label","A lighthouse above a deep blue storm sea with large rolling waves and white foam");
  scene.appendChild(canvas);
  const title=document.createElement("div");
- title.style.cssText="position:absolute;z-index:5;bottom:5%;left:0;right:0;text-align:center;color:#f0f5ff;font:1000 clamp(22px,5.4vw,46px)/1 Georgia,serif;letter-spacing:.15em;text-shadow:0 2px 12px #000,0 0 25px #83dfff;pointer-events:none";
- title.innerHTML='THE HAUNTED LIGHTHOUSE<div style="font:800 10px system-ui;letter-spacing:.3em;margin-top:10px;color:#a9dff3">WHEN THE BEACON TURNS, THE SEA ANSWERS</div>';
+ title.style.cssText="position:absolute;z-index:5;bottom:5%;left:3%;right:3%;text-align:center;color:#f4faff;font:1000 clamp(20px,5vw,44px)/1.05 Georgia,serif;letter-spacing:.12em;text-shadow:0 3px 12px #000,0 0 24px #83dfff;pointer-events:none";
+ title.innerHTML='THE HAUNTED LIGHTHOUSE<div style="font:800 10px system-ui;letter-spacing:.25em;margin-top:9px;color:#b8eaff">WHEN THE BEACON TURNS, THE SEA ANSWERS</div>';
  scene.appendChild(title);overlay.appendChild(scene);document.body.appendChild(overlay);
  if(typeof opts.onSound==="function"){try{opts.onSound();}catch(_){}}
- const ctx=canvas.getContext("2d");if(!ctx){scene.style.background="linear-gradient(#071426 40%,#063448)";return overlay;}
- let alive=true,raf=0,t=0,last=0,flash=0,nextFlash=3.2,W=1,H=1,D=1;
+ const ctx=canvas.getContext("2d");
+ if(!ctx){scene.style.background="linear-gradient(#071426 38%,#07506b 70%,#020b18)";return overlay;}
+ let alive=true,raf=0,t=0,last=0,flash=0,nextFlash=2.8,W=1,H=1,D=1;
  const reduced=!!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
- const duration=Math.max(18000,Number(opts.duration)||24000);
+ const duration=Math.max(18000,Number(opts.duration)||28000);
  function resize(){const r=scene.getBoundingClientRect();W=Math.max(1,r.width);H=Math.max(1,r.height);D=Math.min(window.devicePixelRatio||1,1.5);canvas.width=Math.round(W*D);canvas.height=Math.round(H*D);ctx.setTransform(D,0,0,D,0,0);}
- function wave(y,amp,phase,freq){ctx.beginPath();ctx.moveTo(0,y);for(let x=0;x<=W+8;x+=8)ctx.lineTo(x,y+Math.sin(x*freq+phase)*amp+Math.sin(x*freq*.43-phase*1.4)*amp*.4);}
- function draw(time){
-  const cx=W*.5,portrait=W/H<.78,sea=H*(portrait?.61:.58),base=sea+H*.09,top=sea-H*(portrait?.36:.42),towerW=Math.max(24,W*.052);
-  let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#030918");g.addColorStop(.55,"#20394e");g.addColorStop(1,"#020a14");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-  // Churning clouds and moonlit mist
-  for(let i=0;i<14;i++){let x=((i*151-time*11)%(W+260)+W+260)%(W+260)-130,y=H*(.08+(i%5)*.07),r=W*(.12+(i%3)*.035);g=ctx.createRadialGradient(x,y,2,x,y,r);g.addColorStop(0,"rgba(8,17,30,.94)");g.addColorStop(.7,"rgba(35,53,69,.42)");g.addColorStop(1,"rgba(8,17,30,0)");ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(x,y,r,r*.3,0,0,Math.PI*2);ctx.fill();}
-  g=ctx.createLinearGradient(0,sea-40,0,sea+90);g.addColorStop(0,"rgba(154,197,211,.18)");g.addColorStop(1,"rgba(8,27,42,0)");ctx.fillStyle=g;ctx.fillRect(0,sea-40,W,130);
-  // Island silhouette
-  ctx.beginPath();ctx.moveTo(cx-W*.2,base+H*.05);ctx.lineTo(cx-W*.15,base-H*.04);ctx.lineTo(cx-W*.09,base-H*.085);ctx.lineTo(cx,base-H*.12);ctx.lineTo(cx+W*.11,base-H*.07);ctx.lineTo(cx+W*.2,base+H*.05);ctx.closePath();
-  g=ctx.createLinearGradient(cx-W*.16,base-H*.1,cx+W*.15,base);g.addColorStop(0,"#6c7880");g.addColorStop(.3,"#303c48");g.addColorStop(1,"#101a25");ctx.fillStyle=g;ctx.fill();
-  // Tower
-  ctx.beginPath();ctx.moveTo(cx-towerW*.65,base);ctx.lineTo(cx-towerW*.4,top+H*.08);ctx.lineTo(cx+towerW*.4,top+H*.08);ctx.lineTo(cx+towerW*.65,base);ctx.closePath();
-  g=ctx.createLinearGradient(cx-towerW,0,cx+towerW,0);g.addColorStop(0,"#435360");g.addColorStop(.28,"#eee9d8");g.addColorStop(.7,"#aeb9b9");g.addColorStop(1,"#344553");ctx.fillStyle=g;ctx.fill();
-  for(const yy of [.34,.65]){let y=top+H*yy;ctx.fillStyle="#963b3d";ctx.fillRect(cx-towerW*(.42+yy*.1),y,towerW*(.84+yy*.2),H*.018);}
-  const ly=top+H*.045,lw=towerW*.92;ctx.fillStyle="#273a48";ctx.fillRect(cx-lw*.6,ly,lw*1.2,H*.045);ctx.shadowColor="#ffe2a0";ctx.shadowBlur=28;ctx.fillStyle="#ffe5a2";ctx.fillRect(cx-lw*.42,ly+H*.008,lw*.84,H*.032);ctx.shadowBlur=0;
-  ctx.fillStyle="#85383d";ctx.beginPath();ctx.moveTo(cx-lw*.8,ly);ctx.lineTo(cx,ly-H*.045);ctx.lineTo(cx+lw*.8,ly);ctx.closePath();ctx.fill();
-  ctx.save();ctx.translate(cx,ly+H*.02);ctx.rotate(time*.5);g=ctx.createLinearGradient(0,0,W*.5,0);g.addColorStop(0,"rgba(222,245,255,.3)");g.addColorStop(1,"rgba(200,235,255,0)");ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-H*.012);ctx.lineTo(W*.48,-H*.08);ctx.lineTo(W*.48,H*.08);ctx.lineTo(0,H*.012);ctx.closePath();ctx.fill();ctx.restore();
-  // Seven overlapping swells with visible rolling crests
-  for(let layer=0;layer<7;layer++){
-   const y=sea+H*(.045+layer*.055),amp=H*(.027+layer*.007),phase=time*(1.05+layer*.18)+layer*1.7,freq=.011+layer*.0015;
-   wave(y,amp,phase,freq);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();g=ctx.createLinearGradient(0,y-amp,0,H);g.addColorStop(0,layer%2?"#326b7a":"#1b5065");g.addColorStop(.38,"#0b3045");g.addColorStop(1,"#010812");ctx.fillStyle=g;ctx.fill();
-   wave(y-amp*.24,amp*.72,phase,freq);ctx.strokeStyle=layer%2?"rgba(206,239,241,.72)":"rgba(116,194,208,.58)";ctx.lineWidth=Math.max(2,H*(.003+layer*.0005));ctx.stroke();
-   for(let j=0;j<15;j++){let x=((j*83+layer*47+time*(20+layer*7))%(W+80))-40,yy=y+Math.sin(x*freq+phase)*amp;ctx.strokeStyle="rgba(229,248,248,"+(.25+(j%4)*.13)+")";ctx.lineWidth=Math.max(1,H*.0028);ctx.beginPath();ctx.moveTo(x,yy);ctx.quadraticCurveTo(x+W*.018,yy-H*.012,x+W*.04,yy+H*.003);ctx.stroke();}
+ function wavePath(y,amp,phase,freq,offset){ctx.beginPath();ctx.moveTo(0,y+Math.sin(phase+offset)*amp);for(let x=0;x<=W+10;x+=6){const yy=y+Math.sin(x*freq+phase+offset)*amp+Math.sin(x*freq*.47-phase*1.3+offset)*amp*.34;ctx.lineTo(x,yy);}}
+ function draw(){
+  const cx=W*.5,portrait=W/H<.78,horizon=H*(portrait?.57:.55),towerTop=H*(portrait?.20:.18),islandY=H*.72,towerW=Math.max(26,W*.055);
+  let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#030817");g.addColorStop(.38,"#142d43");g.addColorStop(.56,"#244d62");g.addColorStop(1,"#020a16");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  // Heavy storm clouds, drifting across the moonless sky.
+  for(let i=0;i<16;i++){const x=((i*149-t*13)%(W+300)+W+300)%(W+300)-150,y=H*(.06+(i%5)*.075),r=W*(.13+(i%3)*.035);g=ctx.createRadialGradient(x,y,2,x,y,r);g.addColorStop(0,"rgba(5,13,26,.96)");g.addColorStop(.66,"rgba(46,68,84,.56)");g.addColorStop(1,"rgba(8,17,30,0)");ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(x,y,r,r*.29,0,0,Math.PI*2);ctx.fill();}
+  // Deep open water behind the island.
+  g=ctx.createLinearGradient(0,horizon,0,H);g.addColorStop(0,"#2b7185");g.addColorStop(.16,"#14536d");g.addColorStop(.52,"#07334d");g.addColorStop(1,"#010916");ctx.fillStyle=g;ctx.fillRect(0,horizon,W,H-horizon);
+  // Distant swell bands establish a broad, visible ocean surface.
+  for(let k=0;k<3;k++){const y=horizon+H*(.055+k*.075),amp=H*(.012+k*.006),phase=t*(.8+k*.18)+k*2.1;wavePath(y,amp,phase,.009+k*.002,0);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();g=ctx.createLinearGradient(0,y-amp,0,y+H*.2);g.addColorStop(0,["#3d8998","#246c83","#15516b"][k]);g.addColorStop(1,"rgba(1,12,27,.08)");ctx.fillStyle=g;ctx.fill();}
+  // Island rock rises clearly above the waterline.
+  ctx.beginPath();ctx.moveTo(cx-W*.23,islandY+H*.045);ctx.lineTo(cx-W*.19,islandY-H*.055);ctx.lineTo(cx-W*.12,islandY-H*.105);ctx.lineTo(cx-W*.035,islandY-H*.14);ctx.lineTo(cx+W*.055,islandY-H*.12);ctx.lineTo(cx+W*.15,islandY-H*.07);ctx.lineTo(cx+W*.23,islandY+H*.05);ctx.closePath();
+  g=ctx.createLinearGradient(cx-W*.18,islandY-H*.12,cx+W*.18,islandY+H*.05);g.addColorStop(0,"#87959a");g.addColorStop(.28,"#465560");g.addColorStop(.7,"#263744");g.addColorStop(1,"#101c2b");ctx.fillStyle=g;ctx.fill();
+  // Lighthouse tower, red bands, lantern room and roof.
+  const base=islandY-H*.055,top=towerTop+H*.13;
+  ctx.beginPath();ctx.moveTo(cx-towerW*.66,base);ctx.lineTo(cx-towerW*.39,top);ctx.lineTo(cx+towerW*.39,top);ctx.lineTo(cx+towerW*.66,base);ctx.closePath();
+  g=ctx.createLinearGradient(cx-towerW,0,cx+towerW,0);g.addColorStop(0,"#354957");g.addColorStop(.24,"#dce5e3");g.addColorStop(.53,"#fff8df");g.addColorStop(.78,"#aebfc0");g.addColorStop(1,"#263b4b");ctx.fillStyle=g;ctx.fill();
+  for(const q of [.38,.72]){const y=top+(base-top)*q;ctx.fillStyle="#9c3f43";ctx.fillRect(cx-towerW*.48,y,towerW*.96,H*.018);}
+  const ly=top-H*.035,lw=towerW*.95;ctx.fillStyle="#263b4b";ctx.fillRect(cx-lw*.62,ly,lw*1.24,H*.055);ctx.shadowColor="#ffe5a5";ctx.shadowBlur=30;ctx.fillStyle="#ffe9ad";ctx.fillRect(cx-lw*.43,ly+H*.009,lw*.86,H*.039);ctx.shadowBlur=0;
+  ctx.fillStyle="#8f3c43";ctx.beginPath();ctx.moveTo(cx-lw*.82,ly);ctx.lineTo(cx,ly-H*.055);ctx.lineTo(cx+lw*.82,ly);ctx.closePath();ctx.fill();
+  // Rotating beacon cone.
+  ctx.save();ctx.translate(cx,ly+H*.025);ctx.rotate(t*.48);g=ctx.createLinearGradient(0,0,W*.5,0);g.addColorStop(0,"rgba(240,250,255,.38)");g.addColorStop(.42,"rgba(206,239,255,.17)");g.addColorStop(1,"rgba(190,231,255,0)");ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-H*.014);ctx.lineTo(W*.49,-H*.105);ctx.lineTo(W*.49,H*.105);ctx.lineTo(0,H*.014);ctx.closePath();ctx.fill();ctx.restore();
+  // Foreground breakers: three large, separate moving wave faces.
+  for(let k=0;k<3;k++){const y=H*(.715+k*.095),amp=H*(.035+k*.012),phase=t*(1.1+k*.23)+k*2.4,freq=.008+k*.0016;wavePath(y,amp,phase,freq,0);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();g=ctx.createLinearGradient(0,y-amp,0,H);g.addColorStop(0,["#3990a0","#24768d","#15536e"][k]);g.addColorStop(.28,"#0b405a");g.addColorStop(1,"#010713");ctx.fillStyle=g;ctx.fill();
+   // Bright foam rides the crest rather than appearing as random white dots.
+   wavePath(y-amp*.18,amp*.82,phase,freq,0);ctx.strokeStyle=k===0?"rgba(237,252,255,.94)":"rgba(177,225,237,.72)";ctx.lineWidth=Math.max(2,H*(.006-k*.001));ctx.lineCap="round";ctx.stroke();
+   for(let j=0;j<12;j++){const x=((j*97+k*53+t*(24+k*13))%(W+100))-50,yy=y+Math.sin(x*freq+phase)*amp;ctx.strokeStyle="rgba(238,252,255,"+(.35+(j%3)*.18)+")";ctx.lineWidth=Math.max(1.4,H*.0035);ctx.beginPath();ctx.moveTo(x,yy);ctx.quadraticCurveTo(x+W*.025,yy-H*.018,x+W*.055,yy+H*.004);ctx.stroke();}
   }
-  // Explosive surf impacts on both sides of the island
-  for(const side of [-1,1]){let x=cx+side*W*.15;for(let k=0;k<5;k++){ctx.beginPath();ctx.ellipse(x,base+H*.02-k*H*.01,W*(.035+k*.012),H*(.016+k*.006),side*.1,Math.PI*1.08,Math.PI*1.92);ctx.strokeStyle="rgba(220,246,249,"+(.65-k*.07)+")";ctx.lineWidth=Math.max(2,W*.003);ctx.stroke();}for(let k=0;k<22;k++){let px=x+Math.sin(k*12.7+time*2.5)*W*.05,py=base-H*(.01+((k*7+time*2)%25)/500);ctx.fillStyle="rgba(222,244,247,.7)";ctx.beginPath();ctx.arc(px,py,Math.max(1,W*.0018),0,Math.PI*2);ctx.fill();}}
-  // Slanted rain
-  ctx.strokeStyle="rgba(195,226,239,.28)";ctx.lineWidth=1;for(let i=0;i<130;i++){let x=(i*79+time*155)%(W+35)-15,y=(i*137+time*390)%(H+30)-15;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-W*.01,y+H*.035);ctx.stroke();}
-  if(time>nextFlash){flash=.2;nextFlash=time+4+Math.random()*4;}
-  if(flash>0){ctx.fillStyle="rgba(190,225,255,"+(flash*.55)+")";ctx.fillRect(0,0,W,H);ctx.strokeStyle="#e6f7ff";ctx.lineWidth=Math.max(2,W*.003);ctx.beginPath();let x=W*.72,y=H*.06;ctx.moveTo(x,y);for(let i=0;i<8;i++){x+=(Math.random()-.5)*W*.06;y+=H*.05;ctx.lineTo(x,y);}ctx.stroke();flash-=.025;}
-  g=ctx.createRadialGradient(cx,H*.5,H*.12,cx,H*.5,Math.max(W,H)*.72);g.addColorStop(.4,"rgba(0,0,0,0)");g.addColorStop(1,"rgba(0,0,0,.58)");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  // Surf explodes against both sides of the island, with airborne spray.
+  for(const side of [-1,1]){const x=cx+side*W*.19;for(let k=0;k<5;k++){ctx.beginPath();ctx.ellipse(x,base+H*.02-k*H*.012,W*(.035+k*.012),H*(.014+k*.006),side*.12,Math.PI*1.08,Math.PI*1.92);ctx.strokeStyle="rgba(224,249,255,"+(.78-k*.1)+")";ctx.lineWidth=Math.max(2,W*.0035);ctx.stroke();}for(let k=0;k<24;k++){const px=x+Math.sin(k*12.7+t*2.2)*W*.055,py=base-H*(.015+((k*7+t*2.2)%28)/500);ctx.fillStyle="rgba(226,247,255,.82)";ctx.beginPath();ctx.arc(px,py,Math.max(1.2,W*.002),0,Math.PI*2);ctx.fill();}}
+  // Slanting rain in front of the entire scene.
+  ctx.strokeStyle="rgba(202,232,246,.32)";ctx.lineWidth=1;for(let i=0;i<150;i++){const x=(i*79+t*165)%(W+40)-20,y=(i*137+t*410)%(H+40)-20;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-W*.012,y+H*.04);ctx.stroke();}
+  if(t>nextFlash){flash=.24;nextFlash=t+4.2+Math.random()*3.8;}
+  if(flash>0){ctx.fillStyle="rgba(198,229,255,"+(flash*.55)+")";ctx.fillRect(0,0,W,H);ctx.strokeStyle="#f0fbff";ctx.lineWidth=Math.max(2,W*.003);ctx.beginPath();let x=W*.72,y=H*.055;ctx.moveTo(x,y);for(let n=0;n<8;n++){x+=(Math.random()-.5)*W*.055;y+=H*.05;ctx.lineTo(x,y);}ctx.stroke();flash-=.025;}
+  g=ctx.createRadialGradient(cx,H*.48,H*.12,cx,H*.48,Math.max(W,H)*.74);g.addColorStop(.42,"rgba(0,0,0,0)");g.addColorStop(1,"rgba(0,0,0,.48)");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
  }
- function frame(now){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(frame);let dt=Math.min(.05,(now-last)/1000||0);last=now;if(!reduced)t+=dt;draw(t);}
+ function frame(now){if(!alive||!overlay.isConnected)return;raf=requestAnimationFrame(frame);const dt=Math.min(.05,(now-last)/1000||0);last=now;if(!reduced)t+=dt;draw();}
  function cleanup(){if(!alive)return;alive=false;if(raf)cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected)overlay.remove();}
  resize();window.addEventListener("resize",resize);raf=requestAnimationFrame(frame);
  setTimeout(()=>{if(!alive)return;overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(cleanup,850);},duration);
  return overlay;
 }
-
 function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="hauntedlighthouse")return renderHauntedLighthouseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
 
 /* Cinematic object renderer: custom shaded vector artwork replaces emoji-only gift posters. */
