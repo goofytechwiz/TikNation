@@ -30,13 +30,6 @@ footer{text-align:center;color:#777393;font-size:9px;letter-spacing:.1em;margin-
 @media(max-width:650px){main{padding-top:30px}.stage{min-height:280px;margin-top:26px}.stage:before{width:230px;height:230px}.stage:after{width:285px;height:285px}.portal{width:145px;height:145px}.constellation{grid-template-columns:1fr;gap:10px}.room{min-height:140px;padding:17px}.room h2{margin:12px 0 6px}.control{grid-template-columns:1fr}.actions{justify-content:flex-start}.control h2{font-size:26px}}
 .live-lobby{max-width:920px;margin:18px auto 24px;padding:19px;border:1px solid #ffffff24;border-radius:24px;background:linear-gradient(135deg,#171b39,#241a38 58%,#102b35)}.lobby-head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}.lobby-head h2{font:400 27px Georgia,serif;margin:7px 0 0}.lobby-head p{font-size:11px;color:#bdb7d6;line-height:1.55;margin:6px 0 0}.preview-tag{font-size:8px;letter-spacing:.13em;color:var(--cyan);border:1px solid #8cf7ef55;border-radius:99px;padding:7px 10px}.host-rail{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:15px 0}.host-card{display:flex;align-items:center;gap:11px;padding:13px;border:1px solid #ffffff20;border-radius:16px;background:#ffffff08}.host-avatar{width:43px;height:43px;flex:0 0 43px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#8cf7ef,#9b78dc);color:#11152b;font-weight:950}.host-card strong{font-size:11px}.host-card small{display:block;margin-top:4px;color:#bcb6d4;font-size:8px;line-height:1.4}.host-label{margin-left:auto;font-size:8px;letter-spacing:.1em;color:#ffb5d5;white-space:nowrap}.lobby-columns{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}.lobby-panel{padding:15px;border:1px solid #ffffff1e;border-radius:17px;background:#090b20a8}.lobby-panel h3{font:400 19px Georgia,serif;margin:0 0 11px}.chat-sample{display:grid;gap:9px}.chat-line{font-size:10px;line-height:1.5;color:#d5d0e7}.chat-line b{color:var(--cyan);margin-right:5px}.chat-line:nth-child(2) b{color:var(--pink)}.chat-line:nth-child(3) b{color:var(--gold)}.vibe-actions{display:flex;gap:7px;flex-wrap:wrap}.vibe-actions button{border:1px solid #ffffff2b;border-radius:99px;background:#ffffff09;color:#e7e2f5;padding:9px 11px;font:800 9px system-ui;cursor:pointer}.vibe-actions button[aria-pressed=true]{border-color:#8cf7ef99;background:#8cf7ef18;color:var(--cyan)}.lobby-note{margin-top:10px;color:#9f99bc;font-size:9px;line-height:1.5}.lobby-status{min-height:18px;margin-top:10px;color:var(--cyan);font-size:9px}@media(max-width:650px){.live-lobby{padding:15px}.host-rail,.lobby-columns{grid-template-columns:1fr}.host-card{padding:11px}.lobby-head h2{font-size:24px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
-.live-gift-preview{max-width:920px;margin:18px auto 24px;padding:19px;border:1px solid #9b7bff55;border-radius:22px;background:linear-gradient(135deg,#171b39,#241a38 58%,#102b35)}
-.live-gift-preview h2{font:400 25px Georgia,serif;margin:4px 0 7px}
-.live-gift-preview p{color:#bdb7d6;font-size:11px;line-height:1.6;margin:0 0 13px}
-.live-gift-preview button{border:1px solid #9cf7ef88;border-radius:999px;padding:12px 18px;background:linear-gradient(110deg,#8cf7ef,#b9a4ff);color:#101326;font-weight:900;cursor:pointer}
-.live-gift-preview button:active{transform:scale(.98)}
-.live-gift-status{min-height:16px;margin-top:10px;color:#8cf7ef;font-size:10px}
-
 /* Shared TikNation app navigation */
 body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
 .tn-dock{position:fixed;z-index:12;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:8px;border:1px solid #ffffff2b;border-radius:22px;background:linear-gradient(110deg,#10152beF,#211a3def 55%,#102a34ef);box-shadow:0 14px 48px #000b,0 0 28px #82f6e81c;backdrop-filter:blur(20px)}
@@ -74,35 +67,6 @@ img,video,canvas{max-width:100%}
 }
 
 
-#tn-gallery-gift-overlay{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;padding:18px;background:radial-gradient(ellipse at center,#392b69ee,#070817f5 75%);animation:tnGiftFade .25s ease-out}#tn-gallery-gift-overlay .tn-preview-orbit{position:relative;width:min(88vw,430px);min-height:330px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;border:1px solid #9df7ef88;border-radius:28px;background:radial-gradient(circle,#8cf7ef24,#17142fee 65%);box-shadow:0 0 65px #8cf7ef55,0 20px 80px #000b;text-align:center;animation:tnGiftRise .65s cubic-bezier(.2,.8,.2,1)}#tn-gallery-gift-overlay .tn-preview-emoji{font-size:clamp(76px,19vw,130px);line-height:1.2;filter:drop-shadow(0 0 24px #b9a4ff);animation:tnGiftFloat 1.8s ease-in-out infinite}#tn-gallery-gift-overlay .tn-preview-name{font:400 clamp(25px,6vw,38px) Georgia,serif;color:#fff}#tn-gallery-gift-overlay small{font:800 9px system-ui;letter-spacing:.16em;color:#8cf7ef}#tn-gallery-gift-overlay button{border:1px solid #ffffff55;border-radius:99px;padding:11px 20px;background:#ffffff12;color:white;font-weight:850;cursor:pointer}@keyframes tnGiftFade{from{opacity:0}to{opacity:1}}@keyframes tnGiftRise{from{opacity:0;transform:translateY(45px) scale(.75)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes tnGiftFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.12)}}
-/* Phoenix Rebirth: first rebuilt gift, isolated from the old gift catalog */
-.phoenix-gift{max-width:920px;margin:18px auto 24px;padding:22px;border:1px solid #ffb45d66;border-radius:22px;background:radial-gradient(ellipse at 85% 10%,#9b3d2440,transparent 48%),linear-gradient(130deg,#24162b,#17152e 60%,#302039)}
-.phoenix-gift h2{font:400 27px Georgia,serif;margin:7px 0}.phoenix-gift p{max-width:650px;color:#c7bad0;font-size:11px;line-height:1.65;margin:0 0 15px}
-.phoenix-gift button{min-height:46px;border:1px solid #ffd18b;border-radius:99px;padding:12px 20px;background:linear-gradient(105deg,#ffb45d,#ffe6a8,#ff8b65);color:#241323;font-weight:950;letter-spacing:.08em;cursor:pointer;box-shadow:0 0 25px #ff9c4b44}
-.phoenix-gift button:active{transform:scale(.98)}.phoenix-gift-status{min-height:17px;margin-top:12px;color:#ffd49b;font-size:10px;letter-spacing:.06em}
-#phoenixRebirthScene{position:fixed;inset:0;z-index:2147483647;display:none;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 60%,#702c20 0,#21152b 45%,#050711 100%);isolation:isolate}
-#phoenixRebirthScene.is-active{display:grid;animation:phoenixBackdrop .5s ease both}
-#phoenixRebirthScene:before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(ellipse at 50% 85%,transparent 0 20px,#ff9c4430 22px 24px,transparent 26px 44px);animation:phoenixRings 9s linear infinite;opacity:.6}
-.phoenix-art{position:relative;width:min(94vw,760px);height:min(76vh,620px);z-index:1;filter:drop-shadow(0 0 24px #ff8a35aa)}
-.phoenix-art svg{width:100%;height:100%;overflow:visible}
-.phoenix-wing-left{transform-origin:50% 55%;animation:phoenixWingL 1.35s cubic-bezier(.2,.8,.2,1) both}
-.phoenix-wing-right{transform-origin:50% 55%;animation:phoenixWingR 1.35s cubic-bezier(.2,.8,.2,1) both}
-.phoenix-body{transform-origin:50% 65%;animation:phoenixRise 1.5s cubic-bezier(.16,1,.3,1) both}
-.phoenix-tail{transform-origin:50% 75%;animation:phoenixTail 2.2s ease-out both}
-.phoenix-feather{animation:phoenixFlicker 1.8s ease-in-out infinite alternate}
-.phoenix-gift-title{position:absolute;z-index:2;bottom:8%;left:12px;right:12px;text-align:center;color:#fff0cf;font:400 clamp(26px,6vw,46px) Georgia,serif;letter-spacing:.12em;text-shadow:0 0 22px #ff9a40}
-.phoenix-gift-title small{display:block;margin-top:9px;font:800 9px system-ui;letter-spacing:.28em;color:#ffc98a}
-.phoenix-close{position:absolute;z-index:3;right:18px;top:18px;border:1px solid #ffffff66;border-radius:99px;background:#130f1dcc;color:#fff;padding:11px 17px;font-size:10px;font-weight:850;letter-spacing:.12em;cursor:pointer}
-.phoenix-particle{position:absolute;z-index:2;width:5px;height:5px;border-radius:50%;background:#ffe5a1;box-shadow:0 0 12px 4px #ff8b36;animation:phoenixEmber 2.5s ease-out forwards}
-@keyframes phoenixBackdrop{from{opacity:0}to{opacity:1}}
-@keyframes phoenixRings{to{transform:rotate(360deg)}}
-@keyframes phoenixWingL{from{transform:translateY(100px) rotate(35deg) scale(.45);opacity:.1}to{transform:translateY(0) rotate(0) scale(1);opacity:1}}
-@keyframes phoenixWingR{from{transform:translateY(100px) rotate(-35deg) scale(.45);opacity:.1}to{transform:translateY(0) rotate(0) scale(1);opacity:1}}
-@keyframes phoenixRise{from{transform:translateY(170px) scale(.5);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
-@keyframes phoenixTail{from{transform:scaleY(.15);opacity:0}to{transform:scaleY(1);opacity:1}}
-@keyframes phoenixFlicker{from{opacity:.72;filter:brightness(.9)}to{opacity:1;filter:brightness(1.3)}}
-@keyframes phoenixEmber{0%{transform:translateY(30px) scale(.3);opacity:0}20%{opacity:1}100%{transform:translateY(-65vh) translateX(var(--drift)) scale(0);opacity:0}}
-@media(prefers-reduced-motion:reduce){.phoenix-wing-left,.phoenix-wing-right,.phoenix-body,.phoenix-tail,.phoenix-feather,#phoenixRebirthScene:before{animation:none!important}}
 </style><style id="fod-standalone-style">#fodStandalonePreview{position:fixed;inset:0;z-index:2147483647;pointer-events:none}.fod-scene{position:absolute;inset:0;overflow:hidden;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 44%,#253b48 0,#101a2b 43%,#03060d 100%);animation:fodFadeIn .55s ease both}.fod-runes{position:absolute;top:14%;color:#9cf7ed;font-size:clamp(18px,5vw,34px);letter-spacing:.5em;text-shadow:0 0 18px #7df8ff;animation:fodRunes 12s linear infinite}.fod-hand{position:relative;z-index:2;width:min(78vw,430px);height:min(70vh,540px);overflow:visible;filter:drop-shadow(0 15px 24px #000) drop-shadow(0 0 20px #8ee8e8aa);animation:fodRise 1s cubic-bezier(.16,1,.3,1) both}.fod-title{position:absolute;z-index:3;bottom:13%;left:5%;right:5%;text-align:center;color:#efffff;font-weight:950;font-size:clamp(22px,5vw,42px);letter-spacing:.12em;text-shadow:0 0 22px #8ee8e8,0 4px 9px #000}.fod-title small{display:block;margin-top:10px;font-size:11px;letter-spacing:.28em;color:#b9d8dd}.fod-close{position:absolute;bottom:5%;font-size:9px;letter-spacing:.2em;color:#9bb8c3}.fod-target{animation:fodTarget 1.6s ease-in-out infinite alternate}#fodStandalonePreview.fod-out{opacity:0;transition:opacity .45s ease}@keyframes fodFadeIn{from{opacity:0}to{opacity:1}}@keyframes fodRise{from{opacity:0;transform:translateY(90px) scale(.7) rotate(-8deg)}to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}@keyframes fodRunes{to{transform:rotate(360deg)}}@keyframes fodTarget{from{opacity:.2;transform:translateY(5px)}to{opacity:1;transform:translateY(-7px)}}@media(orientation:landscape){.fod-hand{height:72vh;width:auto}.fod-title{bottom:8%}.fod-close{bottom:2%}}</style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><nav style="display:flex;gap:8px;align-items:center"><a class="back" href="../profile/">MY PROFILE</a><a class="back" href="../realms/">← THE REALMS</a></nav></header>
@@ -123,103 +87,7 @@ img,video,canvas{max-width:100%}
 </section>
 <section class="live-lobby" aria-labelledby="lobbyTitle"><div class="lobby-head"><div><div class="eyebrow">THE LIVE LOBBY</div><h2 id="lobbyTitle">Find the room. Feel the moment.</h2><p>Meet the creator concepts, catch the room vibe, and imagine how LIVE can feel more social.</p></div><span class="preview-tag">ROOM CONCEPTS · NOT LIVE</span></div><div class="host-rail"><article class="host-card"><span class="host-avatar">T</span><div><strong>TikNationStudio</strong><small>FOUNDER SPOTLIGHT · CREATOR CONCEPT</small></div><span class="host-label">FEATURED</span></article><article class="host-card"><span class="host-avatar">M</span><div><strong>MattOnLive</strong><small>CREATOR SPOTLIGHT · ROOM CONCEPT</small></div><span class="host-label">SPOTLIGHT</span></article></div><div class="lobby-columns"><section class="lobby-panel" aria-label="Sample room conversation"><h3>Room conversation</h3><div class="chat-sample"><div class="chat-line"><b>DreamerOne</b> This atmosphere is incredible ✨</div><div class="chat-line"><b>NovaCreates</b> What would you build here?</div><div class="chat-line"><b>Starbound</b> Saving this idea for our next creative night!</div></div><p class="lobby-note">Illustrative sample chat only. These are not real messages or connected accounts.</p></section><section class="lobby-panel" aria-label="Local room reactions"><h3>How is the vibe?</h3><div class="vibe-actions" role="group" aria-label="Choose a room reaction"><button type="button" data-vibe="✨ MAGIC">✨ MAGIC</button><button type="button" data-vibe="💜 LOVE IT">💜 LOVE IT</button><button type="button" data-vibe="🔥 ENERGY">🔥 ENERGY</button></div><p class="lobby-note">Try a reaction. It stays on this screen and is not sent to a broadcaster.</p><div class="lobby-status" id="vibeStatus" role="status">YOUR REACTION WILL APPEAR HERE</div></section></div></section><section class="live-poll" id="liveRoomPoll" aria-labelledby="livePollTitle"><h3 id="livePollTitle">Shape the next LIVE world</h3><p>Which room feature would make you want to stay longer?</p><div class="live-poll-options" role="group" aria-label="Choose a room feature"><button type="button" data-poll="Interactive audience games">✦ Interactive audience games</button><button type="button" data-poll="Creator Q&A moments">◉ Creator Q&amp;A moments</button><button type="button" data-poll="Music and visual stages">♫ Music and visual stages</button><button type="button" data-poll="Cozy group conversations">⌘ Cozy group conversations</button></div><div class="live-poll-status" id="livePollStatus" role="status" aria-live="polite">CHOOSE ONE · LOCAL PREVIEW POLL</div><div class="live-poll-note">Your choice is stored only in this browser. It is not sent to a creator or broadcast.</div></section>
 
-<section class="phoenix-gift" aria-labelledby="phoenixGiftHeading">
-  <div class="eyebrow">THE FIRST REBUILT GIFT · TEST ONE</div>
-  <h2 id="phoenixGiftHeading">Phoenix Rebirth</h2>
-  <p>A legendary LIVE gift: a phoenix rises from the embers, spreads its wings, and fills the screen with a burst of golden fire. This first test runs locally on this page; it does not spend coins or send a real gift.</p>
-  <button type="button" id="sendPhoenixGift">✦ SEND PHOENIX REBIRTH</button>
-  <div class="phoenix-gift-status" id="phoenixGiftStatus" role="status" aria-live="polite">READY · TEST GIFT · NO COINS USED</div>
-</section>
-<div id="phoenixRebirthScene" role="dialog" aria-modal="true" aria-label="Phoenix Rebirth gift animation">
-  <button type="button" class="phoenix-close" id="closePhoenixGift">CLOSE ✕</button>
-  <div class="phoenix-art" aria-hidden="true">
-    <svg viewBox="0 0 1000 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A fiery phoenix with a hooked beak, feathered wings and long tail">
-<defs>
- <linearGradient id="phFeather" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#541a1b"/><stop offset=".34" stop-color="#a92d20"/><stop offset=".68" stop-color="#f36a28"/><stop offset=".9" stop-color="#ffb84b"/><stop offset="1" stop-color="#fff0b2"/></linearGradient>
- <linearGradient id="phFlight" x1="0" y1="1" x2=".8" y2="0"><stop stop-color="#6e1d20"/><stop offset=".48" stop-color="#d94222"/><stop offset=".82" stop-color="#ff9b35"/><stop offset="1" stop-color="#ffe7a0"/></linearGradient>
- <linearGradient id="phBody" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0a4"/><stop offset=".22" stop-color="#ffb13f"/><stop offset=".58" stop-color="#d64722"/><stop offset="1" stop-color="#571b22"/></linearGradient>
- <radialGradient id="phFire"><stop stop-color="#fffbd0"/><stop offset=".25" stop-color="#ffd36c"/><stop offset=".62" stop-color="#f45b26"/><stop offset="1" stop-color="#7e1e20" stop-opacity="0"/></radialGradient>
- <filter id="phAura" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="13" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
- <filter id="phSoft"><feGaussianBlur stdDeviation="3"/></filter>
- </defs>
- <ellipse cx="500" cy="575" rx="245" ry="92" fill="url(#phFire)" opacity=".8"/>
- <!-- long individual tail plumes -->
- <g class="phoenix-tail" stroke-linecap="round" filter="url(#phAura)">
-  <path d="M470 478 C390 560 330 645 235 700 C350 675 445 610 493 500" fill="none" stroke="#9e2a20" stroke-width="31"/>
-  <path d="M485 485 C435 595 430 675 405 735 C485 670 515 575 510 490" fill="none" stroke="#e64d24" stroke-width="26"/>
-  <path d="M515 485 C595 570 665 640 770 695 C660 674 555 605 495 500" fill="none" stroke="#9e2a20" stroke-width="31"/>
-  <path d="M525 475 C620 535 720 565 850 580 C740 610 620 575 515 495" fill="none" stroke="#f17a2b" stroke-width="19"/>
-  <path d="M455 470 C350 510 270 540 145 545 C260 575 380 535 475 490" fill="none" stroke="#f17a2b" stroke-width="18"/>
-  <path d="M470 500 C390 590 330 650 235 700 M510 500 C590 590 670 650 770 695" fill="none" stroke="#ffc35b" stroke-width="5" opacity=".85"/>
- </g>
- <!-- left wing: layered, tapered flight feathers -->
- <g class="phoenix-wing-left" filter="url(#phAura)">
-  <path d="M480 370 C360 265 205 125 35 95 C105 170 125 228 45 260 C145 275 190 320 105 365 C215 365 280 410 235 465 C330 440 405 415 500 405Z" fill="#641e21" stroke="#d84b28" stroke-width="5"/>
-  <g fill="url(#phFeather)" stroke="#702322" stroke-width="3">
-   <path d="M472 390 C340 255 185 135 40 98 C155 200 265 310 472 410Z"/>
-   <path d="M458 397 C310 300 160 255 48 260 C185 335 310 380 458 420Z"/>
-   <path d="M450 408 C310 365 205 360 108 365 C240 430 350 440 460 435Z"/>
-   <path d="M450 420 C335 420 275 450 238 465 C330 480 405 460 470 440Z"/>
-   <path d="M420 370 C300 245 225 190 125 150 C230 270 320 345 450 410Z"/>
-   <path d="M400 390 C285 315 210 290 120 285 C235 360 315 400 450 430Z"/>
-   <path d="M390 410 C300 390 250 395 190 405 C280 450 350 450 455 445Z"/>
-  </g>
-  <g fill="none" stroke="#ffd27b" stroke-width="3" opacity=".72">
-   <path d="M470 395 Q250 190 55 105"/><path d="M455 410 Q230 300 65 270"/><path d="M455 430 Q270 390 125 370"/><path d="M455 440 Q340 440 250 460"/>
-  </g>
- </g>
- <!-- right wing -->
- <g class="phoenix-wing-right" filter="url(#phAura)">
-  <path d="M520 370 C640 265 795 125 965 95 C895 170 875 228 955 260 C855 275 810 320 895 365 C785 365 720 410 765 465 C670 440 595 415 500 405Z" fill="#641e21" stroke="#d84b28" stroke-width="5"/>
-  <g fill="url(#phFeather)" stroke="#702322" stroke-width="3">
-   <path d="M528 390 C660 255 815 135 960 98 C845 200 735 310 528 410Z"/>
-   <path d="M542 397 C690 300 840 255 952 260 C815 335 690 380 542 420Z"/>
-   <path d="M550 408 C690 365 795 360 892 365 C760 430 650 440 540 435Z"/>
-   <path d="M550 420 C665 420 725 450 762 465 C670 480 595 460 530 440Z"/>
-   <path d="M580 370 C700 245 775 190 875 150 C770 270 680 345 550 410Z"/>
-   <path d="M600 390 C715 315 790 290 880 285 C765 360 685 400 550 430Z"/>
-   <path d="M610 410 C700 390 750 395 810 405 C720 450 650 450 545 445Z"/>
-  </g>
-  <g fill="none" stroke="#ffd27b" stroke-width="3" opacity=".72">
-   <path d="M530 395 Q750 190 945 105"/><path d="M545 410 Q770 300 935 270"/><path d="M545 430 Q730 390 875 370"/><path d="M545 440 Q660 440 750 460"/>
-  </g>
- </g>
- <!-- torso, breast and shoulders -->
- <g class="phoenix-body" filter="url(#phAura)">
-  <path d="M500 250 C455 280 430 355 445 430 C455 475 480 515 500 545 C520 515 545 475 555 430 C570 355 545 280 500 250Z" fill="url(#phBody)" stroke="#ffd17b" stroke-width="5"/>
-  <path d="M500 285 C470 335 472 410 500 475 C528 410 530 335 500 285Z" fill="#ffdd83" opacity=".62"/>
-  <g fill="url(#phFeather)" stroke="#8c2b22" stroke-width="2">
-   <path d="M466 335 Q425 360 442 400 Q470 385 480 350Z"/><path d="M534 335 Q575 360 558 400 Q530 385 520 350Z"/>
-   <path d="M460 390 Q420 420 455 448 Q478 425 480 400Z"/><path d="M540 390 Q580 420 545 448 Q522 425 520 400Z"/>
-   <path d="M472 445 Q445 480 480 495 L495 460Z"/><path d="M528 445 Q555 480 520 495 L505 460Z"/>
-  </g>
-  <!-- neck rising into a distinct bird head -->
-  <path d="M485 300 C470 245 468 205 490 175 L520 175 C540 210 530 260 515 310Z" fill="url(#phBody)" stroke="#ffc66c" stroke-width="4"/>
-  <path d="M500 205 C470 165 465 125 490 95 C500 125 505 145 505 175 C520 140 540 125 555 125 C550 165 530 190 515 210Z" fill="url(#phFlight)" stroke="#ffc66c" stroke-width="3"/>
-  <path d="M487 170 C450 145 440 115 455 85 C480 105 492 130 500 160" fill="#f17a2b" stroke="#ffd27b" stroke-width="3"/>
-  <!-- unmistakable hooked beak pointing right -->
-  <path d="M527 190 C555 180 582 184 603 198 C585 205 573 220 563 237 C560 218 548 207 527 205Z" fill="#33202a" stroke="#ffcb68" stroke-width="4"/>
-  <path d="M570 204 Q590 198 602 198 Q584 209 570 222" fill="#f5a43e"/>
-  <path d="M530 183 Q540 177 550 181" fill="none" stroke="#fff2b1" stroke-width="4" stroke-linecap="round"/>
-  <ellipse cx="535" cy="178" rx="7" ry="5" fill="#fff2a0"/><circle cx="537" cy="178" r="2.5" fill="#24131a"/>
-  <!-- crest plumes -->
-  <path d="M492 140 Q460 85 477 40 Q508 86 502 137Z" fill="url(#phFlight)" stroke="#ffc76d" stroke-width="3"/>
-  <path d="M507 145 Q510 78 548 38 Q548 105 518 153Z" fill="url(#phFlight)" stroke="#ffc76d" stroke-width="3"/>
-  <path d="M480 155 Q430 120 425 75 Q475 95 492 151Z" fill="#bd3924" stroke="#ffb44e" stroke-width="3"/>
- </g>
- <!-- sparks and atmospheric flame ribbons -->
- <g fill="none" stroke-linecap="round" filter="url(#phSoft)" opacity=".85">
-  <path d="M270 570 Q190 490 250 410 Q190 350 235 285" stroke="#ff8b2e" stroke-width="9"/>
-  <path d="M730 570 Q810 490 750 410 Q810 350 765 285" stroke="#ff8b2e" stroke-width="9"/>
- </g>
- <g class="phoenix-feather" fill="#ffe7a0" filter="url(#phAura)">
-  <circle cx="340" cy="250" r="5"/><circle cx="650" cy="245" r="4"/><circle cx="300" cy="475" r="5"/><circle cx="700" cy="460" r="5"/>
- </g>
-</svg>
-  </div>
-  <div class="phoenix-gift-title">PHOENIX REBIRTH<small>RISE FROM THE EMBERS</small></div>
-</div>
-\n<div class="status" id="status" role="status">CONCEPT SPACE · NO CAMERA, MICROPHONE, OR LIVE BROADCAST IS ACTIVE</div>
+<div class="status" id="status" role="status">CONCEPT SPACE · NO CAMERA, MICROPHONE, OR LIVE BROADCAST IS ACTIVE</div>
 <footer>AN EXPERIMENT IN WHAT LIVE COULD BECOME · EXISTING TIKNATION LIVE IS UNCHANGED</footer>
 </main>
 <script>
@@ -248,16 +116,5 @@ document.getElementById('enter').addEventListener('click',()=>{sparkle();documen
 <script>(function(){const p=location.pathname;const map=[['discover','/discover/'],['live','/live-worlds/'],['create','/create/'],['community','/community/'],['profile','/profile/'],['settings','/settings/'],['home','/realms/']];let active=map.find(x=>p.includes(x[1]));if(p.includes('/creator-showcase/')||p.includes('/creator-studio/'))active=['profile','/profile/'];if(active){const a=document.querySelector('[data-dock="'+active[0]+'"]');if(a)a.setAttribute('aria-current','page')}})();</script><script>
 (()=>{const key='tiknation-live-room-poll-v1',buttons=[...document.querySelectorAll('[data-poll]')],status=document.getElementById('livePollStatus');if(!buttons.length||!status)return;let choice='';try{choice=localStorage.getItem(key)||''}catch(e){}function render(){buttons.forEach(b=>{const selected=b.dataset.poll===choice;b.setAttribute('aria-pressed',String(selected));b.disabled=!!choice;b.textContent=(selected?'✓ ':'')+b.dataset.poll});status.textContent=choice?'YOUR LOCAL PREVIEW VOTE: '+choice.toUpperCase():'CHOOSE ONE · LOCAL PREVIEW POLL'}buttons.forEach(b=>b.addEventListener('click',()=>{if(choice)return;choice=b.dataset.poll;try{localStorage.setItem(key,choice)}catch(e){}render()}));render()})();
 </script>
-<script>
-(()=> {
- const send=document.getElementById('sendPhoenixGift'),scene=document.getElementById('phoenixRebirthScene'),close=document.getElementById('closePhoenixGift'),status=document.getElementById('phoenixGiftStatus');
- if(!send||!scene||!close||!status)return;
- let emberTimer=null;
- function closeScene(){scene.classList.remove('is-active');scene.style.display='none';scene.querySelectorAll('.phoenix-particle').forEach(p=>p.remove());if(emberTimer)clearInterval(emberTimer);status.textContent='READY · TEST GIFT · NO COINS USED';send.focus();}
- function launch(){scene.style.display='grid';scene.classList.remove('is-active');void scene.offsetWidth;scene.classList.add('is-active');status.textContent='PHOENIX REBIRTH IS RISING · LOCAL ANIMATION';scene.querySelectorAll('.phoenix-particle').forEach(p=>p.remove());if(emberTimer)clearInterval(emberTimer);emberTimer=setInterval(()=>{if(!scene.classList.contains('is-active'))return;const p=document.createElement('i');p.className='phoenix-particle';p.style.left=(15+Math.random()*70)+'%';p.style.top=(58+Math.random()*35)+'%';p.style.setProperty('--drift',(Math.random()*100-50)+'px');scene.appendChild(p);setTimeout(()=>p.remove(),2600)},95);}
- send.addEventListener('click',launch);close.addEventListener('click',closeScene);
- scene.addEventListener('click',e=>{if(e.target===scene)closeScene()});
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&scene.classList.contains('is-active'))closeScene()});
-})();
 </script>
 </body></html>
