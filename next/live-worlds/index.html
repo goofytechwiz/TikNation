@@ -96,7 +96,7 @@ img,video,canvas{max-width:100%}
 <div class="status" id="status" role="status">CONCEPT SPACE · NO CAMERA, MICROPHONE, OR LIVE BROADCAST IS ACTIVE</div>
 <footer>AN EXPERIMENT IN WHAT LIVE COULD BECOME · EXISTING TIKNATION LIVE IS UNCHANGED</footer>
 </main>
-<script src="../../gift-engine.js?v=live-worlds-gift-engine-1"></script>
+<script src="../../gift-engine.js?v=live-worlds-gallery-click-fix-2"></script>
 <script src="../../gifts.js?v=full-catalog-restore-2"></script>
 <script>
 const rooms={
@@ -125,9 +125,17 @@ function renderGiftGallery(){
  grid.innerHTML=entries.map(([code,gift])=>'<button type="button" class="gift-gallery-card" data-gallery-gift="'+code+'"><span class="gift-emoji">'+gift.emoji+'</span><strong>'+gift.name+'</strong><small>'+gift.category.toUpperCase()+' · '+Number(gift.cost).toLocaleString()+' TEST COINS</small></button>').join('');
  grid.querySelectorAll('[data-gallery-gift]').forEach(button=>button.addEventListener('click',()=>{
   const code=button.dataset.galleryGift,gift=giftCatalog[code],status=document.getElementById('giftGalleryStatus');
-  let played=false;
-  try{played=Boolean(window.TikNationGiftEngine&&window.TikNationGiftEngine.show&&window.TikNationGiftEngine.show({...gift,id:'gallery-'+code,name:gift.name,emoji:gift.emoji},{duration:['ghostship','infernal_castle','fingerdeath','meteor','phoenix','dragon','dragonrevenge'].includes(gift.style)?8500:6800,senderName:'TIKNATION GIFT GALLERY'}));}catch(error){console.warn('Gift preview unavailable',error)}
-  status.textContent=(played?'ANIMATION PLAYING · ':'PREVIEW READY · ')+gift.name.toUpperCase()+' · FREE · NO COINS SPENT';
+  status.textContent='OPENING PREVIEW · '+gift.name.toUpperCase();
+  try{
+   const engine=window.TikNationGiftEngine;
+   if(!engine||typeof engine.show!=='function')throw new Error('Gift animation engine did not load. Refresh this page and try again.');
+   const played=engine.show({...gift,id:'gallery-'+code,name:gift.name,emoji:gift.emoji},{duration:['ghostship','infernal_castle','fingerdeath','meteor','phoenix','dragon','dragonrevenge'].includes(gift.style)?8500:6800,senderName:'TIKNATION GIFT GALLERY'});
+   if(!played)throw new Error('The preview could not start. Tap the gift again.');
+   status.textContent='ANIMATION PLAYING · '+gift.name.toUpperCase()+' · FREE · NO COINS SPENT';
+  }catch(error){
+   console.error('Gift preview unavailable',error);
+   status.textContent=(error&&error.message?error.message:'Gift preview unavailable')+' · TRY REFRESHING';
+  }
  }));
 }
 renderGiftGallery();;
