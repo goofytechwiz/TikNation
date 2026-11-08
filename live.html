@@ -770,8 +770,11 @@ function renderLiveGiftEvent(event) {
   const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
   // Route the Flying Dutchman through its dedicated cinematic renderer in BOTH
   // creator previews and received live events; the generic card bypassed it.
-  if(gift.style==="ghostship" && window.TikNationGiftEngine?.show){
-    window.TikNationGiftEngine.show(gift,{meta:"THE FLYING DUTCHMAN · LIVE GIFT",duration:10000});
+  if((gift.style==="ghostship" || gift.style==="meteor") && window.TikNationGiftEngine?.show){
+    window.TikNationGiftEngine.show(gift,{
+      meta:gift.style==="meteor"?"DRAGON'S METEOR STRIKE · LIVE GIFT":"THE FLYING DUTCHMAN · LIVE GIFT",
+      duration:gift.style==="meteor"?7800:10000
+    });
   } else {
     showLiveGiftCelebration(event);
   }
@@ -807,10 +810,7 @@ async function sendLiveGift(giftCode,button) {
       isHost=true;
       unlockLiveGiftAudio();
       const preview={id:"preview-"+Date.now(),gift_code:giftCode,sender_name:"Creator preview"};
-      showLiveGiftCelebration(preview);
-      playLiveGiftSound(preview,gift);
-      const feed=$("liveGiftFeed");
-      if(feed){const row=document.createElement("div");row.className="live-gift-feed-item";row.textContent="Creator preview · "+gift.emoji+" "+gift.name+" · FREE";feed.prepend(row);}
+      renderLiveGiftEvent(preview);
       setLiveGiftStatus("✨ "+gift.name+" preview · Free, no coins spent.","success");
       renderLiveGiftCatalog();
       await refreshLiveGiftBalance();
