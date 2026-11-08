@@ -690,12 +690,11 @@ function renderLivingTombstonesGift(gift,opts,overlay){
  function grave(st,t){
   const ww=(st.shape===0?46:st.shape===1?40:st.shape===2?36:st.shape===3?48:st.shape===4?42:39);
   const hh=(st.shape===0?100:st.shape===1?116:st.shape===2?83:st.shape===3?94:st.shape===4?108:88);
-  const rise=Math.max(0,Math.min(1,(t-st.delay)/1.05));
-  const settle=1-Math.pow(1-rise,2);
-  const tremor=t>st.delay+1.05?Math.sin((t-st.delay)*15+st.phase)*.012:0;
-  const rock=Math.sin(Math.max(0,t-st.delay)*3.8+st.phase)*st.rock*settle+tremor;
-  const lift=(1-settle)*Math.min(78,h*.095);
-  ctx.save();ctx.translate(st.x,st.baseY+lift);ctx.rotate(rock);ctx.scale(st.s,st.s);
+  const wake=Math.max(0,Math.min(1,(t-st.delay)/.8));
+  // Tombstones remain buried in place: only a restrained unsettling shudder.
+  const tremor=t>st.delay?Math.sin((t-st.delay)*17+st.phase)*.0045*wake:0;
+  const rock=Math.sin(Math.max(0,t-st.delay)*4.2+st.phase)*.006*wake+tremor;
+  ctx.save();ctx.translate(st.x,st.baseY);ctx.rotate(rock);ctx.scale(st.s,st.s);
   // Dark buried foot and stone silhouette.
   ctx.fillStyle="rgba(0,0,0,.72)";ctx.beginPath();ctx.ellipse(0,1,ww*.78,9,0,0,Math.PI*2);ctx.fill();
   ctx.beginPath();
@@ -718,7 +717,7 @@ function renderLivingTombstonesGift(gift,opts,overlay){
   ctx.strokeStyle="rgba(210,219,201,.28)";ctx.lineWidth=.8;ctx.strokeRect(-ww*.32,-hh*.69,ww*.64,hh*.28);
   ctx.fillStyle="rgba(230,231,210,.72)";ctx.textAlign="center";ctx.font="bold 8px Georgia";ctx.fillText(st.shape%2?"REST IN PEACE":"R.I.P.",0,-hh*.55);
   // Cracks split and glow briefly as each stone wakes.
-  const crackAlpha=rise*(.5+.5*Math.sin((t-st.delay)*8));
+  const crackAlpha=wake*(.5+.5*Math.sin((t-st.delay)*8));
   ctx.strokeStyle="rgba(5,9,8,.95)";ctx.lineWidth=2.4;ctx.beginPath();ctx.moveTo(-ww*.08,-hh*.94);ctx.lineTo(ww*.02,-hh*.77);ctx.lineTo(-ww*.14,-hh*.62);ctx.lineTo(-ww*.04,-hh*.45);ctx.lineTo(-ww*.17,-hh*.28);ctx.stroke();
   ctx.strokeStyle="rgba(196,219,192,"+(crackAlpha*.58)+")";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(-ww*.08,-hh*.94);ctx.lineTo(ww*.02,-hh*.77);ctx.lineTo(-ww*.14,-hh*.62);ctx.lineTo(-ww*.04,-hh*.45);ctx.stroke();
   ctx.restore();
