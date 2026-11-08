@@ -726,6 +726,8 @@ function renderLivingTombstonesGift(gift,opts,overlay){
   raf=requestAnimationFrame(frame);
  }
  raf=requestAnimationFrame(frame);
+ // This renderer has its own canvas loop, so it must explicitly start the user-gesture audio callback.
+ if(typeof opts.onSound==="function"){try{opts.onSound();}catch(error){console.warn("Tombstone gift audio unavailable:",error);}}
  const duration=Math.max(7000,Number(opts.duration)||7800);
  setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .55s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),580);}},duration);
  return overlay;
