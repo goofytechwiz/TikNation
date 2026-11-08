@@ -96,6 +96,26 @@ img,video,canvas{max-width:100%}
 @keyframes vaultPortal{0%,100%{filter:brightness(1)}50%{filter:brightness(2.2) hue-rotate(30deg)}}
 @media(max-width:620px){.vault-controls{grid-template-columns:1fr}.vault-scene{min-height:205px}.vault-hall{inset:12% 8% 0}}
 @media(prefers-reduced-motion:reduce){.wonder-vault.is-visible,.vault-scene[data-effect]:after{animation:none!important}.vault-door{transition:none}}
+
+/* Expanded vaulted hall: layered depth, pillars, floor perspective and artifact reveal */
+.vault-scene{min-height:340px;background:radial-gradient(ellipse at 50% 64%,#a98aff45,transparent 27%),radial-gradient(ellipse at 50% 100%,#7c5cc744,transparent 55%),linear-gradient(180deg,#080c1d 0%,#19132f 54%,#090d1a 100%)}
+.vault-hall{inset:8% 12% 10%;transform:perspective(850px) rotateX(8deg);border:1px solid #d6c5ff66;border-bottom:0;background:linear-gradient(90deg,#111329 0%,#35284f 17%,#1c1934 50%,#35284f 83%,#111329 100%);box-shadow:inset 0 0 70px #b69aff22,0 0 45px #a78bfa22}
+.vault-hall:before,.vault-hall:after{top:0;bottom:0;width:22%;border:1px solid #d6c5ff55;background:linear-gradient(90deg,#100f22,#4b3a6d 45%,#171329 100%);box-shadow:inset 0 0 24px #c4aaff33,0 0 16px #b69aff22}
+.vault-hall:before{left:3%;transform:skewY(-5deg)}.vault-hall:after{right:3%;transform:scaleX(-1) skewY(-5deg)}
+.vault-arch{position:absolute;z-index:1;top:5%;left:29%;width:42%;height:63%;border:9px double #b9a4ff88;border-bottom:0;border-radius:100% 100% 0 0;box-shadow:0 0 28px #a78bfa44,inset 0 12px 24px #b9a4ff18;pointer-events:none}
+.vault-columns{position:absolute;z-index:1;inset:12% 17% 14%;display:flex;justify-content:space-between;pointer-events:none}
+.vault-columns i{display:block;width:13px;height:100%;border:1px solid #d9c9ff88;background:linear-gradient(90deg,#241d3d,#b49be855,#30234c);box-shadow:0 0 18px #a78bfa55}
+.vault-floor{position:absolute;z-index:1;left:13%;right:13%;bottom:-5%;height:44%;transform:perspective(300px) rotateX(58deg);transform-origin:bottom;background:repeating-linear-gradient(90deg,transparent 0 54px,#b9a4ff33 55px 57px),repeating-linear-gradient(0deg,#b9a4ff12 0 27px,#d7c5ff38 28px 30px);border:1px solid #b9a4ff55;box-shadow:0 -8px 35px #a78bfa22}
+.vault-door{z-index:2;width:164px;height:190px;border-radius:88px 88px 5px 5px;border:3px solid #e4ceff;background:linear-gradient(90deg,#191329,#634b91 48%,#171329);box-shadow:0 0 28px #b9a4ffcc,0 0 90px #9c7cff88,inset 0 0 35px #fff3}
+.vault-door:before{content:"";inset:9px;border:2px solid #d7c5ff88;border-radius:80px 80px 0 0;background:radial-gradient(ellipse at 50% 70%,#e6d4ff88,#7052a766 35%,transparent 72%);font-size:0}
+.vault-door:after{content:"";position:absolute;top:50%;left:50%;height:75%;width:2px;background:#e7d9ff99;box-shadow:0 0 10px #fff}
+.vault-artifact{position:absolute;z-index:3;top:34%;left:50%;transform:translate(-50%,-50%) scale(.4);opacity:0;font-size:52px;color:#fff2c4;text-shadow:0 0 16px #fff,0 0 38px #b9a4ff;transition:all .45s ease;pointer-events:none}
+.vault-scene[data-reveal="crystal"] .vault-artifact,.vault-scene[data-reveal="crown"] .vault-artifact,.vault-scene[data-reveal="dragon"] .vault-artifact{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.vault-scene[data-reveal="crystal"] .vault-artifact{color:#a9fff8;text-shadow:0 0 18px #8cf7ef,0 0 45px #8cf7ef}
+.vault-scene[data-reveal="crown"] .vault-artifact{color:#ffe4a1;text-shadow:0 0 18px #ffd27a,0 0 45px #ffd27a}
+.vault-scene[data-reveal="dragon"] .vault-artifact{color:#b9ff9e;text-shadow:0 0 18px #9aff70,0 0 45px #9aff70}
+.vault-scene[data-effect="portal"] .vault-door{animation:vaultPortal 1.2s ease-in-out both;box-shadow:0 0 45px #d9c5ff,0 0 130px #9c7cff}
+@media(max-width:620px){.vault-scene{min-height:290px}.vault-door{width:138px;height:166px}.vault-arch{left:22%;width:56%}.vault-columns{inset:12% 10% 14%}.vault-floor{left:6%;right:6%}}
 </style><style id="fod-standalone-style">#fodStandalonePreview{position:fixed;inset:0;z-index:2147483647;pointer-events:none}.fod-scene{position:absolute;inset:0;overflow:hidden;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 44%,#253b48 0,#101a2b 43%,#03060d 100%);animation:fodFadeIn .55s ease both}.fod-runes{position:absolute;top:14%;color:#9cf7ed;font-size:clamp(18px,5vw,34px);letter-spacing:.5em;text-shadow:0 0 18px #7df8ff;animation:fodRunes 12s linear infinite}.fod-hand{position:relative;z-index:2;width:min(78vw,430px);height:min(70vh,540px);overflow:visible;filter:drop-shadow(0 15px 24px #000) drop-shadow(0 0 20px #8ee8e8aa);animation:fodRise 1s cubic-bezier(.16,1,.3,1) both}.fod-title{position:absolute;z-index:3;bottom:13%;left:5%;right:5%;text-align:center;color:#efffff;font-weight:950;font-size:clamp(22px,5vw,42px);letter-spacing:.12em;text-shadow:0 0 22px #8ee8e8,0 4px 9px #000}.fod-title small{display:block;margin-top:10px;font-size:11px;letter-spacing:.28em;color:#b9d8dd}.fod-close{position:absolute;bottom:5%;font-size:9px;letter-spacing:.2em;color:#9bb8c3}.fod-target{animation:fodTarget 1.6s ease-in-out infinite alternate}#fodStandalonePreview.fod-out{opacity:0;transition:opacity .45s ease}@keyframes fodFadeIn{from{opacity:0}to{opacity:1}}@keyframes fodRise{from{opacity:0;transform:translateY(90px) scale(.7) rotate(-8deg)}to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}@keyframes fodRunes{to{transform:rotate(360deg)}}@keyframes fodTarget{from{opacity:.2;transform:translateY(5px)}to{opacity:1;transform:translateY(-7px)}}@media(orientation:landscape){.fod-hand{height:72vh;width:auto}.fod-title{bottom:8%}.fod-close{bottom:2%}}</style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><nav style="display:flex;gap:8px;align-items:center"><a class="back" href="../profile/">MY PROFILE</a><a class="back" href="../realms/">← THE REALMS</a></nav></header>
@@ -120,7 +140,7 @@ img,video,canvas{max-width:100%}
   <h2 id="wonderVaultTitle" style="font:400 29px Georgia,serif;margin:8px 0">The vault is waiting.</h2>
   <p style="color:#bdb7d6;font-size:11px;line-height:1.6;margin:0">Choose what the room should reveal. These controls are a local concept preview; they do not send effects to a live broadcast yet.</p>
   <div class="vault-scene" id="vaultScene" data-reveal="none" data-effect="none" aria-label="Interactive 3D-style Wonder Vault chamber">
-    <div class="vault-hall"></div><div class="vault-door"></div>
+    <div class="vault-hall"></div><div class="vault-arch"></div><div class="vault-columns" aria-hidden="true"><i></i><i></i></div><div class="vault-floor"></div><div class="vault-door"></div><div class="vault-artifact" id="vaultArtifact" aria-hidden="true">✧</div>
   </div>
   <div class="vault-controls">
     <div class="vault-group"><h3>Audience chooses the mystery</h3><div class="vault-options" role="group" aria-label="Choose a mystery">
@@ -163,7 +183,7 @@ document.getElementById('enter').addEventListener('click',()=>{sparkle();documen
  const names={crystal:'CRYSTAL KEY',crown:'HOLLOW CROWN',dragon:'DRAGON EGG'};
  const effects={portal:'PORTAL OPENED',starfall:'STARFALL RELEASED',wave:'ARCANE WAVE RELEASED'};
  const revealButtons=[...panel.querySelectorAll('[data-vault-reveal]')],effectButtons=[...panel.querySelectorAll('[data-vault-effect]')];
- revealButtons.forEach(b=>b.addEventListener('click',()=>{const value=b.dataset.vaultReveal;scene.dataset.reveal=value;revealButtons.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));status.textContent='THE AUDIENCE CHOSE: '+names[value]+' · THE VAULT HAS RESPONDED'}));
+ const artifact=document.getElementById('vaultArtifact'),symbols={crystal:'✧',crown:'♛',dragon:'卵'};revealButtons.forEach(b=>b.addEventListener('click',()=>{const value=b.dataset.vaultReveal;scene.dataset.reveal=value;if(artifact)artifact.textContent=symbols[value];revealButtons.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));status.textContent='THE AUDIENCE CHOSE: '+names[value]+' · THE VAULT HAS REVEALED ITS TREASURE'}));
  effectButtons.forEach(b=>b.addEventListener('click',()=>{const value=b.dataset.vaultEffect;scene.dataset.effect='none';void scene.offsetWidth;scene.dataset.effect=value;effectButtons.forEach(x=>x.setAttribute('aria-pressed',String(x===b)));status.textContent=effects[value]+' · CREATOR PREVIEW ONLY'}));
  const cards=[...document.querySelectorAll('[data-room]')],choose=()=>{const active=cards.find(c=>c.getAttribute('aria-pressed')==='true');const show=active&&active.dataset.room==='wonder';panel.classList.toggle('is-visible',!!show);panel.setAttribute('aria-hidden',String(!show));};
  cards.forEach(c=>c.addEventListener('click',()=>requestAnimationFrame(choose)));choose();
