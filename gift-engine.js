@@ -783,7 +783,7 @@ function renderHauntedLighthouseGift(gift,opts,overlay){
    const moonGlow=new T.PointLight(0x7ebce8,22,55,2);moonGlow.position.set(-11,11,-15);world.add(moonGlow);
    // Procedural storm ocean: directional Gerstner swells, fine wind chop,
    // physically shaded highlights, and broken crest foam (no decorative wave stripes).
-   const waterGeometry=new T.PlaneGeometry(180,180,1,1);
+   const waterGeometry=new T.PlaneGeometry(180,180,160,160);
    const waterMat=new T.ShaderMaterial({
     uniforms:{uTime:{value:0},uDeep:{value:new T.Color(0x020913)},uMid:{value:new T.Color(0x092b3b)},uLight:{value:new T.Color(0x315b68)}},
     vertexShader:`uniform float uTime;
@@ -792,12 +792,12 @@ function renderHauntedLighthouseGift(gift,opts,overlay){
       vec3 q=vec3(p.x,p.y,0.0); crest=0.0;
       vec2 d1=normalize(vec2(1.0,.22)),d2=normalize(vec2(-.48,1.0)),d3=normalize(vec2(.72,.69)),d4=normalize(vec2(-.95,.18));
       float a;
-      a=dot(p,d1)*.105+t*1.18; q.xy+=d1*(.34*.72*cos(a)); q.z+=.34*sin(a); crest+=.34*sin(a);
-      a=dot(p,d2)*.17-t*1.46; q.xy+=d2*(.23*.68*cos(a)); q.z+=.23*sin(a); crest+=.23*sin(a);
-      a=dot(p,d3)*.29+t*2.05; q.xy+=d3*(.105*.58*cos(a)); q.z+=.105*sin(a); crest+=.105*sin(a);
-      a=dot(p,d4)*.43-t*2.65; q.xy+=d4*(.045*.5*cos(a)); q.z+=.045*sin(a); crest+=.045*sin(a);
+      a=dot(p,d1)*.105+t*1.18; q.xy+=d1*(1.28*.72*cos(a)); q.z+=1.28*sin(a); crest+=1.28*sin(a);
+      a=dot(p,d2)*.17-t*1.46; q.xy+=d2*(.78*.68*cos(a)); q.z+=.78*sin(a); crest+=.78*sin(a);
+      a=dot(p,d3)*.29+t*2.05; q.xy+=d3*(.36*.58*cos(a)); q.z+=.36*sin(a); crest+=.36*sin(a);
+      a=dot(p,d4)*.43-t*2.65; q.xy+=d4*(.14*.5*cos(a)); q.z+=.14*sin(a); crest+=.14*sin(a);
       q.z+=sin(p.x*.62+p.y*.41-t*3.2)*.025+sin(p.x*1.15-p.y*.83+t*3.8)*.012;
-      crest=crest/.72; return q;
+      crest=crest/2.56; return q;
      }
      void main(){
       vec2 p=position.xy; float c,cx,cy;
@@ -827,12 +827,12 @@ function renderHauntedLighthouseGift(gift,opts,overlay){
       float depth=mix(.35,1.0,clamp((n1*.55+n2*.3+n3*.15),0.0,1.0));
       vec3 col=mix(uDeep,uMid,clamp(.32+n1*.52+vHeight*.22,0.0,1.0));
       col=mix(col,uLight,clamp(diffuse*.20+fresnel*.36,0.0,.48));
-      float crest=smoothstep(.43,.83,vCrest);
+      float crest=smoothstep(.38,.78,vCrest);
       float broken=noise(p*1.65+vec2(uTime*.32,-uTime*.25))*noise(p*.47-vec2(uTime*.16));
-      float foam=crest*smoothstep(.32,.72,broken)*.78;
+      float foam=crest*smoothstep(.24,.68,broken)*.94;
       float islandDist=length(p);
       float shore=(1.0-smoothstep(6.1,9.0,islandDist))*smoothstep(.12,.52,noise(p*2.8+uTime*.08));
-      foam=max(foam,shore*.78);
+      foam=max(foam,shore*.9);
       col=mix(col,vec3(.58,.72,.75),foam);
       col+=vec3(.48,.69,.78)*spec*(.25+fresnel*.9);
       col*=depth;
