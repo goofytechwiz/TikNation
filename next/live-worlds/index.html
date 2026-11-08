@@ -139,6 +139,10 @@ img,video,canvas{max-width:100%}
 @keyframes vaultReveal{from{opacity:0;transform:translate(-50%,-50%) scale(.2)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 @media(max-width:620px){.vault-door{width:138px;height:166px}.vault-interior{width:46%}}
 @media(prefers-reduced-motion:reduce){.vault-door-left,.vault-door-right,.vault-interior{transition:none}.vault-scene[data-open="true"] .vault-artifact{animation:none}}
+
+.vault-door-toggle{position:relative;z-index:8;width:min(100%,360px);min-height:58px;margin:18px auto 14px;display:flex;align-items:center;justify-content:center;gap:10px;border:2px solid #e8d9ff;border-radius:14px;background:linear-gradient(110deg,#6844a4,#a17be0 52%,#62438f);color:#fff;font:900 13px system-ui;letter-spacing:.16em;box-shadow:0 0 0 3px #b9a4ff22,0 0 28px #a78bfa99;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.vault-door-toggle:active{transform:scale(.98);filter:brightness(1.2)}
+.vault-door-toggle:focus-visible{outline:3px solid #8cf7ef;outline-offset:4px}
 </style><style id="fod-standalone-style">#fodStandalonePreview{position:fixed;inset:0;z-index:2147483647;pointer-events:none}.fod-scene{position:absolute;inset:0;overflow:hidden;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 44%,#253b48 0,#101a2b 43%,#03060d 100%);animation:fodFadeIn .55s ease both}.fod-runes{position:absolute;top:14%;color:#9cf7ed;font-size:clamp(18px,5vw,34px);letter-spacing:.5em;text-shadow:0 0 18px #7df8ff;animation:fodRunes 12s linear infinite}.fod-hand{position:relative;z-index:2;width:min(78vw,430px);height:min(70vh,540px);overflow:visible;filter:drop-shadow(0 15px 24px #000) drop-shadow(0 0 20px #8ee8e8aa);animation:fodRise 1s cubic-bezier(.16,1,.3,1) both}.fod-title{position:absolute;z-index:3;bottom:13%;left:5%;right:5%;text-align:center;color:#efffff;font-weight:950;font-size:clamp(22px,5vw,42px);letter-spacing:.12em;text-shadow:0 0 22px #8ee8e8,0 4px 9px #000}.fod-title small{display:block;margin-top:10px;font-size:11px;letter-spacing:.28em;color:#b9d8dd}.fod-close{position:absolute;bottom:5%;font-size:9px;letter-spacing:.2em;color:#9bb8c3}.fod-target{animation:fodTarget 1.6s ease-in-out infinite alternate}#fodStandalonePreview.fod-out{opacity:0;transition:opacity .45s ease}@keyframes fodFadeIn{from{opacity:0}to{opacity:1}}@keyframes fodRise{from{opacity:0;transform:translateY(90px) scale(.7) rotate(-8deg)}to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}@keyframes fodRunes{to{transform:rotate(360deg)}}@keyframes fodTarget{from{opacity:.2;transform:translateY(5px)}to{opacity:1;transform:translateY(-7px)}}@media(orientation:landscape){.fod-hand{height:72vh;width:auto}.fod-title{bottom:8%}.fod-close{bottom:2%}}</style></head>
 <body>
 <header><div class="brand">TIK<span>NATION</span></div><nav style="display:flex;gap:8px;align-items:center"><a class="back" href="../profile/">MY PROFILE</a><a class="back" href="../realms/">← THE REALMS</a></nav></header>
@@ -162,10 +166,10 @@ img,video,canvas{max-width:100%}
   <div class="eyebrow">WORLD 03 · THE WONDER VAULT</div>
   <h2 id="wonderVaultTitle" style="font:400 29px Georgia,serif;margin:8px 0">The vault is waiting.</h2>
   <p style="color:#bdb7d6;font-size:11px;line-height:1.6;margin:0">Choose what the room should reveal. These controls are a local concept preview; they do not send effects to a live broadcast yet.</p>
+  <button type="button" class="vault-door-toggle" id="vaultDoorToggle" aria-expanded="false">✧ OPEN THE VAULT ✧</button>
   <div class="vault-scene" id="vaultScene" data-reveal="none" data-effect="none" aria-label="Interactive 3D-style Wonder Vault chamber">
     <div class="vault-hall"></div><div class="vault-arch"></div><div class="vault-columns" aria-hidden="true"><i></i><i></i></div><div class="vault-floor"></div><div class="vault-interior" aria-hidden="true"></div><div class="vault-door" id="vaultDoors"><div class="vault-door-left"></div><div class="vault-door-right"></div></div><div class="vault-artifact" id="vaultArtifact" aria-hidden="true">✧</div>
   </div>
-  <button type="button" class="vault-door-toggle" id="vaultDoorToggle" aria-expanded="false">✧ OPEN THE VAULT ✧</button>
   <div class="vault-controls">
     <div class="vault-group"><h3>Audience chooses the mystery</h3><div class="vault-options" role="group" aria-label="Choose a mystery">
       <button type="button" data-vault-reveal="crystal" aria-pressed="false">CRYSTAL KEY</button>
