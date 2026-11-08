@@ -683,7 +683,7 @@ function renderLivingTombstonesGift(gift,opts,overlay){
   const rock=Math.sin(Math.max(0,t-st.delay)*3.2+st.phase)*st.rock*wake;
   ctx.save();
   // The pivot is fixed at the foot of the stone: rotation only, never screen-space travel.
-  ctx.translate(st.x,st.baseY);ctx.rotate(rock);ctx.scale(st.s,st.s);
+  ctx.translate(st.x,st.baseY-wake*28*st.s);ctx.rotate(rock);ctx.scale(st.s,st.s);
   ctx.globalAlpha=.72;
   ctx.fillStyle="#020504";ctx.beginPath();ctx.ellipse(0,2,ww*.72,8,0,0,Math.PI*2);ctx.fill();
   ctx.globalAlpha=1;
