@@ -731,11 +731,8 @@ function playLiveGiftSound(event, gift) {
       });
       return;
     }
-    if (Number.isFinite(giftSound.duration) && giftSound.duration > 0) keepSceneUntilFlushEnds();
-    else giftSound.addEventListener("loadedmetadata", keepSceneUntilFlushEnds, { once:true });
-    giftSound.addEventListener("ended", () => overlay.remove(), { once:true });
-  } else {
-    window.setTimeout(()=>overlay.remove(),5000);
+  } catch (error) {
+    console.warn("Gift audio could not be played:", error);
   }
 }
 function renderLiveGiftEvent(event) {
