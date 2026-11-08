@@ -1,4 +1,4 @@
-const CACHE_NAME = "tiknation-shell-v45-flying-dutchman-rebuild";
+const CACHE_NAME = "tiknation-shell-v46-flying-dutchman-cinematic";
 const APP_SHELL = [
   "./",
   "./index.html",
