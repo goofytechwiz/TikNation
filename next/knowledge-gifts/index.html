@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#090817">
-<title>Book of Knowledge & Spooky Genie · TikNation</title>
+<title>Spooky Genie Gift · TikNation</title>
 <style>
 :root{color-scheme:dark;--violet:#b99aff;--cyan:#9cf8ee;--gold:#e9bd76}
 *{box-sizing:border-box}
@@ -20,7 +20,7 @@ button{font:inherit;cursor:pointer}
 .tabs button,.action{border:1px solid #b99aff66;border-radius:999px;background:#ffffff08;color:#eee7ff;padding:11px 16px;font-size:12px;font-weight:850;letter-spacing:.06em}
 .tabs button[aria-pressed=true]{background:#b99aff24;border-color:#c4aaff;color:#fff;box-shadow:0 0 22px #9c7aff30}
 .stage{position:relative;min-height:450px;height:clamp(450px,62vw,610px);overflow:hidden;border:1px solid #b99aff55;border-radius:24px;background:radial-gradient(ellipse at 50% 68%,#45345e88,transparent 54%),linear-gradient(#101328,#171127 70%,#080a13);box-shadow:0 24px 80px #0009,inset 0 0 60px #9e7cff12}
-.scene{position:absolute;inset:0;display:none;overflow:hidden}.scene.active{display:block}
+.scene{position:absolute;inset:0;display:none;overflow:hidden}.scene.active{display:block}.book-scene,.tabs button[data-scene="book"]{display:none!important}
 .ambient{position:absolute;inset:0;background-image:radial-gradient(circle,#fff 1px,transparent 1.8px),radial-gradient(circle,#bda7ff 1px,transparent 2px);background-size:83px 91px,137px 121px;background-position:0 0,42px 30px;opacity:.32;animation:stars 14s linear infinite}
 .book-wrap{position:absolute;left:50%;top:48%;width:min(88vw,490px);height:360px;transform:translate(-50%,-50%);perspective:1100px;filter:drop-shadow(0 27px 28px #000c)}
 .book{position:absolute;left:50%;top:50%;width:260px;height:320px;transform:translate(-50%,-50%) rotateY(-18deg) rotateX(8deg) rotateZ(-2deg);transform-style:preserve-3d;animation:bookFloat 4s ease-in-out infinite}
@@ -91,12 +91,12 @@ button{font:inherit;cursor:pointer}
 <body>
 <header><div class="brand">TIK<span>NATION</span> · GIFT WORKSHOP</div><a href="../">← New TikNation</a></header>
 <main>
-<div class="eyebrow">TWO NEW SUPERNATURAL GIFT CONCEPTS</div>
-<h1>Choose Your Mystery</h1>
-<p class="intro">Explore the animated concepts for the Book of Knowledge and the Spooky Genie. Tap a gift to watch its full entrance.</p>
+<div class="eyebrow">SUPERNATURAL GIFT PREVIEW</div>
+<h1>The Spooky Genie</h1>
+<p class="intro">An ancient brass lamp awakens. Watch the smoke gather as a mysterious genie rises.</p>
 <nav class="tabs" aria-label="Gift previews">
-<button type="button" data-scene="book" aria-pressed="true">📖 The Book of Knowledge</button>
-<button type="button" data-scene="genie" aria-pressed="false">🧞 The Spooky Genie</button>
+
+<button type="button" data-scene="genie" aria-pressed="true">🧞 The Spooky Genie</button>
 </nav>
 <section class="stage" aria-label="Animated gift preview stage">
 <div class="scene book-scene active" id="bookScene">
@@ -106,7 +106,7 @@ button{font:inherit;cursor:pointer}
 </div><div class="book-open"><div class="spread"><div class="page"><div class="page-mark">✦ ✧ ✦</div><h3>THE ANCIENT LORE</h3><div class="runes">ᚠ ᚢ ᚦ ᚨ ᚱ</div><p class="manuscript">At the beginning, there was a spark beneath the endless night. From that spark came every star, every dream, and every hidden wonder.</p><p class="manuscript">Seek not only what is known. The greatest secrets wait beyond the final page.</p><div class="page-foot">— THE FIRST CHRONICLE —</div></div><div class="page"><div class="page-mark">☽ ✧ ☾</div><h3>THE HIDDEN TRUTH</h3><div class="runes">✦ ☽ ✧ ☉ ✦</div><p class="manuscript">When the silver moon meets the shadow, the sleeping words shall awaken. Turn the page, and let the old magic find its voice.</p><p class="manuscript">Three keys guard the forgotten library: courage, wonder, and wisdom.</p><div class="page-foot">— THE KEEPER'S SECRET —</div></div><div class="turning leaf-1"></div><div class="turning leaf-2"></div><div class="turning leaf-3"></div><div class="turning leaf-4"></div><div class="turning leaf-5"></div></div></div></div>
 <div class="genie-label" style="color:#f4d9a2">ANCIENT SECRETS · AWAKEN THE PAGES</div>
 </div>
-<div class="scene genie-scene" id="genieScene">
+<div class="scene genie-scene active" id="genieScene">
 <div class="ambient"></div><div class="moon"></div><div class="smoke"><i></i><i></i><i></i></div>
 <div class="genie">
 <div class="hood"></div><div class="head"></div><div class="eye left"></div><div class="eye right"></div><div class="beard"></div><div class="torso"></div><div class="arm left"></div><div class="arm right"></div><div class="tail"></div>
@@ -120,7 +120,7 @@ button{font:inherit;cursor:pointer}
 </main>
 <script>
 const tabs=[...document.querySelectorAll("[data-scene]")],bookScene=document.getElementById("bookScene"),genieScene=document.getElementById("genieScene"),status=document.getElementById("status"),soundButton=document.getElementById("sound");
-let selected="book",audioContext=null,soundOn=false,pageSoundTimer=null;
+let selected="genie",audioContext=null,soundOn=false,pageSoundTimer=null;
 function choose(name){selected=name;tabs.forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.scene===name)));bookScene.classList.toggle("active",name==="book");genieScene.classList.toggle("active",name==="genie");stopPageSounds();replay();status.textContent=name==="book"?"The ancient book opens and its enchanted pages turn.":"The brass lamp releases a column of smoke and the spooky genie rises."}
 function replay(){const node=selected==="book"?bookScene:genieScene;node.classList.remove("replay");void node.offsetWidth;node.classList.add("replay");if(selected==="book"){bookScene.classList.remove("opened");setTimeout(()=>{bookScene.classList.add("opened");if(soundOn){startPageSounds()}},500)}else stopPageSounds()}
 function ensureAudio(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;if(!audioContext)audioContext=new AC();if(audioContext.state==="suspended")audioContext.resume();return true}
@@ -128,10 +128,10 @@ function pageRustle(){try{if(!ensureAudio())return;const length=Math.floor(audio
 function startPageSounds(){stopPageSounds();pageRustle();pageSoundTimer=setInterval(()=>{if(soundOn&&selected==="book"&&bookScene.classList.contains("opened"))pageRustle();else stopPageSounds()},1550)}
 function stopPageSounds(){if(pageSoundTimer){clearInterval(pageSoundTimer);pageSoundTimer=null}}
 tabs.forEach(b=>b.addEventListener("click",()=>choose(b.dataset.scene)));
-window.addEventListener("load",()=>{setTimeout(()=>{if(selected==="book"){bookScene.classList.add("opened");status.textContent="The cover opens by itself. Enchanted pages turn one after another."}},900)});
+window.addEventListener("load",()=>{status.textContent="The Spooky Genie is ready. Replay the entrance whenever you like."});
 document.getElementById("replay").addEventListener("click",replay);
 soundButton.textContent="PAGE SOUND: OFF";
-soundButton.addEventListener("click",()=>{soundOn=!soundOn;soundButton.textContent="PAGE SOUND: "+(soundOn?"ON":"OFF");if(soundOn&&selected==="book"&&bookScene.classList.contains("opened"))startPageSounds();else stopPageSounds();status.textContent=soundOn?"Only soft paper page-turn sounds are enabled. No music or melody.":"Page sounds muted."});
+soundButton.addEventListener("click",()=>{soundOn=!soundOn;soundButton.textContent="SOUND: "+(soundOn?"ON":"OFF");if(soundOn&&selected==="book"&&bookScene.classList.contains("opened"))startPageSounds();else stopPageSounds();status.textContent=soundOn?"Only soft paper page-turn sounds are enabled. No music or melody.":"Page sounds muted."});
 </script>
 </body>
 </html>
