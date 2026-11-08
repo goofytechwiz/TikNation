@@ -1,14 +1,4 @@
-const TIKNATION_GIFT_CATALOG = {
-  phoenix_rebirth: {
-    name: "The Phoenix Rebirth",
-    emoji: "🔥",
-    category: "Legendary",
-    cost: 100,
-    sound: [196, 262, 392, 523],
-    style: "phoenix",
-    message: "From the ashes, a legend rises."
-  }
-};
+const TIKNATION_GIFT_CATALOG = {};
 window.TIKNATION_GIFT_CATALOG = TIKNATION_GIFT_CATALOG;
 
 let tikNationGiftAudioContext = null;
