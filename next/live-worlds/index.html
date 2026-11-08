@@ -112,74 +112,76 @@ document.getElementById('fingerDeathPreview').addEventListener('click',()=>{
  const status=document.getElementById('fingerDeathStatus');
  const prior=document.getElementById('fodStandalonePreview');if(prior)prior.remove();
  const overlay=document.createElement('div');overlay.id='fodStandalonePreview';
- overlay.innerHTML=`<div class="fod-scene" role="dialog" aria-label="Anatomically detailed skeletal hand"><div class="fod-runes">✦　ᛟ　✧　ᚷ　✦</div><svg class="fod-hand" viewBox="0 0 420 560" role="img" aria-label="Anatomically detailed skeletal hand with finger bones, knuckles, palm bones and wrist bones">
+ overlay.innerHTML=`<div class="fod-scene" role="dialog" aria-label="Anatomically detailed skeletal hand"><div class="fod-runes">✦　ᛟ　✧　ᚷ　✦</div><svg class="fod-hand" viewBox="0 0 420 560" role="img" aria-label="Skeletal hand with solid anatomical finger, palm and wrist bones">
 <defs>
- <linearGradient id="boneReal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff9e8"/><stop offset=".28" stop-color="#e2ddc9"/><stop offset=".62" stop-color="#b5b5a6"/><stop offset="1" stop-color="#657477"/></linearGradient>
- <linearGradient id="boneEdge" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fffde9"/><stop offset=".5" stop-color="#c5c5b5"/><stop offset="1" stop-color="#788789"/></linearGradient>
+ <linearGradient id="boneReal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff9e8"/><stop offset=".35" stop-color="#ded8c3"/><stop offset=".72" stop-color="#aeb0a3"/><stop offset="1" stop-color="#657477"/></linearGradient>
+ <linearGradient id="boneShade" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fdf5dc"/><stop offset=".55" stop-color="#c7c3b0"/><stop offset="1" stop-color="#788486"/></linearGradient>
  <filter id="boneShadow"><feGaussianBlur stdDeviation="4"/></filter>
- <g id="longBone"><path d="M-10 -28Q-16 -36 -12 -45Q-8 -54 0 -51Q8 -54 12 -45Q16 -36 10 -28L8 28Q16 36 12 45Q8 54 0 51Q-8 54 -12 45Q-16 36 -8 28Z" fill="url(#boneReal)" stroke="#536267" stroke-width="3"/><path d="M-3 -35Q-7 -4 -3 34" fill="none" stroke="#fff8df" stroke-width="2" opacity=".65"/><path d="M8 -28Q4 0 7 27" fill="none" stroke="#667779" stroke-width="2" opacity=".65"/></g>
- <g id="joint"><ellipse rx="14" ry="11" fill="url(#boneEdge)" stroke="#536267" stroke-width="3"/><ellipse rx="5" ry="4" fill="#69787a" opacity=".7"/><path d="M-8 -4Q0 -9 8 -4" fill="none" stroke="#fff8e4" stroke-width="2"/></g>
+ <g id="phalanx"><path d="M-13 -31Q-18 -42 -12 -50Q-5 -58 0 -52Q7 -58 13 -49Q18 -41 13 -30L10 28Q17 39 11 48Q5 55 0 50Q-7 56 -12 47Q-17 38 -10 28Z" fill="url(#boneReal)" stroke="#536267" stroke-width="3"/><path d="M-5 -37Q-7 -2 -4 35" fill="none" stroke="#fff9e6" stroke-width="3" opacity=".72"/><path d="M8 -25Q4 0 7 24" fill="none" stroke="#687779" stroke-width="2" opacity=".55"/></g>
+ <g id="knuckle"><path d="M-17 -8Q-16 -19 -6 -18L6 -18Q17 -18 17 -7L15 8Q8 17 0 13Q-9 18 -15 8Z" fill="url(#boneShade)" stroke="#536267" stroke-width="3"/><path d="M-8 -9Q0 -14 8 -9" fill="none" stroke="#fff9e8" stroke-width="2"/></g>
 </defs>
-<ellipse cx="210" cy="292" rx="150" ry="220" fill="#a9efff" opacity=".07" filter="url(#boneShadow)"/>
-<!-- forearm bones -->
-<path d="M151 405Q143 430 148 462L154 535Q166 548 179 535L180 458Q184 428 190 407Z" fill="url(#boneReal)" stroke="#536267" stroke-width="5"/>
-<path d="M231 405Q239 430 234 462L228 535Q216 548 203 535L202 458Q198 428 192 407Z" fill="url(#boneReal)" stroke="#536267" stroke-width="5"/>
-<path d="M160 432L166 523M220 432L214 523" stroke="#fff9e8" stroke-width="3" opacity=".55"/>
-<!-- carpal cluster: individual wrist bones -->
-<g fill="url(#boneEdge)" stroke="#536267" stroke-width="3">
- <path d="M145 393Q140 379 153 370Q166 367 174 380L171 400Q157 408 145 393Z"/>
- <path d="M174 382Q175 367 190 366Q203 373 198 390L184 402Q173 397 174 382Z"/>
- <path d="M201 382Q204 367 219 370Q232 380 224 396L208 403Q198 397 201 382Z"/>
- <path d="M228 382Q238 369 251 378Q260 391 248 402L232 402Q222 395 228 382Z"/>
- <path d="M151 407Q161 396 176 403L181 421Q168 432 154 422Z"/>
- <path d="M181 405Q192 397 204 407L205 426Q192 435 181 423Z"/>
- <path d="M207 407Q219 397 232 405L233 423Q220 435 207 426Z"/>
- <path d="M235 405Q248 396 259 407L256 423Q244 433 232 422Z"/>
+<ellipse cx="210" cy="285" rx="155" ry="230" fill="#a9efff" opacity=".07" filter="url(#boneShadow)"/>
+<!-- paired forearm bones -->
+<path d="M150 411Q142 432 147 457L153 535Q161 546 174 538L182 458Q185 431 190 410Z" fill="url(#boneReal)" stroke="#536267" stroke-width="5"/>
+<path d="M229 410Q235 432 230 458L224 538Q237 546 245 535L252 457Q258 432 249 411Z" fill="url(#boneReal)" stroke="#536267" stroke-width="5"/>
+<!-- wrist: compact, irregular carpal bones -->
+<g fill="url(#boneShade)" stroke="#536267" stroke-width="3">
+<path d="M145 393Q136 381 147 369Q159 362 170 374L174 391Q163 405 151 401Z"/>
+<path d="M172 387Q168 372 183 365Q198 365 201 380L196 400L181 404Z"/>
+<path d="M202 381Q205 365 220 369Q232 377 226 394L213 404L201 396Z"/>
+<path d="M229 383Q237 369 250 377Q260 389 249 403L233 404L225 394Z"/>
+<path d="M151 407Q159 395 174 402L182 418Q172 431 158 423Z"/>
+<path d="M180 405Q193 397 205 406L207 424Q194 435 181 424Z"/>
+<path d="M209 406Q222 397 235 405L237 423Q223 434 209 425Z"/>
+<path d="M237 405Q250 397 261 408L257 424Q245 432 233 422Z"/>
 </g>
-<!-- five metacarpals, individually separated -->
-<g fill="none" stroke="#39494d" stroke-width="16" stroke-linecap="round">
- <path d="M160 392Q145 351 112 318"/><path d="M181 389Q171 337 164 281"/><path d="M207 388Q207 335 207 268"/><path d="M232 389Q247 343 258 287"/><path d="M250 394Q287 365 307 330"/>
+<!-- metacarpals: five broad, tapered bones fanning from wrist to knuckles -->
+<g fill="url(#boneReal)" stroke="#536267" stroke-width="4" stroke-linejoin="round">
+<path d="M157 394Q148 365 126 342Q111 326 103 313Q100 303 109 298Q118 294 126 304Q151 329 167 350Q180 370 176 394Z"/>
+<path d="M177 391Q168 354 163 320Q158 291 157 270Q158 258 168 257Q179 257 182 270Q188 306 192 337Q198 366 195 392Z"/>
+<path d="M199 392Q197 350 198 313Q197 283 198 257Q201 245 211 245Q222 247 222 260L221 318Q224 358 218 393Z"/>
+<path d="M222 393Q228 354 239 322Q249 292 257 270Q263 259 273 264Q283 270 278 282Q270 314 258 343Q249 375 241 397Z"/>
+<path d="M242 397Q260 366 284 345Q304 326 320 310Q331 303 339 312Q346 321 337 330Q316 353 296 372Q273 397 255 410Z"/>
 </g>
-<g fill="none" stroke="url(#boneReal)" stroke-width="10" stroke-linecap="round">
- <path d="M160 392Q145 351 112 318"/><path d="M181 389Q171 337 164 281"/><path d="M207 388Q207 335 207 268"/><path d="M232 389Q247 343 258 287"/><path d="M250 394Q287 365 307 330"/>
-</g>
-<!-- index finger: three distinct phalanges -->
-<g transform="translate(207 0)">
- <use href="#joint" x="0" y="253"/>
- <g transform="translate(0 205) rotate(0)"><use href="#longBone" transform="scale(.72 .72)"/></g>
- <use href="#joint" x="0" y="157"/>
- <g transform="translate(0 111)"><use href="#longBone" transform="scale(.68 .78)"/></g>
- <use href="#joint" x="0" y="62"/>
- <g transform="translate(0 26)"><use href="#longBone" transform="scale(.62 .65)"/></g>
-</g>
-<!-- middle finger curled -->
+<!-- index finger, three robust phalanges raised vertically -->
 <g>
- <path d="M258 270Q275 235 278 207Q280 189 294 190Q308 192 306 208L298 246Q294 265 279 284" fill="none" stroke="#3c4e52" stroke-width="18" stroke-linecap="round"/>
- <path d="M258 270Q275 235 278 207Q280 189 294 190Q308 192 306 208L298 246Q294 265 279 284" fill="none" stroke="url(#boneReal)" stroke-width="11" stroke-linecap="round"/>
- <use href="#joint" x="280" y="207"/><use href="#joint" x="294" y="251"/>
- <path d="M279 284Q301 283 321 266Q335 254 345 268Q354 282 339 295L306 322" fill="none" stroke="#3c4e52" stroke-width="17" stroke-linecap="round"/>
- <path d="M279 284Q301 283 321 266Q335 254 345 268Q354 282 339 295L306 322" fill="none" stroke="url(#boneReal)" stroke-width="10" stroke-linecap="round"/>
- <use href="#joint" x="326" y="272"/>
+<use href="#knuckle" x="211" y="252"/>
+<use href="#phalanx" x="211" y="202" transform="rotate(1 211 202)"/>
+<use href="#knuckle" x="211" y="151"/>
+<use href="#phalanx" x="211" y="103"/>
+<use href="#knuckle" x="211" y="56"/>
+<path d="M197 35Q194 20 203 11Q211 4 220 12Q228 21 224 37L222 47Q211 54 200 46Z" fill="url(#boneReal)" stroke="#536267" stroke-width="4"/>
+<!-- rounded distal fingertip bone -->
+<path d="M201 12Q210 -2 221 12L224 25Q212 34 199 25Z" fill="url(#boneShade)" stroke="#536267" stroke-width="3"/>
 </g>
-<!-- ring finger curled -->
+<!-- middle finger curled: metacarpal continues into three visible segments -->
 <g>
- <path d="M235 279Q248 246 248 225Q248 207 263 204Q278 206 276 223L270 255Q266 275 252 294" fill="none" stroke="#3c4e52" stroke-width="16" stroke-linecap="round"/>
- <path d="M235 279Q248 246 248 225Q248 207 263 204Q278 206 276 223L270 255Q266 275 252 294" fill="none" stroke="url(#boneReal)" stroke-width="10" stroke-linecap="round"/>
- <use href="#joint" x="250" y="224"/><use href="#joint" x="263" y="267"/>
+<path d="M240 273Q255 250 258 226Q260 212 273 211Q286 213 284 228L278 257Q274 278 257 293Z" fill="url(#boneReal)" stroke="#536267" stroke-width="4"/>
+<use href="#knuckle" x="270" y="221"/>
+<path d="M257 291Q277 282 295 267Q309 257 319 269Q328 281 315 292L288 316Q270 328 256 314Z" fill="url(#boneReal)" stroke="#536267" stroke-width="4"/>
+<use href="#knuckle" x="310" y="278"/>
+<path d="M286 315Q307 302 323 292Q336 285 345 297Q352 308 339 319L310 339Q293 345 282 331Z" fill="url(#boneShade)" stroke="#536267" stroke-width="4"/>
 </g>
-<!-- little finger curled -->
+<!-- ring finger folded behind middle -->
 <g>
- <path d="M280 317Q309 305 323 290Q337 278 348 291Q359 306 344 319L316 343" fill="none" stroke="#3c4e52" stroke-width="15" stroke-linecap="round"/>
- <path d="M280 317Q309 305 323 290Q337 278 348 291Q359 306 344 319L316 343" fill="none" stroke="url(#boneReal)" stroke-width="9" stroke-linecap="round"/>
- <use href="#joint" x="330" y="294"/>
+<path d="M220 277Q235 252 237 232Q239 218 251 217Q264 219 261 235L254 265Q248 285 235 296Z" fill="url(#boneShade)" stroke="#536267" stroke-width="4"/>
+<use href="#knuckle" x="249" y="229"/>
+<path d="M235 296Q255 286 272 279Q286 274 293 286Q300 299 286 308L259 325Q242 331 231 317Z" fill="url(#boneReal)" stroke="#536267" stroke-width="4"/>
 </g>
-<!-- thumb: two phalanges and saddle joint -->
-<path d="M151 304Q125 283 105 267Q88 253 75 267Q62 283 79 297L119 332Q136 346 157 348" fill="none" stroke="#3c4e52" stroke-width="19" stroke-linecap="round"/>
-<path d="M151 304Q125 283 105 267Q88 253 75 267Q62 283 79 297L119 332Q136 346 157 348" fill="none" stroke="url(#boneReal)" stroke-width="12" stroke-linecap="round"/>
-<use href="#joint" x="103" y="271"/><use href="#joint" x="139" y="332"/>
-<!-- anatomical joint shadows and subtle bone pores -->
-<g fill="#596a6d" opacity=".48"><circle cx="201" cy="31" r="2"/><circle cx="214" cy="40" r="1.8"/><circle cx="157" cy="186" r="2"/><circle cx="265" cy="211" r="2"/><circle cx="332" cy="285" r="2"/><circle cx="84" cy="279" r="2"/></g>
-<path d="M207 7V28M196 18H218" stroke="#c8fbff" stroke-width="2.5" stroke-linecap="round"/>
+<!-- little finger curls inward at outer edge -->
+<g>
+<path d="M250 331Q278 323 296 311Q310 304 319 315Q327 327 314 337L284 355Q265 361 251 348Z" fill="url(#boneShade)" stroke="#536267" stroke-width="4"/>
+<use href="#knuckle" x="312" y="321"/>
+</g>
+<!-- thumb with two phalanges and prominent saddle joint -->
+<g>
+<path d="M155 322Q132 306 112 290Q96 278 86 289Q77 300 91 313L126 344Q142 358 161 360Z" fill="url(#boneReal)" stroke="#536267" stroke-width="4"/>
+<use href="#knuckle" x="105" y="297" transform="rotate(-48 105 297)"/>
+<path d="M160 359Q145 373 130 365Q118 357 126 346Q137 335 151 342Z" fill="url(#boneShade)" stroke="#536267" stroke-width="4"/>
+</g>
+<!-- subtle cortical texture and dark recesses -->
+<g fill="#5c6968" opacity=".4"><circle cx="208" cy="19" r="2.5"/><circle cx="160" cy="278" r="2"/><circle cx="270" cy="228" r="2"/><circle cx="326" cy="316" r="2"/><circle cx="89" cy="299" r="2"/></g>
+<path d="M211 0V8M202 4H220" stroke="#c8fbff" stroke-width="2" stroke-linecap="round"/>
 </svg><div class="fod-title">FINGER OF DEATH<small>THE HAND HAS CHOSEN</small></div><div class="fod-close">FREE VISUAL PREVIEW · NO COINS SPENT</div></div>`;
  document.body.appendChild(overlay);status.textContent='FINGER OF DEATH SUMMONED · FREE PREVIEW';
  setTimeout(()=>{if(overlay.isConnected){overlay.classList.add('fod-out');setTimeout(()=>overlay.remove(),500)}},8500);
