@@ -1,14 +1,4 @@
-const TIKNATION_GIFT_CATALOG = {
-  meteor_mayhem: {
-    name: "Dragon's Meteor Strike",
-    emoji: "☄️",
-    category: "Special Effects",
-    cost: 125,
-    sound: true,
-    style: "meteor",
-    message: "A blazing meteor tears through the sky and crashes in a shower of fire, sparks, smoke, and debris."
-  }
-};
+const TIKNATION_GIFT_CATALOG = {};
 window.TIKNATION_GIFT_CATALOG = TIKNATION_GIFT_CATALOG;
 
 let tikNationGiftAudioContext = null;
