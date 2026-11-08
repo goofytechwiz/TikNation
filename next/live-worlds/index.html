@@ -37,7 +37,7 @@ footer{text-align:center;color:#777393;font-size:9px;letter-spacing:.1em;margin-
 .live-gift-preview button:active{transform:scale(.98)}
 .live-gift-status{min-height:16px;margin-top:10px;color:#8cf7ef;font-size:10px}
 
-.gift-gallery-count{color:#8cf7ef;font-size:10px;letter-spacing:.16em;font-weight:850;margin:12px 0}.gift-gallery-categories{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 16px}.gift-gallery-categories button{border:1px solid #ffffff2b;border-radius:99px;padding:9px 12px;background:#ffffff09;color:#eee8ff;font-size:9px;font-weight:800;cursor:pointer}.gift-gallery-categories button[aria-pressed=true]{border-color:#8cf7ef;background:#8cf7ef18;color:#8cf7ef}.gift-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.gift-gallery-card{min-width:0;min-height:112px;text-align:left;padding:12px;border:1px solid #ffffff22;border-radius:15px;background:linear-gradient(145deg,#ffffff12,#ffffff04);color:#f7f3ff;cursor:pointer}.gift-gallery-card:hover,.gift-gallery-card:focus-visible{border-color:#8cf7ef99;box-shadow:0 0 22px #8cf7ef18;outline:none}.gift-gallery-card .gift-emoji{display:block;font-size:25px;margin-bottom:7px}.gift-gallery-card strong{display:block;font-size:11px;line-height:1.3}.gift-gallery-card small{display:block;color:#a9a2c7;font-size:8px;letter-spacing:.08em;margin-top:6px}@media(max-width:560px){.gift-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gift-gallery-card{min-height:105px;padding:10px}}
+.gift-gallery-count{color:#8cf7ef;font-size:10px;letter-spacing:.16em;font-weight:850;margin:12px 0}.gift-gallery-categories{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 16px}.gift-gallery-categories button{border:1px solid #ffffff2b;border-radius:99px;padding:9px 12px;background:#ffffff09;color:#eee8ff;font-size:9px;font-weight:800;cursor:pointer}.gift-gallery-categories button[aria-pressed=true]{border-color:#8cf7ef;background:#8cf7ef18;color:#8cf7ef}.gift-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.gift-gallery-card{position:relative;z-index:1;pointer-events:auto;touch-action:manipulation;min-width:0;min-height:112px;text-align:left;padding:12px;border:1px solid #ffffff22;border-radius:15px;background:linear-gradient(145deg,#ffffff12,#ffffff04);color:#f7f3ff;cursor:pointer}.gift-gallery-card:hover,.gift-gallery-card:focus-visible{border-color:#8cf7ef99;box-shadow:0 0 22px #8cf7ef18;outline:none}.gift-gallery-card .gift-emoji{display:block;font-size:25px;margin-bottom:7px}.gift-gallery-card strong{display:block;font-size:11px;line-height:1.3}.gift-gallery-card small{display:block;color:#a9a2c7;font-size:8px;letter-spacing:.08em;margin-top:6px}@media(max-width:560px){.gift-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gift-gallery-card{min-height:105px;padding:10px}}
 /* Shared TikNation app navigation */
 body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
 .tn-dock{position:fixed;z-index:12;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;padding:8px;border:1px solid #ffffff2b;border-radius:22px;background:linear-gradient(110deg,#10152beF,#211a3def 55%,#102a34ef);box-shadow:0 14px 48px #000b,0 0 28px #82f6e81c;backdrop-filter:blur(20px)}
@@ -150,4 +150,40 @@ renderGiftGallery();;
 </nav>
 <script>(function(){const p=location.pathname;const map=[['discover','/discover/'],['live','/live-worlds/'],['create','/create/'],['community','/community/'],['profile','/profile/'],['settings','/settings/'],['home','/realms/']];let active=map.find(x=>p.includes(x[1]));if(p.includes('/creator-showcase/')||p.includes('/creator-studio/'))active=['profile','/profile/'];if(active){const a=document.querySelector('[data-dock="'+active[0]+'"]');if(a)a.setAttribute('aria-current','page')}})();</script><script>
 (()=>{const key='tiknation-live-room-poll-v1',buttons=[...document.querySelectorAll('[data-poll]')],status=document.getElementById('livePollStatus');if(!buttons.length||!status)return;let choice='';try{choice=localStorage.getItem(key)||''}catch(e){}function render(){buttons.forEach(b=>{const selected=b.dataset.poll===choice;b.setAttribute('aria-pressed',String(selected));b.disabled=!!choice;b.textContent=(selected?'✓ ':'')+b.dataset.poll});status.textContent=choice?'YOUR LOCAL PREVIEW VOTE: '+choice.toUpperCase():'CHOOSE ONE · LOCAL PREVIEW POLL'}buttons.forEach(b=>b.addEventListener('click',()=>{if(choice)return;choice=b.dataset.poll;try{localStorage.setItem(key,choice)}catch(e){}render()}));render()})();
-</script></body></html>
+</script><script>
+/* Independent gift click controller: works even if another LIVE Worlds script fails. */
+(function(){
+  if(window.__tnGiftGalleryClickFix)return;
+  window.__tnGiftGalleryClickFix=true;
+  function loadEngine(){
+    if(window.TikNationGiftEngine&&typeof window.TikNationGiftEngine.show==="function")return Promise.resolve(window.TikNationGiftEngine);
+    return new Promise((resolve,reject)=>{
+      const script=document.createElement("script");
+      script.src="../../gift-engine.js?v=gift-gallery-independent-controller-7";
+      script.onload=()=>window.TikNationGiftEngine&&typeof window.TikNationGiftEngine.show==="function"?resolve(window.TikNationGiftEngine):reject(new Error("Gift animation engine did not initialize."));
+      script.onerror=()=>reject(new Error("Gift animation engine could not load."));
+      document.head.appendChild(script);
+    });
+  }
+  document.addEventListener("click",function(event){
+    const target=event.target;
+    const button=target&&target.closest?target.closest("[data-gallery-gift]"):null;
+    if(!button)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    const catalog=window.TIKNATION_GIFT_CATALOG||{};
+    const gift=catalog[button.getAttribute("data-gallery-gift")];
+    const status=document.getElementById("giftGalleryStatus");
+    if(!gift){if(status)status.textContent="GIFT DATA NOT FOUND · REFRESH THE PAGE";return;}
+    if(status)status.textContent="PREPARING FULL ANIMATION · "+gift.name.toUpperCase();
+    loadEngine().then(engine=>{
+      const duration=["ghostship","infernal_castle","meteor","phoenix","dragon","dragonrevenge","fingerdeath"].includes(gift.style)?8500:6200;
+      const started=engine.show(gift,{meta:"TIKNATION GIFT GALLERY · FREE PREVIEW",duration});
+      if(status)status.textContent=started?"ANIMATION PLAYING · "+gift.name.toUpperCase()+" · FREE PREVIEW":"ANIMATION COULD NOT START · TAP AGAIN";
+    }).catch(error=>{
+      if(status)status.textContent="ANIMATION ERROR · "+error.message;
+    });
+  },true);
+})();
+</script>
+</body></html>
