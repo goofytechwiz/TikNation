@@ -837,6 +837,47 @@ function renderHauntedLighthouseGift(gift,opts,overlay){
     const line=new T.Line(new T.BufferGeometry().setFromPoints(pts),lightningMat.clone());line.visible=false;lightningGroup.add(line);
    }
    const flashLight=new T.PointLight(0xbfeaff,0,65,1.5);flashLight.position.set(0,13,-5);world.add(flashLight);
+   // Storm atmosphere: rain, sea spray, seabirds, and a distant ship.
+   const rainCount=260,rainPositions=new Float32Array(rainCount*3),rainSpeeds=[];
+   for(let i=0;i<rainCount;i++){
+    rainPositions[i*3]=(Math.random()-.5)*48;
+    rainPositions[i*3+1]=Math.random()*28+2;
+    rainPositions[i*3+2]=(Math.random()-.5)*42-5;
+    rainSpeeds.push(8+Math.random()*8);
+   }
+   const rainGeo=new T.BufferGeometry();rainGeo.setAttribute("position",new T.BufferAttribute(rainPositions,3));
+   const rain=new T.Points(rainGeo,new T.PointsMaterial({color:0xb9d9e8,size:.075,transparent:true,opacity:.42,depthWrite:false}));world.add(rain);
+   const sprayCount=95,sprayPositions=new Float32Array(sprayCount*3),sprayVelocities=[];
+   for(let i=0;i<sprayCount;i++){
+    const a=Math.random()*Math.PI*2,r=5.5+Math.random()*2.8;
+    sprayPositions[i*3]=Math.cos(a)*r;sprayPositions[i*3+1]=Math.random()*.4;sprayPositions[i*3+2]=Math.sin(a)*r;
+    sprayVelocities.push({x:(Math.random()-.5)*1.7,y:.5+Math.random()*2.5,z:(Math.random()-.5)*1.7});
+   }
+   const sprayGeo=new T.BufferGeometry();sprayGeo.setAttribute("position",new T.BufferAttribute(sprayPositions,3));
+   const spray=new T.Points(sprayGeo,new T.PointsMaterial({color:0xd5f6ff,size:.16,transparent:true,opacity:.72,depthWrite:false}));world.add(spray);
+   const gulls=[];
+   const gullMat=new T.LineBasicMaterial({color:0x172a38,transparent:true,opacity:.82});
+   for(let i=0;i<5;i++){
+    const g=new T.Group();
+    const left=new T.Line(new T.BufferGeometry().setFromPoints([new T.Vector3(-.55,0,0),new T.Vector3(0,.18,0)]),gullMat);
+    const right=new T.Line(new T.BufferGeometry().setFromPoints([new T.Vector3(0,.18,0),new T.Vector3(.55,0,0)]),gullMat);
+    g.add(left,right);g.position.set(-15+i*5,7+i%3*2,-10-i*2);g.scale.setScalar(.45+i*.1);world.add(g);
+    gulls.push(g);
+   }
+   const ship=new T.Group();
+   const hull=new T.Mesh(new T.BoxGeometry(3.8,.55,1.05),mat(0x18232c,.6,.28));hull.position.y=.2;ship.add(hull);
+   const deck=new T.Mesh(new T.BoxGeometry(2.1,.42,.82),mat(0x39434a,.75));deck.position.set(-.15,.62,0);ship.add(deck);
+   const mast=new T.Mesh(new T.CylinderGeometry(.035,.045,2.3,8),mat(0x303d47,.55,.3));mast.position.set(.45,1.8,0);ship.add(mast);
+   const sail=new T.Mesh(new T.PlaneGeometry(1.15,1.45),new T.MeshStandardMaterial({color:0x9eabb1,roughness:.95,side:T.DoubleSide}));sail.position.set(.95,1.75,0);sail.rotation.y=Math.PI/2;ship.add(sail);
+   const shipLamp=new T.PointLight(0xffbd69,1.5,7,2);shipLamp.position.set(-.9,.9,.2);ship.add(shipLamp);
+   ship.position.set(-23,-.05,-15);ship.rotation.y=-.12;world.add(ship);
+   const cloudLayers=[];
+   for(let i=0;i<7;i++){
+    const cloud=new T.Mesh(new T.SphereGeometry(1,12,8),new T.MeshBasicMaterial({color:0x101e2b,transparent:true,opacity:.22,depthWrite:false}));
+    cloud.scale.set(7+Math.random()*5,1.3+Math.random(),3);
+    cloud.position.set(-22+i*7,15+Math.random()*5,-23-Math.random()*8);world.add(cloud);cloudLayers.push(cloud);
+   }
+
    resizeHandler=()=>{
     if(!alive)return;const width=Math.max(1,scene.clientWidth),height=Math.max(1,scene.clientHeight),portrait=width/height<.8;
     renderer.setSize(width,height,false);camera.aspect=width/height;camera.fov=portrait?49:43;
@@ -856,6 +897,21 @@ function renderHauntedLighthouseGift(gift,opts,overlay){
      arr.needsUpdate=true;waterGeometry.computeVertexNormals();
      fogs.forEach((f,i)=>{f.position.x+=dt*(.12+(i%4)*.035);if(f.position.x>13)f.position.x=-13;f.material.opacity=.035+.025*(.5+.5*Math.sin(elapsed*.6+i));});
      foamRings.forEach((r,i)=>{r.rotation.z=elapsed*(.12+i*.04);r.scale.setScalar(1+.035*Math.sin(elapsed*1.3+i));});
+     const rp=rainGeo.attributes.position;
+     for(let i=0;i<rainCount;i++){
+      const k=i*3;rp.array[k]-=dt*1.7;rp.array[k+1]-=dt*rainSpeeds[i];rp.array[k+2]+=dt*.8;
+      if(rp.array[k+1]<-.5){rp.array[k]=(Math.random()-.5)*48;rp.array[k+1]=25+Math.random()*7;rp.array[k+2]=(Math.random()-.5)*42-5;}
+     }rp.needsUpdate=true;
+     const sp=sprayGeo.attributes.position;
+     for(let i=0;i<sprayCount;i++){
+      const k=i*3,v=sprayVelocities[i];sp.array[k]+=v.x*dt;sp.array[k+1]+=v.y*dt;sp.array[k+2]+=v.z*dt;
+      v.y-=1.15*dt;
+      if(sp.array[k+1]<-.05){const a=Math.random()*Math.PI*2,r=5.5+Math.random()*2.8;sp.array[k]=Math.cos(a)*r;sp.array[k+1]=.05;sp.array[k+2]=Math.sin(a)*r;v.x=(Math.random()-.5)*1.7;v.y=.7+Math.random()*2.4;v.z=(Math.random()-.5)*1.7;}
+     }sp.needsUpdate=true;
+     gulls.forEach((g,i)=>{g.position.x+=dt*(1.15+i*.13);g.position.y+=Math.sin(elapsed*3+i)*dt*.55;if(g.position.x>23)g.position.x=-23;});
+     ship.position.x+=dt*.62;if(ship.position.x>24)ship.position.x=-24;
+     cloudLayers.forEach((c,i)=>{c.position.x+=dt*(.16+i*.018);if(c.position.x>24)c.position.x=-24;});
+
      if(elapsed>nextStrike){lightningGroup.children.forEach(line=>line.visible=true);flashUntil=elapsed+.16;flashLight.intensity=8;nextStrike=elapsed+3.2+Math.random()*3.4;}
      if(elapsed>flashUntil){lightningGroup.children.forEach(line=>line.visible=false);flashLight.intensity=Math.max(0,flashLight.intensity-dt*32);}
     }
