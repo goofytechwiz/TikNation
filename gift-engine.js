@@ -760,7 +760,72 @@ function renderInfernalCastleGift(gift,opts,overlay){
  style.textContent='#tiknation-gift-engine.infernal-castle{position:fixed!important;inset:0!important;z-index:2147483000!important;display:block!important;overflow:hidden!important;padding:0!important;background:#030509!important}.infernal-castle .ic-world{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,#080d1b 0%,#242737 48%,#161319 75%,#030509 100%)}.infernal-castle .ic-moon{position:absolute;right:13%;top:8%;width:clamp(70px,10vw,130px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fff8df,#c4c2b4 42%,#596174 82%);box-shadow:0 0 38px 14px #d9d8c255,0 0 140px 55px #9eafd033}.infernal-castle .ic-castle{position:absolute;z-index:2;width:min(96vw,1200px);height:min(84vh,850px);left:50%;top:51%;transform:translate(-50%,-50%);filter:drop-shadow(0 32px 30px #000d);animation:ic-arrive 2.1s cubic-bezier(.16,1,.3,1) both}.infernal-castle .ic-window{fill:#ffb45c;filter:url(#ic-glow);animation:ic-flicker 2.8s ease-in-out infinite alternate}.infernal-castle .ic-fire{transform-box:fill-box;transform-origin:50% 100%;filter:url(#ic-glow);animation:ic-fire .48s ease-in-out infinite alternate}.infernal-castle .ic-fog{position:absolute;z-index:3;left:-15%;right:-15%;bottom:-5%;height:42%;background:linear-gradient(transparent,#c0c4d022 45%,#030509 100%);filter:blur(18px);animation:ic-fog 12s ease-in-out infinite alternate}.infernal-castle .ic-embers{position:absolute;z-index:4;inset:45% 0 0;pointer-events:none}.infernal-castle .ic-ember{position:absolute;left:var(--x);bottom:-8%;width:var(--s);height:var(--s);border-radius:50%;background:#ffb45b;box-shadow:0 0 10px 3px #ff571e;animation:ic-ember var(--t) linear infinite;animation-delay:var(--d)}.infernal-castle .ic-title{position:absolute;z-index:6;left:3%;right:3%;bottom:3%;text-align:center;color:#ead7bd;font:900 clamp(19px,4.2vw,43px) Georgia,serif;letter-spacing:.17em;text-shadow:0 3px 10px #000,0 0 25px #e15c2d}.infernal-castle .ic-title small{display:block;margin-top:8px;color:#b9b4b1;font:700 11px system-ui;letter-spacing:.25em}@keyframes ic-arrive{from{opacity:0;transform:translate(-50%,-42%) scale(.76)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}@keyframes ic-flicker{0%,100%{opacity:.7}42%{opacity:1}47%{opacity:.35}53%{opacity:.95}}@keyframes ic-fire{from{transform:scaleY(.72) skewX(-3deg);opacity:.72}to{transform:scaleY(1.18) skewX(3deg);opacity:1}}@keyframes ic-fog{from{transform:translateX(-4%);opacity:.55}to{transform:translateX(4%);opacity:.95}}@keyframes ic-ember{0%{opacity:0;transform:translate(0,0) scale(.4)}15%{opacity:1}100%{opacity:0;transform:translate(var(--drift),-75vh) scale(1.2)}}@media(max-width:650px){.infernal-castle .ic-castle{width:112vw;height:78vh;top:50%}.infernal-castle .ic-title{letter-spacing:.1em}}@media(prefers-reduced-motion:reduce){.infernal-castle .ic-castle,.infernal-castle .ic-window,.infernal-castle .ic-fire,.infernal-castle .ic-fog,.infernal-castle .ic-ember{animation:none!important}}';
  document.head.appendChild(style);overlay.className="infernal-castle";
  const world=document.createElement("div");world.className="ic-world";
- world.innerHTML='<div class="ic-moon"></div><svg class="ic-castle" viewBox="0 0 1400 900" role="img" aria-label="A towering Gothic fortress on a volcanic cliff, with multiple spires, stone buttresses, iron gate and burning windows"><defs><linearGradient id="ic-stone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#89827b"/><stop offset=".22" stop-color="#55535b"/><stop offset=".62" stop-color="#252934"/><stop offset="1" stop-color="#080c15"/></linearGradient><linearGradient id="ic-roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#77717a"/><stop offset=".5" stop-color="#35323e"/><stop offset="1" stop-color="#080b13"/></linearGradient><linearGradient id="ic-cliff" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#514343"/><stop offset="1" stop-color="#05070c"/></linearGradient><filter id="ic-glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><pattern id="ic-brick" width="84" height="54" patternUnits="userSpaceOnUse"><path d="M0 1H84M0 27H84M42 1V27M18 27V54" fill="none" stroke="#d2c3b4" stroke-opacity=".13" stroke-width="2"/></pattern></defs><ellipse cx="700" cy="810" rx="620" ry="55" fill="#000" opacity=".8"/><g stroke="#10131b" stroke-width="10" stroke-linejoin="round" fill="url(#ic-stone)"><path d="M250 700V390L350 330H1050L1150 400V700Z"/><path d="M390 700V250H1010V700Z"/><path d="M485 700V180H915V700Z"/><path d="M120 700V445H345V700ZM1055 700V435H1280V700Z"/></g><g fill="url(#ic-brick)"><path d="M250 390H1150V700H250Z"/><path d="M390 250H1010V700H390Z"/><path d="M485 180H915V700H485Z"/></g><g fill="#242630" stroke="#0b0e16" stroke-width="8"><path d="M390 260L330 700H410L455 260ZM1010 260L1070 700H990L945 260ZM520 190L470 700H525L565 190ZM880 190L930 700H875L835 190Z"/></g><g fill="url(#ic-roof)" stroke="#090c13" stroke-width="11"><path d="M105 455L235 55L375 455Z M1025 450L1155 35L1300 450Z M410 275L560 -95L710 275Z M690 275L840 -95L990 275Z M500 205L700 -210L900 205Z"/></g><g fill="#4a4750" stroke="#11131a" stroke-width="7"><path d="M265 390V350H300V390H340V350H375V390H410V350H445V390H480V350H515V390H550V350H585V390H620V350H655V390H690V350H725V390H760V350H795V390H830V350H865V390H900V350H935V390H970V350H1005V390H1040V350H1075V390H1110V350H1140V410Z"/></g><g class="ic-window"><path d="M270 485Q300 445 330 485V555H270Z M1070 480Q1100 440 1130 480V555H1070Z M420 340Q445 305 470 340V410H420Z M930 340Q955 305 980 340V410H930Z M590 265Q625 220 660 265V350H590Z M740 265Q775 220 810 265V350H740Z M590 430Q625 385 660 430V520H590Z M740 430Q775 385 810 430V520H740Z M510 555Q540 520 570 555V620H510Z M830 555Q860 520 890 555V620H830Z M165 520Q205 475 245 520V600H165Z M1155 515Q1195 470 1235 515V600H1155Z"/></g><g fill="none" stroke="#28232a" stroke-width="8"><path d="M300 455V555M270 520H330M1100 450V555M1070 520H1130M445 310V410M420 375H470M955 310V410M930 375H980M625 230V350M590 305H660M775 230V350M740 305H810M625 395V520M590 475H660M775 395V520M740 475H810M540 525V620M510 585H570M860 525V620M830 585H890M205 490V600M165 560H245M1195 485V600M1155 555H1235"/></g><path d="M475 700V555Q700 340 925 555V700Z" fill="#080b12" stroke="#92847b" stroke-width="14"/><path d="M535 700V570Q700 420 865 570V700Z" fill="#241d1d" stroke="#a07b55" stroke-width="9"/><g stroke="#ad895f" stroke-width="7"><path d="M565 565V700M610 535V700M655 510V700M700 495V700M745 510V700M790 535V700M835 565V700M535 615H865M535 660H865"/></g><path d="M0 700L120 650 210 710 330 660 450 715 560 675 700 720 820 670 930 715 1070 660 1190 710 1400 650V900H0Z" fill="url(#ic-cliff)" stroke="#08090d" stroke-width="12"/><path d="M0 755L170 710 270 765 420 715 570 775 700 730 860 775 1010 715 1160 770 1400 710" fill="none" stroke="#a44329" stroke-opacity=".5" stroke-width="16"/><g class="ic-fire" fill="#ff6828"><path d="M120 745Q75 660 135 605Q130 660 170 670Q185 610 225 565Q260 665 210 745Z M1180 745Q1135 660 1195 605Q1190 660 1230 670Q1245 610 1285 565Q1320 665 1270 745Z M350 750Q310 680 360 635Q355 675 390 685Q405 645 435 615Q460 690 420 750Z M965 750Q925 680 975 635Q970 675 1005 685Q1020 645 1050 615Q1075 690 1035 750Z"/></g></svg><div class="ic-fog"></div><div class="ic-embers"></div><div class="ic-title">INFERNAL CASTLE<small>THE GATES OF THE UNDERWORLD OPEN</small></div>';
+ world.innerHTML='<div class="ic-moon"></div><svg class="ic-castle" viewBox="0 0 1400 900" role="img" aria-label="A towering Gothic fortress on a volcanic cliff, with multiple spires, stone buttresses, iron gate and burning windows"><defs><linearGradient id="ic-stone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#89827b"/><stop offset=".22" stop-color="#55535b"/><stop offset=".62" stop-color="#252934"/><stop offset="1" stop-color="#080c15"/></linearGradient><linearGradient id="ic-roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#77717a"/><stop offset=".5" stop-color="#35323e"/><stop offset="1" stop-color="#080b13"/></linearGradient><linearGradient id="ic-cliff" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#514343"/><stop offset="1" stop-color="#05070c"/></linearGradient><filter id="ic-glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><pattern id="ic-brick" width="84" height="54" patternUnits="userSpaceOnUse"><path d="M0 1H84M0 27H84M42 1V27M18 27V54" fill="none" stroke="#d2c3b4" stroke-opacity=".13" stroke-width="2"/></pattern></defs>
+<ellipse cx="700" cy="815" rx="650" ry="48" fill="#000" opacity=".75"/>
+<!-- distant mountain silhouettes -->
+<path d="M0 720L130 610 220 670 355 565 470 680 600 590 730 690 900 560 1030 660 1190 570 1400 700V900H0Z" fill="#11151e"/>
+<!-- castle foundations and connected curtain walls -->
+<g stroke="#11131b" stroke-width="13" stroke-linejoin="round">
+ <path fill="url(#ic-stone)" d="M180 720V475L245 425H1155L1220 475V720Z"/>
+ <path fill="url(#ic-stone)" d="M405 720V330L485 270H915L995 330V720Z"/>
+ <path fill="url(#ic-stone)" d="M520 720V245L590 190H810L880 245V720Z"/>
+</g>
+<!-- tower bases: distinct round towers -->
+<g stroke="#11131b" stroke-width="12" stroke-linejoin="round">
+ <path fill="url(#ic-stone)" d="M130 720V405Q130 365 170 365H270Q310 365 310 405V720Z"/>
+ <path fill="url(#ic-stone)" d="M1090 720V405Q1090 365 1130 365H1230Q1270 365 1270 405V720Z"/>
+ <path fill="url(#ic-stone)" d="M350 720V295Q350 255 390 255H485Q525 255 525 295V720Z"/>
+ <path fill="url(#ic-stone)" d="M875 720V295Q875 255 915 255H1010Q1050 255 1050 295V720Z"/>
+ <path fill="url(#ic-stone)" d="M565 720V215Q565 175 605 175H795Q835 175 835 215V720Z"/>
+</g>
+<!-- stone courses -->
+<g fill="url(#ic-brick)" opacity=".8">
+ <path d="M180 475H1220V720H180Z"/><path d="M405 330H995V720H405Z"/><path d="M520 245H880V720H520Z"/>
+</g>
+<!-- conical roofs and tower caps -->
+<g fill="url(#ic-roof)" stroke="#090c13" stroke-width="13" stroke-linejoin="round">
+ <path d="M105 410L220 70L335 410Z"/>
+ <path d="M1065 410L1180 70L1295 410Z"/>
+ <path d="M325 300L435 5L545 300Z"/>
+ <path d="M855 300L965 5L1075 300Z"/>
+ <path d="M535 225L700 -175L865 225Z"/>
+</g>
+<!-- roof finials -->
+<g stroke="#b6a08a" stroke-width="7" fill="#d1b99a">
+ <path d="M220 70V5M1180 70V5M435 5V-48M965 5V-48M700 -175V-235"/>
+ <circle cx="220" cy="0" r="10"/><circle cx="1180" cy="0" r="10"/><circle cx="700" cy="-235" r="12"/>
+</g>
+<!-- crenellated battlements -->
+<g fill="#55515a" stroke="#11131b" stroke-width="8">
+ <path d="M170 420V380H205V420H245V380H280V420H320V380H355V420H395V380H430V420H470V380H505V420H545V380H580V420H620V380H655V420H695V380H730V420H770V380H805V420H845V380H880V420H920V380H955V420H995V380H1030V420H1070V380H1105V420H1145V380H1180V420H1230V455H170Z"/>
+ <path d="M365 300V265H400V300H440V265H475V300H515V265H550V300H590V265H625V300H665V265H700V300H740V265H775V300H815V265H850V300H890V265H925V300H965V265H1000V300H1035V335H365Z"/>
+</g>
+<!-- arched windows placed within tower and keep facades -->
+<g class="ic-window">
+ <path d="M164 470Q220 400 276 470V560H164Z M1124 470Q1180 400 1236 470V560H1124Z"/>
+ <path d="M382 365Q437 300 492 365V455H382Z M908 365Q963 300 1018 365V455H908Z"/>
+ <path d="M600 285Q700 205 800 285V385H600Z"/>
+ <path d="M600 445Q640 395 680 445V535H600Z M720 445Q760 395 800 445V535H720Z"/>
+ <path d="M205 590Q245 550 285 590V655H205Z M1115 590Q1155 550 1195 590V655H1115Z"/>
+ <path d="M430 520Q465 480 500 520V590H430Z M900 520Q935 480 970 520V590H900Z"/>
+</g>
+<!-- window stone mullions -->
+<g fill="none" stroke="#28232a" stroke-width="8">
+ <path d="M220 425V560M164 510H276M1180 425V560M1124 510H1236M437 320V455M382 410H492M963 320V455M908 410H1018M700 230V385M600 335H800M640 405V535M600 485H680M760 405V535M720 485H800M245 565V655M205 620H285M1155 565V655M1115 620H1195M465 490V590M430 555H500M935 490V590M900 555H970"/>
+</g>
+<!-- monumental central gate -->
+<path d="M520 720V565Q520 420 700 420Q880 420 880 565V720Z" fill="#080a10" stroke="#b5a18a" stroke-width="18"/>
+<path d="M565 720V575Q565 470 700 470Q835 470 835 575V720Z" fill="#20191a" stroke="#715d4d" stroke-width="10"/>
+<g stroke="#9b815f" stroke-width="8"><path d="M600 535V720M650 490V720M700 475V720M750 490V720M800 535V720M565 620H835M565 670H835"/></g>
+<!-- raised drawbridge and rocky cliff -->
+<path d="M0 720L130 680 230 735 350 685 470 745 590 690 700 745 825 690 950 740 1080 680 1200 735 1400 680V900H0Z" fill="url(#ic-cliff)" stroke="#08090d" stroke-width="12"/>
+<path d="M590 725L700 755 810 725 850 790H550Z" fill="#292a30" stroke="#0b0d12" stroke-width="10"/>
+<path d="M0 785L170 735 270 790 420 740 570 800 700 755 860 800 1010 740 1160 795 1400 735" fill="none" stroke="#a44329" stroke-opacity=".45" stroke-width="15"/>
+<!-- firelight at the base -->
+<g class="ic-fire" fill="#ff6828">
+ <path d="M95 755Q50 670 110 615Q105 670 145 680Q160 620 200 575Q235 675 185 755Z M1200 755Q1155 670 1215 615Q1210 670 1250 680Q1265 620 1305 575Q1340 675 1290 755Z"/>
+ <path d="M330 760Q290 690 340 645Q335 685 370 695Q385 655 415 625Q440 700 400 760Z M985 760Q945 690 995 645Q990 685 1025 695Q1040 655 1070 625Q1095 700 1055 760Z"/>
+</g></svg><div class="ic-fog"></div><div class="ic-embers"></div><div class="ic-title">INFERNAL CASTLE<small>THE GATES OF THE UNDERWORLD OPEN</small></div>';
  const embers=world.querySelector(".ic-embers");
  for(let i=0;i<34;i++){const e=document.createElement("i");e.className="ic-ember";e.style.setProperty("--x",(4+(i*37)%92)+"%");e.style.setProperty("--s",(3+i%5*2)+"px");e.style.setProperty("--t",(4+i%6*.7)+"s");e.style.setProperty("--d",(-i*.31)+"s");e.style.setProperty("--drift",((i%2?1:-1)*(18+i%7*15))+"px");embers.appendChild(e);}
  overlay.appendChild(world);document.body.appendChild(overlay);
