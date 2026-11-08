@@ -829,6 +829,28 @@ function renderInfernalCastleGift(gift,opts,overlay){
  const embers=world.querySelector(".ic-embers");
  for(let i=0;i<34;i++){const e=document.createElement("i");e.className="ic-ember";e.style.setProperty("--x",(4+(i*37)%92)+"%");e.style.setProperty("--s",(3+i%5*2)+"px");e.style.setProperty("--t",(4+i%6*.7)+"s");e.style.setProperty("--d",(-i*.31)+"s");e.style.setProperty("--drift",((i%2?1:-1)*(18+i%7*15))+"px");embers.appendChild(e);}
  overlay.appendChild(world);document.body.appendChild(overlay);
+ // Drive the main castle motion directly with Web Animations so it is visibly
+ // moving even if the page's CSS animation cascade interferes with keyframes.
+ const reduceMotion=!!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+ if(!reduceMotion&&typeof Element.prototype.animate==="function"){
+  const castle=world.querySelector(".ic-castle");
+  const gate=world.querySelector(".ic-gate");
+  const portal=world.querySelector(".ic-portal");
+  if(castle){castle.style.setProperty("animation","none","important");castle.animate([
+   {transform:"translate(-50%,-50%) scale(1)"},
+   {transform:"translate(-50%,-55%) scale(1.075)"},
+   {transform:"translate(-50%,-48%) scale(.985)"},
+   {transform:"translate(-50%,-50%) scale(1)"}
+  ],{duration:3600,iterations:Infinity,easing:"ease-in-out"});}
+  if(gate){gate.style.setProperty("animation","none","important");gate.animate([
+   {transform:"translateX(0)"},{transform:"translateX(-22px)"},
+   {transform:"translateX(22px)"},{transform:"translateX(0)"}
+  ],{duration:2400,iterations:Infinity,easing:"ease-in-out"});}
+  if(portal){portal.style.setProperty("animation","none","important");portal.animate([
+   {opacity:.12,transform:"scale(.72)"},{opacity:.9,transform:"scale(1.32)"},
+   {opacity:.12,transform:"scale(.72)"}
+  ],{duration:1900,iterations:Infinity,easing:"ease-in-out"});}
+ }
  if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}
  const duration=Math.max(9000,Number(opts.duration)||11500);
  setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .7s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),720)}},duration);return overlay;
