@@ -97,7 +97,7 @@ img,video,canvas{max-width:100%}
 <div class="status" id="status" role="status">CONCEPT SPACE · NO CAMERA, MICROPHONE, OR LIVE BROADCAST IS ACTIVE</div>
 <footer>AN EXPERIMENT IN WHAT LIVE COULD BECOME · EXISTING TIKNATION LIVE IS UNCHANGED</footer>
 </main>
-<script src="../../gift-engine.js?v=live-worlds-gallery-click-fix-2"></script>
+<script src="../../gift-engine.js?v=live-worlds-gallery-cinematic-5"></script>
 <script src="../../gifts.js?v=full-catalog-restore-2"></script>
 <script>
 const rooms={
@@ -111,7 +111,7 @@ cards.forEach(c=>c.addEventListener('click',()=>choose(c.dataset.room)));
 document.querySelectorAll('[data-vibe]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-vibe]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));document.getElementById('vibeStatus').textContent='LOCAL PREVIEW REACTION: '+button.dataset.vibe;document.getElementById('status').textContent='YOUR ROOM REACTION IS A LOCAL VISUAL DEMO · NO BROADCAST OR CHAT CONNECTION'}));
 function sparkle(){const p=document.createElement('span');p.textContent='✦';p.className='pulse';p.style.cssText='position:absolute;z-index:3;left:'+(42+Math.random()*16)+'%;top:'+(35+Math.random()*25)+'%;font-size:30px;color:#fff7c8;text-shadow:0 0 20px #fff,0 0 35px #8cf7ef;pointer-events:none';document.querySelector('.stage').appendChild(p);setTimeout(()=>p.remove(),750)}
 document.getElementById('pulse').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent='✧ YOUR LIGHT PULSE HAS CROSSED THE '+rooms[active].name+' · VISUAL DEMO'});
-document.getElementById('portal').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent='THE GATE RESPONDED · THIS IS A VISUAL INTERACTION, NOT A LIVE ROOM'});
+const portalButton=document.getElementById('portal');if(portalButton)portalButton.addEventListener('click',()=>{sparkle();document.getElementById('status').textContent='THE GATE RESPONDED · THIS IS A VISUAL INTERACTION, NOT A LIVE ROOM'});
 document.getElementById('enter').addEventListener('click',()=>{sparkle();document.getElementById('status').textContent=rooms[active].name+' · YOU ARE PREVIEWING THE CONCEPT, NOT JOINING A BROADCAST'});
 const giftCatalog=window.TIKNATION_GIFT_CATALOG||{};
 const giftCategories=['All','Musical','Magical','Special Effects','Visual Effects','Legendary','Surprises'];
