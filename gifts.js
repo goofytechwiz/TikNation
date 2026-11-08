@@ -345,7 +345,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=haunted-lighthouse-ocean-20261108a";
+    script.src = "./gift-engine.js?v=haunted-lighthouse-ocean-20261108b";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
