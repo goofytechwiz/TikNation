@@ -768,20 +768,23 @@ function showLiveGiftCelebration(event) {
   window.setTimeout(() => overlay.remove(), 4200);
 }
 function renderLiveGiftEvent(event) {
-  if(event?.gift_code==="storm_of_the_world")return;
+  if(!event||event.gift_code==="storm_of_the_world")return;
   const gift=LIVE_GIFT_CATALOG[event.gift_code];if(!gift)return;
-  // Route the Flying Dutchman through its dedicated cinematic renderer in BOTH
-  // creator previews and received live events; the generic card bypassed it.
-  if((gift.style==="ghostship" || gift.style==="meteor" || gift.style==="infernal_castle" || gift.style==="fingerdeath") && window.TikNationGiftEngine?.show){
-    window.TikNationGiftEngine.show(gift,{
-      meta:gift.style==="meteor"?"DRAGON'S METEOR STRIKE · LIVE GIFT":"THE FLYING DUTCHMAN · LIVE GIFT",
-      duration:gift.style==="meteor"?7800:gift.style==="fingerdeath"?8500:10000
-    });
-  } else {
-    showLiveGiftCelebration(event);
-  }
-  if((gift.style==="meteor" || gift.style==="infernal_castle") && typeof playTikNationGiftSound==="function") playTikNationGiftSound(gift);
-  else playLiveGiftSound(event,gift);
+  // Give every received gift its own cinematic treatment when the engine is ready.
+  let rendered=false;
+  try{
+    if(window.TikNationGiftEngine?.show){
+      rendered=Boolean(window.TikNationGiftEngine.show(gift,{
+        meta:(event.sender_name||"A TIKNATION MEMBER")+" · LIVE GIFT",
+        duration:["meteor","infernal_castle","fingerdeath","ghostship"].includes(gift.style)?8500:6800
+      }));
+    }
+  }catch(error){console.warn("Cinematic gift renderer unavailable; using fallback.",error);}
+  if(!rendered)showLiveGiftCelebration(event);
+  try{
+    if((gift.style==="meteor"||gift.style==="infernal_castle")&&typeof playTikNationGiftSound==="function")playTikNationGiftSound(gift);
+    else playLiveGiftSound(event,gift);
+  }catch(error){console.warn("Gift sound unavailable.",error);}
   const feed=$("liveGiftFeed");if(!feed)return;
   const empty=feed.querySelector(".small");if(empty)feed.innerHTML="";
   const row=document.createElement("div");row.className="live-gift-feed-item";const strong=document.createElement("strong");strong.textContent=event.sender_name||"TikNation member";
