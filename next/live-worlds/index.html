@@ -127,4 +127,29 @@ document.getElementById('fingerDeathPreview').addEventListener('click',()=>{
 </nav>
 <script>(function(){const p=location.pathname;const map=[['discover','/discover/'],['live','/live-worlds/'],['create','/create/'],['community','/community/'],['profile','/profile/'],['settings','/settings/'],['home','/realms/']];let active=map.find(x=>p.includes(x[1]));if(p.includes('/creator-showcase/')||p.includes('/creator-studio/'))active=['profile','/profile/'];if(active){const a=document.querySelector('[data-dock="'+active[0]+'"]');if(a)a.setAttribute('aria-current','page')}})();</script><script>
 (()=>{const key='tiknation-live-room-poll-v1',buttons=[...document.querySelectorAll('[data-poll]')],status=document.getElementById('livePollStatus');if(!buttons.length||!status)return;let choice='';try{choice=localStorage.getItem(key)||''}catch(e){}function render(){buttons.forEach(b=>{const selected=b.dataset.poll===choice;b.setAttribute('aria-pressed',String(selected));b.disabled=!!choice;b.textContent=(selected?'✓ ':'')+b.dataset.poll});status.textContent=choice?'YOUR LOCAL PREVIEW VOTE: '+choice.toUpperCase():'CHOOSE ONE · LOCAL PREVIEW POLL'}buttons.forEach(b=>b.addEventListener('click',()=>{if(choice)return;choice=b.dataset.poll;try{localStorage.setItem(key,choice)}catch(e){}render()}));render()})();
+</script><script id="fod-independent-handler">
+(function(){
+  function install(){
+    const button=document.getElementById('fingerDeathPreview');
+    if(!button || button.dataset.fodInstalled==='yes') return;
+    button.dataset.fodInstalled='yes';
+    button.addEventListener('click',function(){
+      try{
+        const status=document.getElementById('fingerDeathStatus');
+        const old=document.getElementById('fodStandalonePreview');
+        if(old) old.remove();
+        const overlay=document.createElement('div');
+        overlay.id='fodStandalonePreview';
+        overlay.innerHTML='<div class="fod-scene" role="dialog" aria-label="Finger of Death animation"><div class="fod-runes">✦　ᛟ　✧　ᚷ　✦</div><svg class="fod-hand" viewBox="0 0 420 520" role="img" aria-label="Skeletal hand raising one finger"><defs><linearGradient id="fodBone2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff9dc"/><stop offset=".5" stop-color="#c9d2c9"/><stop offset="1" stop-color="#667b80"/></linearGradient></defs><path d="M143 405L155 493Q210 516 266 493L279 405Z" fill="url(#fodBone2)" stroke="#53656a" stroke-width="8"/><path d="M160 449Q210 468 260 449M164 475Q210 492 256 475" fill="none" stroke="#687c7c" stroke-width="7"/><path d="M126 388Q105 346 119 298Q131 260 165 259Q194 255 211 280Q233 257 261 270Q294 284 292 324L286 403Q210 440 139 409Z" fill="url(#fodBone2)" stroke="#52666b" stroke-width="8"/><g fill="url(#fodBone2)" stroke="#52666b" stroke-width="8" stroke-linejoin="round"><path d="M155 288Q145 242 144 203Q142 169 161 158Q180 150 190 174L202 287Z"/><path d="M202 281L200 104Q200 65 221 57Q244 54 250 84L249 294Z"/><path d="M250 290Q255 221 268 185Q279 155 298 162Q319 169 313 197L289 330Z"/><path d="M288 326Q310 281 333 273Q355 269 361 289Q367 309 346 329L307 378Z"/><path d="M130 330Q98 301 76 310Q58 321 69 341Q83 365 124 379L154 389Z"/></g><g fill="#e9e7d6" stroke="#64777a" stroke-width="5"><ellipse cx="166" cy="174" rx="15" ry="9"/><ellipse cx="223" cy="91" rx="15" ry="9"/><ellipse cx="286" cy="183" rx="14" ry="9"/><ellipse cx="336" cy="291" rx="13" ry="8"/><ellipse cx="85" cy="326" rx="12" ry="8"/></g><path d="M174 190L183 262M216 112L222 257M286 204L278 290M331 306L303 352M99 340L139 365" fill="none" stroke="#53666b" stroke-width="4"/><path class="fod-target" d="M222 10V42M208 26H236" stroke="#c8fbff" stroke-width="3" stroke-linecap="round"/></svg><div class="fod-title">FINGER OF DEATH<small>THE HAND HAS CHOSEN</small></div><div class="fod-close">FREE VISUAL PREVIEW · NO COINS SPENT</div></div>';
+        document.body.appendChild(overlay);
+        if(status) status.textContent='FINGER OF DEATH SUMMONED · FREE PREVIEW';
+        window.setTimeout(function(){if(overlay.isConnected){overlay.classList.add('fod-out');window.setTimeout(function(){overlay.remove()},500)}},8500);
+      }catch(error){
+        const status=document.getElementById('fingerDeathStatus');
+        if(status) status.textContent='PREVIEW ERROR: '+(error && error.message ? error.message : 'PLEASE RELOAD');
+      }
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',install,{once:true}); else install();
+})();
 </script></body></html>
