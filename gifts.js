@@ -1,4 +1,7 @@
-const TIKNATION_GIFT_CATALOG = {};
+const TIKNATION_GIFT_CATALOG = {
+  phoenix_rebirth: { name: "Phoenix Rebirth", emoji: "🪽", category: "Legendary", cost: 750, style: "phoenix", sound: "phoenix", message: "Rise from the ashes." },
+  infernal_castle: { name: "Infernal Castle", emoji: "🏰", category: "Legendary", cost: 900, style: "infernal_castle", sound: "infernal_castle", message: "The gates of the underworld open." }
+};
 window.TIKNATION_GIFT_CATALOG = TIKNATION_GIFT_CATALOG;
 
 let tikNationGiftAudioContext = null;
