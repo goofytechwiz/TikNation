@@ -14,10 +14,10 @@ button{border:1px solid #c3a06b;border-radius:999px;padding:13px 24px;background
 button:disabled{opacity:.45}#status{min-height:20px;font:11px system-ui;letter-spacing:.13em;color:#e6c38c}.note{font:10px system-ui;color:#999;margin:8px auto;max-width:560px}
 </style></head><body><main>
 <div class="eyebrow">TIKNATION · EPIC GIFTS · PRIVATE PREVIEW</div>
-<h1>THE CURSED JACK-IN-THE-BOX</h1><div class="sub">A MECHANICAL NIGHTMARE · FULL 3D REBUILD</div>
+<h1>THE CURSED JACK-IN-THE-BOX</h1><div class="sub">THE MIDNIGHT CIRCUS · FINAL 3D REBUILD</div>
 <div class="stage"><canvas id="scene" aria-label="Interactive three-dimensional antique jack-in-the-box horror gift"></canvas><div class="overlay"></div></div>
 <div class="controls"><button id="wind">✧ Wind it up</button><button id="reset" disabled>Stop / reset</button></div>
-<div id="status" role="status">THE BOX IS WAITING IN THE DARK.</div>
+<div id="status" role="status">THE CIRCUS BOX IS WAITING IN THE DARK.</div>
 <div class="note">Tap Wind it up to start the complete sequence. Sound begins after your tap. Private preview only.</div>
 </main>
 <script type="module">
@@ -46,34 +46,32 @@ function makeScene(){
  const base=mesh(new THREE.BoxGeometry(2.18,.12,1.95),mat('#392033',.55,.06),scene,0,.22,0);
  boxRig=new THREE.Group();scene.add(boxRig);boxRig.position.y=.36;
  // Main wooden cabinet with subtle textured finish
- const wood=mat('#174b73',.42,.02,{map:makeNoiseTexture()});
- roundedBox(2.02,1.92,1.78,.055,wood,boxRig,0,1.02,0);
- // A traditional toy cube: no appliance-style front door or control panel.
- // Bright painted corner rails and chunky wooden feet make the silhouette unmistakable.
- for(const x of [-1.08,1.08])for(const z of [-.91,.91]){
-   mesh(new THREE.BoxGeometry(.12,1.88,.12),mat('#e5b84f',.38,.12),boxRig,x,1.02,z);
-   for(const y of [.16,1.88])mesh(new THREE.SphereGeometry(.075,18,14),gold,boxRig,x,y,z);
+ const wood=mat('#76182d',.48,.015,{map:makeNoiseTexture()});
+ // Rebuilt as a classic circus toy chest: a true square wooden cube, not a rounded appliance.
+ mesh(new THREE.BoxGeometry(2.16,2.02,2.02),wood,boxRig,0,1.04,0);
+ // Broad ivory-and-crimson vertical bands wrap the front and visible side faces.
+ const stripeRed=mat('#9e2039',.46,.02),stripeCream=mat('#ead9b6',.62,.01);
+ for(let i=0;i<7;i++){
+   const x=-.91+i*.303;
+   mesh(new THREE.BoxGeometry(.145,1.88,.025),i%2?stripeCream:stripeRed,boxRig,x,1.04,1.025);
+   mesh(new THREE.BoxGeometry(.025,1.88,.145),i%2?stripeCream:stripeRed,boxRig,1.095,1.04,-.91+i*.303);
  }
- for(const x of [-.68,.68])for(const z of [-.58,.58]){
-   const foot=mesh(new THREE.SphereGeometry(.19,24,18),mat('#a52d3e',.38,.08),boxRig,x,.04,z);
-   foot.scale.set(1,.72,1);
+ // Heavy wooden corner posts and visible joinery establish a real toy-box silhouette.
+ for(const x of [-1.105,1.105])for(const z of [-1.035,1.035]){
+   mesh(new THREE.BoxGeometry(.13,2.02,.13),gold,boxRig,x,1.04,z);
+   for(const y of [.18,1.91])mesh(new THREE.SphereGeometry(.075,18,14),mat('#f1d18a',.3,.18),boxRig,x,y,z);
  }
- // Front face: playful harlequin diamonds and oversized painted stars, not a plaque.
- const diamondMats=[mat('#f1c75b',.38,.05),mat('#c53a4b',.42,.03),mat('#e8dfc6',.5,.01),mat('#37a6a0',.38,.04)];
- for(let row=0;row<3;row++)for(let col=0;col<5;col++){
-   const d=mesh(new THREE.BoxGeometry(.205,.205,.035),diamondMats[(row+col)%4],boxRig,-.76+col*.38,.48+row*.43,.925);
-   d.rotation.z=Math.PI/4;
+ // Four chunky red turned feet.
+ for(const x of [-.73,.73])for(const z of [-.68,.68]){
+   const foot=mesh(new THREE.CylinderGeometry(.17,.22,.28,20),mat('#a52d3e',.36,.05),boxRig,x,.02,z);
+   foot.rotation.y=.18;
  }
- // Raised central jester-star medallion is decorative, not a door.
- const starShape=new THREE.Shape();for(let i=0;i<10;i++){const r=i%2===0?.31:.13,ang=-Math.PI/2+i*Math.PI/5,x=Math.cos(ang)*r,y=Math.sin(ang)*r;if(i===0)starShape.moveTo(x,y);else starShape.lineTo(x,y)}starShape.closePath();
- const star=mesh(new THREE.ExtrudeGeometry(starShape,{depth:.045,bevelEnabled:true,bevelSegments:2,bevelSize:.018,bevelThickness:.018}),mat('#f4d16d',.34,.08),boxRig,0,1.02,.95);
- // Small painted corner rosettes and side stripes
- for(const x of [-.79,.79])for(const y of [.27,1.77]){
-   mesh(new THREE.TorusGeometry(.105,.025,8,28),gold,boxRig,x,y,.94);
-   mesh(new THREE.SphereGeometry(.045,16,12),mat('#f7e8c9',.35),boxRig,x,y,.95);
- }
- for(const side of [-1,1]){
-   for(let y=.35;y<1.8;y+=.34)mesh(new THREE.BoxGeometry(.045,.20,.025),mat('#e9bd58',.4),boxRig,side*1.025,y,0);
+ // Big raised circus-star crest, deliberately integrated into the painted front face.
+ const starShape=new THREE.Shape();for(let i=0;i<10;i++){const rr=i%2===0?.38:.16,ang=-Math.PI/2+i*Math.PI/5,x=Math.cos(ang)*rr,y=Math.sin(ang)*rr;if(i===0)starShape.moveTo(x,y);else starShape.lineTo(x,y)}starShape.closePath();
+ mesh(new THREE.ExtrudeGeometry(starShape,{depth:.09,bevelEnabled:true,bevelSegments:3,bevelSize:.025,bevelThickness:.025}),mat('#f3cb65',.32,.12),boxRig,0,1.04,1.055);
+ // Brass nail heads along the front corners, no appliance-style controls or front door.
+ for(const x of [-.91,.91])for(const y of [.27,.58,1.5,1.81]){
+   mesh(new THREE.SphereGeometry(.035,16,12),darkGold,boxRig,x,y,1.11);
  }
  // The open top is a dark square cavity surrounded by a bright toy-colored rim.
  for(const [x,z,w,d] of [[0,-.84,2.08,.09],[0,.84,2.08,.09],[-.995,0,.09,1.68],[.995,0,.09,1.68]])mesh(new THREE.BoxGeometry(w,.13,d),mat('#e8bd59',.35,.12),boxRig,x,2.02,z);
@@ -81,12 +79,12 @@ function makeScene(){
  // hinge barrels along back edge
  for(let x of [-.7,0,.7]){const h=mesh(new THREE.CylinderGeometry(.075,.075,.35,24),gold,boxRig,x,1.84,-.87);h.rotation.z=Math.PI/2}
  lidPivot=new THREE.Group();lidPivot.position.set(0,2.04,-.82);boxRig.add(lidPivot);
- roundedBox(2.12,.105,1.48,.035,mat('#c13b4c',.36,.04),lidPivot,0,0,.72);
- roundedBox(1.88,.025,1.24,.015,mat('#f2d47b',.42,.08),lidPivot,0,.065,.72);
- for(const x of [-.92,.92])for(const z of [.2,1.42])mesh(new THREE.SphereGeometry(.06,16,12),gold,lidPivot,x,.12,z);
+ mesh(new THREE.BoxGeometry(2.28,.16,2.18),mat('#f0d6a0',.48,.03),lidPivot,0,0,1.02);
+ mesh(new THREE.BoxGeometry(2.04,.045,1.94),mat('#9b1c36',.4,.03),lidPivot,0,.095,1.02);
+ for(const x of [-.92,.92])for(const z of [.2,1.42])mesh(new THREE.SphereGeometry(.075,16,12),gold,lidPivot,x,.14,z);
  // winding shaft and crank on right side
- const axle=mesh(new THREE.CylinderGeometry(.095,.095,.28,32),gold,boxRig,1.22,1.05,.12);axle.rotation.z=Math.PI/2;
- crank=new THREE.Group();crank.position.set(1.39,1.05,.12);boxRig.add(crank);
+ const axle=mesh(new THREE.CylinderGeometry(.12,.12,.34,32),gold,boxRig,1.25,1.05,.12);axle.rotation.z=Math.PI/2;
+ crank=new THREE.Group();crank.position.set(1.43,1.05,.12);boxRig.add(crank);
  cylinderBetween(new THREE.Vector3(0,0,0),new THREE.Vector3(.04,.42,0),.045,.045,gold,crank);
  cylinderBetween(new THREE.Vector3(.04,.42,0),new THREE.Vector3(.37,.42,0),.045,.045,gold,crank);
  mesh(new THREE.SphereGeometry(.095,24,16),mat('#28151e',.25,.4),crank,.37,.42,0);
