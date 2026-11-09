@@ -6,11 +6,11 @@
 <body><header><b>TIKNATION · EPIC GIFT TEST</b><a href="./">← GIFT TEST LAB</a></header>
 <main><div class="eyebrow">GIFT #2 · NEW CONCEPT · ISOLATED TEST</div><h1 class="title">The Haunted Hearse</h1><p class="copy">A long, vintage funeral hearse rolls out of the midnight fog. Its headlights cut through the darkness, polished coachwork catches the moonlight, and the rear hearse doors reveal a chilling surprise. A full 3D arrival—not a mansion or a static picture.</p>
 <section class="preview"><div><strong>THE FINAL RIDE IS HERE</strong><small>NO ONE RIDES ALONE</small></div></section>
-<div class="controls"><button class="primary" id="play" type="button" disabled>✦ PLAY THE HAUNTED HEARSE</button><button id="stop" type="button">STOP PREVIEW</button></div>
+<div class="controls"><button class="primary" id="play" type="button" disabled>✦ PLAY THE HAUNTED HEARSE</button><button id="soundcheck" type="button">TEST SOUND</button><button id="stop" type="button">STOP PREVIEW</button></div>
 <div class="status" id="status" role="status" aria-live="polite">LOADING GIFT ENGINE…</div>
-<p class="fine">Isolated preview only. This does not send a live gift, charge coins, or change the live gift catalog. Tap Play to start the 3D hearse and its sound callback.</p></main>
+<p class="fine">Isolated preview only. This does not send a live gift, charge coins, or change the live gift catalog. Use TEST SOUND first to check whether this browser can play audio, then tap Play for the hearse effects.</p></main>
 <script>
-const status=document.getElementById("status"),play=document.getElementById("play"),stop=document.getElementById("stop");let audio=null,oscillators=[],noiseSource=null,stopped=false;
+const status=document.getElementById("status"),play=document.getElementById("play"),stop=document.getElementById("stop"),soundcheck=document.getElementById("soundcheck");let audio=null,oscillators=[],noiseSource=null,stopped=false;
 function stopSound(){stopped=true;oscillators.forEach(o=>{try{o.stop()}catch(e){}});oscillators=[];if(noiseSource){try{noiseSource.stop()}catch(e){}noiseSource=null;}if(audio&&audio.state!=="closed"){audio.close().catch(()=>{});}audio=null;}
 function startSound(){
  stopSound();stopped=false;
@@ -39,6 +39,7 @@ function startSound(){
  }catch(e){status.textContent="AUDIO ERROR · "+e.message;}
 }
 const engine=document.createElement("script");engine.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=haunted-hearse-preview-20261109";engine.onload=()=>{if(window.TikNationGiftEngine){play.disabled=false;status.textContent="READY · TAP PLAY"}else status.textContent="ENGINE DID NOT INITIALIZE"};engine.onerror=()=>status.textContent="GIFT ENGINE FAILED TO LOAD";document.head.appendChild(engine);
+soundcheck.addEventListener("click",async()=>{try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent="NO WEB AUDIO SUPPORT";return;}const c=new AC();await c.resume();const o=c.createOscillator(),g=c.createGain();o.type="square";o.frequency.setValueAtTime(740,c.currentTime);o.frequency.setValueAtTime(520,c.currentTime+.22);g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.65,c.currentTime+.025);g.gain.setValueAtTime(.65,c.currentTime+.42);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.55);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.56);status.textContent="SOUND CHECK PLAYING · YOU SHOULD HEAR TWO CLEAR TONES";o.onended=()=>c.close();}catch(e){status.textContent="SOUND CHECK FAILED · "+e.message;}});
 play.addEventListener("click",()=>{if(!window.TikNationGiftEngine){status.textContent="ENGINE NOT READY";return;}startSound();try{const ok=window.TikNationGiftEngine.show({name:"The Haunted Hearse",style:"hauntedhearse"},{duration:30000});if(ok)status.textContent="THE HAUNTED HEARSE IS ARRIVING · PREVIEW ONLY";else status.textContent="GIFT COULD NOT START";}catch(e){status.textContent="PREVIEW ERROR · "+e.message;}});
 stop.addEventListener("click",()=>{stopSound();status.textContent="PREVIEW AUDIO STOPPED";});
 </script></body></html>
