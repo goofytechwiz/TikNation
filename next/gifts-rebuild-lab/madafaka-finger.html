@@ -4,41 +4,41 @@
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 80%,#33202b 0,#100d17 48%,#07070b 100%);color:#f6edf0;font-family:system-ui,sans-serif;overflow-x:hidden}header{padding:17px 20px;border-bottom:1px solid #ffffff20;font-size:10px;letter-spacing:.18em;color:#c5b7c4}a{color:#f3c4d5;text-decoration:none}main{width:min(94%,760px);margin:30px auto}.eyebrow{font-size:10px;letter-spacing:.24em;color:#f0a7c2}.title{font:400 clamp(30px,7vw,54px)/1 Georgia,serif;margin:10px 0}.copy{font-size:13px;line-height:1.6;color:#c3b5c1;max-width:620px}.stage{height:min(62vh,510px);min-height:340px;margin-top:20px;position:relative;overflow:hidden;border:1px solid #d69bb044;border-radius:18px;background:radial-gradient(ellipse at 50% 88%,#563143 0,#211522 42%,#08070d 78%);display:grid;place-items:center;isolation:isolate}.spot{position:absolute;width:70%;height:120%;top:-45%;left:15%;background:radial-gradient(ellipse,#f7b9c533,transparent 65%);filter:blur(15px)}.floor{position:absolute;bottom:-20%;left:-10%;width:120%;height:42%;background:radial-gradient(ellipse,#9c5971aa,transparent 68%);filter:blur(20px)}.hand{position:relative;width:min(76vw,330px);height:410px;max-height:95%;transform:translateY(125%);filter:drop-shadow(0 18px 24px #000b);z-index:2}.hand.rise{animation:rise 1.05s cubic-bezier(.18,.78,.2,1) forwards}.hand svg{width:100%;height:100%;overflow:visible}.impact{position:absolute;inset:0;z-index:3;opacity:0;pointer-events:none;background:radial-gradient(circle at 50% 48%,#fff4 0,transparent 40%)}.impact.flash{animation:flash .5s ease-out}.caption{position:absolute;z-index:4;bottom:7%;left:0;right:0;text-align:center;font-weight:1000;font-size:clamp(24px,6vw,42px);letter-spacing:.08em;color:#ffe1eb;text-shadow:0 3px 12px #000,0 0 20px #ff5d9b;opacity:0;transform:scale(.75)}.caption.show{animation:caption .5s .72s cubic-bezier(.2,1.4,.4,1) forwards}.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button{border:1px solid #e5a6bf66;border-radius:999px;background:#35202d;color:#ffeaf1;padding:14px 20px;font-size:10px;font-weight:900;letter-spacing:.13em}button.primary{background:#f2bfd1;color:#25121b}.status{min-height:24px;margin-top:12px;color:#d9b6c6;font-size:10px;letter-spacing:.12em}.fine{color:#988493;font-size:10px;line-height:1.6;margin-top:22px}@keyframes rise{0%{transform:translateY(125%) rotate(7deg)}65%{transform:translateY(-4%) rotate(-2deg)}82%{transform:translateY(2%) rotate(1deg)}100%{transform:translateY(0) rotate(0)}}@keyframes flash{0%{opacity:0}25%{opacity:1}100%{opacity:0}}@keyframes caption{to{opacity:1;transform:scale(1)}}@media(prefers-reduced-motion:reduce){.hand.rise,.caption.show,.impact.flash{animation-duration:.01ms}}
 </style></head><body>
 <header><b>TIKNATION · EPIC GIFT TEST</b> <span style="float:right"><a href="./">← GIFT TEST LAB</a></span></header>
-<main><div class="eyebrow">GIFT #3 · ISOLATED PREVIEW</div><h1 class="title">The Madafaka Finger</h1><p class="copy">A giant hand shoots up from the darkness, holds the unmistakable middle-finger salute, and lands with a cheeky cinematic impact.</p>
+<main><div class="eyebrow">GIFT #3 · ISOLATED PREVIEW</div><h1 class="title">The Madafaka Finger</h1><p class="copy">A skeletal hand erupts from the darkness, its middle finger raised in a defiant salute. Weathered ivory bones, visible joints, and a sharp cinematic impact.</p>
 <section class="stage" id="stage"><div class="spot"></div><div class="floor"></div>
-<div class="hand" id="hand"><svg viewBox="0 0 320 430" role="img" aria-label="A realistic human hand making a middle-finger gesture">
+<div class="hand" id="hand"><svg viewBox="0 0 320 430" role="img" aria-label="An anatomically inspired skeletal hand making a middle-finger gesture">
 <defs>
-<linearGradient id="skin" x1="0" y1="0" x2="1" y2=".35"><stop stop-color="#f7c5a7"/><stop offset=".18" stop-color="#e9a98a"/><stop offset=".42" stop-color="#c98269"/><stop offset=".7" stop-color="#a45f51"/><stop offset="1" stop-color="#62363a"/></linearGradient>
-<linearGradient id="finger" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#8e4d46"/><stop offset=".2" stop-color="#d58e72"/><stop offset=".48" stop-color="#f1b99a"/><stop offset=".76" stop-color="#c77d66"/><stop offset="1" stop-color="#713f40"/></linearGradient>
-<linearGradient id="palm" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#f3b99a"/><stop offset=".34" stop-color="#d48b70"/><stop offset=".72" stop-color="#a85f54"/><stop offset="1" stop-color="#63383c"/></linearGradient>
-<linearGradient id="nail" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#b97868"/><stop offset=".35" stop-color="#f1c5ad"/><stop offset=".72" stop-color="#e4a88f"/><stop offset="1" stop-color="#986052"/></linearGradient>
-<radialGradient id="knuckle"><stop stop-color="#f5c1a1" stop-opacity=".9"/><stop offset=".55" stop-color="#c47a65" stop-opacity=".5"/><stop offset="1" stop-color="#7d4744" stop-opacity="0"/></radialGradient>
-<filter id="skinTexture" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="3" seed="19" result="grain"/><feColorMatrix in="grain" type="saturate" values="0" result="mono"/><feComponentTransfer in="mono" result="softgrain"><feFuncA type="table" tableValues="0 .12"/></feComponentTransfer><feBlend in="SourceGraphic" in2="softgrain" mode="soft-light"/></filter>
-<filter id="softShadow" x="-40%" y="-30%" width="180%" height="180%"><feGaussianBlur stdDeviation="5"/></filter>
+<linearGradient id="bone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff4d7"/><stop offset=".3" stop-color="#d8c9a7"/><stop offset=".7" stop-color="#a99a7c"/><stop offset="1" stop-color="#554d43"/></linearGradient>
+<linearGradient id="boneHi" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff8df"/><stop offset=".5" stop-color="#e2d5b7"/><stop offset="1" stop-color="#8e826b"/></linearGradient>
+<radialGradient id="joint"><stop stop-color="#f3e5c4"/><stop offset=".58" stop-color="#b9aa8b"/><stop offset="1" stop-color="#62594b"/></radialGradient>
+<filter id="boneShadow" x="-40%" y="-30%" width="180%" height="180%"><feGaussianBlur stdDeviation="5"/></filter>
+<filter id="boneGrain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="8"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .16"/></feComponentTransfer><feBlend in="SourceGraphic" mode="soft-light"/></filter>
 </defs>
-<path d="M89 393 C70 340 56 282 42 230 C35 205 48 188 66 192 C82 195 91 219 101 245 L111 99 C112 72 126 54 144 56 C162 58 169 74 168 101 L167 235 L176 39 C177 12 194 -3 213 3 C233 9 238 26 235 49 L220 238 L242 92 C245 68 263 56 280 65 C297 74 296 91 291 113 L264 255 C283 229 302 224 313 239 C324 254 312 273 302 292 L265 358 C250 389 222 408 188 414 L129 423 C108 425 96 412 89 393Z" fill="#170d13" opacity=".75" filter="url(#softShadow)" transform="translate(4 9)"/>
-<g filter="url(#skinTexture)" stroke-linejoin="round">
-<path d="M91 392 C81 361 71 328 63 298 C56 273 49 248 42 228 C36 208 46 192 63 191 C80 190 89 208 97 231 L111 278 L111 99 C111 72 125 55 143 56 C161 57 169 73 168 100 L166 236 L176 39 C177 13 193 -2 212 3 C232 8 238 25 235 49 L220 240 L243 91 C246 68 262 57 279 65 C296 73 297 91 291 113 L264 256 C282 230 301 225 313 239 C325 254 312 275 302 293 L265 358 C249 389 222 407 188 414 L130 423 C109 425 98 412 91 392Z" fill="url(#palm)" stroke="#6c3d3d" stroke-width="2.4"/>
-<path d="M119 101 C119 73 130 62 143 63 C155 64 160 77 159 101 L157 285 L139 291Z" fill="url(#finger)"/>
-<path d="M184 42 C185 17 197 8 211 12 C225 16 229 29 226 50 L209 264 L190 263Z" fill="url(#finger)"/>
-<path d="M251 95 C254 73 265 66 277 73 C288 80 287 94 282 113 L254 257 L239 253Z" fill="url(#finger)"/>
-<path d="M126 67 Q141 55 155 68 L155 86 Q141 92 127 84Z" fill="url(#nail)" stroke="#9a6256" stroke-width="1.2"/>
-<path d="M192 11 Q207 1 222 15 L222 34 Q206 41 191 32Z" fill="url(#nail)" stroke="#9a6256" stroke-width="1.2"/>
-<path d="M260 68 Q273 60 284 75 L280 91 Q266 96 255 85Z" fill="url(#nail)" stroke="#9a6256" stroke-width="1.2"/>
-<path d="M48 199 Q61 188 74 202 L82 220 Q68 230 54 222Z" fill="url(#nail)" opacity=".8"/>
-<ellipse cx="81" cy="267" rx="28" ry="40" fill="url(#knuckle)"/><ellipse cx="170" cy="290" rx="37" ry="26" fill="url(#knuckle)"/><ellipse cx="222" cy="277" rx="27" ry="21" fill="url(#knuckle)"/><ellipse cx="258" cy="260" rx="23" ry="19" fill="url(#knuckle)"/>
-<g fill="none" stroke-linecap="round">
-<path d="M119 283 Q137 294 158 286 M117 291 Q139 303 160 295" stroke="#713f40" stroke-width="2.4" opacity=".65"/>
-<path d="M179 260 Q195 269 211 262 M180 267 Q197 276 210 269" stroke="#6e3c3c" stroke-width="2" opacity=".62"/>
-<path d="M224 252 Q239 261 253 254 M224 258 Q240 267 254 260" stroke="#713e3c" stroke-width="2" opacity=".6"/>
-<path d="M65 226 Q78 237 85 254 M72 240 Q83 250 88 267" stroke="#713e3c" stroke-width="2" opacity=".65"/>
-<path d="M101 312 Q141 329 183 313 M95 338 Q143 356 199 335 M104 365 Q150 381 205 357" stroke="#713f3e" stroke-width="2.1" opacity=".55"/>
-<path d="M109 309 Q145 320 177 307 M103 337 Q145 349 188 330" stroke="#f3b89a" stroke-width="2.3" opacity=".55"/>
-<path d="M137 115 L137 242 M202 61 L198 232 M267 117 L252 225" stroke="#f6c5a5" stroke-width="2.5" opacity=".34"/>
-</g>
-<g fill="none" stroke="#8e514b" stroke-width="2" opacity=".28"><path d="M122 376 Q139 352 132 330 M133 355 Q151 345 160 328 M190 382 Q205 360 202 343"/></g>
+<path d="M119 430 L112 355 Q99 329 90 299 Q78 264 96 237 Q111 216 139 221 L157 236 Q181 212 207 222 Q229 230 239 255 Q251 286 229 321 L210 365 L205 430Z" fill="#050408" opacity=".8" filter="url(#boneShadow)"/>
+<g filter="url(#boneGrain)" stroke="#514838" stroke-width="2.2" stroke-linejoin="round">
+<path d="M126 425 Q121 386 126 351 L143 321 Q151 313 159 321 Q165 330 158 343 L148 371 L150 425Z" fill="url(#bone)"/>
+<path d="M177 425 L177 371 L169 342 Q164 329 174 321 Q184 314 191 326 L203 356 L202 425Z" fill="url(#boneHi)"/>
+<g fill="url(#joint)"><ellipse cx="145" cy="304" rx="15" ry="13"/><ellipse cx="169" cy="299" rx="14" ry="12"/><ellipse cx="192" cy="304" rx="14" ry="12"/><ellipse cx="211" cy="291" rx="12" ry="11"/><ellipse cx="128" cy="286" rx="12" ry="11"/><ellipse cx="153" cy="282" rx="12" ry="10"/><ellipse cx="178" cy="278" rx="12" ry="10"/></g>
+<path d="M143 293 Q139 268 138 245 Q138 232 148 231 Q158 231 160 244 L164 285Z" fill="url(#boneHi)"/>
+<path d="M164 287 L170 239 Q172 226 183 228 Q193 230 190 243 L181 292Z" fill="url(#bone)"/>
+<path d="M188 293 L203 251 Q208 239 218 244 Q228 249 222 261 L207 300Z" fill="url(#boneHi)"/>
+<path d="M129 294 L111 267 Q104 257 113 250 Q122 244 130 255 L148 284Z" fill="url(#bone)"/>
+<path d="M176 237 Q178 205 180 174 L182 109 Q183 91 194 89 Q206 89 207 107 L203 178 L198 241Z" fill="url(#boneHi)"/>
+<path d="M182 111 L184 66 Q185 50 196 49 Q208 49 209 66 L207 111Z" fill="url(#bone)"/>
+<path d="M185 66 L186 28 Q187 12 198 11 Q210 11 211 28 L209 67Z" fill="url(#boneHi)"/>
+<path d="M188 27 Q188 5 199 4 Q211 4 212 27 L209 39 Q199 45 188 37Z" fill="url(#bone)"/>
+<path d="M141 243 Q119 226 104 211 Q95 202 101 193 Q108 184 118 192 L150 215 Q162 223 158 236Z" fill="url(#bone)"/>
+<path d="M105 211 L82 192 Q72 183 80 174 Q88 165 98 174 L119 193Z" fill="url(#boneHi)"/>
+<path d="M82 192 Q68 181 59 173 Q51 165 58 157 Q66 149 76 157 L97 176Z" fill="url(#bone)"/>
+<path d="M190 244 Q211 226 229 212 Q239 204 247 213 Q255 223 245 232 L212 263Z" fill="url(#boneHi)"/>
+<path d="M211 263 L243 242 Q255 235 263 245 Q270 256 258 264 L222 285Z" fill="url(#bone)"/>
+<path d="M204 267 Q224 266 242 279 Q254 287 246 298 Q239 308 227 299 L190 284Z" fill="url(#boneHi)"/>
+<path d="M126 286 Q102 281 84 266 Q72 256 79 246 Q87 235 98 244 L137 266 Q149 274 143 286Z" fill="url(#bone)"/>
+<path d="M84 266 Q66 255 53 245 Q43 237 50 227 Q58 218 69 226 L96 246Z" fill="url(#boneHi)"/>
+<g fill="url(#joint)" stroke="#5b5142" stroke-width="1.6"><ellipse cx="194" cy="91" rx="12" ry="9"/><ellipse cx="195" cy="49" rx="11" ry="8"/><ellipse cx="193" cy="110" rx="12" ry="8"/><ellipse cx="158" cy="235" rx="10" ry="8"/><ellipse cx="181" cy="228" rx="10" ry="8"/><ellipse cx="219" cy="246" rx="10" ry="8"/><ellipse cx="117" cy="194" rx="9" ry="7"/><ellipse cx="96" cy="174" rx="9" ry="7"/><ellipse cx="244" cy="231" rx="9" ry="7"/><ellipse cx="256" cy="263" rx="9" ry="7"/></g>
+<g fill="none" stroke="#6a5d49" stroke-width="2" opacity=".65"><path d="M184 143 Q194 149 204 143 M182 178 Q192 184 202 177 M181 214 Q190 219 200 213 M117 226 Q128 226 135 237 M207 269 Q220 260 231 261 M96 263 Q108 271 120 269 M130 352 Q139 360 151 354 M178 354 Q189 361 199 353"/></g>
 </g></svg></div><div class="impact" id="impact"></div><div class="caption" id="caption">MA-DA-FA-KA! 🤘</div></section>
-<div class="controls"><button class="primary" id="play">✦ PLAY GIFT</button><button id="stop">STOP PREVIEW</button></div><div class="status" id="status">READY · TAP PLAY</div><p class="fine">Isolated preview only. No live gift is sent and no coins are charged. The comic impact sound is synthesized in-browser; no external audio files required.</p></main>
+<div class="controls"><button class="primary" id="play">✦ PLAY GIFT</button><button id="stop">STOP PREVIEW</button></div><div class="status" id="status">READY · TAP PLAY</div><p class="fine">Isolated preview only. No live gift is sent and no coins are charged. A low impact and dry bone-rattle are synthesized in-browser; no external audio files required.</p></main>
 <script>
 const hand=document.getElementById("hand"),caption=document.getElementById("caption"),impact=document.getElementById("impact"),status=document.getElementById("status");let ctx=null,active=false,timers=[];
 function clear(){active=false;timers.forEach(clearTimeout);timers=[];hand.classList.remove("rise");caption.classList.remove("show");impact.classList.remove("flash");if(ctx&&ctx.state!=="closed")ctx.close().catch(()=>{});ctx=null;}
