@@ -1,124 +1,141 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050509">
-<title>The Mirror of No Return · TikNation</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050509"><title>The Mirror of No Return · TikNation</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#07070b;color:#eee;font-family:system-ui,sans-serif}header{padding:14px 18px;border-bottom:1px solid #ffffff20;display:flex;justify-content:space-between;color:#aaa;font-size:10px;letter-spacing:.16em}a{color:#ddd;text-decoration:none}main{width:min(96%,1000px);margin:22px auto}.eyebrow{color:#c5a77b;font-size:10px;letter-spacing:.22em}.title{font:clamp(34px,6vw,58px) Georgia,serif;margin:8px 0}.copy{max-width:760px;color:#b6b3bf;font-size:13px;line-height:1.65}.stage{position:relative;margin-top:20px;height:min(75vw,660px);min-height:480px;overflow:hidden;border:1px solid #a98b6540;border-radius:14px;background:#09090e;box-shadow:0 25px 70px #000,inset 0 0 80px #000}.stage canvas{display:block;width:100%;height:100%}.vignette{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 100px 30px #000a}.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button{border:1px solid #c7b58c66;border-radius:999px;background:#211c23;color:#f7f1e8;padding:13px 19px;font-size:10px;font-weight:800;letter-spacing:.14em;cursor:pointer}button.primary{background:#d6c39c;color:#18120d}.status{min-height:26px;margin-top:12px;color:#d5c9b5;font-size:10px;letter-spacing:.1em}.fine{border-top:1px solid #ffffff20;margin-top:20px;padding-top:14px;color:#858b9b;font-size:10px;line-height:1.6}@media(max-width:560px){.stage{height:560px;min-height:0}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
-</style></head>
-<body><header><b>TIKNATION · EPIC GIFT TEST</b><a href="./">← GIFT TEST LAB</a></header>
-<main><div class="eyebrow">GIFT #4 · COMPLETE REBUILD</div><h1 class="title">The Mirror of No Return</h1>
-<p class="copy">An empty antique mirror begins to fracture. The glass bursts inward, revealing a living black vortex. A violent pull catches the curtains, furniture, floor debris and the room itself—dragging everything into the mirror.</p>
-<section class="stage" id="stage" aria-label="A haunted room and antique mirror are pulled into a swirling black portal"><canvas id="scene"></canvas><div class="vignette"></div></section>
-<div class="controls"><button class="primary" id="play">✦ PLAY THE MIRROR</button><button id="stop">STOP PREVIEW</button></div>
-<div class="status" id="status" role="status" aria-live="polite">THE MIRROR IS WAITING · TAP PLAY</div>
-<p class="fine">Isolated preview only. No gift is sent and no coins are charged. Original real-time canvas effects and synthesized sound; no stock images, no person or figure in the reflection. Tap Play to enable sound.</p></main>
+*{box-sizing:border-box}body{margin:0;background:#07070b;color:#eee;font-family:system-ui,sans-serif}header{padding:14px 18px;border-bottom:1px solid #ffffff20;display:flex;justify-content:space-between;color:#aaa;font-size:10px;letter-spacing:.16em}a{color:#ddd;text-decoration:none}main{width:min(96%,1000px);margin:22px auto}.eyebrow{color:#c5a77b;font-size:10px;letter-spacing:.22em}.title{font:clamp(34px,6vw,58px) Georgia,serif;margin:8px 0}.copy{max-width:760px;color:#b6b3bf;font-size:13px;line-height:1.65}.stage{position:relative;margin-top:20px;height:min(75vw,660px);min-height:480px;overflow:hidden;border:1px solid #a98b6540;border-radius:14px;background:#09090e;box-shadow:0 25px 70px #000,inset 0 0 80px #000}.stage canvas{display:block;width:100%;height:100%}.vignette{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 100px 30px #000b}.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button{border:1px solid #c7b58c66;border-radius:999px;background:#211c23;color:#f7f1e8;padding:13px 19px;font-size:10px;font-weight:800;letter-spacing:.14em;cursor:pointer}button.primary{background:#d6c39c;color:#18120d}.status{min-height:26px;margin-top:12px;color:#d5c9b5;font-size:10px;letter-spacing:.1em}.fine{border-top:1px solid #ffffff20;margin-top:20px;padding-top:14px;color:#858b9b;font-size:10px;line-height:1.6}@media(max-width:560px){.stage{height:560px;min-height:0}}
+</style></head><body><header><b>TIKNATION · EPIC GIFT TEST</b><a href="./">← GIFT TEST LAB</a></header><main>
+<div class="eyebrow">GIFT #4 · CINEMATIC REBUILD</div><h1 class="title">The Mirror of No Return</h1>
+<p class="copy">The mirror breaks inward. A bottomless void opens behind the glass. The room is violently pulled apart—furniture, curtains, paintings and splintered wood tumble into the mirror and vanish.</p>
+<section class="stage" id="stage" aria-label="An antique mirror tears a haunted room apart and swallows it"><canvas id="scene"></canvas><div class="vignette"></div></section>
+<div class="controls"><button class="primary" id="play">✦ PLAY THE MIRROR</button><button id="stop">STOP PREVIEW</button></div><div class="status" id="status" role="status" aria-live="polite">THE MIRROR IS WAITING · TAP PLAY</div>
+<p class="fine">Isolated preview only. No gift is sent and no coins are charged. Original real-time animation and synthesized sound; no stock images and no figure in the reflection. Tap Play to enable sound.</p></main>
 <script>
-(()=>{
+(()=>{'use strict';
 const canvas=document.getElementById('scene'),g=canvas.getContext('2d'),stage=document.getElementById('stage'),status=document.getElementById('status');
-let W=0,H=0,dpr=1,raf=0,start=0,playing=false,audioCtx=null,nodes=[],particles=[],shards=[],audioTimer=[];
-const rand=(a,b)=>a+Math.random()*(b-a),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-function resize(){const r=stage.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);g.setTransform(dpr,0,0,dpr,0,0);draw(0)}
+let W=0,H=0,D=1,raf=0,start=0,playing=false,ac=null,voices=[];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),smooth=v=>{v=clamp(v,0,1);return v*v*(3-2*v)},rand=(a,b)=>a+Math.random()*(b-a);
+const cx=()=>W*.5,cy=()=>H*.43;
+function resize(){const r=stage.getBoundingClientRect();D=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=W*D;canvas.height=H*D;g.setTransform(D,0,0,D,0,0);draw(0)}
 new ResizeObserver(resize).observe(stage);
-function path(points){g.beginPath();points.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]))}
+function poly(points,fill,stroke,lw=1){g.beginPath();points.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();if(fill){g.fillStyle=fill;g.fill()}if(stroke){g.strokeStyle=stroke;g.lineWidth=lw;g.stroke()}}
+function glow(x,y,r,c){const q=g.createRadialGradient(x,y,0,x,y,r);q.addColorStop(0,c);q.addColorStop(1,'transparent');g.fillStyle=q;g.fillRect(x-r,y-r,2*r,2*r)}
 function ellipse(x,y,rx,ry,fill,stroke,lw=1){g.beginPath();g.ellipse(x,y,rx,ry,0,0,Math.PI*2);if(fill){g.fillStyle=fill;g.fill()}if(stroke){g.strokeStyle=stroke;g.lineWidth=lw;g.stroke()}}
-function glow(x,y,r,color){const q=g.createRadialGradient(x,y,0,x,y,r);q.addColorStop(0,color);q.addColorStop(1,'transparent');g.fillStyle=q;g.fillRect(x-r,y-r,r*2,r*2)}
 function drawRoom(t){
-const pull=clamp((t-4.2)/8.8,0,1),ease=pull*pull*(3-2*pull),cx=W*.5,cy=H*.44;
-g.save();g.translate(cx,cy);g.scale(1-ease*.985,1-ease*.985);g.translate(-cx,-cy);
-const bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#302731');bg.addColorStop(.58,'#17151d');bg.addColorStop(1,'#08090e');g.fillStyle=bg;g.fillRect(0,0,W,H);
-g.fillStyle='#0a090e';g.fillRect(0,0,W*.12,H);g.fillRect(W*.88,0,W*.12,H);
-g.strokeStyle='#92724c55';g.lineWidth=2;g.strokeRect(W*.075,H*.07,W*.85,H*.72);
-for(let x of [.31,.69]){g.strokeStyle='#c0a07824';g.beginPath();g.moveTo(W*x,H*.08);g.lineTo(W*x,H*.76);g.stroke()}
-const floor=g.createLinearGradient(0,H*.68,0,H);floor.addColorStop(0,'#282126');floor.addColorStop(1,'#09090e');g.fillStyle=floor;path([[W*.12,H*.68],[W*.88,H*.68],[W,H],[0,H]]);g.closePath();g.fill();
-g.strokeStyle='#b18a5b30';g.lineWidth=1;for(let i=0;i<9;i++){const y=H*(.7+i*i*.0038);g.beginPath();g.moveTo(0,y);g.lineTo(W,y);g.stroke()}for(let i=-3;i<=3;i++){g.beginPath();g.moveTo(W*.5+i*W*.045,H*.68);g.lineTo(W*.5+i*W*.2,H);g.stroke()}
-g.fillStyle='#241722';g.beginPath();g.moveTo(W*.12,0);g.lineTo(W*.3,0);g.lineTo(W*.25,H*.73);g.lineTo(0,H*.65);g.closePath();g.fill();g.beginPath();g.moveTo(W*.7,0);g.lineTo(W*.88,0);g.lineTo(W,H*.65);g.lineTo(W*.75,H*.73);g.closePath();g.fill();
-for(let side of [0,1]){let x=side?W*.87:W*.13;g.fillStyle='#60432b';g.fillRect(x-W*.012,H*.37,W*.024,H*.16);glow(x,H*.34,W*.09,'#ffb85b55');ellipse(x,H*.32,W*.012,H*.025,'#fff1c1');}
-for(let side of [0,1]){let x=side?W*.81:W*.19,y=H*.69;g.fillStyle='#24150f';g.fillRect(x-W*.07,y,W*.14,H*.12);g.fillStyle='#8d6841';g.fillRect(x-W*.078,y-W*.018,W*.156,H*.025);g.fillStyle='#513725';for(let k=-1;k<=1;k++)g.fillRect(x+k*W*.047,y+H*.12,W*.009,H*.08);glow(x,y-H*.04,W*.06,'#d9a86b22');}
-g.save();g.translate(W*.5,H*.86);g.scale(1,.42);ellipse(0,0,W*.27,H*.13,'#30212e','#a0805a99',3);ellipse(0,0,W*.245,H*.105,null,'#b38a5c55',2);g.restore();
-g.restore();
-}
-function drawMirror(t){
-const cx=W*.5,cy=H*.43,mw=Math.min(W*.37,245),mh=Math.min(H*.7,450),top=H*.08,pull=clamp((t-4.2)/8.8,0,1);
-g.save();g.shadowColor='#000';g.shadowBlur=35;g.shadowOffsetY=12;
-const frame=g.createLinearGradient(cx-mw/2,0,cx+mw/2,0);['#26170d','#b98b4e','#ead39a','#49301b','#d0a66b','#28180e'].forEach((c,i)=>frame.addColorStop(i/5,c));
-g.fillStyle=frame;g.beginPath();g.roundRect(cx-mw/2,top,mw,mh,[mw*.48,mw*.48,8,8]);g.fill();g.shadowBlur=0;g.shadowOffsetY=0;
-g.strokeStyle='#f0d7a0';g.lineWidth=3;g.stroke();
-g.save();g.beginPath();g.roundRect(cx-mw*.43,top+mh*.045,mw*.86,mh*.91,[mw*.42,mw*.42,3,3]);g.clip();
-const glass=g.createLinearGradient(cx-mw*.4,top,cx+mw*.4,top+mh);glass.addColorStop(0,'#4b5666');glass.addColorStop(.45,'#111a29');glass.addColorStop(1,'#03050b');g.fillStyle=glass;g.fillRect(cx-mw*.45,top,mw*.9,mh);
-g.fillStyle='#b9d8f0';g.globalAlpha=.1;g.beginPath();g.moveTo(cx-mw*.32,top+mh*.08);g.lineTo(cx-mw*.15,top+mh*.08);g.lineTo(cx+mw*.18,top+mh*.9);g.lineTo(cx+mw*.04,top+mh*.9);g.fill();g.globalAlpha=1;
-if(t>1.35){let a=clamp((t-1.35)/.5,0,1);g.globalAlpha=a;g.strokeStyle='#f4f7ff';g.lineWidth=1.6;g.shadowColor='#d8edff';g.shadowBlur=9;const cracks=[[[cx,top+mh*.05],[cx-mw*.04,top+mh*.22],[cx+mw*.06,top+mh*.35],[cx-mw*.02,top+mh*.53],[cx+mw*.08,top+mh*.72],[cx+mw*.03,top+mh*.92]],[[cx+mw*.06,top+mh*.35],[cx+mw*.27,top+mh*.29],[cx+mw*.4,top+mh*.39]],[[cx-mw*.02,top+mh*.53],[cx-mw*.24,top+mh*.57],[cx-mw*.4,top+mh*.7]],[[cx-mw*.04,top+mh*.22],[cx-mw*.28,top+mh*.14],[cx-mw*.4,top+mh*.08]],[[cx+mw*.08,top+mh*.72],[cx+mw*.28,top+mh*.78],[cx+mw*.4,top+mh*.88]]];cracks.forEach(p=>{path(p);g.stroke()});g.shadowBlur=0;g.globalAlpha=1}
-if(t>4.2){const v=clamp((t-4.2)/1.4,0,1);g.save();g.translate(cx,cy);g.rotate(t*1.8);g.globalAlpha=v;for(let i=0;i<7;i++){g.rotate(Math.PI*2/7);g.strokeStyle=i%2?'#7da9d9aa':'#e2f2ffdd';g.lineWidth=2+i%3;g.beginPath();g.ellipse(0,0,mw*(.13+v*.45),mh*(.1+v*.37),0,-.4,1.2);g.stroke()}const vortex=g.createRadialGradient(0,0,2,0,0,mw*.55);vortex.addColorStop(0,'#000');vortex.addColorStop(.28,'#01030a');vortex.addColorStop(.52,'#111e33cc');vortex.addColorStop(.72,'#9acbff55');vortex.addColorStop(1,'transparent');g.fillStyle=vortex;ellipse(0,0,mw*.56,mh*.48,vortex);g.restore()}
-g.restore();g.restore();
-if(t>1.65&&t<4.7){g.globalAlpha=Math.max(0,1-(t-1.65)/3);glow(cx,cy,mw*.9,'#d9efff44');g.globalAlpha=1}
-}
-function makeParticles(){particles=[];shards=[];for(let i=0;i<145;i++)particles.push({x:rand(0,W),y:rand(0,H),size:rand(1,4),angle:rand(0,Math.PI*2),speed:rand(.4,2.8),phase:rand(0,1),spin:rand(-.12,.12)});for(let i=0;i<42;i++)shards.push({x:rand(W*.12,W*.88),y:rand(H*.15,H*.85),r:rand(4,13),a:rand(0,Math.PI*2),speed:rand(1,3),delay:rand(1.7,3.5)})}
-function drawEffects(t){
-const cx=W*.5,cy=H*.43,open=clamp((t-4.2)/1.5,0,1),pull=clamp((t-4.2)/9,0,1);
-if(t>4.2){g.save();g.globalCompositeOperation='screen';for(let i=0;i<85;i++){let p=particles[i],a=p.angle+t*(.7+p.speed*.14),r=(Math.max(0,1-pull)*Math.hypot(W,H)*.58)*(p.phase*.9+.1);let x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r*.72;g.strokeStyle='rgba(175,215,255,'+(.12+open*.55)+')';g.lineWidth=p.size*.7;g.beginPath();g.moveTo(x,y);g.lineTo(x-Math.cos(a)*p.speed*15,y-Math.sin(a)*p.speed*15);g.stroke()}
-for(let p of particles){let a=p.angle+t*(1.1+p.speed*.2),r=Math.max(2,(1-pull*.97)*Math.hypot(W,H)*p.phase);let x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r*.7;glow(x,y,p.size*5,'rgba(190,220,255,.3)');ellipse(x,y,p.size,p.size,'#d7eaff')}
-g.restore()}
-if(t>1.7&&t<4.8){for(let p of shards){let k=clamp((t-p.delay)/1.3,0,1);if(k<=0)continue;let x=p.x+(cx-p.x)*k,y=p.y+(cy-p.y)*k;g.save();g.translate(x,y);g.rotate(p.a+t*2);g.fillStyle='#dbeeff';g.shadowColor='#fff';g.shadowBlur=12;path([[0,-p.r],[p.r*.45,0],[0,p.r*1.3],[-p.r*.3,0]]);g.closePath();g.fill();g.restore()}}
-if(t>4.2){let flash=Math.max(0,1-Math.abs(t-4.45)/.3);if(flash){g.fillStyle='rgba(210,235,255,'+flash*.55+')';g.fillRect(0,0,W,H)}}
-}
-function drawSuction(t){
- if(t<4.15)return;
- const cx=W*.5,cy=H*.43,p=clamp((t-4.15)/9.3,0,1),ease=p*p*(3-2*p);
- g.save();g.globalCompositeOperation='screen';
- // Long, curved wind trails make the pull readable across the whole room.
- for(let i=0;i<34;i++){
-  const a=i*Math.PI*2/34+t*(.25+(i%5)*.025),startR=Math.max(W,H)*(.42+(i%4)*.12),endR=20+(i%6)*9;
-  const r=startR+(endR-startR)*ease,swirl=a+ease*4.8;
-  const x=cx+Math.cos(swirl)*r,y=cy+Math.sin(swirl)*r*.72;
-  const tail=cx+Math.cos(swirl-.42)*Math.min(110,r*.35),ty=cy+Math.sin(swirl-.42)*Math.min(82,r*.35)*.72;
-  g.strokeStyle='rgba(177,211,245,'+(.08+ease*.22)+')';g.lineWidth=1+(i%3)*.7;
-  g.beginPath();g.moveTo(tail,ty);g.quadraticCurveTo((tail+x)/2+Math.sin(t*2+i)*18,(ty+y)/2,x,y);g.stroke();
- }
- // Distinct room objects are torn loose and dragged into the opening.
- for(let i=0;i<22;i++){
-  const seed=i*12.9898,angle=seed%6.283,delay=(i%7)*.18;
-  const q=clamp((t-4.45-delay)/7.8,0,1);if(q<=0)continue;
-  const startX=W*(.05+((i*37)%90)/100),startY=H*(.24+((i*19)%68)/100);
-  const spin=angle+q*5.4+(i%2?1:-1)*q*2;
-  const radius=Math.hypot(startX-cx,startY-cy)*(1-q)+12;
-  const x=cx+Math.cos(spin)*radius,y=cy+Math.sin(spin)*radius*.72;
-  const scale=(1-q*.86),rot=spin+q*7;
-  g.save();g.translate(x,y);g.rotate(rot);g.scale(scale,scale);
-  if(i%4===0){ // a chair/table fragment
-   g.fillStyle='#493020';g.fillRect(-18,-4,36,7);g.fillRect(-15,2,5,24);g.fillRect(10,2,5,24);g.fillRect(-18,-15,5,14);
-   g.strokeStyle='#b58a5b';g.lineWidth=2;g.strokeRect(-18,-4,36,7);
-  }else if(i%4===1){ // torn curtain
-   g.fillStyle='rgba(85,35,47,.85)';g.beginPath();g.moveTo(-10,-22);g.quadraticCurveTo(18,-7,4,25);g.quadraticCurveTo(-15,9,-10,-22);g.fill();
-   g.strokeStyle='rgba(190,137,122,.4)';g.lineWidth=2;g.stroke();
-  }else if(i%4===2){ // flying timber
-   g.fillStyle='#765035';g.fillRect(-22,-3,44,6);g.fillStyle='#c49a68';g.fillRect(-20,-3,38,1.5);
-  }else{ // broken glass
-   g.fillStyle='rgba(202,229,255,.8)';path([[-14,-9],[13,-5],[4,14],[-8,7]]);g.closePath();g.fill();
-   g.strokeStyle='#f0f8ff';g.lineWidth=1;g.stroke();
-  }
-  g.restore();
- }
- // A hard radial pressure wave ripples the room as suction peaks.
- if(t>4.3&&t<6.1){const k=(t-4.3)/1.8;g.strokeStyle='rgba(205,226,255,'+(.24*(1-k))+')';g.lineWidth=2;g.beginPath();g.ellipse(cx,cy,Math.max(10,k*Math.max(W,H)*.7),Math.max(10,k*Math.max(W,H)*.5),0,0,Math.PI*2);g.stroke()}
+ const late=smooth((t-11.3)/3.1),shake=clamp((t-4.05)/.3,0,1)*(1-smooth((t-12.7)/2.2))*4;
+ g.save();g.translate(rand(-shake,shake),rand(-shake,shake));g.translate(cx(),cy());g.scale(1-late*.48,1-late*.48);g.translate(-cx(),-cy());
+ const wall=g.createLinearGradient(0,0,0,H*.78);wall.addColorStop(0,'#3b3035');wall.addColorStop(.55,'#211a22');wall.addColorStop(1,'#100e15');g.fillStyle=wall;g.fillRect(0,0,W,H);
+ // Ceiling and architectural beams
+ poly([[0,0],[W,0],[W*.88,H*.12],[W*.12,H*.12]],'#17131a','#80674d55',2);
+ for(let x of [.12,.32,.68,.88]){g.strokeStyle='#b08a5d38';g.lineWidth=3;g.beginPath();g.moveTo(W*x,0);g.lineTo(W*(.5+(x-.5)*.88),H*.72);g.stroke()}
+ // Wall paneling
+ for(let x=0;x<8;x++){let xx=W*(.04+x*.132);g.strokeStyle='#b18b6544';g.lineWidth=2;g.strokeRect(xx,H*.16,W*.105,H*.47);g.strokeStyle='#08070c88';g.lineWidth=5;g.strokeRect(xx+4,H*.16+4,W*.105-8,H*.47-8)}
+ // Curtains
+ poly([[W*.02,H*.04],[W*.19,H*.04],[W*.23,H*.67],[W*.16,H*.73],[W*.12,H*.61],[W*.08,H*.75],[W*.04,H*.6]],'#542d39','#a66b6744',2);
+ poly([[W*.98,H*.04],[W*.81,H*.04],[W*.77,H*.67],[W*.84,H*.73],[W*.88,H*.61],[W*.92,H*.75],[W*.96,H*.6]],'#542d39','#a66b6744',2);
+ for(let k=0;k<5;k++){g.strokeStyle='#b8797744';g.lineWidth=2;g.beginPath();g.moveTo(W*(.035+k*.033),H*.05);g.quadraticCurveTo(W*(.12+k*.025),H*.35,W*(.04+k*.035),H*.65);g.stroke();g.beginPath();g.moveTo(W*(.965-k*.033),H*.05);g.quadraticCurveTo(W*(.88-k*.025),H*.35,W*(.96-k*.035),H*.65);g.stroke()}
+ // Framed paintings, empty landscapes
+ for(let side of [-1,1]){let x=cx()+side*W*.34,y=H*.3;g.fillStyle='#4b321f';g.fillRect(x-W*.055,y-H*.105,W*.11,H*.21);g.strokeStyle='#c09a60';g.lineWidth=3;g.strokeRect(x-W*.05,y-H*.1,W*.1,H*.2);const p=g.createLinearGradient(x,y-H*.1,x,y+H*.1);p.addColorStop(0,'#4d5660');p.addColorStop(1,'#171c26');g.fillStyle=p;g.fillRect(x-W*.042,y-H*.09,W*.084,H*.18);poly([[x-W*.04,y+H*.05],[x-W*.01,y-H*.01],[x+W*.005,y+H*.03],[x+W*.04,y-H*.04],[x+W*.04,y+H*.09],[x-W*.04,y+H*.09]],'#171b1e')}
+ // Floor in strong perspective
+ const fl=g.createLinearGradient(0,H*.63,0,H);fl.addColorStop(0,'#342a2b');fl.addColorStop(1,'#09090d');poly([[W*.12,H*.62],[W*.88,H*.62],[W,H],[0,H]],fl,'#9a795244',2);
+ g.strokeStyle='#a98a633d';g.lineWidth=1.5;for(let i=0;i<12;i++){let y=H*(.65+i*i*.0028);g.beginPath();g.moveTo(0,y);g.lineTo(W,y);g.stroke()}for(let i=-5;i<=5;i++){g.beginPath();g.moveTo(cx()+i*W*.035,H*.62);g.lineTo(cx()+i*W*.15,H);g.stroke()}
+ // Ceiling chandelier
+ const chx=cx(),chy=H*.13;g.strokeStyle='#a88b60';g.lineWidth=3;g.beginPath();g.moveTo(chx,0);g.lineTo(chx,chy);g.stroke();g.strokeStyle='#9b784c';g.lineWidth=5;g.beginPath();g.moveTo(chx-W*.11,chy);g.quadraticCurveTo(chx,chy+H*.07,chx+W*.11,chy);g.stroke();for(let i=-2;i<=2;i++){let x=chx+i*W*.042;g.strokeStyle='#b78d57';g.beginPath();g.moveTo(x,chy+H*.015);g.lineTo(x,chy+H*.065);g.stroke();glow(x,chy+H*.07,25,'#ffb95b55');ellipse(x,chy+H*.07,3,6,'#ffe0a0')}
+ // Console tables and lamps
+ for(let side of [-1,1]){let x=cx()+side*W*.34,y=H*.69;g.fillStyle='#24150f';g.fillRect(x-W*.09,y,W*.18,H*.105);g.fillStyle='#8c6540';g.fillRect(x-W*.098,y-H*.02,W*.196,H*.025);for(let k of [-1,1]){g.fillStyle='#170e0b';g.fillRect(x+k*W*.065,y+H*.1,W*.012,H*.12)}g.fillStyle='#b18a5b';g.fillRect(x-W*.012,y-H*.12,W*.024,H*.1);ellipse(x,y-H*.14,W*.024,H*.027,'#66503b','#c5a77a',2);glow(x,y-H*.16,45,'#ffb75b24')}
+ // Center rug
+ g.save();g.translate(cx(),H*.88);g.scale(1,.35);ellipse(0,0,W*.31,H*.16,'#39232e','#b38c5c88',3);ellipse(0,0,W*.285,H*.14,null,'#b38c5c55',2);g.restore();
  g.restore();
 }
-function draw(t){if(!W||!H)return;g.clearRect(0,0,W,H);if(t>4.15){const shake=clamp((t-4.15)/.8,0,1)*(1-clamp((t-11.8)/2.5,0,1))*5;g.save();g.translate(rand(-shake,shake),rand(-shake,shake));}drawRoom(t);drawMirror(t);drawEffects(t);drawSuction(t);if(t>4.15)g.restore();if(t>13.2){g.fillStyle='rgba(0,0,0,'+clamp((t-13.2)/1.1,0,.88)+')';g.fillRect(0,0,W,H)}}
-function tick(now){if(!playing)return;let t=(now-start)/1000;draw(t);if(t<14.5)raf=requestAnimationFrame(tick);else{playing=false;status.textContent='THE ROOM HAS VANISHED INTO THE MIRROR · PLAY AGAIN';}}
-function sound(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('Audio unavailable');audioCtx=new AC();const c=audioCtx;return c.resume().then(()=>{
-const master=c.createGain(),comp=c.createDynamicsCompressor();master.gain.value=.75;comp.threshold.value=-22;comp.knee.value=18;comp.ratio.value=5;comp.attack.value=.003;comp.release.value=.25;master.connect(comp);comp.connect(c.destination);
-function osc(type,f1,f2,at,dur,vol){let o=c.createOscillator(),v=c.createGain();o.type=type;o.frequency.setValueAtTime(f1,c.currentTime+at);o.frequency.exponentialRampToValueAtTime(Math.max(1,f2),c.currentTime+at+dur);v.gain.setValueAtTime(.0001,c.currentTime+at);v.gain.linearRampToValueAtTime(vol,c.currentTime+at+.035);v.gain.exponentialRampToValueAtTime(.0001,c.currentTime+at+dur);o.connect(v);v.connect(master);o.start(c.currentTime+at);o.stop(c.currentTime+at+dur+.03);nodes.push(o)}
-function hiss(at,dur,vol,lo,hi,type='bandpass'){let n=Math.floor(c.sampleRate*dur),b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,.7);let s=c.createBufferSource(),f=c.createBiquadFilter(),v=c.createGain();s.buffer=b;f.type=type;f.frequency.setValueAtTime(lo,c.currentTime+at);f.frequency.exponentialRampToValueAtTime(Math.max(25,hi),c.currentTime+at+dur);f.Q.value=.7;v.gain.setValueAtTime(.0001,c.currentTime+at);v.gain.linearRampToValueAtTime(vol,c.currentTime+at+.025);v.gain.exponentialRampToValueAtTime(.0001,c.currentTime+at+dur);s.connect(f);f.connect(v);v.connect(master);s.start(c.currentTime+at);s.stop(c.currentTime+at+dur+.02);nodes.push(s)}
-osc('sine',49,36,0,12,.09);osc('triangle',88,54,.1,10,.035);
-osc('sine',980,2400,1.05,.9,.045);hiss(1.55,.2,.12,2600,7000,'highpass');
-hiss(1.78,.42,.65,1800,11000,'highpass');hiss(1.8,.3,.35,900,5000);osc('triangle',2900,430,1.8,.38,.16);osc('sine',4600,1200,1.82,.28,.08);
-for(let i=0;i<12;i++){let at=2.05+i*.105;hiss(at,rand(.08,.24),rand(.06,.17),rand(2400,6500),rand(6000,12000),'highpass');osc('sine',rand(1200,4200),rand(300,900),at,.2,rand(.015,.05))}
-hiss(3.35,1.5,.18,250,2500);osc('sawtooth',180,48,3.6,1.6,.045);
-hiss(4.2,9.8,.3,180,2400,'lowpass');hiss(4.35,9.5,.24,500,3600);hiss(4.5,9.2,.12,2200,8000,'highpass');osc('sine',76,24,4.2,9.5,.23);osc('triangle',150,30,4.35,9.2,.12);osc('sawtooth',260,36,4.5,8.8,.05);
-for(let i=0;i<9;i++){let at=5+i*.8;osc('sine',rand(35,65),rand(22,30),at,1.4,.07);hiss(at,.9,.08,150,900,'lowpass')}
-hiss(11.4,1.3,.2,2500,9500,'highpass');hiss(12.2,1.6,.13,700,150,'lowpass');osc('sine',48,20,12.4,2,.12);
-})}
-function stop(){playing=false;cancelAnimationFrame(raf);nodes.forEach(n=>{try{n.stop()}catch(e){}});nodes=[];if(audioCtx&&audioCtx.state!=='closed')audioCtx.close();audioCtx=null;draw(0)}
-document.getElementById('play').addEventListener('click',async()=>{stop();makeParticles();playing=true;start=performance.now();status.textContent='THE GLASS IS CRACKING…';try{await sound();status.textContent='SOUND ON · GLASS SHATTERING · VORTEX SUCTION'}catch(e){status.textContent='VISUAL PREVIEW ON · AUDIO COULD NOT START — CHECK DEVICE MEDIA VOLUME'}raf=requestAnimationFrame(tick)});
+function mirrorRect(){return {x:cx(),y:H*.435,w:Math.min(W*.43,340),h:Math.min(H*.73,470),top:H*.065}}
+function drawVortex(t,m){
+ const {x,y,w,h,top}=m,open=smooth((t-4.1)/1.15),spin=t*2.8;
+ g.save();g.beginPath();g.roundRect(x-w*.39,top+h*.035,w*.78,h*.93,[w*.38,w*.38,4,4]);g.clip();
+ const black=g.createRadialGradient(x,y,1,x,y,w*.48);black.addColorStop(0,'#000');black.addColorStop(.35,'#010106');black.addColorStop(.57,'#070b14');black.addColorStop(.75,'#24364b');black.addColorStop(1,'#07080c');g.fillStyle='#020207';g.fillRect(x-w*.5,top,w,h);
+ g.save();g.translate(x,y);g.rotate(spin);g.globalAlpha=open;
+ for(let i=0;i<13;i++){g.rotate(Math.PI*2/13);g.strokeStyle=i%2?'rgba(148,188,230,.48)':'rgba(225,238,255,.78)';g.lineWidth=1.5+(i%3);g.beginPath();g.ellipse(0,0,w*(.12+open*.34),h*(.11+open*.35),0,-.18,1.35);g.stroke()}
+ const v=g.createRadialGradient(0,0,1,0,0,w*.48);v.addColorStop(0,'#000');v.addColorStop(.42,'#000');v.addColorStop(.68,'rgba(3,7,15,.9)');v.addColorStop(1,'rgba(130,177,226,.08)');g.fillStyle=v;ellipse(0,0,w*.47,h*.47,v);
+ g.restore();
+ // Swirling inward streaks
+ g.globalAlpha=open*.75;for(let i=0;i<38;i++){let a=i*Math.PI*2/38+t*(i%2?.8:-.65),r=w*(.08+(i%7)*.055);g.strokeStyle=i%3?'#b7d8ff66':'#f1f6ff99';g.lineWidth=1+(i%3);g.beginPath();g.moveTo(x+Math.cos(a)*r,y+Math.sin(a)*r*1.5);g.quadraticCurveTo(x+Math.cos(a+1)*r*1.4,y+Math.sin(a+1)*r*1.6,x+Math.cos(a+2)*r*.45,y+Math.sin(a+2)*r*.5);g.stroke()}
+ g.restore();
+}
+function drawMirror(t){
+ const m=mirrorRect(),{x,y,w,h,top}=m,open=smooth((t-4.1)/1.1),collapse=smooth((t-12.2)/2.1);
+ g.save();g.translate(x,y);g.scale(1-collapse*.92,1-collapse*.92);g.translate(-x,-y);
+ // ornate antique carved frame
+ g.shadowColor='#000';g.shadowBlur=30;g.shadowOffsetY=12;
+ const metal=g.createLinearGradient(x-w/2,0,x+w/2,0);['#1c100b','#78502c','#e0bd7d','#49301c','#c79a59','#24140c'].forEach((c,i)=>metal.addColorStop(i/5,c));
+ g.fillStyle=metal;g.beginPath();g.roundRect(x-w/2,top,w,h,[w*.45,w*.45,9,9]);g.fill();g.shadowBlur=0;g.shadowOffsetY=0;g.strokeStyle='#e3c68b';g.lineWidth=4;g.stroke();
+ g.strokeStyle='#3a2414';g.lineWidth=4;g.beginPath();g.roundRect(x-w*.44,top+h*.025,w*.88,h*.95,[w*.42,w*.42,6,6]);g.stroke();
+ // carved frame details
+ for(let k=0;k<8;k++){let a=k*Math.PI/4;let px=x+Math.cos(a)*w*.44,py=top+h*.5+Math.sin(a)*h*.44;ellipse(px,py,5,8,'#b48b52','#e1c58b',1)}
+ drawVortex(t,m);
+ // reflection stays completely empty before portal opens
+ if(t<4.1){const glass=g.createLinearGradient(x-w*.35,top,x+w*.35,top+h);glass.addColorStop(0,'rgba(125,145,164,.42)');glass.addColorStop(.45,'rgba(18,25,36,.5)');glass.addColorStop(1,'rgba(2,4,9,.7)');g.fillStyle=glass;g.globalAlpha=1-smooth((t-3.5)/.6);g.fillRect(x-w*.37,top+h*.05,w*.74,h*.9);g.globalAlpha=1}
+ // visible branching cracks
+ if(t>1.15&&t<4.8){let a=smooth((t-1.15)/.4)*(1-smooth((t-4.25)/.55));g.globalAlpha=a;g.strokeStyle='#eff7ff';g.lineWidth=1.6;g.shadowColor='#d7edff';g.shadowBlur=12;
+ const lines=[[[x,top+h*.04],[x-w*.045,top+h*.2],[x+w*.035,top+h*.33],[x-w*.01,top+h*.5],[x+w*.08,top+h*.68],[x+w*.03,top+h*.93]],[[x-w*.045,top+h*.2],[x-w*.24,top+h*.13],[x-w*.38,top+h*.19]],[[x+w*.035,top+h*.33],[x+w*.25,top+h*.26],[x+w*.38,top+h*.35]],[[x-w*.01,top+h*.5],[x-w*.24,top+h*.57],[x-w*.38,top+h*.7]],[[x+w*.08,top+h*.68],[x+w*.26,top+h*.77],[x+w*.38,top+h*.86]]];for(let p of lines){g.beginPath();p.forEach((v,i)=>i?g.lineTo(...v):g.moveTo(...v));g.stroke()}g.shadowBlur=0;g.globalAlpha=1}
+ g.restore();return m;
+}
+const debris=[];
+function initDebris(){debris.length=0;const types=['chair','table','curtain','painting','chandelier','vase','timber','glass','book','candle','timber','glass','curtain','chair','painting','vase','timber','glass'];for(let i=0;i<types.length;i++){let side=i%2?1:-1;debris.push({type:types[i],sx:types[i]==='chandelier'?cx()+rand(-40,40):types[i]==='curtain'?(side<0?W*.12:W*.88):rand(W*.06,W*.94),sy:types[i]==='chandelier'?H*.19:types[i]==='curtain'?H*.42:rand(H*.42,H*.9),delay:4.45+(i%6)*.19,spin:rand(-5,5),size:rand(.72,1.3),seed:rand(0,10)})}}
+function drawProp(type,size){g.save();g.scale(size,size);
+ if(type==='chair'){g.fillStyle='#49301e';g.fillRect(-22,-5,44,8);g.fillRect(-18,-31,7,30);g.fillRect(11,-31,7,30);g.fillRect(-18,3,6,32);g.fillRect(12,3,6,32);g.fillRect(-18,-31,36,7);g.strokeStyle='#bd8d57';g.lineWidth=2;g.strokeRect(-22,-5,44,8)}
+ else if(type==='table'){g.fillStyle='#4b2d19';g.fillRect(-30,-7,60,9);g.fillStyle='#23150f';g.fillRect(-24,2,7,34);g.fillRect(17,2,7,34);g.strokeStyle='#b98c59';g.lineWidth=2;g.strokeRect(-30,-7,60,9)}
+ else if(type==='curtain'){poly([[-18,-38],[13,-32],[22,35],[4,26],[-7,39],[-20,12]],'#6c3545','#c08b8b',2);g.strokeStyle='#b57d7e';g.beginPath();g.moveTo(-9,-34);g.quadraticCurveTo(3,0,-7,30);g.stroke()}
+ else if(type==='painting'){g.fillStyle='#9b7040';g.fillRect(-23,-30,46,60);g.fillStyle='#19232b';g.fillRect(-18,-25,36,50);poly([[-16,16],[-8,-3],[0,9],[8,-12],[17,16]],'#53604d')}
+ else if(type==='chandelier'){g.strokeStyle='#b68e59';g.lineWidth=3;g.beginPath();g.moveTo(0,-32);g.lineTo(0,-5);g.moveTo(-28,-5);g.quadraticCurveTo(0,16,28,-5);g.stroke();for(let x of [-22,0,22]){g.beginPath();g.moveTo(x,-3);g.lineTo(x,17);g.stroke();ellipse(x,21,4,7,'#ffe1a2')}}
+ else if(type==='vase'){g.fillStyle='#43515a';g.beginPath();g.moveTo(-10,-25);g.lineTo(10,-25);g.lineTo(7,-9);g.quadraticCurveTo(23,14,12,27);g.lineTo(-12,27);g.quadraticCurveTo(-23,14,-7,-9);g.closePath();g.fill();g.strokeStyle='#b3a18a';g.stroke()}
+ else if(type==='book'){g.fillStyle='#7b3430';g.fillRect(-22,-14,44,28);g.fillStyle='#c4a46f';g.fillRect(-17,-10,34,2);g.fillRect(-17,8,34,2)}
+ else if(type==='candle'){g.fillStyle='#d7c49b';g.fillRect(-5,-18,10,32);ellipse(0,-19,3,5,'#ffdc94');glow(0,-22,23,'#ffb64b55')}
+ else if(type==='glass'){poly([[-16,-12],[13,-8],[5,15],[-9,8]],'rgba(207,231,255,.8)','#f4fbff',2)}
+ else{g.fillStyle='#765036';g.fillRect(-25,-4,50,8);g.fillStyle='#c49a68';g.fillRect(-23,-4,45,2)}
+ g.restore()}
+function drawFlyingObjects(t){
+ const m=mirrorRect(),x=m.x,y=m.y;
+ for(const o of debris){let q=smooth((t-o.delay)/7.7);if(q<=0)continue;let early=clamp((t-o.delay)/1.1,0,1),sx=o.sx,sy=o.sy;
+ // whip sideways first, then spiral hard into the portal
+ let angle=Math.atan2(sy-y,sx-x)+q*5.6+o.seed*.2,dist=Math.hypot(sx-x,sy-y)*(1-q)+8;
+ let px=x+Math.cos(angle)*dist,py=y+Math.sin(angle)*dist*.82;
+ px+=Math.sin(t*4+o.seed)*early*(1-q)*24;py+=Math.cos(t*3+o.seed)*early*(1-q)*16;
+ let scale=o.size*(1-q*.9),rot=o.spin*q+q*5;
+ g.save();g.translate(px,py);g.rotate(rot);g.globalAlpha=1-smooth((q-.78)/.22);drawProp(o.type,scale);g.restore();
+ // motion blur / directional streaks
+ if(q<.85){g.strokeStyle='rgba(201,222,248,'+(.08+q*.16)+')';g.lineWidth=2;g.beginPath();g.moveTo(px-Math.cos(angle)*24,py-Math.sin(angle)*18);g.lineTo(px,py);g.stroke()}
+ }
+}
+let shards=[];
+function makeShards(){shards=[];for(let i=0;i<70;i++)shards.push({a:rand(0,Math.PI*2),r:rand(.08,.48),size:rand(3,13),spin:rand(-8,8),delay:rand(1.65,2.1)})}
+function drawShards(t){const m=mirrorRect();for(const s of shards){if(t<s.delay)continue;let q=clamp((t-s.delay)/2.8,0,1),dist=s.r*Math.min(W,H)*(1-q*.83);let x=m.x+Math.cos(s.a)*dist,y=m.y+Math.sin(s.a)*dist*1.35;g.save();g.translate(x,y);g.rotate(s.spin*q);g.globalAlpha=1-smooth((q-.75)/.25);poly([[0,-s.size],[s.size*.45,0],[0,s.size*1.4],[-s.size*.3,0]],'rgba(209,232,255,.82)','#fff',1);g.restore()}}
+function drawWind(t){if(t<4.1)return;let q=smooth((t-4.1)/7.5),m=mirrorRect();g.save();g.globalCompositeOperation='screen';for(let i=0;i<45;i++){let a=i*Math.PI*2/45+t*(i%2?.4:-.35),r=Math.max(8,Math.max(W,H)*(.58-q*.53)*(0.45+(i%7)*.09)),ex=m.x+Math.cos(a)*r,ey=m.y+Math.sin(a)*r*.75;g.strokeStyle='rgba(177,211,245,'+(.07+q*.22)+')';g.lineWidth=1+(i%3);g.beginPath();g.moveTo(ex+Math.cos(a-.5)*55,ey+Math.sin(a-.5)*40);g.quadraticCurveTo(ex+Math.cos(a+1)*r*.25,ey+Math.sin(a+1)*r*.2,ex,ey);g.stroke()}g.restore()}
+function draw(t){if(!W||!H)return;g.clearRect(0,0,W,H);drawRoom(t);const m=drawMirror(t);drawWind(t);drawShards(t);drawFlyingObjects(t);
+ if(t>4.1&&t<5.4){let f=1-Math.abs(t-4.35)/1.05;if(f>0){g.fillStyle='rgba(220,236,255,'+f*.4+')';g.fillRect(0,0,W,H)}}
+ if(t>12.5){let k=smooth((t-12.5)/2);g.fillStyle='rgba(0,0,0,'+k*.96+')';g.fillRect(0,0,W,H)}
+ // cinematic letterbox
+ g.fillStyle='#030306';g.fillRect(0,0,W,H*.035);g.fillRect(0,H*.965,W,H*.035);
+}
+function frame(now){if(!playing)return;let t=(now-start)/1000;draw(t);const labels=[[0,'THE GLASS IS WHISPERING…'],[1.2,'FRACTURES SPREAD ACROSS THE EMPTY GLASS'],[2.0,'THE MIRROR IMPLODES'],[4.1,'SOMETHING OPENS BEHIND THE GLASS'],[5.0,'THE ROOM IS BEING TORN APART'],[8.0,'NOTHING CAN ESCAPE THE PULL'],[12.5,'THE ROOM DISAPPEARS'],[14.5,'THE MIRROR HAS TAKEN EVERYTHING']];let label=labels.filter(x=>t>=x[0]).at(-1);if(label)status.textContent=label[1];if(t<16)raf=requestAnimationFrame(frame);else{playing=false;status.textContent='THE MIRROR HAS TAKEN EVERYTHING · PLAY AGAIN'}}
+function audio(){
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('No Web Audio support');ac=new AC();const c=ac,master=c.createGain(),lim=c.createDynamicsCompressor();master.gain.value=.95;lim.threshold.value=-20;lim.knee.value=16;lim.ratio.value=7;lim.attack.value=.003;lim.release.value=.3;master.connect(lim);lim.connect(c.destination);
+ function tone(type,f1,f2,at,dur,v){let o=c.createOscillator(),a=c.createGain();o.type=type;o.frequency.setValueAtTime(f1,c.currentTime+at);o.frequency.exponentialRampToValueAtTime(Math.max(18,f2),c.currentTime+at+dur);a.gain.setValueAtTime(.0001,c.currentTime+at);a.gain.linearRampToValueAtTime(v,c.currentTime+at+.025);a.gain.exponentialRampToValueAtTime(.0001,c.currentTime+at+dur);o.connect(a);a.connect(master);o.start(c.currentTime+at);o.stop(c.currentTime+at+dur+.04);voices.push(o)}
+ function noise(at,dur,v,lo,hi,filter='bandpass'){let n=Math.floor(c.sampleRate*dur),b=c.createBuffer(1,n,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,.55);let s=c.createBufferSource(),f=c.createBiquadFilter(),a=c.createGain();s.buffer=b;f.type=filter;f.frequency.setValueAtTime(lo,c.currentTime+at);f.frequency.exponentialRampToValueAtTime(Math.max(30,hi),c.currentTime+at+dur);f.Q.value=.8;a.gain.setValueAtTime(.0001,c.currentTime+at);a.gain.linearRampToValueAtTime(v,c.currentTime+at+.025);a.gain.exponentialRampToValueAtTime(.0001,c.currentTime+at+dur);s.connect(f);f.connect(a);a.connect(master);s.start(c.currentTime+at);s.stop(c.currentTime+at+dur+.03);voices.push(s)}
+ return c.resume().then(()=>{
+ // room tone and rising glass strain
+ tone('sine',42,34,0,15,.11);tone('triangle',92,48,.2,12,.045);noise(.15,1.2,.055,90,260,'lowpass');
+ tone('sine',620,2200,1.0,1.1,.065);tone('triangle',1700,3600,1.25,.8,.035);noise(1.4,.35,.16,2800,9000,'highpass');
+ // violent inward implosion / layered shatter
+ noise(1.85,.65,.82,700,12000,'highpass');noise(1.88,.75,.65,120,2600);tone('sawtooth',210,42,1.9,1.0,.18);tone('triangle',3400,260,1.9,.55,.13);
+ for(let i=0;i<24;i++){let at=2.0+i*.075;noise(at,rand(.07,.23),rand(.06,.19),rand(1500,5000),rand(4500,11000),'highpass');tone('sine',rand(900,5000),rand(200,850),at,.18,rand(.018,.055))}
+ // air gets ripped from the room; long, heavy vacuum-like roar
+ noise(3.9,11.7,.48,55,1700,'lowpass');noise(4.1,11.2,.32,240,4200);noise(4.25,10.8,.22,1200,9000,'highpass');
+ tone('sine',84,25,4.0,11.5,.28);tone('triangle',175,28,4.1,11.2,.17);tone('sawtooth',260,32,4.25,10.5,.075);
+ for(let i=0;i<13;i++){let at=4.8+i*.55;tone('sine',rand(38,70),rand(22,31),at,1.1,.075);noise(at,.65,.095,100,900,'lowpass')}
+ // collapsing timber and distant final suction tail
+ for(let i=0;i<7;i++){let at=6+i*.8;noise(at,.24,.14,90,450,'lowpass');tone('triangle',rand(65,130),35,at,.55,.06)}
+ noise(13.2,2.2,.22,1800,180,'lowpass');tone('sine',55,19,13.4,2.3,.16);
+ });
+}
+function stop(){playing=false;cancelAnimationFrame(raf);voices.forEach(v=>{try{v.stop()}catch(e){}});voices=[];if(ac&&ac.state!=='closed')ac.close();ac=null;draw(0)}
+document.getElementById('play').addEventListener('click',async()=>{stop();initDebris();makeShards();playing=true;start=performance.now();status.textContent='THE GLASS IS WHISPERING…';try{await audio()}catch(e){status.textContent='VISUAL PREVIEW · AUDIO UNAVAILABLE ON THIS DEVICE'}raf=requestAnimationFrame(frame)});
 document.getElementById('stop').addEventListener('click',()=>{stop();status.textContent='PREVIEW STOPPED · THE MIRROR IS RESTORED'});
 resize();
 })();
