@@ -1,71 +1,58 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>The Curse of the Mummy's Medallion</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#100a06"><title>The Curse of the Mummy's Medallion</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#100b08;color:#fff1d4;font-family:system-ui,sans-serif}#scene{position:fixed;inset:0}canvas{display:block;width:100%;height:100%}.shade{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 48%,transparent 25%,#080503aa 100%),linear-gradient(#10090455,transparent 45%,#08050399)}header{position:fixed;top:env(safe-area-inset-top,10px);left:0;right:0;text-align:center;padding:15px 8px 0;text-shadow:0 2px 15px #000;pointer-events:none}.tag{font-size:10px;letter-spacing:.32em;color:#e5bd70;font-weight:800}h1{font:500 clamp(22px,4.7vw,42px) Georgia,serif;letter-spacing:.045em;margin:6px 0}.sub{font-size:10px;letter-spacing:.16em;color:#d9c59d}.controls{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:0;right:0;display:flex;justify-content:center;gap:10px;padding:0 10px}button{border:1px solid #d5a94e99;background:#21170de0;color:#fff1d4;border-radius:30px;padding:12px 17px;font-size:10px;font-weight:800;letter-spacing:.1em;backdrop-filter:blur(10px)}button.primary{background:linear-gradient(135deg,#76501c,#3b2711);border-color:#f1cb77}#hint{position:fixed;bottom:calc(74px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;font-size:10px;letter-spacing:.13em;color:#e5c990;text-shadow:0 2px 8px #000;pointer-events:none}#loading{position:fixed;inset:0;display:grid;place-items:center;background:#100b08;color:#e9c77d;letter-spacing:.2em;font-size:11px;z-index:5;transition:opacity .5s}#loading.off{opacity:0;pointer-events:none}#err{display:none;position:fixed;top:50%;left:8%;right:8%;text-align:center;color:#ffd6c8;font-size:13px}@media(max-width:520px){h1{font-size:24px}button{padding:11px 13px}}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#100a06;color:#f5dfb0;font-family:Georgia,serif}canvas{position:fixed;inset:0;width:100%;height:100%;display:block}.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 48%,transparent 25%,#08050399 100%),linear-gradient(#10090455,transparent 40%,#080503bb)}header{position:fixed;top:env(safe-area-inset-top,0);left:0;right:0;text-align:center;padding:14px 10px;text-shadow:0 3px 12px #000;pointer-events:none}.eyebrow{font:800 9px system-ui;letter-spacing:.32em;color:#e4bd70}h1{font-weight:500;font-size:clamp(20px,4vw,38px);letter-spacing:.045em;margin:7px 0}.sub{font:10px system-ui;letter-spacing:.18em;color:#d6bd91}#hint{position:fixed;bottom:calc(78px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;font:800 10px system-ui;letter-spacing:.16em;color:#f2d08c;text-shadow:0 2px 8px #000;pointer-events:none;padding:0 10px}.controls{position:fixed;bottom:calc(17px + env(safe-area-inset-bottom,0px));left:0;right:0;display:flex;justify-content:center;gap:10px;padding:0 10px}button{border:1px solid #d5a94e;background:#21170deF;color:#fff0d0;border-radius:30px;padding:13px 17px;font:800 10px system-ui;letter-spacing:.1em;cursor:pointer;touch-action:manipulation}button.primary{background:linear-gradient(135deg,#86591d,#38240e);box-shadow:0 0 22px #e5a83a44}button:active{transform:scale(.96)}@media(max-width:520px){h1{font-size:22px}button{padding:12px 13px}}
 </style></head><body>
-<div id="scene"></div><div class="shade"></div><header><div class="tag">TIKNATION · EPIC GIFTS</div><h1>THE CURSE OF THE MUMMY'S MEDALLION</h1><div class="sub">SOME TREASURES SHOULD REMAIN BURIED</div></header><div id="hint">THE MEDALLION HAS BEEN DISTURBED</div><div class="controls"><button class="primary" id="curse">BREAK THE SEAL</button><button id="sound">SOUND: OFF</button></div><div id="loading">ENTERING THE ANCIENT TOMB…</div><div id="err"></div>
+<canvas id="art"></canvas><div class="vignette"></div><header><div class="eyebrow">TIKNATION · EPIC GIFTS</div><h1>THE CURSE OF THE MUMMY'S MEDALLION</h1><div class="sub">SOME TREASURES SHOULD REMAIN BURIED</div></header><div id="hint">THE MEDALLION HAS BEEN DISTURBED</div><div class="controls"><button class="primary" id="curse">BREAK THE SEAL</button><button id="sound">SOUND: OFF</button></div>
 <script>
-document.getElementById('curse').addEventListener('click',()=>{document.getElementById('hint').textContent='THE ANCIENT CURSE HAS BEEN UNLEASHED';document.getElementById('curse').textContent='THE SEAL IS BROKEN';});
-document.getElementById('sound').addEventListener('click',()=>{document.getElementById('sound').textContent='SOUND: ENABLED';});
-</script>
-<script type="module">
-const host=document.getElementById('scene'),loading=document.getElementById('loading');
-try{
-const THREE=await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js');
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x21150c);scene.fog=new THREE.FogExp2(0x28190d,.022);
-const camera=new THREE.PerspectiveCamera(43,innerWidth/innerHeight,.1,300);camera.position.set(0,8.5,27);camera.lookAt(0,4,0);
-const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;host.appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0xe8c58d,0x160c07,1.35));
-const key=new THREE.DirectionalLight(0xffd69a,2.1);key.position.set(-8,18,12);key.castShadow=true;scene.add(key);
-const goldLight=new THREE.PointLight(0xffa82e,42,28);goldLight.position.set(0,4,5);scene.add(goldLight);
-const torchL=new THREE.PointLight(0xff7020,24,22);torchL.position.set(-9,5,1);scene.add(torchL);const torchR=new THREE.PointLight(0xff7020,24,22);torchR.position.set(9,5,-2);scene.add(torchR);
-const stone=new THREE.MeshStandardMaterial({color:0x80613c,roughness:.96}),sandstone=new THREE.MeshStandardMaterial({color:0xb18a55,roughness:.93}),darkStone=new THREE.MeshStandardMaterial({color:0x342315,roughness:1}),gold=new THREE.MeshStandardMaterial({color:0xd9a83e,metalness:.82,roughness:.22}),goldDark=new THREE.MeshStandardMaterial({color:0x68451b,metalness:.7,roughness:.32}),linen=new THREE.MeshStandardMaterial({color:0xc8b68f,roughness:1}),linenShadow=new THREE.MeshStandardMaterial({color:0x77664c,roughness:1}),gem=new THREE.MeshPhysicalMaterial({color:0x16c9b4,metalness:.3,roughness:.16,emissive:0x087d70,emissiveIntensity:.7,clearcoat:1});
-const floor=new THREE.Mesh(new THREE.PlaneGeometry(90,90),new THREE.MeshStandardMaterial({color:0x49321e,roughness:1}));floor.rotation.x=-Math.PI/2;floor.position.y=-.15;floor.receiveShadow=true;scene.add(floor);
-// Massive tomb walls and ceiling ribs
-const back=new THREE.Mesh(new THREE.BoxGeometry(32,17,1.2),darkStone);back.position.set(0,8,-8);back.receiveShadow=true;scene.add(back);
-for(const x of [-15,15]){const side=new THREE.Mesh(new THREE.BoxGeometry(1.2,17,18),stone);side.position.set(x,8,0);scene.add(side)}
-const ceiling=new THREE.Mesh(new THREE.BoxGeometry(31,1,18),darkStone);ceiling.position.set(0,16.5,0);scene.add(ceiling);
-for(let x=-13;x<=13;x+=4.3){const pilaster=new THREE.Mesh(new THREE.BoxGeometry(.8,15,.9),sandstone);pilaster.position.set(x,7.5,-7.25);scene.add(pilaster);const cap=new THREE.Mesh(new THREE.BoxGeometry(1.5,.6,1.3),goldDark);cap.position.set(x,14.8,-7.2);scene.add(cap)}
-// Ancient carved wall panels
-for(let i=0;i<7;i++){const panel=new THREE.Mesh(new THREE.BoxGeometry(2.6,5,.16),sandstone);panel.position.set(-12.5+i*4.15,8.5,-7.28);scene.add(panel);for(let k=0;k<3;k++){const glyph=new THREE.Mesh(new THREE.BoxGeometry(.14,1.4,.08),goldDark);glyph.position.set(-13.2+i*4.15+k*.65,8.5,-7.16);glyph.rotation.z=(k-1)*.12;scene.add(glyph)}}
-function pillar(x,z){const base=new THREE.Mesh(new THREE.CylinderGeometry(1.05,1.2,.65,8),darkStone);base.position.set(x,.2,z);scene.add(base);const col=new THREE.Mesh(new THREE.CylinderGeometry(.72,.86,10,10),sandstone);col.position.set(x,5.5,z);col.castShadow=true;scene.add(col);const capital=new THREE.Mesh(new THREE.CylinderGeometry(1.2,1.05,.9,8),goldDark);capital.position.set(x,10.9,z);scene.add(capital)}
-pillar(-11,3);pillar(11,3);
-// Sarcophagus on a raised stone platform
-const tomb=new THREE.Group();scene.add(tomb);tomb.position.set(0,.2,-.2);
-const plinth=new THREE.Mesh(new THREE.BoxGeometry(8.8,1,5.2),darkStone);plinth.position.y=.5;plinth.castShadow=true;plinth.receiveShadow=true;tomb.add(plinth);
-const baseBox=new THREE.Mesh(new THREE.BoxGeometry(7.7,1.35,4.2),goldDark);baseBox.position.y=1.65;tomb.add(baseBox);
-const coffin=new THREE.Mesh(new THREE.BoxGeometry(7.35,1.25,3.85),sandstone);coffin.position.y=2.75;coffin.castShadow=true;tomb.add(coffin);
-const lidGroup=new THREE.Group();lidGroup.position.set(0,3.42,-1.75);tomb.add(lidGroup);
-const lid=new THREE.Mesh(new THREE.BoxGeometry(7.8,.8,4.35),goldDark);lid.position.set(0,0,1.9);lid.castShadow=true;lidGroup.add(lid);
-const lidFace=new THREE.Mesh(new THREE.BoxGeometry(7.1,.18,3.7),gold);lidFace.position.set(0,.48,1.9);lidGroup.add(lidFace);
-for(let i=0;i<9;i++){const stripe=new THREE.Mesh(new THREE.BoxGeometry(.14,.08,3.35),goldDark);stripe.position.set(-3.25+i*.81,.59,1.9);lidGroup.add(stripe)}
-// Mummy body built as wrapped, articulated form
-const mummy=new THREE.Group();scene.add(mummy);mummy.position.set(0,2.3,0);mummy.rotation.x=-.12;
-function ellipsoid(parent,mat,x,y,z,sx,sy,sz){const m=new THREE.Mesh(new THREE.SphereGeometry(1,20,16),mat);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.castShadow=true;parent.add(m);return m}
-ellipsoid(mummy,linen,0,1.2,0,1.12,1.45,.55);ellipsoid(mummy,linen,0,3.05,.03,.72,.9,.62);ellipsoid(mummy,linen,0,4.15,.05,.63,.72,.58);
-ellipsoid(mummy,linenShadow,0,4.25,.48,.48,.28,.18);
-for(const side of [-1,1]){const arm=new THREE.Group();arm.position.set(side*.85,2.9,0);arm.rotation.z=side*.45;mummy.add(arm);ellipsoid(arm,linen,side*.2,-.62,.02,.32,.95,.34);ellipsoid(arm,linen,side*.38,-1.42,.15,.27,.8,.3);const leg=new THREE.Group();leg.position.set(side*.48,.25,0);mummy.add(leg);ellipsoid(leg,linen,0,-.55,.02,.39,1.05,.4);ellipsoid(leg,linen,side*.08,-1.35,.4,.42,.32,.72)}
-// Layered bandage strips wrap torso, head and limbs
-for(let i=0;i<15;i++){const y=.25+i*.19;const wrap=new THREE.Mesh(new THREE.TorusGeometry(.83-i*.012,.075,7,36),linenShadow);wrap.position.set(0,y,0);wrap.scale.set(1.12,.78,.62);wrap.rotation.x=Math.PI/2; mummy.add(wrap)}
-for(let i=0;i<9;i++){const band=new THREE.Mesh(new THREE.TorusGeometry(.55-i*.018,.06,7,32),linenShadow);band.position.set(0,3.7+i*.11,.06);band.scale.set(1,1,.9);mummy.add(band)}
-// Gold collar and cursed medallion
-const collar=new THREE.Mesh(new THREE.TorusGeometry(.78,.15,10,48),gold);collar.position.set(0,3.48,.55);collar.rotation.x=Math.PI/2.3;collar.scale.set(1.15,.85,1);mummy.add(collar);
-const medallion=new THREE.Group();scene.add(medallion);medallion.position.set(0,5.8,4.6);
-const disk=new THREE.Mesh(new THREE.CylinderGeometry(.78,.78,.16,48),gold);disk.rotation.x=Math.PI/2;medallion.add(disk);
-const ring=new THREE.Mesh(new THREE.TorusGeometry(.62,.075,10,48),goldDark);medallion.add(ring);
-const center=new THREE.Mesh(new THREE.CircleGeometry(.52,48),goldDark);center.position.z=.095;medallion.add(center);
-const scarab=new THREE.Mesh(new THREE.SphereGeometry(.34,24,18),gem);scarab.scale.set(.82,1.2,.48);scarab.position.z=.17;medallion.add(scarab);
-for(let i=0;i<12;i++){const ray=new THREE.Mesh(new THREE.BoxGeometry(.07,.32,.08),gold);const a=i*Math.PI/6;ray.position.set(Math.cos(a)*.43,Math.sin(a)*.43,.15);ray.rotation.z=a;medallion.add(ray)}
-const chain=new THREE.Mesh(new THREE.TorusGeometry(1.02,.055,8,48,Math.PI),goldDark);chain.position.y=.85;medallion.add(chain);
-// Floating sand and glowing dust
-const dustN=650,dustPos=new Float32Array(dustN*3);for(let i=0;i<dustN;i++){dustPos[i*3]=(Math.random()-.5)*32;dustPos[i*3+1]=Math.random()*16;dustPos[i*3+2]=(Math.random()-.5)*25}const dustGeo=new THREE.BufferGeometry();dustGeo.setAttribute('position',new THREE.BufferAttribute(dustPos,3));const dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:0xe6bd78,size:.045,transparent:true,opacity:.58}));scene.add(dust);
-const sparks=new THREE.Group();scene.add(sparks);for(let i=0;i<34;i++){const p=new THREE.Mesh(new THREE.SphereGeometry(.035,6,5),new THREE.MeshBasicMaterial({color:0x54ffe5}));p.position.set((Math.random()-.5)*5,Math.random()*8+1,3+Math.random()*3);sparks.add(p)}
-// Torch bowls and flame glow
-for(const x of [-9,9]){const stand=new THREE.Mesh(new THREE.CylinderGeometry(.22,.42,2.3,8),darkStone);stand.position.set(x,1.2,1.5);scene.add(stand);const flame=new THREE.Mesh(new THREE.ConeGeometry(.28,1.1,12),new THREE.MeshBasicMaterial({color:0xff9b32}));flame.position.set(x,2.85,1.5);scene.add(flame)}
-let awakening=0,target=0,audio=null,osc=null,gain=null,soundOn=false;
-document.getElementById('curse').addEventListener('click',()=>{target=1;document.getElementById('hint').textContent='THE ANCIENT CURSE HAS BEEN UNLEASHED';});
-document.getElementById('sound').addEventListener('click',()=>{soundOn=!soundOn;document.getElementById('sound').textContent='SOUND: '+(soundOn?'ON':'OFF');if(soundOn){audio=audio||new (window.AudioContext||window.webkitAudioContext)();audio.resume();osc=audio.createOscillator();gain=audio.createGain();const filter=audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=95;osc.type='sawtooth';osc.frequency.value=42;gain.gain.value=.0001;osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);osc.start();gain.gain.setTargetAtTime(.045,audio.currentTime,.5)}else if(gain){gain.gain.setTargetAtTime(.0001,audio.currentTime,.25);setTimeout(()=>{try{osc.stop()}catch(e){}},1000)}});
-const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime();awakening+=(target-awakening)*.012;lidGroup.position.x=-awakening*5.2;lidGroup.rotation.z=-awakening*.06;mummy.position.y=2.3+awakening*2.1+Math.sin(t*.8)*.045;mummy.rotation.z=Math.sin(t*.4)*.025;medallion.position.y=5.8+Math.sin(t*1.3)*.22+awakening*.8;medallion.rotation.y=t*.45;medallion.rotation.z=Math.sin(t*.7)*.12;goldLight.intensity=35+Math.sin(t*5)*7+awakening*25;torchL.intensity=22+Math.sin(t*8)*4;torchR.intensity=22+Math.sin(t*7.2)*5;const arr=dustGeo.attributes.position.array;for(let i=0;i<dustN;i++){arr[i*3]+=.003*Math.sin(t+i);arr[i*3+1]+=.008;if(arr[i*3+1]>16)arr[i*3+1]=0}dustGeo.attributes.position.needsUpdate=true;sparks.rotation.y=t*.28;sparks.children.forEach((p,i)=>{p.position.y+=Math.sin(t*1.7+i)*.002;p.material.opacity=.4+.5*(.5+.5*Math.sin(t*3+i))});renderer.render(scene,camera)}
-animate();loading.classList.add('off');setTimeout(()=>loading.remove(),650);addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
-}catch(e){loading.classList.add('off');document.getElementById('err').style.display='block';document.getElementById('err').textContent='The tomb could not load on this device. '+e.message;console.error(e)}
+(()=>{
+const canvas=document.getElementById('art'),ctx=canvas.getContext('2d');let W=0,H=0,D=1,broken=false,progress=0,sound=false,audio=null,osc=null,gain=null;
+function resize(){D=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=W*D;canvas.height=H*D;ctx.setTransform(D,0,0,D,0,0)}addEventListener('resize',resize);resize();
+function poly(points,fill,stroke){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function ellipse(x,y,rx,ry,fill){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill()}
+function rect(x,y,w,h,fill){ctx.fillStyle=fill;ctx.fillRect(x,y,w,h)}
+function glow(x,y,r,color){let g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,color);g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2)}
+function text(s,x,y,size,color){ctx.font='bold '+size+'px Georgia';ctx.textAlign='center';ctx.fillStyle=color;ctx.fillText(s,x,y)}
+function draw(t){const scale=Math.min(W/900,H/620),cx=W/2,top=H*.13,base=H*.87;ctx.clearRect(0,0,W,H);ctx.save();ctx.translate(cx,0);ctx.scale(scale,scale);ctx.translate(-450,0);
+const floorY=base/scale;
+// chamber backdrop with converging perspective
+let wall=ctx.createLinearGradient(0,top,0,base);wall.addColorStop(0,'#28190f');wall.addColorStop(.6,'#624326');wall.addColorStop(1,'#1a1009');rect(-300,top/scale,1500,(base-top)/scale,wall);
+poly([[0,top/scale],[220,top/scale+30],[220,floorY],[0,floorY]],'#382515');poly([[900,top/scale],[680,top/scale+30],[680,floorY],[900,floorY]],'#382515');
+poly([[220,top/scale+30],[680,top/scale+30],[900,floorY], [0,floorY]],'#6b4a29');
+for(let i=0;i<7;i++){let x=245+i*68;rect(x,top/scale+38,3,(floorY-top/scale)*.58,'#9b7445');rect(x+4,top/scale+38,1,(floorY-top/scale)*.58,'#2b1b10')}
+for(let y=top/scale+55;y<floorY-35;y+=54){ctx.strokeStyle='#a17b4c66';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(220,y);ctx.lineTo(680,y);ctx.stroke()}
+for(let i=0;i<12;i++){let x=238+i*37;ctx.strokeStyle='#d4ad6c77';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,top/scale+60);ctx.lineTo(x+5,top/scale+83);ctx.lineTo(x-3,top/scale+105);ctx.stroke();ellipse(x+12,top/scale+132,4,7,'#c39a5e')}
+// columns
+for(let x of [115,785]){rect(x-27,top/scale+25,54,floorY-top/scale-20,'#25170e');rect(x-22,top/scale+35,44,floorY-top/scale-25,'#9b7447');for(let k=0;k<8;k++)rect(x-20+k*5,top/scale+40,2,floorY-top/scale-35,'#d0a66a');rect(x-40,top/scale+18,80,16,'#c09252');rect(x-34,floorY-10,68,18,'#2a1a0e')}
+// torch sconces
+for(let x of [170,730]){rect(x-8,top/scale+160,16,85,'#24170e');poly([[x-19,top/scale+160],[x,top/scale+126],[x+19,top/scale+160]],'#9a6330');glow(x,top/scale+122,90,'#ff8c2c55');ellipse(x,top/scale+123,8,20,'#ff9b38');ellipse(x,top/scale+117,4,12,'#ffe5a0')}
+// raised tomb base
+let tombY=floorY-150;poly([[170,tombY+60],[730,tombY+60],[780,tombY+130],[120,tombY+130]],'#21150d','#b28a4d');poly([[190,tombY],[710,tombY],[730,tombY+65],[170,tombY+65]],'#9a7442','#e1b96d');poly([[205,tombY+8],[695,tombY+8],[710,tombY+56],[190,tombY+56]],'#4a2d16','#d5a34c');
+for(let i=0;i<12;i++){rect(215+i*40,tombY+14,2,35,'#d8b56c');}
+// coffin and lid sliding aside on activation
+let lidShift=progress*260;
+poly([[230-lidShift,tombY-82],[670-lidShift,tombY-82],[715-lidShift,tombY+4],[185-lidShift,tombY+4]],'#b48a4b','#f0ca77');poly([[245-lidShift,tombY-70],[655-lidShift,tombY-70],[686-lidShift,tombY-7],[214-lidShift,tombY-7]],'#593916','#e5bd6a');for(let i=0;i<8;i++)rect(250-lidShift+i*50,tombY-61,3,48,'#d8ad5c');
+poly([[245,tombY-75],[655,tombY-75],[685,tombY-8],[215,tombY-8]],'#6b4b27','#c69b57');
+// mummy rising from coffin
+let rise=progress*105, mx=450,my=tombY-95-rise;
+ellipse(mx,my+130,110,24,'#120b06aa');
+ellipse(mx,my+30,61,77,'#bda57c');rect(mx-53,my+56,106,113,'#bca47a');ellipse(mx,my-48,43,51,'#d0bd96');
+ellipse(mx-16,my-53,5,4,'#28170d');ellipse(mx+16,my-53,5,4,'#28170d');rect(mx-19,my-33,38,5,'#49311d');
+ctx.save();ctx.translate(mx,my+65);ctx.rotate(-.12);for(let i=0;i<12;i++){ctx.strokeStyle=i%2?'#766247':'#e0d0aa';ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(-52+i*8,-48);ctx.lineTo(-44+i*8,65);ctx.stroke()}ctx.restore();
+for(let j=0;j<7;j++){ctx.strokeStyle=j%2?'#756044':'#e3d2ad';ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(mx-42,my-70+j*12);ctx.quadraticCurveTo(mx,my-58+j*12,mx+43,my-70+j*12);ctx.stroke()}
+for(let side of [-1,1]){ctx.save();ctx.translate(mx+side*52,my+42);ctx.rotate(side*(.35-progress*.3));ctx.strokeStyle='#d4c19a';ctx.lineWidth=22;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(side*35,65);ctx.lineTo(side*28,112);ctx.stroke();ctx.strokeStyle='#766247';ctx.lineWidth=5;for(let k=0;k<5;k++){ctx.beginPath();ctx.moveTo(side*(-10+k*5),10);ctx.lineTo(side*(25+k*4),95);ctx.stroke()}ctx.restore()}
+// collar
+poly([[mx-47,my-1],[mx-30,my+24],[mx+30,my+24],[mx+47,my-1],[mx+32,my+6],[mx,my+17],[mx-32,my+6]],'#d6a63e','#f4d78b');
+// medallion hovering forward
+let medY=my-12-Math.sin(t*1.6)*8-progress*65;glow(mx,medY,95,'#00e9cf55');ellipse(mx,medY,27,31,'#c99b3e');ellipse(mx,medY,21,25,'#62451b');ellipse(mx,medY,14,18,'#14cbb4');ellipse(mx-5,medY-5,4,7,'#b4fff0');for(let i=0;i<12;i++){let a=i*Math.PI/6;ctx.strokeStyle='#f2ce73';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(mx+Math.cos(a)*29,medY+Math.sin(a)*32);ctx.lineTo(mx+Math.cos(a)*38,medY+Math.sin(a)*42);ctx.stroke()}
+ctx.strokeStyle='#d4ad5d';ctx.lineWidth=4;ctx.beginPath();ctx.arc(mx,medY-34,40,Math.PI,Math.PI*2);ctx.stroke();
+// foreground sand ripples and drifting dust
+for(let i=0;i<40;i++){let x=(i*83+t*9)%900,y=(i*47+Math.sin(t+i)*8+floorY*.78);ellipse(x,y,1.5+(i%3),1.5,'#e7c58b88')}
+if(progress>.05){glow(mx,medY,160,'#05d8c755');for(let i=0;i<28;i++){let a=i*2.4+t*1.2,r=45+((i*19+t*20)%105);ellipse(mx+Math.cos(a)*r,medY+Math.sin(a)*r,2,2,'#70fff0')}}
+ctx.restore();
+}
+let last=0;function frame(ts){let dt=Math.min((ts-last)/1000,.05);last=ts;if(broken)progress=Math.min(1,progress+dt*.22);draw(ts/1000);requestAnimationFrame(frame)}requestAnimationFrame(frame);
+document.getElementById('curse').addEventListener('click',()=>{broken=true;document.getElementById('hint').textContent='THE SEAL IS BROKEN · THE MUMMY AWAKENS';document.getElementById('curse').textContent='THE CURSE IS UNLEASHED';});
+document.getElementById('sound').addEventListener('click',()=>{sound=!sound;document.getElementById('sound').textContent='SOUND: '+(sound?'ON':'OFF');if(sound){try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();audio.resume();osc=audio.createOscillator();gain=audio.createGain();let filter=audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=110;osc.type='sawtooth';osc.frequency.value=48;gain.gain.value=.035;osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);osc.start()}catch(e){}}else if(osc){try{osc.stop()}catch(e){}osc=null}});
+})();
 </script></body></html>
