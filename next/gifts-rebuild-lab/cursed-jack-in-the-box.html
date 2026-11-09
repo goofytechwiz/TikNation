@@ -100,6 +100,20 @@ function draw(t){
  // right-side winding axle and turning handle, visible even on idle
  ctx.fillStyle='#151018';ctx.beginPath();ctx.ellipse(157,-82,13,20,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#e0b66c';ctx.lineWidth=5;ctx.stroke();
  ctx.save();ctx.translate(166,-82);const spin=phase==='idle'?0:t* Math.PI*2*1.35;ctx.rotate(spin);ctx.strokeStyle='#d9b46d';ctx.lineWidth=9;ctx.lineCap='round';line(0,0,42,-48,'#d9b46d',9);ctx.fillStyle=gradient(42,-48,9,'#fff0b1','#805125');ctx.beginPath();ctx.arc(42,-48,9,0,Math.PI*2);ctx.fill();ctx.fillStyle='#392025';ctx.beginPath();ctx.roundRect(29,-59,28,12,6);ctx.fill();ctx.restore();
+ // Rolling smoke puffs after the jump-scare; each cloud expands and drifts.
+ if(phase!=='idle'&&t>5.05){
+   const smokeAge=t-5.05,fade=clamp(1-smokeAge/6,0,1);
+   for(let i=0;i<22;i++){
+     const seed=i*2.399,age=(smokeAge+i*.075)%2.7,drift=age*18;
+     const sx=Math.cos(seed)* (24+age*17),sy=-205+Math.sin(seed)*16-drift;
+     const radius=8+age*12+(i%4)*3;
+     const cloud=ctx.createRadialGradient(sx-radius*.25,sy-radius*.25,1,sx,sy,radius);
+     cloud.addColorStop(0,'rgba(218,220,225,'+(fade*.22)+')');
+     cloud.addColorStop(.55,'rgba(125,132,151,'+(fade*.13)+')');
+     cloud.addColorStop(1,'rgba(65,70,90,0)');
+     ctx.fillStyle=cloud;ctx.beginPath();ctx.arc(sx,sy,radius,0,Math.PI*2);ctx.fill();
+   }
+ }
  // magic flare when clown springs out
  if(pop>0&&vanish<1){const a=(1-vanish)*(.3+.25*Math.sin(t*12));ctx.globalAlpha=a;const g=ctx.createRadialGradient(0,-235,8,0,-235,180);g.addColorStop(0,'#8af5ff88');g.addColorStop(.5,'#a84bff22');g.addColorStop(1,'#a84bff00');ctx.fillStyle=g;ctx.fillRect(-210,-420,420,360);ctx.globalAlpha=1;
  for(let i=0;i<24;i++){const ang=i/24*Math.PI*2+t*.7,rad=100+Math.sin(t*4+i)*16;ctx.fillStyle=i%2?'#7ef3ff':'#d48bff';ctx.globalAlpha=a;ctx.beginPath();ctx.arc(Math.cos(ang)*rad, -225+Math.sin(ang)*rad*.55,2.2,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1}
@@ -124,8 +138,29 @@ function playTune(){
  for(let tt=0;tt<duration;){const when=audio.currentTime+tt;const o=audio.createOscillator(),g=audio.createGain();o.type='square';o.frequency.value=1900;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(.025,when+.002);g.gain.exponentialRampToValueAtTime(.0001,when+.018);o.connect(g).connect(master);o.start(when);o.stop(when+.02);oscillators.push(o);tt+=Math.max(.12,.32-tt/duration*.19)}
  return duration;
 }
+function addMechanicalFX(){
+ if(!audio||!master)return;
+ const now=audio.currentTime;
+ // Hinge groan as the lid releases.
+ const creak=audio.createOscillator(),cg=audio.createGain(),cf=audio.createBiquadFilter();
+ creak.type='sawtooth';creak.frequency.setValueAtTime(115,now+4.05);creak.frequency.exponentialRampToValueAtTime(330,now+4.85);creak.frequency.exponentialRampToValueAtTime(82,now+5.15);
+ cf.type='lowpass';cf.frequency.value=720;cg.gain.setValueAtTime(.0001,now+4.05);cg.gain.exponentialRampToValueAtTime(.12,now+4.18);cg.gain.exponentialRampToValueAtTime(.0001,now+5.2);
+ creak.connect(cf).connect(cg).connect(master);creak.start(now+4.05);creak.stop(now+5.22);oscillators.push(creak);
+ // A short, filtered broadband impact.
+ const bangAt=now+5.02,buffer=audio.createBuffer(1,Math.floor(audio.sampleRate*.55),audio.sampleRate),data=buffer.getChannelData(0);
+ for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/data.length,3);
+ const noise=audio.createBufferSource(),ng=audio.createGain(),nf=audio.createBiquadFilter();
+ noise.buffer=buffer;nf.type='lowpass';nf.frequency.setValueAtTime(1700,bangAt);nf.frequency.exponentialRampToValueAtTime(180,bangAt+.42);
+ ng.gain.setValueAtTime(.0001,bangAt);ng.gain.exponentialRampToValueAtTime(.48,bangAt+.008);ng.gain.exponentialRampToValueAtTime(.0001,bangAt+.52);
+ noise.connect(nf).connect(ng).connect(master);noise.start(bangAt);oscillators.push(noise);
+ // Air rush when the clown lunges.
+ const rush=audio.createOscillator(),rg=audio.createGain(),rf=audio.createBiquadFilter();
+ rush.type='triangle';rush.frequency.setValueAtTime(480,now+9.35);rush.frequency.exponentialRampToValueAtTime(75,now+10.05);
+ rf.type='lowpass';rf.frequency.value=900;rg.gain.setValueAtTime(.0001,now+9.35);rg.gain.exponentialRampToValueAtTime(.15,now+9.48);rg.gain.exponentialRampToValueAtTime(.0001,now+10.1);
+ rush.connect(rf).connect(rg).connect(master);rush.start(now+9.35);rush.stop(now+10.12);oscillators.push(rush);
+}
 function stopAudio(){if(audio){try{audio.close()}catch(e){}audio=null}oscillators=[]}
-function begin(){if(phase!=='idle')return;makeParticles();phase='show';start=performance.now();wind.disabled=true;reset.disabled=false;status.textContent='THE HANDLE TURNS… THE LITTLE TUNE BEGINS.';const duration=playTune();const total=duration+1.7;setTimeout(()=>{if(phase!=='show')return;status.textContent='THE LID BURSTS OPEN!'},4300);setTimeout(()=>{if(phase!=='show')return;status.textContent='HE FOUND YOU.'},6200);setTimeout(()=>{if(phase!=='show')return;status.textContent='A SHARP CRACK — THEN NOTHING.'},11200);endTimer=setTimeout(()=>{if(phase!=='show')return;phase='idle';stopAudio();wind.disabled=false;reset.disabled=true;status.textContent='THE MUSIC HAS ENDED. THE HANDLE IS STILL.';draw(0)},total*1000)}
+function begin(){if(phase!=='idle')return;makeParticles();phase='show';start=performance.now();wind.disabled=true;reset.disabled=false;status.textContent='THE HANDLE TURNS… THE LITTLE TUNE BEGINS.';const duration=playTune();addMechanicalFX();const total=Math.max(duration+1.7,13.2);setTimeout(()=>{if(phase!=='show')return;status.textContent='THE LID BURSTS OPEN!'},4300);setTimeout(()=>{if(phase!=='show')return;status.textContent='HE FOUND YOU.'},6200);setTimeout(()=>{if(phase!=='show')return;status.textContent='A SHARP CRACK — THEN NOTHING.'},11200);endTimer=setTimeout(()=>{if(phase!=='show')return;phase='idle';stopAudio();wind.disabled=false;reset.disabled=true;status.textContent='THE MUSIC HAS ENDED. THE HANDLE IS STILL.';draw(0)},total*1000)}
 function stop(){phase='idle';clearTimeout(endTimer);stopAudio();wind.disabled=false;reset.disabled=true;status.textContent='THE BOX HAS BEEN RESET.';draw(0)}
 wind.addEventListener('click',begin);reset.addEventListener('click',stop);
 makeParticles();resize();frame();
