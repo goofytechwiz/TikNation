@@ -114,30 +114,37 @@ function draw(t){if(!W||!H)return;g.clearRect(0,0,W,H);drawRoom(t);const m=drawM
  g.fillStyle='#030306';g.fillRect(0,0,W,H*.035);g.fillRect(0,H*.965,W,H*.035);
 }
 function frame(now){if(!playing)return;let t=(now-start)/1000;draw(t);const labels=[[0,'THE GLASS IS WHISPERING…'],[1.2,'FRACTURES SPREAD ACROSS THE EMPTY GLASS'],[2.0,'THE MIRROR IMPLODES'],[4.1,'SOMETHING OPENS BEHIND THE GLASS'],[5.0,'THE ROOM IS BEING TORN APART'],[8.0,'NOTHING CAN ESCAPE THE PULL'],[12.5,'THE ROOM DISAPPEARS'],[14.5,'THE MIRROR HAS TAKEN EVERYTHING']];let label=labels.filter(x=>t>=x[0]).at(-1);if(label)status.textContent=label[1];if(t<16)raf=requestAnimationFrame(frame);else{playing=false;status.textContent='THE MIRROR HAS TAKEN EVERYTHING · PLAY AGAIN'}}
-function audio(){
- // Use real downloadable sound-effect files rather than synthesized oscillator noise.
- // Playback is started from the user's Play gesture and each layer is timed to the scene.
+async function audio(){
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('Web Audio is unavailable');
+ ac=new AC();await ac.resume();
  const clips=[
-  {at:0,url:'https://cdn.sonilo.com/library/sfx/whooshing-smash-and-glass-shattering-6d2b96d9.mp3',volume:.96},
-  {at:2150,url:'https://cdn.sonilo.com/library/sfx/deep-rumbling-cinematic-whoosh-472b493b.mp3',volume:1},
-  {at:5050,url:'https://cdn.sonilo.com/library/sfx/quick-airy-sucking-whoosh-sting-bb290a11.mp3',volume:.92},
-  {at:8350,url:'https://cdn.sonilo.com/library/sfx/heavy-wooden-pallets-crushing-and-splintering-a90b7485.mp3',volume:.92}
+  {at:0,url:'https://sfxmint.com/dl/horror-drone-80.mp3',volume:.72,pan:0},
+  {at:.55,url:'https://sfxmint.com/dl/ice-crack-08.mp3',volume:.72,pan:-.18},
+  {at:1.8,url:'https://sfxmint.com/dl/glass-shatter-50.mp3',volume:1,pan:0},
+  {at:2.02,url:'https://sfxmint.com/dl/glass-shatter-60.mp3',volume:.72,pan:.22},
+  {at:3.85,url:'https://sfxmint.com/dl/transition-whoosh-68.mp3',volume:.95,pan:0},
+  {at:5.55,url:'https://sfxmint.com/dl/door-creak-45.mp3',volume:.82,pan:-.28},
+  {at:8.35,url:'https://sfxmint.com/dl/transition-whoosh-37.mp3',volume:.82,pan:.24}
  ];
- clips.forEach((clip,index)=>{
-  const sound=new Audio(clip.url);sound.preload='auto';sound.volume=clip.volume;voices.push(sound);
-  const timer=setTimeout(()=>{
-   if(!playing)return;
-   sound.currentTime=0;
-   sound.play().catch(()=>{
-    if(index===0)status.textContent='SOUND FILES COULD NOT LOAD · CHECK YOUR CONNECTION';
-   });
-  },clip.at);
-  timers.push(timer);
+ const loaded=await Promise.allSettled(clips.map(async clip=>{
+  const response=await fetch(clip.url,{mode:'cors',cache:'force-cache'});
+  if(!response.ok)throw Error('Audio file unavailable: '+response.status);
+  const buffer=await response.arrayBuffer();
+  return {clip,buffer:await ac.decodeAudioData(buffer)};
+ }));
+ const ready=loaded.filter(x=>x.status==='fulfilled').map(x=>x.value);
+ if(!ready.length)throw Error('No sound files could be loaded');
+ const base=ac.currentTime+.12;start=performance.now();
+ ready.forEach(({clip,buffer})=>{
+  const source=ac.createBufferSource(),gain=ac.createGain(),pan=ac.createStereoPanner?ac.createStereoPanner():null;
+  source.buffer=buffer;gain.gain.value=clip.volume;source.connect(gain);
+  if(pan){pan.pan.value=clip.pan;gain.connect(pan);pan.connect(ac.destination)}else gain.connect(ac.destination);
+  source.start(base+clip.at);voices.push(source);
  });
- return Promise.resolve();
+ return ready.length;
 }
-function stop(){playing=false;cancelAnimationFrame(raf);timers.forEach(clearTimeout);timers=[];voices.forEach(v=>{try{v.pause();v.currentTime=0}catch(e){}});voices=[];if(ac&&ac.state!=='closed')ac.close();ac=null;draw(0)}
-document.getElementById('play').addEventListener('click',async()=>{stop();initDebris();makeShards();playing=true;start=performance.now();status.textContent='THE GLASS IS WHISPERING…';try{await audio()}catch(e){status.textContent='VISUAL PREVIEW · AUDIO UNAVAILABLE ON THIS DEVICE'}raf=requestAnimationFrame(frame)});
+function stop(){playing=false;cancelAnimationFrame(raf);timers.forEach(clearTimeout);timers=[];voices.forEach(v=>{try{v.stop()}catch(e){}});voices=[];if(ac&&ac.state!=='closed')ac.close();ac=null;draw(0)}
+document.getElementById('play').addEventListener('click',async()=>{stop();initDebris();makeShards();status.textContent='LOADING REAL SOUND EFFECTS…';try{const count=await audio();playing=true;status.textContent='THE GLASS IS WHISPERING… · '+count+' SOUND LAYERS READY';raf=requestAnimationFrame(frame)}catch(e){playing=true;start=performance.now();status.textContent='AUDIO COULD NOT LOAD · CHECK CONNECTION AND TRY AGAIN';raf=requestAnimationFrame(frame)}});
 document.getElementById('stop').addEventListener('click',()=>{stop();status.textContent='PREVIEW STOPPED · THE MIRROR IS RESTORED'});
 resize();
 })();
