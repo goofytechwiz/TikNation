@@ -671,6 +671,7 @@ function renderLivingTombstonesGift(gift,opts,overlay){
  scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#05080b;isolation:isolate";
  scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(0,0,0,.82)),radial-gradient(ellipse,transparent 24%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:7%;left:0;right:0;text-align:center;color:#d7ded4;font:1000 clamp(22px,5.8vw,44px)/1.1 Georgia,serif;letter-spacing:.1em;text-shadow:0 2px 8px #000,0 0 18px #8aa08c">THE NIGHT OF THE LIVING TOMBSTONES<div style="font:700 10px system-ui;letter-spacing:.28em;margin-top:9px;color:#a6b6a7">THE DEAD WILL NOT STAY BURIED</div></div>';
  overlay.appendChild(scene);document.body.appendChild(overlay);
+ if(typeof opts.onSound==="function"){try{opts.onSound();}catch(error){console.warn("Cemetery sound callback failed:",error);}}
  const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");
  let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start;
  const rand=(a,b)=>a+Math.random()*(b-a),stones=[],mist=[];
