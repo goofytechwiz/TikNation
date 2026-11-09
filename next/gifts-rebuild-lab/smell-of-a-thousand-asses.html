@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10140b">
+<title>The Smell of a Thousand Asses · TikNation Gift Lab</title>
+<style>
+:root{color-scheme:dark;--acid:#b7df38;--lime:#d7ff57;--ink:#080b06}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#080b06;color:#f3f1d9;font-family:system-ui,Arial,sans-serif}
+body{min-height:100svh;display:grid;place-items:center;padding:12px;overflow-x:hidden}
+.stage{position:relative;isolation:isolate;width:min(100%,900px);height:min(94svh,760px);min-height:620px;overflow:hidden;border:1px solid #687b2b;border-radius:22px;background:radial-gradient(ellipse at 50% 65%,#38451c 0,#18200f 36%,#090d08 78%);box-shadow:0 0 70px #9ac52b22}
+.backdrop{position:absolute;inset:0;background:linear-gradient(180deg,#080d08dd 0%,transparent 36%,#090b06 100%),repeating-linear-gradient(90deg,transparent 0 79px,#d6f27a08 80px 82px)}
+.moon{position:absolute;right:11%;top:8%;width:100px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f4f0bf,#b9c47c 55%,#4d6132);box-shadow:0 0 55px 18px #c3ed6a22}
+.title{position:absolute;z-index:10;top:22px;left:16px;right:16px;text-align:center;text-transform:uppercase;font-weight:1000;letter-spacing:.09em;font-size:clamp(19px,4vw,34px);text-shadow:0 3px 0 #17200c,0 0 20px #b7df3888}
+.subtitle{display:block;margin-top:6px;font-size:10px;letter-spacing:.28em;color:#d1e98b}
+bin{display:none}
+.dumpster{position:absolute;z-index:2;left:50%;bottom:12%;transform:translateX(-50%);width:min(58%,470px);height:31%;border:8px solid #28331a;border-top:14px solid #667c36;border-radius:8px 8px 28px 28px;background:repeating-linear-gradient(90deg,#29371d 0 36px,#42572a 38px 42px,#263319 45px 73px);box-shadow:inset 0 12px 20px #0009,0 25px 25px #000b}
+.dumpster:before{content:"BIOHAZARD: STENCH";position:absolute;top:23%;left:0;right:0;text-align:center;font-weight:1000;font-size:clamp(10px,2vw,16px);letter-spacing:.12em;color:#d8ed85;text-shadow:0 2px #18210e}
+.dumpster:after{content:"☣";position:absolute;top:39%;left:50%;transform:translateX(-50%);font-size:clamp(35px,8vw,70px);color:#d8ed85;text-shadow:0 0 18px #b7df3877}
+.lid{position:absolute;z-index:3;left:50%;bottom:43%;transform:translateX(-50%) rotate(-3deg);width:min(64%,510px);height:35px;border:5px solid #6b7f3c;border-radius:8px;background:linear-gradient(#849b4c,#394b25 45%,#1d2a17);box-shadow:0 10px 15px #0009;transform-origin:15% 90%;transition:transform .8s}
+.stink{position:absolute;z-index:4;left:50%;bottom:34%;width:70%;height:55%;transform:translateX(-50%);opacity:0;pointer-events:none;filter:drop-shadow(0 0 20px #b6ed35)}
+.puff{position:absolute;bottom:0;width:36%;aspect-ratio:1;border-radius:48% 52% 46% 54%;background:radial-gradient(circle at 34% 28%,#e6ff9a 0,#a7d43d 23%,#557d22 55%,#233715 78%,transparent 79%);filter:blur(2px);animation:rise 4s ease-in-out infinite}
+.puff:nth-child(1){left:8%;animation-delay:-1s}.puff:nth-child(2){left:31%;width:48%;animation-delay:-2.5s}.puff:nth-child(3){right:5%;animation-delay:-.4s}
+.puff:nth-child(4){left:20%;bottom:30%;width:32%;animation-delay:-3s}.puff:nth-child(5){right:18%;bottom:35%;width:34%;animation-delay:-1.8s}
+@keyframes rise{0%{transform:translateY(35px) scale(.65);opacity:0}25%{opacity:.9}100%{transform:translateY(-190px) scale(1.35);opacity:0}}
+.fly{position:absolute;z-index:6;font-size:24px;opacity:0;filter:drop-shadow(0 2px 2px #000);pointer-events:none}
+.fly.one{left:25%;top:43%}.fly.two{right:24%;top:48%}.fly.three{left:48%;top:36%}
+.stage.released .stink{opacity:1}.stage.released .lid{transform:translateX(-50%) rotate(-28deg) translateY(-18px)}
+.stage.released .fly{opacity:1;animation:orbit 3s linear infinite}.fly.two{animation-duration:4.2s;animation-direction:reverse}.fly.three{animation-duration:2.6s}
+@keyframes orbit{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(65px,-35px) rotate(90deg)}50%{transform:translate(10px,-90px) rotate(180deg)}75%{transform:translate(-60px,-30px) rotate(270deg)}100%{transform:translate(0,0) rotate(360deg)}}
+.shock{position:absolute;z-index:5;left:50%;bottom:27%;width:15px;height:15px;border:4px solid #dfff8b;border-radius:50%;transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none}
+.stage.released .shock{animation:shock 1.2s ease-out 1}
+@keyframes shock{0%{transform:translate(-50%,-50%) scale(.1);opacity:1}100%{transform:translate(-50%,-50%) scale(32);opacity:0}}
+.gauge{position:absolute;z-index:8;top:110px;left:50%;transform:translateX(-50%);width:min(75%,420px);text-align:center}
+.gauge-label{font-size:11px;letter-spacing:.24em;color:#cde68b;font-weight:900}
+.meter{height:12px;margin-top:9px;border:1px solid #a5c85b;border-radius:20px;background:#11190b;overflow:hidden;box-shadow:0 0 12px #b7df3822}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#648a22,#b6df38,#f2ff9b);transition:width 1s ease;box-shadow:0 0 16px #dfff65}
+.readout{margin-top:8px;color:#efffb6;font-size:12px;font-weight:900;letter-spacing:.12em}
+.controls{position:absolute;z-index:12;left:12px;right:12px;bottom:18px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+button{border:1px solid #b7df38;border-radius:999px;background:linear-gradient(#40551e,#1b2810);color:#f5ffd8;padding:13px 19px;font-size:12px;font-weight:1000;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;touch-action:manipulation;box-shadow:0 5px 0 #10170a,0 0 18px #b7df3822}
+button:active{transform:translateY(3px);box-shadow:0 2px 0 #10170a}
+button:focus-visible{outline:3px solid white;outline-offset:3px}
+button.primary{background:linear-gradient(#c1e94a,#648b25);color:#101606;border-color:#e6ff92}
+.status{position:absolute;z-index:9;bottom:94px;left:10px;right:10px;text-align:center;min-height:22px;color:#e7f6b4;font-size:12px;font-weight:800;text-shadow:0 2px 5px #000}
+.warning{position:absolute;z-index:9;top:164px;left:0;right:0;text-align:center;color:#b7c88e;font-size:10px;letter-spacing:.18em}
+@media(max-width:560px){.stage{min-height:620px;height:94svh;border-radius:14px}.dumpster{width:72%;height:28%;bottom:15%}.lid{bottom:43%;width:78%}.stink{width:90%;bottom:34%}.gauge{top:112px}.warning{top:165px;font-size:9px}.controls{bottom:15px;gap:8px}button{padding:12px 14px;font-size:10px}.status{bottom:94px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="stage" id="stage">
+<div class="backdrop"></div><div class="moon"></div>
+<header class="title">THE SMELL OF A THOUSAND ASSES<span class="subtitle">A LEGENDARY TIKNATION GIFT · BIOHAZARD CLASS: OH NO</span></header>
+<section class="gauge" aria-label="Stench meter"><div class="gauge-label">CONCENTRATED STENCH LEVEL</div><div class="meter"><div class="fill" id="fill"></div></div><div class="readout" id="readout">0 / 1,000,000 NOSE HAIRS DESTROYED</div></section>
+<div class="warning">WARNING: DO NOT OPEN IN A CLOSED ROOM</div>
+<div class="dumpster"></div><div class="lid"></div>
+<div class="stink" aria-hidden="true"><i class="puff"></i><i class="puff"></i><i class="puff"></i><i class="puff"></i><i class="puff"></i></div>
+<div class="fly one">🪰</div><div class="fly two">🪰</div><div class="fly three">🪰</div><div class="shock"></div>
+<div class="status" id="status" aria-live="polite">THE CONTAINER IS SEALED. FOR NOW.</div>
+<div class="controls"><button class="primary" id="release">RELEASE THE STENCH 💨</button><button id="fan">ACTIVATE INDUSTRIAL FAN</button><button id="sound">SOUND: OFF</button><button id="reset">CONTAIN IT</button></div>
+</main>
+<script>
+(()=> {
+const stage=document.getElementById('stage'),fill=document.getElementById('fill'),readout=document.getElementById('readout'),status=document.getElementById('status');
+const release=document.getElementById('release'),fan=document.getElementById('fan'),sound=document.getElementById('sound'),reset=document.getElementById('reset');
+let audioOn=false,ctx=null,fanOn=false;
+function tone(freq,duration,type='sine',gain=.06,when=0){if(!audioOn)return;try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,ctx.currentTime+when);g.gain.setValueAtTime(.0001,ctx.currentTime+when);g.gain.exponentialRampToValueAtTime(gain,ctx.currentTime+when+.025);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+when+duration);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+when);o.stop(ctx.currentTime+when+duration+.04)}catch(e){}}
+function fart(){if(!audioOn)return;try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();const n=Math.floor(ctx.sampleRate*.85),buf=ctx.createBuffer(1,n,ctx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<n;i++){const t=i/n;d[i]=(Math.random()*2-1)*Math.pow(1-t,1.7)*(.55+.45*Math.sin(t*75));}const src=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),g=ctx.createGain();src.buffer=buf;filter.type='lowpass';filter.frequency.setValueAtTime(420,ctx.currentTime);filter.frequency.exponentialRampToValueAtTime(90,ctx.currentTime+.8);g.gain.value=.7;src.connect(filter);filter.connect(g);g.connect(ctx.destination);src.start()}catch(e){}}
+release.addEventListener('click',()=>{stage.classList.add('released');fill.style.width='100%';readout.textContent='1,000,000 / 1,000,000 NOSE HAIRS DESTROYED';status.textContent='BIOHAZARD BREACH! THE FLIES HAVE CALLED THEIR LAWYER.';fart();tone(95,.7,'sawtooth',.08,.35);tone(48,1.1,'triangle',.12,.65)});
+fan.addEventListener('click',()=>{fanOn=!fanOn;fan.textContent=fanOn?'STOP THE FAN':'ACTIVATE INDUSTRIAL FAN';if(fanOn&&stage.classList.contains('released')){status.textContent='THE FAN HAS MADE IT EVERYONE’S PROBLEM.';tone(180,.5,'sawtooth',.035)}else if(fanOn){status.textContent='FAN READY. THIS MAY BE A TERRIBLE IDEA.';tone(180,.25,'sawtooth',.025)}else status.textContent='FAN SHUT DOWN. THE AIR IS STILL SUSPICIOUS.'});
+sound.addEventListener('click',()=>{audioOn=!audioOn;sound.textContent='SOUND: '+(audioOn?'ON':'OFF');if(audioOn){ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();tone(520,.12,'sine',.04);status.textContent='SOUND ENABLED. YOU HAVE BEEN WARNED.'}else status.textContent='SOUND MUTED.'});
+reset.addEventListener('click',()=>{stage.classList.remove('released');fill.style.width='0%';readout.textContent='0 / 1,000,000 NOSE HAIRS DESTROYED';status.textContent='CONTAINMENT RESTORED. THE SMELL WILL REMAIN IN YOUR MEMORIES.';fanOn=false;fan.textContent='ACTIVATE INDUSTRIAL FAN';tone(260,.18,'sine',.035)});
+})();
+</script>
+</body></html>
