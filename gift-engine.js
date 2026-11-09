@@ -873,7 +873,7 @@ function renderHauntedMansionGift(gift,opts,overlay){
  "#tiknation-gift-engine .hm-world{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#080e1b,#182333 48%,#080d12 78%,#020406);isolation:isolate}",
  "#tiknation-gift-engine .hm-moon{position:absolute;right:14%;top:9%;width:clamp(58px,9vw,104px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 36% 32%,#fff4d1,#e6c98b 58%,#9b805a 86%);box-shadow:0 0 34px 13px #f2d9a955,0 0 150px 65px #c7d8ef22}",
  "#tiknation-gift-engine .hm-cloud{position:absolute;inset:-10% -25%;background:radial-gradient(ellipse at 24% 26%,#66708066,transparent 24%),radial-gradient(ellipse at 65% 18%,#5b687966,transparent 26%);filter:blur(18px);animation:hm-cloud 18s ease-in-out infinite alternate}",
- "#tiknation-gift-engine .hm-scene{position:absolute;inset:0;width:100%;height:100%}",
+ "#tiknation-gift-engine .hm-scene{position:absolute;inset:0;width:100%;height:100%;transform:scale(.84);transform-origin:50% 50%}",
  "#tiknation-gift-engine .hm-house{transform-origin:50% 100%;animation:hm-arrive 1.6s cubic-bezier(.18,.72,.22,1) both}",
  "#tiknation-gift-engine .hm-window{fill:#1a1a17;stroke:#7c7665;stroke-width:5}",
  "#tiknation-gift-engine .hm-light{fill:#ffc968;opacity:.12;filter:url(#hm-glow);animation:hm-flicker 3.8s steps(1,end) infinite}",
@@ -892,7 +892,7 @@ function renderHauntedMansionGift(gift,opts,overlay){
  "@keyframes hm-flicker{0%,17%,19%,45%,47%,100%{opacity:.12}18%,46%{opacity:.95}70%{opacity:.45}}@keyframes hm-gate-left{to{transform:perspective(500px) rotateY(-68deg)}}@keyframes hm-gate-right{to{transform:perspective(500px) rotateY(68deg)}}",
  "@keyframes hm-door-left{to{transform:perspective(500px) rotateY(-76deg)}}@keyframes hm-door-right{to{transform:perspective(500px) rotateY(76deg)}}@keyframes hm-shadow{to{opacity:.92}}",
  "@keyframes hm-lightning{0%,5%,9%,100%{opacity:0}6%,7%{opacity:1}8%{opacity:.25}}@keyframes hm-flash{0%,5%,9%,100%{opacity:0}6%{opacity:.22}7%{opacity:0}8%{opacity:.1}}",
- "@keyframes hm-fog{to{transform:translateX(8%) scale(1.08);opacity:.55}}@media(max-width:650px){#tiknation-gift-engine .hm-scene{width:145%;left:-22.5%}#tiknation-gift-engine .hm-title{letter-spacing:.08em}}",
+ "@keyframes hm-fog{to{transform:translateX(8%) scale(1.08);opacity:.55}}@media(max-width:650px){#tiknation-gift-engine .hm-scene{width:100%;left:0;transform:scale(.76)}#tiknation-gift-engine .hm-title{letter-spacing:.08em}}",
  "@media(prefers-reduced-motion:reduce){#tiknation-gift-engine .hm-house,#tiknation-gift-engine .hm-gate-left,#tiknation-gift-engine .hm-gate-right,#tiknation-gift-engine .hm-door-left,#tiknation-gift-engine .hm-door-right,#tiknation-gift-engine .hm-shadow-person{animation:none!important;opacity:1!important;transform:none!important}}"
  ].join("");
  const world=document.createElement("div");world.className="hm-world";
@@ -911,8 +911,8 @@ function renderHauntedMansionGift(gift,opts,overlay){
  '<path class="hm-lightning" d="M895 12L820 150L876 145L790 300L925 165L865 170Z" fill="none" stroke="#d9edff" stroke-width="10" stroke-linejoin="round" filter="url(#hm-glow)"/>'+
  '<g class="hm-house">'+
  '<!-- immense multi-wing Victorian manor, deliberately oversized -->'+
- '<path d="M15 330L70 220L270 115L475 245L475 290L610 150L780 275L780 315L970 185L1185 320L1190 700H10Z" fill="url(#hm-roof)" stroke="#0c131d" stroke-width="18"/>'+
- '<path d="M70 220L270 115L475 245M610 150L780 275M970 185L1185 320" fill="none" stroke="#a2a8ad" stroke-width="7" opacity=".5"/>'+
+ '<path d="M15 330L55 250L145 205H1055L1150 250L1190 330L1190 700H10Z" fill="url(#hm-roof)" stroke="#0c131d" stroke-width="18"/>'+
+ '<path d="M55 250L145 205H1055L1150 250" fill="none" stroke="#a2a8ad" stroke-width="7" opacity=".5"/>'+
  '<!-- long left residential wing -->'+
  '<path d="M30 365L270 215L500 360V700H20Z" fill="url(#hm-stone)" stroke="#111923" stroke-width="14"/>'+
  '<path d="M30 365L270 215L500 360V700H20Z" fill="url(#hm-blocks)" opacity=".5"/>'+
@@ -934,13 +934,13 @@ function renderHauntedMansionGift(gift,opts,overlay){
  '<g class="hm-light"><path d="M82 418V375Q105 340 128 375V418Z M187 418V350Q210 315 233 350V418Z M292 418V375Q315 340 338 375V418Z M417 418V355Q440 320 463 355V418Z M542 418V305Q565 270 588 305V418Z M632 418V305Q655 270 678 305V418Z M757 418V355Q780 320 803 355V418Z M872 418V375Q895 340 918 375V418Z M977 418V350Q1000 315 1023 350V418Z M1087 418V375Q1110 340 1133 375V418Z"/></g>'+
  '<g class="hm-light delay"><path d="M82 503V460Q105 425 128 460V503Z M187 503V440Q210 405 233 440V503Z M292 503V460Q315 425 338 460V503Z M417 503V440Q440 405 463 440V503Z M542 503V440Q565 405 588 440V503Z M632 503V440Q655 405 678 440V503Z M757 503V440Q780 405 803 440V503Z M872 503V460Q895 425 918 460V503Z M977 503V440Q1000 405 1023 440V503Z M1087 503V460Q1110 425 1133 460V503Z"/></g>'+
  '<!-- imposing central mansard pavilion, broad not spired -->'+
- '<path d="M450 320L480 245L610 125L740 245L770 320Z" fill="#303946" stroke="#111923" stroke-width="13"/>'+
- '<path d="M495 275L610 165L725 275" fill="none" stroke="#89919a" stroke-width="7"/>'+
+ '<path d="M450 320L475 250L525 205H695L745 250L770 320Z" fill="#303946" stroke="#111923" stroke-width="13"/>'+
+ '<path d="M480 250L525 205H695L740 250" fill="none" stroke="#89919a" stroke-width="7"/>'+
  '<path d="M530 305V250Q570 205 610 250Q650 205 690 250V305Z" fill="#101923" stroke="#b1a897" stroke-width="7"/>'+
  '<g class="hm-light"><path d="M540 298V255Q570 220 600 255V298Z M620 298V255Q650 220 680 255V298Z"/></g>'+
  '<!-- corner pavilions and rooftop dormers -->'+
- '<path d="M30 360V285L115 220L200 285V360Z M1000 350V270L1080 205L1160 270V350Z" fill="#59616a" stroke="#111923" stroke-width="11"/>'+
- '<path d="M20 285L115 185L210 285M990 270L1080 170L1170 270" fill="#303946" stroke="#111923" stroke-width="12"/>'+
+ '<path d="M30 360V285L55 245H175L200 285V360Z M1000 350V270L1025 230H1135L1160 270V350Z" fill="#59616a" stroke="#111923" stroke-width="11"/>'+
+ '<path d="M20 285L55 225H175L210 285M990 270L1025 210H1135L1170 270" fill="#303946" stroke="#111923" stroke-width="12"/>'+
  '<path d="M80 345V300Q115 260 150 300V345Z M1045 335V285Q1080 245 1115 285V335Z" fill="#111923" stroke="#b0a895" stroke-width="6"/>'+
  '<!-- ornate balcony rails and projecting bay windows -->'+
  '<path d="M395 445H495V455H395ZM705 445H805V455H705Z" fill="#b0a58e"/>'+
