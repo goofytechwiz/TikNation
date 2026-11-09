@@ -686,8 +686,8 @@ function renderLivingTombstonesGift(gift,opts,overlay){
   ctx.save();
   // The pivot is fixed at the foot of the stone: rotation only, never screen-space travel.
   ctx.translate(st.x,st.baseY);ctx.rotate(rock);ctx.scale(st.s,st.s);
-  ctx.globalAlpha=.72;
-  ctx.fillStyle="#020504";ctx.beginPath();ctx.ellipse(0,2,ww*.72,8,0,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=.9;
+  ctx.fillStyle="#020302";ctx.beginPath();ctx.ellipse(0,3,ww*.82,10,0,0,Math.PI*2);ctx.fill();
   ctx.globalAlpha=1;
   ctx.beginPath();
   if(st.shape===0){ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh+19);ctx.quadraticCurveTo(-ww/2,-hh+2,-ww*.18,-hh);ctx.quadraticCurveTo(ww*.2,-hh-3,ww/2,-hh+18);ctx.lineTo(ww/2,0);}
@@ -698,13 +698,14 @@ function renderLivingTombstonesGift(gift,opts,overlay){
   ctx.closePath();
   const stone=ctx.createLinearGradient(-ww/2,-hh,ww/2,0);
   stone.addColorStop(0,st.tone>.5?"#252b29":"#1a211f");stone.addColorStop(.28,"#555c55");stone.addColorStop(.55,"#343b36");stone.addColorStop(1,"#111714");
-  ctx.fillStyle=stone;ctx.fill();
+  ctx.save();ctx.shadowColor="rgba(0,0,0,.85)";ctx.shadowBlur=12;ctx.shadowOffsetX=5;ctx.shadowOffsetY=5;ctx.fillStyle=stone;ctx.fill();ctx.restore();
   ctx.strokeStyle="rgba(157,165,151,.48)";ctx.lineWidth=1.1;ctx.stroke();
   // chipped edge and darker bevel
   ctx.strokeStyle="rgba(5,9,7,.82)";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-ww/2+3,-5);ctx.lineTo(-ww/2+3,-hh+20);ctx.lineTo(-ww*.2,-hh+5);ctx.stroke();
   ctx.strokeStyle="rgba(190,192,174,.17)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(ww/2-3,-8);ctx.lineTo(ww/2-3,-hh+20);ctx.stroke();
-  // weathering, lichen and age streaks
-  for(let k=0;k<7;k++){const px=-ww*.4+((k*37+st.shape*11)%70)/70*ww*.8,py=-hh*.82+((k*19+st.shape*7)%60)/60*hh*.66;ctx.fillStyle=k%2?"rgba(113,129,98,.16)":"rgba(3,8,6,.2)";ctx.beginPath();ctx.ellipse(px,py,2+(k%3),5+(k%4)*2,-.3,0,Math.PI*2);ctx.fill();}
+  // Pitted stone pores, rain streaks and irregular lichen patches
+  for(let k=0;k<24;k++){const px=-ww*.43+((k*29+st.shape*13)%83)/83*ww*.86,py=-hh*.88+((k*17+st.shape*9)%79)/79*hh*.76;ctx.fillStyle=k%3?"rgba(5,9,7,.22)":"rgba(157,165,137,.18)";ctx.beginPath();ctx.ellipse(px,py,.7+(k%3)*.55,1.4+(k%4),-.25,0,Math.PI*2);ctx.fill();}
+  for(let k=0;k<5;k++){const px=-ww*.38+((k*31+st.shape*7)%67)/67*ww*.76;ctx.strokeStyle="rgba(126,143,113,.2)";ctx.lineWidth=1.5+(k%2);ctx.beginPath();ctx.moveTo(px,-hh*.82);ctx.quadraticCurveTo(px-3,-hh*.48,px+2,-hh*.22);ctx.stroke();}
   ctx.strokeStyle="rgba(8,13,10,.9)";ctx.lineWidth=1.35;ctx.beginPath();ctx.moveTo(-ww*.1,-hh*.91);ctx.lineTo(-ww*.02,-hh*.72);ctx.lineTo(-ww*.16,-hh*.59);ctx.lineTo(-ww*.09,-hh*.43);ctx.stroke();
   // worn inscription panel and subtle carved lettering
   ctx.fillStyle="rgba(5,10,8,.28)";ctx.fillRect(-ww*.31,-hh*.69,ww*.62,hh*.27);
@@ -720,7 +721,10 @@ function renderLivingTombstonesGift(gift,opts,overlay){
   const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#070c13");sky.addColorStop(.5,"#172029");sky.addColorStop(1,"#080d0b");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
   const moon=ctx.createRadialGradient(w*.78,h*.19,2,w*.78,h*.19,h*.18);moon.addColorStop(0,"rgba(218,228,214,.48)");moon.addColorStop(.25,"rgba(154,174,161,.13)");moon.addColorStop(1,"transparent");ctx.fillStyle=moon;ctx.fillRect(0,0,w,h);
   tree(w*.08,h*.78,Math.max(.55,w/1000));tree(w*.92,h*.77,Math.max(.6,w/950));
-  ctx.fillStyle="#0b100e";ctx.beginPath();ctx.moveTo(0,h*.65);ctx.quadraticCurveTo(w*.5,h*.54,w,h*.66);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
+  const ground=ctx.createLinearGradient(0,h*.55,0,h);ground.addColorStop(0,"#172019");ground.addColorStop(.22,"#0c130f");ground.addColorStop(1,"#050907");ctx.fillStyle=ground;ctx.beginPath();ctx.moveTo(0,h*.65);ctx.quadraticCurveTo(w*.5,h*.54,w,h*.66);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
+  // Uneven cemetery earth, scattered stones and sparse wet grass
+  for(let i=0;i<150;i++){const x=(i*83.17%w),y=h*(.66+(i*37.13%33)/100);ctx.fillStyle=i%3?"rgba(92,108,85,.13)":"rgba(2,5,3,.3)";ctx.beginPath();ctx.ellipse(x,y,1+(i%4),.6+(i%3)*.5,(i%7)*.2,0,Math.PI*2);ctx.fill();}
+  for(let i=0;i<72;i++){const x=(i*47.73%w),y=h*(.67+(i*19.31%31)/100),len=4+(i%7)*1.6;ctx.strokeStyle=i%2?"rgba(92,117,82,.35)":"rgba(137,145,107,.22)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+(i%2?2:-2),y-len);ctx.stroke();}
   // distant graves first, then larger foreground stones; all keep their base coordinates.
   stones.slice().sort((a,b)=>a.baseY-b.baseY).forEach(st=>grave(st,t));
   mist.forEach(m=>{m.x-=m.speed*dt;if(m.x<-m.r)m.x=w+m.r;const fog=ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,m.r);fog.addColorStop(0,"rgba(181,196,185,"+m.a+")");fog.addColorStop(1,"transparent");ctx.fillStyle=fog;ctx.fillRect(m.x-m.r,m.y-m.r,m.r*2,m.r*2);});
