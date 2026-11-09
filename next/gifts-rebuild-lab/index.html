@@ -17,7 +17,7 @@ const playButton=document.getElementById("play");
 playButton.disabled=true;
 document.getElementById("status").textContent="LOADING TIKNATION GIFT ENGINE…";
 const engineScript=document.createElement("script");
-engineScript.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=sync-audio-animation-end-20261108d";
+engineScript.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=cinematic-stone-ground-texture-20261108f";
 engineScript.onload=()=>{if(window.TikNationGiftEngine){playButton.disabled=false;document.getElementById("status").textContent="READY · TAP PLAY TO START THE GIFT"}else{document.getElementById("status").textContent="ENGINE INIT ERROR · "+(window.__tikNationGiftLoadError||"NO WINDOW ERROR CAPTURED")}};
 engineScript.onerror=()=>{document.getElementById("status").textContent="ENGINE SCRIPT FAILED TO LOAD · "+engineScript.src};
 document.head.appendChild(engineScript);
