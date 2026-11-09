@@ -8,35 +8,32 @@
 <section class="preview"><div><strong>THE FINAL RIDE IS HERE</strong><small>NO ONE RIDES ALONE</small></div></section>
 <div class="controls"><button class="primary" id="play" type="button" disabled>✦ PLAY THE HAUNTED HEARSE</button><button id="soundcheck" type="button">TEST SOUND</button><button id="stop" type="button">STOP PREVIEW</button></div>
 <div class="status" id="status" role="status" aria-live="polite">LOADING GIFT ENGINE…</div>
-<p class="fine">Isolated preview only. This does not send a live gift, charge coins, or change the live gift catalog. Use TEST SOUND first to check whether this browser can play audio, then tap Play for the hearse effects.</p></main>
+<p class="fine">Isolated preview only. This does not send a live gift, charge coins, or change the live gift catalog. Sound uses CC0 audio clips from SFXMint, with engine start and idle, a distant horn, and heavy door movement.</p></main>
 <script>
-const status=document.getElementById("status"),play=document.getElementById("play"),stop=document.getElementById("stop"),soundcheck=document.getElementById("soundcheck");let audio=null,oscillators=[],noiseSource=null,stopped=false;
-function stopSound(){stopped=true;oscillators.forEach(o=>{try{o.stop()}catch(e){}});oscillators=[];if(noiseSource){try{noiseSource.stop()}catch(e){}noiseSource=null;}if(audio&&audio.state!=="closed"){audio.close().catch(()=>{});}audio=null;}
+const status=document.getElementById("status"),play=document.getElementById("play"),stop=document.getElementById("stop"),soundcheck=document.getElementById("soundcheck");const soundFiles={
+ start:"https://sfxmint.com/dl/truck-08.mp3",
+ engine:"https://sfxmint.com/dl/truck-02.mp3",
+ horn:"https://sfxmint.com/dl/ship-horn-05.mp3",
+ creak:"https://sfxmint.com/dl/door-open-44.mp3",
+ slam:"https://sfxmint.com/dl/car-door-05.mp3"
+};
+const sounds={},timers=[];let stopped=true;
+Object.entries(soundFiles).forEach(([key,src])=>{const a=new Audio(src);a.preload="auto";a.volume=key==="engine"?.68:.9;sounds[key]=a;});
+function later(fn,ms){const id=window.setTimeout(()=>{if(!stopped)fn();},ms);timers.push(id);}
+function playClip(key){const a=sounds[key];if(!a)return;a.currentTime=0;a.play().catch(()=>{status.textContent="AUDIO NEEDS ANOTHER TAP · PRESS PLAY AGAIN";});}
+function stopSound(){stopped=true;timers.forEach(clearTimeout);timers.length=0;Object.values(sounds).forEach(a=>{a.pause();a.currentTime=0;});}
 function startSound(){
  stopSound();stopped=false;
- const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent="THIS BROWSER DOES NOT SUPPORT AUDIO";return;}
- try{
-  audio=new AC();const c=audio,now=c.currentTime;
-  const master=c.createGain();master.gain.setValueAtTime(.9,now);master.connect(c.destination);
-  // Make the engine audible on small phone speakers: low motor plus clear midrange harmonics.
-  const motor=c.createOscillator(),motorGain=c.createGain(),motorFilter=c.createBiquadFilter();
-  motor.type="sawtooth";motor.frequency.setValueAtTime(88,now);motor.frequency.linearRampToValueAtTime(132,now+4);motor.frequency.linearRampToValueAtTime(96,now+13);
-  motorFilter.type="lowpass";motorFilter.frequency.value=620;motorGain.gain.value=.16;motor.connect(motorFilter);motorFilter.connect(motorGain);motorGain.connect(master);motor.start();oscillators.push(motor);
-  const harmonic=c.createOscillator(),harmonicGain=c.createGain();harmonic.type="triangle";harmonic.frequency.setValueAtTime(176,now);harmonic.frequency.linearRampToValueAtTime(264,now+4);harmonic.frequency.linearRampToValueAtTime(192,now+13);harmonicGain.gain.value=.11;harmonic.connect(harmonicGain);harmonicGain.connect(master);harmonic.start();oscillators.push(harmonic);
-  // Rolling road and night wind with audible midrange hiss.
-  const nlen=c.sampleRate*3,buf=c.createBuffer(1,nlen,c.sampleRate),d=buf.getChannelData(0);for(let i=0;i<nlen;i++)d[i]=Math.random()*2-1;
-  const wind=c.createBufferSource(),wf=c.createBiquadFilter(),wg=c.createGain();wind.buffer=buf;wind.loop=true;wf.type="bandpass";wf.frequency.value=760;wf.Q.value=.55;wg.gain.value=.12;wind.connect(wf);wf.connect(wg);wg.connect(master);wind.start();noiseSource=wind;
-  // Two clear, mournful funeral-horn notes.
-  const horn=c.createOscillator(),horn2=c.createOscillator(),hg=c.createGain();horn.type="sawtooth";horn2.type="triangle";horn.frequency.setValueAtTime(220,now+2);horn2.frequency.setValueAtTime(330,now+2);horn.frequency.setValueAtTime(165,now+3.15);horn2.frequency.setValueAtTime(247,now+3.15);
-  hg.gain.setValueAtTime(.0001,now);hg.gain.setValueAtTime(.12,now+2);hg.gain.setValueAtTime(.0001,now+3.05);hg.gain.setValueAtTime(.13,now+3.15);hg.gain.setValueAtTime(.0001,now+5.1);horn.connect(hg);horn2.connect(hg);hg.connect(master);horn.start();horn2.start();horn.stop(now+5.2);horn2.stop(now+5.2);oscillators.push(horn,horn2);
-  // Metal rear-door groan with a scrape that cuts through phone speakers.
-  const creak=c.createOscillator(),cg=c.createGain(),cf=c.createBiquadFilter();creak.type="sawtooth";creak.frequency.setValueAtTime(320,now+14);creak.frequency.linearRampToValueAtTime(185,now+17);cf.type="bandpass";cf.frequency.value=680;cf.Q.value=1.1;cg.gain.setValueAtTime(.0001,now);cg.gain.setValueAtTime(.16,now+14);cg.gain.setValueAtTime(.0001,now+17.3);creak.connect(cf);cf.connect(cg);cg.connect(master);creak.start();creak.stop(now+17.4);oscillators.push(creak);
-  // Heavy latch impact with a short noisy metallic rattle.
-  const thud=c.createOscillator(),tg=c.createGain();thud.type="sine";thud.frequency.setValueAtTime(105,now+17.5);thud.frequency.exponentialRampToValueAtTime(48,now+18.1);tg.gain.setValueAtTime(.0001,now);tg.gain.setValueAtTime(.32,now+17.5);tg.gain.exponentialRampToValueAtTime(.0001,now+18.2);thud.connect(tg);tg.connect(master);thud.start();thud.stop(now+18.25);oscillators.push(thud);
-  c.resume().then(()=>{if(audio===c)status.textContent="SOUND ON · ENGINE · FUNERAL HORN · WIND · METAL DOORS · HEAVY LATCH";}).catch(e=>{status.textContent="AUDIO BLOCKED · TAP PLAY AGAIN";});
-  // Keep the sound tied to the 30-second gift preview.
-  window.setTimeout(()=>{if(audio===c)stopSound();},30000);
- }catch(e){status.textContent="AUDIO ERROR · "+e.message;}
+ // Real recorded-style CC0 sound clips replace the earlier synthetic oscillator effects.
+ playClip("start");
+ sounds.start.onended=()=>{if(!stopped){sounds.engine.loop=true;playClip("engine");}};
+ // Safety fallback if the startup clip is interrupted or unavailable.
+ later(()=>{if(sounds.engine.paused) {sounds.engine.loop=true;playClip("engine");}},4200);
+ later(()=>playClip("horn"),5600);
+ later(()=>playClip("creak"),14500);
+ later(()=>playClip("slam"),17000);
+ later(()=>stopSound(),30000);
+ status.textContent="REALISTIC AUDIO · DIESEL START · IDLE · DISTANT HORN · HEARSE DOORS";
 }
 const engine=document.createElement("script");engine.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=haunted-hearse-preview-20261109";engine.onload=()=>{if(window.TikNationGiftEngine){play.disabled=false;status.textContent="READY · TAP PLAY"}else status.textContent="ENGINE DID NOT INITIALIZE"};engine.onerror=()=>status.textContent="GIFT ENGINE FAILED TO LOAD";document.head.appendChild(engine);
 soundcheck.addEventListener("click",async()=>{try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent="NO WEB AUDIO SUPPORT";return;}const c=new AC();await c.resume();const o=c.createOscillator(),g=c.createGain();o.type="square";o.frequency.setValueAtTime(740,c.currentTime);o.frequency.setValueAtTime(520,c.currentTime+.22);g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.65,c.currentTime+.025);g.gain.setValueAtTime(.65,c.currentTime+.42);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.55);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.56);status.textContent="SOUND CHECK PLAYING · YOU SHOULD HEAR TWO CLEAR TONES";o.onended=()=>c.close();}catch(e){status.textContent="SOUND CHECK FAILED · "+e.message;}});
