@@ -34,9 +34,9 @@ let lidShift=progress*260;
 poly([[230-lidShift,tombY-82],[670-lidShift,tombY-82],[715-lidShift,tombY+4],[185-lidShift,tombY+4]],'#b48a4b','#f0ca77');poly([[245-lidShift,tombY-70],[655-lidShift,tombY-70],[686-lidShift,tombY-7],[214-lidShift,tombY-7]],'#593916','#e5bd6a');for(let i=0;i<8;i++)rect(250-lidShift+i*50,tombY-61,3,48,'#d8ad5c');
 poly([[245,tombY-75],[655,tombY-75],[685,tombY-8],[215,tombY-8]],'#6b4b27','#c69b57');
 // cinematic full-size mummy emerging from the sarcophagus
-let rise=progress*105, mx=450,my=tombY-95-rise;
+let rise=progress*105, mx=450,my=tombY-330-rise;
 // Enlarge the whole creature around its chest so it dominates the tomb scene
-ctx.save();ctx.translate(mx,my+48);ctx.scale(1.24,1.24);ctx.translate(-mx,-(my+48));
+ctx.save();ctx.translate(mx,my+48);ctx.scale(2.0,2.0);ctx.translate(-mx,-(my+48));
 ellipse(mx,my+225,125,26,'#100904bb');
 // dangling wrapped legs and broad feet, visible below the torso
 for(let side of [-1,1]){
@@ -74,7 +74,7 @@ for(let i=0;i<6;i++){let x=mx-46+i*18;ctx.strokeStyle=i%2?'#e2d1ad':'#786347';ct
 poly([[mx-47,my-1],[mx-30,my+24],[mx+30,my+24],[mx+47,my-1],[mx+32,my+6],[mx,my+17],[mx-32,my+6]],'#d6a63e','#f4d78b');
 ctx.restore(); // end enlarged mummy character
 // medallion hovering forward
-let medX=mx+108,medY=my+55-Math.sin(t*1.6)*8-progress*65;glow(medX,medY,105,'#00e9cf66');ellipse(medX,medY,34,39,'#c99b3e');ellipse(medX,medY,27,32,'#62451b');ellipse(medX,medY,18,24,'#14cbb4');ellipse(medX-6,medY-7,5,9,'#b4fff0');for(let i=0;i<12;i++){let a=i*Math.PI/6;ctx.strokeStyle='#f2ce73';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(medX+Math.cos(a)*37,medY+Math.sin(a)*42);ctx.lineTo(medX+Math.cos(a)*48,medY+Math.sin(a)*53);ctx.stroke()}
+let medX=mx+175,medY=my+55-Math.sin(t*1.6)*8-progress*65;glow(medX,medY,105,'#00e9cf66');ellipse(medX,medY,34,39,'#c99b3e');ellipse(medX,medY,27,32,'#62451b');ellipse(medX,medY,18,24,'#14cbb4');ellipse(medX-6,medY-7,5,9,'#b4fff0');for(let i=0;i<12;i++){let a=i*Math.PI/6;ctx.strokeStyle='#f2ce73';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(medX+Math.cos(a)*37,medY+Math.sin(a)*42);ctx.lineTo(medX+Math.cos(a)*48,medY+Math.sin(a)*53);ctx.stroke()}
 ctx.strokeStyle='#d4ad5d';ctx.lineWidth=4;ctx.beginPath();ctx.arc(medX,medY-44,48,Math.PI,Math.PI*2);ctx.stroke();
 // foreground sand ripples and drifting dust
 for(let i=0;i<40;i++){let x=(i*83+t*9)%900,y=(i*47+Math.sin(t+i)*8+floorY*.78);ellipse(x,y,1.5+(i%3),1.5,'#e7c58b88')}
