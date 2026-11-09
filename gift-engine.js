@@ -873,7 +873,7 @@ function renderHauntedMansionGift(gift,opts,overlay){
  "#tiknation-gift-engine .hm-world{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#080e1b,#182333 48%,#080d12 78%,#020406);isolation:isolate}",
  "#tiknation-gift-engine .hm-moon{position:absolute;right:14%;top:9%;width:clamp(58px,9vw,104px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 36% 32%,#fff4d1,#e6c98b 58%,#9b805a 86%);box-shadow:0 0 34px 13px #f2d9a955,0 0 150px 65px #c7d8ef22}",
  "#tiknation-gift-engine .hm-cloud{position:absolute;inset:-10% -25%;background:radial-gradient(ellipse at 24% 26%,#66708066,transparent 24%),radial-gradient(ellipse at 65% 18%,#5b687966,transparent 26%);filter:blur(18px);animation:hm-cloud 18s ease-in-out infinite alternate}",
- "#tiknation-gift-engine .hm-scene{position:absolute;inset:0;width:100%;height:100%;transform:scale(.84);transform-origin:50% 50%}",
+ "#tiknation-gift-engine .hm-scene{position:absolute;inset:0;width:100%;height:100%;transform:scale(.70);transform-origin:50% 50%}",
  "#tiknation-gift-engine .hm-house{transform-origin:50% 100%;animation:hm-arrive 1.6s cubic-bezier(.18,.72,.22,1) both}",
  "#tiknation-gift-engine .hm-window{fill:#1a1a17;stroke:#7c7665;stroke-width:5}",
  "#tiknation-gift-engine .hm-light{fill:#ffc968;opacity:.12;filter:url(#hm-glow);animation:hm-flicker 3.8s steps(1,end) infinite}",
@@ -892,12 +892,12 @@ function renderHauntedMansionGift(gift,opts,overlay){
  "@keyframes hm-flicker{0%,17%,19%,45%,47%,100%{opacity:.12}18%,46%{opacity:.95}70%{opacity:.45}}@keyframes hm-gate-left{to{transform:perspective(500px) rotateY(-68deg)}}@keyframes hm-gate-right{to{transform:perspective(500px) rotateY(68deg)}}",
  "@keyframes hm-door-left{to{transform:perspective(500px) rotateY(-76deg)}}@keyframes hm-door-right{to{transform:perspective(500px) rotateY(76deg)}}@keyframes hm-shadow{to{opacity:.92}}",
  "@keyframes hm-lightning{0%,5%,9%,100%{opacity:0}6%,7%{opacity:1}8%{opacity:.25}}@keyframes hm-flash{0%,5%,9%,100%{opacity:0}6%{opacity:.22}7%{opacity:0}8%{opacity:.1}}",
- "@keyframes hm-fog{to{transform:translateX(8%) scale(1.08);opacity:.55}}@media(max-width:650px){#tiknation-gift-engine .hm-scene{width:100%;left:0;transform:scale(.76)}#tiknation-gift-engine .hm-title{letter-spacing:.08em}}",
+ "@keyframes hm-fog{to{transform:translateX(8%) scale(1.08);opacity:.55}}@media(max-width:650px){#tiknation-gift-engine .hm-scene{width:100%;left:0;transform:scale(.60)}#tiknation-gift-engine .hm-title{letter-spacing:.08em}}",
  "@media(prefers-reduced-motion:reduce){#tiknation-gift-engine .hm-house,#tiknation-gift-engine .hm-gate-left,#tiknation-gift-engine .hm-gate-right,#tiknation-gift-engine .hm-door-left,#tiknation-gift-engine .hm-door-right,#tiknation-gift-engine .hm-shadow-person{animation:none!important;opacity:1!important;transform:none!important}}"
  ].join("");
  const world=document.createElement("div");world.className="hm-world";
  world.innerHTML='<div class="hm-moon"></div><div class="hm-cloud"></div>'+
- '<svg class="hm-scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A sprawling haunted Victorian mansion with broad asymmetrical wings, dormers, chimneys, bay windows and a grand entrance">'+
+ '<svg class="hm-scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A sprawling haunted Victorian mansion with broad asymmetrical wings, dormers, chimneys, bay windows and a grand entrance">'+
  '<defs>'+
  '<linearGradient id="hm-stone" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#777b80"/><stop offset=".42" stop-color="#454c55"/><stop offset="1" stop-color="#171d25"/></linearGradient>'+
  '<linearGradient id="hm-roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#59616b"/><stop offset="1" stop-color="#111821"/></linearGradient>'+
@@ -1020,7 +1020,7 @@ function renderGhostShipGift(gift,opts,overlay){
  const world=document.createElement("div");world.className="fd5-world";
  world.innerHTML=`
  <div class="fd5-moon"></div>
- <svg class="fd5-scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The Flying Dutchman, a vast cursed Dutch galleon with a towering stern, four masts, shredded square sails and a barnacled sea-creature hull">
+ <svg class="fd5-scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet" role="img" aria-label="The Flying Dutchman, a vast cursed Dutch galleon with a towering stern, four masts, shredded square sails and a barnacled sea-creature hull">
  <defs>
   <linearGradient id="fd5-oak" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#a6a184"/><stop offset=".18" stop-color="#53645a"/><stop offset=".5" stop-color="#263b35"/><stop offset="1" stop-color="#070e10"/></linearGradient>
   <linearGradient id="fd5-side" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a5a184"/><stop offset=".2" stop-color="#586958"/><stop offset=".55" stop-color="#243832"/><stop offset="1" stop-color="#071012"/></linearGradient>
