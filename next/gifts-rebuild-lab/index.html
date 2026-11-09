@@ -23,11 +23,35 @@ engineScript.onerror=()=>{document.getElementById("status").textContent="ENGINE 
 document.head.appendChild(engineScript);
 </script>
 <script>
-let tombstoneAudio=[],tombstoneTimers=[];
+let tombstoneAudio=[],tombstoneTimers=[],fallbackAudio=null,fallbackNodes=[];
 function stopAudio(){
  tombstoneTimers.forEach(clearTimeout);tombstoneTimers=[];
  tombstoneAudio.forEach(a=>{try{a.pause();a.currentTime=0;}catch(e){}});
  tombstoneAudio=[];
+ fallbackNodes.forEach(n=>{try{n.stop();}catch(e){}});
+ fallbackNodes=[];
+ if(fallbackAudio&&fallbackAudio.state!=="closed"){try{fallbackAudio.close();}catch(e){}}
+ fallbackAudio=null;
+}
+function playFallbackCemeterySound(){
+ const AC=window.AudioContext||window.webkitAudioContext;
+ if(!AC){document.getElementById("status").textContent="SOUND UNAVAILABLE · THIS BROWSER BLOCKED AUDIO";return;}
+ try{
+  fallbackAudio=new AC();const ctx=fallbackAudio;
+  const play=()=>{
+   if(ctx.state!=="running")return;
+   const now=ctx.currentTime;
+   const len=Math.floor(ctx.sampleRate*6.5),buf=ctx.createBuffer(1,len,ctx.sampleRate),data=buf.getChannelData(0);
+   for(let i=0;i<len;i++)data[i]=(Math.random()*2-1)*Math.min(1,i/(ctx.sampleRate*.3))*Math.max(0,1-i/len);
+   const wind=ctx.createBufferSource(),wf=ctx.createBiquadFilter(),wg=ctx.createGain();wind.buffer=buf;wf.type="lowpass";wf.frequency.value=420;wg.gain.value=.22;wind.connect(wf);wf.connect(wg);wg.connect(ctx.destination);wind.start(now);wind.stop(now+6.4);fallbackNodes.push(wind);
+   [0.15,3.15].forEach((d,i)=>{const o=ctx.createOscillator(),f=ctx.createBiquadFilter(),g=ctx.createGain(),lfo=ctx.createOscillator(),lg=ctx.createGain();o.type="sawtooth";o.frequency.setValueAtTime(i?62:78,now+d);o.frequency.exponentialRampToValueAtTime(i?34:42,now+d+2);f.type="lowpass";f.frequency.value=145;g.gain.setValueAtTime(.0001,now+d);g.gain.linearRampToValueAtTime(.13,now+d+.3);g.gain.exponentialRampToValueAtTime(.0001,now+d+2.1);lfo.frequency.value=4.2;lg.gain.value=7;lfo.connect(lg);lg.connect(o.frequency);o.connect(f);f.connect(g);g.connect(ctx.destination);o.start(now+d);o.stop(now+d+2.2);lfo.start(now+d);lfo.stop(now+d+2.2);fallbackNodes.push(o,lfo);});
+   [1.05,1.45,1.85].forEach((d)=>{const src=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();src.buffer=buf;f.type="bandpass";f.frequency.value=330;g.gain.setValueAtTime(.0001,now+d);g.gain.linearRampToValueAtTime(.18,now+d+.05);g.gain.exponentialRampToValueAtTime(.0001,now+d+.55);src.connect(f);f.connect(g);g.connect(ctx.destination);src.start(now+d);src.stop(now+d+.6);fallbackNodes.push(src);});
+   const hit=ctx.createOscillator(),hg=ctx.createGain();hit.type="sine";hit.frequency.setValueAtTime(90,now+4.4);hit.frequency.exponentialRampToValueAtTime(28,now+5.1);hg.gain.setValueAtTime(.25,now+4.4);hg.gain.exponentialRampToValueAtTime(.0001,now+5.2);hit.connect(hg);hg.connect(ctx.destination);hit.start(now+4.4);hit.stop(now+5.25);fallbackNodes.push(hit);
+   document.getElementById("status").textContent="CEMETERY WIND · ZOMBIE GROANS · STONE GRIND · IMPACT PLAYING";
+   tombstoneTimers.push(setTimeout(()=>{fallbackNodes.forEach(n=>{try{n.stop();}catch(e){}});fallbackNodes=[];},6600));
+  };
+  if(ctx.state==="running")play();else ctx.resume().then(play).catch(()=>{document.getElementById("status").textContent="SOUND BLOCKED · TAP PLAY AGAIN";});
+ }catch(e){document.getElementById("status").textContent="SOUND ERROR · "+e.message;}
 }
 function playCemeterySound(){
  stopAudio();
@@ -37,17 +61,17 @@ function playCemeterySound(){
  tombstoneAudio=[wind,zombie,stone];
  wind.loop=false;wind.volume=.3;zombie.volume=1;stone.volume=.78;
  tombstoneAudio.forEach(a=>{a.preload="auto";});
- zombie.addEventListener("error",()=>{document.getElementById("status").textContent="ZOMBIE RECORDING FAILED TO LOAD";},{once:true});
- stone.addEventListener("error",()=>{document.getElementById("status").textContent="STONE SOUND FAILED TO LOAD";},{once:true});
+ let failed=false;
+ const fallback=()=>{if(failed)return;failed=true;tombstoneAudio.forEach(a=>{try{a.pause();a.currentTime=0;}catch(e){}});playFallbackCemeterySound();};
+ [wind,zombie,stone].forEach(a=>a.addEventListener("error",fallback,{once:true}));
  const windStart=wind.play(),zombieStart=zombie.play();
  Promise.allSettled([windStart,zombieStart]).then(results=>{
   if(!tombstoneAudio.includes(zombie))return;
-  if(results[1].status==="rejected")document.getElementById("status").textContent="ZOMBIE AUDIO BLOCKED · "+(results[1].reason?.message||"TRY PLAY AGAIN");
-  else if(results[0].status==="rejected")document.getElementById("status").textContent="CEMETERY WIND BLOCKED · ZOMBIE GROAN PLAYING";
+  if(results.some(r=>r.status==="rejected"))fallback();
   else document.getElementById("status").textContent="RECORDED CEMETERY WIND + ZOMBIE GROAN PLAYING";
  });
- tombstoneTimers.push(setTimeout(()=>{if(tombstoneAudio.includes(stone))stone.play().catch(err=>{document.getElementById("status").textContent="STONE SOUND BLOCKED · "+(err.message||"");});},1550));
- tombstoneTimers.push(setTimeout(stopAudio,6900));
+ tombstoneTimers.push(setTimeout(()=>{if(tombstoneAudio.includes(stone))stone.play().catch(fallback);},1550));
+ tombstoneTimers.push(setTimeout(()=>{if(tombstoneAudio.length)stopAudio();},6900));
 }
 document.getElementById("play").addEventListener("click",()=>{stopAudio();if(!window.TikNationGiftEngine){document.getElementById("status").textContent="GIFT ENGINE DID NOT LOAD · PLEASE REFRESH";return;}try{playCemeterySound();const result=window.TikNationGiftEngine.show({name:"The Night of the Living Tombstones",style:"livingtombstones",message:"The dead will not stay buried."},{meta:"TIKNATION EPIC GIFT · PREVIEW ONLY",duration:10500});document.getElementById("status").textContent=result?"THE NIGHT OF THE LIVING TOMBSTONES IS PLAYING · PREVIEW ONLY":"GIFT ENGINE COULD NOT START · REFRESH AND TRY AGAIN";}catch(error){console.error(error);document.getElementById("status").textContent="PLAYBACK ERROR · "+(error.message||"PLEASE REFRESH");}});
 document.getElementById("stop").addEventListener("click",()=>{stopAudio();document.getElementById("status").textContent="PREVIEW AUDIO STOPPED"});
