@@ -17,7 +17,7 @@ function startSound(){
  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
  try{
   audio=new AC();const c=audio,now=c.currentTime;
-  const master=c.createGain();master.gain.value=.72;master.connect(c.destination);
+  const master=c.createGain();master.gain.value=1;master.connect(c.destination);
   // Deep, uneven diesel engine rumble with a slow rev as the hearse approaches.
   const motor=c.createOscillator(),motor2=c.createOscillator(),mg=c.createGain(),mf=c.createBiquadFilter();
   motor.type="sawtooth";motor.frequency.setValueAtTime(43,now);motor.frequency.linearRampToValueAtTime(69,now+5);motor.frequency.linearRampToValueAtTime(51,now+13);
@@ -35,6 +35,6 @@ function startSound(){
  }catch(e){status.textContent="AUDIO ERROR · "+e.message;}
 }
 const engine=document.createElement("script");engine.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=haunted-hearse-preview-20261109";engine.onload=()=>{if(window.TikNationGiftEngine){play.disabled=false;status.textContent="READY · TAP PLAY"}else status.textContent="ENGINE DID NOT INITIALIZE"};engine.onerror=()=>status.textContent="GIFT ENGINE FAILED TO LOAD";document.head.appendChild(engine);
-play.addEventListener("click",()=>{if(!window.TikNationGiftEngine){status.textContent="ENGINE NOT READY";return;}try{const ok=window.TikNationGiftEngine.show({name:"The Haunted Hearse",style:"hauntedhearse"},{duration:30000,onSound:startSound});if(ok)status.textContent="THE HAUNTED HEARSE IS ARRIVING · PREVIEW ONLY";else status.textContent="GIFT COULD NOT START";}catch(e){status.textContent="PREVIEW ERROR · "+e.message;}});
+play.addEventListener("click",()=>{if(!window.TikNationGiftEngine){status.textContent="ENGINE NOT READY";return;}startSound();try{const ok=window.TikNationGiftEngine.show({name:"The Haunted Hearse",style:"hauntedhearse"},{duration:30000});if(ok)status.textContent="THE HAUNTED HEARSE IS ARRIVING · PREVIEW ONLY";else status.textContent="GIFT COULD NOT START";}catch(e){status.textContent="PREVIEW ERROR · "+e.message;}});
 stop.addEventListener("click",()=>{stopSound();status.textContent="PREVIEW AUDIO STOPPED";});
 </script></body></html>
