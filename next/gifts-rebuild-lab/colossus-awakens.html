@@ -1,93 +1,39 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>TikNation Gift Lab — The Colossus Awakens</title>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Colossus Awakens · 3D Model Preview</title>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.3.1/model-viewer.min.js"></script>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#070b13;color:#eaf5ff;font-family:system-ui,Arial}#scene{position:fixed;inset:0}canvas{display:block;width:100%;height:100%}.hud{position:fixed;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;padding:20px 18px env(safe-area-inset-bottom)}.top{text-align:center;text-shadow:0 2px 18px #000}.eyebrow{font-size:10px;letter-spacing:.38em;color:#9bc8d8}.title{font-size:clamp(24px,6vw,46px);font-weight:900;letter-spacing:.1em;margin:5px 0;background:linear-gradient(#fff,#a7c9d6 55%,#638b9d);color:transparent;background-clip:text}.sub{font-size:11px;letter-spacing:.2em;color:#b0c4ce}.bottom{display:flex;justify-content:center;gap:10px;pointer-events:auto;flex-wrap:wrap}.btn{border:1px solid #8cc6d5a0;background:#081724d9;color:#eafaff;padding:13px 19px;border-radius:30px;font-weight:800;letter-spacing:.12em;font-size:11px;backdrop-filter:blur(8px)}.btn.primary{background:linear-gradient(120deg,#24596b,#142e48);border-color:#b1e9f5}.hint{text-align:center;font-size:10px;color:#9eb3bf;margin-top:9px;letter-spacing:.12em}.status{position:fixed;left:12px;bottom:92px;font-size:9px;color:#9eb8c4;letter-spacing:.16em;pointer-events:none}
-</style></head><body><div id="scene"></div><div class="hud"><div class="top"><div class="eyebrow">AN ANCIENT POWER STIRS</div><div class="title">THE COLOSSUS AWAKENS</div><div class="sub">STONE REMEMBERS. THE EARTH TREMBLES.</div></div><div><div class="bottom"><button class="btn primary" id="awaken">AWAKEN THE COLOSSUS</button><button class="btn" id="sound">SOUND: OFF</button></div><div class="hint">DRAG TO LOOK AROUND · TAP AWAKEN TO BEGIN</div></div></div><div class="status" id="status">DORMANT · RUINS OF THE FIRST KINGDOM</div>
-<script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-const root=document.querySelector('#scene'), scene=new THREE.Scene();scene.background=new THREE.Color(0x080e18);scene.fog=new THREE.FogExp2(0x101b27,.018);
-const camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,180);camera.position.set(0,5.4,19);
-const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;root.appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0x9bbbd0,0x17121a,1.35));const moon=new THREE.DirectionalLight(0xa8d8ee,2.6);moon.position.set(-8,14,7);moon.castShadow=true;moon.shadow.mapSize.set(2048,2048);scene.add(moon);const ember=new THREE.PointLight(0xff8b45,0,13);ember.position.set(0,2,3);scene.add(ember);
-// Procedural weathered granite: layered mineral grain, pits and subtle natural variation
-const stoneCanvas=document.createElement('canvas');stoneCanvas.width=512;stoneCanvas.height=512;const sctx=stoneCanvas.getContext('2d');sctx.fillStyle='#777b79';sctx.fillRect(0,0,512,512);for(let i=0;i<52000;i++){const x=Math.random()*512,y=Math.random()*512,v=65+Math.random()*125;sctx.fillStyle='rgba('+v+','+(v+Math.random()*7)+','+(v+Math.random()*10)+','+(Math.random()*.18)+')';sctx.fillRect(x,y,Math.random()*2.4+.3,Math.random()*2.4+.3)}for(let i=0;i<170;i++){const x=Math.random()*512,y=Math.random()*512,r=Math.random()*5+.5;sctx.fillStyle='rgba(20,25,28,'+(Math.random()*.18)+')';sctx.beginPath();sctx.ellipse(x,y,r,r*.45,Math.random()*3,0,Math.PI*2);sctx.fill()}const graniteMap=new THREE.CanvasTexture(stoneCanvas);graniteMap.wrapS=graniteMap.wrapT=THREE.RepeatWrapping;graniteMap.repeat.set(2,2);graniteMap.colorSpace=THREE.SRGBColorSpace;
-const stone=new THREE.MeshStandardMaterial({color:0xb2b6b3,map:graniteMap,roughness:1}),edge=new THREE.MeshStandardMaterial({color:0x454d51,map:graniteMap,roughness:1}),rune=new THREE.MeshStandardMaterial({color:0x72dfff,emissive:0x168bbd,emissiveIntensity:0,roughness:.3}),groundMat=new THREE.MeshStandardMaterial({color:0x20272c,roughness:1});
-const ground=new THREE.Mesh(new THREE.PlaneGeometry(100,100),groundMat);ground.rotation.x=-Math.PI/2;ground.position.y=-.1;ground.receiveShadow=true;scene.add(ground);
-function box(parent,w,h,d,mat,x,y,z,rx=0,ry=0,rz=0){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.rotation.set(rx,ry,rz);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
-function rock(parent,r,x,y,z,sx=1,sy=1,sz=1){const m=new THREE.Mesh(new THREE.DodecahedronGeometry(r,1),stone);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.rotation.set(Math.random(),Math.random(),Math.random());m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
-// Broken cathedral gate and pillars
-for(let side of [-1,1]){box(scene,1.2,9,1.3,edge,side*8,4.5,-2);for(let y=1;y<9;y+=1.5)box(scene,1.45,.25,1.5,stone,side*8,y,-2);box(scene,4,.8,1.2,edge,side*6,9,-2,0,0,side*.12)}
-for(let i=0;i<9;i++){let p=new THREE.Mesh(new THREE.CylinderGeometry(.13,.2,Math.random()*4+2,6),edge);p.position.set((Math.random()-.5)*18,1,(Math.random()-.5)*8-4);p.rotation.z=(Math.random()-.5)*.8;p.castShadow=true;scene.add(p)}
-// Sculpted titan: continuous tapered anatomy, no detached stones or protruding chunks
-const titan=new THREE.Group();scene.add(titan);titan.position.set(0,0,-1);
-const body=new THREE.Group();titan.add(body);
-function sculpt(rx,ry,rz,x,y,z,mat=stone){
- const g=new THREE.SphereGeometry(1,40,32);
- const a=g.attributes.position;
- for(let i=0;i<a.count;i++){
-  const px=a.getX(i),py=a.getY(i),pz=a.getZ(i);
-  const n=1+.012*Math.sin(px*19+py*13)*Math.cos(pz*17-py*8);
-  a.setXYZ(i,px*n,py*n,pz*n);
- }
- g.computeVertexNormals();
- const m=new THREE.Mesh(g,mat);m.position.set(x,y,z);m.scale.set(rx,ry,rz);m.castShadow=true;m.receiveShadow=true;body.add(m);return m;
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080d15;color:#edf7ff;font-family:system-ui,Arial}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 50% 45%,#263544 0,#111c29 38%,#05080e 78%);z-index:0}
+.ruin{position:fixed;inset:auto 0 0;height:36vh;z-index:0;opacity:.8;background:linear-gradient(transparent,#05070b 70%),repeating-linear-gradient(90deg,transparent 0 11%,#111923 11.2% 12%,transparent 12.3% 22%);clip-path:polygon(0 20%,8% 20%,8% 0,13% 0,13% 32%,22% 32%,22% 9%,28% 9%,28% 40%,39% 40%,39% 12%,44% 12%,44% 38%,55% 38%,55% 0,61% 0,61% 24%,72% 24%,72% 8%,78% 8%,78% 33%,88% 33%,88% 0,94% 0,94% 21%,100% 21%,100% 100%,0 100%)}
+header{position:fixed;z-index:3;top:18px;left:0;right:0;text-align:center;text-shadow:0 3px 18px #000}.eyebrow{font-size:10px;letter-spacing:.38em;color:#a4c4d4}.title{font-weight:900;font-size:clamp(23px,6vw,44px);letter-spacing:.09em;margin:4px 0}.sub{font-size:10px;letter-spacing:.18em;color:#b6c8d1}
+model-viewer{position:fixed;z-index:1;inset:0;width:100%;height:100%;--poster-color:transparent;background:transparent}
+.panel{position:fixed;z-index:4;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));padding:12px 15px;border:1px solid #a4d9e644;border-radius:14px;background:#08131de8;backdrop-filter:blur(12px);text-align:center}.state{font-size:11px;letter-spacing:.12em;color:#c5e5f1}.detail{font-size:10px;color:#9db4c1;margin-top:5px}.actions{display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap}button{border:1px solid #8bc5d6;background:#15354a;color:#eafaff;border-radius:24px;padding:10px 16px;font-weight:800;font-size:10px;letter-spacing:.1em}
+</style>
+</head>
+<body>
+<div class="ruin"></div>
+<header><div class="eyebrow">AN ANCIENT POWER STIRS</div><div class="title">THE COLOSSUS AWAKENS</div><div class="sub">A REAL 3D CHARACTER MODEL · NOT PRIMITIVE SHAPES</div></header>
+<model-viewer id="model" camera-controls auto-rotate rotation-per-second="12deg" shadow-intensity="1.2" exposure="1.1" environment-image="neutral" interaction-prompt="none" ar-status="not-presenting" autoplay>
+</model-viewer>
+<section class="panel"><div class="state" id="state">SEARCHING THE PUBLIC CC0 3D MODEL LIBRARY…</div><div class="detail" id="detail">Looking for a real stone golem or giant model. No upload required.</div><div class="actions"><button id="retry">SEARCH AGAIN</button><button id="sound">SOUND: OFF</button></div></section>
+<script>
+const model=document.querySelector('#model'),state=document.querySelector('#state'),detail=document.querySelector('#detail');
+const API='https://3dassets.dev/api/v1';
+function listFrom(data){if(Array.isArray(data))return data;return data.assets||data.results||data.items||data.data||[]}
+function score(a){const s=((a.title||a.name||'')+' '+(a.summary||a.description||'')+' '+(a.tags||[]).join(' ')).toLowerCase();let n=0;for(const [w,v] of [['golem',12],['stone',9],['rock',5],['giant',7],['titan',6],['monster',3],['creature',2],['character',1]])if(s.includes(w))n+=v;return n}
+async function search(){state.textContent='SEARCHING THE PUBLIC 3D MODEL LIBRARY…';detail.textContent='Finding a proper sculpted creature model.';model.removeAttribute('src');
+try{
+ const res=await fetch(API+'/assets?q=stone%20golem&sort=relevance&limit=40');if(!res.ok)throw new Error('Asset search returned '+res.status);const raw=await res.json();const items=listFrom(raw).sort((a,b)=>score(b)-score(a));
+ if(!items.length)throw new Error('The asset library returned no matching models.');
+ let chosen=null,full=null;
+ for(const item of items.slice(0,12)){const slug=item.slug||item.id;if(!slug)continue;const dres=await fetch(API+'/assets/'+encodeURIComponent(slug));if(!dres.ok)continue;const d=await dres.json();const asset=d.asset||d.data||d;const url=asset.cdnUrl||asset.cdn_url||asset.modelUrl||asset.model_url;if(url){chosen=asset;full=url;break}}
+ if(!chosen)throw new Error('No matching result included a usable public GLB model.');
+ model.src=full;model.alt=chosen.title||chosen.name||'3D stone creature';state.textContent='3D MODEL LOADING';detail.textContent=(chosen.title||chosen.name||'Stone creature')+' · Public CC0 model';model.addEventListener('load',()=>{state.textContent='MODEL LOADED · DRAG TO INSPECT';detail.textContent=(chosen.title||chosen.name||'3D creature')+' · Real mesh and materials · Live gifts untouched'},{once:true});model.addEventListener('error',()=>{state.textContent='MODEL COULD NOT LOAD';detail.textContent='The public model host did not return a compatible GLB.'},{once:true});
+}catch(e){state.textContent='NO VERIFIED MODEL FOUND';detail.textContent=e.message+' The preview will not substitute another homemade rock figure.'}
 }
-function limb(points,radii,mat=stone){
- const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));
- const steps=48,sides=20,verts=[],indices=[];
- for(let i=0;i<=steps;i++){
-  const u=i/steps,pt=curve.getPoint(u),tan=curve.getTangent(u);
-  const ref=Math.abs(tan.y)<.9?new THREE.Vector3(0,1,0):new THREE.Vector3(1,0,0);
-  const n=new THREE.Vector3().crossVectors(tan,ref).normalize(),b=new THREE.Vector3().crossVectors(tan,n).normalize();
-  const k=u*(radii.length-1),j=Math.min(radii.length-2,Math.floor(k)),v=k-j;
-  const rad=THREE.MathUtils.lerp(radii[j],radii[j+1],v);
-  for(let q=0;q<sides;q++){const a=q/sides*Math.PI*2;const p=pt.clone().addScaledVector(n,Math.cos(a)*rad).addScaledVector(b,Math.sin(a)*rad);verts.push(p.x,p.y,p.z)}
- }
- for(let i=0;i<steps;i++)for(let q=0;q<sides;q++){const a=i*sides+q,b=i*sides+(q+1)%sides,c0=(i+1)*sides+(q+1)%sides,d=(i+1)*sides+q;indices.push(a,b,d,b,c0,d)}
- const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(verts,3));g.setIndex(indices);g.computeVertexNormals();
- const m=new THREE.Mesh(g,mat);m.castShadow=true;m.receiveShadow=true;body.add(m);return m;
-}
-// Solid pelvis, abdomen, ribcage and shoulders form one clear torso silhouette
-sculpt(1.28,.82,.76,0,4.65,0);
-sculpt(1.35,1.55,.78,0,6.15,0);
-sculpt(1.72,.62,.82,0,7.45,0);
-sculpt(.78,1.0,.72,0,8.75,.02);
-sculpt(.7,.36,.65,0,9.62,.08,edge);
-// Broad, continuous arms taper naturally from shoulder to wrist
-for(const s of [-1,1]){
- limb([[s*1.25,7.55,0],[s*1.85,7.05,.02],[s*2.18,6.25,.1],[s*2.4,5.45,.18],[s*2.62,4.55,.3]],[.72,.68,.56,.48,.38]);
- sculpt(.43,.52,.42,s*2.65,4.35,.32);
- // Anatomical palm and four short, curved fingers fused into the silhouette
- sculpt(.47,.48,.36,s*2.72,3.94,.43,stone);
- for(let f=0;f<4;f++){const fx=s*(2.43+f*.19);const len=[.42,.52,.48,.37][f];limb([[fx,3.78,.67],[fx+s*.025,3.58,.72],[fx+s*.035,3.78-len,.7]],[.105,.09,.065],stone)}
- // Thumb angles inward from the palm instead of jutting away like a rock spike
- limb([[s*2.39,4.02,.48],[s*2.25,3.84,.57],[s*2.2,3.68,.61]],[.16,.12,.075],stone);
- // Legs taper from hips into broad, flat feet touching the ground plane
- limb([[s*.68,4.55,0],[s*.76,3.75,.02],[s*.78,2.75,.05],[s*.8,1.65,.1],[s*.82,.62,.12]],[.78,.72,.61,.52,.43]);
- sculpt(.64,.3,.98,s*.82,.25,.58,stone);
- // Toe ridge is broad and low, giving the foot weight against the ground
- sculpt(.61,.16,.36,s*.82,.13,1.08,edge);
- // Shoulder armor follows the shoulder contour and stays flush to the body
- sculpt(.72,.34,.78,s*1.42,7.58,.04,edge);
-}
-// Face carved into one head mass: recessed-looking eye sockets and a strong brow
-sculpt(.75,.32,.68,0,9.0,.52,edge);
-sculpt(.2,.34,.22,0,8.78,.84);
-sculpt(.53,.22,.42,0,8.35,.62,edge);
-for(const s of [-1,1]){
- const eye=new THREE.Mesh(new THREE.SphereGeometry(.105,20,16),rune);eye.position.set(s*.32,9.0,.99);body.add(eye);
-}
-// A single inset chest sigil, flush with the stone breastplate
-const chest=new THREE.Mesh(new THREE.OctahedronGeometry(.55,2),rune);chest.position.set(0,6.35,.76);chest.scale.set(.8,1.12,.18);body.add(chest);
-// No floating rubble on the body; ground debris stays low around the planted feet
-for(let i=0;i<32;i++){const a=Math.random()*Math.PI*2,r=2.1+Math.random()*3.1;const m=rock(scene,.12+Math.random()*.24,Math.cos(a)*r,.05,Math.sin(a)*r-1,.9,.28,.8);m.rotation.x=Math.PI/2;}
-// drifting ash motes
-const particles=new THREE.BufferGeometry(),N=500,positions=new Float32Array(N*3);for(let i=0;i<N;i++){positions[i*3]=(Math.random()-.5)*26;positions[i*3+1]=Math.random()*13;positions[i*3+2]=(Math.random()-.5)*18-1}particles.setAttribute('position',new THREE.BufferAttribute(positions,3));const motes=new THREE.Points(particles,new THREE.PointsMaterial({color:0xb4d9e8,size:.045,transparent:true,opacity:.55}));scene.add(motes);
-let active=false,soundOn=false,audio=null,drag=false,lastX=0,lastY=0,targetX=0,targetY=0;const status=document.querySelector('#status');
-document.querySelector('#awaken').onclick=()=>{active=true;status.textContent='AWAKENING · THE OLD KING RISES';document.querySelector('#awaken').textContent='THE COLOSSUS IS AWAKE';if(soundOn)rumble()};
-document.querySelector('#sound').onclick=()=>{soundOn=!soundOn;document.querySelector('#sound').textContent='SOUND: '+(soundOn?'ON':'OFF');if(soundOn&&active)rumble()};
-function rumble(){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type='sawtooth';o.frequency.setValueAtTime(48,audio.currentTime);o.frequency.exponentialRampToValueAtTime(24,audio.currentTime+2);g.gain.setValueAtTime(.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.16,audio.currentTime+.15);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+2.6);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+2.7)}catch(e){}}
-renderer.domElement.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;renderer.domElement.setPointerCapture(e.pointerId)});renderer.domElement.addEventListener('pointerup',()=>drag=false);renderer.domElement.addEventListener('pointermove',e=>{if(!drag)return;targetX+=(e.clientX-lastX)*.004;targetY=Math.max(-.35,Math.min(.35,targetY+(e.clientY-lastY)*.003));lastX=e.clientX;lastY=e.clientY});
-let t=0;function animate(){requestAnimationFrame(animate);t+=.016;const rise=active?Math.min(1,Math.max(0,(t-1)*.22)):0;const ease=rise*rise*(3-2*rise);titan.position.y=ease*1.35+Math.sin(t*1.3)*.025;body.rotation.z=Math.sin(t*.55)*.012+(active?Math.sin(t*1.1)*.025:0);titan.rotation.y=Math.sin(t*.22)*.035+targetX;camera.position.x+=(targetY*3-camera.position.x)*.025;camera.lookAt(0,5.3,-1);chest.material.emissiveIntensity=active?1.8+.7*Math.sin(t*3):0;body.children.forEach(c=>{if(c.material===rune)c.material.emissiveIntensity=active?1.2:0});ember.intensity=active?2+Math.sin(t*5)*.7:0;motes.rotation.y=t*.012;const p=particles.attributes.position;for(let i=0;i<N;i++){p.array[i*3+1]-=.008;if(p.array[i*3+1]<0)p.array[i*3+1]=13}p.needsUpdate=true;renderer.render(scene,camera)}
-animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
-</script></body></html>
+document.querySelector('#retry').onclick=search;let audio=null,on=false;document.querySelector('#sound').onclick=()=>{on=!on;document.querySelector('#sound').textContent='SOUND: '+(on?'ON':'OFF');if(on){try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=42;g.gain.value=.035;o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+1.4)}catch(e){}}};search();
+</script>
+</body></html>
