@@ -127,9 +127,9 @@ function audioStart(){
  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
  audio=new AC();master=audio.createGain();master.gain.value=.36;master.connect(audio.destination);
  const notes=[659,587,523,587,659,659,659,587,587,587,659,784,784,659,587,523,587,659,659,659,659,587,587,659,587,523];
- let at=audio.currentTime+.05;
+ const base=audio.currentTime;let at=base+.05;
  notes.forEach((f,i)=>{const d=.31-i*.004,o=audio.createOscillator(),g=audio.createGain(),filter=audio.createBiquadFilter();o.type='triangle';o.frequency.value=f;filter.type='lowpass';filter.frequency.value=1800;g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.14,at+.012);g.gain.exponentialRampToValueAtTime(.0001,at+d*.9);o.connect(filter).connect(g).connect(master);o.start(at);o.stop(at+d);at+=d});
- const impact=audio.createOscillator(),ig=audio.createGain();impact.type='sawtooth';impact.frequency.setValueAtTime(95,at+4.85);impact.frequency.exponentialRampToValueAtTime(32,at+5.3);ig.gain.setValueAtTime(.0001,at+4.85);ig.gain.exponentialRampToValueAtTime(.45,at+4.9);ig.gain.exponentialRampToValueAtTime(.0001,at+5.5);impact.connect(ig).connect(master);impact.start(at+4.85);impact.stop(at+5.55);
+ const impact=audio.createOscillator(),ig=audio.createGain();impact.type='sawtooth';impact.frequency.setValueAtTime(95,base+4.85);impact.frequency.exponentialRampToValueAtTime(32,base+5.3);ig.gain.setValueAtTime(.0001,base+4.85);ig.gain.exponentialRampToValueAtTime(.45,base+4.9);ig.gain.exponentialRampToValueAtTime(.0001,base+5.5);impact.connect(ig).connect(master);impact.start(base+4.85);impact.stop(base+5.55);
  return at-audio.currentTime;
 }
 function stopSound(){if(audio){audio.close().catch(()=>{});audio=null}}
