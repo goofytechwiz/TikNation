@@ -1,122 +1,31 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>The Cursed Jack-in-the-Box · TikNation Gift Lab</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>The Cursed Jack-in-the-Box · TikNation Gift Lab</title>
 <style>
-:root{color-scheme:dark;--gold:#c99b58;--red:#8e2429;--ink:#08090d}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07080d;color:#f4ead9;font-family:Georgia,serif}
-body{display:grid;place-items:center;padding:18px;background:radial-gradient(ellipse at 50% 38%,#24202a 0,#101018 43%,#05060a 100%)}
-main{width:min(100%,760px);text-align:center}.eyebrow{font:11px system-ui;letter-spacing:.32em;color:#c5a06b}.title{font-size:clamp(27px,6vw,48px);font-weight:400;letter-spacing:.05em;margin:9px 0 5px;text-shadow:0 2px 20px #a32a24}.sub{font:12px system-ui;letter-spacing:.12em;color:#aaa0a0;margin-bottom:14px}
-.stage{position:relative;width:100%;aspect-ratio:4/3;max-height:66vh;overflow:hidden;border:1px solid #554334;border-radius:14px;background:radial-gradient(ellipse at 50% 62%,#51402c 0,#211a1b 35%,#0b0c12 76%);box-shadow:0 18px 65px #000, inset 0 0 60px #000}
-canvas{width:100%;height:100%;display:block}
-.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px 0 10px}
-button{border:1px solid #b18b56;background:linear-gradient(#4a2525,#1b1115);color:#f7e6cb;border-radius:999px;padding:13px 23px;font:12px system-ui;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
-button:disabled{opacity:.45}#status{min-height:20px;font:11px system-ui;letter-spacing:.12em;color:#c9a878}.note{font:11px system-ui;color:#807b7c;margin-top:12px}
-</style></head>
-<body><main>
-<div class="eyebrow">TIKNATION · EPIC GIFTS · PREVIEW</div>
-<h1 class="title">THE CURSED JACK-IN-THE-BOX</h1>
-<div class="sub">WIND IT. LISTEN. DON'T LOOK AWAY.</div>
-<div class="stage"><canvas id="scene" width="960" height="720" aria-label="An antique jack-in-the-box opens and a sinister clown springs out"></canvas></div>
-<div class="controls"><button id="play">▶ Wind it up</button><button id="stop" disabled>■ Stop</button></div>
-<div id="status" role="status">THE MUSIC HAS STOPPED… FOR NOW.</div>
-<div class="note">Sound begins when you press Wind it up. Headphones recommended.</div>
-</main>
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050509;color:#eee;font-family:Georgia,serif}body{display:grid;place-items:center;padding:16px;background:radial-gradient(ellipse at 50% 40%,#28202a,#090910 62%,#030306)}main{width:min(100%,850px);text-align:center}.eyebrow{font:10px system-ui;letter-spacing:.34em;color:#c6a779}.title{font-size:clamp(25px,5.7vw,45px);font-weight:400;letter-spacing:.045em;margin:9px 0 4px;text-shadow:0 0 24px #9c2424}.sub{font:11px system-ui;letter-spacing:.18em;color:#9d9696;margin-bottom:14px}.stage{height:min(66vh,590px);min-height:390px;position:relative;overflow:hidden;border:1px solid #59483b;border-radius:12px;background:radial-gradient(ellipse at 50% 45%,#41302c 0,#17141b 48%,#07080d 100%);perspective:1050px;isolation:isolate;box-shadow:0 25px 75px #000,inset 0 0 80px #000}.backdrop{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 5%,#08080c 88%)}.moonlight{position:absolute;width:60%;height:80%;left:20%;top:-20%;background:radial-gradient(ellipse,rgba(211,184,149,.16),transparent 68%);filter:blur(22px)}.floor{position:absolute;left:-20%;right:-20%;height:44%;bottom:-8%;transform:rotateX(65deg);transform-origin:top;background:repeating-linear-gradient(90deg,transparent 0 95px,rgba(180,143,100,.12) 96px 98px),repeating-linear-gradient(0deg,#181216 0 45px,#30201d 46px 48px);box-shadow:0 -20px 55px #000}.spot{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 53%,transparent 5%,rgba(0,0,0,.7) 100%);pointer-events:none}.dust{position:absolute;inset:0;opacity:.45;background-image:radial-gradient(#c6b18d 1px,transparent 1.5px),radial-gradient(#bca17c 1px,transparent 1.5px);background-size:97px 113px,151px 167px;background-position:10px 20px,70px 90px;animation:dust 13s linear infinite}@keyframes dust{to{background-position:150px -160px,-80px 240px}}.platform{position:absolute;width:390px;height:300px;left:50%;bottom:6%;transform:translateX(-50%);transform-style:preserve-3d}.box{position:absolute;width:260px;height:220px;left:65px;bottom:0;transform-style:preserve-3d;transform:rotateX(-7deg) rotateY(-12deg)}.boxfront{position:absolute;width:260px;height:180px;bottom:0;left:0;transform:translateZ(92px);border:7px solid #8d6948;background:repeating-linear-gradient(90deg,#37191d 0 28px,#542329 29px 55px);box-shadow:inset 0 0 35px #10080c,0 18px 25px #000}.boxside{position:absolute;width:184px;height:180px;right:-92px;bottom:0;transform:rotateY(90deg);transform-origin:left;background:linear-gradient(90deg,#241216,#512126 55%,#160d12);border:6px solid #765638}.boxback{position:absolute;width:260px;height:180px;bottom:0;transform:translateZ(-92px);background:#241216}.boxbase{position:absolute;bottom:-18px;left:-14px;width:288px;height:32px;transform:rotateX(90deg) translateZ(16px);background:linear-gradient(#b18b58,#34201c);border:4px solid #755338}.top{position:absolute;width:260px;height:184px;left:0;top:-92px;transform:rotateX(90deg) translateZ(90px);transform-origin:center;background:linear-gradient(145deg,#8b4437,#3b171e);border:8px ridge #b38a55;box-shadow:inset 0 0 25px #17090e}.lid{position:absolute;width:260px;height:184px;left:0;top:-92px;transform-origin:50% 100%;transform:rotateX(90deg) translateZ(90px);transform-style:preserve-3d;background:linear-gradient(145deg,#854139,#34151c);border:9px ridge #b28a57;box-shadow:inset 0 0 30px #1a080e;transition:transform 1s cubic-bezier(.2,.8,.2,1)}.lid:after{content:"";position:absolute;inset:13px;border:2px solid #c5a16a;box-shadow:inset 0 0 12px #16090b}.lid:before{content:"✦  JOLLY JESTER  ✦";position:absolute;inset:0;display:grid;place-items:center;color:#d6b77f;font: bold 17px Georgia;letter-spacing:.12em;text-shadow:0 2px 5px #100}.front-label{position:absolute;inset:0;display:grid;place-items:center;color:#d8b77a;font-size:18px;letter-spacing:.12em;text-shadow:0 2px 5px #100}.rivet{position:absolute;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#f0d5a0,#76502d 65%,#21140e);box-shadow:0 1px 4px #000}.clown{position:absolute;width:220px;height:290px;left:85px;bottom:140px;transform:translateY(300px) scale(.7);opacity:0;transform-style:preserve-3d;transition:none;filter:drop-shadow(0 12px 18px #000)}.head{position:absolute;width:154px;height:190px;left:33px;top:8px;border-radius:48% 48% 45% 45%;background:radial-gradient(ellipse at 34% 23%,#f4e7d6 0,#c9b9a8 37%,#82726c 72%,#34252a 100%);box-shadow:inset -15px -10px 24px #20151b,inset 8px 8px 16px #fff5e2,0 5px 20px #000;border:2px solid #4b3836;overflow:hidden}.head:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(17deg,transparent 0 18px,rgba(65,39,34,.07) 19px 20px),radial-gradient(ellipse at 50% 90%,rgba(45,20,25,.45),transparent 55%);mix-blend-mode:multiply}.hair{position:absolute;z-index:3;left:28px;top:-2px;width:164px;height:68px;border-radius:50% 50% 12% 12%;background:radial-gradient(ellipse at 50% 90%,#302329,#09090d 65%);clip-path:polygon(0 0,100% 0,92% 52%,80% 35%,72% 65%,62% 39%,52% 68%,42% 40%,30% 65%,20% 35%,8% 65%)}.eye{position:absolute;z-index:4;top:69px;width:42px;height:37px;border-radius:50%;background:radial-gradient(ellipse,#050407 35%,#342128 70%,transparent 72%);box-shadow:0 0 12px #170c11}.eye.left{left:27px}.eye.right{right:27px}.iris{position:absolute;left:15px;top:12px;width:10px;height:15px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#eee0c8 0 12%,#8b4b3c 22%,#080609 60%);box-shadow:0 0 5px #fff}.brow{position:absolute;z-index:5;top:57px;width:48px;height:12px;border-top:5px solid #4c2529;border-radius:50%}.brow.left{left:24px;transform:rotate(12deg)}.brow.right{right:24px;transform:rotate(-12deg)}.nose{position:absolute;z-index:5;left:69px;top:91px;width:24px;height:37px;border-radius:48% 48% 60% 60%;background:linear-gradient(90deg,#805d59,#d9b6a7 45%,#684447);box-shadow:inset -5px 0 8px #503337}.cheek{position:absolute;z-index:3;top:112px;width:39px;height:27px;border-radius:50%;background:radial-gradient(ellipse,rgba(119,26,35,.78),rgba(119,26,35,0) 72%);filter:blur(2px)}.cheek.left{left:8px}.cheek.right{right:8px}.mouth{position:absolute;z-index:5;left:32px;top:137px;width:91px;height:39px;border-radius:10% 10% 55% 55%;background:linear-gradient(#260c12,#080609 75%);clip-path:polygon(0 0,100% 0,86% 75%,50% 100%,14% 75%);border-top:5px solid #6e242a}.teeth{position:absolute;z-index:6;left:44px;top:139px;width:69px;height:13px;background:repeating-linear-gradient(90deg,#e2d4bd 0 8px,#796b60 9px 10px);clip-path:polygon(0 0,100% 0,90% 100%,10% 100%)}.crack{position:absolute;z-index:6;left:103px;top:25px;width:2px;height:32px;background:#67514c;transform:rotate(28deg);box-shadow:0 12px 0 -0.3px #67514c}.ruff{position:absolute;z-index:1;left:16px;top:177px;width:188px;height:72px;border-radius:50%;background:repeating-conic-gradient(from 0deg at 50% 0%,#b9a58d 0deg 8deg,#39252a 9deg 15deg,#8d7770 16deg 22deg);filter:drop-shadow(0 4px 4px #000)}.torso{position:absolute;left:47px;top:220px;width:126px;height:90px;border-radius:50% 50% 10% 10%;background:linear-gradient(90deg,#130c12,#541b25 48%,#170d13);border:2px solid #3a2024}.spring{position:absolute;left:100px;bottom:90px;width:20px;height:115px;background:repeating-linear-gradient(0deg,transparent 0 8px,#aaa 9px 12px,transparent 13px 17px);filter:drop-shadow(0 0 3px #ddd);opacity:0}.smoke{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 50% 54%,rgba(196,193,189,.7),transparent 20%),radial-gradient(ellipse at 43% 60%,rgba(125,124,132,.7),transparent 28%),radial-gradient(ellipse at 59% 61%,rgba(160,151,148,.65),transparent 30%);filter:blur(14px)}.stage.open .lid{transform:rotateX(90deg) rotateX(-118deg) translateZ(90px)}.stage.pop .clown{opacity:1;transform:translateY(-10px) scale(1);transition:transform 1.15s cubic-bezier(.12,.9,.18,1),opacity .2s}.stage.pop .spring{opacity:1}.stage.lunge .clown{transform:translateY(-20px) translateZ(210px) scale(1.48);transition:transform .48s cubic-bezier(.1,.8,.2,1)}.stage.vanish .clown{opacity:0;transform:translateY(-120px) translateZ(250px) scale(.25);filter:blur(12px);transition:all .75s}.stage.vanish .smoke{opacity:.9;animation:smoke .9s ease-out forwards}@keyframes smoke{to{opacity:0;transform:scale(1.8)}}.stage.blackout:after{content:"";position:absolute;inset:0;background:#000;animation:fade .8s forwards}@keyframes fade{to{opacity:.9}}.controls{display:flex;gap:10px;justify-content:center;margin:15px 0 9px;flex-wrap:wrap}button{border:1px solid #b18b56;background:linear-gradient(#4a2525,#1b1115);color:#f7e6cb;border-radius:999px;padding:13px 23px;font:12px system-ui;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}button:disabled{opacity:.4}#status{min-height:20px;font:11px system-ui;letter-spacing:.12em;color:#c9a878}.note{font:10px system-ui;color:#777;margin-top:9px}
+@media(max-width:520px){.stage{min-height:350px;height:54vh}.platform{transform:translateX(-50%) scale(.78);transform-origin:bottom center;bottom:3%}.floor{height:35%}}
+</style></head><body><main><div class="eyebrow">TIKNATION · EPIC GIFTS · PREVIEW</div><h1 class="title">THE CURSED JACK-IN-THE-BOX</h1><div class="sub">WIND IT. LISTEN. DON'T LOOK AWAY.</div>
+<div class="stage" id="stage"><div class="backdrop"></div><div class="moonlight"></div><div class="dust"></div><div class="floor"></div><div class="platform"><div class="clown" id="clown"><div class="torso"></div><div class="ruff"></div><div class="head"><div class="hair"></div><div class="brow left"></div><div class="brow right"></div><div class="eye left"><div class="iris"></div></div><div class="eye right"><div class="iris"></div></div><div class="cheek left"></div><div class="cheek right"></div><div class="nose"></div><div class="mouth"></div><div class="teeth"></div><div class="crack"></div></div></div><div class="spring"></div><div class="box"><div class="boxback"></div><div class="boxside"></div><div class="boxfront"><div class="front-label">JOLLY JESTER</div></div><div class="boxbase"></div><div class="top"></div><div class="lid"></div><i class="rivet" style="left:12px;bottom:12px"></i><i class="rivet" style="right:12px;bottom:12px"></i></div></div><div class="smoke"></div><div class="spot"></div></div>
+<div class="controls"><button id="play">▶ Wind it up</button><button id="stop" disabled>■ Stop</button></div><div id="status" role="status">THE MUSIC HAS STOPPED… FOR NOW.</div><div class="note">Sound starts after tapping Wind it up · Headphones recommended</div></main>
 <script>
-(()=>{
-const c=document.getElementById('scene'),x=c.getContext('2d'),play=document.getElementById('play'),stop=document.getElementById('stop'),status=document.getElementById('status');
-let raf=0,start=0,ctx=null,nodes=[],running=false;
-const W=960,H=720;
-function path(points,fill,stroke='#171116',lw=5){x.beginPath();points.forEach((p,i)=>i?x.lineTo(...p):x.moveTo(...p));x.closePath();x.fillStyle=fill;x.fill();x.lineWidth=lw;x.strokeStyle=stroke;x.stroke()}
-function ellipse(cx,cy,rx,ry,fill,stroke='#100e12',lw=5){x.beginPath();x.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);x.fillStyle=fill;x.fill();x.lineWidth=lw;x.strokeStyle=stroke;x.stroke()}
-function draw(t){
-x.clearRect(0,0,W,H);
-let shake=t>4.2&&t<8.5?(Math.sin(t*39)*Math.min(9,(t-4)*2)):0;x.save();x.translate(shake,Math.sin(t*2)*2);
-let glow=x.createRadialGradient(480,410,30,480,410,440);glow.addColorStop(0,'#7a3326');glow.addColorStop(.45,'#271c20');glow.addColorStop(1,'#090a10');x.fillStyle=glow;x.fillRect(0,0,W,H);
-// dusty floor and back wall
-x.fillStyle='#171317';x.fillRect(0,550,W,170);x.strokeStyle='#51402f';x.lineWidth=3;x.beginPath();x.moveTo(0,555);x.lineTo(W,555);x.stroke();
-for(let i=0;i<28;i++){let px=(i*137)%W,py=100+(i*71)%490;x.fillStyle='rgba(218,178,119,'+(.08+.08*Math.sin(t+i)+0.08)+')';x.fillRect(px,py,2,2)}
-// box shadow
-ellipse(480,575,235,45,'rgba(0,0,0,.65)','transparent',0);
-let lidOpen=t<2.4?0:t<4.7?(t-2.4)/2.3:t<8.7?1:Math.max(0,1-(t-8.7)*1.8);
-let springY=t<3.5?0:t<4.7?(t-3.5)*170:t<8.7?204:Math.max(0,204-(t-8.7)*230);
-let pop=t<3.5?0:t<4.7?(t-3.5)/1.2:t<8.7?1:Math.max(0,1-(t-8.7)*1.4);
-if(lidOpen>.02){x.save();x.translate(480,355);x.rotate(-lidOpen*1.25);path([[-185,0],[-185,-35],[185,-35],[185,0]],'#5d2525','#c39b63',9);x.restore()}
-// box body
-path([[285,360],[675,360],[715,550],[245,550]],'#542326','#c49b66',9);
-path([[285,360],[480,300],[675,360],[480,415]],'#7d3930','#d0ac72',7);
-path([[245,550],[715,550],[675,592],[285,592]],'#241317','#a57b4e',7);
-for(let i=0;i<5;i++){x.strokeStyle='rgba(226,186,126,.55)';x.lineWidth=5;x.beginPath();x.moveTo(280+i*20,378);x.lineTo(310+i*14,540);x.stroke()}
-x.fillStyle='#d7b77b';x.font='bold 26px Georgia';x.textAlign='center';x.fillText('★  JOLLY JESTER  ★',480,490);
-ellipse(480,355,190,22,'#160f15','#c39b63',6);
-// crank on right
-x.strokeStyle='#b99a70';x.lineWidth=12;x.beginPath();x.moveTo(700,420);x.lineTo(750,420);x.lineTo(750+Math.sin(t*13)*13,455);x.stroke();ellipse(750+Math.sin(t*13)*13,465,18,18,'#b99a70');
-// Clown emerges as a sinister, human-proportioned porcelain-faced performer
-if(pop>0){
- const bob=Math.sin(t*7)*4,cy=315-springY+bob,scale=.68+pop*.32;
- x.save();x.translate(480,cy);x.scale(scale,scale);
- // worn velvet shoulders and layered collar
- let coat=x.createLinearGradient(-100,80,110,230);coat.addColorStop(0,'#170f14');coat.addColorStop(.48,'#5a171f');coat.addColorStop(1,'#160d13');
- path([[-58,88],[-125,245],[-82,285],[0,240],[82,285],[125,245],[58,88]],coat,'#100b10',8);
- for(let i=0;i<17;i++){let q=-1+i/8;ellipse(q*70,117+Math.abs(q)*16,18,27,i%2?'#d8c9b0':'#8e7770','#38272a',3)}
- // neck disappearing into ruff
- let neck=x.createLinearGradient(-20,40,20,110);neck.addColorStop(0,'#9b8174');neck.addColorStop(1,'#d3bba4');x.fillStyle=neck;x.fillRect(-19,46,38,82);
- // elongated, irregular human skull and skin shading
- let skin=x.createRadialGradient(-24,-38,8,4,0,112);skin.addColorStop(0,'#eee3d2');skin.addColorStop(.48,'#c9b9a9');skin.addColorStop(.82,'#88776f');skin.addColorStop(1,'#30252a');
- ellipse(0,0,76,99,skin,'#24191d',5);
- // subtle age spots, pores and grime
- for(let i=0;i<125;i++){let px=Math.sin(i*91.7)*62,py=Math.cos(i*47.3)*82;if((px*px/5776+py*py/9801)<.88){x.fillStyle=i%3?'rgba(62,39,39,.13)':'rgba(255,242,220,.16)';x.beginPath();x.arc(px,py,1+(i%4)*.45,0,Math.PI*2);x.fill()}}
- // deep eye sockets
- for(let side of [-1,1]){
- let eg=x.createRadialGradient(side*29,-19,2,side*29,-17,31);eg.addColorStop(0,'#09090c');eg.addColorStop(.6,'#332126');eg.addColorStop(1,'rgba(49,31,35,0)');
- ellipse(side*29,-17,24,30,eg,'transparent',0);
- ellipse(side*29,-13,7,10,'#d9c9b8','#171014',2);
- ellipse(side*29,-13,3,6,'#08080a','transparent',0);
- x.strokeStyle='#4a252b';x.lineWidth=5;x.beginPath();x.moveTo(side*49,-48);x.quadraticCurveTo(side*28,-59,side*8,-43);x.stroke();
- }
- // cracked, faded white greasepaint and smeared red makeup
- x.strokeStyle='rgba(104,35,39,.8)';x.lineWidth=5;x.beginPath();x.moveTo(-59,-3);x.quadraticCurveTo(-72,20,-48,39);x.moveTo(59,-3);x.quadraticCurveTo(72,20,48,39);x.stroke();
- // long nose with natural highlight
- let ng=x.createLinearGradient(-13,0,14,28);ng.addColorStop(0,'#aa8277');ng.addColorStop(.5,'#e0c6b2');ng.addColorStop(1,'#6d4548');path([[-10,-3],[0,34],[13,-3]],ng,'#705252',2);
- // unsettling stretched smile, not a cartoon grin
- x.beginPath();x.moveTo(-39,43);x.quadraticCurveTo(-4,70,39,40);x.quadraticCurveTo(28,91,-5,88);x.quadraticCurveTo(-31,82,-39,43);x.fillStyle='#160b10';x.fill();x.strokeStyle='#5c292e';x.lineWidth=5;x.stroke();
- x.save();x.beginPath();x.moveTo(-34,47);x.quadraticCurveTo(0,69,34,46);x.lineTo(25,61);x.quadraticCurveTo(0,72,-25,61);x.closePath();x.clip();for(let i=0;i<7;i++){x.fillStyle='#c9bba7';x.fillRect(-31+i*9,45,6,20)}x.restore();
- // old, thinning dark hair instead of a toy hat
- for(let i=0;i<19;i++){let px=-66+i*7; x.strokeStyle=i%2?'#21191c':'#493237';x.lineWidth=4;x.beginPath();x.moveTo(px,-68+Math.sin(i*2)*8);x.quadraticCurveTo(px-12,-104+Math.sin(i)*11,px-5,-121+Math.cos(i*3)*9);x.stroke()}
- // aged ruffle collar and tiny tarnished bell
- ellipse(0,123,12,12,'#8e743e','#2b2020',3);
- // harsh side light and eye glint
- let light=x.createRadialGradient(-38,-40,3,-20,-20,100);light.addColorStop(0,'rgba(255,239,214,.34)');light.addColorStop(1,'rgba(0,0,0,0)');ellipse(-15,-22,66,82,light,'transparent',0);
- x.restore();
-}
-// spring coils
-if(pop>.05){x.strokeStyle='#c9b9a4';x.lineWidth=10;x.beginPath();let base=400;for(let i=0;i<=22;i++){let yy=base-i*(springY+20)/22;let xx=480+Math.sin(i*1.7+t*8)*24;x.lineTo(xx,yy)}x.stroke()}
-if(t>4.6&&t<5.3){x.fillStyle='rgba(255,225,177,'+(.5*(1-(t-4.6)/.7))+')';x.fillRect(0,0,W,H)}
-// floating dust and ominous vignette
-x.restore();let v=x.createRadialGradient(480,350,210,480,350,600);v.addColorStop(0,'transparent');v.addColorStop(1,'rgba(0,0,0,.72)');x.fillStyle=v;x.fillRect(0,0,W,H);
-if(t>9.5){x.fillStyle='rgba(0,0,0,'+Math.min(.9,(t-9.5)*.5)+')';x.fillRect(0,0,W,H)}
-}
-function tick(now){if(!running)return;let t=(now-start)/1000;draw(t);if(t>11){running=false;play.disabled=false;stop.disabled=true;status.textContent='THE BOX HAS GONE QUIET…';return}raf=requestAnimationFrame(tick)}
-function tone(freq,dur,when,type='sine',gain=.04){let o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,when);g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(gain,when+.02);g.gain.exponentialRampToValueAtTime(.0001,when+dur);o.connect(g).connect(ctx.destination);o.start(when);o.stop(when+dur+.03);nodes.push(o)}
-function noise(dur,when,gain,filterFreq){let n=Math.floor(ctx.sampleRate*dur),b=ctx.createBuffer(1,n,ctx.sampleRate),a=b.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*Math.pow(1-i/n,.7);let s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=b;f.type='lowpass';f.frequency.value=filterFreq;g.gain.setValueAtTime(gain,when);g.gain.exponentialRampToValueAtTime(.001,when+dur);s.connect(f).connect(g).connect(ctx.destination);s.start(when);nodes.push(s)}
-function audio(){ctx=new (window.AudioContext||window.webkitAudioContext)();let now=ctx.currentTime;
-// winding ratchet
-for(let i=0;i<18;i++){let w=now+i*.16;tone(440+(i%3)*95,.035,w,'square',.012)}
-// music-box melody, increasingly urgent
-let notes=[659,784,988,784,659,523,659,784,1047,988,784,659,784,988,1175,1047,988,784,659,784,988,1175,1318,1175,988,784];
-notes.forEach((f,i)=>{let at=now+1.3+i*.29; tone(f,.42,at,'sine',.038);tone(f*2,.22,at,'triangle',.012)});
-// accelerating ticking
-for(let i=0;i<24;i++){let at=now+1.5+i*(.23-i*.006);tone(1250,.025,at,'square',.009)}
-// lid bang and spring reveal
-noise(.65,now+4.5,.42,1800);tone(72,.8,now+4.5,'sawtooth',.16);noise(1.3,now+4.7,.25,700);
-// spring boings
-for(let i=0;i<5;i++){let at=now+4.7+i*.22;tone(180-i*18,.2,at,'triangle',.08)}
-// clown sting and low ominous tail
-tone(880,.7,now+5.2,'sawtooth',.035);tone(110,.9,now+5.2,'sine',.12);noise(3.8,now+5.4,.12,430);
-}
-function halt(){running=false;cancelAnimationFrame(raf);nodes.forEach(n=>{try{n.stop()}catch(e){}});nodes=[];if(ctx){ctx.close();ctx=null}draw(0);play.disabled=false;stop.disabled=true;status.textContent='THE MUSIC HAS STOPPED… FOR NOW.'}
-play.addEventListener('click',async()=>{halt();play.disabled=true;stop.disabled=false;status.textContent='WINDING… THE MUSIC IS STARTING';try{audio();await ctx.resume();start=performance.now();running=true;status.textContent='IT’S COMING…';raf=requestAnimationFrame(tick)}catch(e){halt();status.textContent='SOUND COULD NOT START — TAP PLAY AGAIN'}});
-stop.addEventListener('click',halt);draw(0);
+(()=>{const stage=document.getElementById('stage'),play=document.getElementById('play'),stop=document.getElementById('stop'),status=document.getElementById('status');let ctx=null,timers=[],osc=[],active=false;
+function later(fn,ms){const id=setTimeout(fn,ms);timers.push(id)}
+function tone(f,d,at,type='sine',vol=.04,end=f){const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(f,at);o.frequency.exponentialRampToValueAtTime(Math.max(1,end),at+d);g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(vol,at+.025);g.gain.exponentialRampToValueAtTime(.0001,at+d);o.connect(g).connect(ctx.destination);o.start(at);o.stop(at+d+.03);osc.push(o)}
+function noise(d,at,vol,cut){const b=ctx.createBuffer(1,ctx.sampleRate*d,ctx.sampleRate),a=b.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=(Math.random()*2-1)*(1-i/a.length)**.6;const s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=b;f.type='lowpass';f.frequency.value=cut;g.gain.setValueAtTime(vol,at);g.gain.exponentialRampToValueAtTime(.001,at+d);s.connect(f).connect(g).connect(ctx.destination);s.start(at)}
+function stopAll(){active=false;timers.forEach(clearTimeout);timers=[];osc.forEach(o=>{try{o.stop()}catch(e){}});osc=[];if(ctx){ctx.close();ctx=null}stage.className='stage';play.disabled=false;stop.disabled=true;status.textContent='THE MUSIC HAS STOPPED… FOR NOW.'}
+function playShow(){stopAll();ctx=new(window.AudioContext||window.webkitAudioContext)();ctx.resume();active=true;play.disabled=true;stop.disabled=false;const n=ctx.currentTime;status.textContent='THE MECHANISM IS TURNING…';// metallic winding ratchet
+for(let i=0;i<17;i++){let a=n+i*.14;tone(2100-(i%4)*170,.035,a,'square',.018,1500)}
+// eerie music box, accelerating phrases
+const melody=[659,784,988,784,659,523,659,784,1047,988,784,659,784,988,1175,1047,988,784,659,784,988,1175,1318,1175,988,784,880,1047,1318,1568];
+melody.forEach((f,i)=>{let a=n+1.1+i*(i<12?.29:.19);tone(f,.36,a,'sine',.035);tone(f*2,.18,a,'triangle',.009)});
+for(let i=0;i<25;i++){let a=n+1.5+i*(.22-i*.005);tone(1300,.022,a,'square',.008)}
+// reveal, impact, spring recoil, approach
+later(()=>{stage.classList.add('open');status.textContent='THE LID IS OPENING…'},3900);
+later(()=>{stage.classList.add('pop');status.textContent='SOMETHING IS INSIDE!';noise(.8,ctx.currentTime,.55,1600);tone(58,.8,ctx.currentTime,'sawtooth',.2,35);for(let i=0;i<6;i++)tone(220-i*22,.22,ctx.currentTime+i*.17,'triangle',.08,100)},4700);
+later(()=>{status.textContent='IT SEES YOU.';tone(880,.8,ctx.currentTime,'sawtooth',.035,180);tone(92,1.8,ctx.currentTime,'sine',.14,38);noise(1.5,ctx.currentTime,.1,500)},6500);
+later(()=>{stage.classList.add('lunge');status.textContent='GET BACK!';noise(.45,ctx.currentTime,.75,2400);tone(48,.7,ctx.currentTime,'sawtooth',.25,25);tone(1200,.4,ctx.currentTime,'square',.05,160)},8200);
+later(()=>{stage.classList.add('vanish');status.textContent='IT HAS DISAPPEARED…';noise(1.4,ctx.currentTime,.35,650);tone(180,.9,ctx.currentTime,'sine',.09,32)},9000);
+later(()=>{stage.classList.add('blackout');status.textContent='THE BOX HAS GONE QUIET.'},10300);
+later(()=>{stopAll()},11600)}
+play.addEventListener('click',playShow);stop.addEventListener('click',stopAll);
 })();
 </script></body></html>
