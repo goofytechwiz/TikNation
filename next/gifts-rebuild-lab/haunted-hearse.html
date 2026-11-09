@@ -12,10 +12,29 @@
 <script>
 const status=document.getElementById("status"),play=document.getElementById("play"),stop=document.getElementById("stop");let audio=null,oscillators=[],noiseSource=null,stopped=false;
 function stopSound(){stopped=true;oscillators.forEach(o=>{try{o.stop()}catch(e){}});oscillators=[];if(noiseSource){try{noiseSource.stop()}catch(e){}noiseSource=null;}if(audio&&audio.state!=="closed"){audio.close().catch(()=>{});}audio=null;}
-function startSound(){stopSound();stopped=false;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;try{audio=new AC();const c=audio,now=c.currentTime;const engine=c.createOscillator(),engineGain=c.createGain(),filter=c.createBiquadFilter(),lfo=c.createOscillator(),lfoGain=c.createGain();engine.type="sawtooth";engine.frequency.setValueAtTime(54,now);engine.frequency.linearRampToValueAtTime(78,now+4);engine.frequency.linearRampToValueAtTime(58,now+12);filter.type="lowpass";filter.frequency.value=145;engineGain.gain.value=.095;lfo.frequency.value=7;lfoGain.gain.value=5;lfo.connect(lfoGain);lfoGain.connect(engine.frequency);engine.connect(filter);filter.connect(engineGain);engineGain.connect(c.destination);engine.start();lfo.start();oscillators.push(engine,lfo);
-const len=Math.floor(c.sampleRate*7),buf=c.createBuffer(1,len,c.sampleRate),data=buf.getChannelData(0);for(let i=0;i<len;i++)data[i]=(Math.random()*2-1)*Math.max(0,1-i/len);noiseSource=c.createBufferSource();noiseSource.buffer=buf;noiseSource.loop=true;const nf=c.createBiquadFilter(),ng=c.createGain();nf.type="lowpass";nf.frequency.value=360;ng.gain.value=.045;noiseSource.connect(nf);nf.connect(ng);ng.connect(c.destination);noiseSource.start();
-const horn=c.createOscillator(),hg=c.createGain();horn.type="triangle";horn.frequency.setValueAtTime(110,now+1.4);horn.frequency.setValueAtTime(82,now+2.1);hg.gain.setValueAtTime(.0001,now);hg.gain.setValueAtTime(.12,now+1.4);hg.gain.setValueAtTime(.0001,now+3.2);horn.connect(hg);hg.connect(c.destination);horn.start();horn.stop(now+3.3);oscillators.push(horn);c.resume().catch(()=>{});status.textContent="LOW ENGINE RUMBLE · DISTANT FUNERAL HORN · NIGHT WIND";}catch(e){status.textContent="AUDIO ERROR · "+e.message;}}
+function startSound(){
+ stopSound();stopped=false;
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+ try{
+  audio=new AC();const c=audio,now=c.currentTime;
+  const master=c.createGain();master.gain.value=.72;master.connect(c.destination);
+  // Deep, uneven diesel engine rumble with a slow rev as the hearse approaches.
+  const motor=c.createOscillator(),motor2=c.createOscillator(),mg=c.createGain(),mf=c.createBiquadFilter();
+  motor.type="sawtooth";motor.frequency.setValueAtTime(43,now);motor.frequency.linearRampToValueAtTime(69,now+5);motor.frequency.linearRampToValueAtTime(51,now+13);
+  motor2.type="triangle";motor2.frequency.setValueAtTime(47,now);motor2.frequency.linearRampToValueAtTime(73,now+5);motor2.frequency.linearRampToValueAtTime(54,now+13);
+  mf.type="lowpass";mf.frequency.value=125;mg.gain.value=.17;motor.connect(mf);motor2.connect(mf);mf.connect(mg);mg.connect(master);motor.start();motor2.start();oscillators.push(motor,motor2);
+  // Continuous cold night wind and rolling road hiss.
+  const nlen=c.sampleRate*5,buf=c.createBuffer(1,nlen,c.sampleRate),d=buf.getChannelData(0);for(let i=0;i<nlen;i++)d[i]=Math.random()*2-1;
+  const wind=c.createBufferSource(),wf=c.createBiquadFilter(),wg=c.createGain();wind.buffer=buf;wind.loop=true;wf.type="lowpass";wf.frequency.value=420;wg.gain.value=.075;wind.connect(wf);wf.connect(wg);wg.connect(master);wind.start();noiseSource=wind;
+  // Funeral horn: two mournful notes as the vehicle emerges.
+  const horn=c.createOscillator(),hg=c.createGain();horn.type="triangle";horn.frequency.setValueAtTime(110,now+2.2);horn.frequency.setValueAtTime(82.4,now+3.3);hg.gain.setValueAtTime(.0001,now);hg.gain.setValueAtTime(.15,now+2.2);hg.gain.setValueAtTime(.0001,now+3.15);hg.gain.setValueAtTime(.13,now+3.3);hg.gain.setValueAtTime(.0001,now+5.1);horn.connect(hg);hg.connect(master);horn.start();horn.stop(now+5.2);oscillators.push(horn);
+  // Rear-door hinges groan, followed by a heavy latch/door thud.
+  const creak=c.createOscillator(),cg=c.createGain(),cf=c.createBiquadFilter();creak.type="sawtooth";creak.frequency.setValueAtTime(190,now+14);creak.frequency.linearRampToValueAtTime(72,now+17);cf.type="bandpass";cf.frequency.value=520;cg.gain.setValueAtTime(.0001,now);cg.gain.setValueAtTime(.055,now+14);cg.gain.setValueAtTime(.0001,now+17.3);creak.connect(cf);cf.connect(cg);cg.connect(master);creak.start();creak.stop(now+17.4);oscillators.push(creak);
+  const thud=c.createOscillator(),tg=c.createGain();thud.type="sine";thud.frequency.setValueAtTime(68,now+17.5);thud.frequency.exponentialRampToValueAtTime(31,now+18.1);tg.gain.setValueAtTime(.0001,now);tg.gain.setValueAtTime(.24,now+17.5);tg.gain.exponentialRampToValueAtTime(.0001,now+18.2);thud.connect(tg);tg.connect(master);thud.start();thud.stop(now+18.25);oscillators.push(thud);
+  c.resume().catch(()=>{});status.textContent="DIESEL ENGINE · FUNERAL HORN · NIGHT WIND · REAR DOOR CREAK · HEAVY LATCH";
+ }catch(e){status.textContent="AUDIO ERROR · "+e.message;}
+}
 const engine=document.createElement("script");engine.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=haunted-hearse-preview-20261109";engine.onload=()=>{if(window.TikNationGiftEngine){play.disabled=false;status.textContent="READY · TAP PLAY"}else status.textContent="ENGINE DID NOT INITIALIZE"};engine.onerror=()=>status.textContent="GIFT ENGINE FAILED TO LOAD";document.head.appendChild(engine);
-play.addEventListener("click",()=>{if(!window.TikNationGiftEngine){status.textContent="ENGINE NOT READY";return;}startSound();try{const ok=window.TikNationGiftEngine.show({name:"The Haunted Hearse",style:"hauntedhearse"},{duration:30000,onSound:startSound});if(ok)status.textContent="THE HAUNTED HEARSE IS ARRIVING · PREVIEW ONLY";else status.textContent="GIFT COULD NOT START";}catch(e){status.textContent="PREVIEW ERROR · "+e.message;}});
+play.addEventListener("click",()=>{if(!window.TikNationGiftEngine){status.textContent="ENGINE NOT READY";return;}try{const ok=window.TikNationGiftEngine.show({name:"The Haunted Hearse",style:"hauntedhearse"},{duration:30000,onSound:startSound});if(ok)status.textContent="THE HAUNTED HEARSE IS ARRIVING · PREVIEW ONLY";else status.textContent="GIFT COULD NOT START";}catch(e){status.textContent="PREVIEW ERROR · "+e.message;}});
 stop.addEventListener("click",()=>{stopSound();status.textContent="PREVIEW AUDIO STOPPED";});
 </script></body></html>
