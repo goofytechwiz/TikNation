@@ -17,23 +17,24 @@ body{min-height:100svh;display:grid;place-items:center;overflow-x:hidden}
 .curtain{position:absolute;right:4%;top:3%;width:35%;height:44%;background:linear-gradient(90deg,#19131b,#33202b 18%,transparent 23% 77%,#2b1925 82%,#120e17);opacity:.8;filter:drop-shadow(0 0 9px #000)}
 .floor{position:absolute;bottom:0;left:0;width:100%;height:19%;background:repeating-linear-gradient(90deg,#171116 0 2px,#211820 3px 120px),linear-gradient(#1b1519,#09080b);transform:perspective(260px) rotateX(9deg);transform-origin:bottom}
 .rug{position:absolute;bottom:1%;left:14%;width:72%;height:14%;background:radial-gradient(ellipse,#32202a,#130f17 70%);border:2px solid #4a3033;clip-path:polygon(8% 0,92% 0,100% 100%,0 100%);opacity:.9}
-.clock{position:absolute;z-index:4;left:50%;bottom:7%;transform:perspective(900px) translateX(-50%) rotateY(-7deg) rotateX(1deg);transform-style:preserve-3d;width:min(43%,330px);height:79%;filter:drop-shadow(18px 24px 24px #000)}
+.clock{position:absolute;z-index:4;left:50%;bottom:7%;transform:perspective(700px) translateX(-50%) rotateY(-13deg) rotateX(2deg);transform-style:preserve-3d;width:min(43%,330px);height:79%;filter:drop-shadow(18px 24px 24px #000)}
 .crown{position:absolute;top:0;left:9%;width:82%;height:15%;transform:translateZ(13px);background:linear-gradient(90deg,#120b08 0%,#81512c 10%,#321b12 23%,#d19a5a 48%,#3b2116 73%,#75472a 90%,#100a08 100%);clip-path:polygon(0 100%,5% 45%,17% 45%,22% 0,78% 0,83% 45%,95% 45%,100% 100%);border-bottom:5px solid #c18c4e;box-shadow:inset 0 5px 9px #f2c88a55,0 10px 10px #0009}
 .crown:after{content:"";position:absolute;inset:8% 18% 18%;border:2px solid #c08a4e;clip-path:polygon(0 100%,8% 25%,25% 25%,30% 0,70% 0,75% 25%,92% 25%,100% 100%)}
 .case{position:absolute;top:10%;bottom:0;left:14%;width:72%;border:7px solid #24150f;border-radius:48% 48% 8px 8px/16% 16% 8px 8px;background:linear-gradient(90deg,#160e0b,#704326 9%,#29180f 19%,#87532e 48%,#2a170f 78%,#75472a 92%,#160e0b);box-shadow:inset 0 0 0 3px #b27c45,inset 0 0 20px #000,0 0 0 2px #090708}
 .case:before{content:"";position:absolute;inset:8px;border:1px solid #c1945b;border-radius:48% 48% 3px 3px/16% 16% 3px 3px;opacity:.8}
 .woodgrain{position:absolute;inset:0;background:repeating-linear-gradient(92deg,transparent 0 15px,#d6a36b12 16px,#0003 18px,transparent 23px);mix-blend-mode:screen;pointer-events:none}
 .dial{position:absolute;top:9%;left:50%;transform:translateX(-50%) translateZ(22px);width:69%;aspect-ratio:1;border-radius:50%;border:11px ridge #a87942;background:radial-gradient(circle at 34% 27%,#fff0d0 0,#e0cda7 38%,#c5ad83 67%,#76502f 69%,#d0a46b 73%,#39241a 77%);box-shadow:0 0 0 5px #21140f,0 0 0 9px #a87942,inset 0 0 17px #48301e,inset 0 5px 13px #fff7,0 12px 18px #000b}
-.dial:before{content:"";position:absolute;inset:8%;border:1px solid #725438;border-radius:50%;box-shadow:0 0 0 2px #b28a58}
+.dial:before{content:"";position:absolute;inset:8%;border:2px solid #725438;border-radius:50%;box-shadow:0 0 0 3px #b28a58,0 0 0 7px #4a2c19, inset 0 0 14px #79542d}
+.dial:after{content:"";position:absolute;inset:-12px;border-radius:50%;border:5px solid #704626;box-shadow:inset 0 3px 7px #f7d49a88,0 7px 0 #1b100b,0 12px 16px #000b;pointer-events:none}
 .brand{position:absolute;top:27%;width:100%;text-align:center;font-size:clamp(6px,1vw,9px);letter-spacing:2px;color:#725437}
 .roman{position:absolute;inset:0;color:#49301f;font-size:clamp(12px,2vw,18px);font-weight:bold}
 .roman span{position:absolute;transform:translate(-50%,-50%)}
 .hand{position:absolute;left:50%;top:50%;transform-origin:50% 100%;background:#33241a;border-radius:5px;box-shadow:0 0 2px #fff5}
-.hour{height:25%;width:5px;transform:translate(-50%,-100%) rotate(0deg);animation:hourTick 43200s linear infinite}
-.minute{height:35%;width:3px;transform:translate(-50%,-100%) rotate(0deg);animation:minuteTick 3600s linear infinite}
+.hour{height:25%;width:5px;transform:translate(-50%,-100%) rotate(0deg);animation:hourTick 300s linear infinite}
+.minute{height:35%;width:3px;transform:translate(-50%,-100%) rotate(0deg);animation:minuteTick 60s linear infinite}
 @keyframes minuteTick{to{transform:translate(-50%,-100%) rotate(360deg)}}
 @keyframes hourTick{to{transform:translate(-50%,-100%) rotate(360deg)}}
-.scene.awake .minute{animation-duration:8s}.scene.awake .hour{animation-duration:96s}
+.scene.awake .minute{animation-duration:5s}.scene.awake .hour{animation-duration:25s}
 .pin{position:absolute;left:50%;top:50%;width:11px;height:11px;border-radius:50%;background:#3a2417;border:2px solid #c39a5e;transform:translate(-50%,-50%)}
 .glass{position:absolute;inset:0;border-radius:50%;background:linear-gradient(125deg,#fff3 0 8%,transparent 24% 72%,#fff1 88%);pointer-events:none}
 .belly{position:absolute;top:45%;bottom:7%;left:23%;right:23%;border:5px solid #9b6a3a;background:linear-gradient(90deg,#160e0b,#4c2e1d 18%,#17100d 48%,#56331e 82%,#150d0a);box-shadow:inset 0 0 18px #000}
