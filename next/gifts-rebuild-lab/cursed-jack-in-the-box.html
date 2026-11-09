@@ -3,173 +3,154 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Cursed Jack-in-the-Box · TikNation Gift Lab</title>
 <style>
-:root{color-scheme:dark;--gold:#d8ad68;--cyan:#70eaff;--wine:#711c36}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#05060b;color:#f4e8d4;font-family:Georgia,serif}
-body{display:grid;place-items:center;padding:14px;background:radial-gradient(ellipse at 50% 28%,#24203b 0,#0b0d19 48%,#030408 100%)}
-main{width:min(100%,900px);text-align:center}.eyebrow{font:10px system-ui;letter-spacing:.34em;color:#d7b67e}
-h1{font-size:clamp(25px,5.5vw,45px);font-weight:400;letter-spacing:.045em;margin:9px 0 4px;text-shadow:0 0 28px #a5224c}.sub{font:10px system-ui;letter-spacing:.2em;color:#b9b0a9;margin-bottom:14px}
-.stage{position:relative;height:min(66vh,590px);min-height:390px;overflow:hidden;border:1px solid #886c9b;border-radius:12px;background:radial-gradient(ellipse at 50% 45%,#45405d 0,#171827 48%,#080a12 100%);box-shadow:0 0 32px #6d3f8770,inset 0 0 90px #000}
-.stage:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 48px,#ffffff05 49px 50px),linear-gradient(transparent 65%,#0009);pointer-events:none}
-canvas{width:100%;height:100%;display:block}.vignette{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 90px #000b}
-.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0 8px}
-button{border:1px solid #c39b60;border-radius:999px;padding:13px 24px;background:linear-gradient(#583044,#21131f);color:#fff0d8;font:12px system-ui;letter-spacing:.14em;text-transform:uppercase}
-button:disabled{opacity:.4}#status{min-height:20px;font:11px system-ui;letter-spacing:.13em;color:#e3bd83}
-.note{font:10px system-ui;color:#aaa;margin:8px auto 0;max-width:540px}
-@media(max-width:520px){.stage{height:56vh;min-height:360px}}
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050507;color:#f5e9d5;font-family:Georgia,serif}
+body{display:grid;place-items:center;padding:12px;background:radial-gradient(ellipse at 50% 15%,#29202b 0,#0b0a10 48%,#020204 100%)}
+main{width:min(100%,980px);text-align:center}.eyebrow{font:10px system-ui;letter-spacing:.34em;color:#d4b37b;margin:5px 0 9px}
+h1{font-weight:400;font-size:clamp(25px,5vw,44px);letter-spacing:.06em;margin:0 0 5px;text-shadow:0 3px 24px #9b2848}.sub{font:10px system-ui;letter-spacing:.2em;color:#b9aeb1;margin-bottom:13px}
+.stage{position:relative;height:min(69vh,650px);min-height:390px;overflow:hidden;border:1px solid #80677d;border-radius:12px;background:#08080d;box-shadow:0 12px 55px #000,inset 0 0 65px #000}
+#scene{width:100%;height:100%;display:block}.overlay{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#0005,transparent 28%,transparent 72%,#0008),radial-gradient(ellipse at center,transparent 48%,#0009 100%)}
+.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:13px 0 7px}
+button{border:1px solid #c3a06b;border-radius:999px;padding:13px 24px;background:linear-gradient(#583143,#1b111b);color:#fff0d9;font:12px system-ui;letter-spacing:.14em;text-transform:uppercase}
+button:disabled{opacity:.45}#status{min-height:20px;font:11px system-ui;letter-spacing:.13em;color:#e6c38c}.note{font:10px system-ui;color:#999;margin:8px auto;max-width:560px}
 </style></head><body><main>
 <div class="eyebrow">TIKNATION · EPIC GIFTS · PRIVATE PREVIEW</div>
-<h1>THE CURSED JACK-IN-THE-BOX</h1><div class="sub">TURN THE HANDLE. HEAR THE TUNE. FACE WHAT'S INSIDE.</div>
-<div class="stage"><canvas id="art" aria-label="An antique purple and crimson jack-in-the-box with a winding crank and a sinister clown"></canvas><div class="vignette"></div></div>
+<h1>THE CURSED JACK-IN-THE-BOX</h1><div class="sub">A MECHANICAL NIGHTMARE · FULL 3D REBUILD</div>
+<div class="stage"><canvas id="scene" aria-label="Interactive three-dimensional antique jack-in-the-box horror gift"></canvas><div class="overlay"></div></div>
 <div class="controls"><button id="wind">✧ Wind it up</button><button id="reset" disabled>Stop / reset</button></div>
 <div id="status" role="status">THE BOX IS WAITING IN THE DARK.</div>
-<div class="note">Original synthesized toy music-box rendition of “Pop Goes the Weasel”. Sound begins after tapping Wind it up.</div>
+<div class="note">Tap Wind it up to start the complete sequence. Sound begins after your tap. Private preview only.</div>
 </main>
-<script>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 (()=>{
-const canvas=document.getElementById('art'),ctx=canvas.getContext('2d'),wind=document.getElementById('wind'),reset=document.getElementById('reset'),status=document.getElementById('status');
-let W=0,H=0,dpr=1,raf=0,start=0,phase='idle',audio=null,master=null,oscillators=[],endTimer=0,particles=[];
-function resize(){const r=canvas.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);draw(0)}
-new ResizeObserver(resize).observe(canvas);
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),ease=t=>1-Math.pow(1-t,3);
-function rr(x,y,w,h,r,fill,stroke,lw=1){ctx.beginPath();ctx.roundRect(x,y,w,h,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.lineWidth=lw;ctx.strokeStyle=stroke;ctx.stroke()}}
-function gradient(x,y,r,c1,c2){const g=ctx.createRadialGradient(x-r*.3,y-r*.4,1,x,y,r);g.addColorStop(0,c1);g.addColorStop(1,c2);return g}
-function line(x1,y1,x2,y2,color,width=1){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke()}
-function draw(t){
- const w=W,h=H;if(!w||!h)return;ctx.clearRect(0,0,w,h);
- const cx=w*.5,base=h*.83,scale=Math.min(w/640,h/470);ctx.save();ctx.translate(cx,base);ctx.scale(scale,scale);
- // theatre floor and soft pool of light
- const pool=ctx.createRadialGradient(0,8,5,0,8,290);pool.addColorStop(0,'#75617c66');pool.addColorStop(1,'#08091200');ctx.fillStyle=pool;ctx.fillRect(-330,-390,660,450);
- ctx.fillStyle='#090a12';ctx.beginPath();ctx.ellipse(0,12,255,25,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#8b718c55';ctx.lineWidth=2;ctx.stroke();
- // floating dust motes
- for(const p of particles){ctx.globalAlpha=p.a;ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x, p.y, p.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
- const lidProgress=phase==='idle'?0:clamp((t-4.15)/.82,0,1);
- const lidOpen=lidProgress*(Math.PI*.78)+ (lidProgress>0?Math.sin(t*17)*.035*(1-lidProgress*.45):0);
- const pop=phase==='idle'?0:clamp((t-4.85)/1.05,0,1);
- const lunge=phase==='idle'?0:clamp((t-9.35)/.48,0,1);
- const vanish=phase==='idle'?0:clamp((t-11.45)/.72,0,1);
- const boxShake=phase==='idle'?0:(t>4.1&&t<5.35?Math.sin(t*49)*4*(1-clamp((t-4.1)/1.25,0,1)):Math.sin(t*2.7)*.8);
- ctx.translate(boxShake,0);
- // shadow behind the box
- ctx.fillStyle='#0009';ctx.beginPath();ctx.ellipse(0,-5,166,19,0,0,Math.PI*2);ctx.fill();
- // box body: front, side and top bevel
- const bx=-150,by=-155,bw=300,bh=155,depth=34;
- ctx.beginPath();ctx.moveTo(bx+bw,by);ctx.lineTo(bx+bw+depth,by-22);ctx.lineTo(bx+bw+depth,by+bh-18);ctx.lineTo(bx+bw,by+bh);ctx.closePath();ctx.fillStyle='#25112a';ctx.fill();ctx.strokeStyle='#d5a75b';ctx.lineWidth=3;ctx.stroke();
- const body=ctx.createLinearGradient(0,by,0,by+bh);body.addColorStop(0,'#8a2449');body.addColorStop(.45,'#42152f');body.addColorStop(1,'#170e20');rr(bx,by,bw,bh,8,body,'#e2b96e',4);
- // inset panels
- rr(-133,-139,266,123,4,'#291b36','#bd9256',2);rr(-124,-130,248,105,3,'#173d4b','#8d6ba0',1);
- // ornate diamond quilting
- for(let x=-112;x<=112;x+=28){line(x,-124,x+14,-25,'#a9d8d455',1);line(x+14,-124,x,-25,'#e8bd7850',1)}
- // plaque and corner studs
- rr(-61,-91,122,42,6,'#24111f','#d7ae67',2);ctx.textAlign='center';ctx.fillStyle='#f3d69b';ctx.font='bold 10px Georgia';ctx.fillText('POP  •  GOES',0,-73);ctx.font='8px Georgia';ctx.fillText('THE WEASEL',0,-59);
- for(const x of [-137,137])for(const y of [-141,-15]){ctx.fillStyle=gradient(x,y,6,'#fff1b7','#9a5b25');ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fill()}
- // top rim and hollow interior
- ctx.beginPath();ctx.moveTo(-150,-155);ctx.lineTo(-130,-180);ctx.lineTo(130,-180);ctx.lineTo(150,-155);ctx.closePath();ctx.fillStyle='#170f20';ctx.fill();ctx.strokeStyle='#e4bd77';ctx.lineWidth=4;ctx.stroke();
- ctx.beginPath();ctx.ellipse(0,-164,126,18,0,0,Math.PI*2);ctx.fillStyle='#08080f';ctx.fill();ctx.strokeStyle='#9d6b4e';ctx.lineWidth=2;ctx.stroke();
- // spring rising from fixed floor inside
- const springTop=-180-pop*94-(pop>0?Math.sin(t*19)*8*(1-lunge*.65):0);ctx.strokeStyle='#d8b56d';ctx.lineWidth=5;ctx.beginPath();for(let i=0;i<=48;i++){const q=i/48,y=-165+(springTop+165)*q,x=Math.sin(q*Math.PI*18+t*2)* (11+pop*3);if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)}ctx.stroke();
- ctx.fillStyle='#c5a16b';ctx.beginPath();ctx.ellipse(0,-164,15,5,0,0,Math.PI*2);ctx.fill();
- // lid swings backward on hinge, with perspective trapezoid
- ctx.save();ctx.translate(0,-177);ctx.rotate(-lidOpen);ctx.translate(0,0);
- ctx.beginPath();ctx.moveTo(-150,0);ctx.lineTo(-126,-24);ctx.lineTo(-112,-143);ctx.lineTo(112,-143);ctx.lineTo(126,-24);ctx.lineTo(150,0);ctx.closePath();
- const lidg=ctx.createLinearGradient(-130,-100,130,-20);lidg.addColorStop(0,'#a32d50');lidg.addColorStop(.5,'#4a1d43');lidg.addColorStop(1,'#17152e');ctx.fillStyle=lidg;ctx.fill();ctx.strokeStyle='#e3bd79';ctx.lineWidth=5;ctx.stroke();
- ctx.beginPath();ctx.moveTo(-105,-125);ctx.lineTo(105,-125);ctx.lineTo(119,-25);ctx.lineTo(-119,-25);ctx.closePath();ctx.strokeStyle='#b9e7e8';ctx.lineWidth=2;ctx.stroke();
- for(let x of [-86,86]){ctx.fillStyle='#e6c47f';ctx.beginPath();ctx.arc(x,-76,5,0,Math.PI*2);ctx.fill()}
- ctx.restore();
- // clown rises out of the cavity: shaded head, hair, collar, ruff and suit
- if(pop>0&&vanish<1){
- ctx.save();ctx.translate(0,-175-pop*91+lunge*38,0);ctx.scale(1+lunge*.52,1+lunge*.52);
- ctx.globalAlpha=1-vanish;
- // articulated sleeves and hands, swinging outward as the clown springs up
- const armSwing=Math.sin(t*10)*.13+pop*.32;
- ctx.save();ctx.translate(-42,15);ctx.rotate(-.72-armSwing);ctx.fillStyle='#321326';ctx.beginPath();ctx.roundRect(-12,-8,24,76,11);ctx.fill();ctx.strokeStyle='#c39a65';ctx.lineWidth=3;ctx.stroke();ctx.fillStyle='#d9c4b1';ctx.beginPath();ctx.ellipse(0,73,12,17,-.2,0,Math.PI*2);ctx.fill();ctx.restore();
- ctx.save();ctx.translate(42,15);ctx.rotate(.72+armSwing);ctx.fillStyle='#321326';ctx.beginPath();ctx.roundRect(-12,-8,24,76,11);ctx.fill();ctx.strokeStyle='#c39a65';ctx.lineWidth=3;ctx.stroke();ctx.fillStyle='#d9c4b1';ctx.beginPath();ctx.ellipse(0,73,12,17,.2,0,Math.PI*2);ctx.fill();ctx.restore();
- // shoulders and costume
- const suit=ctx.createLinearGradient(-70,0,70,0);suit.addColorStop(0,'#170f20');suit.addColorStop(.5,'#a51f42');suit.addColorStop(1,'#210d22');
- ctx.fillStyle=suit;ctx.beginPath();ctx.moveTo(-61,70);ctx.quadraticCurveTo(-74,8,-40,-4);ctx.lineTo(40,-4);ctx.quadraticCurveTo(74,8,61,70);ctx.closePath();ctx.fill();ctx.strokeStyle='#d3a75d';ctx.lineWidth=3;ctx.stroke();
- // pleated ruff
- for(let i=0;i<19;i++){const a=Math.PI*2*i/19;ctx.save();ctx.translate(Math.cos(a)*36,5+Math.sin(a)*12);ctx.rotate(a);ctx.fillStyle=i%2?'#ded0bd':'#a99791';ctx.beginPath();ctx.ellipse(0,0,10,25,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#66525a';ctx.lineWidth=1;ctx.stroke();ctx.restore()}
- // head shape with natural shaded volume
- ctx.fillStyle=gradient(0,-49,66,'#f1d9c7','#76605d');ctx.beginPath();ctx.ellipse(0,-49,53,66,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#39252a';ctx.lineWidth=2;ctx.stroke();
- // dark cap and wild hair tufts
- ctx.fillStyle='#171019';ctx.beginPath();ctx.ellipse(0,-92,55,30,-.08,Math.PI,Math.PI*2);ctx.fill();for(let i=0;i<11;i++){const x=-48+i*9.5;ctx.beginPath();ctx.moveTo(x,-95);ctx.quadraticCurveTo(x-12,-121-Math.sin(i*2)*9,x+4,-133+Math.cos(i)*5);ctx.quadraticCurveTo(x+13,-114,x+8,-91);ctx.fill()}
- // eyes, sockets and cold highlights
- for(const x of [-21,21]){ctx.fillStyle='#302129';ctx.beginPath();ctx.ellipse(x,-54,14,18,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#eee1d1';ctx.beginPath();ctx.ellipse(x,-54,9,12,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#9c493b';ctx.beginPath();ctx.arc(x+2,-54,5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#08070b';ctx.beginPath();ctx.arc(x+2,-54,2.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x,-58,1.7,0,Math.PI*2);ctx.fill()}
- // arched brows and red clown nose
- ctx.strokeStyle='#26151b';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-37,-78);ctx.quadraticCurveTo(-21,-91,-8,-77);ctx.moveTo(8,-77);ctx.quadraticCurveTo(23,-91,38,-78);ctx.stroke();
- ctx.fillStyle=gradient(0,-34,13,'#ff7c76','#8c102b');ctx.beginPath();ctx.ellipse(0,-34,10,13,0,0,Math.PI*2);ctx.fill();
- // unsettling grin, dark mouth and teeth
- ctx.fillStyle='#260b18';ctx.beginPath();ctx.moveTo(-30,-16);ctx.quadraticCurveTo(0,3,30,-16);ctx.quadraticCurveTo(21,13,0,14);ctx.quadraticCurveTo(-22,10,-30,-16);ctx.fill();ctx.strokeStyle='#7b142b';ctx.lineWidth=3;ctx.stroke();
- for(let i=0;i<7;i++){ctx.fillStyle='#f1dfc9';ctx.beginPath();ctx.moveTo(-23+i*7,-13);ctx.lineTo(-18+i*7,-12);ctx.lineTo(-19+i*7,-4);ctx.closePath();ctx.fill()}
- // cheek paint streaks
- ctx.strokeStyle='#8f163b';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-39,-38);ctx.quadraticCurveTo(-34,-22,-28,-21);ctx.moveTo(39,-38);ctx.quadraticCurveTo(34,-22,28,-21);ctx.stroke();
- ctx.restore();ctx.globalAlpha=1;
+const canvas=document.querySelector('#scene'),wind=document.querySelector('#wind'),reset=document.querySelector('#reset'),status=document.querySelector('#status');
+let renderer,scene,camera,clock,raf=0,phase='idle',started=0,audio=null,master=null,clownRig,boxRig,lidPivot,crank,spring,smoke=[],dust=[],bodyMat,head,arms=[],mixerTime=0;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),smooth=t=>{t=clamp(t,0,1);return t*t*(3-2*t)};
+const mat=(color,roughness=.55,metalness=0,extra={})=>new THREE.MeshStandardMaterial({color,roughness,metalness,...extra});
+const gold=mat('#c59a55',.28,.82),darkGold=mat('#62401f',.38,.75),wine=mat('#641b35',.3,.18),black=mat('#100d14',.3,.12),ivory=mat('#d9c9b4',.48),red=mat('#8e182b',.28,.08),steel=mat('#b8c2c9',.24,.85);
+function mesh(geo,m,parent,x=0,y=0,z=0){const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
+function roundedBox(w,h,d,r,m,parent,x,y,z){const shape=new THREE.Shape();shape.moveTo(-w/2+r,-h/2);shape.lineTo(w/2-r,-h/2);shape.quadraticCurveTo(w/2,-h/2,w/2,-h/2+r);shape.lineTo(w/2,h/2-r);shape.quadraticCurveTo(w/2,h/2,w/2-r,h/2);shape.lineTo(-w/2+r,h/2);shape.quadraticCurveTo(-w/2,h/2,-w/2,h/2-r);shape.lineTo(-w/2,-h/2+r);shape.quadraticCurveTo(-w/2,-h/2,-w/2+r,-h/2);const g=new THREE.ExtrudeGeometry(shape,{depth:d-2*r,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:r,bevelThickness:r});g.translate(0,0,-(d-2*r)/2);return mesh(g,m,parent,x,y,z)}
+function cylinderBetween(a,b,r1,r2,m,parent){const d=new THREE.Vector3().subVectors(b,a),g=new THREE.CylinderGeometry(r2,r1,d.length(),16);const o=mesh(g,m,parent);o.position.copy(a).add(b).multiplyScalar(.5);o.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());return o}
+function makeNoiseTexture(){const c=document.createElement('canvas');c.width=512;c.height=512;const x=c.getContext('2d');x.fillStyle='#542039';x.fillRect(0,0,512,512);for(let i=0;i<9000;i++){const v=80+Math.random()*100;x.fillStyle='rgba('+v+','+(v*.55)+','+(v*.7)+','+(Math.random()*.11)+')';x.fillRect(Math.random()*512,Math.random()*512,1+Math.random()*3,1+Math.random()*3)}for(let y=0;y<512;y+=64){x.strokeStyle='rgba(220,177,112,.18)';x.lineWidth=2;x.beginPath();x.moveTo(0,y);x.lineTo(512,y);x.stroke()}const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(1,1);t.colorSpace=THREE.SRGBColorSpace;return t}
+function makeScene(){
+ renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.18;
+ scene=new THREE.Scene();scene.background=new THREE.Color('#09080d');scene.fog=new THREE.FogExp2('#09080d',.035);
+ camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(7.6,5.1,10.8);camera.lookAt(0,1.9,0);
+ scene.add(new THREE.HemisphereLight('#b8b8d8','#170d13',1.25));
+ const key=new THREE.SpotLight('#ffe2bd',190,30,Math.PI/5,.48,1.5);key.position.set(-4,9,6);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key);
+ const rim=new THREE.PointLight('#a33d72',75,14);rim.position.set(4,4,-3);scene.add(rim);
+ const fill=new THREE.PointLight('#75c9d6',24,10);fill.position.set(-4,2,3);scene.add(fill);
+ const floor=mesh(new THREE.PlaneGeometry(200,200),mat('#111016',.92),scene,0,-.06,0);floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;
+ // stage platform and box foundation
+ mesh(new THREE.CylinderGeometry(3.7,3.85,.24,96),mat('#211a23',.42,.42),scene,0,.06,0);
+ const base=mesh(new THREE.BoxGeometry(2.55,.18,2.1),darkGold,scene,0,.27,0);
+ boxRig=new THREE.Group();scene.add(boxRig);boxRig.position.y=.36;
+ // Main wooden cabinet with subtle textured finish
+ const wood=mat('#67213a',.3,.12,{map:makeNoiseTexture()});
+ roundedBox(2.35,1.62,1.82,.09,wood,boxRig,0,.93,0);
+ // corner brass rails, inset front panel and ornate trim
+ for(const x of [-1.12,1.12])for(const z of [-.87,.87]){
+   mesh(new THREE.BoxGeometry(.055,1.53,.055),gold,boxRig,x,.93,z);
+   for(const y of [.22,1.62])mesh(new THREE.SphereGeometry(.055,16,12),gold,boxRig,x,y,z);
  }
- // right-side winding axle and turning handle, visible even on idle
- ctx.fillStyle='#151018';ctx.beginPath();ctx.ellipse(157,-82,13,20,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#e0b66c';ctx.lineWidth=5;ctx.stroke();
- ctx.save();ctx.translate(166,-82);const spin=phase==='idle'?0:(t<4.2?t* Math.PI*2*1.35:4.2*Math.PI*2*1.35+(t-4.2)*Math.PI*2*.18);ctx.rotate(spin);ctx.strokeStyle='#d9b46d';ctx.lineWidth=9;ctx.lineCap='round';line(0,0,42,-48,'#d9b46d',9);ctx.fillStyle=gradient(42,-48,9,'#fff0b1','#805125');ctx.beginPath();ctx.arc(42,-48,9,0,Math.PI*2);ctx.fill();ctx.fillStyle='#392025';ctx.beginPath();ctx.roundRect(29,-59,28,12,6);ctx.fill();ctx.restore();
- // Rolling smoke puffs after the jump-scare; each cloud expands and drifts.
- if(phase!=='idle'&&t>5.05){
-   const smokeAge=t-5.05,fade=clamp(1-smokeAge/6,0,1);
-   for(let i=0;i<22;i++){
-     const seed=i*2.399,age=(smokeAge+i*.075)%2.7,drift=age*18;
-     const sx=Math.cos(seed)* (24+age*17),sy=-205+Math.sin(seed)*16-drift;
-     const radius=8+age*12+(i%4)*3;
-     const cloud=ctx.createRadialGradient(sx-radius*.25,sy-radius*.25,1,sx,sy,radius);
-     cloud.addColorStop(0,'rgba(218,220,225,'+(fade*.22)+')');
-     cloud.addColorStop(.55,'rgba(125,132,151,'+(fade*.13)+')');
-     cloud.addColorStop(1,'rgba(65,70,90,0)');
-     ctx.fillStyle=cloud;ctx.beginPath();ctx.arc(sx,sy,radius,0,Math.PI*2);ctx.fill();
-   }
+ roundedBox(1.78,1.12,.055,.045,mat('#291626',.34,.22),boxRig,0,.95,.925);
+ roundedBox(1.62,.96,.035,.035,mat('#25414a',.31,.34),boxRig,0,.95,.963);
+ // embossed gold scroll-like inlays
+ for(let x=-.68;x<=.69;x+=.34){const bar=mesh(new THREE.BoxGeometry(.018,.78,.018),gold,boxRig,x,.95,.99);bar.rotation.z=.22}
+ roundedBox(.82,.3,.06,.04,mat('#24131d',.24,.5),boxRig,0,.94,1.01);
+ // plaque lettering
+ const plaque=document.createElement('canvas');plaque.width=512;plaque.height=180;const p=plaque.getContext('2d');p.fillStyle='#24131d';p.fillRect(0,0,512,180);p.strokeStyle='#d8b26f';p.lineWidth=9;p.strokeRect(9,9,494,162);p.fillStyle='#f1d6a1';p.textAlign='center';p.font='bold 47px Georgia';p.fillText('POP GOES',256,82);p.font='34px Georgia';p.fillText('THE WEASEL',256,130);const pt=new THREE.CanvasTexture(plaque);pt.colorSpace=THREE.SRGBColorSpace;
+ mesh(new THREE.PlaneGeometry(.78,.275),new THREE.MeshStandardMaterial({map:pt,roughness:.48,metalness:.18}),boxRig,0,.94,1.047);
+ // hollow top rim and interior darkness
+ roundedBox(2.45,.13,1.92,.045,gold,boxRig,0,1.79,0);
+ mesh(new THREE.BoxGeometry(2.23,.025,1.7),mat('#08070b',.98),boxRig,0,1.79,0);
+ // hinge barrels along back edge
+ for(let x of [-.7,0,.7]){const h=mesh(new THREE.CylinderGeometry(.075,.075,.35,24),gold,boxRig,x,1.84,-.87);h.rotation.z=Math.PI/2}
+ lidPivot=new THREE.Group();lidPivot.position.set(0,1.83,-.82);boxRig.add(lidPivot);
+ roundedBox(2.38,.16,1.72,.055,wine,lidPivot,0,0,.82);
+ roundedBox(2.12,.035,1.46,.025,mat('#2b172c',.26,.3),lidPivot,0,.095,.82);
+ for(const x of [-.92,.92])for(const z of [.2,1.42])mesh(new THREE.SphereGeometry(.06,16,12),gold,lidPivot,x,.12,z);
+ // winding shaft and crank on right side
+ const axle=mesh(new THREE.CylinderGeometry(.095,.095,.28,32),gold,boxRig,1.22,1.05,.12);axle.rotation.z=Math.PI/2;
+ crank=new THREE.Group();crank.position.set(1.39,1.05,.12);boxRig.add(crank);
+ cylinderBetween(new THREE.Vector3(0,0,0),new THREE.Vector3(.04,.42,0),.045,.045,gold,crank);
+ cylinderBetween(new THREE.Vector3(.04,.42,0),new THREE.Vector3(.37,.42,0),.045,.045,gold,crank);
+ mesh(new THREE.SphereGeometry(.095,24,16),mat('#28151e',.25,.4),crank,.37,.42,0);
+ // spring, attached to floor and clown's lower body
+ spring=new THREE.Group();spring.position.set(0,1.88,0);boxRig.add(spring);
+ const pts=[];for(let i=0;i<=160;i++){const a=i/160*Math.PI*2*13;pts.push(new THREE.Vector3(Math.cos(a)*.105,i/160*.92,Math.sin(a)*.105))}
+ const coil=mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),260,.025,8,false),steel,spring);coil.castShadow=true;
+ // clown rig, starts hidden below box rim
+ clownRig=new THREE.Group();boxRig.add(clownRig);clownRig.position.set(0,1.75,0);clownRig.visible=false;
+ const suit=mat('#391124',.34,.08),ruff=mat('#d8cbbb',.7),skin=mat('#d4bca8',.54),hair=mat('#151116',.8),eye=mat('#eee6d7',.28),pupil=mat('#09080c',.15);
+ mesh(new THREE.CapsuleGeometry(.42,.64,8,18),suit,clownRig,0,.22,0);
+ // ruff collar: layered folded petals
+ const collar=new THREE.Group();clownRig.add(collar);collar.position.y=.58;
+ for(let i=0;i<24;i++){const a=i/24*Math.PI*2;const petal=mesh(new THREE.ConeGeometry(.14,.48,8),ruff,collar,Math.cos(a)*.39,.01,Math.sin(a)*.39);petal.rotation.z=-Math.PI/2;petal.rotation.y=-a;petal.rotation.x=Math.PI/2}
+ // head, ears, jaw and nose
+ head=new THREE.Group();clownRig.add(head);head.position.y=1.22;
+ mesh(new THREE.SphereGeometry(.48,48,40),skin,head,0,0,0);
+ for(const x of [-.47,.47])mesh(new THREE.SphereGeometry(.12,20,16),skin,head,x,-.03,0);
+ mesh(new THREE.SphereGeometry(.13,24,18),red,head,0,-.05,.46);
+ // eye sockets and eyeballs
+ for(const x of [-.19,.19]){
+   mesh(new THREE.SphereGeometry(.145,24,18),black,head,x,.12,.39);
+   mesh(new THREE.SphereGeometry(.094,24,18),eye,head,x,.12,.48);
+   mesh(new THREE.SphereGeometry(.047,20,16),pupil,head,x+.018,.11,.558);
+   mesh(new THREE.SphereGeometry(.018,12,10),mat('#ffffff',.08),head,x-.015,.15,.58);
+   const brow=mesh(new THREE.TorusGeometry(.18,.035,10,32,Math.PI),hair,head,x,.31,.42);brow.rotation.z=Math.PI;
  }
- // magic flare when clown springs out
- if(pop>0&&vanish<1){const a=(1-vanish)*(.3+.25*Math.sin(t*12));ctx.globalAlpha=a;const g=ctx.createRadialGradient(0,-235,8,0,-235,180);g.addColorStop(0,'#8af5ff88');g.addColorStop(.5,'#a84bff22');g.addColorStop(1,'#a84bff00');ctx.fillStyle=g;ctx.fillRect(-210,-420,420,360);ctx.globalAlpha=1;
- for(let i=0;i<24;i++){const ang=i/24*Math.PI*2+t*.7,rad=100+Math.sin(t*4+i)*16;ctx.fillStyle=i%2?'#7ef3ff':'#d48bff';ctx.globalAlpha=a;ctx.beginPath();ctx.arc(Math.cos(ang)*rad, -225+Math.sin(ang)*rad*.55,2.2,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1}
- // lid slam shake at jump
- if(phase!=='idle'&&t>4.8&&t<5.4){const j=Math.sin((t-4.8)*42)*3;ctx.translate(j,0)}
- ctx.restore();
+ // sculpted mouth opening and teeth
+ mesh(new THREE.SphereGeometry(.245,32,20),mat('#180810',.4),head,0,-.29,.38).scale.set(1,.48,.23);
+ for(let i=0;i<7;i++)mesh(new THREE.BoxGeometry(.052,.09,.025),ivory,head,-.15+i*.05,-.27,.57);
+ // swept hair cap and pointed locks
+ mesh(new THREE.SphereGeometry(.49,32,24,0,Math.PI*2,0,Math.PI*.52),hair,head,0,.25,-.015);
+ for(let i=0;i<13;i++){const a=(i/12-.5)*Math.PI*.92;const lock=mesh(new THREE.ConeGeometry(.105,.48,10),hair,head,Math.sin(a)*.43,.37,Math.cos(a)*.27);lock.rotation.z=-Math.sin(a)*.85;lock.rotation.x=.25}
+ // red cheek paint, tear streaks
+ for(const x of [-.32,.32]){const mark=mesh(new THREE.SphereGeometry(.095,20,16),red,head,x,-.14,.36);mark.scale.set(.55,1.8,.3)}
+ // articulated upper arms and hands
+ for(const side of [-1,1]){const pivot=new THREE.Group();pivot.position.set(side*.42,.55,0);clownRig.add(pivot);const upper=mesh(new THREE.CapsuleGeometry(.105,.55,6,12),suit,pivot,side*.04,-.34,0);upper.rotation.z=side*-.12;const hand=mesh(new THREE.SphereGeometry(.12,20,16),skin,pivot,side*.08,-.7,.02);arms.push(pivot)}
+ // sinister black gloves fingers
+ // clown rig shadow / dramatic pose
+ // lights in eyes
+ for(const x of [-.19,.19]){const gl=new THREE.PointLight('#ff314f',.0,1.1);gl.position.set(x,.12,.7);head.add(gl);dust.push(gl)}
+ // smoke sprites as transparent soft spheres
+ const smokeMat=new THREE.MeshBasicMaterial({color:'#aeb4c5',transparent:true,opacity:0,depthWrite:false});
+ for(let i=0;i<34;i++){const o=mesh(new THREE.SphereGeometry(.16+Math.random()*.17,12,10),smokeMat.clone(),scene,(Math.random()-.5)*1.1,.8+Math.random()*1.3,(Math.random()-.5)*.7);o.visible=false;smoke.push(o)}
+ // floating dust
+ const dgeo=new THREE.BufferGeometry(),positions=new Float32Array(220*3);for(let i=0;i<220;i++){positions[i*3]=(Math.random()-.5)*9;positions[i*3+1]=Math.random()*6;positions[i*3+2]=(Math.random()-.5)*7}
+ dgeo.setAttribute('position',new THREE.BufferAttribute(positions,3));const points=new THREE.Points(dgeo,new THREE.PointsMaterial({color:'#d7bd91',size:.025,transparent:true,opacity:.55}));scene.add(points);dust.push(points);
+ resize();
 }
-function frame(){if(phase!=='idle'){const t=(performance.now()-start)/1000;draw(t)}else draw(0);raf=requestAnimationFrame(frame)}
-function makeParticles(){particles=[];for(let i=0;i<65;i++)particles.push({x:(Math.random()-.5)*W*.8,y:-Math.random()*H*.85,r:.5+Math.random()*1.5,a:.15+Math.random()*.5,c:Math.random()>.5?'#e8c58c':'#9beeff'})}
-function playTune(){
- const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent='THIS BROWSER DOES NOT SUPPORT AUDIO';return}
- audio=new AC();master=audio.createGain();master.gain.value=.22;master.connect(audio.destination);
+function resize(){if(!renderer)return;const r=canvas.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix()}
+function audioStart(){
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+ audio=new AC();master=audio.createGain();master.gain.value=.36;master.connect(audio.destination);
  const notes=[659,587,523,587,659,659,659,587,587,587,659,784,784,659,587,523,587,659,659,659,659,587,587,659,587,523];
- const durations=[.23,.23,.23,.23,.23,.23,.46,.23,.23,.46,.23,.23,.46,.23,.23,.23,.23,.23,.23,.23,.23,.23,.23,.23,.23,.55];
- let at=audio.currentTime+.08;
- notes.forEach((freq,i)=>{const d=durations[i]*(1.7-i/notes.length*.18),o=audio.createOscillator(),g=audio.createGain(),filter=audio.createBiquadFilter();o.type='sine';o.frequency.value=freq;filter.type='lowpass';filter.frequency.value=2400;g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.19,at+.012);g.gain.exponentialRampToValueAtTime(.0001,at+d*.92);o.connect(filter).connect(g).connect(master);o.start(at);o.stop(at+d);oscillators.push(o);
- const overtone=audio.createOscillator(),og=audio.createGain();overtone.type='triangle';overtone.frequency.value=freq*2.01;og.gain.setValueAtTime(.0001,at);og.gain.exponentialRampToValueAtTime(.035,at+.008);og.gain.exponentialRampToValueAtTime(.0001,at+d*.65);overtone.connect(og).connect(master);overtone.start(at);overtone.stop(at+d);oscillators.push(overtone);
- at+=d;
- });
- const duration=at-audio.currentTime+.05;
- // Mechanical ticking accelerates with the tune.
- for(let tt=0;tt<duration;){const when=audio.currentTime+tt;const o=audio.createOscillator(),g=audio.createGain();o.type='square';o.frequency.value=1900;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(.025,when+.002);g.gain.exponentialRampToValueAtTime(.0001,when+.018);o.connect(g).connect(master);o.start(when);o.stop(when+.02);oscillators.push(o);tt+=Math.max(.12,.32-tt/duration*.19)}
- return duration;
+ let at=audio.currentTime+.05;
+ notes.forEach((f,i)=>{const d=.31-i*.004,o=audio.createOscillator(),g=audio.createGain(),filter=audio.createBiquadFilter();o.type='triangle';o.frequency.value=f;filter.type='lowpass';filter.frequency.value=1800;g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.14,at+.012);g.gain.exponentialRampToValueAtTime(.0001,at+d*.9);o.connect(filter).connect(g).connect(master);o.start(at);o.stop(at+d);at+=d});
+ const impact=audio.createOscillator(),ig=audio.createGain();impact.type='sawtooth';impact.frequency.setValueAtTime(95,at+4.85);impact.frequency.exponentialRampToValueAtTime(32,at+5.3);ig.gain.setValueAtTime(.0001,at+4.85);ig.gain.exponentialRampToValueAtTime(.45,at+4.9);ig.gain.exponentialRampToValueAtTime(.0001,at+5.5);impact.connect(ig).connect(master);impact.start(at+4.85);impact.stop(at+5.55);
+ return at-audio.currentTime;
 }
-function addMechanicalFX(){
- if(!audio||!master)return;
- const now=audio.currentTime;
- // Hinge groan as the lid releases.
- const creak=audio.createOscillator(),cg=audio.createGain(),cf=audio.createBiquadFilter();
- creak.type='sawtooth';creak.frequency.setValueAtTime(115,now+4.05);creak.frequency.exponentialRampToValueAtTime(330,now+4.85);creak.frequency.exponentialRampToValueAtTime(82,now+5.15);
- cf.type='lowpass';cf.frequency.value=720;cg.gain.setValueAtTime(.0001,now+4.05);cg.gain.exponentialRampToValueAtTime(.12,now+4.18);cg.gain.exponentialRampToValueAtTime(.0001,now+5.2);
- creak.connect(cf).connect(cg).connect(master);creak.start(now+4.05);creak.stop(now+5.22);oscillators.push(creak);
- // A short, filtered broadband impact.
- const bangAt=now+5.02,buffer=audio.createBuffer(1,Math.floor(audio.sampleRate*.55),audio.sampleRate),data=buffer.getChannelData(0);
- for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/data.length,3);
- const noise=audio.createBufferSource(),ng=audio.createGain(),nf=audio.createBiquadFilter();
- noise.buffer=buffer;nf.type='lowpass';nf.frequency.setValueAtTime(1700,bangAt);nf.frequency.exponentialRampToValueAtTime(180,bangAt+.42);
- ng.gain.setValueAtTime(.0001,bangAt);ng.gain.exponentialRampToValueAtTime(.48,bangAt+.008);ng.gain.exponentialRampToValueAtTime(.0001,bangAt+.52);
- noise.connect(nf).connect(ng).connect(master);noise.start(bangAt);oscillators.push(noise);
- // Air rush when the clown lunges.
- const rush=audio.createOscillator(),rg=audio.createGain(),rf=audio.createBiquadFilter();
- rush.type='triangle';rush.frequency.setValueAtTime(480,now+9.35);rush.frequency.exponentialRampToValueAtTime(75,now+10.05);
- rf.type='lowpass';rf.frequency.value=900;rg.gain.setValueAtTime(.0001,now+9.35);rg.gain.exponentialRampToValueAtTime(.15,now+9.48);rg.gain.exponentialRampToValueAtTime(.0001,now+10.1);
- rush.connect(rf).connect(rg).connect(master);rush.start(now+9.35);rush.stop(now+10.12);oscillators.push(rush);
+function stopSound(){if(audio){audio.close().catch(()=>{});audio=null}}
+function start(){if(phase!=='idle')return;phase='show';started=clock.getElapsedTime();wind.disabled=true;reset.disabled=false;status.textContent='THE HANDLE TURNS… THE MUSIC BEGINS.';const d=audioStart();setTimeout(()=>{if(phase==='show')status.textContent='THE LID BURSTS OPEN!'},4900);setTimeout(()=>{if(phase==='show')status.textContent='HE FOUND YOU.'},9500);setTimeout(()=>{if(phase==='show')status.textContent='A CRACK… THEN SILENCE.'},11600);setTimeout(()=>{if(phase==='show')resetShow()},14500)}
+function resetShow(){phase='idle';stopSound();wind.disabled=false;reset.disabled=true;status.textContent='THE BOX IS WAITING IN THE DARK.';clownRig.visible=false;clownRig.position.set(0,1.75,0);lidPivot.rotation.set(0,0,0);spring.scale.y=1;crank.rotation.z=0;smoke.forEach(o=>{o.visible=false;o.material.opacity=0})}
+function stop(){resetShow();status.textContent='THE BOX HAS BEEN RESET.'}
+function animate(){raf=requestAnimationFrame(animate);const t=clock.getElapsedTime(),run=phase==='show'?t-started:0;
+ if(phase==='show'){
+   const windup=clamp(run/4.25,0,1);crank.rotation.z=-windup*Math.PI*8;
+   const open=smooth((run-4.15)/.75);lidPivot.rotation.x=-open*1.68;
+   const rise=smooth((run-4.8)/1.05);clownRig.visible=run>4.75;clownRig.position.y=1.75+rise*1.42+Math.sin(run*13)*.035*rise;
+   spring.scale.y=1+rise*.95;clownRig.rotation.z=Math.sin(run*8)*.035;
+   const lunge=smooth((run-9.35)/.48);clownRig.position.z=lunge*1.1;clownRig.scale.setScalar(1+lunge*.48);
+   arms.forEach((a,i)=>{a.rotation.z=(i===0?-.8:.8)+Math.sin(run*9+i)*.22+rise*.3});
+   const vanish=smooth((run-11.35)/.85);clownRig.visible=run<12.25;
+   smoke.forEach((o,i)=>{const age=run-5.05-i*.055;o.visible=age>0&&age<5.5;if(o.visible){const k=clamp(age/5.5,0,1);o.position.x=Math.sin(i*2.1+age*1.7)*(.45+k*.95);o.position.y=.9+k*2.6+(i%5)*.12;o.position.z=Math.cos(i*1.4)*(.3+k*.4);o.scale.setScalar(.7+k*3.2);o.material.opacity=(1-k)*.18}});
+   if(run>12.1){clownRig.scale.setScalar(1+vanish*.48)}
+ }else{crank.rotation.z=0;clownRig.scale.setScalar(1)}
+ renderer.render(scene,camera)
 }
-function stopAudio(){if(audio){try{audio.close()}catch(e){}audio=null}oscillators=[]}
-function begin(){if(phase!=='idle')return;makeParticles();phase='show';start=performance.now();wind.disabled=true;reset.disabled=false;status.textContent='THE HANDLE TURNS… THE LITTLE TUNE BEGINS.';const duration=playTune();addMechanicalFX();const total=Math.max(duration+1.7,13.2);setTimeout(()=>{if(phase!=='show')return;status.textContent='THE LID BURSTS OPEN!'},4300);setTimeout(()=>{if(phase!=='show')return;status.textContent='HE FOUND YOU.'},6200);setTimeout(()=>{if(phase!=='show')return;status.textContent='A SHARP CRACK — THEN NOTHING.'},11200);endTimer=setTimeout(()=>{if(phase!=='show')return;phase='idle';stopAudio();wind.disabled=false;reset.disabled=true;status.textContent='THE MUSIC HAS ENDED. THE HANDLE IS STILL.';draw(0)},total*1000)}
-function stop(){phase='idle';clearTimeout(endTimer);stopAudio();wind.disabled=false;reset.disabled=true;status.textContent='THE BOX HAS BEEN RESET.';draw(0)}
-wind.addEventListener('click',begin);reset.addEventListener('click',stop);
-makeParticles();resize();frame();
+wind.addEventListener('click',start);reset.addEventListener('click',stop);
+try{makeScene();clock=new THREE.Clock();animate();window.addEventListener('resize',resize)}catch(e){status.textContent='3D SCENE FAILED TO LOAD — CHECK CONNECTION';console.error(e)}
 })();
 </script></body></html>
