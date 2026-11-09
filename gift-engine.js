@@ -682,7 +682,7 @@ function renderLivingTombstonesGift(gift,opts,overlay){
  function grave(st,t){
   const ww=st.shape===0?43:st.shape===1?38:st.shape===2?35:st.shape===3?46:40;
   const hh=st.shape===0?91:st.shape===1?105:st.shape===2?78:st.shape===3?88:96;
-  const rock=0;
+  const rock=Math.sin(t*2.1+st.phase)*.035;
   ctx.save();
   // The pivot is fixed at the foot of the stone: rotation only, never screen-space travel.
   ctx.translate(st.x,st.baseY);ctx.rotate(rock);ctx.scale(st.s,st.s);
