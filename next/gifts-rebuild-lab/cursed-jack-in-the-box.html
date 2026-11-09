@@ -115,7 +115,7 @@ function playTune(){
  const notes=[659,587,523,587,659,659,659,587,587,587,659,784,784,659,587,523,587,659,659,659,659,587,587,659,587,523];
  const durations=[.23,.23,.23,.23,.23,.23,.46,.23,.23,.46,.23,.23,.46,.23,.23,.23,.23,.23,.23,.23,.23,.23,.23,.23,.23,.55];
  let at=audio.currentTime+.08;
- notes.forEach((freq,i)=>{const d=durations[i],o=audio.createOscillator(),g=audio.createGain(),filter=audio.createBiquadFilter();o.type='sine';o.frequency.value=freq;filter.type='lowpass';filter.frequency.value=2400;g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.19,at+.012);g.gain.exponentialRampToValueAtTime(.0001,at+d*.92);o.connect(filter).connect(g).connect(master);o.start(at);o.stop(at+d);oscillators.push(o);
+ notes.forEach((freq,i)=>{const d=durations[i]*(1.7-i/notes.length*.18),o=audio.createOscillator(),g=audio.createGain(),filter=audio.createBiquadFilter();o.type='sine';o.frequency.value=freq;filter.type='lowpass';filter.frequency.value=2400;g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.19,at+.012);g.gain.exponentialRampToValueAtTime(.0001,at+d*.92);o.connect(filter).connect(g).connect(master);o.start(at);o.stop(at+d);oscillators.push(o);
  const overtone=audio.createOscillator(),og=audio.createGain();overtone.type='triangle';overtone.frequency.value=freq*2.01;og.gain.setValueAtTime(.0001,at);og.gain.exponentialRampToValueAtTime(.035,at+.008);og.gain.exponentialRampToValueAtTime(.0001,at+d*.65);overtone.connect(og).connect(master);overtone.start(at);overtone.stop(at+d);oscillators.push(overtone);
  at+=d;
  });
