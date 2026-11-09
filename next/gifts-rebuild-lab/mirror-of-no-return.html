@@ -61,7 +61,48 @@ g.restore()}
 if(t>1.7&&t<4.8){for(let p of shards){let k=clamp((t-p.delay)/1.3,0,1);if(k<=0)continue;let x=p.x+(cx-p.x)*k,y=p.y+(cy-p.y)*k;g.save();g.translate(x,y);g.rotate(p.a+t*2);g.fillStyle='#dbeeff';g.shadowColor='#fff';g.shadowBlur=12;path([[0,-p.r],[p.r*.45,0],[0,p.r*1.3],[-p.r*.3,0]]);g.closePath();g.fill();g.restore()}}
 if(t>4.2){let flash=Math.max(0,1-Math.abs(t-4.45)/.3);if(flash){g.fillStyle='rgba(210,235,255,'+flash*.55+')';g.fillRect(0,0,W,H)}}
 }
-function draw(t){if(!W||!H)return;g.clearRect(0,0,W,H);drawRoom(t);drawMirror(t);drawEffects(t);if(t>13.2){g.fillStyle='rgba(0,0,0,'+clamp((t-13.2)/1.1,0,.88)+')';g.fillRect(0,0,W,H)}}
+function drawSuction(t){
+ if(t<4.15)return;
+ const cx=W*.5,cy=H*.43,p=clamp((t-4.15)/9.3,0,1),ease=p*p*(3-2*p);
+ g.save();g.globalCompositeOperation='screen';
+ // Long, curved wind trails make the pull readable across the whole room.
+ for(let i=0;i<34;i++){
+  const a=i*Math.PI*2/34+t*(.25+(i%5)*.025),startR=Math.max(W,H)*(.42+(i%4)*.12),endR=20+(i%6)*9;
+  const r=startR+(endR-startR)*ease,swirl=a+ease*4.8;
+  const x=cx+Math.cos(swirl)*r,y=cy+Math.sin(swirl)*r*.72;
+  const tail=cx+Math.cos(swirl-.42)*Math.min(110,r*.35),ty=cy+Math.sin(swirl-.42)*Math.min(82,r*.35)*.72;
+  g.strokeStyle='rgba(177,211,245,'+(.08+ease*.22)+')';g.lineWidth=1+(i%3)*.7;
+  g.beginPath();g.moveTo(tail,ty);g.quadraticCurveTo((tail+x)/2+Math.sin(t*2+i)*18,(ty+y)/2,x,y);g.stroke();
+ }
+ // Distinct room objects are torn loose and dragged into the opening.
+ for(let i=0;i<22;i++){
+  const seed=i*12.9898,angle=seed%6.283,delay=(i%7)*.18;
+  const q=clamp((t-4.45-delay)/7.8,0,1);if(q<=0)continue;
+  const startX=W*(.05+((i*37)%90)/100),startY=H*(.24+((i*19)%68)/100);
+  const spin=angle+q*5.4+(i%2?1:-1)*q*2;
+  const radius=Math.hypot(startX-cx,startY-cy)*(1-q)+12;
+  const x=cx+Math.cos(spin)*radius,y=cy+Math.sin(spin)*radius*.72;
+  const scale=(1-q*.86),rot=spin+q*7;
+  g.save();g.translate(x,y);g.rotate(rot);g.scale(scale,scale);
+  if(i%4===0){ // a chair/table fragment
+   g.fillStyle='#493020';g.fillRect(-18,-4,36,7);g.fillRect(-15,2,5,24);g.fillRect(10,2,5,24);g.fillRect(-18,-15,5,14);
+   g.strokeStyle='#b58a5b';g.lineWidth=2;g.strokeRect(-18,-4,36,7);
+  }else if(i%4===1){ // torn curtain
+   g.fillStyle='rgba(85,35,47,.85)';g.beginPath();g.moveTo(-10,-22);g.quadraticCurveTo(18,-7,4,25);g.quadraticCurveTo(-15,9,-10,-22);g.fill();
+   g.strokeStyle='rgba(190,137,122,.4)';g.lineWidth=2;g.stroke();
+  }else if(i%4===2){ // flying timber
+   g.fillStyle='#765035';g.fillRect(-22,-3,44,6);g.fillStyle='#c49a68';g.fillRect(-20,-3,38,1.5);
+  }else{ // broken glass
+   g.fillStyle='rgba(202,229,255,.8)';path([[-14,-9],[13,-5],[4,14],[-8,7]]);g.closePath();g.fill();
+   g.strokeStyle='#f0f8ff';g.lineWidth=1;g.stroke();
+  }
+  g.restore();
+ }
+ // A hard radial pressure wave ripples the room as suction peaks.
+ if(t>4.3&&t<6.1){const k=(t-4.3)/1.8;g.strokeStyle='rgba(205,226,255,'+(.24*(1-k))+')';g.lineWidth=2;g.beginPath();g.ellipse(cx,cy,Math.max(10,k*Math.max(W,H)*.7),Math.max(10,k*Math.max(W,H)*.5),0,0,Math.PI*2);g.stroke()}
+ g.restore();
+}
+function draw(t){if(!W||!H)return;g.clearRect(0,0,W,H);if(t>4.15){const shake=clamp((t-4.15)/.8,0,1)*(1-clamp((t-11.8)/2.5,0,1))*5;g.save();g.translate(rand(-shake,shake),rand(-shake,shake));}drawRoom(t);drawMirror(t);drawEffects(t);drawSuction(t);if(t>4.15)g.restore();if(t>13.2){g.fillStyle='rgba(0,0,0,'+clamp((t-13.2)/1.1,0,.88)+')';g.fillRect(0,0,W,H)}}
 function tick(now){if(!playing)return;let t=(now-start)/1000;draw(t);if(t<14.5)raf=requestAnimationFrame(tick);else{playing=false;status.textContent='THE ROOM HAS VANISHED INTO THE MIRROR · PLAY AGAIN';}}
 function sound(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('Audio unavailable');audioCtx=new AC();const c=audioCtx;return c.resume().then(()=>{
 const master=c.createGain(),comp=c.createDynamicsCompressor();master.gain.value=.75;comp.threshold.value=-22;comp.knee.value=18;comp.ratio.value=5;comp.attack.value=.003;comp.release.value=.25;master.connect(comp);comp.connect(c.destination);
