@@ -17,20 +17,23 @@ body{min-height:100svh;display:grid;place-items:center;overflow-x:hidden}
 .curtain{position:absolute;right:4%;top:3%;width:35%;height:44%;background:linear-gradient(90deg,#19131b,#33202b 18%,transparent 23% 77%,#2b1925 82%,#120e17);opacity:.8;filter:drop-shadow(0 0 9px #000)}
 .floor{position:absolute;bottom:0;left:0;width:100%;height:19%;background:repeating-linear-gradient(90deg,#171116 0 2px,#211820 3px 120px),linear-gradient(#1b1519,#09080b);transform:perspective(260px) rotateX(9deg);transform-origin:bottom}
 .rug{position:absolute;bottom:1%;left:14%;width:72%;height:14%;background:radial-gradient(ellipse,#32202a,#130f17 70%);border:2px solid #4a3033;clip-path:polygon(8% 0,92% 0,100% 100%,0 100%);opacity:.9}
-.clock{position:absolute;z-index:4;left:50%;bottom:7%;transform:translateX(-50%);width:min(43%,330px);height:79%;filter:drop-shadow(0 18px 22px #000)}
-.crown{position:absolute;top:0;left:9%;width:82%;height:15%;background:linear-gradient(90deg,#28170f,#81512c 14%,#321b12 25%,#a16b39 49%,#3b2116 74%,#75472a 90%,#1b120e);clip-path:polygon(0 100%,5% 45%,17% 45%,22% 0,78% 0,83% 45%,95% 45%,100% 100%);border-bottom:4px solid #c18c4e}
+.clock{position:absolute;z-index:4;left:50%;bottom:7%;transform:perspective(900px) translateX(-50%) rotateY(-7deg) rotateX(1deg);transform-style:preserve-3d;width:min(43%,330px);height:79%;filter:drop-shadow(18px 24px 24px #000)}
+.crown{position:absolute;top:0;left:9%;width:82%;height:15%;transform:translateZ(13px);background:linear-gradient(90deg,#120b08 0%,#81512c 10%,#321b12 23%,#d19a5a 48%,#3b2116 73%,#75472a 90%,#100a08 100%);clip-path:polygon(0 100%,5% 45%,17% 45%,22% 0,78% 0,83% 45%,95% 45%,100% 100%);border-bottom:5px solid #c18c4e;box-shadow:inset 0 5px 9px #f2c88a55,0 10px 10px #0009}
 .crown:after{content:"";position:absolute;inset:8% 18% 18%;border:2px solid #c08a4e;clip-path:polygon(0 100%,8% 25%,25% 25%,30% 0,70% 0,75% 25%,92% 25%,100% 100%)}
 .case{position:absolute;top:10%;bottom:0;left:14%;width:72%;border:7px solid #24150f;border-radius:48% 48% 8px 8px/16% 16% 8px 8px;background:linear-gradient(90deg,#160e0b,#704326 9%,#29180f 19%,#87532e 48%,#2a170f 78%,#75472a 92%,#160e0b);box-shadow:inset 0 0 0 3px #b27c45,inset 0 0 20px #000,0 0 0 2px #090708}
 .case:before{content:"";position:absolute;inset:8px;border:1px solid #c1945b;border-radius:48% 48% 3px 3px/16% 16% 3px 3px;opacity:.8}
 .woodgrain{position:absolute;inset:0;background:repeating-linear-gradient(92deg,transparent 0 15px,#d6a36b12 16px,#0003 18px,transparent 23px);mix-blend-mode:screen;pointer-events:none}
-.dial{position:absolute;top:9%;left:50%;transform:translateX(-50%);width:69%;aspect-ratio:1;border-radius:50%;border:8px ridge #a87942;background:radial-gradient(circle,#e0cda7 0 56%,#6f4b2c 57% 60%,#c29a61 61% 64%,#39241a 66%);box-shadow:0 0 0 3px #21140f,inset 0 0 12px #48301e,0 3px 12px #000}
+.dial{position:absolute;top:9%;left:50%;transform:translateX(-50%) translateZ(22px);width:69%;aspect-ratio:1;border-radius:50%;border:11px ridge #a87942;background:radial-gradient(circle at 34% 27%,#fff0d0 0,#e0cda7 38%,#c5ad83 67%,#76502f 69%,#d0a46b 73%,#39241a 77%);box-shadow:0 0 0 5px #21140f,0 0 0 9px #a87942,inset 0 0 17px #48301e,inset 0 5px 13px #fff7,0 12px 18px #000b}
 .dial:before{content:"";position:absolute;inset:8%;border:1px solid #725438;border-radius:50%;box-shadow:0 0 0 2px #b28a58}
 .brand{position:absolute;top:27%;width:100%;text-align:center;font-size:clamp(6px,1vw,9px);letter-spacing:2px;color:#725437}
 .roman{position:absolute;inset:0;color:#49301f;font-size:clamp(12px,2vw,18px);font-weight:bold}
 .roman span{position:absolute;transform:translate(-50%,-50%)}
 .hand{position:absolute;left:50%;top:50%;transform-origin:50% 100%;background:#33241a;border-radius:5px;box-shadow:0 0 2px #fff5}
-.hour{height:25%;width:4px;transform:translate(-50%,-100%) rotate(0deg)}
-.minute{height:35%;width:3px;transform:translate(-50%,-100%) rotate(0deg)}
+.hour{height:25%;width:5px;transform:translate(-50%,-100%) rotate(0deg);animation:hourTick 43200s linear infinite}
+.minute{height:35%;width:3px;transform:translate(-50%,-100%) rotate(0deg);animation:minuteTick 3600s linear infinite}
+@keyframes minuteTick{to{transform:translate(-50%,-100%) rotate(360deg)}}
+@keyframes hourTick{to{transform:translate(-50%,-100%) rotate(360deg)}}
+.scene.awake .minute{animation-duration:8s}.scene.awake .hour{animation-duration:96s}
 .pin{position:absolute;left:50%;top:50%;width:11px;height:11px;border-radius:50%;background:#3a2417;border:2px solid #c39a5e;transform:translate(-50%,-50%)}
 .glass{position:absolute;inset:0;border-radius:50%;background:linear-gradient(125deg,#fff3 0 8%,transparent 24% 72%,#fff1 88%);pointer-events:none}
 .belly{position:absolute;top:45%;bottom:7%;left:23%;right:23%;border:5px solid #9b6a3a;background:linear-gradient(90deg,#160e0b,#4c2e1d 18%,#17100d 48%,#56331e 82%,#150d0a);box-shadow:inset 0 0 18px #000}
@@ -110,6 +113,6 @@ let audio=false,ctx=null,awakened=false;
 function tone(freq,duration,when=0){if(!audio)return;ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(freq,ctx.currentTime+when);g.gain.setValueAtTime(.0001,ctx.currentTime+when);g.gain.exponentialRampToValueAtTime(.16,ctx.currentTime+when+.03);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+when+duration);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+when);o.stop(ctx.currentTime+when+duration+.05)}
 function chime(){[523.25,392,329.63,261.63].forEach((f,i)=>tone(f,2,i*.55));tone(55,4,2.4);tone(73.4,3,3.1)}
 document.getElementById('sound').addEventListener('click',()=>{audio=!audio;const b=document.getElementById('sound');b.textContent='Sound: '+(audio?'on':'off');b.setAttribute('aria-pressed',String(audio));if(audio){ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();ctx.resume()}});
-document.getElementById('awaken').addEventListener('click',()=>{scene.classList.remove('awake');void scene.offsetWidth;scene.classList.add('awake');awakened=true;note.textContent='THE CURSE HAS BEEN UNSEALED';hour.style.transform='translate(-50%,-100%) rotate(0deg)';minute.style.transform='translate(-50%,-100%) rotate(0deg)';chime();tone(82,3,2.2);tone(110,2,3.1);window.setTimeout(()=>{note.textContent='SOMETHING IS WATCHING FROM THE DARK'},2400);window.setTimeout(()=>{note.textContent='THE CLOCK HAS CHOSEN YOU'},5200);window.setTimeout(()=>{note.textContent='THE WITCHING HOUR · THE CURSE LIVES'},8200)});
+document.getElementById('awaken').addEventListener('click',()=>{scene.classList.remove('awake');void scene.offsetWidth;scene.classList.add('awake');awakened=true;note.textContent='THE CURSE HAS BEEN UNSEALED';chime();tone(82,3,2.2);tone(110,2,3.1);window.setTimeout(()=>{note.textContent='SOMETHING IS WATCHING FROM THE DARK'},2400);window.setTimeout(()=>{note.textContent='THE CLOCK HAS CHOSEN YOU'},5200);window.setTimeout(()=>{note.textContent='THE WITCHING HOUR · THE CURSE LIVES'},8200)});
 </script>
 </body></html>
