@@ -17,7 +17,7 @@ const playButton=document.getElementById("play");
 playButton.disabled=true;
 document.getElementById("status").textContent="LOADING TIKNATION GIFT ENGINE…";
 const engineScript=document.createElement("script");
-engineScript.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=grounded-visible-rocking-graves-20261108c";
+engineScript.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=sync-audio-animation-end-20261108d";
 engineScript.onload=()=>{if(window.TikNationGiftEngine){playButton.disabled=false;document.getElementById("status").textContent="READY · TAP PLAY TO START THE GIFT"}else{document.getElementById("status").textContent="ENGINE INIT ERROR · "+(window.__tikNationGiftLoadError||"NO WINDOW ERROR CAPTURED")}};
 engineScript.onerror=()=>{document.getElementById("status").textContent="ENGINE SCRIPT FAILED TO LOAD · "+engineScript.src};
 document.head.appendChild(engineScript);
@@ -73,6 +73,6 @@ function playCemeterySound(){
  tombstoneTimers.push(setTimeout(()=>{if(tombstoneAudio.includes(stone))stone.play().catch(fallback);},1550));
  tombstoneTimers.push(setTimeout(()=>{if(tombstoneAudio.length)stopAudio();},6900));
 }
-document.getElementById("play").addEventListener("click",()=>{stopAudio();if(!window.TikNationGiftEngine){document.getElementById("status").textContent="GIFT ENGINE DID NOT LOAD · PLEASE REFRESH";return;}try{playCemeterySound();const result=window.TikNationGiftEngine.show({name:"The Night of the Living Tombstones",style:"livingtombstones",message:"The dead will not stay buried."},{meta:"TIKNATION EPIC GIFT · PREVIEW ONLY",duration:10500});document.getElementById("status").textContent=result?"THE NIGHT OF THE LIVING TOMBSTONES IS PLAYING · PREVIEW ONLY":"GIFT ENGINE COULD NOT START · REFRESH AND TRY AGAIN";}catch(error){console.error(error);document.getElementById("status").textContent="PLAYBACK ERROR · "+(error.message||"PLEASE REFRESH");}});
+document.getElementById("play").addEventListener("click",()=>{stopAudio();if(!window.TikNationGiftEngine){document.getElementById("status").textContent="GIFT ENGINE DID NOT LOAD · PLEASE REFRESH";return;}try{playCemeterySound();const result=window.TikNationGiftEngine.show({name:"The Night of the Living Tombstones",style:"livingtombstones",message:"The dead will not stay buried."},{meta:"TIKNATION EPIC GIFT · PREVIEW ONLY",duration:7000});document.getElementById("status").textContent=result?"THE NIGHT OF THE LIVING TOMBSTONES IS PLAYING · PREVIEW ONLY":"GIFT ENGINE COULD NOT START · REFRESH AND TRY AGAIN";}catch(error){console.error(error);document.getElementById("status").textContent="PLAYBACK ERROR · "+(error.message||"PLEASE REFRESH");}});
 document.getElementById("stop").addEventListener("click",()=>{stopAudio();document.getElementById("status").textContent="PREVIEW AUDIO STOPPED"});
 </script></body></html>
