@@ -908,43 +908,54 @@ function renderHauntedMansionGift(gift,opts,overlay){
  '<ellipse cx="600" cy="720" rx="590" ry="72" fill="#000" opacity=".82" filter="url(#hm-haze)"/>'+
  '<path class="hm-lightning" d="M895 12L820 150L876 145L790 300L925 165L865 170Z" fill="none" stroke="#d9edff" stroke-width="10" stroke-linejoin="round" filter="url(#hm-glow)"/>'+
  '<g class="hm-house">'+
- '<!-- sprawling Victorian estate: asymmetrical wings, steep roofs, corner turrets -->'+
- '<path d="M35 438L55 330L255 205L465 320L465 365L620 250L805 360L805 405L980 285L1170 390L1175 690L25 690Z" fill="url(#hm-roof)" stroke="#101720" stroke-width="15"/>'+
- '<path d="M48 430L255 220L454 340L454 390L620 265L790 380L790 420L980 300L1158 410" fill="none" stroke="#9299a0" stroke-width="5" opacity=".5"/>'+
- '<g fill="#343d48" stroke="#111923" stroke-width="9"><path d="M115 300V190H168V267Z"/><path d="M720 330V205H770V300Z"/><path d="M1035 350V220H1085V320Z"/></g>'+
- '<!-- left wing: three floors, deep bay and balcony -->'+
- '<path d="M55 410L255 285L455 405V690H40Z" fill="url(#hm-stone)" stroke="#151d27" stroke-width="12"/>'+
- '<path d="M55 410L255 285L455 405V690H40Z" fill="url(#hm-blocks)" opacity=".45"/>'+
- '<path d="M70 480L255 370L440 480M55 565H450" fill="none" stroke="#a0a3a1" stroke-width="7" opacity=".35"/>'+
- '<path d="M125 430V365Q165 320 205 365V430Z M280 430V365Q320 320 360 365V430Z M125 535V470Q165 425 205 470V535Z M280 535V470Q320 425 360 470V535Z M125 640V575Q165 530 205 575V640Z M280 640V575Q320 530 360 575V640Z" fill="#101923" stroke="#9b9b91" stroke-width="6"/>'+
- '<g class="hm-light"><path d="M133 425V370Q165 337 197 370V425Z M288 425V370Q320 337 352 370V425Z M133 530V475Q165 442 197 475V530Z M288 530V475Q320 442 352 475V530Z"/></g>'+
- '<path d="M102 444H225L235 458H92Z M258 444H380L390 458H248Z" fill="#777d80" stroke="#1b232d" stroke-width="5"/>'+
- '<!-- central block set back from the front wings -->'+
- '<path d="M420 395L620 290L815 405V690H405Z" fill="#59616a" stroke="#151d27" stroke-width="13"/>'+
- '<path d="M420 395L620 290L815 405" fill="none" stroke="#a1a5a5" stroke-width="7" opacity=".4"/>'+
- '<path d="M495 445V385Q535 345 575 385V445Z M660 445V385Q700 345 740 385V445Z M495 555V495Q535 455 575 495V555Z M660 555V495Q700 455 740 495V555Z" fill="#111923" stroke="#a09f94" stroke-width="6"/>'+
- '<g class="hm-light delay"><path d="M503 438V390Q535 357 567 390V438Z M668 438V390Q700 357 732 390V438Z M503 548V500Q535 467 567 500V548Z M668 548V500Q700 467 732 500V548Z"/></g>'+
- '<!-- right wing projects forward; broken roofline and mansard dormers -->'+
- '<path d="M775 425L980 300L1160 410V690H755Z" fill="#4b545e" stroke="#151d27" stroke-width="13"/>'+
- '<path d="M795 430L980 320L1145 425" fill="none" stroke="#a1a5a5" stroke-width="6" opacity=".35"/>'+
- '<path d="M835 465V395Q875 350 915 395V465Z M1000 465V395Q1040 350 1080 395V465Z M835 575V505Q875 460 915 505V575Z M1000 575V505Q1040 460 1080 505V575Z M835 675V605Q875 560 915 605V675Z M1000 675V605Q1040 560 1080 605V675Z" fill="#111923" stroke="#a09f94" stroke-width="6"/>'+
- '<g class="hm-light delay"><path d="M843 458V400Q875 367 907 400V458Z M1008 458V400Q1040 367 1072 400V458Z M843 568V510Q875 477 907 510V568Z M1008 568V510Q1040 477 1072 510V568Z"/></g>'+
- '<!-- small mansard dormers, not a church steeple -->'+
- '<g fill="#252e39" stroke="#111923" stroke-width="7"><path d="M190 315L225 270L260 315V360H190Z"/><path d="M565 330L605 280L645 330V370H565Z"/><path d="M915 355L950 310L985 355V395H915Z"/></g>'+
- '<g fill="#e6b966" opacity=".55"><path d="M205 350V320Q225 295 245 320V350Z M578 360V335Q605 305 632 335V360Z M928 385V360Q950 335 972 360V385Z"/></g>'+
- '<!-- corner turret with conical roof, set to the side like an old manor -->'+
- '<path d="M1045 365V270Q1090 215 1135 270V390Z" fill="#535c66" stroke="#151d27" stroke-width="10"/>'+
- '<path d="M1030 275L1090 185L1150 275Z" fill="#252e39" stroke="#101720" stroke-width="9"/>'+
- '<path d="M1070 340V295Q1090 270 1110 295V340Z" fill="#111923" stroke="#aaa18e" stroke-width="5"/>'+
- '<!-- entrance is a modest timber doorway, deliberately not a cathedral arch -->'+
- '<path d="M535 690V590H665V690Z" fill="#080d13" stroke="#a09b8d" stroke-width="8"/>'+
- '<path d="M543 690V595H600V690Z M600 595H657V690H600Z" fill="url(#hm-door)" stroke="#17120f" stroke-width="5"/>'+
- '<path d="M553 610H590V675H553Z M610 610H647V675H610Z" fill="none" stroke="#9b7953" stroke-width="4"/>'+
- '<circle cx="589" cy="648" r="4" fill="#d5b46f"/><circle cx="611" cy="648" r="4" fill="#d5b46f"/>'+
- '<path d="M515 590L600 555L685 590Z" fill="#555d65" stroke="#151d27" stroke-width="8"/>'+
- '<path d="M520 690H680L700 710H500Z M490 710H710L730 732H470Z M455 732H745L775 755H425Z" fill="#6b7278" stroke="#171e26" stroke-width="7"/>'+
- '<g class="hm-shadow-person"><ellipse cx="630" cy="410" rx="15" ry="20" fill="#050609"/><path d="M607 462Q609 427 630 427Q651 427 653 462Z" fill="#050609"/></g>'+
- '<path d="M25 690H1175" stroke="#a2a19a" stroke-width="9" opacity=".45"/>'+
+ '<!-- immense multi-wing Victorian manor, deliberately oversized -->'+
+ '<path d="M15 330L70 220L270 115L475 245L475 290L610 150L780 275L780 315L970 185L1185 320L1190 700H10Z" fill="url(#hm-roof)" stroke="#0c131d" stroke-width="18"/>'+
+ '<path d="M70 220L270 115L475 245M610 150L780 275M970 185L1185 320" fill="none" stroke="#a2a8ad" stroke-width="7" opacity=".5"/>'+
+ '<!-- long left residential wing -->'+
+ '<path d="M30 365L270 215L500 360V700H20Z" fill="url(#hm-stone)" stroke="#111923" stroke-width="14"/>'+
+ '<path d="M30 365L270 215L500 360V700H20Z" fill="url(#hm-blocks)" opacity=".5"/>'+
+ '<!-- broad central grand hall -->'+
+ '<path d="M390 330L610 170L830 330V700H375Z" fill="#59616b" stroke="#111923" stroke-width="16"/>'+
+ '<path d="M390 330L610 170L830 330" fill="none" stroke="#aeb0aa" stroke-width="8" opacity=".45"/>'+
+ '<!-- right wing and rear connecting block -->'+
+ '<path d="M760 365L980 215L1180 350V700H745Z" fill="#4e5862" stroke="#111923" stroke-width="14"/>'+
+ '<path d="M760 365L980 215L1180 350V700H745Z" fill="url(#hm-blocks)" opacity=".45"/>'+
+ '<!-- five broad levels of architectural detail across the facade -->'+
+ '<path d="M25 420H1175M20 510H1180M15 605H1185" stroke="#a9aaa5" stroke-width="9" opacity=".55"/>'+
+ '<path d="M20 430H1180M20 520H1180M20 615H1180" stroke="#171e28" stroke-width="5"/>'+
+ '<!-- dozens of tall, individually framed windows -->'+
+ '<g fill="#101923" stroke="#aaa597" stroke-width="6">'+
+ '<path d="M75 425V370Q105 325 135 370V425Z M180 425V345Q210 300 240 345V425Z M285 425V370Q315 325 345 370V425Z M410 425V350Q440 305 470 350V425Z M535 425V300Q565 255 595 300V425Z M625 425V300Q655 255 685 300V425Z M750 425V350Q780 305 810 350V425Z M865 425V370Q895 325 925 370V425Z M970 425V345Q1000 300 1030 345V425Z M1080 425V370Q1110 325 1140 370V425Z"/>'+
+ '<path d="M75 510V455Q105 410 135 455V510Z M180 510V435Q210 390 240 435V510Z M285 510V455Q315 410 345 455V510Z M410 510V435Q440 390 470 435V510Z M535 510V435Q565 390 595 435V510Z M625 510V435Q655 390 685 435V510Z M750 510V435Q780 390 810 435V510Z M865 510V455Q895 410 925 455V510Z M970 510V435Q1000 390 1030 435V510Z M1080 510V455Q1110 410 1140 455V510Z"/>'+
+ '<path d="M75 605V550Q105 505 135 550V605Z M180 605V530Q210 485 240 530V605Z M285 605V550Q315 505 345 550V605Z M410 605V530Q440 485 470 530V605Z M750 605V530Q780 485 810 530V605Z M865 605V550Q895 505 925 550V605Z M970 605V530Q1000 485 1030 530V605Z M1080 605V550Q1110 505 1140 550V605Z"/>'+
+ '</g>'+
+ '<g class="hm-light"><path d="M82 418V375Q105 340 128 375V418Z M187 418V350Q210 315 233 350V418Z M292 418V375Q315 340 338 375V418Z M417 418V355Q440 320 463 355V418Z M542 418V305Q565 270 588 305V418Z M632 418V305Q655 270 678 305V418Z M757 418V355Q780 320 803 355V418Z M872 418V375Q895 340 918 375V418Z M977 418V350Q1000 315 1023 350V418Z M1087 418V375Q1110 340 1133 375V418Z"/></g>'+
+ '<g class="hm-light delay"><path d="M82 503V460Q105 425 128 460V503Z M187 503V440Q210 405 233 440V503Z M292 503V460Q315 425 338 460V503Z M417 503V440Q440 405 463 440V503Z M542 503V440Q565 405 588 440V503Z M632 503V440Q655 405 678 440V503Z M757 503V440Q780 405 803 440V503Z M872 503V460Q895 425 918 460V503Z M977 503V440Q1000 405 1023 440V503Z M1087 503V460Q1110 425 1133 460V503Z"/></g>'+
+ '<!-- imposing central mansard pavilion, broad not spired -->'+
+ '<path d="M450 320L480 245L610 125L740 245L770 320Z" fill="#303946" stroke="#111923" stroke-width="13"/>'+
+ '<path d="M495 275L610 165L725 275" fill="none" stroke="#89919a" stroke-width="7"/>'+
+ '<path d="M530 305V250Q570 205 610 250Q650 205 690 250V305Z" fill="#101923" stroke="#b1a897" stroke-width="7"/>'+
+ '<g class="hm-light"><path d="M540 298V255Q570 220 600 255V298Z M620 298V255Q650 220 680 255V298Z"/></g>'+
+ '<!-- corner pavilions and rooftop dormers -->'+
+ '<path d="M30 360V285L115 220L200 285V360Z M1000 350V270L1080 205L1160 270V350Z" fill="#59616a" stroke="#111923" stroke-width="11"/>'+
+ '<path d="M20 285L115 185L210 285M990 270L1080 170L1170 270" fill="#303946" stroke="#111923" stroke-width="12"/>'+
+ '<path d="M80 345V300Q115 260 150 300V345Z M1045 335V285Q1080 245 1115 285V335Z" fill="#111923" stroke="#b0a895" stroke-width="6"/>'+
+ '<!-- ornate balcony rails and projecting bay windows -->'+
+ '<path d="M395 445H495V455H395ZM705 445H805V455H705Z" fill="#b0a58e"/>'+
+ '<path d="M400 455V485M420 455V485M440 455V485M460 455V485M480 455V485M710 455V485M730 455V485M750 455V485M770 455V485M790 455V485" stroke="#c0b69f" stroke-width="5"/>'+
+ '<path d="M365 510L405 485H505L545 510V610H365Z M675 510L715 485H815L855 510V610H675Z" fill="#414b56" stroke="#151d27" stroke-width="10"/>'+
+ '<path d="M390 570V530Q455 490 520 530V570Z M700 570V530Q765 490 830 530V570Z" fill="#101923" stroke="#b1a795" stroke-width="6"/>'+
+ '<!-- grand porte-cochere with massive columns and wide stairs -->'+
+ '<path d="M455 640L610 555L765 640Z" fill="#747a7c" stroke="#151d27" stroke-width="11"/>'+
+ '<path d="M450 640H770" stroke="#c2b9a7" stroke-width="8"/>'+
+ '<g fill="#9a9b96" stroke="#252c34" stroke-width="8"><path d="M465 640H495V690H465Z M725 640H755V690H725Z"/></g>'+
+ '<path d="M550 690V620Q550 585 610 580Q670 585 670 620V690Z" fill="#080d13" stroke="#b6ac98" stroke-width="9"/>'+
+ '<path d="M558 690V625Q558 600 610 590V690Z M610 590Q662 600 662 625V690H610Z" fill="url(#hm-door)" stroke="#20180f" stroke-width="5"/>'+
+ '<path d="M575 620V675H600V620ZM620 620V675H645V620Z" fill="none" stroke="#9b7953" stroke-width="4"/>'+
+ '<path d="M430 690H790L815 715H405Z M395 715H825L850 740H370Z M355 740H865L895 770H325Z" fill="#72797d" stroke="#151c25" stroke-width="8"/>'+
+ '<!-- chimneys, rooftop railings, no church spire -->'+
+ '<g fill="#353e49" stroke="#111923" stroke-width="8"><path d="M250 255V125H300V225Z M820 290V145H870V255Z M930 265V130H980V230Z"/></g>'+
+ '<path d="M15 700H1185" stroke="#b1aa99" stroke-width="10" opacity=".5"/>'+
  '</g>'+
  '<path d="M430 800L490 750H710L770 800Z" fill="#292c2c"/>'+
  '<g fill="none" stroke="#171e26" stroke-width="8" stroke-linecap="round"><path d="M0 640H180M1020 640H1200M0 690H180M1020 690H1200"/><path d="M10 640V560L35 640L60 560L85 640L110 560L135 640L160 560L180 640M1020 640L1040 560L1065 640L1090 560L1115 640L1140 560L1165 640L1190 560V640"/></g>'+
