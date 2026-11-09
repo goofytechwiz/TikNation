@@ -2,73 +2,80 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#10140b">
-<title>The Smell of a Thousand Asses · TikNation Gift Lab</title>
+<meta name="theme-color" content="#090d0a">
+<title>The Smell of a Thousand Asses · TikNation</title>
 <style>
-:root{color-scheme:dark;--acid:#b7df38;--lime:#d7ff57;--ink:#080b06}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#080b06;color:#f3f1d9;font-family:system-ui,Arial,sans-serif}
-body{min-height:100svh;display:grid;place-items:center;padding:12px;overflow-x:hidden}
-.stage{position:relative;isolation:isolate;width:min(100%,900px);height:min(94svh,760px);min-height:620px;overflow:hidden;border:1px solid #687b2b;border-radius:22px;background:radial-gradient(ellipse at 50% 75%,#34352a 0,#1b2019 38%,#090d0b 82%);box-shadow:0 0 70px #9ac52b22}
-.backdrop{position:absolute;inset:0;background:linear-gradient(180deg,#080d08bb 0%,transparent 34%,#080a08 78%),repeating-linear-gradient(90deg,transparent 0 79px,#d6d6c008 80px 82px),radial-gradient(ellipse at 12% 65%,#59604a33,transparent 34%),radial-gradient(ellipse at 88% 52%,#4b514433,transparent 30%)}
-.moon{position:absolute;right:11%;top:8%;width:100px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f4f0bf,#b9c47c 55%,#4d6132);box-shadow:0 0 55px 18px #c3ed6a22}
-.title{position:absolute;z-index:10;top:22px;left:16px;right:16px;text-align:center;text-transform:uppercase;font-weight:1000;letter-spacing:.09em;font-size:clamp(19px,4vw,34px);text-shadow:0 3px 0 #17200c,0 0 20px #b7df3888}
-.subtitle{display:block;margin-top:6px;font-size:10px;letter-spacing:.28em;color:#d1e98b}
-bin{display:none}
-.dumpster{position:absolute;z-index:2;left:50%;bottom:12%;transform:translateX(-50%);width:min(58%,470px);height:31%;border:7px solid #303a2b;border-top:16px solid #59634a;border-radius:5px 5px 16px 16px;background:repeating-linear-gradient(90deg,#30392e 0 34px,#4a5543 36px 39px,#252e26 43px 71px);box-shadow:inset 0 15px 22px #000b,inset 0 -12px 16px #080a08,0 27px 30px #000d;filter:drop-shadow(0 0 2px #89907844)}
-.ground-shadow{position:absolute;z-index:1;left:50%;bottom:7%;transform:translateX(-50%);width:76%;height:9%;border-radius:50%;background:radial-gradient(ellipse,#000d 0%,#0009 42%,transparent 74%);filter:blur(7px)}\n.dumpster:before{content:"WASTE MANAGEMENT";position:absolute;top:19%;left:0;right:0;text-align:center;font-weight:800;font-size:clamp(9px,1.6vw,13px);letter-spacing:.18em;color:#c0c6a8;text-shadow:0 2px 3px #10140d}
-.dumpster:after{content:"BIOHAZARD";position:absolute;top:48%;left:0;right:0;text-align:center;font-size:clamp(11px,2vw,17px);font-weight:900;letter-spacing:.2em;color:#b5bd9d;text-shadow:0 2px 3px #10140d}
-.lid{position:absolute;z-index:3;left:50%;bottom:43%;transform:translateX(-50%) rotate(-3deg);width:min(64%,510px);height:35px;border:5px solid #414b37;border-radius:4px;background:repeating-linear-gradient(90deg,#515b49 0 48px,#323b30 50px 53px),linear-gradient(#7d8970,#343d30 45%,#1d251d);box-shadow:inset 0 4px 5px #c4cbb455,0 10px 15px #000b;transform-origin:15% 90%;transition:transform .8s}
-.stink{position:absolute;z-index:4;left:50%;bottom:33%;width:70%;height:53%;transform:translateX(-50%);opacity:0;pointer-events:none;filter:blur(8px) saturate(.55)}
-.puff{position:absolute;bottom:0;width:42%;height:58%;border-radius:48%;background:radial-gradient(ellipse at 48% 72%,#8d927c99 0,#747b6a77 28%,#a0a18b44 57%,transparent 76%);filter:blur(13px);animation:rise 5.8s ease-in-out infinite}
-.puff:nth-child(1){left:8%;animation-delay:-1s}.puff:nth-child(2){left:31%;width:48%;animation-delay:-2.5s}.puff:nth-child(3){right:5%;animation-delay:-.4s}
-.puff:nth-child(4){left:20%;bottom:30%;width:32%;animation-delay:-3s}.puff:nth-child(5){right:18%;bottom:35%;width:34%;animation-delay:-1.8s}
-@keyframes rise{0%{transform:translateY(24px) scale(.72);opacity:0}22%{opacity:.55}100%{transform:translateY(-170px) scale(1.4);opacity:0}}
-.fly{position:absolute;z-index:6;width:13px;height:8px;opacity:0;pointer-events:none;filter:drop-shadow(0 2px 2px #000);transform-origin:center}
-.fly:before{content:"";position:absolute;left:4px;top:3px;width:7px;height:3px;border-radius:50%;background:#080b08;box-shadow:0 0 0 1px #56604a}.fly:after{content:"";position:absolute;left:1px;top:0;width:5px;height:4px;border-radius:100% 100% 30% 30%;background:#b6c0ad99;transform:rotate(-28deg);box-shadow:5px 1px 0 -1px #b6c0ad99}.fly.one{left:43%;top:57%}.fly.two{left:55%;top:56%}.fly.three{left:49%;top:59%}
-.stage.released .stink{opacity:1}.stage.released .lid{transform:translateX(-50%) rotate(-28deg) translateY(-18px)}
-.stage.released .fly{opacity:1;animation:orbit 3s linear infinite}.fly.two{animation-duration:4.2s;animation-direction:reverse}.fly.three{animation-duration:2.6s}
-@keyframes orbit{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(18px,-8px) rotate(12deg)}50%{transform:translate(8px,-19px) rotate(-8deg)}75%{transform:translate(-15px,-7px) rotate(10deg)}100%{transform:translate(0,0) rotate(0)}}
-.shock{position:absolute;z-index:5;left:50%;bottom:27%;width:15px;height:15px;border:4px solid #dfff8b;border-radius:50%;transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none}
-.stage.released .shock{animation:shock 1.2s ease-out 1}
-@keyframes shock{0%{transform:translate(-50%,-50%) scale(.1);opacity:1}100%{transform:translate(-50%,-50%) scale(32);opacity:0}}
-.gauge{position:absolute;z-index:8;top:110px;left:50%;transform:translateX(-50%);width:min(75%,420px);text-align:center}
-.gauge-label{font-size:11px;letter-spacing:.24em;color:#cde68b;font-weight:900}
-.meter{height:12px;margin-top:9px;border:1px solid #a5c85b;border-radius:20px;background:#11190b;overflow:hidden;box-shadow:0 0 12px #b7df3822}
-.fill{height:100%;width:0;background:linear-gradient(90deg,#648a22,#b6df38,#f2ff9b);transition:width 1s ease;box-shadow:0 0 16px #dfff65}
-.readout{margin-top:8px;color:#efffb6;font-size:12px;font-weight:900;letter-spacing:.12em}
-.controls{position:absolute;z-index:12;left:12px;right:12px;bottom:18px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-button{border:1px solid #b7df38;border-radius:999px;background:linear-gradient(#40551e,#1b2810);color:#f5ffd8;padding:13px 19px;font-size:12px;font-weight:1000;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;touch-action:manipulation;box-shadow:0 5px 0 #10170a,0 0 18px #b7df3822}
-button:active{transform:translateY(3px);box-shadow:0 2px 0 #10170a}
+:root{color-scheme:dark;--acid:#b7d957;--metal:#39443c;--ink:#080b09}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#070a08;color:#f1f4e7;font-family:system-ui,Arial,sans-serif}
+body{min-height:100svh;display:grid;place-items:center;padding:10px}
+.scene{position:relative;isolation:isolate;width:min(100%,920px);height:min(94svh,760px);min-height:620px;overflow:hidden;border:1px solid #4a5947;border-radius:20px;background:radial-gradient(ellipse at 50% 76%,#4c5144 0,#242b25 34%,#111713 68%,#080c0a 100%);box-shadow:0 24px 90px #000}
+.sky{position:absolute;inset:0;background:linear-gradient(180deg,#070d0dcc 0%,transparent 46%,#080b09 90%),radial-gradient(ellipse at 15% 60%,#a5ad7c20,transparent 30%),radial-gradient(ellipse at 88% 40%,#8b9b7920,transparent 28%)}
+.moon{position:absolute;right:12%;top:9%;width:clamp(52px,10vw,94px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 34% 30%,#f2f0c9,#b9c39a 55%,#596b4b);box-shadow:0 0 60px 16px #d5e7a51c}
+.fence{position:absolute;left:0;right:0;bottom:23%;height:25%;opacity:.28;background:repeating-linear-gradient(90deg,transparent 0 34px,#a5ad9d 35px 38px,transparent 39px 64px);mask-image:linear-gradient(transparent,#000)}
+.ground{position:absolute;left:-8%;right:-8%;bottom:-6%;height:36%;background:linear-gradient(180deg,#252b25,#0b100c 72%);transform:perspective(260px) rotateX(8deg);transform-origin:top;box-shadow:inset 0 18px 24px #0007}
+.puddle{position:absolute;bottom:10%;left:13%;width:74%;height:12%;border-radius:50%;background:radial-gradient(ellipse,#080b08 0,#111811 42%,transparent 72%);filter:blur(5px)}
+.header{position:absolute;z-index:10;top:20px;left:12px;right:12px;text-align:center;font-size:clamp(19px,4vw,34px);font-weight:1000;letter-spacing:.075em;text-transform:uppercase;text-shadow:0 3px 0 #111b12,0 0 20px #b7d95755}
+.header small{display:block;margin-top:5px;color:#d5e7a5;font-size:10px;letter-spacing:.26em}
+.warning{position:absolute;z-index:10;top:110px;left:0;right:0;text-align:center;color:#c4d49d;font-size:10px;letter-spacing:.18em}
+.meter{position:absolute;z-index:10;top:140px;left:50%;transform:translateX(-50%);width:min(72%,410px);text-align:center}
+.meter label{font-size:10px;letter-spacing:.22em;color:#e1edc2;font-weight:900}
+.track{height:10px;margin-top:8px;border:1px solid #9eaf79;border-radius:20px;background:#101710;overflow:hidden}
+.level{height:100%;width:0;background:linear-gradient(90deg,#748d35,#c5e56a,#f0f5bd);box-shadow:0 0 15px #d7f68b;transition:width 1.2s}
+.meter strong{display:block;margin-top:7px;font-size:11px;color:#e8f4c9;letter-spacing:.12em}
+.bin-shadow{position:absolute;z-index:2;left:50%;bottom:8%;width:72%;height:11%;transform:translateX(-50%);border-radius:50%;background:#000b;filter:blur(11px)}
+.bin{position:absolute;z-index:4;left:50%;bottom:15%;width:min(62%,490px);height:30%;transform:translateX(-50%) perspective(800px) rotateY(-4deg);border:5px solid #202a23;border-top:11px solid #596456;border-radius:8px 8px 13px 13px;background:linear-gradient(90deg,#222c25 0 5%,transparent 5% 94%,#1b241e 95%),repeating-linear-gradient(90deg,#344036 0 30px,#536050 32px 35px,#29342c 38px 61px);box-shadow:inset 0 12px 20px #b2c0a022,inset 0 -18px 20px #000b,18px 18px 26px #0009}
+.bin:before{content:"";position:absolute;inset:13% 8% 15%;border:1px solid #a8b39b44;background:linear-gradient(115deg,#ffffff0a,transparent 42%,#0004);box-shadow:inset 0 0 18px #0008}
+.bin:after{content:"WASTE MANAGEMENT  •  BIOHAZARD";position:absolute;left:5%;right:5%;top:44%;text-align:center;color:#c5cbb5;font-size:clamp(8px,1.4vw,12px);font-weight:900;letter-spacing:.15em;text-shadow:0 2px 3px #000}
+.side{position:absolute;right:-5%;top:6%;width:10%;height:90%;background:linear-gradient(90deg,#1a241d,#52604e,#1b241d);transform:skewY(-8deg);border:2px solid #172019}
+.rib{position:absolute;top:0;bottom:0;width:5px;background:#111a13;box-shadow:1px 0 #89917c55}
+.r1{left:22%}.r2{left:44%}.r3{left:66%}.r4{left:84%}
+.wheel{position:absolute;z-index:5;bottom:-7%;width:12%;height:17%;border-radius:50%;background:radial-gradient(circle,#65705e 0 16%,#111 18% 58%,#3a4439 60% 67%,#090d0a 69%);box-shadow:0 5px 8px #000}
+.wheel.left{left:12%}.wheel.right{right:12%}
+.lid{position:absolute;z-index:6;left:50%;bottom:44%;width:min(68%,530px);height:30px;transform:translateX(-50%) rotate(-2deg);transform-origin:14% 90%;border:5px solid #273229;border-radius:5px;background:repeating-linear-gradient(90deg,#596454 0 45px,#303b32 47px 50px),linear-gradient(#788371,#303a31);box-shadow:inset 0 4px 5px #d0d7bd44,0 9px 15px #000b;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.handle{position:absolute;right:12%;top:7px;width:14%;height:7px;border-radius:8px;background:#202820;box-shadow:0 1px 0 #9aa48d}
+.vapor{position:absolute;z-index:7;left:50%;bottom:36%;width:78%;height:48%;transform:translateX(-50%);opacity:0;pointer-events:none;filter:blur(9px)}
+.cloud{position:absolute;bottom:0;width:44%;height:55%;border-radius:50%;background:radial-gradient(ellipse,#8c967c99 0,#7d887077 35%,#aab09a35 64%,transparent 78%);animation:drift 5s ease-in-out infinite}
+.cloud:nth-child(1){left:2%}.cloud:nth-child(2){left:28%;width:48%;animation-delay:-2s}.cloud:nth-child(3){right:1%;animation-delay:-3s}.cloud:nth-child(4){left:22%;bottom:25%;width:34%;animation-delay:-1s}
+@keyframes drift{0%{transform:translate(0,22px) scale(.7);opacity:0}25%{opacity:.7}100%{transform:translate(12px,-150px) scale(1.35);opacity:0}}
+.fly{position:absolute;z-index:8;width:12px;height:7px;opacity:0;pointer-events:none;transform-origin:center;filter:drop-shadow(0 2px 2px #000)}
+.fly:before{content:"";position:absolute;left:3px;top:3px;width:7px;height:3px;border-radius:50%;background:#080a08;box-shadow:0 0 0 1px #65705d}
+.fly:after{content:"";position:absolute;left:1px;top:0;width:5px;height:4px;border-radius:50%;background:#aeb9a477;box-shadow:5px 1px 0 -1px #aeb9a477}
+.f1{left:43%;top:57%}.f2{left:54%;top:56%}.f3{left:49%;top:59%}
+@keyframes hover{0%,100%{transform:translate(0,0)}25%{transform:translate(5px,-3px)}50%{transform:translate(1px,-7px)}75%{transform:translate(-4px,-2px)}}
+.scene.released .vapor{opacity:1}.scene.released .lid{transform:translateX(-50%) rotate(-23deg) translateY(-15px)}
+.scene.released .fly{opacity:1;animation:hover 1.4s ease-in-out infinite}.scene.released .f2{animation-delay:-.5s}.scene.released .f3{animation-delay:-1s}
+.controls{position:absolute;z-index:12;left:10px;right:10px;bottom:17px;display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
+button{border:1px solid #a9c96a;border-radius:999px;background:linear-gradient(#3d4b38,#18231b);color:#f2f6e7;padding:13px 17px;font-size:11px;font-weight:950;letter-spacing:.08em;cursor:pointer;touch-action:manipulation;box-shadow:0 4px 0 #080d09,0 0 18px #a8cb5b20}
+button:active{transform:translateY(2px);box-shadow:0 2px 0 #080d09}
 button:focus-visible{outline:3px solid white;outline-offset:3px}
-button.primary{background:linear-gradient(#c1e94a,#648b25);color:#101606;border-color:#e6ff92}
-.status{position:absolute;z-index:9;bottom:94px;left:10px;right:10px;text-align:center;min-height:22px;color:#e7f6b4;font-size:12px;font-weight:800;text-shadow:0 2px 5px #000}
-.warning{position:absolute;z-index:9;top:164px;left:0;right:0;text-align:center;color:#b7c88e;font-size:10px;letter-spacing:.18em}
-@media(max-width:560px){.stage{min-height:620px;height:94svh;border-radius:14px}.dumpster{width:72%;height:28%;bottom:15%}.lid{bottom:43%;width:78%}.stink{width:90%;bottom:34%}.gauge{top:112px}.warning{top:165px;font-size:9px}.controls{bottom:15px;gap:8px}button{padding:12px 14px;font-size:10px}.status{bottom:94px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+button.primary{background:linear-gradient(#d0e98a,#809e45);color:#11180e;border-color:#ecffc3}
+.status{position:absolute;z-index:11;bottom:83px;left:12px;right:12px;min-height:22px;text-align:center;color:#e1edc6;font-size:12px;font-weight:800;text-shadow:0 2px 5px #000}
+@media(max-width:560px){.scene{min-height:620px;height:94svh;border-radius:14px}.bin{width:76%;height:28%;bottom:17%}.lid{width:82%;bottom:44%}.vapor{width:96%;bottom:36%}.meter{top:140px}.warning{top:112px}.controls{bottom:14px;gap:7px}button{padding:12px 13px;font-size:10px}.status{bottom:82px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
 </style>
 </head>
 <body>
-<main class="stage" id="stage">
-<div class="backdrop"></div><div class="moon"></div>
-<header class="title">THE SMELL OF A THOUSAND ASSES<span class="subtitle">A LEGENDARY TIKNATION GIFT · BIOHAZARD CLASS: OH NO</span></header>
-<section class="gauge" aria-label="Stench meter"><div class="gauge-label">CONCENTRATED STENCH LEVEL</div><div class="meter"><div class="fill" id="fill"></div></div><div class="readout" id="readout">0 / 1,000,000 NOSE HAIRS DESTROYED</div></section>
-<div class="warning">WARNING: DO NOT OPEN IN A CLOSED ROOM</div>
-<div class="ground-shadow"></div><div class="dumpster"></div><div class="lid"></div>
-<div class="stink" aria-hidden="true"><i class="puff"></i><i class="puff"></i><i class="puff"></i><i class="puff"></i><i class="puff"></i></div>
-<div class="fly one" aria-hidden="true"></div><div class="fly two" aria-hidden="true"></div><div class="fly three" aria-hidden="true"></div><div class="shock"></div>
-<audio id="stenchAudio" preload="auto" src="https://sfxmint.com/dl/natural-fart-02.mp3"></audio><div class="status" id="status" aria-live="polite">THE CONTAINER IS SEALED. FOR NOW.</div>
-<div class="controls"><button class="primary" id="release">RELEASE THE STENCH 💨</button><button id="fan">ACTIVATE INDUSTRIAL FAN</button><button id="sound">SOUND: OFF</button><button id="reset">CONTAIN IT</button></div>
+<main class="scene" id="scene">
+<div class="sky"></div><div class="moon"></div><div class="fence"></div><div class="ground"></div><div class="puddle"></div>
+<header class="header">THE SMELL OF A THOUSAND ASSES<small>THE LEGENDARY BIOHAZARD GIFT</small></header>
+<div class="warning">CAUTION · CONTAINMENT LEVEL: QUESTIONABLE</div>
+<div class="meter"><label>NOSE-HAIR SURVIVAL METER</label><div class="track"><div class="level" id="level"></div></div><strong id="counter">0% · AIR QUALITY: QUESTIONABLE</strong></div>
+<div class="bin-shadow"></div>
+<div class="bin"><span class="side"></span><i class="rib r1"></i><i class="rib r2"></i><i class="rib r3"></i><i class="rib r4"></i><i class="wheel left"></i><i class="wheel right"></i></div>
+<div class="lid"><span class="handle"></span></div>
+<div class="vapor" aria-hidden="true"><i class="cloud"></i><i class="cloud"></i><i class="cloud"></i><i class="cloud"></i></div>
+<i class="fly f1" aria-hidden="true"></i><i class="fly f2" aria-hidden="true"></i><i class="fly f3" aria-hidden="true"></i>
+<audio id="sfx" preload="auto" src="https://sfxmint.com/dl/natural-fart-02.mp3"></audio>
+<div class="status" id="status" aria-live="polite">THE BIN IS SEALED. YOUR NOSE IS SAFE… FOR NOW.</div>
+<div class="controls"><button class="primary" id="release">RELEASE THE STENCH 💨</button><button id="test">TEST SOUND</button><button id="reset">RECONTAIN</button></div>
 </main>
 <script>
-(()=> {
-const stage=document.getElementById('stage'),fill=document.getElementById('fill'),readout=document.getElementById('readout'),status=document.getElementById('status');
-const release=document.getElementById('release'),fan=document.getElementById('fan'),sound=document.getElementById('sound'),reset=document.getElementById('reset');
-let audioOn=false,fanOn=false;const stenchAudio=document.getElementById('stenchAudio');
-async function playStench(){try{stenchAudio.pause();stenchAudio.currentTime=0;stenchAudio.volume=1;await stenchAudio.play();return true}catch(e){status.textContent='SOUND COULD NOT PLAY: '+e.message;return false}}
-release.addEventListener('click',async()=>{stage.classList.add('released');fill.style.width='100%';readout.textContent='1,000,000 / 1,000,000 NOSE HAIRS DESTROYED';status.textContent='BIOHAZARD BREACH! THE FLIES HAVE CALLED THEIR LAWYER.';if(audioOn){playStench()}});
-fan.addEventListener('click',()=>{fanOn=!fanOn;fan.textContent=fanOn?'STOP THE FAN':'ACTIVATE INDUSTRIAL FAN';if(fanOn&&stage.classList.contains('released'))status.textContent='THE FAN HAS MADE IT EVERYONE’S PROBLEM.';else if(fanOn)status.textContent='FAN READY. THIS MAY BE A TERRIBLE IDEA.';else status.textContent='FAN SHUT DOWN. THE AIR IS STILL SUSPICIOUS.'});
-sound.addEventListener('click',async()=>{if(audioOn){audioOn=false;sound.textContent='SOUND: OFF';stenchAudio.pause();status.textContent='SOUND MUTED.';return}audioOn=true;sound.textContent='SOUND: ON';status.textContent='PLAYING A REAL RECORDED SOUND EFFECT';await playStench()});
-reset.addEventListener('click',()=>{stage.classList.remove('released');fill.style.width='0%';readout.textContent='0 / 1,000,000 NOSE HAIRS DESTROYED';status.textContent='CONTAINMENT RESTORED. THE SMELL WILL REMAIN IN YOUR MEMORIES.';fanOn=false;fan.textContent='ACTIVATE INDUSTRIAL FAN';stenchAudio.pause();stenchAudio.currentTime=0});
+(()=>{const scene=document.getElementById('scene'),level=document.getElementById('level'),counter=document.getElementById('counter'),status=document.getElementById('status'),sfx=document.getElementById('sfx');let soundReady=false;
+sfx.addEventListener('canplaythrough',()=>{soundReady=true});sfx.addEventListener('error',()=>{status.textContent='SOUND FILE DID NOT LOAD. VISUAL EFFECTS STILL WORK.'});
+async function play(){try{sfx.pause();sfx.currentTime=0;sfx.volume=1;await sfx.play();return true}catch(e){status.textContent='SOUND BLOCKED BY THE BROWSER. TAP TEST SOUND ONCE.';return false}}
+document.getElementById('test').addEventListener('click',()=>{play().then(ok=>{if(ok)status.textContent='SOUND TEST PLAYING.'})});
+document.getElementById('release').addEventListener('click',()=>{scene.classList.add('released');level.style.width='100%';counter.textContent='0% · AIR QUALITY: EXTINCTION EVENT';status.textContent='BIOHAZARD BREACH! EVACUATE THE GENERAL AREA.';play()});
+document.getElementById('reset').addEventListener('click',()=>{scene.classList.remove('released');level.style.width='0';counter.textContent='100% · AIR QUALITY: QUESTIONABLE';status.textContent='CONTAINMENT RESTORED. THE MEMORY REMAINS.';sfx.pause();sfx.currentTime=0});
 })();
 </script>
 </body></html>
