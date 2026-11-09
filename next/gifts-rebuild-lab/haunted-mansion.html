@@ -26,7 +26,7 @@ function startSound(){
  timers.push(setTimeout(()=>{stopSound();status.textContent="SOUND EFFECTS FINISHED";},10000));
  }catch(e){status.textContent="AUDIO ERROR · "+e.message;}
 }
-const engine=document.createElement("script");engine.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=mansion-zoom-20261109";
+const engine=document.createElement("script");engine.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=mansion-zoom-more-20261109";
 engine.onload=()=>{if(window.TikNationGiftEngine){playButton.disabled=false;status.textContent="READY · TAP PLAY"}else status.textContent="ENGINE DID NOT INITIALIZE"};
 engine.onerror=()=>status.textContent="GIFT ENGINE FAILED TO LOAD";
 document.head.appendChild(engine);
