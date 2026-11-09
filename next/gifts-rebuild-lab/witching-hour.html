@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09080d">
+<title>The Witching Hour · TikNation Gift Lab</title>
+<style>
+:root{color-scheme:dark;--gold:#c9a56a;--amber:#f0c987;--night:#08080e}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#07070b;color:#eee;font-family:Georgia,serif}
+body{min-height:100svh;display:grid;place-items:center;overflow-x:hidden}
+.scene{position:relative;width:min(100vw,900px);height:min(100svh,760px);min-height:590px;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 78% 22%,#273043 0,#111521 23%,#090a11 57%,#050508 100%);box-shadow:0 0 90px #000}
+.wall{position:absolute;inset:0;background:linear-gradient(90deg,#08080e 0 8%,transparent 8% 92%,#08080e 92%),repeating-linear-gradient(90deg,transparent 0 118px,#ffffff05 119px 121px),linear-gradient(180deg,#151824,#08090f 70%);opacity:.95}
+.moon{position:absolute;right:12%;top:10%;width:110px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 32%,#f1e9d4,#b9b8b3 58%,#646879);box-shadow:0 0 45px 18px #b9c6e333,0 0 130px 55px #8ca1c21a}
+.window{position:absolute;right:8%;top:5%;width:27%;height:40%;border:9px solid #171922;box-shadow:inset 0 0 0 3px #55505a,0 8px 25px #000;background:linear-gradient(180deg,#222b3c,#101521);clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.window:before,.window:after{content:"";position:absolute;background:#171922;box-shadow:0 0 0 1px #64616a}
+.window:before{width:8px;height:100%;left:50%}.window:after{height:8px;width:100%;top:51%}
+.curtain{position:absolute;right:4%;top:3%;width:35%;height:44%;background:linear-gradient(90deg,#19131b,#33202b 18%,transparent 23% 77%,#2b1925 82%,#120e17);opacity:.8;filter:drop-shadow(0 0 9px #000)}
+.floor{position:absolute;bottom:0;left:0;width:100%;height:19%;background:repeating-linear-gradient(90deg,#171116 0 2px,#211820 3px 120px),linear-gradient(#1b1519,#09080b);transform:perspective(260px) rotateX(9deg);transform-origin:bottom}
+.rug{position:absolute;bottom:1%;left:14%;width:72%;height:14%;background:radial-gradient(ellipse,#32202a,#130f17 70%);border:2px solid #4a3033;clip-path:polygon(8% 0,92% 0,100% 100%,0 100%);opacity:.9}
+.clock{position:absolute;z-index:4;left:50%;bottom:7%;transform:translateX(-50%);width:min(43%,330px);height:79%;filter:drop-shadow(0 18px 22px #000)}
+.crown{position:absolute;top:0;left:9%;width:82%;height:15%;background:linear-gradient(90deg,#28170f,#81512c 14%,#321b12 25%,#a16b39 49%,#3b2116 74%,#75472a 90%,#1b120e);clip-path:polygon(0 100%,5% 45%,17% 45%,22% 0,78% 0,83% 45%,95% 45%,100% 100%);border-bottom:4px solid #c18c4e}
+.crown:after{content:"";position:absolute;inset:8% 18% 18%;border:2px solid #c08a4e;clip-path:polygon(0 100%,8% 25%,25% 25%,30% 0,70% 0,75% 25%,92% 25%,100% 100%)}
+.case{position:absolute;top:10%;bottom:0;left:14%;width:72%;border:7px solid #24150f;border-radius:48% 48% 8px 8px/16% 16% 8px 8px;background:linear-gradient(90deg,#160e0b,#704326 9%,#29180f 19%,#87532e 48%,#2a170f 78%,#75472a 92%,#160e0b);box-shadow:inset 0 0 0 3px #b27c45,inset 0 0 20px #000,0 0 0 2px #090708}
+.case:before{content:"";position:absolute;inset:8px;border:1px solid #c1945b;border-radius:48% 48% 3px 3px/16% 16% 3px 3px;opacity:.8}
+.woodgrain{position:absolute;inset:0;background:repeating-linear-gradient(92deg,transparent 0 15px,#d6a36b12 16px,#0003 18px,transparent 23px);mix-blend-mode:screen;pointer-events:none}
+.dial{position:absolute;top:9%;left:50%;transform:translateX(-50%);width:69%;aspect-ratio:1;border-radius:50%;border:8px ridge #a87942;background:radial-gradient(circle,#e0cda7 0 56%,#6f4b2c 57% 60%,#c29a61 61% 64%,#39241a 66%);box-shadow:0 0 0 3px #21140f,inset 0 0 12px #48301e,0 3px 12px #000}
+.dial:before{content:"";position:absolute;inset:8%;border:1px solid #725438;border-radius:50%;box-shadow:0 0 0 2px #b28a58}
+.brand{position:absolute;top:27%;width:100%;text-align:center;font-size:clamp(6px,1vw,9px);letter-spacing:2px;color:#725437}
+.roman{position:absolute;inset:0;color:#49301f;font-size:clamp(12px,2vw,18px);font-weight:bold}
+.roman span{position:absolute;transform:translate(-50%,-50%)}
+.hand{position:absolute;left:50%;top:50%;transform-origin:50% 100%;background:#33241a;border-radius:5px;box-shadow:0 0 2px #fff5}
+.hour{height:25%;width:4px;transform:translate(-50%,-100%) rotate(0deg)}
+.minute{height:35%;width:3px;transform:translate(-50%,-100%) rotate(0deg)}
+.pin{position:absolute;left:50%;top:50%;width:11px;height:11px;border-radius:50%;background:#3a2417;border:2px solid #c39a5e;transform:translate(-50%,-50%)}
+.glass{position:absolute;inset:0;border-radius:50%;background:linear-gradient(125deg,#fff3 0 8%,transparent 24% 72%,#fff1 88%);pointer-events:none}
+.belly{position:absolute;top:45%;bottom:7%;left:23%;right:23%;border:5px solid #9b6a3a;background:linear-gradient(90deg,#160e0b,#4c2e1d 18%,#17100d 48%,#56331e 82%,#150d0a);box-shadow:inset 0 0 18px #000}
+.belly:before{content:"";position:absolute;inset:8px;border:1px solid #bd8c50}
+.pendulum{position:absolute;left:50%;top:5%;height:85%;width:2px;background:linear-gradient(90deg,#4d301b,#e1b66d,#51351e);transform-origin:top;animation:swing 2.8s ease-in-out infinite alternate}
+.bob{position:absolute;bottom:-17px;left:50%;width:45px;height:45px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle at 32% 28%,#f3d99b,#a9783c 45%,#392216 78%);border:3px solid #c49a5e;box-shadow:0 0 12px #d4a35b55}
+@keyframes swing{from{transform:rotate(-10deg)}to{transform:rotate(10deg)}}
+.ornament{position:absolute;bottom:3%;left:50%;transform:translateX(-50%);width:58%;height:5%;border:3px double #b3834d;border-radius:50%;box-shadow:0 0 8px #000}
+.shadow{position:absolute;z-index:3;left:50%;bottom:13%;width:28%;height:66%;transform:translateX(-50%) scale(.4);transform-origin:bottom;opacity:0;filter:blur(7px);transition:all 3.8s ease}
+.shadow:before{content:"";position:absolute;left:34%;top:0;width:32%;height:22%;border-radius:48% 48% 42% 42%;background:radial-gradient(ellipse,#020205,#09080e 70%);box-shadow:0 0 22px 9px #000}
+.shadow:after{content:"";position:absolute;left:8%;right:8%;top:17%;bottom:0;background:linear-gradient(90deg,transparent,#020205 18%,#05040a 50%,#020205 82%,transparent);clip-path:polygon(34% 0,66% 0,88% 12%,100% 100%,0 100%,12% 12%);border-radius:45% 45% 0 0}
+.shadow .arm{position:absolute;top:23%;width:19%;height:48%;background:#030207;border-radius:80% 80% 40% 40%;z-index:2;transform-origin:top}
+.shadow .arm.left{left:8%;transform:rotate(20deg)}.shadow .arm.right{right:8%;transform:rotate(-23deg)}
+.scene.awake .shadow{opacity:.9;transform:translateX(-50%) scale(1);filter:blur(2px)}
+.scene.awake .clock{animation:quake .22s 12}
+.scene.awake .dial{box-shadow:0 0 25px #d8a75a88,inset 0 0 12px #48301e}
+@keyframes quake{0%,100%{translate:0 0}25%{translate:-2px 0}75%{translate:2px 0}}
+.burst{position:absolute;inset:0;z-index:6;pointer-events:none;opacity:0;background:#d9e4ff}
+.scene.awake .burst{animation:flash .5s 2.5s}
+@keyframes flash{0%,100%{opacity:0}20%{opacity:.25}40%{opacity:0}60%{opacity:.15}}
+.dust{position:absolute;inset:0;z-index:5;pointer-events:none;background-image:radial-gradient(2px 2px at 17% 32%,#e5c78a88 50%,transparent),radial-gradient(1px 1px at 65% 56%,#fff8 50%,transparent),radial-gradient(2px 2px at 83% 72%,#d9bd8b88 50%,transparent),radial-gradient(1px 1px at 32% 81%,#fff7 50%,transparent);background-size:210px 180px;animation:drift 16s linear infinite}
+@keyframes drift{to{background-position:0 -360px}}
+.caption{position:absolute;z-index:8;top:3%;left:0;width:100%;text-align:center;text-transform:uppercase;letter-spacing:.28em;color:#c8b18b;font:10px Arial,sans-serif;text-shadow:0 2px 8px #000}
+.controls{position:absolute;z-index:10;bottom:15px;left:0;width:100%;display:flex;justify-content:center;gap:10px;padding:0 12px}
+button{border:1px solid #b18a56;background:linear-gradient(#35271e,#171117);color:#f3d8a7;padding:12px 19px;border-radius:3px;text-transform:uppercase;letter-spacing:.13em;font:11px Arial,sans-serif;cursor:pointer;box-shadow:0 4px 18px #000}
+button:active{transform:translateY(1px)}button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.note{position:absolute;z-index:8;bottom:64px;width:100%;text-align:center;color:#b5a58f;font:10px Arial,sans-serif;letter-spacing:.12em;opacity:.8}
+@media(max-width:560px){.scene{min-height:560px;height:100svh}.clock{width:58%;height:73%;bottom:9%}.window{width:35%;right:3%;height:33%}.moon{right:12%;top:11%;width:68px}.shadow{width:38%;height:57%;bottom:13%}.caption{font-size:9px}.note{bottom:68px}.controls{bottom:14px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main class="scene" id="scene" aria-label="A haunted grandfather clock in a moonlit room">
+ <div class="wall"></div><div class="moon"></div><div class="window"></div><div class="curtain"></div>
+ <div class="caption">TikNation presents · a gift from beyond midnight</div>
+ <div class="rug"></div><div class="floor"></div>
+ <div class="shadow" aria-hidden="true"><i class="arm left"></i><i class="arm right"></i></div>
+ <div class="clock" aria-hidden="true">
+  <div class="crown"></div><div class="case"><div class="woodgrain"></div>
+   <div class="dial"><div class="brand">TEMPUS · UMBRA</div><div class="roman" id="roman"></div><div class="hand hour" id="hour"></div><div class="hand minute" id="minute"></div><div class="pin"></div><div class="glass"></div></div>
+   <div class="belly"><div class="woodgrain"></div><div class="pendulum"><div class="bob"></div></div></div>
+   <div class="ornament"></div>
+  </div>
+ </div>
+ <div class="dust"></div><div class="burst"></div>
+ <div class="note" id="note">THE HOUSE IS HOLDING ITS BREATH</div>
+ <div class="controls"><button id="awaken">Awaken the hour</button><button id="sound" aria-pressed="false">Sound: off</button></div>
+</main>
+<script>
+const scene=document.getElementById('scene'),note=document.getElementById('note'),hour=document.getElementById('hour'),minute=document.getElementById('minute');
+const roman=['XII','I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];
+const dial=document.getElementById('roman');
+roman.forEach((v,i)=>{const a=i*Math.PI/6-Math.PI/2,s=document.createElement('span');s.textContent=v;s.style.left=(50+39*Math.cos(a))+'%';s.style.top=(50+39*Math.sin(a))+'%';dial.appendChild(s)});
+let audio=false,ctx=null,awakened=false;
+function tone(freq,duration,when=0){if(!audio)return;ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(freq,ctx.currentTime+when);g.gain.setValueAtTime(.0001,ctx.currentTime+when);g.gain.exponentialRampToValueAtTime(.16,ctx.currentTime+when+.03);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+when+duration);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+when);o.stop(ctx.currentTime+when+duration+.05)}
+function chime(){[523.25,392,329.63,261.63].forEach((f,i)=>tone(f,2,i*.55))}
+document.getElementById('sound').addEventListener('click',()=>{audio=!audio;const b=document.getElementById('sound');b.textContent='Sound: '+(audio?'on':'off');b.setAttribute('aria-pressed',String(audio));if(audio){ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();ctx.resume()}});
+document.getElementById('awaken').addEventListener('click',()=>{scene.classList.remove('awake');void scene.offsetWidth;scene.classList.add('awake');awakened=true;note.textContent='MIDNIGHT HAS FOUND YOU';hour.style.transform='translate(-50%,-100%) rotate(0deg)';minute.style.transform='translate(-50%,-100%) rotate(0deg)';chime();tone(82,3,2.2);tone(110,2,3.1);window.setTimeout(()=>{note.textContent='SOMEONE IS STANDING BEHIND THE GLASS'},3600);window.setTimeout(()=>{note.textContent='THE WITCHING HOUR'},6500)});
+</script>
+</body></html>
