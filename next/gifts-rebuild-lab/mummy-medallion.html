@@ -33,15 +33,32 @@ for(let i=0;i<12;i++){rect(215+i*40,tombY+14,2,35,'#d8b56c');}
 let lidShift=progress*260;
 poly([[230-lidShift,tombY-82],[670-lidShift,tombY-82],[715-lidShift,tombY+4],[185-lidShift,tombY+4]],'#b48a4b','#f0ca77');poly([[245-lidShift,tombY-70],[655-lidShift,tombY-70],[686-lidShift,tombY-7],[214-lidShift,tombY-7]],'#593916','#e5bd6a');for(let i=0;i<8;i++)rect(250-lidShift+i*50,tombY-61,3,48,'#d8ad5c');
 poly([[245,tombY-75],[655,tombY-75],[685,tombY-8],[215,tombY-8]],'#6b4b27','#c69b57');
-// mummy rising from coffin
+// detailed mummy: aged linen, layered torso, wrapped limbs and shadowed eye sockets
 let rise=progress*105, mx=450,my=tombY-95-rise;
-ellipse(mx,my+130,110,24,'#120b06aa');
-ellipse(mx,my+30,61,77,'#bda57c');rect(mx-53,my+56,106,113,'#bca47a');ellipse(mx,my-48,43,51,'#d0bd96');
-ellipse(mx-16,my-53,5,4,'#28170d');ellipse(mx+16,my-53,5,4,'#28170d');rect(mx-19,my-33,38,5,'#49311d');
-ctx.save();ctx.translate(mx,my+65);ctx.rotate(-.12);for(let i=0;i<12;i++){ctx.strokeStyle=i%2?'#766247':'#e0d0aa';ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(-52+i*8,-48);ctx.lineTo(-44+i*8,65);ctx.stroke()}ctx.restore();
-for(let j=0;j<7;j++){ctx.strokeStyle=j%2?'#756044':'#e3d2ad';ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(mx-42,my-70+j*12);ctx.quadraticCurveTo(mx,my-58+j*12,mx+43,my-70+j*12);ctx.stroke()}
-for(let side of [-1,1]){ctx.save();ctx.translate(mx+side*52,my+42);ctx.rotate(side*(.35-progress*.3));ctx.strokeStyle='#d4c19a';ctx.lineWidth=22;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(side*35,65);ctx.lineTo(side*28,112);ctx.stroke();ctx.strokeStyle='#766247';ctx.lineWidth=5;for(let k=0;k<5;k++){ctx.beginPath();ctx.moveTo(side*(-10+k*5),10);ctx.lineTo(side*(25+k*4),95);ctx.stroke()}ctx.restore()}
-// collar
+ellipse(mx,my+133,120,25,'#100904aa');
+let bodyGrad=ctx.createLinearGradient(mx-65,my+5,mx+65,my+155);bodyGrad.addColorStop(0,'#ead9b4');bodyGrad.addColorStop(.48,'#b5a07a');bodyGrad.addColorStop(1,'#625039');
+ctx.beginPath();ctx.moveTo(mx-43,my+3);ctx.quadraticCurveTo(mx-76,my+38,mx-65,my+119);ctx.quadraticCurveTo(mx-53,my+163,mx-34,my+170);ctx.lineTo(mx+36,my+170);ctx.quadraticCurveTo(mx+64,my+147,mx+65,my+91);ctx.quadraticCurveTo(mx+73,my+28,mx+40,my+2);ctx.closePath();ctx.fillStyle=bodyGrad;ctx.fill();
+ellipse(mx,my-48,44,53,'#c8b58e');ellipse(mx-3,my-48,35,45,'#d8c7a2');
+ctx.save();ctx.beginPath();ctx.ellipse(mx,my-48,44,53,0,0,Math.PI*2);ctx.clip();
+for(let j=0;j<12;j++){let yy=my-91+j*8;ctx.strokeStyle=j%2?'#766044':'#ead9b6';ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(mx-53,yy+5);ctx.quadraticCurveTo(mx,yy-8,mx+54,yy+5);ctx.stroke();ctx.strokeStyle='#4c3925';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(mx-48,yy+9);ctx.quadraticCurveTo(mx,yy-3,mx+48,yy+9);ctx.stroke()}
+ctx.restore();
+// narrow dark eye opening between old wrappings, with faint amber eyes
+poly([[mx-24,my-52],[mx-8,my-57],[mx+1,my-52],[mx+22,my-57],[mx+27,my-49],[mx+5,my-43],[mx-17,my-44]],'#26180f');
+ellipse(mx-13,my-49,3,2,'#c98b35');ellipse(mx+14,my-50,3,2,'#c98b35');
+ctx.strokeStyle='#59432c';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(mx-20,my-29);ctx.quadraticCurveTo(mx,my-20,mx+19,my-31);ctx.stroke();
+// torso bandages, diagonally wound with frayed edges and aged stains
+ctx.save();ctx.beginPath();ctx.moveTo(mx-67,my+1);ctx.lineTo(mx+67,my+1);ctx.lineTo(mx+69,my+170);ctx.lineTo(mx-69,my+170);ctx.closePath();ctx.clip();
+for(let j=0;j<17;j++){let yy=my+7+j*10;ctx.strokeStyle=j%2?'#766247':'#e4d4b2';ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(mx-82,yy+20);ctx.lineTo(mx+82,yy-20);ctx.stroke();ctx.strokeStyle='#59452f88';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(mx-82,yy+24);ctx.lineTo(mx+82,yy-16);ctx.stroke()}
+for(let j=0;j<8;j++){ellipse(mx-35+j*10,my+35+(j%3)*29,4,7,'#80634344')}
+ctx.restore();
+// shoulder and arm silhouettes
+for(let side of [-1,1]){ctx.save();ctx.translate(mx+side*49,my+22);ctx.rotate(side*(.42-progress*.32));let arm=ctx.createLinearGradient(-16,0,18,0);arm.addColorStop(0,'#665039');arm.addColorStop(.35,'#e0cfaa');arm.addColorStop(1,'#8c7654');ctx.strokeStyle=arm;ctx.lineWidth=30;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(side*24,38,side*34,67);ctx.lineTo(side*27,103);ctx.stroke();ctx.strokeStyle='#f0dfbd';ctx.lineWidth=5;for(let k=0;k<7;k++){ctx.beginPath();ctx.moveTo(side*(-13+k*4),8+k*2);ctx.lineTo(side*(22+k*3),91+k*2);ctx.stroke()}ctx.strokeStyle='#59452e';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(side*25,48);ctx.lineTo(side*42,63);ctx.stroke();
+// curled fingers
+for(let f=0;f<4;f++){ctx.strokeStyle=f%2?'#b9a47f':'#e1d0ab';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(side*(27+f*3),101);ctx.quadraticCurveTo(side*(39+f*4),115,side*(31+f*4),124);ctx.stroke()}
+ctx.restore()}
+// hanging torn linen strips
+for(let i=0;i<6;i++){let x=mx-46+i*18;ctx.strokeStyle=i%2?'#e2d1ad':'#786347';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x,my+82);ctx.quadraticCurveTo(x-9,my+117,x+((i%2)*13-6),my+151+(i%3)*8);ctx.stroke()}
+// layered collar
 poly([[mx-47,my-1],[mx-30,my+24],[mx+30,my+24],[mx+47,my-1],[mx+32,my+6],[mx,my+17],[mx-32,my+6]],'#d6a63e','#f4d78b');
 // medallion hovering forward
 let medY=my-12-Math.sin(t*1.6)*8-progress*65;glow(mx,medY,95,'#00e9cf55');ellipse(mx,medY,27,31,'#c99b3e');ellipse(mx,medY,21,25,'#62451b');ellipse(mx,medY,14,18,'#14cbb4');ellipse(mx-5,medY-5,4,7,'#b4fff0');for(let i=0;i<12;i++){let a=i*Math.PI/6;ctx.strokeStyle='#f2ce73';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(mx+Math.cos(a)*29,medY+Math.sin(a)*32);ctx.lineTo(mx+Math.cos(a)*38,medY+Math.sin(a)*42);ctx.stroke()}
