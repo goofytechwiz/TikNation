@@ -666,100 +666,73 @@ function renderHauntedHearseGift(gift,opts,overlay){
 }
 function renderLivingTombstonesGift(gift,opts,overlay){
  const scene=document.createElement("div");
- scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#080e13;isolation:isolate";
- scene.innerHTML='<canvas aria-label="Moonlit graveyard with animated tombstones" style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 52%,rgba(0,0,0,.35) 72%,rgba(0,0,0,.82)),radial-gradient(ellipse at 50% 42%,transparent 32%,rgba(0,0,0,.28) 100%)"></div><div style="position:absolute;z-index:8;bottom:6%;left:3%;right:3%;text-align:center;color:#f0f3e9;font:1000 clamp(20px,5.4vw,42px)/1.12 Georgia,serif;letter-spacing:.08em;text-shadow:0 3px 12px #000,0 0 22px #a6c9d4">THE NIGHT OF THE LIVING TOMBSTONES<div style="font:800 10px system-ui;letter-spacing:.28em;margin-top:9px;color:#c5d9d1">THE DEAD WILL NOT STAY BURIED</div></div>';
+ scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#05080b;isolation:isolate";
+ scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:linear-gradient(transparent 38%,rgba(0,0,0,.82)),radial-gradient(ellipse,transparent 24%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;bottom:7%;left:0;right:0;text-align:center;color:#d7ded4;font:1000 clamp(22px,5.8vw,44px)/1.1 Georgia,serif;letter-spacing:.1em;text-shadow:0 2px 8px #000,0 0 18px #8aa08c">THE NIGHT OF THE LIVING TOMBSTONES<div style="font:700 10px system-ui;letter-spacing:.28em;margin-top:9px;color:#a6b6a7">THE DEAD WILL NOT STAY BURIED</div></div>';
  overlay.appendChild(scene);document.body.appendChild(overlay);
  const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");
  let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start;
- const rand=(a,b)=>a+Math.random()*(b-a),stones=[],mist=[],embers=[];
- function resize(){dpr=Math.min(2,window.devicePixelRatio||1);w=window.innerWidth;h=window.innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}
- function groundY(x){return h*(.665+.075*x/w)+Math.sin(x/w*Math.PI*2)*h*.012;}
+ const rand=(a,b)=>a+Math.random()*(b-a),stones=[],mist=[];
+ function resize(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
  resize();window.addEventListener("resize",resize);
- for(let i=0;i<19;i++){
-  const x=rand(w*.035,w*.965),depth=rand(.08,1),scale=.43+depth*.82;
-  stones.push({x,baseY:groundY(x)+depth*h*.145,s:scale,phase:rand(0,6.28),delay:.55+rand(0,2.1),shape:i%6,crack:rand(0,1),rock:rand(.045,.085),tone:rand(0,1),depth});
- }
- for(let i=0;i<52;i++)mist.push({x:rand(0,w),y:rand(h*.55,h*.96),r:rand(35,120),speed:rand(7,23),a:rand(.035,.095),phase:rand(0,6.28)});
- for(let i=0;i<32;i++)embers.push({x:rand(0,w),y:rand(h*.48,h),r:rand(1,2.8),speed:rand(8,24),phase:rand(0,6.28)});
- function drawTree(x,y,s){
-  ctx.save();ctx.translate(x,y);ctx.scale(s,s);
-  ctx.strokeStyle="#101c1c";ctx.lineCap="round";ctx.lineJoin="round";ctx.lineWidth=17;
-  ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-8,-180);ctx.lineTo(-45,-245);ctx.moveTo(-4,-132);ctx.lineTo(68,-193);ctx.lineTo(91,-250);ctx.moveTo(-8,-168);ctx.lineTo(-82,-218);ctx.lineTo(-112,-266);ctx.moveTo(-8,-205);ctx.lineTo(28,-268);ctx.lineTo(22,-310);ctx.stroke();
-  ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-45,-245);ctx.lineTo(-74,-286);ctx.moveTo(91,-250);ctx.lineTo(132,-286);ctx.moveTo(-112,-266);ctx.lineTo(-146,-284);ctx.stroke();ctx.restore();
- }
+ for(let i=0;i<16;i++){const depth=i/15,scale=.42+depth*.9;stones.push({x:rand(.025,.975)*w,baseY:h*(.53+depth*.32),s:scale,phase:rand(0,Math.PI*2),delay:1.1+rand(0,2.1),shape:i%5,crack:rand(0,1),rock:rand(.026,.052),tone:rand(0,1)});}
+ for(let i=0;i<38;i++)mist.push({x:rand(0,w),y:rand(h*.5,h),r:rand(28,105),speed:rand(6,19),a:rand(.025,.075)});
  function grave(st,t){
-  const ww=(st.shape===0?46:st.shape===1?40:st.shape===2?36:st.shape===3?48:st.shape===4?42:39);
-  const hh=(st.shape===0?100:st.shape===1?116:st.shape===2?83:st.shape===3?94:st.shape===4?108:88);
-  const wake=Math.max(0,Math.min(1,(t-st.delay)/.8));
-  // Tombstones remain buried in place: only a restrained unsettling shudder.
-  const tremor=t>st.delay?Math.sin((t-st.delay)*17+st.phase)*.0045*wake:0;
-  const rock=Math.sin(Math.max(0,t-st.delay)*4.2+st.phase)*.006*wake+tremor;
-  ctx.save();ctx.translate(st.x,st.baseY);ctx.rotate(rock);ctx.scale(st.s,st.s);
-  // Dark buried foot and stone silhouette.
-  ctx.fillStyle="rgba(0,0,0,.72)";ctx.beginPath();ctx.ellipse(0,1,ww*.78,9,0,0,Math.PI*2);ctx.fill();
+  const ww=st.shape===0?43:st.shape===1?38:st.shape===2?35:st.shape===3?46:40;
+  const hh=st.shape===0?91:st.shape===1?105:st.shape===2?78:st.shape===3?88:96;
+  const wake=Math.max(0,Math.min(1,(t-st.delay)/.9));
+  const rock=Math.sin(Math.max(0,t-st.delay)*3.2+st.phase)*st.rock*wake;
+  ctx.save();
+  // The pivot is fixed at the foot of the stone: rotation only, never screen-space travel.
+  ctx.translate(st.x,st.baseY);ctx.rotate(rock);ctx.scale(st.s,st.s);
+  ctx.globalAlpha=.72;
+  ctx.fillStyle="#020504";ctx.beginPath();ctx.ellipse(0,2,ww*.72,8,0,0,Math.PI*2);ctx.fill();
+  ctx.globalAlpha=1;
   ctx.beginPath();
-  if(st.shape===0){ctx.moveTo(-ww/2,5);ctx.lineTo(-ww/2,-hh+22);ctx.quadraticCurveTo(-ww/2,-hh+2,-ww*.18,-hh);ctx.quadraticCurveTo(ww*.2,-hh-3,ww/2,-hh+20);ctx.lineTo(ww/2,5);}
-  else if(st.shape===1){ctx.moveTo(-ww/2,5);ctx.lineTo(-ww/2,-hh+15);ctx.quadraticCurveTo(-ww*.4,-hh-5,0,-hh+1);ctx.quadraticCurveTo(ww*.42,-hh-4,ww/2,-hh+15);ctx.lineTo(ww/2,5);}
-  else if(st.shape===2){ctx.moveTo(-ww/2,5);ctx.lineTo(-ww/2,-hh);ctx.lineTo(ww/2,-hh);ctx.lineTo(ww/2,5);}
-  else if(st.shape===3){ctx.moveTo(-ww/2,5);ctx.lineTo(-ww/2,-hh+9);ctx.lineTo(-ww*.25,-hh);ctx.lineTo(ww*.25,-hh);ctx.lineTo(ww/2,-hh+9);ctx.lineTo(ww/2,5);}
-  else if(st.shape===4){ctx.moveTo(-ww/2,5);ctx.lineTo(-ww/2,-hh+18);ctx.quadraticCurveTo(-ww/2,-hh+3,0,-hh+4);ctx.quadraticCurveTo(ww/2,-hh+3,ww/2,-hh+18);ctx.lineTo(ww/2,5);}
-  else{ctx.moveTo(-ww/2,5);ctx.lineTo(-ww/2,-hh+10);ctx.lineTo(-ww*.2,-hh+24);ctx.lineTo(0,-hh);ctx.lineTo(ww*.2,-hh+24);ctx.lineTo(ww/2,-hh+10);ctx.lineTo(ww/2,5);}
+  if(st.shape===0){ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh+19);ctx.quadraticCurveTo(-ww/2,-hh+2,-ww*.18,-hh);ctx.quadraticCurveTo(ww*.2,-hh-3,ww/2,-hh+18);ctx.lineTo(ww/2,0);}
+  else if(st.shape===1){ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh+12);ctx.quadraticCurveTo(-ww*.4,-hh-4,0,-hh+2);ctx.quadraticCurveTo(ww*.42,-hh-2,ww/2,-hh+13);ctx.lineTo(ww/2,0);}
+  else if(st.shape===2){ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh);ctx.lineTo(ww/2,-hh);ctx.lineTo(ww/2,0);}
+  else if(st.shape===3){ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh+8);ctx.lineTo(-ww*.25,-hh);ctx.lineTo(ww*.25,-hh);ctx.lineTo(ww/2,-hh+8);ctx.lineTo(ww/2,0);}
+  else{ctx.moveTo(-ww/2,0);ctx.lineTo(-ww/2,-hh+16);ctx.quadraticCurveTo(-ww/2,-hh+4,0,-hh+5);ctx.quadraticCurveTo(ww/2,-hh+4,ww/2,-hh+16);ctx.lineTo(ww/2,0);}
   ctx.closePath();
   const stone=ctx.createLinearGradient(-ww/2,-hh,ww/2,0);
-  stone.addColorStop(0,st.tone>.5?"#89938b":"#69766f");stone.addColorStop(.22,"#59645e");stone.addColorStop(.58,"#394640");stone.addColorStop(1,"#17221f");
-  ctx.fillStyle=stone;ctx.fill();ctx.strokeStyle="rgba(206,219,205,.68)";ctx.lineWidth=1.25;ctx.stroke();
-  // Side bevel, chipped edges, age streaks and moss.
-  ctx.strokeStyle="rgba(4,10,9,.82)";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(-ww/2+4,-5);ctx.lineTo(-ww/2+4,-hh+20);ctx.lineTo(-ww*.2,-hh+5);ctx.stroke();
-  ctx.strokeStyle="rgba(220,229,211,.22)";ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(ww/2-4,-8);ctx.lineTo(ww/2-4,-hh+20);ctx.stroke();
-  for(let k=0;k<9;k++){const px=-ww*.4+((k*37+st.shape*11)%70)/70*ww*.8,py=-hh*.82+((k*19+st.shape*7)%60)/60*hh*.66;ctx.fillStyle=k%2?"rgba(130,157,111,.27)":"rgba(5,13,10,.27)";ctx.beginPath();ctx.ellipse(px,py,2+(k%3),5+(k%4)*2,-.3,0,Math.PI*2);ctx.fill();}
-  // Inscription.
-  ctx.fillStyle="rgba(7,13,11,.34)";ctx.fillRect(-ww*.32,-hh*.69,ww*.64,hh*.28);
-  ctx.strokeStyle="rgba(210,219,201,.28)";ctx.lineWidth=.8;ctx.strokeRect(-ww*.32,-hh*.69,ww*.64,hh*.28);
-  ctx.fillStyle="rgba(230,231,210,.72)";ctx.textAlign="center";ctx.font="bold 8px Georgia";ctx.fillText(st.shape%2?"REST IN PEACE":"R.I.P.",0,-hh*.55);
-  // Cracks split and glow briefly as each stone wakes.
-  const crackAlpha=wake*(.5+.5*Math.sin((t-st.delay)*8));
-  ctx.strokeStyle="rgba(5,9,8,.95)";ctx.lineWidth=2.4;ctx.beginPath();ctx.moveTo(-ww*.08,-hh*.94);ctx.lineTo(ww*.02,-hh*.77);ctx.lineTo(-ww*.14,-hh*.62);ctx.lineTo(-ww*.04,-hh*.45);ctx.lineTo(-ww*.17,-hh*.28);ctx.stroke();
-  ctx.strokeStyle="rgba(196,219,192,"+(crackAlpha*.58)+")";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(-ww*.08,-hh*.94);ctx.lineTo(ww*.02,-hh*.77);ctx.lineTo(-ww*.14,-hh*.62);ctx.lineTo(-ww*.04,-hh*.45);ctx.stroke();
+  stone.addColorStop(0,st.tone>.5?"#252b29":"#1a211f");stone.addColorStop(.28,"#555c55");stone.addColorStop(.55,"#343b36");stone.addColorStop(1,"#111714");
+  ctx.fillStyle=stone;ctx.fill();
+  ctx.strokeStyle="rgba(157,165,151,.48)";ctx.lineWidth=1.1;ctx.stroke();
+  // chipped edge and darker bevel
+  ctx.strokeStyle="rgba(5,9,7,.82)";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-ww/2+3,-5);ctx.lineTo(-ww/2+3,-hh+20);ctx.lineTo(-ww*.2,-hh+5);ctx.stroke();
+  ctx.strokeStyle="rgba(190,192,174,.17)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(ww/2-3,-8);ctx.lineTo(ww/2-3,-hh+20);ctx.stroke();
+  // weathering, lichen and age streaks
+  for(let k=0;k<7;k++){const px=-ww*.4+((k*37+st.shape*11)%70)/70*ww*.8,py=-hh*.82+((k*19+st.shape*7)%60)/60*hh*.66;ctx.fillStyle=k%2?"rgba(113,129,98,.16)":"rgba(3,8,6,.2)";ctx.beginPath();ctx.ellipse(px,py,2+(k%3),5+(k%4)*2,-.3,0,Math.PI*2);ctx.fill();}
+  ctx.strokeStyle="rgba(8,13,10,.9)";ctx.lineWidth=1.35;ctx.beginPath();ctx.moveTo(-ww*.1,-hh*.91);ctx.lineTo(-ww*.02,-hh*.72);ctx.lineTo(-ww*.16,-hh*.59);ctx.lineTo(-ww*.09,-hh*.43);ctx.stroke();
+  // worn inscription panel and subtle carved lettering
+  ctx.fillStyle="rgba(5,10,8,.28)";ctx.fillRect(-ww*.31,-hh*.69,ww*.62,hh*.27);
+  ctx.strokeStyle="rgba(177,184,165,.19)";ctx.lineWidth=.8;ctx.strokeRect(-ww*.31,-hh*.69,ww*.62,hh*.27);
+  ctx.fillStyle="rgba(194,197,177,.45)";ctx.textAlign="center";ctx.font="bold 8px Georgia";ctx.fillText(st.shape%2?"REST IN PEACE":"R.I.P.",0,-hh*.56);
+  ctx.fillStyle="rgba(6,10,8,.55)";ctx.fillRect(-ww*.23,-hh*.48,ww*.46,1);
   ctx.restore();
  }
- function drawGround(t){
-  // Foreground soil is painted over stone feet so every grave is visibly buried.
-  ctx.beginPath();ctx.moveTo(0,groundY(0));ctx.bezierCurveTo(w*.25,h*.69,w*.65,h*.73,w,groundY(w));ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.closePath();
-  const earth=ctx.createLinearGradient(0,h*.66,0,h);earth.addColorStop(0,"#26342d");earth.addColorStop(.12,"#18241e");earth.addColorStop(1,"#070d0b");ctx.fillStyle=earth;ctx.fill();
-  stones.forEach(st=>{
-   const pulse=.5+.5*Math.sin(t*3+st.phase);ctx.fillStyle="rgba(5,11,8,.88)";ctx.beginPath();ctx.ellipse(st.x,st.baseY+2,st.s*31,st.s*8,0,0,Math.PI*2);ctx.fill();
-   ctx.strokeStyle="rgba(118,143,119,"+(.12+pulse*.1)+")";ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(st.x,st.baseY,st.s*29,st.s*6,0,Math.PI,Math.PI*2);ctx.stroke();
-  });
-  // Foreground blades and scattered stones establish scale.
-  for(let i=0;i<40;i++){const x=(i*97)%w,y=groundY(x)+18+(i%6)*13;ctx.strokeStyle="rgba(91,116,91,.22)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-4+(i%9),y-7-(i%5)*2);ctx.stroke();}
- }
+ function tree(x,y,s){ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.strokeStyle="#101713";ctx.lineCap="round";ctx.lineWidth=13;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(5,-220);ctx.lineTo(-24,-280);ctx.moveTo(3,-170);ctx.lineTo(65,-225);ctx.lineTo(82,-273);ctx.moveTo(0,-130);ctx.lineTo(-74,-181);ctx.lineTo(-94,-224);ctx.moveTo(8,-205);ctx.lineTo(52,-250);ctx.stroke();ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-24,-280);ctx.lineTo(-54,-306);ctx.moveTo(82,-273);ctx.lineTo(111,-296);ctx.moveTo(-94,-224);ctx.lineTo(-124,-237);ctx.stroke();ctx.restore();}
  function frame(now){
   if(!alive||!overlay.isConnected)return;
   const t=(now-start)/1000,dt=Math.min(.04,(now-last)/1000);last=now;ctx.clearRect(0,0,w,h);
-  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#111d2b");sky.addColorStop(.38,"#263c4b");sky.addColorStop(.68,"#182b30");sky.addColorStop(1,"#09120f");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
-  // Moon and cool light bloom.
-  const mx=w*.78,my=h*.19,mr=Math.min(w,h)*.075;
-  ctx.fillStyle="rgba(202,226,220,.08)";ctx.beginPath();ctx.arc(mx,my,mr*2.9,0,Math.PI*2);ctx.fill();
-  const moon=ctx.createRadialGradient(mx-mr*.25,my-mr*.25,2,mx,my,mr);moon.addColorStop(0,"#f4f5df");moon.addColorStop(.65,"#c5d4c8");moon.addColorStop(1,"#738c88");ctx.fillStyle=moon;ctx.beginPath();ctx.arc(mx,my,mr,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle="rgba(211,228,219,.08)";ctx.beginPath();ctx.arc(mx,my,mr*1.65,0,Math.PI*2);ctx.fill();
-  // Distant silhouettes and fence.
-  drawTree(w*.08,h*.77,Math.max(.48,w/1100));drawTree(w*.94,h*.77,Math.max(.52,w/1050));
-  ctx.strokeStyle="rgba(7,15,14,.85)";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(0,h*.62);ctx.lineTo(w,h*.64);for(let x=0;x<=w;x+=w/14){ctx.moveTo(x,h*.59);ctx.lineTo(x,h*.68);}ctx.stroke();
+  const sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,"#070c13");sky.addColorStop(.5,"#172029");sky.addColorStop(1,"#080d0b");ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+  const moon=ctx.createRadialGradient(w*.78,h*.19,2,w*.78,h*.19,h*.18);moon.addColorStop(0,"rgba(218,228,214,.48)");moon.addColorStop(.25,"rgba(154,174,161,.13)");moon.addColorStop(1,"transparent");ctx.fillStyle=moon;ctx.fillRect(0,0,w,h);
+  tree(w*.08,h*.78,Math.max(.55,w/1000));tree(w*.92,h*.77,Math.max(.6,w/950));
+  ctx.fillStyle="#0b100e";ctx.beginPath();ctx.moveTo(0,h*.65);ctx.quadraticCurveTo(w*.5,h*.54,w,h*.66);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
+  // distant graves first, then larger foreground stones; all keep their base coordinates.
   stones.slice().sort((a,b)=>a.baseY-b.baseY).forEach(st=>grave(st,t));
-  drawGround(t);
-  // Layered ground mist, with enough contrast to preserve the silhouettes.
-  mist.forEach(m=>{m.x-=m.speed*dt;if(m.x<-m.r)m.x=w+m.r;const bob=Math.sin(t*.7+m.phase)*8;const fog=ctx.createRadialGradient(m.x,m.y+bob,0,m.x,m.y+bob,m.r);fog.addColorStop(0,"rgba(192,218,207,"+m.a+")");fog.addColorStop(1,"rgba(130,165,155,0)");ctx.fillStyle=fog;ctx.fillRect(m.x-m.r,m.y-m.r,m.r*2,m.r*2);});
-  embers.forEach(e=>{e.y-=e.speed*dt;if(e.y<h*.4)e.y=h*.9;ctx.fillStyle="rgba(194,218,190,"+(.18+.2*(.5+.5*Math.sin(t*2+e.phase)))+")";ctx.beginPath();ctx.arc(e.x+Math.sin(t+e.phase)*5,e.y,e.r,0,Math.PI*2);ctx.fill();});
-  // Brief moonlight pulse when the first stones finish rising.
-  if(t>3.2&&t<3.55){ctx.fillStyle="rgba(208,230,220,"+(Math.sin((t-3.2)/.35*Math.PI)*.12)+")";ctx.fillRect(0,0,w,h);}
+  mist.forEach(m=>{m.x-=m.speed*dt;if(m.x<-m.r)m.x=w+m.r;const fog=ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,m.r);fog.addColorStop(0,"rgba(181,196,185,"+m.a+")");fog.addColorStop(1,"transparent");ctx.fillStyle=fog;ctx.fillRect(m.x-m.r,m.y-m.r,m.r*2,m.r*2);});
+  if(t>4.5&&t<5.1){ctx.fillStyle="rgba(174,195,177,"+(Math.sin(t*38)*.025)+")";ctx.fillRect(0,0,w,h);}
   raf=requestAnimationFrame(frame);
  }
  raf=requestAnimationFrame(frame);
- if(typeof opts.onSound==="function"){try{opts.onSound();}catch(error){console.warn("Tombstone gift audio unavailable:",error);}}
- const duration=Math.max(9000,Number(opts.duration)||10500);
- setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .65s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),680);}},duration);
+ const duration=Math.max(7000,Number(opts.duration)||7800);
+ setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .55s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),580);}},duration);
  return overlay;
 }
+
+
+
 
 
 function renderPhoenixGift(gift,opts,overlay){
