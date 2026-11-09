@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#06131a"><title>The Phantom Shipwreck</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#06131a;color:#d7f5e9;font-family:Georgia,serif}canvas{position:fixed;inset:0;width:100%;height:100%;display:block}.shade{position:fixed;inset:0;pointer-events:none;background:linear-gradient(180deg,#020b13a8,transparent 28%,#03101744 65%,#02080de0),radial-gradient(ellipse at center,transparent 20%,#02070bc9 100%)}header{position:fixed;top:env(safe-area-inset-top,0);left:0;right:0;text-align:center;padding:13px 8px;text-shadow:0 3px 15px #000;pointer-events:none}.eyebrow{font:800 9px system-ui;letter-spacing:.34em;color:#91e8d0}h1{font-weight:500;font-size:clamp(21px,4vw,38px);letter-spacing:.07em;margin:6px 0}.sub{font:9px system-ui;letter-spacing:.22em;color:#b5d8d1}#hint{position:fixed;bottom:calc(76px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;font:800 10px system-ui;letter-spacing:.17em;color:#b5f5df;text-shadow:0 2px 9px #000;pointer-events:none;padding:0 10px}.controls{position:fixed;bottom:calc(15px + env(safe-area-inset-bottom,0px));left:0;right:0;display:flex;justify-content:center;gap:10px;padding:0 10px}button{border:1px solid #75cdb6;background:#071c21ed;color:#e1fff3;border-radius:28px;padding:13px 17px;font:800 10px system-ui;letter-spacing:.1em;cursor:pointer;touch-action:manipulation}button.primary{background:linear-gradient(135deg,#176b60,#0a292e);box-shadow:0 0 24px #55e5c344}button:active{transform:scale(.96)}@media(max-width:520px){h1{font-size:22px}button{padding:12px 14px}}
+</style></head><body>
+<canvas id="scene"></canvas><div class="shade"></div><header><div class="eyebrow">TIKNATION · EPIC GIFTS</div><h1>THE PHANTOM SHIPWRECK</h1><div class="sub">THE DEAD DO NOT SAIL ALONE</div></header><div id="hint">A LOST SHIP HAUNTS THE BLACK WATER</div><div class="controls"><button class="primary" id="awaken">AWAKEN THE DEEP</button><button id="sound">SOUND: OFF</button></div>
+<script>
+(()=>{const c=document.getElementById('scene'),x=c.getContext('2d');let w,h,d=1,t=0,awake=false,sound=false,audio=null,osc=null,gain=null;
+function size(){d=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=w*d;c.height=h*d;x.setTransform(d,0,0,d,0,0)}addEventListener('resize',size);size();
+function path(points,fill,stroke,lw=1){x.beginPath();points.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.closePath();x.fillStyle=fill;x.fill();if(stroke){x.strokeStyle=stroke;x.lineWidth=lw;x.stroke()}}
+function glow(a,b,r,col){let g=x.createRadialGradient(a,b,0,a,b,r);g.addColorStop(0,col);g.addColorStop(1,'transparent');x.fillStyle=g;x.fillRect(a-r,b-r,r*2,r*2)}
+function line(points,col,lw){x.beginPath();points.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.strokeStyle=col;x.lineWidth=lw;x.lineCap='round';x.lineJoin='round';x.stroke()}
+function ellipse(a,b,rx,ry,col){x.beginPath();x.ellipse(a,b,rx,ry,0,0,Math.PI*2);x.fillStyle=col;x.fill()}
+function draw(){t+=.016;let sky=x.createLinearGradient(0,0,0,h);sky.addColorStop(0,'#071521');sky.addColorStop(.52,'#19333b');sky.addColorStop(1,'#07151b');x.fillStyle=sky;x.fillRect(0,0,w,h);
+let moonX=w*.73,moonY=h*.22;glow(moonX,moonY,Math.min(w,h)*.28,'#b8d9cf20');ellipse(moonX,moonY,Math.min(w,h)*.055,Math.min(w,h)*.055,'#a9c5bd22');
+ // distant storm cloud banks
+for(let k=0;k<8;k++){let xx=((k*177-t*8)%(w+300))-120,yy=h*(.13+(k%3)*.085);ellipse(xx,yy,110+(k%3)*35,27,'#101f29aa');ellipse(xx+48,yy-9,74,25,'#142631cc')}
+ // lightning forks on occasional pulses
+let flash=awake&&Math.sin(t*2.1)>0.985;if(flash){x.fillStyle='#c9fff522';x.fillRect(0,0,w,h);let lx=w*(.22+.55*Math.abs(Math.sin(t*1.7)));line([[lx,0],[lx-22,h*.13],[lx+8,h*.17],[lx-42,h*.29],[lx-12,h*.32]],'#d8fff0',3);line([[lx+8,h*.17],[lx+48,h*.22],[lx+20,h*.27]],'#c9fff0',2)}
+let sea=h*.59;let water=x.createLinearGradient(0,sea,0,h);water.addColorStop(0,'#173b42');water.addColorStop(.3,'#0a252d');water.addColorStop(1,'#020b12');x.fillStyle=water;x.fillRect(0,sea,w,h-sea);
+ // rolling ocean bands and foam
+for(let layer=0;layer<9;layer++){let yy=sea+layer*(h-sea)/9;let pts=[];for(let q=0;q<=18;q++){let xx=q*w/18;pts.push([xx,yy+Math.sin(q*.8+t*(1+layer*.09)+layer)* (5+layer*1.3)])}line(pts,layer%2?'#76aaa055':'#020a0d88',1.5)}
+for(let i=0;i<85;i++){let xx=(i*97+t*(22+i%4*8))%(w+30)-15,yy=sea+((i*41+t*(8+i%5*2))%(h-sea));line([[xx,yy],[xx+12+(i%9),yy-1]],'#a7d8d044',1+(i%2))}
+ // wreck silhouette with deck, broken hull and rigging
+let sx=w*.49,sy=sea-h*.11,boatW=Math.min(w*.53,520),boatH=boatW*.42;x.save();x.translate(sx,sy);x.scale(boatW/420,boatW/420);
+path([[-210,15],[-170,58],[-90,79],[60,83],[155,54],[208,5],[174,71],[92,102],[-85,99],[-182,69]],'#080f12','#263a3a',3);
+path([[-170,4],[-125,18],[-35,23],[65,18],[145,0],[188,7],[142,40],[40,57],[-92,50]],'#17272a','#63716a',3);
+for(let i=0;i<12;i++){let xx=-150+i*26;line([[xx,27+Math.sin(i)*5],[xx+18,48+Math.sin(i)*3]],'#786d54',3)}
+// three broken masts
+line([[-72,15],[-80,-205]],'#171e1e',9);line([[5,16],[13,-245]],'#141d20',10);line([[92,13],[157,-164]],'#111a1d',8);
+line([[-80,-182],[-176,-130],[-34,-142],[-80,-182]],'#34434499',3);line([[13,-216],[-83,-145],[107,-159],[13,-216]],'#293a3a99',3);line([[157,-145],[87,-93],[184,-113]],'#26363899',3);
+path([[-78,-183],[-45,-170],[-60,-110],[-94,-127]],'#263635aa');path([[18,-210],[65,-190],[73,-124],[24,-143]],'#30413e88');
+ // lanterns on deck
+for(let p of [[-117,24],[52,22],[130,12]]){glow(p[0],p[1],46,'#4bffd266');ellipse(p[0],p[1],5,9,'#8effd9');rectLantern(p[0]-4,p[1]-10)}
+x.restore();
+function rectLantern(a,b){x.fillStyle='#182c2b';x.fillRect(a,b,8,3)}
+// huge sea serpent rising behind and around ship
+let serpentX=sx+w*.02,serpY=sea-h*.19,serpScale=Math.min(w/900,1.15)*(awake?1.15:1);x.save();x.translate(serpentX,serpY);x.scale(serpScale,serpScale);
+let sway=Math.sin(t*1.1)*12;
+ // coiling body
+line([[-330,100],[-270,45],[-205,62],[-150,112],[-88,95],[-45,30],[8,-45],[80,-75],[146,-48],[190,5],[238,65],[302,78]],'#071719',36);
+line([[-330,91],[-270,37],[-205,54],[-150,104],[-88,87],[-45,22],[8,-53],[80,-83],[146,-56],[190,-3],[238,57],[302,70]],'#31554e',24);
+line([[-330,83],[-270,29],[-205,46],[-150,96],[-88,79],[-45,14],[8,-61],[80,-91],[146,-64],[190,-11],[238,49],[302,62]],'#668176',5);
+ // raised neck and dragon-like sea head
+line([[80,-80],[105,-130+sway],[150,-163+sway],[192,-154+sway]],'#081719',45);line([[80,-88],[105,-138+sway],[150,-171+sway],[192,-162+sway]],'#45665d',29);
+ellipse(197,-164+sway,38,24,'#203d39');path([[185,-175+sway],[225,-184+sway],[238,-164+sway],[211,-151+sway],[183,-156+sway]],'#314e47','#779087',2);
+ellipse(216,-170+sway,5,4,'#d7ffb0');glow(216,-170+sway,20,'#a5ff9b99');line([[194,-146+sway],[221,-139+sway],[236,-145+sway]],'#0b1a18',3);
+for(let k=0;k<4;k++){line([[174+k*13,-181+sway],[164+k*9,-204+sway]],'#60796e',5)}
+x.restore();
+ // sea spray and rain streaks
+for(let i=0;i<130;i++){let xx=(i*71+t*(70+i%4*12))%w, yy=(i*53+t*180)%h;line([[xx,yy],[xx-4,yy+12]],'#b9d8d333',1)}
+for(let i=0;i<28;i++){let xx=(i*113+t*23)%w, yy=sea+Math.sin(t+i)*23;ellipse(xx,yy,4+(i%4),2,'#b6e5d855')}
+if(awake){glow(sx,sea-h*.07,Math.min(w,h)*.32,'#3af5c522');for(let i=0;i<24;i++){let xx=(i*79+t*34)%w,yy=sea-((i*31+t*24)%(h*.45));ellipse(xx,yy,2,3,'#8affdc99')}}
+requestAnimationFrame(draw)}
+draw();
+document.getElementById('awaken').addEventListener('click',()=>{awake=true;document.getElementById('hint').textContent='THE SERPENT HAS RISEN · THE SHIP IS CLAIMED';document.getElementById('awaken').textContent='THE DEEP IS AWAKE'});
+document.getElementById('sound').addEventListener('click',()=>{sound=!sound;document.getElementById('sound').textContent='SOUND: '+(sound?'ON':'OFF');if(sound){try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();audio.resume();osc=audio.createOscillator();gain=audio.createGain();let f=audio.createBiquadFilter();f.type='lowpass';f.frequency.value=140;osc.type='sawtooth';osc.frequency.value=42;gain.gain.value=.035;osc.connect(f);f.connect(gain);gain.connect(audio.destination);osc.start()}catch(e){}}else if(osc){try{osc.stop()}catch(e){}osc=null}});
+})();
+</script></body></html>
