@@ -6,13 +6,37 @@
 <header><b>TIKNATION · EPIC GIFT TEST</b> <span style="float:right"><a href="./">← GIFT TEST LAB</a></span></header>
 <main><div class="eyebrow">GIFT #3 · ISOLATED PREVIEW</div><h1 class="title">The Madafaka Finger</h1><p class="copy">A giant hand shoots up from the darkness, holds the unmistakable middle-finger salute, and lands with a cheeky cinematic impact.</p>
 <section class="stage" id="stage"><div class="spot"></div><div class="floor"></div>
-<div class="hand" id="hand"><svg viewBox="0 0 320 430" role="img" aria-label="A raised hand making a middle-finger gesture">
-<defs><linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd2b5"/><stop offset=".38" stop-color="#d88e70"/><stop offset=".72" stop-color="#a85e50"/><stop offset="1" stop-color="#683a3b"/></linearGradient><linearGradient id="light" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#fff0d8" stop-opacity=".8"/><stop offset=".35" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#421f2a" stop-opacity=".55"/></linearGradient><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="8" result="noise"/><feColorMatrix in="noise" type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .07"/></feComponentTransfer><feBlend in="SourceGraphic" mode="soft-light"/></filter></defs>
-<g filter="url(#rough)" stroke="#6e3c3b" stroke-width="3" stroke-linejoin="round">
-<path fill="url(#skin)" d="M91 392 C83 362 74 329 66 300 C59 274 53 250 46 229 C41 211 48 198 61 196 C74 194 83 204 90 223 L113 278 L111 95 C111 72 124 57 140 58 C156 59 165 72 165 94 L166 235 L174 35 C175 12 190 0 207 4 C225 8 232 23 230 45 L218 239 L239 85 C242 65 258 56 273 63 C288 70 291 85 286 105 L263 254 C281 228 298 222 309 234 C321 248 312 266 301 286 L261 355 C248 380 224 398 195 405 L133 418 C115 420 99 409 91 392Z"/>
-<path fill="url(#light)" stroke="none" d="M122 96 C122 72 130 63 141 64 C151 65 156 76 156 97 L157 285 L137 285Z M184 37 C185 16 194 8 206 11 C218 14 223 26 221 46 L207 259 L190 257Z M250 88 C253 70 261 64 271 69 C281 74 283 85 279 103 L253 245 L239 241Z"/>
-<path fill="none" stroke="#f9c6a8" stroke-width="5" stroke-linecap="round" opacity=".65" d="M119 300 Q146 312 169 301 M112 327 Q150 340 187 326 M96 355 Q139 372 197 350"/>
-<path fill="none" stroke="#6d3c3b" stroke-width="3" opacity=".65" d="M166 253 Q184 262 206 257 M218 248 Q235 259 255 252 M61 220 Q76 230 84 249"/>
+<div class="hand" id="hand"><svg viewBox="0 0 320 430" role="img" aria-label="A realistic human hand making a middle-finger gesture">
+<defs>
+<linearGradient id="skin" x1="0" y1="0" x2="1" y2=".35"><stop stop-color="#f7c5a7"/><stop offset=".18" stop-color="#e9a98a"/><stop offset=".42" stop-color="#c98269"/><stop offset=".7" stop-color="#a45f51"/><stop offset="1" stop-color="#62363a"/></linearGradient>
+<linearGradient id="finger" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#8e4d46"/><stop offset=".2" stop-color="#d58e72"/><stop offset=".48" stop-color="#f1b99a"/><stop offset=".76" stop-color="#c77d66"/><stop offset="1" stop-color="#713f40"/></linearGradient>
+<linearGradient id="palm" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#f3b99a"/><stop offset=".34" stop-color="#d48b70"/><stop offset=".72" stop-color="#a85f54"/><stop offset="1" stop-color="#63383c"/></linearGradient>
+<linearGradient id="nail" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#b97868"/><stop offset=".35" stop-color="#f1c5ad"/><stop offset=".72" stop-color="#e4a88f"/><stop offset="1" stop-color="#986052"/></linearGradient>
+<radialGradient id="knuckle"><stop stop-color="#f5c1a1" stop-opacity=".9"/><stop offset=".55" stop-color="#c47a65" stop-opacity=".5"/><stop offset="1" stop-color="#7d4744" stop-opacity="0"/></radialGradient>
+<filter id="skinTexture" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="3" seed="19" result="grain"/><feColorMatrix in="grain" type="saturate" values="0" result="mono"/><feComponentTransfer in="mono" result="softgrain"><feFuncA type="table" tableValues="0 .12"/></feComponentTransfer><feBlend in="SourceGraphic" in2="softgrain" mode="soft-light"/></filter>
+<filter id="softShadow" x="-40%" y="-30%" width="180%" height="180%"><feGaussianBlur stdDeviation="5"/></filter>
+</defs>
+<path d="M89 393 C70 340 56 282 42 230 C35 205 48 188 66 192 C82 195 91 219 101 245 L111 99 C112 72 126 54 144 56 C162 58 169 74 168 101 L167 235 L176 39 C177 12 194 -3 213 3 C233 9 238 26 235 49 L220 238 L242 92 C245 68 263 56 280 65 C297 74 296 91 291 113 L264 255 C283 229 302 224 313 239 C324 254 312 273 302 292 L265 358 C250 389 222 408 188 414 L129 423 C108 425 96 412 89 393Z" fill="#170d13" opacity=".75" filter="url(#softShadow)" transform="translate(4 9)"/>
+<g filter="url(#skinTexture)" stroke-linejoin="round">
+<path d="M91 392 C81 361 71 328 63 298 C56 273 49 248 42 228 C36 208 46 192 63 191 C80 190 89 208 97 231 L111 278 L111 99 C111 72 125 55 143 56 C161 57 169 73 168 100 L166 236 L176 39 C177 13 193 -2 212 3 C232 8 238 25 235 49 L220 240 L243 91 C246 68 262 57 279 65 C296 73 297 91 291 113 L264 256 C282 230 301 225 313 239 C325 254 312 275 302 293 L265 358 C249 389 222 407 188 414 L130 423 C109 425 98 412 91 392Z" fill="url(#palm)" stroke="#6c3d3d" stroke-width="2.4"/>
+<path d="M119 101 C119 73 130 62 143 63 C155 64 160 77 159 101 L157 285 L139 291Z" fill="url(#finger)"/>
+<path d="M184 42 C185 17 197 8 211 12 C225 16 229 29 226 50 L209 264 L190 263Z" fill="url(#finger)"/>
+<path d="M251 95 C254 73 265 66 277 73 C288 80 287 94 282 113 L254 257 L239 253Z" fill="url(#finger)"/>
+<path d="M126 67 Q141 55 155 68 L155 86 Q141 92 127 84Z" fill="url(#nail)" stroke="#9a6256" stroke-width="1.2"/>
+<path d="M192 11 Q207 1 222 15 L222 34 Q206 41 191 32Z" fill="url(#nail)" stroke="#9a6256" stroke-width="1.2"/>
+<path d="M260 68 Q273 60 284 75 L280 91 Q266 96 255 85Z" fill="url(#nail)" stroke="#9a6256" stroke-width="1.2"/>
+<path d="M48 199 Q61 188 74 202 L82 220 Q68 230 54 222Z" fill="url(#nail)" opacity=".8"/>
+<ellipse cx="81" cy="267" rx="28" ry="40" fill="url(#knuckle)"/><ellipse cx="170" cy="290" rx="37" ry="26" fill="url(#knuckle)"/><ellipse cx="222" cy="277" rx="27" ry="21" fill="url(#knuckle)"/><ellipse cx="258" cy="260" rx="23" ry="19" fill="url(#knuckle)"/>
+<g fill="none" stroke-linecap="round">
+<path d="M119 283 Q137 294 158 286 M117 291 Q139 303 160 295" stroke="#713f40" stroke-width="2.4" opacity=".65"/>
+<path d="M179 260 Q195 269 211 262 M180 267 Q197 276 210 269" stroke="#6e3c3c" stroke-width="2" opacity=".62"/>
+<path d="M224 252 Q239 261 253 254 M224 258 Q240 267 254 260" stroke="#713e3c" stroke-width="2" opacity=".6"/>
+<path d="M65 226 Q78 237 85 254 M72 240 Q83 250 88 267" stroke="#713e3c" stroke-width="2" opacity=".65"/>
+<path d="M101 312 Q141 329 183 313 M95 338 Q143 356 199 335 M104 365 Q150 381 205 357" stroke="#713f3e" stroke-width="2.1" opacity=".55"/>
+<path d="M109 309 Q145 320 177 307 M103 337 Q145 349 188 330" stroke="#f3b89a" stroke-width="2.3" opacity=".55"/>
+<path d="M137 115 L137 242 M202 61 L198 232 M267 117 L252 225" stroke="#f6c5a5" stroke-width="2.5" opacity=".34"/>
+</g>
+<g fill="none" stroke="#8e514b" stroke-width="2" opacity=".28"><path d="M122 376 Q139 352 132 330 M133 355 Q151 345 160 328 M190 382 Q205 360 202 343"/></g>
 </g></svg></div><div class="impact" id="impact"></div><div class="caption" id="caption">MA-DA-FA-KA! 🤘</div></section>
 <div class="controls"><button class="primary" id="play">✦ PLAY GIFT</button><button id="stop">STOP PREVIEW</button></div><div class="status" id="status">READY · TAP PLAY</div><p class="fine">Isolated preview only. No live gift is sent and no coins are charged. The comic impact sound is synthesized in-browser; no external audio files required.</p></main>
 <script>
