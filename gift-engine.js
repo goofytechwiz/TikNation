@@ -904,6 +904,8 @@ function renderHauntedMansionGift(gift,opts,overlay){
  '<linearGradient id="hm-door" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#66503a"/><stop offset=".5" stop-color="#211a17"/><stop offset="1" stop-color="#59432f"/></linearGradient>'+
  '<filter id="hm-glow"><feGaussianBlur stdDeviation="8"/></filter><filter id="hm-haze"><feGaussianBlur stdDeviation="22"/></filter>'+
  '<pattern id="hm-blocks" width="86" height="44" patternUnits="userSpaceOnUse"><path d="M0 1H86M0 43H86M43 1V22M0 22H86M22 22V43" fill="none" stroke="#111821" stroke-width="2" opacity=".45"/></pattern>'+
+ '<pattern id="hm-stone-grain" width="118" height="72" patternUnits="userSpaceOnUse"><path d="M0 0H118M0 36H118M58 0V36M18 36V72M88 36V72" fill="none" stroke="#c3c0b6" stroke-width="2" opacity=".24"/><path d="M7 10l22 -3m35 16l18 -4m20 25l15 -5m-90 19l25 -3" stroke="#d1ccc0" stroke-width="1" opacity=".22"/></pattern>'+
+ '<pattern id="hm-roof-lines" width="44" height="24" patternUnits="userSpaceOnUse"><path d="M0 1H44M0 12H44M0 23H44M22 1V12M0 12V23" fill="none" stroke="#aab0b4" stroke-width="2" opacity=".2"/></pattern>'+
  '</defs>'+
  '<ellipse cx="600" cy="720" rx="590" ry="72" fill="#000" opacity=".82" filter="url(#hm-haze)"/>'+
  '<path class="hm-lightning" d="M895 12L820 150L876 145L790 300L925 165L865 170Z" fill="none" stroke="#d9edff" stroke-width="10" stroke-linejoin="round" filter="url(#hm-glow)"/>'+
@@ -955,6 +957,20 @@ function renderHauntedMansionGift(gift,opts,overlay){
  '<path d="M430 690H790L815 715H405Z M395 715H825L850 740H370Z M355 740H865L895 770H325Z" fill="#72797d" stroke="#151c25" stroke-width="8"/>'+
  '<!-- chimneys, rooftop railings, no church spire -->'+
  '<g fill="#353e49" stroke="#111923" stroke-width="8"><path d="M250 255V125H300V225Z M820 290V145H870V255Z M930 265V130H980V230Z"/></g>'+
+ '<!-- architectural surface detail: weathered cut-stone courses and slate roof seams -->'+
+ '<path d="M30 365L270 215L500 360V700H20Z M390 330L610 170L830 330V700H375Z M760 365L980 215L1180 350V700H745Z" fill="url(#hm-stone-grain)" opacity=".48"/>'+
+ '<path d="M30 365L270 215L500 360L500 700H20Z M390 330L610 170L830 330L830 700H375Z M760 365L980 215L1180 350L1180 700H745Z" fill="none" stroke="#c1c0b8" stroke-width="4" opacity=".17"/>'+
+ '<path d="M30 365L270 215L500 360L500 700H20Z M390 330L610 170L830 330L830 700H375Z M760 365L980 215L1180 350L1180 700H745Z" fill="none" stroke="#090e15" stroke-width="12" opacity=".35"/>'+
+ '<path d="M15 330L70 220L270 115L475 245L475 290L610 150L780 275L780 315L970 185L1185 320L1190 700H10Z" fill="url(#hm-roof-lines)" opacity=".8"/>'+
+ '<!-- recessed window shadows and heavy stone lintels -->'+
+ '<path d="M62 432H150M167 432H257M272 432H362M397 432H478M522 432H698M737 432H822M852 432H938M957 432H1043M1067 432H1150" stroke="#0b1119" stroke-width="10" opacity=".5"/>'+
+ '<path d="M45 615H365M395 615H835M755 615H1160" stroke="#d2c7ae" stroke-width="5" opacity=".22"/>'+
+ '<!-- long gravel approach and estate grounds -->'+
+ '<path d="M490 800L535 742H685L730 800Z" fill="#65635c" opacity=".72"/>'+
+ '<path d="M555 800L580 744H640L665 800Z" fill="#a19a88" opacity=".18"/>'+
+ '<path d="M0 735Q160 675 320 725T600 740T900 715T1200 735V800H0Z" fill="#090e11" opacity=".72"/>'+
+ '<g fill="#090f13" stroke="#151d20" stroke-width="5"><path d="M0 700L35 565L70 700Z M35 700L80 530L125 700Z M1080 700L1125 540L1170 700Z M1140 700L1180 575L1200 700Z"/></g>'+
+ '<g fill="#18211e" opacity=".9"><path d="M0 640Q35 590 70 640Q95 580 125 640L140 710H0Z M1060 650Q1100 580 1135 645Q1160 590 1200 645V710H1060Z"/></g>'+
  '<path d="M15 700H1185" stroke="#b1aa99" stroke-width="10" opacity=".5"/>'+
  '</g>'+
  '<path d="M430 800L490 750H710L770 800Z" fill="#292c2c"/>'+
