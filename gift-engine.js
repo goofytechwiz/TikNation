@@ -381,7 +381,7 @@ function renderVoidRiftGift(gift,opts,overlay){
  scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 48%,transparent 5%,rgba(0,0,0,.28) 48%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;left:0;right:0;bottom:9%;text-align:center;color:#f1eaff;font:1000 clamp(25px,6vw,48px)/1.1 system-ui;letter-spacing:.16em;text-shadow:0 0 22px #a98aff,0 3px 10px #000">THE VOID RIFT<div style="font-size:clamp(10px,2vw,14px);letter-spacing:.25em;margin-top:10px;color:#c7b6ff">REALITY HAS SPLIT OPEN</div></div>';
  overlay.appendChild(scene);document.body.appendChild(overlay);
  // Start the user-authorized cemetery sound from the same Play gesture.
- if(typeof opts.onSound==="function"){try{opts.onSound();}catch(error){console.warn("Cemetery sound callback failed:",error);}}
+ // Audio is started only by the lab's explicit Play button; never autoplay here.
  const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");
  let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start,particles=[];
  const rand=(a,b)=>a+Math.random()*(b-a);
@@ -677,7 +677,7 @@ function renderLivingTombstonesGift(gift,opts,overlay){
  const rand=(a,b)=>a+Math.random()*(b-a),stones=[],mist=[];
  function resize(){dpr=Math.min(2,devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
  resize();window.addEventListener("resize",resize);
- for(let i=0;i<16;i++){const depth=i/15,scale=.42+depth*.9;stones.push({x:rand(.025,.975)*w,baseY:h*(.53+depth*.32),s:scale,phase:rand(0,Math.PI*2),delay:1.1+rand(0,2.1),shape:i%5,crack:rand(0,1),rock:rand(.026,.052),tone:rand(0,1)});}
+ for(let i=0;i<16;i++){const depth=i/15,scale=.42+depth*.9;stones.push({x:rand(.025,.975)*w,baseY:h*(.68+depth*.25),s:scale,phase:rand(0,Math.PI*2),delay:1.1+rand(0,2.1),shape:i%5,crack:rand(0,1),rock:0,tone:rand(0,1)});}
  for(let i=0;i<38;i++)mist.push({x:rand(0,w),y:rand(h*.5,h),r:rand(28,105),speed:rand(6,19),a:rand(.025,.075)});
  function grave(st,t){
   const ww=st.shape===0?43:st.shape===1?38:st.shape===2?35:st.shape===3?46:40;
