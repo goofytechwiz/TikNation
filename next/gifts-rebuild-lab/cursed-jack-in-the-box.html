@@ -35,7 +35,7 @@ function makeNoiseTexture(){const c=document.createElement('canvas');c.width=512
 function makeScene(){
  renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.18;
  scene=new THREE.Scene();scene.background=new THREE.Color('#09080d');scene.fog=new THREE.FogExp2('#09080d',.035);
- camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(7.3,5.8,10.2);camera.lookAt(0,2.05,0);
+ camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(6.6,5.1,9.6);camera.lookAt(0,1.75,0);
  scene.add(new THREE.HemisphereLight('#b8b8d8','#170d13',1.25));
  const key=new THREE.SpotLight('#ffe2bd',190,30,Math.PI/5,.48,1.5);key.position.set(-4,9,6);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key);
  const rim=new THREE.PointLight('#a33d72',75,14);rim.position.set(4,4,-3);scene.add(rim);
@@ -46,29 +46,43 @@ function makeScene(){
  const base=mesh(new THREE.BoxGeometry(2.18,.12,1.95),mat('#392033',.55,.06),scene,0,.22,0);
  boxRig=new THREE.Group();scene.add(boxRig);boxRig.position.y=.36;
  // Main wooden cabinet with subtle textured finish
- const wood=mat('#8b2445',.48,.03,{map:makeNoiseTexture()});
+ const wood=mat('#174b73',.42,.02,{map:makeNoiseTexture()});
  roundedBox(2.02,1.92,1.78,.055,wood,boxRig,0,1.02,0);
- // corner brass rails, inset front panel and ornate trim
- for(const x of [-1.12,1.12])for(const z of [-.87,.87]){
-   mesh(new THREE.BoxGeometry(.035,1.84,.035),darkGold,boxRig,x,1.02,z);
-   for(const y of [.12,1.91])mesh(new THREE.SphereGeometry(.055,16,12),gold,boxRig,x,y,z);
+ // A traditional toy cube: no appliance-style front door or control panel.
+ // Bright painted corner rails and chunky wooden feet make the silhouette unmistakable.
+ for(const x of [-1.08,1.08])for(const z of [-.91,.91]){
+   mesh(new THREE.BoxGeometry(.12,1.88,.12),mat('#e5b84f',.38,.12),boxRig,x,1.02,z);
+   for(const y of [.16,1.88])mesh(new THREE.SphereGeometry(.075,18,14),gold,boxRig,x,y,z);
  }
- roundedBox(1.56,1.48,.035,.025,mat('#172c38',.52,.02),boxRig,0,1.02,.91);
- roundedBox(1.40,1.32,.025,.018,mat('#8b2445',.4,.03),boxRig,0,1.02,.934);
- // embossed gold scroll-like inlays
- for(let x=-.58;x<=.59;x+=.29){const bar=mesh(new THREE.BoxGeometry(.018,1.12,.018),gold,boxRig,x,.95,.99);bar.rotation.z=.22}
- roundedBox(.72,.26,.045,.025,mat('#24131d',.38,.22),boxRig,0,1.02,.965);
- // plaque lettering
- const plaque=document.createElement('canvas');plaque.width=512;plaque.height=180;const p=plaque.getContext('2d');p.fillStyle='#24131d';p.fillRect(0,0,512,180);p.strokeStyle='#d8b26f';p.lineWidth=9;p.strokeRect(9,9,494,162);p.fillStyle='#f1d6a1';p.textAlign='center';p.font='bold 47px Georgia';p.fillText('POP GOES',256,82);p.font='34px Georgia';p.fillText('THE WEASEL',256,130);const pt=new THREE.CanvasTexture(plaque);pt.colorSpace=THREE.SRGBColorSpace;
- mesh(new THREE.PlaneGeometry(.68,.24),new THREE.MeshStandardMaterial({map:pt,roughness:.65,metalness:.02}),boxRig,0,1.02,.995);
- // hollow top rim and interior darkness
- // Thin painted top rim around a clearly open square cavity\n for(const [x,z,w,d] of [[0,-.84,2.08,.09],[0,.84,2.08,.09],[-.995,0,.09,1.68],[.995,0,.09,1.68]])mesh(new THREE.BoxGeometry(w,.11,d),wine,boxRig,x,2.02,z);
+ for(const x of [-.68,.68])for(const z of [-.58,.58]){
+   const foot=mesh(new THREE.SphereGeometry(.19,24,18),mat('#a52d3e',.38,.08),boxRig,x,.04,z);
+   foot.scale.set(1,.72,1);
+ }
+ // Front face: playful harlequin diamonds and oversized painted stars, not a plaque.
+ const diamondMats=[mat('#f1c75b',.38,.05),mat('#c53a4b',.42,.03),mat('#e8dfc6',.5,.01),mat('#37a6a0',.38,.04)];
+ for(let row=0;row<3;row++)for(let col=0;col<5;col++){
+   const d=mesh(new THREE.BoxGeometry(.205,.205,.035),diamondMats[(row+col)%4],boxRig,-.76+col*.38,.48+row*.43,.925);
+   d.rotation.z=Math.PI/4;
+ }
+ // Raised central jester-star medallion is decorative, not a door.
+ const starShape=new THREE.Shape();for(let i=0;i<10;i++){const r=i%2===0?.31:.13,ang=-Math.PI/2+i*Math.PI/5,x=Math.cos(ang)*r,y=Math.sin(ang)*r;if(i===0)starShape.moveTo(x,y);else starShape.lineTo(x,y)}starShape.closePath();
+ const star=mesh(new THREE.ExtrudeGeometry(starShape,{depth:.045,bevelEnabled:true,bevelSegments:2,bevelSize:.018,bevelThickness:.018}),mat('#f4d16d',.34,.08),boxRig,0,1.02,.95);
+ // Small painted corner rosettes and side stripes
+ for(const x of [-.79,.79])for(const y of [.27,1.77]){
+   mesh(new THREE.TorusGeometry(.105,.025,8,28),gold,boxRig,x,y,.94);
+   mesh(new THREE.SphereGeometry(.045,16,12),mat('#f7e8c9',.35),boxRig,x,y,.95);
+ }
+ for(const side of [-1,1]){
+   for(let y=.35;y<1.8;y+=.34)mesh(new THREE.BoxGeometry(.045,.20,.025),mat('#e9bd58',.4),boxRig,side*1.025,y,0);
+ }
+ // The open top is a dark square cavity surrounded by a bright toy-colored rim.
+ for(const [x,z,w,d] of [[0,-.84,2.08,.09],[0,.84,2.08,.09],[-.995,0,.09,1.68],[.995,0,.09,1.68]])mesh(new THREE.BoxGeometry(w,.13,d),mat('#e8bd59',.35,.12),boxRig,x,2.02,z);
  mesh(new THREE.BoxGeometry(1.88,.035,1.48),mat('#020207',.99),boxRig,0,1.965,0);
  // hinge barrels along back edge
  for(let x of [-.7,0,.7]){const h=mesh(new THREE.CylinderGeometry(.075,.075,.35,24),gold,boxRig,x,1.84,-.87);h.rotation.z=Math.PI/2}
  lidPivot=new THREE.Group();lidPivot.position.set(0,2.04,-.82);boxRig.add(lidPivot);
- roundedBox(2.12,.105,1.48,.035,mat('#8b2445',.38,.04),lidPivot,0,0,.72);
- roundedBox(1.88,.025,1.24,.015,mat('#e0bd72',.5,.15),lidPivot,0,.065,.72);
+ roundedBox(2.12,.105,1.48,.035,mat('#c13b4c',.36,.04),lidPivot,0,0,.72);
+ roundedBox(1.88,.025,1.24,.015,mat('#f2d47b',.42,.08),lidPivot,0,.065,.72);
  for(const x of [-.92,.92])for(const z of [.2,1.42])mesh(new THREE.SphereGeometry(.06,16,12),gold,lidPivot,x,.12,z);
  // winding shaft and crank on right side
  const axle=mesh(new THREE.CylinderGeometry(.095,.095,.28,32),gold,boxRig,1.22,1.05,.12);axle.rotation.z=Math.PI/2;
