@@ -33,8 +33,20 @@ for(let i=0;i<12;i++){rect(215+i*40,tombY+14,2,35,'#d8b56c');}
 let lidShift=progress*260;
 poly([[230-lidShift,tombY-82],[670-lidShift,tombY-82],[715-lidShift,tombY+4],[185-lidShift,tombY+4]],'#b48a4b','#f0ca77');poly([[245-lidShift,tombY-70],[655-lidShift,tombY-70],[686-lidShift,tombY-7],[214-lidShift,tombY-7]],'#593916','#e5bd6a');for(let i=0;i<8;i++)rect(250-lidShift+i*50,tombY-61,3,48,'#d8ad5c');
 poly([[245,tombY-75],[655,tombY-75],[685,tombY-8],[215,tombY-8]],'#6b4b27','#c69b57');
-// detailed mummy: aged linen, layered torso, wrapped limbs and shadowed eye sockets
+// cinematic full-size mummy emerging from the sarcophagus
 let rise=progress*105, mx=450,my=tombY-95-rise;
+// Enlarge the whole creature around its chest so it dominates the tomb scene
+ctx.save();ctx.translate(mx,my+48);ctx.scale(1.24,1.24);ctx.translate(-mx,-(my+48));
+ellipse(mx,my+225,125,26,'#100904bb');
+// dangling wrapped legs and broad feet, visible below the torso
+for(let side of [-1,1]){
+  let lx=mx+side*27;
+  ctx.strokeStyle='#8a7554';ctx.lineWidth=43;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(lx,my+128);ctx.quadraticCurveTo(lx+side*8,my+184,lx+side*5,my+222);ctx.stroke();
+  ctx.strokeStyle='#d7c6a0';ctx.lineWidth=34;ctx.beginPath();ctx.moveTo(lx,my+130);ctx.lineTo(lx+side*5,my+218);ctx.stroke();
+  ctx.strokeStyle='#786044';ctx.lineWidth=5;for(let k=0;k<6;k++){ctx.beginPath();ctx.moveTo(lx-16,my+145+k*9);ctx.lineTo(lx+17,my+153+k*9);ctx.stroke()}
+  ellipse(lx+side*9,my+237,29,12,'#bca782');
+  for(let k=0;k<4;k++){ctx.strokeStyle=k%2?'#e4d4b2':'#806747';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(lx+side*(-8+k*5),my+229);ctx.lineTo(lx+side*(-10+k*5),my+247);ctx.stroke()}
+}
 ellipse(mx,my+133,120,25,'#100904aa');
 let bodyGrad=ctx.createLinearGradient(mx-65,my+5,mx+65,my+155);bodyGrad.addColorStop(0,'#ead9b4');bodyGrad.addColorStop(.48,'#b5a07a');bodyGrad.addColorStop(1,'#625039');
 ctx.beginPath();ctx.moveTo(mx-43,my+3);ctx.quadraticCurveTo(mx-76,my+38,mx-65,my+119);ctx.quadraticCurveTo(mx-53,my+163,mx-34,my+170);ctx.lineTo(mx+36,my+170);ctx.quadraticCurveTo(mx+64,my+147,mx+65,my+91);ctx.quadraticCurveTo(mx+73,my+28,mx+40,my+2);ctx.closePath();ctx.fillStyle=bodyGrad;ctx.fill();
@@ -60,12 +72,13 @@ ctx.restore()}
 for(let i=0;i<6;i++){let x=mx-46+i*18;ctx.strokeStyle=i%2?'#e2d1ad':'#786347';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x,my+82);ctx.quadraticCurveTo(x-9,my+117,x+((i%2)*13-6),my+151+(i%3)*8);ctx.stroke()}
 // layered collar
 poly([[mx-47,my-1],[mx-30,my+24],[mx+30,my+24],[mx+47,my-1],[mx+32,my+6],[mx,my+17],[mx-32,my+6]],'#d6a63e','#f4d78b');
+ctx.restore(); // end enlarged mummy character
 // medallion hovering forward
-let medY=my-12-Math.sin(t*1.6)*8-progress*65;glow(mx,medY,95,'#00e9cf55');ellipse(mx,medY,27,31,'#c99b3e');ellipse(mx,medY,21,25,'#62451b');ellipse(mx,medY,14,18,'#14cbb4');ellipse(mx-5,medY-5,4,7,'#b4fff0');for(let i=0;i<12;i++){let a=i*Math.PI/6;ctx.strokeStyle='#f2ce73';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(mx+Math.cos(a)*29,medY+Math.sin(a)*32);ctx.lineTo(mx+Math.cos(a)*38,medY+Math.sin(a)*42);ctx.stroke()}
-ctx.strokeStyle='#d4ad5d';ctx.lineWidth=4;ctx.beginPath();ctx.arc(mx,medY-34,40,Math.PI,Math.PI*2);ctx.stroke();
+let medX=mx+108,medY=my+55-Math.sin(t*1.6)*8-progress*65;glow(medX,medY,105,'#00e9cf66');ellipse(medX,medY,34,39,'#c99b3e');ellipse(medX,medY,27,32,'#62451b');ellipse(medX,medY,18,24,'#14cbb4');ellipse(medX-6,medY-7,5,9,'#b4fff0');for(let i=0;i<12;i++){let a=i*Math.PI/6;ctx.strokeStyle='#f2ce73';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(medX+Math.cos(a)*37,medY+Math.sin(a)*42);ctx.lineTo(medX+Math.cos(a)*48,medY+Math.sin(a)*53);ctx.stroke()}
+ctx.strokeStyle='#d4ad5d';ctx.lineWidth=4;ctx.beginPath();ctx.arc(medX,medY-44,48,Math.PI,Math.PI*2);ctx.stroke();
 // foreground sand ripples and drifting dust
 for(let i=0;i<40;i++){let x=(i*83+t*9)%900,y=(i*47+Math.sin(t+i)*8+floorY*.78);ellipse(x,y,1.5+(i%3),1.5,'#e7c58b88')}
-if(progress>.05){glow(mx,medY,160,'#05d8c755');for(let i=0;i<28;i++){let a=i*2.4+t*1.2,r=45+((i*19+t*20)%105);ellipse(mx+Math.cos(a)*r,medY+Math.sin(a)*r,2,2,'#70fff0')}}
+if(progress>.05){glow(medX,medY,180,'#05d8c755');for(let i=0;i<28;i++){let a=i*2.4+t*1.2,r=45+((i*19+t*20)%105);ellipse(medX+Math.cos(a)*r,medY+Math.sin(a)*r,2,2,'#70fff0')}}
 ctx.restore();
 }
 let last=0;function frame(ts){let dt=Math.min((ts-last)/1000,.05);last=ts;if(broken)progress=Math.min(1,progress+dt*.22);draw(ts/1000);requestAnimationFrame(frame)}requestAnimationFrame(frame);
