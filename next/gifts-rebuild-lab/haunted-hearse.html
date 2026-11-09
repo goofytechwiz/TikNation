@@ -8,33 +8,21 @@
 <section class="preview"><div><strong>THE FINAL RIDE IS HERE</strong><small>NO ONE RIDES ALONE</small></div></section>
 <div class="controls"><button class="primary" id="play" type="button" disabled>✦ PLAY THE HAUNTED HEARSE</button><button id="soundcheck" type="button">TEST SOUND</button><button id="stop" type="button">STOP PREVIEW</button></div>
 <div class="status" id="status" role="status" aria-live="polite">LOADING GIFT ENGINE…</div>
-<p class="fine">Isolated preview only. This does not send a live gift, charge coins, or change the live gift catalog. Sound uses CC0 audio clips from SFXMint, with engine start and idle, a distant horn, and heavy door movement.</p></main>
+<p class="fine">Isolated preview only. This does not send a live gift, charge coins, or change the live gift catalog. The diesel engine is generated locally in the browser; no external audio files are required.</p></main>
 <script>
-const status=document.getElementById("status"),play=document.getElementById("play"),stop=document.getElementById("stop"),soundcheck=document.getElementById("soundcheck");const soundFiles={
- start:"https://sfxmint.com/dl/truck-08.mp3",
- engine:"https://sfxmint.com/dl/truck-02.mp3",
- horn:"https://sfxmint.com/dl/ship-horn-05.mp3",
- creak:"https://sfxmint.com/dl/door-open-44.mp3",
- slam:"https://sfxmint.com/dl/car-door-05.mp3"
-};
-const sounds={},timers=[];let stopped=true;
-Object.entries(soundFiles).forEach(([key,src])=>{const a=new Audio(src);a.preload="auto";a.volume=key==="engine"?.68:.9;sounds[key]=a;});
-function later(fn,ms){const id=window.setTimeout(()=>{if(!stopped)fn();},ms);timers.push(id);}
-function playClip(key){const a=sounds[key];if(!a)return;a.currentTime=0;a.play().catch(()=>{status.textContent="AUDIO NEEDS ANOTHER TAP · PRESS PLAY AGAIN";});}
-function stopSound(){stopped=true;timers.forEach(clearTimeout);timers.length=0;Object.values(sounds).forEach(a=>{a.pause();a.currentTime=0;});}
-function startSound(){
- stopSound();stopped=false;
- // Real recorded-style CC0 sound clips replace the earlier synthetic oscillator effects.
- playClip("start");
- sounds.start.onended=()=>{if(!stopped){sounds.engine.loop=true;playClip("engine");}};
- // Safety fallback if the startup clip is interrupted or unavailable.
- later(()=>{if(sounds.engine.paused) {sounds.engine.loop=true;playClip("engine");}},4200);
- later(()=>playClip("horn"),5600);
- later(()=>playClip("creak"),14500);
- later(()=>playClip("slam"),17000);
- later(()=>stopSound(),30000);
- status.textContent="REALISTIC AUDIO · DIESEL START · IDLE · DISTANT HORN · HEARSE DOORS";
+const status=document.getElementById("status"),play=document.getElementById("play"),stop=document.getElementById("stop"),soundcheck=document.getElementById("soundcheck");let audio=null,engineNodes=[],timers=[],stopped=true;
+function stopSound(){stopped=true;timers.forEach(clearTimeout);timers=[];engineNodes.forEach(n=>{try{n.stop()}catch(e){}try{n.disconnect()}catch(e){}});engineNodes=[];if(audio&&audio.state!=="closed")audio.close().catch(()=>{});audio=null;}
+function startEngine(){
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent="THIS BROWSER DOES NOT SUPPORT AUDIO";return;}
+ audio=new AC();const c=audio,now=c.currentTime,master=c.createGain();master.gain.setValueAtTime(.85,now);master.connect(c.destination);
+ const motor=c.createOscillator(),mg=c.createGain(),mf=c.createBiquadFilter();motor.type="sawtooth";motor.frequency.setValueAtTime(58,now);motor.frequency.linearRampToValueAtTime(82,now+2.8);motor.frequency.linearRampToValueAtTime(66,now+5.5);mf.type="lowpass";mf.frequency.value=950;mg.gain.value=.22;motor.connect(mf);mf.connect(mg);mg.connect(master);motor.start();engineNodes.push(motor);
+ const firing=c.createOscillator(),fg=c.createGain();firing.type="square";firing.frequency.setValueAtTime(116,now);firing.frequency.linearRampToValueAtTime(164,now+2.8);firing.frequency.linearRampToValueAtTime(132,now+5.5);fg.gain.value=.075;firing.connect(fg);fg.connect(master);firing.start();engineNodes.push(firing);
+ const len=c.sampleRate*2,buffer=c.createBuffer(1,len,c.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<len;i++)data[i]=Math.random()*2-1;
+ const noise=c.createBufferSource(),filter=c.createBiquadFilter(),ng=c.createGain();noise.buffer=buffer;noise.loop=true;filter.type="bandpass";filter.frequency.value=430;filter.Q.value=.7;ng.gain.value=.13;noise.connect(filter);filter.connect(ng);ng.connect(master);noise.start();engineNodes.push(noise);
+ const wobble=c.createOscillator(),wg=c.createGain();wobble.frequency.value=2.2;wg.gain.value=.045;wobble.connect(wg);wg.connect(master.gain);wobble.start();engineNodes.push(wobble);
+ c.resume().then(()=>{if(audio===c)status.textContent="DIESEL ENGINE RUNNING · IDLE AND REV";}).catch(()=>{status.textContent="AUDIO BLOCKED · TAP PLAY AGAIN";});
 }
+function startSound(){stopSound();stopped=false;startEngine();const later=(fn,ms)=>{const id=window.setTimeout(()=>{if(!stopped)fn();},ms);timers.push(id);};later(()=>{if(!audio||audio.state==="closed")return;const t=audio.currentTime,o=audio.createOscillator(),g=audio.createGain();o.type="triangle";o.frequency.setValueAtTime(220,t);o.frequency.setValueAtTime(165,t+1.1);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.08);g.gain.setValueAtTime(.12,t+1.5);g.gain.exponentialRampToValueAtTime(.0001,t+2.2);o.connect(g);g.connect(audio.destination);o.start();o.stop(t+2.25);},5600);later(()=>stopSound(),30000);}
 const engine=document.createElement("script");engine.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=haunted-hearse-preview-20261109";engine.onload=()=>{if(window.TikNationGiftEngine){play.disabled=false;status.textContent="READY · TAP PLAY"}else status.textContent="ENGINE DID NOT INITIALIZE"};engine.onerror=()=>status.textContent="GIFT ENGINE FAILED TO LOAD";document.head.appendChild(engine);
 soundcheck.addEventListener("click",async()=>{try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent="NO WEB AUDIO SUPPORT";return;}const c=new AC();await c.resume();const o=c.createOscillator(),g=c.createGain();o.type="square";o.frequency.setValueAtTime(740,c.currentTime);o.frequency.setValueAtTime(520,c.currentTime+.22);g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(.65,c.currentTime+.025);g.gain.setValueAtTime(.65,c.currentTime+.42);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.55);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.56);status.textContent="SOUND CHECK PLAYING · YOU SHOULD HEAR TWO CLEAR TONES";o.onended=()=>c.close();}catch(e){status.textContent="SOUND CHECK FAILED · "+e.message;}});
 play.addEventListener("click",()=>{if(!window.TikNationGiftEngine){status.textContent="ENGINE NOT READY";return;}startSound();try{const ok=window.TikNationGiftEngine.show({name:"The Haunted Hearse",style:"hauntedhearse"},{duration:30000});if(ok)status.textContent="THE HAUNTED HEARSE IS ARRIVING · PREVIEW ONLY";else status.textContent="GIFT COULD NOT START";}catch(e){status.textContent="PREVIEW ERROR · "+e.message;}});
