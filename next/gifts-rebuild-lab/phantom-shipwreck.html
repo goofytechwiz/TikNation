@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>The Phantom Shipwreck · TikNation Gift Lab</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020914;color:#dff8ff;font-family:system-ui,sans-serif}canvas{display:block}#hud{position:fixed;inset:0;pointer-events:none;background:linear-gradient(180deg,#020914b8,transparent 25%,transparent 70%,#020914c9)}header{position:absolute;top:env(safe-area-inset-top,12px);left:16px;right:16px;display:flex;justify-content:space-between;align-items:center;gap:12px}h1{font-size:clamp(15px,3vw,22px);letter-spacing:.16em;margin:0;text-shadow:0 0 18px #36c9ff}small{display:block;color:#8ab9c9;letter-spacing:.18em;font-size:9px;margin-top:5px}button{pointer-events:auto;border:1px solid #73dfff88;background:#061a2bd9;color:#e5faff;border-radius:30px;padding:11px 17px;font-weight:700;letter-spacing:.12em}#bottom{position:absolute;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:0;right:0;text-align:center;color:#a5cbd8;font-size:11px;letter-spacing:.2em;text-shadow:0 2px 8px #000}#flash{position:fixed;inset:0;background:#dff8ff;opacity:0;pointer-events:none}
+</style>
+</head>
+<body><div id="hud"><header><div><h1>THE PHANTOM SHIPWRECK</h1><small>AN EPIC GIFT · GIFT REBUILD LAB</small></div><button id="awaken">AWAKEN THE DEEP</button></header><div id="bottom">A CURSED VESSEL STIRS BENEATH THE STORM</div></div><div id="flash"></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x061525);scene.fog=new THREE.FogExp2(0x071a2a,.023);
+const camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,300);camera.position.set(0,8,24);camera.lookAt(0,3,0);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;document.body.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0x9ac9e8,0x07101b,1.5));
+const moon=new THREE.DirectionalLight(0x9bdcff,3.2);moon.position.set(-9,17,8);moon.castShadow=true;scene.add(moon);
+const lightning=new THREE.PointLight(0x9edfff,0,55,1.5);lightning.position.set(3,13,-9);scene.add(lightning);
+const mat=(c,r=.8,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+const wood=mat(0x38251b),edge=mat(0x765039),dark=mat(0x111b20),iron=mat(0x26343a,.35,.8),cloth=mat(0x1c2529,1),gold=mat(0xc49b4d,.3,.7);
+const waterGeo=new THREE.PlaneGeometry(180,180,100,100);waterGeo.rotateX(-Math.PI/2);const waterMat=new THREE.MeshStandardMaterial({color:0x073047,roughness:.24,metalness:.48,transparent:true,opacity:.96});const water=new THREE.Mesh(waterGeo,waterMat);water.position.y=-.7;water.receiveShadow=true;scene.add(water);const baseY=waterGeo.attributes.position.array.slice();
+const ship=new THREE.Group();scene.add(ship);
+const hullShape=new THREE.Shape();hullShape.moveTo(-6.2,1.4);hullShape.lineTo(6.2,1.4);hullShape.lineTo(5.1,-.5);hullShape.lineTo(2.8,-1.65);hullShape.lineTo(-3.4,-1.65);hullShape.lineTo(-5.5,-.6);hullShape.closePath();
+const hull=new THREE.Mesh(new THREE.ExtrudeGeometry(hullShape,{depth:2.3,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.16,bevelThickness:.16}),wood);hull.position.set(0,2,-1.1);hull.castShadow=true;ship.add(hull);
+for(let z=-1.1;z<1.3;z+=.28){const plank=new THREE.Mesh(new THREE.BoxGeometry(10.6,.12,.09),edge);plank.position.set(0,2.2,z);ship.add(plank)}
+const deck=new THREE.Mesh(new THREE.BoxGeometry(10.6,.25,2.8),wood);deck.position.set(0,3.35,0);deck.castShadow=true;ship.add(deck);
+for(let side of [-1,1]){const rail=new THREE.Mesh(new THREE.BoxGeometry(10.2,.25,.22),edge);rail.position.set(0,3.75,side*1.27);ship.add(rail);for(let x=-4.8;x<=4.8;x+=.6){const post=new THREE.Mesh(new THREE.BoxGeometry(.12,.65,.14),edge);post.position.set(x,3.65,side*1.27);ship.add(post)}}
+function mast(x,h){const pole=new THREE.Mesh(new CylinderGeometry(.16,.24,h,12),dark);pole.position.set(x,3.5+h/2,0);pole.castShadow=true;ship.add(pole);const yard=new THREE.Mesh(new CylinderGeometry(.09,.09,7,10),edge);yard.rotation.z=Math.PI/2;yard.position.set(x,3.5+h*.7,0);ship.add(yard);const sail=new THREE.Mesh(new PlaneGeometry(5.4,h*.55,12,12),cloth);sail.position.set(x,3.5+h*.7,.08);sail.castShadow=true;ship.add(sail);for(let i=0;i<7;i++){const rope=new THREE.Mesh(new CylinderGeometry(.018,.018,h*.88,5),gold);rope.position.set(x-2.7+i*.9,3.5+h*.45,.12);rope.rotation.z=(i-3)*-.08;ship.add(rope)}}
+mast(-2.4,9);mast(1.7,7.5);
+const bowsprit=new THREE.Mesh(new CylinderGeometry(.12,.2,5,10),edge);bowsprit.rotation.z=-Math.PI/2.8;bowsprit.position.set(6.2,3.5,0);ship.add(bowsprit);
+for(let x of [-4.8,4.6]){const lamp=new THREE.PointLight(0xff9b43,3,7);lamp.position.set(x,4.2,1.4);ship.add(lamp);const glow=new THREE.Mesh(new SphereGeometry(.16,12,12),new THREE.MeshBasicMaterial({color:0xffb45b}));glow.position.copy(lamp.position);ship.add(glow)}
+// Serpent body: linked, tapered 3D coils rising around the ship.
+const beast=new THREE.Group();scene.add(beast);const scaleMat=mat(0x123d43,.28,.45),belly=mat(0x71827a,.55,.12);
+function tube(points,radii,material){const curve=new THREE.CatmullRomCurve3(points);const mesh=new THREE.Mesh(new TubeGeometry(curve,160,radii,12,false),material);mesh.castShadow=true;mesh.receiveShadow=true;beast.add(mesh);return mesh}
+const coil1=[new THREE.Vector3(-8,0,-3),new THREE.Vector3(-7,1,-1),new THREE.Vector3(-5,2,1),new THREE.Vector3(-2,1.4,2.8),new THREE.Vector3(1,.7,2.6),new THREE.Vector3(4,1.2,1),new THREE.Vector3(6,2.8,-1),new THREE.Vector3(7,4,-3)];
+tube(coil1,.72,scaleMat);tube(coil1.map(p=>new THREE.Vector3(p.x,p.y-.35,p.z+.04)),.34,belly);
+const neckPts=[new THREE.Vector3(6,2.7,-2),new THREE.Vector3(7,4,-3),new THREE.Vector3(7.8,6,-3.5),new THREE.Vector3(7,7.4,-3.1),new THREE.Vector3(5.6,7.7,-2.4)];tube(neckPts,.65,scaleMat);
+const head=new THREE.Group();head.position.set(5.3,7.65,-2.35);beast.add(head);
+const skull=new THREE.Mesh(new SphereGeometry(1,32,24),scaleMat);skull.scale.set(1.45,.72,.78);head.add(skull);
+const snout=new THREE.Mesh(new SphereGeometry(.7,24,18),scaleMat);snout.scale.set(1.2,.42,.68);snout.position.set(1.05,-.22,.08);head.add(snout);
+const jaw=new THREE.Mesh(new SphereGeometry(.65,24,16),belly);jaw.scale.set(1.15,.28,.62);jaw.position.set(1,-.57,.08);head.add(jaw);
+for(let s of [-1,1]){const eye=new THREE.Mesh(new SphereGeometry(.19,16,12),new THREE.MeshBasicMaterial({color:0xffc34d}));eye.position.set(.1,.32,s*.69);head.add(eye);const pupil=new THREE.Mesh(new SphereGeometry(.07,12,10),mat(0x080b0c));pupil.position.set(.16,.33,s*.82);head.add(pupil);const horn=new THREE.Mesh(new ConeGeometry(.2,1.1,8),dark);horn.position.set(-.65,.85,s*.4);horn.rotation.z=-.4;head.add(horn)}
+// Scutes along visible body, raised dorsal ridges.
+for(let i=0;i<32;i++){const t=i/31;const p=coil1[Math.min(6,Math.floor(t*7))].clone().lerp(coil1[Math.min(7,Math.floor(t*7)+1)],(t*7)%1);const spike=new THREE.Mesh(new ConeGeometry(.18,.55,5),dark);spike.position.set(p.x,p.y+.62,p.z);spike.rotation.z=(i%2?-.18:.18);beast.add(spike)}
+for(let s of [-1,1])for(let i=0;i<5;i++){const fin=new THREE.Mesh(new ConeGeometry(.23,.9,5),scaleMat);fin.position.set(4.9+i*.35,6.8-i*.16,s*.6);fin.rotation.z=-.7;head.add(fin)}
+// distant storm clouds
+for(let i=0;i<22;i++){const cloud=new THREE.Mesh(new SphereGeometry(1,12,8),new THREE.MeshStandardMaterial({color:0x142633,roughness:1}));cloud.scale.set(2.3+Math.random()*2,1+Math.random(),1.5);cloud.position.set((Math.random()-.5)*48,10+Math.random()*13,-14-Math.random()*15);scene.add(cloud)}
+// Rain streaks
+const rainN=1100,rainGeo=new THREE.BufferGeometry(),rainPos=new Float32Array(rainN*3);for(let i=0;i<rainN;i++){rainPos[i*3]=(Math.random()-.5)*55;rainPos[i*3+1]=Math.random()*25;rainPos[i*3+2]=(Math.random()-.5)*38}rainGeo.setAttribute('position',new THREE.BufferAttribute(rainPos,3));const rain=new THREE.Points(rainGeo,new THREE.PointsMaterial({color:0x9bc8dc,size:.055,transparent:true,opacity:.5}));scene.add(rain);
+const clock=new THREE.Clock();let awakened=false,flashTimer=4;const flash=document.getElementById('flash');document.getElementById('awaken').onclick=()=>{awakened=true;document.getElementById('bottom').textContent='THE DEEP HAS ANSWERED';beast.scale.setScalar(1.12);lightning.intensity=8;setTimeout(()=>lightning.intensity=0,260)};
+function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime();ship.position.y=Math.sin(t*1.2)*.16;ship.rotation.z=Math.sin(t*.65)*.025;ship.rotation.x=Math.sin(t*.8)*.018;beast.position.y=Math.sin(t*.8)*.18;head.rotation.z=Math.sin(t*1.1)*.08;head.rotation.y=Math.sin(t*.7)*.12;
+const a=waterGeo.attributes.position;for(let i=0;i<a.count;i++){const x=baseY[i*3],z=baseY[i*3+2];a.array[i*3+1]=baseY[i*3+1]+Math.sin(x*.22+t*1.5)*.16+Math.cos(z*.3+t*1.1)*.12}a.needsUpdate=true;waterGeo.computeVertexNormals();
+const rp=rain.geometry.attributes.position;for(let i=0;i<rainN;i++){rp.array[i*3+1]-=.42;if(rp.array[i*3+1]<0)rp.array[i*3+1]=25}rp.needsUpdate=true;
+flashTimer-=clock.getDelta();if(flashTimer<0){lightning.intensity=10+Math.random()*12;flash.style.opacity='.22';setTimeout(()=>{lightning.intensity=0;flash.style.opacity='0'},100);flashTimer=5+Math.random()*8}
+camera.position.x=Math.sin(t*.12)*.65;camera.lookAt(0,3.5,0);renderer.render(scene,camera)}
+animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+</script></body></html>
