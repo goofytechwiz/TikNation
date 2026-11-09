@@ -14,7 +14,7 @@ const playButton=document.getElementById("play");
 playButton.disabled=true;
 document.getElementById("status").textContent="LOADING TIKNATION GIFT ENGINE…";
 const engineScript=document.createElement("script");
-engineScript.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=live-tombstones-engine-20261108-7";
+engineScript.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=living-tombstones-zombie-return-20261109";
 engineScript.onload=()=>{if(window.TikNationGiftEngine){playButton.disabled=false;document.getElementById("status").textContent="READY · TAP PLAY TO START THE GIFT"}else{document.getElementById("status").textContent="ENGINE FILE LOADED BUT DID NOT INITIALIZE · CHECK SCRIPT ERROR"}};
 engineScript.onerror=()=>{document.getElementById("status").textContent="ENGINE SCRIPT FAILED TO LOAD · "+engineScript.src};
 document.head.appendChild(engineScript);
