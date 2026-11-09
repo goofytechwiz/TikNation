@@ -47,6 +47,28 @@ body{min-height:100svh;display:grid;place-items:center;overflow-x:hidden}
 .scene.awake .shadow{opacity:.9;transform:translateX(-50%) scale(1);filter:blur(2px)}
 .scene.awake .clock{animation:quake .22s 12}
 .scene.awake .dial{box-shadow:0 0 25px #d8a75a88,inset 0 0 12px #48301e}
+.curse-glow{position:absolute;inset:-15%;z-index:5;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 50% 58%,#9b071b55,transparent 58%);mix-blend-mode:screen}
+.scene.awake .curse-glow{opacity:1;animation:cursePulse 2.8s ease-in-out infinite}
+@keyframes cursePulse{0%,100%{opacity:.25;filter:hue-rotate(0)}50%{opacity:.9;filter:hue-rotate(25deg)}}
+.runes{position:absolute;z-index:7;left:50%;top:50%;width:min(78vw,620px);aspect-ratio:1;transform:translate(-50%,-50%) rotate(-12deg);border:1px solid #9e1c2c66;border-radius:50%;opacity:0;pointer-events:none}
+.runes:before,.runes:after{content:"ᚦ ᚱ ᛟ ᚨ ᛉ ᚷ ᛞ ᚾ ᛇ ᚲ ᛏ ᛒ";position:absolute;inset:5%;border:1px dashed #c02b3b99;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#e14b5b;font:clamp(12px,2vw,20px) Georgia;letter-spacing:.55em;text-shadow:0 0 12px #ff001d}
+.runes:after{inset:16%;border:1px solid #d13a4b66;transform:rotate(30deg);content:"✦ ᛟ ✦ ᚦ ✦ ᛉ ✦ ᚱ ✦"}
+.scene.awake .runes{opacity:.72;animation:rotateRunes 28s linear infinite}
+@keyframes rotateRunes{to{transform:translate(-50%,-50%) rotate(348deg)}}
+.smoke{position:absolute;z-index:5;inset:20% 0 0;opacity:0;pointer-events:none;background:radial-gradient(ellipse at 25% 90%,#85808a44,transparent 35%),radial-gradient(ellipse at 75% 82%,#625b6a55,transparent 32%),radial-gradient(ellipse at 50% 100%,#aaa0ad33,transparent 42%);filter:blur(18px)}
+.scene.awake .smoke{opacity:.85;animation:smokeRise 5s ease-in-out infinite alternate}
+@keyframes smokeRise{from{transform:translateY(30px) scale(.95);filter:blur(18px)}to{transform:translateY(-35px) scale(1.12);filter:blur(27px)}}
+.lightning{position:absolute;z-index:6;inset:0;opacity:0;pointer-events:none;background:linear-gradient(115deg,transparent 42%,#e5e9ff 43%,transparent 44%),linear-gradient(70deg,transparent 63%,#c8d6ff 64%,transparent 65%)}
+.scene.awake .lightning{animation:stormFlash 7s linear infinite}
+@keyframes stormFlash{0%,8%,10%,48%,50%,100%{opacity:0}9%,49%{opacity:.5}}
+.cracks{position:absolute;z-index:6;inset:0;opacity:0;pointer-events:none;background:linear-gradient(72deg,transparent 49.7%,#b7b2b8 50%,transparent 50.4%),linear-gradient(108deg,transparent 49.6%,#aaa 50%,transparent 50.3%);clip-path:polygon(48% 0,51% 0,50% 24%,57% 35%,50% 45%,54% 60%,49% 71%,53% 100%,47% 100%,49% 73%,44% 61%,49% 46%,43% 35%,49% 23%)}
+.scene.awake .cracks{opacity:.45;animation:crackBlink 4s steps(2) infinite}
+@keyframes crackBlink{50%{opacity:.12}}
+.eyes{position:absolute;z-index:6;left:50%;top:30%;transform:translateX(-50%);display:flex;gap:20px;opacity:0;pointer-events:none}
+.eyes i{width:12px;height:5px;border-radius:50%;background:#ff243e;box-shadow:0 0 9px 4px #ff001f,0 0 25px 8px #b00018}
+.scene.awake .eyes{opacity:.85;animation:eyesBlink 5s 2s infinite}
+@keyframes eyesBlink{0%,88%,92%,100%{opacity:.85}90%{opacity:0}}
+.scene.awake .moon{filter:sepia(.5) hue-rotate(300deg);box-shadow:0 0 45px 18px #c3133433,0 0 130px 55px #a10d2c33}
 @keyframes quake{0%,100%{translate:0 0}25%{translate:-2px 0}75%{translate:2px 0}}
 .burst{position:absolute;inset:0;z-index:6;pointer-events:none;opacity:0;background:#d9e4ff}
 .scene.awake .burst{animation:flash .5s 2.5s}
@@ -75,7 +97,7 @@ button:active{transform:translateY(1px)}button:focus-visible{outline:2px solid #
    <div class="ornament"></div>
   </div>
  </div>
- <div class="dust"></div><div class="burst"></div>
+ <div class="dust"></div><div class="curse-glow"></div><div class="runes"></div><div class="smoke"></div><div class="lightning"></div><div class="cracks"></div><div class="eyes"><i></i><i></i></div><div class="burst"></div>
  <div class="note" id="note">THE HOUSE IS HOLDING ITS BREATH</div>
  <div class="controls"><button id="awaken">Awaken the hour</button><button id="sound" aria-pressed="false">Sound: off</button></div>
 </main>
@@ -86,8 +108,8 @@ const dial=document.getElementById('roman');
 roman.forEach((v,i)=>{const a=i*Math.PI/6-Math.PI/2,s=document.createElement('span');s.textContent=v;s.style.left=(50+39*Math.cos(a))+'%';s.style.top=(50+39*Math.sin(a))+'%';dial.appendChild(s)});
 let audio=false,ctx=null,awakened=false;
 function tone(freq,duration,when=0){if(!audio)return;ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(freq,ctx.currentTime+when);g.gain.setValueAtTime(.0001,ctx.currentTime+when);g.gain.exponentialRampToValueAtTime(.16,ctx.currentTime+when+.03);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+when+duration);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+when);o.stop(ctx.currentTime+when+duration+.05)}
-function chime(){[523.25,392,329.63,261.63].forEach((f,i)=>tone(f,2,i*.55))}
+function chime(){[523.25,392,329.63,261.63].forEach((f,i)=>tone(f,2,i*.55));tone(55,4,2.4);tone(73.4,3,3.1)}
 document.getElementById('sound').addEventListener('click',()=>{audio=!audio;const b=document.getElementById('sound');b.textContent='Sound: '+(audio?'on':'off');b.setAttribute('aria-pressed',String(audio));if(audio){ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();ctx.resume()}});
-document.getElementById('awaken').addEventListener('click',()=>{scene.classList.remove('awake');void scene.offsetWidth;scene.classList.add('awake');awakened=true;note.textContent='MIDNIGHT HAS FOUND YOU';hour.style.transform='translate(-50%,-100%) rotate(0deg)';minute.style.transform='translate(-50%,-100%) rotate(0deg)';chime();tone(82,3,2.2);tone(110,2,3.1);window.setTimeout(()=>{note.textContent='SOMEONE IS STANDING BEHIND THE GLASS'},3600);window.setTimeout(()=>{note.textContent='THE WITCHING HOUR'},6500)});
+document.getElementById('awaken').addEventListener('click',()=>{scene.classList.remove('awake');void scene.offsetWidth;scene.classList.add('awake');awakened=true;note.textContent='THE CURSE HAS BEEN UNSEALED';hour.style.transform='translate(-50%,-100%) rotate(0deg)';minute.style.transform='translate(-50%,-100%) rotate(0deg)';chime();tone(82,3,2.2);tone(110,2,3.1);window.setTimeout(()=>{note.textContent='SOMETHING IS WATCHING FROM THE DARK'},2400);window.setTimeout(()=>{note.textContent='THE CLOCK HAS CHOSEN YOU'},5200);window.setTimeout(()=>{note.textContent='THE WITCHING HOUR · THE CURSE LIVES'},8200)});
 </script>
 </body></html>
