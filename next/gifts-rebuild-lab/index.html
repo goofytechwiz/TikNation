@@ -17,7 +17,7 @@ const playButton=document.getElementById("play");
 playButton.disabled=true;
 document.getElementById("status").textContent="LOADING TIKNATION GIFT ENGINE…";
 const engineScript=document.createElement("script");
-engineScript.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=cemetery-visible-effects-20261108k";
+engineScript.src="https://goofytechwiz.github.io/TikNation/gift-engine.js?v=warm-yellow-moon-light-20261108l";
 engineScript.onload=()=>{if(window.TikNationGiftEngine){playButton.disabled=false;document.getElementById("status").textContent="READY · TAP PLAY TO START THE GIFT"}else{document.getElementById("status").textContent="ENGINE INIT ERROR · "+(window.__tikNationGiftLoadError||"NO WINDOW ERROR CAPTURED")}};
 engineScript.onerror=()=>{document.getElementById("status").textContent="ENGINE SCRIPT FAILED TO LOAD · "+engineScript.src};
 document.head.appendChild(engineScript);
