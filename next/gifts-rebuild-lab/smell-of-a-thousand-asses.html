@@ -8,26 +8,26 @@
 :root{color-scheme:dark;--acid:#b7df38;--lime:#d7ff57;--ink:#080b06}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#080b06;color:#f3f1d9;font-family:system-ui,Arial,sans-serif}
 body{min-height:100svh;display:grid;place-items:center;padding:12px;overflow-x:hidden}
-.stage{position:relative;isolation:isolate;width:min(100%,900px);height:min(94svh,760px);min-height:620px;overflow:hidden;border:1px solid #687b2b;border-radius:22px;background:radial-gradient(ellipse at 50% 65%,#38451c 0,#18200f 36%,#090d08 78%);box-shadow:0 0 70px #9ac52b22}
-.backdrop{position:absolute;inset:0;background:linear-gradient(180deg,#080d08dd 0%,transparent 36%,#090b06 100%),repeating-linear-gradient(90deg,transparent 0 79px,#d6f27a08 80px 82px)}
+.stage{position:relative;isolation:isolate;width:min(100%,900px);height:min(94svh,760px);min-height:620px;overflow:hidden;border:1px solid #687b2b;border-radius:22px;background:radial-gradient(ellipse at 50% 75%,#34352a 0,#1b2019 38%,#090d0b 82%);box-shadow:0 0 70px #9ac52b22}
+.backdrop{position:absolute;inset:0;background:linear-gradient(180deg,#080d08bb 0%,transparent 34%,#080a08 78%),repeating-linear-gradient(90deg,transparent 0 79px,#d6d6c008 80px 82px),radial-gradient(ellipse at 12% 65%,#59604a33,transparent 34%),radial-gradient(ellipse at 88% 52%,#4b514433,transparent 30%)}
 .moon{position:absolute;right:11%;top:8%;width:100px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f4f0bf,#b9c47c 55%,#4d6132);box-shadow:0 0 55px 18px #c3ed6a22}
 .title{position:absolute;z-index:10;top:22px;left:16px;right:16px;text-align:center;text-transform:uppercase;font-weight:1000;letter-spacing:.09em;font-size:clamp(19px,4vw,34px);text-shadow:0 3px 0 #17200c,0 0 20px #b7df3888}
 .subtitle{display:block;margin-top:6px;font-size:10px;letter-spacing:.28em;color:#d1e98b}
 bin{display:none}
-.dumpster{position:absolute;z-index:2;left:50%;bottom:12%;transform:translateX(-50%);width:min(58%,470px);height:31%;border:8px solid #28331a;border-top:14px solid #667c36;border-radius:8px 8px 28px 28px;background:repeating-linear-gradient(90deg,#29371d 0 36px,#42572a 38px 42px,#263319 45px 73px);box-shadow:inset 0 12px 20px #0009,0 25px 25px #000b}
-.dumpster:before{content:"BIOHAZARD: STENCH";position:absolute;top:23%;left:0;right:0;text-align:center;font-weight:1000;font-size:clamp(10px,2vw,16px);letter-spacing:.12em;color:#d8ed85;text-shadow:0 2px #18210e}
-.dumpster:after{content:"☣";position:absolute;top:39%;left:50%;transform:translateX(-50%);font-size:clamp(35px,8vw,70px);color:#d8ed85;text-shadow:0 0 18px #b7df3877}
-.lid{position:absolute;z-index:3;left:50%;bottom:43%;transform:translateX(-50%) rotate(-3deg);width:min(64%,510px);height:35px;border:5px solid #6b7f3c;border-radius:8px;background:linear-gradient(#849b4c,#394b25 45%,#1d2a17);box-shadow:0 10px 15px #0009;transform-origin:15% 90%;transition:transform .8s}
-.stink{position:absolute;z-index:4;left:50%;bottom:34%;width:70%;height:55%;transform:translateX(-50%);opacity:0;pointer-events:none;filter:drop-shadow(0 0 20px #b6ed35)}
-.puff{position:absolute;bottom:0;width:36%;aspect-ratio:1;border-radius:48% 52% 46% 54%;background:radial-gradient(circle at 34% 28%,#e6ff9a 0,#a7d43d 23%,#557d22 55%,#233715 78%,transparent 79%);filter:blur(2px);animation:rise 4s ease-in-out infinite}
+.dumpster{position:absolute;z-index:2;left:50%;bottom:12%;transform:translateX(-50%);width:min(58%,470px);height:31%;border:7px solid #303a2b;border-top:16px solid #59634a;border-radius:5px 5px 16px 16px;background:repeating-linear-gradient(90deg,#30392e 0 34px,#4a5543 36px 39px,#252e26 43px 71px);box-shadow:inset 0 15px 22px #000b,inset 0 -12px 16px #080a08,0 27px 30px #000d;filter:drop-shadow(0 0 2px #89907844)}
+.ground-shadow{position:absolute;z-index:1;left:50%;bottom:7%;transform:translateX(-50%);width:76%;height:9%;border-radius:50%;background:radial-gradient(ellipse,#000d 0%,#0009 42%,transparent 74%);filter:blur(7px)}\n.dumpster:before{content:"WASTE MANAGEMENT";position:absolute;top:19%;left:0;right:0;text-align:center;font-weight:800;font-size:clamp(9px,1.6vw,13px);letter-spacing:.18em;color:#c0c6a8;text-shadow:0 2px 3px #10140d}
+.dumpster:after{content:"BIOHAZARD";position:absolute;top:48%;left:0;right:0;text-align:center;font-size:clamp(11px,2vw,17px);font-weight:900;letter-spacing:.2em;color:#b5bd9d;text-shadow:0 2px 3px #10140d}
+.lid{position:absolute;z-index:3;left:50%;bottom:43%;transform:translateX(-50%) rotate(-3deg);width:min(64%,510px);height:35px;border:5px solid #414b37;border-radius:4px;background:repeating-linear-gradient(90deg,#515b49 0 48px,#323b30 50px 53px),linear-gradient(#7d8970,#343d30 45%,#1d251d);box-shadow:inset 0 4px 5px #c4cbb455,0 10px 15px #000b;transform-origin:15% 90%;transition:transform .8s}
+.stink{position:absolute;z-index:4;left:50%;bottom:33%;width:70%;height:53%;transform:translateX(-50%);opacity:0;pointer-events:none;filter:blur(8px) saturate(.55)}
+.puff{position:absolute;bottom:0;width:42%;height:58%;border-radius:48%;background:radial-gradient(ellipse at 48% 72%,#8d927c99 0,#747b6a77 28%,#a0a18b44 57%,transparent 76%);filter:blur(13px);animation:rise 5.8s ease-in-out infinite}
 .puff:nth-child(1){left:8%;animation-delay:-1s}.puff:nth-child(2){left:31%;width:48%;animation-delay:-2.5s}.puff:nth-child(3){right:5%;animation-delay:-.4s}
 .puff:nth-child(4){left:20%;bottom:30%;width:32%;animation-delay:-3s}.puff:nth-child(5){right:18%;bottom:35%;width:34%;animation-delay:-1.8s}
-@keyframes rise{0%{transform:translateY(35px) scale(.65);opacity:0}25%{opacity:.9}100%{transform:translateY(-190px) scale(1.35);opacity:0}}
-.fly{position:absolute;z-index:6;font-size:24px;opacity:0;filter:drop-shadow(0 2px 2px #000);pointer-events:none}
-.fly.one{left:25%;top:43%}.fly.two{right:24%;top:48%}.fly.three{left:48%;top:36%}
+@keyframes rise{0%{transform:translateY(24px) scale(.72);opacity:0}22%{opacity:.55}100%{transform:translateY(-170px) scale(1.4);opacity:0}}
+.fly{position:absolute;z-index:6;width:13px;height:8px;opacity:0;pointer-events:none;filter:drop-shadow(0 2px 2px #000);transform-origin:center}
+.fly:before{content:"";position:absolute;left:4px;top:3px;width:7px;height:3px;border-radius:50%;background:#080b08;box-shadow:0 0 0 1px #56604a}.fly:after{content:"";position:absolute;left:1px;top:0;width:5px;height:4px;border-radius:100% 100% 30% 30%;background:#b6c0ad99;transform:rotate(-28deg);box-shadow:5px 1px 0 -1px #b6c0ad99}.fly.one{left:43%;top:57%}.fly.two{left:55%;top:56%}.fly.three{left:49%;top:59%}
 .stage.released .stink{opacity:1}.stage.released .lid{transform:translateX(-50%) rotate(-28deg) translateY(-18px)}
 .stage.released .fly{opacity:1;animation:orbit 3s linear infinite}.fly.two{animation-duration:4.2s;animation-direction:reverse}.fly.three{animation-duration:2.6s}
-@keyframes orbit{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(65px,-35px) rotate(90deg)}50%{transform:translate(10px,-90px) rotate(180deg)}75%{transform:translate(-60px,-30px) rotate(270deg)}100%{transform:translate(0,0) rotate(360deg)}}
+@keyframes orbit{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(18px,-8px) rotate(12deg)}50%{transform:translate(8px,-19px) rotate(-8deg)}75%{transform:translate(-15px,-7px) rotate(10deg)}100%{transform:translate(0,0) rotate(0)}}
 .shock{position:absolute;z-index:5;left:50%;bottom:27%;width:15px;height:15px;border:4px solid #dfff8b;border-radius:50%;transform:translate(-50%,-50%) scale(0);opacity:0;pointer-events:none}
 .stage.released .shock{animation:shock 1.2s ease-out 1}
 @keyframes shock{0%{transform:translate(-50%,-50%) scale(.1);opacity:1}100%{transform:translate(-50%,-50%) scale(32);opacity:0}}
@@ -53,9 +53,9 @@ button.primary{background:linear-gradient(#c1e94a,#648b25);color:#101606;border-
 <header class="title">THE SMELL OF A THOUSAND ASSES<span class="subtitle">A LEGENDARY TIKNATION GIFT · BIOHAZARD CLASS: OH NO</span></header>
 <section class="gauge" aria-label="Stench meter"><div class="gauge-label">CONCENTRATED STENCH LEVEL</div><div class="meter"><div class="fill" id="fill"></div></div><div class="readout" id="readout">0 / 1,000,000 NOSE HAIRS DESTROYED</div></section>
 <div class="warning">WARNING: DO NOT OPEN IN A CLOSED ROOM</div>
-<div class="dumpster"></div><div class="lid"></div>
+<div class="ground-shadow"></div><div class="dumpster"></div><div class="lid"></div>
 <div class="stink" aria-hidden="true"><i class="puff"></i><i class="puff"></i><i class="puff"></i><i class="puff"></i><i class="puff"></i></div>
-<div class="fly one">🪰</div><div class="fly two">🪰</div><div class="fly three">🪰</div><div class="shock"></div>
+<div class="fly one" aria-hidden="true"></div><div class="fly two" aria-hidden="true"></div><div class="fly three" aria-hidden="true"></div><div class="shock"></div>
 <div class="status" id="status" aria-live="polite">THE CONTAINER IS SEALED. FOR NOW.</div>
 <div class="controls"><button class="primary" id="release">RELEASE THE STENCH 💨</button><button id="fan">ACTIVATE INDUSTRIAL FAN</button><button id="sound">SOUND: OFF</button><button id="reset">CONTAIN IT</button></div>
 </main>
