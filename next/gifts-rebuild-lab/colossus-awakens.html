@@ -9,7 +9,9 @@ const root=document.querySelector('#scene'), scene=new THREE.Scene();scene.backg
 const camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,180);camera.position.set(0,5.4,19);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;root.appendChild(renderer.domElement);
 scene.add(new THREE.HemisphereLight(0x9bbbd0,0x17121a,1.35));const moon=new THREE.DirectionalLight(0xa8d8ee,2.6);moon.position.set(-8,14,7);moon.castShadow=true;moon.shadow.mapSize.set(2048,2048);scene.add(moon);const ember=new THREE.PointLight(0xff8b45,0,13);ember.position.set(0,2,3);scene.add(ember);
-const stone=new THREE.MeshStandardMaterial({color:0x59636a,roughness:.96}),edge=new THREE.MeshStandardMaterial({color:0x343f47,roughness:1}),rune=new THREE.MeshStandardMaterial({color:0x72dfff,emissive:0x168bbd,emissiveIntensity:0,roughness:.3}),groundMat=new THREE.MeshStandardMaterial({color:0x20272c,roughness:1});
+// Procedural weathered granite: layered mineral grain, pits and subtle natural variation
+const stoneCanvas=document.createElement('canvas');stoneCanvas.width=512;stoneCanvas.height=512;const sctx=stoneCanvas.getContext('2d');sctx.fillStyle='#777b79';sctx.fillRect(0,0,512,512);for(let i=0;i<52000;i++){const x=Math.random()*512,y=Math.random()*512,v=65+Math.random()*125;sctx.fillStyle='rgba('+v+','+(v+Math.random()*7)+','+(v+Math.random()*10)+','+(Math.random()*.18)+')';sctx.fillRect(x,y,Math.random()*2.4+.3,Math.random()*2.4+.3)}for(let i=0;i<170;i++){const x=Math.random()*512,y=Math.random()*512,r=Math.random()*5+.5;sctx.fillStyle='rgba(20,25,28,'+(Math.random()*.18)+')';sctx.beginPath();sctx.ellipse(x,y,r,r*.45,Math.random()*3,0,Math.PI*2);sctx.fill()}const graniteMap=new THREE.CanvasTexture(stoneCanvas);graniteMap.wrapS=graniteMap.wrapT=THREE.RepeatWrapping;graniteMap.repeat.set(2,2);graniteMap.colorSpace=THREE.SRGBColorSpace;
+const stone=new THREE.MeshStandardMaterial({color:0xb2b6b3,map:graniteMap,roughness:1}),edge=new THREE.MeshStandardMaterial({color:0x454d51,map:graniteMap,roughness:1}),rune=new THREE.MeshStandardMaterial({color:0x72dfff,emissive:0x168bbd,emissiveIntensity:0,roughness:.3}),groundMat=new THREE.MeshStandardMaterial({color:0x20272c,roughness:1});
 const ground=new THREE.Mesh(new THREE.PlaneGeometry(100,100),groundMat);ground.rotation.x=-Math.PI/2;ground.position.y=-.1;ground.receiveShadow=true;scene.add(ground);
 function box(parent,w,h,d,mat,x,y,z,rx=0,ry=0,rz=0){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);m.rotation.set(rx,ry,rz);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
 function rock(parent,r,x,y,z,sx=1,sy=1,sz=1){const m=new THREE.Mesh(new THREE.DodecahedronGeometry(r,1),stone);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.rotation.set(Math.random(),Math.random(),Math.random());m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
@@ -55,11 +57,16 @@ sculpt(.7,.36,.65,0,9.62,.08,edge);
 for(const s of [-1,1]){
  limb([[s*1.25,7.55,0],[s*1.85,7.05,.02],[s*2.18,6.25,.1],[s*2.4,5.45,.18],[s*2.62,4.55,.3]],[.72,.68,.56,.48,.38]);
  sculpt(.43,.52,.42,s*2.65,4.35,.32);
- // Hand is a broad stone mitten with shallow finger grooves, not separate dangling rods
- sculpt(.48,.55,.42,s*2.72,3.95,.43,edge);
+ // Anatomical palm and four short, curved fingers fused into the silhouette
+ sculpt(.47,.48,.36,s*2.72,3.94,.43,stone);
+ for(let f=0;f<4;f++){const fx=s*(2.43+f*.19);const len=[.42,.52,.48,.37][f];limb([[fx,3.78,.67],[fx+s*.025,3.58,.72],[fx+s*.035,3.78-len,.7]],[.105,.09,.065],stone)}
+ // Thumb angles inward from the palm instead of jutting away like a rock spike
+ limb([[s*2.39,4.02,.48],[s*2.25,3.84,.57],[s*2.2,3.68,.61]],[.16,.12,.075],stone);
  // Legs taper from hips into broad, flat feet touching the ground plane
  limb([[s*.68,4.55,0],[s*.76,3.75,.02],[s*.78,2.75,.05],[s*.8,1.65,.1],[s*.82,.62,.12]],[.78,.72,.61,.52,.43]);
- sculpt(.62,.34,.95,s*.82,.27,.58,edge);
+ sculpt(.64,.3,.98,s*.82,.25,.58,stone);
+ // Toe ridge is broad and low, giving the foot weight against the ground
+ sculpt(.61,.16,.36,s*.82,.13,1.08,edge);
  // Shoulder armor follows the shoulder contour and stays flush to the body
  sculpt(.72,.34,.78,s*1.42,7.58,.04,edge);
 }
