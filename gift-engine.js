@@ -380,6 +380,8 @@ function renderVoidRiftGift(gift,opts,overlay){
  scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#02030a;isolation:isolate";
  scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 48%,transparent 5%,rgba(0,0,0,.28) 48%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;left:0;right:0;bottom:9%;text-align:center;color:#f1eaff;font:1000 clamp(25px,6vw,48px)/1.1 system-ui;letter-spacing:.16em;text-shadow:0 0 22px #a98aff,0 3px 10px #000">THE VOID RIFT<div style="font-size:clamp(10px,2vw,14px);letter-spacing:.25em;margin-top:10px;color:#c7b6ff">REALITY HAS SPLIT OPEN</div></div>';
  overlay.appendChild(scene);document.body.appendChild(overlay);
+ // Start the user-authorized cemetery sound from the same Play gesture.
+ if(typeof opts.onSound==="function"){try{opts.onSound();}catch(error){console.warn("Cemetery sound callback failed:",error);}}
  const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");
  let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start,particles=[];
  const rand=(a,b)=>a+Math.random()*(b-a);
@@ -679,8 +681,7 @@ function renderLivingTombstonesGift(gift,opts,overlay){
  function grave(st,t){
   const ww=st.shape===0?43:st.shape===1?38:st.shape===2?35:st.shape===3?46:40;
   const hh=st.shape===0?91:st.shape===1?105:st.shape===2?78:st.shape===3?88:96;
-  const wake=Math.max(0,Math.min(1,(t-st.delay)/.9));
-  const rock=Math.sin(Math.max(0,t-st.delay)*3.2+st.phase)*st.rock*wake;
+  const rock=0;
   ctx.save();
   // The pivot is fixed at the foot of the stone: rotation only, never screen-space travel.
   ctx.translate(st.x,st.baseY);ctx.rotate(rock);ctx.scale(st.s,st.s);
