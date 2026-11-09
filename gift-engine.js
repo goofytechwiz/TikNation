@@ -897,71 +897,56 @@ function renderHauntedMansionGift(gift,opts,overlay){
  ].join("");
  const world=document.createElement("div");world.className="hm-world";
  world.innerHTML='<div class="hm-moon"></div><div class="hm-cloud"></div>'+
- '<svg class="hm-scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A vast three-storey Victorian gothic manor with multiple wings, steep roofs, towers, tall windows, grand entrance, iron gates and storm clouds">'+
+ '<svg class="hm-scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A sprawling haunted Victorian mansion with broad asymmetrical wings, dormers, chimneys, bay windows and a grand entrance">'+
  '<defs>'+
- '<linearGradient id="hm-stone" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#85878a"/><stop offset=".3" stop-color="#555b64"/><stop offset=".72" stop-color="#303843"/><stop offset="1" stop-color="#141a23"/></linearGradient>'+
- '<linearGradient id="hm-roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#737b85"/><stop offset=".4" stop-color="#343e4a"/><stop offset="1" stop-color="#101722"/></linearGradient>'+
+ '<linearGradient id="hm-stone" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#777b80"/><stop offset=".42" stop-color="#454c55"/><stop offset="1" stop-color="#171d25"/></linearGradient>'+
+ '<linearGradient id="hm-roof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#59616b"/><stop offset="1" stop-color="#111821"/></linearGradient>'+
  '<linearGradient id="hm-door" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#66503a"/><stop offset=".5" stop-color="#211a17"/><stop offset="1" stop-color="#59432f"/></linearGradient>'+
- '<linearGradient id="hm-glass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffd98a"/><stop offset="1" stop-color="#6d3b1b"/></linearGradient>'+
  '<filter id="hm-glow"><feGaussianBlur stdDeviation="8"/></filter><filter id="hm-haze"><feGaussianBlur stdDeviation="22"/></filter>'+
  '<pattern id="hm-blocks" width="86" height="44" patternUnits="userSpaceOnUse"><path d="M0 1H86M0 43H86M43 1V22M0 22H86M22 22V43" fill="none" stroke="#111821" stroke-width="2" opacity=".45"/></pattern>'+
  '</defs>'+
  '<ellipse cx="600" cy="720" rx="590" ry="72" fill="#000" opacity=".82" filter="url(#hm-haze)"/>'+
  '<path class="hm-lightning" d="M895 12L820 150L876 145L790 300L925 165L865 170Z" fill="none" stroke="#d9edff" stroke-width="10" stroke-linejoin="round" filter="url(#hm-glow)"/>'+
  '<g class="hm-house">'+
- '<!-- distant roofline and chimneys -->'+
- '<path d="M85 420L115 340L165 340L190 420M1020 420L1045 330L1095 330L1120 420" fill="#202833" stroke="#0b1119" stroke-width="10"/>'+
- '<!-- left wing roof, dormers and gables -->'+
- '<path d="M55 420L165 285L285 365L390 260L510 420Z" fill="url(#hm-roof)" stroke="#101720" stroke-width="13"/>'+
- '<path d="M100 365L165 285L232 365L165 340Z" fill="#59636e" stroke="#111923" stroke-width="8"/>'+
- '<path d="M270 350L390 260L485 370L390 335Z" fill="#56616d" stroke="#111923" stroke-width="9"/>'+
- '<path d="M165 285L165 220L180 285M390 260L390 195L405 260" stroke="#111923" stroke-width="10"/>'+
- '<!-- right wing roof -->'+
- '<path d="M690 420L800 350L915 265L1035 355L1150 420Z" fill="url(#hm-roof)" stroke="#101720" stroke-width="13"/>'+
- '<path d="M735 375L800 350L915 265L980 365L915 330Z" fill="#59636e" stroke="#111923" stroke-width="8"/>'+
- '<path d="M915 265L915 195L930 265" stroke="#111923" stroke-width="10"/>'+
- '<!-- central towering keep and steep roof -->'+
- '<path d="M400 405L420 245L600 105L780 245L800 405Z" fill="url(#hm-roof)" stroke="#0d141d" stroke-width="15"/>'+
- '<path d="M420 245L600 105L780 245L744 260L600 145L456 260Z" fill="#77808a" opacity=".5"/>'+
- '<path d="M530 162L600 42L670 162L600 138Z" fill="#394451" stroke="#111923" stroke-width="11"/>'+
- '<path d="M590 53L600 5L610 53" fill="#89919a" stroke="#111923" stroke-width="7"/>'+
- '<path d="M430 285L600 155L770 285" fill="none" stroke="#a0a5a8" stroke-width="7" opacity=".35"/>'+
- '<!-- broad three-storey mansion body -->'+
- '<path d="M95 400L1105 400L1140 690L60 690Z" fill="url(#hm-stone)" stroke="#111821" stroke-width="16"/>'+
- '<path d="M95 400L1105 400L1140 690L60 690Z" fill="url(#hm-blocks)" opacity=".58"/>'+
- '<!-- floor ledges, stone string courses and corner quoins -->'+
- '<path d="M76 492L1124 492M68 590L1132 590" stroke="#a1a3a1" stroke-width="9" opacity=".5"/>'+
- '<path d="M90 410L110 410L78 685L58 685ZM1090 410L1110 410L1140 685L1120 685Z" fill="#858a8d" opacity=".55"/>'+
- '<!-- rows of tall arched windows on all wings -->'+
- '<g>'+[0,1,2,3,4,5,6,7].map((n)=>{const x=145+n*130;return '<path class="hm-window" d="M'+x+' 480V430Q'+(x+35)+' 385 '+(x+70)+' 430V480Z"/><path class="hm-light '+(n%2?'delay':'')+'" d="M'+(x+7)+' 474V433Q'+(x+35)+' 400 '+(x+63)+' 433V474Z"/><path d="M'+(x+35)+' 410V480M'+x+' 450H'+(x+70)+'" stroke="#161c25" stroke-width="7"/>';}).join("")+'</g>'+
- '<g>'+[0,1,2,3,4,5,6,7].map((n)=>{const x=145+n*130;return '<path class="hm-window" d="M'+x+' 580V530Q'+(x+35)+' 485 '+(x+70)+' 530V580Z"/><path class="hm-light '+(n%3?'delay':'')+'" d="M'+(x+7)+' 574V533Q'+(x+35)+' 500 '+(x+63)+' 533V574Z"/><path d="M'+(x+35)+' 510V580M'+x+' 550H'+(x+70)+'" stroke="#161c25" stroke-width="7"/>';}).join("")+'</g>'+
- '<!-- projecting bay windows -->'+
- '<path d="M115 595L150 565L205 565L240 595V690H115ZM960 595L995 565L1050 565L1085 595V690H960Z" fill="#3d4651" stroke="#171e28" stroke-width="8"/>'+
- '<path d="M145 660V610Q177 580 210 610V660M990 660V610Q1022 580 1055 610V660" fill="#171a1b" stroke="#85878a" stroke-width="5"/>'+
- '<!-- central tower facade and grand arched upper window -->'+
- '<path d="M430 390L430 280L600 165L770 280V690H430Z" fill="#5c646d" stroke="#151c26" stroke-width="13"/>'+
- '<path d="M485 365V280Q600 190 715 280V365Z" class="hm-window"/><path class="hm-light" d="M495 355V284Q600 207 705 284V355Z"/>'+
- '<path d="M600 218V365M485 315H715" stroke="#171d25" stroke-width="10"/>'+
- '<!-- tall central entrance portico, columns, pediment -->'+
- '<path d="M390 500L600 415L810 500Z" fill="#737b82" stroke="#171e27" stroke-width="12"/>'+
- '<path d="M410 500H790" stroke="#a2a5a4" stroke-width="10"/>'+
- '<g fill="#8b9091" stroke="#222a34" stroke-width="8"><path d="M425 500H455V685H425ZM745 500H775V685H745Z"/><path d="M490 500H515V685H490ZM685 500H710V685H685Z"/></g>'+
- '<path d="M385 690H815L845 720H355Z" fill="#737a80" stroke="#151c25" stroke-width="9"/>'+
- '<!-- deep arched entry and inward-swinging double doors -->'+
- '<path d="M485 690V555Q485 475 600 455Q715 475 715 555V690Z" fill="#080d13" stroke="#a1a5a4" stroke-width="13"/>'+
- '<g class="hm-door-left"><path d="M495 690V555Q495 490 600 470V690Z" fill="url(#hm-door)" stroke="#100e0d" stroke-width="9"/><path d="M515 670V555Q515 515 580 495V670Z" fill="none" stroke="#a0835c" stroke-width="5"/><path d="M545 520V690M570 500V690" stroke="#100f0e" stroke-width="5"/><circle cx="580" cy="585" r="8" fill="#d4b16c"/></g>'+
- '<g class="hm-door-right"><path d="M600 470Q705 490 705 555V690H600Z" fill="url(#hm-door)" stroke="#100e0d" stroke-width="9"/><path d="M620 495Q685 515 685 555V670H620Z" fill="none" stroke="#a0835c" stroke-width="5"/><path d="M630 500V690M655 520V690" stroke="#100f0e" stroke-width="5"/><circle cx="620" cy="585" r="8" fill="#d4b16c"/></g>'+
- '<!-- dark silhouette watches from central upper window -->'+
- '<g class="hm-shadow-person"><ellipse cx="655" cy="294" rx="21" ry="27" fill="#050609"/><path d="M620 355Q622 310 655 312Q688 310 690 355Z" fill="#050609"/></g>'+
- '<!-- broad stone stairs -->'+
+ '<!-- Broad irregular roofline: no steeple, spire or church tower -->'+
+ '<path d="M42 405L155 300L265 355L370 255L500 365L625 285L755 365L890 245L1035 355L1160 300L1190 420Z" fill="url(#hm-roof)" stroke="#101720" stroke-width="15"/>'+
+ '<path d="M42 405L155 300L265 355L370 255L500 365L625 285L755 365L890 245L1035 355L1160 300L1190 420" fill="none" stroke="#87909a" stroke-width="5" opacity=".35"/>'+
+ '<!-- Chimneys and varied dormers -->'+
+ '<g fill="#303944" stroke="#111821" stroke-width="9"><path d="M112 340V235H160V320Z"/><path d="M320 305V190H365V275Z"/><path d="M815 310V185H865V270Z"/><path d="M1070 350V240H1118V330Z"/></g>'+
+ '<g fill="#59616b" stroke="#151c25" stroke-width="8"><path d="M205 355L250 295L295 355Z"/><path d="M520 360L575 300L630 360Z"/><path d="M940 350L995 285L1050 350Z"/></g>'+
+ '<!-- One continuous, wide multi-wing manor body -->'+
+ '<path d="M48 405H1150L1170 690H30Z" fill="url(#hm-stone)" stroke="#111821" stroke-width="16"/>'+
+ '<path d="M48 405H1150L1170 690H30Z" fill="url(#hm-blocks)" opacity=".55"/>'+
+ '<path d="M30 495H1165M25 590H1170" stroke="#a1a3a1" stroke-width="9" opacity=".48"/>'+
+ '<!-- Projecting left and right wings -->'+
+ '<path d="M55 430L85 385H365L390 430V690H45Z" fill="#505862" stroke="#171e28" stroke-width="10"/>'+
+ '<path d="M815 430L845 385H1120L1155 430V690H805Z" fill="#505862" stroke="#171e28" stroke-width="10"/>'+
+ '<!-- Tall, narrow windows repeated across the wings -->'+
+ '<g>'+[0,1,2,3,4,5,6,7,8].map((n)=>{const x=92+n*112;return '<path class="hm-window" d="M'+x+' 480V430Q'+(x+29)+' 390 '+(x+58)+' 430V480Z"/><path class="hm-light '+(n%2?'delay':'')+'" d="M'+(x+6)+' 474V433Q'+(x+29)+' 402 '+(x+52)+' 433V474Z"/><path d="M'+(x+29)+' 405V480M'+x+' 450H'+(x+58)+'" stroke="#161c25" stroke-width="6"/>';}).join("")+'</g>'+
+ '<g>'+[0,1,2,3,4,5,6,7,8].map((n)=>{const x=92+n*112;return '<path class="hm-window" d="M'+x+' 580V530Q'+(x+29)+' 490 '+(x+58)+' 530V580Z"/><path class="hm-light '+(n%3?'delay':'')+'" d="M'+(x+6)+' 574V533Q'+(x+29)+' 502 '+(x+52)+' 533V574Z"/><path d="M'+(x+29)+' 495V580M'+x+' 550H'+(x+58)+'" stroke="#161c25" stroke-width="6"/>';}).join("")+'</g>'+
+ '<!-- Broad central facade with a modest roof peak, not a vertical tower -->'+
+ '<path d="M385 410L485 330L715 330L815 410V690H385Z" fill="#626a72" stroke="#171e28" stroke-width="13"/>'+
+ '<path d="M365 412L485 320H715L835 412" fill="none" stroke="#92979a" stroke-width="9" opacity=".55"/>'+
+ '<!-- Large central upper bay window -->'+
+ '<path d="M505 470V405Q600 330 695 405V470Z" fill="#171d25" stroke="#a0a3a0" stroke-width="8"/>'+
+ '<path class="hm-light" d="M515 462V410Q600 350 685 410V462Z"/>'+
+ '<path d="M600 365V470M505 430H695" stroke="#171d25" stroke-width="9"/>'+
+ '<!-- Grand entrance portico and wide steps -->'+
+ '<path d="M420 535L600 465L780 535Z" fill="#747b80" stroke="#171e27" stroke-width="11"/>'+
+ '<path d="M438 535H762" stroke="#a2a5a4" stroke-width="9"/>'+
+ '<g fill="#858b8e" stroke="#222a34" stroke-width="8"><path d="M450 535H478V680H450Z"/><path d="M722 535H750V680H722Z"/></g>'+
+ '<path d="M390 690H810L845 720H355Z" fill="#737a80" stroke="#151c25" stroke-width="9"/>'+
+ '<!-- Deep arched entry and double doors -->'+
+ '<path d="M505 690V590Q505 500 600 485Q695 500 695 590V690Z" fill="#080d13" stroke="#a1a5a4" stroke-width="13"/>'+
+ '<g class="hm-door-left"><path d="M515 690V590Q515 520 600 500V690Z" fill="url(#hm-door)" stroke="#100e0d" stroke-width="9"/><path d="M535 670V590Q535 545 580 525V670Z" fill="none" stroke="#a0835c" stroke-width="5"/><path d="M555 535V690" stroke="#100f0e" stroke-width="5"/><circle cx="580" cy="610" r="8" fill="#d4b16c"/></g>'+
+ '<g class="hm-door-right"><path d="M600 500Q685 520 685 590V690H600Z" fill="url(#hm-door)" stroke="#100e0d" stroke-width="9"/><path d="M620 525Q665 545 665 590V670H620Z" fill="none" stroke="#a0835c" stroke-width="5"/><path d="M645 535V690" stroke="#100f0e" stroke-width="5"/><circle cx="620" cy="610" r="8" fill="#d4b16c"/></g>'+
+ '<g class="hm-shadow-person"><ellipse cx="655" cy="410" rx="19" ry="25" fill="#050609"/><path d="M625 465Q627 425 655 427Q683 425 685 465Z" fill="#050609"/></g>'+
  '<path d="M350 720H850L885 750H315Z" fill="#7a7d7d" stroke="#171d26" stroke-width="8"/><path d="M305 750H895L940 785H260Z" fill="#4a5158" stroke="#111821" stroke-width="9"/>'+
  '</g>'+
- '<!-- long curved drive and lawn -->'+
- '<path d="M430 800L490 750L710 750L770 800Z" fill="#292c2c"/><path d="M570 800L585 750M630 800L615 750" stroke="#8b877c" stroke-width="4" opacity=".4"/>'+
- '<!-- ornate perimeter fence and opening gates -->'+
+ '<path d="M430 800L490 750H710L770 800Z" fill="#292c2c"/>'+
  '<g fill="none" stroke="#171e26" stroke-width="8" stroke-linecap="round"><path d="M0 640H180M1020 640H1200M0 690H180M1020 690H1200"/><path d="M10 640V560L35 640L60 560L85 640L110 560L135 640L160 560L180 640M1020 640L1040 560L1065 640L1090 560L1115 640L1140 560L1165 640L1190 560V640"/></g>'+
- '<g class="hm-gate-left"><path d="M175 710V555L410 585V710Z" fill="#171e26" stroke="#080d13" stroke-width="10"/><path d="M195 700V575L390 600V700M230 705V580M270 705V585M310 705V590M350 705V595M390 705V600" fill="none" stroke="#89939a" stroke-width="6"/><path d="M175 555L290 520L410 585" fill="none" stroke="#89939a" stroke-width="6"/></g>'+
- '<g class="hm-gate-right"><path d="M790 585L1025 555V710H790Z" fill="#171e26" stroke="#080d13" stroke-width="10"/><path d="M810 600L1005 575V700M850 595V705M890 590V705M930 585V705M970 580V705M1010 575V700" fill="none" stroke="#89939a" stroke-width="6"/><path d="M790 585L910 520L1025 555" fill="none" stroke="#89939a" stroke-width="6"/></g>'+
+ '<g class="hm-gate-left"><path d="M175 710V555L410 585V710Z" fill="#171e26" stroke="#080d13" stroke-width="10"/><path d="M195 700V575L390 600V700M230 705V580M270 705V585M310 705V590M350 705V595M390 705V600" fill="none" stroke="#89939a" stroke-width="6"/></g>'+
+ '<g class="hm-gate-right"><path d="M790 585L1025 555V710H790Z" fill="#171e26" stroke="#080d13" stroke-width="10"/><path d="M810 600L1005 575V700M850 595V705M890 590V705M930 585V705M970 580V705M1010 575V700" fill="none" stroke="#89939a" stroke-width="6"/></g>'+
  '</svg><div class="hm-fog"></div><div class="hm-flash"></div><div class="hm-title">THE HAUNTED MANSION<small>ENTER IF YOU DARE</small></div>'; 
  overlay.appendChild(world);document.body.appendChild(overlay);
  if(typeof opts.onSound==="function"){try{opts.onSound();}catch(error){console.warn("Haunted mansion sound callback failed:",error);}}
