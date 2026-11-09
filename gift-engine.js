@@ -975,8 +975,8 @@ function renderHauntedMansionGift(gift,opts,overlay){
  '</g>'+
  '<path d="M430 800L490 750H710L770 800Z" fill="#292c2c"/>'+
  '<g fill="none" stroke="#171e26" stroke-width="8" stroke-linecap="round"><path d="M0 640H180M1020 640H1200M0 690H180M1020 690H1200"/><path d="M10 640V560L35 640L60 560L85 640L110 560L135 640L160 560L180 640M1020 640L1040 560L1065 640L1090 560L1115 640L1140 560L1165 640L1190 560V640"/></g>'+
- '<g class="hm-gate-left"><path d="M175 710V555L410 585V710Z" fill="#171e26" stroke="#080d13" stroke-width="10"/><path d="M195 700V575L390 600V700M230 705V580M270 705V585M310 705V590M350 705V595M390 705V600" fill="none" stroke="#89939a" stroke-width="6"/></g>'+
- '<g class="hm-gate-right"><path d="M790 585L1025 555V710H790Z" fill="#171e26" stroke="#080d13" stroke-width="10"/><path d="M810 600L1005 575V700M850 595V705M890 590V705M930 585V705M970 580V705M1010 575V700" fill="none" stroke="#89939a" stroke-width="6"/></g>'+
+ 
+ 
  '</svg><div class="hm-fog"></div><div class="hm-flash"></div><div class="hm-title">THE HAUNTED MANSION<small>ENTER IF YOU DARE</small></div>'; 
  overlay.appendChild(world);document.body.appendChild(overlay);
  if(typeof opts.onSound==="function"){try{opts.onSound();}catch(error){console.warn("Haunted mansion sound callback failed:",error);}}
