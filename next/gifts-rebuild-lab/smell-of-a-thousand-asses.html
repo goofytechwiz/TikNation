@@ -32,15 +32,25 @@ body{min-height:100svh;display:grid;place-items:center;padding:8px}
 .wheel{position:absolute;z-index:6;bottom:-9%;width:12%;height:18%;border-radius:50%;background:radial-gradient(circle,#69745e 0 15%,#101510 17% 58%,#45503f 60% 68%,#080b08 70%);box-shadow:0 5px 8px #000}.wheel.l{left:12%}.wheel.r{right:12%}
 .lid{position:absolute;z-index:7;left:50%;bottom:57%;width:min(67%,540px);height:30px;transform:translateX(-50%) rotate(-1deg);transform-origin:12% 90%;border:5px solid #273229;border-radius:5px;background:repeating-linear-gradient(90deg,#64705d 0 44px,#303b32 46px 50px);box-shadow:inset 0 4px 5px #d0d7bd44,0 8px 15px #000b;transition:transform .6s}
 .handle{position:absolute;right:12%;top:6px;width:14%;height:7px;border-radius:8px;background:#202820}
-.vapor{position:absolute;z-index:8;left:50%;bottom:48%;width:90%;height:43%;transform:translateX(-50%);opacity:0;pointer-events:none;filter:blur(2px)}
-.puff{position:absolute;bottom:0;width:46%;height:65%;border-radius:50%;background:radial-gradient(ellipse,#c1ce82df 0,#9aa76aab 34%,#79844c55 62%,transparent 78%);animation:rise 3s ease-in-out infinite}
-.puff:nth-child(1){left:0}.puff:nth-child(2){left:26%;width:50%;animation-delay:-1s}.puff:nth-child(3){right:0;animation-delay:-2s}
-@keyframes rise{0%{transform:translate(0,16px) scale(.7);opacity:.1}25%{opacity:.9}100%{transform:translate(24px,-180px) scale(1.55);opacity:0}}
-.fly{position:absolute;z-index:12;width:24px;height:16px;opacity:0;pointer-events:none;filter:drop-shadow(0 2px 3px #000)}
-.fly:before{content:"";position:absolute;left:7px;top:7px;width:13px;height:5px;border-radius:50%;background:#050705;box-shadow:0 0 0 1px #a8b28e}
-.fly:after{content:"";position:absolute;left:2px;top:1px;width:10px;height:7px;border-radius:80% 80% 30% 80%;background:#dce5d0dd;transform:rotate(-25deg);box-shadow:10px 2px 0 -1px #dce5d0dd}
+.vapor{position:absolute;z-index:8;left:50%;bottom:48%;width:76%;height:48%;transform:translateX(-50%);opacity:0;pointer-events:none;filter:blur(7px);mix-blend-mode:screen}
+.wisp{position:absolute;bottom:0;width:13%;height:88%;border-radius:50% 50% 42% 42%;background:linear-gradient(0deg,#716f55aa 0%,#99977a70 24%,#8d927a42 58%,transparent 100%);filter:blur(9px);transform-origin:bottom;animation:stink-rise 4.8s ease-in-out infinite}
+.wisp:nth-child(1){left:17%;height:76%;animation-delay:-1.7s}
+.wisp:nth-child(2){left:34%;height:100%;width:17%;animation-delay:-.4s}
+.wisp:nth-child(3){left:54%;height:82%;animation-delay:-3.1s}
+.wisp:nth-child(4){left:70%;height:92%;width:10%;animation-delay:-2.2s}
+.wisp:nth-child(5){left:44%;height:68%;width:20%;animation-delay:-1s}
+@keyframes stink-rise{0%{transform:translate(0,12px) scale(.65,.55) rotate(-8deg);opacity:0}18%{opacity:.55}55%{transform:translate(18px,-74px) scale(1.3,1) rotate(9deg);opacity:.36}100%{transform:translate(-15px,-205px) scale(1.9,1.2) rotate(-12deg);opacity:0}}
+.fly{position:absolute;z-index:12;width:38px;height:30px;opacity:0;pointer-events:none;filter:drop-shadow(0 2px 2px #000)}
+.fly-body{position:absolute;left:15px;top:11px;width:17px;height:7px;border-radius:55% 48% 48% 55%;background:linear-gradient(180deg,#59645b 0%,#111713 45%,#030504 100%);box-shadow:inset 0 1px 1px #d6e0d455}
+.fly-body:before{content:"";position:absolute;left:-5px;top:-2px;width:8px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#9d3b34 0 18%,#343c35 40%,#090d0a 75%)}
+.wing{position:absolute;top:4px;left:10px;width:18px;height:8px;border:1px solid #c4d0c4a8;border-radius:90% 35% 80% 30%;background:linear-gradient(145deg,#e4eee1a8,#81908722 65%,#dce5d055);transform:rotate(-25deg);transform-origin:80% 80%;box-shadow:inset 0 0 3px #fff8;animation:wingbeat .075s linear infinite alternate}
+.wing.right{left:19px;top:6px;transform:scaleX(-1) rotate(-22deg);animation-delay:-.04s}
+.legs{position:absolute;left:16px;top:16px;width:17px;height:10px;border-top:1px solid #0b100d}
+.legs:before,.legs:after{content:"";position:absolute;top:-2px;left:1px;width:14px;height:9px;border-top:1px solid #0a100c;border-bottom:1px solid #0a100c;transform:rotate(24deg)}
+.legs:after{left:3px;transform:rotate(-24deg)}
 .fly.a{left:39%;top:43%}.fly.b{left:52%;top:45%}.fly.c{left:47%;top:39%}.fly.d{left:57%;top:41%}
-@keyframes buzz{0%{transform:translate(0,0) rotate(0)}20%{transform:translate(35px,-24px) rotate(18deg)}43%{transform:translate(68px,9px) rotate(-20deg)}67%{transform:translate(-22px,-37px) rotate(13deg)}100%{transform:translate(0,0) rotate(0)}}
+@keyframes wingbeat{from{transform:rotate(-35deg) scaleY(.55)}to{transform:rotate(22deg) scaleY(1.1)}}
+@keyframes buzz{0%{transform:translate(0,0) rotate(-8deg)}13%{transform:translate(23px,-18px) rotate(16deg)}27%{transform:translate(8px,7px) rotate(-24deg)}46%{transform:translate(56px,-30px) rotate(12deg)}63%{transform:translate(31px,9px) rotate(-16deg)}82%{transform:translate(-19px,-24px) rotate(19deg)}100%{transform:translate(0,0) rotate(-8deg)}}
 .odor-label{position:absolute;z-index:15;left:0;right:0;bottom:60%;text-align:center;color:#e3f7a6;font-size:clamp(13px,2.6vw,20px);font-weight:1000;letter-spacing:.16em;text-shadow:0 0 15px #b9ed51,0 2px 4px #000;opacity:0;pointer-events:none}
 .scene.odor-on .vapor,.scene.release-on .vapor{opacity:1}.scene.odor-on .lid,.scene.release-on .lid{transform:translateX(-50%) rotate(-22deg) translateY(-13px)}
 .scene.odor-on .odor-label,.scene.release-on .odor-label{opacity:1;animation:glow 1s ease-in-out infinite alternate}
@@ -57,7 +67,7 @@ button:focus-visible,input:focus-visible{outline:3px solid white;outline-offset:
 .volume input{flex:1;min-width:50px;accent-color:#c5df72}
 #reset{grid-column:1/-1}
 @media(max-width:560px){.scene{height:97svh;min-height:700px}.bin{width:76%;height:26%;bottom:31%}.lid{width:82%;bottom:56%}.vapor{width:98%;bottom:48%}.status{bottom:184px}.panel{gap:6px;padding:8px}.panel button{font-size:9px;min-height:40px}}
-@media(prefers-reduced-motion:reduce){.scene .fly,.scene .puff,.scene .odor-label{animation:none!important}.scene.release-on .fly{opacity:1}.scene.release-on .puff{opacity:.7}}
+@media(prefers-reduced-motion:reduce){.scene .fly,.scene .wisp,.scene .odor-label{animation:none!important}.scene.release-on .fly{opacity:1}.scene.release-on .puff{opacity:.7}}
 </style>
 </head>
 <body>
@@ -69,9 +79,12 @@ button:focus-visible,input:focus-visible{outline:3px solid white;outline-offset:
 <div class="bin-shadow"></div>
 <div class="bin"><i class="rib r1"></i><i class="rib r2"></i><i class="rib r3"></i><i class="rib r4"></i><i class="wheel l"></i><i class="wheel r"></i></div>
 <div class="lid"><i class="handle"></i></div>
-<div class="vapor" aria-hidden="true"><i class="puff"></i><i class="puff"></i><i class="puff"></i></div>
+<div class="vapor" aria-hidden="true"><i class="wisp"></i><i class="wisp"></i><i class="wisp"></i><i class="wisp"></i><i class="wisp"></i></div>
 <div class="odor-label">☣ STENCH CLOUD ACTIVE ☣</div>
-<i class="fly a" aria-hidden="true"></i><i class="fly b" aria-hidden="true"></i><i class="fly c" aria-hidden="true"></i><i class="fly d" aria-hidden="true"></i>
+<div class="fly a" aria-hidden="true"><i class="wing"></i><i class="wing right"></i><i class="fly-body"></i><i class="legs"></i></div>
+<div class="fly b" aria-hidden="true"><i class="wing"></i><i class="wing right"></i><i class="fly-body"></i><i class="legs"></i></div>
+<div class="fly c" aria-hidden="true"><i class="wing"></i><i class="wing right"></i><i class="fly-body"></i><i class="legs"></i></div>
+<div class="fly d" aria-hidden="true"><i class="wing"></i><i class="wing right"></i><i class="fly-body"></i><i class="legs"></i></div>
 <audio id="sfx" preload="auto" src="https://sfxmint.com/dl/natural-fart-02.mp3"></audio>
 <div class="status" id="status" aria-live="polite">THE BIN IS SEALED. YOUR NOSE IS SAFE… FOR NOW.</div>
 <section class="panel" aria-label="Gift test controls">
