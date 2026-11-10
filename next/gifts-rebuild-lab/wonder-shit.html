@@ -1,118 +1,112 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080d19"><title>WONDER SHIT · TikNation Gift Preview</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070b18">
+<title>WONDER SHIT — TikNation Gift Lab</title>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
 <style>
-:root{color-scheme:dark;--lime:#c9ff72;--cyan:#80eaff;--ink:#080d19}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0,#182a42 0,#0a1020 48%,#060911 100%);color:#f4f7ff;font-family:Inter,system-ui,Segoe UI,sans-serif}
-header{height:58px;padding:0 clamp(14px,4vw,34px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff18;font-size:10px;letter-spacing:.19em;color:#b9c9df}
-header b{color:#e9f2ff}header a{color:var(--lime);text-decoration:none}
-main{width:min(1120px,94vw);margin:clamp(18px,4vw,38px) auto 45px}
-.kicker{font-size:10px;letter-spacing:.28em;font-weight:900;color:var(--cyan)}
-h1{font-size:clamp(42px,8vw,86px);line-height:.85;letter-spacing:-.075em;margin:13px 0 12px;font-weight:1000}
-h1 span{color:var(--lime);text-shadow:0 0 28px #c9ff7240}
-.intro{color:#aebdd1;max-width:650px;font-size:14px;line-height:1.65;margin:0 0 22px}
-.stage{position:relative;height:clamp(370px,58vw,610px);overflow:hidden;border-radius:24px;border:1px solid #b8e9ff45;background:linear-gradient(180deg,#12223b 0%,#254969 45%,#edaa70 100%);box-shadow:0 30px 100px #0009,inset 0 0 50px #9edaff12;isolation:isolate}
-.stage:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 78% 24%,#fff7c5 0 6%,#ffdfa044 12%,transparent 33%),linear-gradient(180deg,transparent 65%,#182b3c99);z-index:0}
-.stars{position:absolute;inset:0;opacity:.55;background-image:radial-gradient(2px 2px at 10% 20%,#fff 50%,transparent 60%),radial-gradient(1px 1px at 26% 12%,#fff 50%,transparent 60%),radial-gradient(2px 2px at 43% 30%,#fff 50%,transparent 60%),radial-gradient(1px 1px at 64% 10%,#fff 50%,transparent 60%),radial-gradient(2px 2px at 88% 45%,#fff 50%,transparent 60%)}
-.horizon{position:absolute;left:-5%;right:-5%;bottom:-13%;height:34%;border-radius:50% 50% 0 0;background:linear-gradient(180deg,#496b73,#142c38 75%);filter:blur(3px)}
-.city{position:absolute;bottom:18%;left:0;right:0;height:24%;opacity:.4;background:linear-gradient(90deg,transparent 0 3%,#10233a 3% 7%,transparent 7% 10%,#142b43 10% 14%,transparent 14% 19%,#10233a 19% 23%,transparent 23% 33%,#10233a 33% 38%,transparent 38% 45%,#10233a 45% 50%,transparent 50% 57%,#10233a 57% 62%,transparent 62% 68%,#10233a 68% 73%,transparent 73% 82%,#10233a 82% 88%,transparent 88%)}
-.city:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 27px,#ffd67b88 28px 30px,transparent 31px 53px);mask-image:linear-gradient(#000,transparent)}
-.sun{position:absolute;right:12%;top:10%;width:clamp(70px,12vw,128px);aspect-ratio:1;border-radius:50%;background:#fff0b4;box-shadow:0 0 75px 25px #ffd88955}
-.topline{position:absolute;z-index:10;left:0;right:0;top:20px;text-align:center;font-size:clamp(10px,1.7vw,14px);letter-spacing:.22em;font-weight:1000;text-shadow:0 2px 12px #08111d}
-.topline span{display:inline-block;padding:10px 18px;border:1px solid #ffffff5c;border-radius:999px;background:#071323a8;backdrop-filter:blur(8px)}
-.hero-wrap{position:absolute;z-index:5;left:50%;top:51%;width:min(91%,880px);height:75%;transform:translate(-50%,-50%);filter:drop-shadow(0 24px 15px #07152277);display:grid;place-items:center}
-.real-dog{width:100%;height:100%;background:transparent;--poster-color:transparent;filter:drop-shadow(0 18px 16px #07152266)}
-.model-loading{color:#d9efff;font:900 11px system-ui;letter-spacing:.18em;padding:16px;border:1px solid #ffffff44;border-radius:20px;background:#081321bb}
-.cape-3d{position:absolute;z-index:-1;left:5%;top:25%;width:45%;height:55%;background:linear-gradient(135deg,#ff8e82,#d82046 50%,#67142d);clip-path:polygon(100% 0,70% 35%,100% 100%,0 78%,20% 45%,0 8%);filter:drop-shadow(0 12px 12px #050b18);transform-origin:90% 15%;opacity:.95}
-.hero-emblem{position:absolute;z-index:6;left:46%;top:45%;width:clamp(28px,5vw,52px);aspect-ratio:1;display:grid;place-items:center;border-radius:50%;background:linear-gradient(145deg,#fff3a6,#dba833);color:#9b1735;font-size:clamp(17px,3vw,30px);border:3px solid #fff2bd;box-shadow:0 0 20px #ffd96b99;pointer-events:none}
-.model-note{position:absolute;z-index:8;bottom:12px;left:12px;padding:7px 10px;border-radius:8px;background:#06101bbd;color:#c9eaff;font-size:9px;letter-spacing:.12em}
-.dog{width:100%;height:100%;overflow:visible}
-.cape{transform-origin:43% 34%;animation:none}
-.stage.play .cape-3d{animation:capeFlutter .28s ease-in-out infinite alternate}
-.stage.play .real-dog{animation:dogGlide 8s cubic-bezier(.2,.65,.25,1) forwards}
-.stage.play .hero-wrap{animation:heroFlight 8s cubic-bezier(.2,.65,.25,1) forwards}
-.streak{position:absolute;z-index:2;width:36%;height:3px;left:-40%;top:55%;background:linear-gradient(90deg,transparent,#fff,#a6f2ff,transparent);transform:rotate(-7deg);opacity:0}
-.stage.play .streak{animation:streak 1.2s linear infinite}
-.projectile{position:absolute;z-index:7;left:12%;top:54%;font-size:clamp(28px,5vw,56px);opacity:0;filter:drop-shadow(0 5px 4px #24160e)}
-.stage.play .projectile{animation:launch 1.6s ease-in 3.2s forwards}
-.cloudblast{position:absolute;z-index:6;left:7%;bottom:7%;font-size:clamp(75px,14vw,145px);opacity:0;filter:drop-shadow(0 0 20px #baff62)}
-.stage.play .cloudblast{animation:stink 2.8s ease-out 4.4s forwards}
-.flies{position:absolute;z-index:8;left:8%;bottom:28%;font-size:clamp(16px,3vw,26px);opacity:0}
-.stage.play .flies{animation:flies .3s ease 5.3s forwards}
-.controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px}
-button{border:1px solid #ffffff42;background:#17263b;color:#f7fbff;border-radius:999px;padding:14px 20px;font-size:10px;font-weight:1000;letter-spacing:.14em;cursor:pointer}
+:root{color-scheme:dark;--lime:#c9ff70;--cyan:#7cecff;--gold:#ffe49a}
+*{box-sizing:border-box}
+body{margin:0;background:#070b18;color:#f5f7ff;font-family:Inter,system-ui,Segoe UI,sans-serif;overflow-x:hidden}
+header{height:58px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff20;background:#080e1c}
+header strong{font-size:11px;letter-spacing:.2em}header a{color:var(--lime);font-size:11px;text-decoration:none}
+main{width:min(1120px,94vw);margin:26px auto 44px}
+.eyebrow{font-size:10px;font-weight:900;letter-spacing:.3em;color:var(--cyan)}
+h1{font-size:clamp(43px,8vw,88px);line-height:.88;letter-spacing:-.075em;margin:12px 0}
+h1 span{color:var(--lime);text-shadow:0 0 35px #c9ff7050}
+.intro{max-width:680px;color:#aebbd0;line-height:1.6;font-size:14px;margin:0 0 20px}
+.scene{height:clamp(420px,62vw,650px);position:relative;overflow:hidden;border:1px solid #a3d8ff55;border-radius:25px;background:linear-gradient(180deg,#101c38 0%,#273c62 45%,#e38d66 100%);isolation:isolate;box-shadow:0 30px 90px #0009}
+.scene:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 78% 22%,#fff0bd 0 4%,#ffe7a055 10%,transparent 27%),linear-gradient(180deg,transparent 52%,#08101caa);z-index:0}
+.moon{position:absolute;right:12%;top:9%;width:clamp(62px,10vw,112px);aspect-ratio:1;border-radius:50%;background:#fff0c9;box-shadow:0 0 65px 24px #ffdfa044}
+.stars{position:absolute;inset:0;opacity:.8;background-image:radial-gradient(2px 2px at 9% 19%,white 55%,transparent),radial-gradient(1px 1px at 22% 9%,white 55%,transparent),radial-gradient(2px 2px at 43% 25%,white 55%,transparent),radial-gradient(1px 1px at 61% 13%,white 55%,transparent),radial-gradient(2px 2px at 89% 42%,white 55%,transparent),radial-gradient(1px 1px at 76% 58%,white 55%,transparent)}
+.skyline{position:absolute;bottom:15%;left:0;right:0;height:31%;opacity:.8;background:linear-gradient(90deg,transparent 0 2%,#101c32 2% 8%,transparent 8% 11%,#14213b 11% 18%,transparent 18% 21%,#0e1a31 21% 29%,transparent 29% 33%,#14213b 33% 42%,transparent 42% 46%,#101b31 46% 54%,transparent 54% 58%,#14213b 58% 67%,transparent 67% 71%,#101b31 71% 79%,transparent 79% 83%,#14213b 83% 91%,transparent 91%)}
+.skyline:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 17px,#f7d58c88 18px 20px,transparent 21px 34px);mask-image:linear-gradient(#000,transparent)}
+.rooftop{position:absolute;bottom:-15%;left:-10%;width:120%;height:38%;border-radius:50% 50% 0 0;background:linear-gradient(#35495a,#101d2b 75%);box-shadow:0 -10px 50px #a8e9ff20}
+.beam{position:absolute;z-index:1;left:50%;bottom:12%;width:2px;height:72%;background:linear-gradient(transparent,#baffff88,transparent);transform:rotate(27deg);filter:blur(5px)}
+.banner{position:absolute;z-index:10;top:20px;left:0;right:0;text-align:center;font-size:clamp(10px,1.7vw,14px);font-weight:1000;letter-spacing:.2em;text-shadow:0 2px 12px #000}
+.banner span{display:inline-block;padding:10px 17px;border:1px solid #ffffff55;border-radius:999px;background:#081323bb;backdrop-filter:blur(8px)}
+.hero{position:absolute;z-index:5;left:50%;top:51%;width:min(84%,820px);height:76%;transform:translate(-50%,-50%);display:grid;place-items:center;filter:drop-shadow(0 25px 18px #050b18aa)}
+.dog{width:100%;height:100%;background:transparent;--poster-color:transparent;pointer-events:auto}
+.poster{height:100%;display:grid;place-items:center;color:#d9f3ff;font-size:11px;font-weight:900;letter-spacing:.15em;text-align:center;padding:15px}
+.cape{position:absolute;z-index:-1;left:8%;top:24%;width:46%;height:55%;background:linear-gradient(130deg,#ff9b87,#d9234c 55%,#6d102d);clip-path:polygon(100% 0,76% 28%,100% 100%,0 77%,18% 45%,0 8%);filter:drop-shadow(0 12px 12px #020714);transform-origin:90% 12%}
+.emblem{position:absolute;z-index:7;left:47%;top:42%;width:clamp(32px,5vw,52px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;color:#9b1735;background:linear-gradient(145deg,#fff4b4,#e4a82e);border:3px solid #fff0ae;font-size:25px;box-shadow:0 0 25px #ffe07b99;pointer-events:none}
+.trail{position:absolute;z-index:3;left:-40%;top:55%;width:45%;height:4px;background:linear-gradient(90deg,transparent,#fff,#8ef4ff,transparent);transform:rotate(-9deg);opacity:0}
+.stink{position:absolute;z-index:8;left:9%;top:56%;font-size:clamp(60px,11vw,115px);opacity:0;filter:drop-shadow(0 0 18px #c9ff70)}
+.poop{position:absolute;z-index:9;left:15%;top:51%;font-size:clamp(28px,5vw,52px);opacity:0}
+.flies{position:absolute;z-index:9;left:8%;top:76%;font-size:24px;opacity:0}
+.scene.play .hero{animation:fly 7.6s cubic-bezier(.2,.65,.25,1) forwards}
+.scene.play .dog{animation:bank 7.6s ease-in-out forwards}
+.scene.play .cape{animation:cape 0.35s ease-in-out infinite alternate}
+.scene.play .trail{animation:streak 1.2s linear infinite}
+.scene.play .poop{animation:launch 1.3s ease-in 3.1s forwards}
+.scene.play .stink{animation:cloud 2.6s ease-out 4.1s forwards}
+.scene.play .flies{animation:appear .2s ease 5.1s forwards}
+@keyframes fly{0%{left:-25%;top:72%;transform:translate(-50%,-50%) scale(.48)}24%{left:22%;top:58%;transform:translate(-50%,-50%) scale(.68)}58%{left:57%;top:43%;transform:translate(-50%,-50%) scale(.9)}82%{left:85%;top:35%;transform:translate(-50%,-50%) scale(1)}100%{left:70%;top:38%;transform:translate(-50%,-50%) scale(.98)}}
+@keyframes bank{0%,100%{rotate:-5deg}40%{rotate:1deg}70%{rotate:4deg}}
+@keyframes cape{from{transform:skewY(-10deg) rotate(-7deg)}to{transform:skewY(12deg) rotate(8deg)}}
+@keyframes streak{to{left:140%;opacity:.8}}
+@keyframes launch{0%{opacity:0;transform:translate(0,0) scale(.2)}15%{opacity:1}80%{opacity:1;transform:translate(-35px,95px) rotate(520deg) scale(1)}100%{opacity:0;transform:translate(-60px,140px) rotate(720deg) scale(.4)}}
+@keyframes cloud{0%{opacity:0;transform:scale(.15)}20%{opacity:1;transform:scale(1.1)}75%{opacity:1;transform:scale(1.4)}100%{opacity:.9;transform:scale(1.35)}}
+@keyframes appear{to{opacity:1}}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+button{border:1px solid #ffffff44;background:#17243b;color:#f7fbff;border-radius:999px;padding:14px 20px;font-size:10px;font-weight:1000;letter-spacing:.13em;cursor:pointer}
+button.primary{background:var(--lime);border-color:var(--lime);color:#111b08}
 button:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
-button.primary{background:var(--lime);border-color:var(--lime);color:#101a0b;box-shadow:0 0 26px #c9ff7230}
-.status{min-height:24px;margin:14px 2px 0;color:var(--lime);font-size:10px;letter-spacing:.17em;font-weight:800}
-.info{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
-.info div{border:1px solid #ffffff1c;border-radius:15px;padding:13px 15px;background:#ffffff08}
-.info b{display:block;color:#e9f3ff;font-size:10px;letter-spacing:.14em;margin-bottom:6px}.info span{font-size:11px;color:#91a4bd;line-height:1.5}
-.foot{margin-top:18px;padding-top:14px;border-top:1px solid #ffffff1b;color:#8293aa;font-size:10px;line-height:1.6}
-@keyframes heroFlight{0%{left:-32%;top:69%;transform:translate(-50%,-50%) scale(.52)}22%{left:22%;top:56%;transform:translate(-50%,-50%) scale(.72)}55%{left:58%;top:43%;transform:translate(-50%,-50%) scale(.94)}78%{left:88%;top:36%;transform:translate(-50%,-50%) scale(1.03)}100%{left:73%;top:40%;transform:translate(-50%,-50%) scale(1)}}
-@keyframes dogGlide{0%{transform:rotate(-8deg) scale(.88)}35%{transform:rotate(-2deg) scale(1)}70%{transform:rotate(2deg) scale(1.04)}100%{transform:rotate(0) scale(1)}}
-@keyframes capeFlutter{from{transform:skewY(-8deg) rotate(-5deg)}to{transform:skewY(10deg) rotate(7deg)}}
-@keyframes streak{to{left:135%;opacity:.85}}
-@keyframes launch{0%{opacity:0;transform:translate(0,0) scale(.25) rotate(0)}12%{opacity:1}75%{opacity:1;transform:translate(-30px,105px) scale(1) rotate(480deg)}100%{opacity:0;transform:translate(-65px,145px) scale(.35) rotate(700deg)}}
-@keyframes stink{0%{opacity:0;transform:scale(.2)}20%{opacity:1;transform:scale(1.2)}70%{opacity:1;transform:scale(1.45)}100%{opacity:.9;transform:scale(1.4)}}
-@keyframes flies{to{opacity:1}}
-@media(max-width:650px){main{width:94vw}.stage{height:420px}.hero-wrap{width:118%;height:66%;top:52%}.info{grid-template-columns:1fr}.topline{top:13px}}
+.status{min-height:24px;margin:13px 2px 0;color:var(--lime);font-size:10px;font-weight:900;letter-spacing:.16em}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.features div{padding:14px;border:1px solid #ffffff20;border-radius:14px;background:#ffffff08}
+.features b{display:block;font-size:10px;letter-spacing:.14em;margin-bottom:7px}.features span{font-size:11px;line-height:1.5;color:#9eafc6}
+.foot{border-top:1px solid #ffffff20;margin-top:18px;padding-top:13px;color:#8797ad;font-size:10px;line-height:1.6}
+@media(max-width:650px){main{margin-top:20px}.scene{height:470px}.hero{width:120%;height:66%;top:52%}.features{grid-template-columns:1fr}.banner{top:13px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
 </head>
 <body>
-<header><b>TIKNATION · GIFT LAB</b><a href="./">← BACK TO GIFT LAB</a></header>
+<header><strong>TIKNATION · GIFT LAB</strong><a href="./">← BACK TO GIFT LAB</a></header>
 <main>
-<div class="kicker">ORIGINAL CHARACTER · FULL REBUILD</div>
+<div class="eyebrow">A BRAND-NEW SUPERHERO GIFT</div>
 <h1>WONDER <span>SHIT</span> 💩</h1>
-<p class="intro">A ridiculous superhero with a serious mission. A real-time 3D dog model takes center stage, with a flying entrance, superhero cape, and the ultimate stink-powered save.</p>
-<section class="stage" id="stage" aria-label="Wonder Shit superhero gift animation">
-<div class="stars"></div><div class="sun"></div><div class="city"></div><div class="horizon"></div>
-<div class="topline"><span id="headline">THE CITY'S LAST LINE OF DEFENSE</span></div>
-<div class="streak"></div>
-<div class="hero-wrap">
-<div class="cape-3d" aria-hidden="true"></div>
-<model-viewer class="real-dog" src="https://cdn.3dassets.dev/assets/28128/v1/model.glb"
-  alt="Realistic detailed 3D dog model used as the Wonder Shit superhero"
-  camera-controls auto-rotate auto-rotate-delay="0" rotation-per-second="18deg"
-  camera-orbit="0deg 75deg 1.9m" min-camera-orbit="auto auto 1.2m"
-  max-camera-orbit="auto auto 3m" camera-target="0m 0.34m 0m"
-  shadow-intensity="1" exposure="1.15" environment-image="neutral"
-  interaction-prompt="none" disable-zoom>
-  <div slot="poster" class="model-loading">LOADING REAL 3D DOG…</div>
+<p class="intro">One brave golden pup. One very questionable superpower. Rebuilt as a cinematic 3D gift preview with a proper hero entrance, a flapping cape, and a stink-powered finale.</p>
+<section class="scene" id="scene" aria-label="Wonder Shit animated gift preview">
+<div class="stars"></div><div class="moon"></div><div class="skyline"></div><div class="rooftop"></div><div class="beam"></div>
+<div class="banner"><span id="headline">THE CITY NEEDS A HERO</span></div><div class="trail"></div>
+<div class="hero" id="hero">
+<div class="cape" aria-hidden="true"></div>
+<model-viewer class="dog" id="dog" src="https://cdn.3dassets.dev/assets/28137/v1/model.glb" alt="Golden retriever puppy 3D model"
+camera-controls camera-orbit="0deg 75deg 2.1m" camera-target="0m 0.25m 0m"
+min-camera-orbit="auto auto 1.2m" max-camera-orbit="auto auto 3.5m"
+shadow-intensity="1" exposure="1.1" environment-image="neutral"
+interaction-prompt="none" disable-zoom>
+<div slot="poster" class="poster">LOADING THE GOLDEN PUP HERO…</div>
 </model-viewer>
-<div class="hero-emblem" aria-hidden="true">★</div>
+<div class="emblem" aria-hidden="true">★</div>
 </div>
-<div class="projectile" aria-hidden="true">💩</div><div class="cloudblast" aria-hidden="true">💨</div><div class="flies" aria-hidden="true">🪰　🪰　🪰</div>
+<div class="poop" aria-hidden="true">💩</div><div class="stink" aria-hidden="true">💨</div><div class="flies" aria-hidden="true">🪰　🪰　🪰</div>
 </section>
-<div class="controls">
-<button class="primary" id="play">▶ PLAY THE GIFT</button><button id="stop">■ STOP</button><button id="sound">SOUND: ON</button>
+<div class="controls"><button class="primary" id="play">▶ PLAY THE GIFT</button><button id="stop">■ RESET</button><button id="sound">SOUND: ON</button></div>
+<div class="status" id="status" role="status" aria-live="polite">READY · THE HERO IS ON STANDBY</div>
+<div class="features">
+<div><b>01 · HERO ARRIVAL</b><span>The pup sweeps across the skyline with a clear forward flight path.</span></div>
+<div><b>02 · SUPERPOWER</b><span>A silly stink payload launches behind the hero — never out of the front.</span></div>
+<div><b>03 · GRAND FINALE</b><span>A giant cloud, buzzing flies, and a cheeky victory line.</span></div>
 </div>
-<div class="status" id="status" role="status" aria-live="polite">READY · PRESS PLAY</div>
-<div class="info"><div><b>THE TAKEOFF</b><span>Forward flight with a trailing cape and speed streaks.</span></div><div><b>THE ATTACK</b><span>A ridiculous rear-launched stink surprise.</span></div><div><b>THE FINISH</b><span>Cloud, flies, and the final superhero punchline.</span></div></div>
-<p class="foot">Standalone preview only · No coins charged · No gift sent · Not yet connected to the live gift catalog.</p>
+<p class="foot">Preview only · No coins charged · No gift sent · The dog is a real-time 3D golden retriever puppy model. The model itself is a posed study; the flight and cape are animated in the scene.</p>
 </main>
 <script>
-const stage=document.getElementById('stage'),headline=document.getElementById('headline'),status=document.getElementById('status');
-let soundOn=true,timers=[],audio=[];
-const sounds={whoosh:'https://sfxmint.com/dl/transition-swoosh-63.mp3',bark:'https://sfxmint.com/dl/animal-dog-bark-25.mp3',blast:'https://sfxmint.com/dl/fart-03.mp3',splat:'https://sfxmint.com/dl/fart-08.mp3'};
-function clearRun(){timers.forEach(clearTimeout);timers=[];audio.forEach(a=>{a.pause();a.currentTime=0});audio=[]}
-function stop(){stage.classList.remove('play');clearRun();status.textContent='STOPPED'}
-function play(){
- stop();void stage.offsetWidth;stage.classList.add('play');
- headline.textContent='THE CITY\'S LAST LINE OF DEFENSE';status.textContent='WONDER SHIT IS TAKING OFF…';
- const later=(ms,fn)=>timers.push(setTimeout(fn,ms));
- const sound=(key)=>{if(!soundOn)return;const a=new Audio(sounds[key]);a.volume=1;audio.push(a);a.play().catch(()=>{status.textContent='SOUND COULD NOT PLAY · CHECK DEVICE VOLUME'})};
- sound('whoosh');later(700,()=>sound('bark'));
- later(3400,()=>{sound('blast');headline.textContent='THE ULTIMATE STINK ATTACK!';status.textContent='STINK BLAST DEPLOYED 😂'});
- later(4700,()=>sound('splat'));
- later(6800,()=>{headline.textContent='SMELL YA LATER!';status.textContent='CITY SAVED · HERO DOG WINS'});
- later(9200,()=>{stage.classList.remove('play');status.textContent='FINISHED · READY TO REPLAY'});
-}
+const scene=document.getElementById('scene'),headline=document.getElementById('headline'),status=document.getElementById('status');
+let soundOn=true,timers=[],ctx=null;
+function stop(){timers.forEach(clearTimeout);timers=[];scene.classList.remove('play');status.textContent='RESET · READY TO FLY';headline.textContent='THE CITY NEEDS A HERO'}
+function tone(freq,duration,type='sine',volume=.08,slide=0){if(!soundOn)return;try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,ctx.currentTime);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(35,freq+slide),ctx.currentTime+duration);g.gain.setValueAtTime(volume,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+duration)}catch(e){}}
+function whoosh(){tone(240,.55,'sawtooth',.045,620);tone(90,.8,'sine',.07,180)}
+function bark(){tone(190,.11,'triangle',.12,-90);setTimeout(()=>tone(150,.13,'triangle',.11,-60),130)}
+function fart(){tone(85,.65,'sawtooth',.13,-45);setTimeout(()=>tone(62,.5,'square',.07,35),180)}
+function play(){stop();void scene.offsetWidth;scene.classList.add('play');headline.textContent='THE CITY NEEDS A HERO';status.textContent='WONDER SHIT IS TAKING FLIGHT!';whoosh();bark();const later=(ms,fn)=>timers.push(setTimeout(fn,ms));later(3300,()=>{headline.textContent='STINK POWER… ACTIVATE!';status.textContent='SPECIAL DELIVERY INCOMING 😂';fart()});later(4900,()=>tone(120,.4,'sine',.1,-70));later(6700,()=>{headline.textContent='SMELL YA LATER!';status.textContent='CITY SAVED · HERO PUP WINS'});later(9000,()=>{scene.classList.remove('play');status.textContent='FINISHED · READY TO REPLAY'})}
 document.getElementById('play').addEventListener('click',play);
 document.getElementById('stop').addEventListener('click',stop);
-document.getElementById('sound').addEventListener('click',()=>{soundOn=!soundOn;document.getElementById('sound').textContent='SOUND: '+(soundOn?'ON':'OFF');if(!soundOn){audio.forEach(a=>{a.pause();a.currentTime=0})}status.textContent='SOUND '+(soundOn?'ON':'OFF')});
+document.getElementById('sound').addEventListener('click',()=>{soundOn=!soundOn;document.getElementById('sound').textContent='SOUND: '+(soundOn?'ON':'OFF');status.textContent='SOUND '+(soundOn?'ON':'OFF')});
+document.getElementById('dog').addEventListener('error',()=>{status.textContent='3D MODEL FAILED TO LOAD · CHECK CONNECTION';});
 </script>
-</body></html>
+</body>
+</html>
