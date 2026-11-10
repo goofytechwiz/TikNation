@@ -1,111 +1,108 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#09070d"><title>The Cursed Carnival · TikNation Gift Preview</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#09070b">
+<title>The Cursed Carnival · TikNation Gift Preview</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#08070b;color:#f7e9dc;font-family:system-ui,sans-serif}body{min-height:100vh;background:radial-gradient(ellipse at 50% 65%,#34201f 0,#110e12 52%,#07070a 100%);overflow-x:hidden}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#09080c;color:#f5e8d9;font-family:system-ui,sans-serif}body{background:radial-gradient(ellipse at 50% 65%,#30202a 0,#100d14 52%,#07070a 100%);overflow-x:hidden}
 header{height:54px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff20;color:#c7b9b0;font-size:10px;letter-spacing:.18em}a{color:#e7c6a9;text-decoration:none}
-main{width:min(960px,94vw);margin:25px auto 40px}.eyebrow{font-size:10px;letter-spacing:.25em;color:#d5a87d}.title{font:clamp(34px,7vw,58px)/1.05 Georgia,serif;margin:8px 0}.intro{max-width:680px;color:#c8bcb6;font-size:13px;line-height:1.6}
-.scene{position:relative;height:min(65vh,570px);min-height:370px;margin-top:20px;border:1px solid #c68f6244;border-radius:18px;overflow:hidden;background:linear-gradient(#100f18 0%,#28202a 54%,#161116 100%);box-shadow:0 24px 75px #000a,inset 0 0 90px #000b;isolation:isolate}
-.skyglow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 62%,#9d552b33,transparent 58%),radial-gradient(ellipse at 80% 18%,#6b315022,transparent 40%)}
-.moon{position:absolute;right:12%;top:9%;width:58px;height:58px;border-radius:50%;background:#e6d5b6;box-shadow:0 0 24px #e6d5b677,0 0 90px #e6d5b633;opacity:.78}
-.fog{position:absolute;left:-20%;right:-20%;bottom:7%;height:32%;background:linear-gradient(transparent,#c5b6b022 45%,transparent);filter:blur(18px);animation:fog 13s ease-in-out infinite alternate}
-.ground{position:absolute;left:0;right:0;bottom:0;height:23%;background:linear-gradient(#20191b,#09090c);border-top:1px solid #d8a36a22}
-.reflection{position:absolute;left:0;right:0;bottom:0;height:20%;background:repeating-linear-gradient(100deg,transparent 0 34px,#d39b5520 35px 37px,transparent 38px 74px);opacity:.5;transform:skewY(-3deg)}
-.wheel{position:absolute;width:min(37vw,285px);height:min(37vw,285px);min-width:190px;min-height:190px;left:7%;bottom:17%;filter:drop-shadow(0 0 10px #d8a05b44)}
-.wheel svg{width:100%;height:100%;overflow:visible}
-.rim{fill:none;stroke:#c89b6d;stroke-width:4}.spokes{stroke:#a77e5c;stroke-width:2}.hub{fill:#e6c28e;stroke:#573a2a;stroke-width:5}.gondola{fill:#30242b;stroke:#d3a16c;stroke-width:2}
-.wheelspin{transform-origin:150px 150px;animation:wheel 34s linear infinite}
-.tent{position:absolute;width:min(44vw,350px);min-width:220px;right:7%;bottom:17%;filter:drop-shadow(0 12px 20px #000a)}
-.sign{position:absolute;left:50%;top:5%;transform:translateX(-50%);width:min(84%,500px);text-align:center;color:#f6d4a6;font-size:clamp(10px,2vw,15px);letter-spacing:.28em;text-shadow:0 0 12px #e9a35a}
-.bulbs{position:absolute;left:50%;top:15%;transform:translateX(-50%);display:flex;gap:clamp(8px,2vw,18px)}
-.bulbs i{width:6px;height:6px;border-radius:50%;background:#eac18b;box-shadow:0 0 12px #ffc77a;animation:blink 2.2s infinite alternate}
-.bulbs i:nth-child(2n){animation-delay:.7s}.bulbs i:nth-child(3n){animation-delay:1.3s}
-.banner{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);font:clamp(13px,2.4vw,21px) Georgia,serif;letter-spacing:.2em;color:#f4d6b1;text-shadow:0 2px 12px #000;width:100%;text-align:center}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}button{border:1px solid #c79a6b77;background:#21191b;color:#f6e6d7;border-radius:999px;padding:13px 20px;font-size:10px;font-weight:850;letter-spacing:.13em;cursor:pointer}button.primary{background:linear-gradient(110deg,#dca56e,#f0d1a5);border:0;color:#1b1110}button:focus-visible{outline:3px solid white;outline-offset:3px}
-.status{margin-top:12px;min-height:22px;color:#d8b48e;font-size:10px;letter-spacing:.12em}
-.scene.cursed{background:linear-gradient(#08070d,#211018 54%,#120b10)}.scene.cursed .skyglow{background:radial-gradient(ellipse at 50% 65%,#b52c1c44,transparent 58%)}.scene.cursed .moon{background:#a9a0a0;box-shadow:0 0 34px #d6d0d077}.scene.cursed .tent{filter:drop-shadow(0 0 18px #d42c1d88) brightness(.75) saturate(1.5)}.scene.cursed .wheel{filter:drop-shadow(0 0 18px #c72e2588) sepia(.3)}.scene.cursed .bulbs i{background:#ff4b35;box-shadow:0 0 17px #ff3020;animation:alarm .35s infinite alternate}.scene.cursed .fog{background:linear-gradient(transparent,#b21f242e 45%,transparent);animation-duration:5s}.scene.cursed .banner{color:#ffb5a0;text-shadow:0 0 16px #ff301d}
-.scene.cursed:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#0000 0 3px,#00000012 4px);animation:film 1.5s steps(2) infinite}\n.scene.cursed{animation:haunt 5s ease-in-out infinite}.scene.cursed .moon{animation:moonPulse 3s ease-in-out infinite alternate}.scene.cursed .wheelspin{animation-duration:13s}.scene.cursed .tent:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,#ff2b1c55,transparent 55%);mix-blend-mode:screen;animation:flare 2s infinite alternate}.lightning{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;background:#fff;mix-blend-mode:screen}.scene.strike .lightning{animation:flash .55s ease-out}.embers{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden}.ember{position:absolute;bottom:-12px;width:4px;height:4px;border-radius:50%;background:#ffb15d;box-shadow:0 0 12px #ff4b22;animation:rise var(--dur) linear infinite;animation-delay:var(--delay)}.scene.cursed .ember{background:#ff593d;box-shadow:0 0 15px #ff2418}\n@keyframes haunt{0%,100%{filter:none}48%{filter:contrast(1.12)}50%{filter:contrast(1.35) brightness(1.2)}53%{filter:contrast(1.05)}}@keyframes moonPulse{to{box-shadow:0 0 55px #e5b8b877,0 0 120px #e5b8b855}}@keyframes flare{to{opacity:.2}}@keyframes flash{0%{opacity:0}12%{opacity:.95}25%{opacity:0}38%{opacity:.55}100%{opacity:0}}@keyframes rise{to{transform:translateY(-560px) translateX(35px);opacity:0}}
-@keyframes wheel{to{transform:rotate(360deg)}}@keyframes blink{0%{opacity:.35}100%{opacity:1}}@keyframes alarm{to{opacity:.25;transform:scale(.65)}}@keyframes fog{to{transform:translateX(9%) scaleY(1.25)}}@keyframes film{50%{opacity:.35}}
-@media(max-width:600px){.wheel{left:-3%;bottom:19%}.tent{right:-7%;bottom:19%}.moon{right:8%;top:12%;width:42px;height:42px}.scene{min-height:390px}.sign{top:6%}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important}}
+main{width:min(980px,94vw);margin:25px auto 40px}.eyebrow{font-size:10px;letter-spacing:.25em;color:#d5a87d}.title{font:clamp(36px,7vw,60px)/1.02 Georgia,serif;margin:8px 0}.intro{max-width:690px;color:#c8bcb6;font-size:13px;line-height:1.65}
+.stage{height:min(68vh,590px);min-height:400px;position:relative;margin-top:20px;overflow:hidden;border:1px solid #b98a6440;border-radius:18px;background:linear-gradient(#10101a 0%,#28202b 58%,#110d11 100%);box-shadow:0 25px 80px #000b;isolation:isolate}
+.stars{position:absolute;inset:0;background-image:radial-gradient(1px 1px at 10% 16%,#fff9 98%,transparent),radial-gradient(1px 1px at 30% 11%,#fff7 98%,transparent),radial-gradient(1px 1px at 68% 17%,#fff8 98%,transparent),radial-gradient(1px 1px at 84% 29%,#fff7 98%,transparent),radial-gradient(1px 1px at 51% 8%,#fff8 98%,transparent)}
+.moon{position:absolute;right:13%;top:9%;width:68px;height:68px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f4e9d3,#b9a99a 72%);box-shadow:0 0 25px #d9c7a566,0 0 100px #c4b3a633}
+.moon:after{content:"";position:absolute;inset:12px 8px 10px 17px;border-radius:50%;background:#756b6b22;box-shadow:-15px 18px 0 -8px #756b6b33,10px -8px 0 -6px #756b6b33}
+.horizon{position:absolute;inset:auto 0 18%;height:27%;background:linear-gradient(transparent,#171319 80%);clip-path:polygon(0 60%,9% 42%,16% 58%,26% 36%,35% 55%,44% 28%,53% 56%,65% 37%,75% 57%,87% 34%,100% 56%,100% 100%,0 100%);opacity:.9}
+.midway{position:absolute;inset:0;transform-origin:50% 100%}
+.wheel{position:absolute;width:min(38vw,300px);height:min(38vw,300px);min-width:205px;min-height:205px;left:5%;bottom:17%;filter:drop-shadow(0 0 13px #d6a66b55)}
+.wheel svg{width:100%;height:100%;overflow:visible}.wheelrot{transform-origin:150px 150px;animation:rotate 42s linear infinite}
+.rim{fill:none;stroke:#d0a474;stroke-width:4}.spoke{stroke:#a98261;stroke-width:2}.gondola{fill:#28232b;stroke:#d4aa79;stroke-width:2}.support{stroke:#8c6b55;stroke-width:9;fill:none;stroke-linecap:round}
+.bigTop{position:absolute;width:min(47vw,390px);min-width:235px;right:4%;bottom:17%;filter:drop-shadow(0 16px 18px #000b)}
+.bigTop svg{width:100%;height:auto;display:block}
+.ticketbooth{position:absolute;left:41%;bottom:17%;width:105px;height:96px;background:linear-gradient(90deg,#4b252b 0 48%,#d4b28b 49% 52%,#321b24 53%);clip-path:polygon(8% 33%,50% 0,92% 33%,88% 100%,12% 100%);filter:drop-shadow(0 8px 10px #000)}
+.ticketbooth:before{content:"TICKETS";position:absolute;top:34%;left:12%;width:76%;text-align:center;font:10px Georgia;color:#f8d7a9;letter-spacing:1px}
+.bulbs{position:absolute;left:50%;top:15%;transform:translateX(-50%);display:flex;gap:clamp(8px,2vw,19px)}.bulbs i{width:6px;height:6px;border-radius:50%;background:#f3c98d;box-shadow:0 0 12px #ffd08c;animation:twinkle 2s infinite alternate}.bulbs i:nth-child(3n){animation-delay:.7s}.bulbs i:nth-child(2n){animation-delay:1.2s}
+.midwaySign{position:absolute;top:6%;left:50%;transform:translateX(-50%);width:90%;text-align:center;font:clamp(11px,2vw,16px) Georgia;letter-spacing:.3em;color:#f2d3a8;text-shadow:0 0 16px #d99a58}
+.floor{position:absolute;bottom:0;left:0;right:0;height:23%;background:linear-gradient(#231b20,#0b0a0d);border-top:1px solid #d5a16d33}.planks{position:absolute;inset:0;background:repeating-linear-gradient(96deg,transparent 0 47px,#c39a7020 48px 50px,transparent 51px 95px);transform:perspective(180px) rotateX(12deg);transform-origin:bottom}
+.mist{position:absolute;left:-20%;right:-20%;bottom:11%;height:26%;background:linear-gradient(transparent,#c6b8bd20 50%,transparent);filter:blur(18px);animation:mist 12s ease-in-out infinite alternate}
+.banner{position:absolute;bottom:5%;width:100%;text-align:center;font:clamp(13px,2.5vw,21px) Georgia;letter-spacing:.22em;color:#f0d7b7;text-shadow:0 2px 12px #000}
+.flash{position:absolute;inset:0;opacity:0;pointer-events:none;background:#fff;mix-blend-mode:screen;z-index:5}
+.sparks{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:4}.spark{position:absolute;bottom:-8px;width:3px;height:3px;border-radius:50%;background:#ffc078;box-shadow:0 0 10px #ff652d;animation:rise var(--speed) linear infinite;animation-delay:var(--delay)}
+.stage.cursed{background:linear-gradient(#0a0811,#251019 60%,#0c090e)}.stage.cursed .moon{background:#bcb2b4;box-shadow:0 0 45px #d9a2a288,0 0 120px #d12d2d44}.stage.cursed .wheel{filter:drop-shadow(0 0 20px #e3422e99) saturate(.7)}.stage.cursed .wheelrot{animation-duration:15s}.stage.cursed .bigTop{filter:drop-shadow(0 0 20px #e3312688) brightness(.78) saturate(1.4)}.stage.cursed .bulbs i{background:#ff4a39;box-shadow:0 0 16px #ff2a1c;animation:alarm .32s infinite alternate}.stage.cursed .banner{color:#ffb6a5;text-shadow:0 0 18px #f22}.stage.cursed .mist{background:linear-gradient(transparent,#a91e302e 50%,transparent);animation-duration:5s}
+.stage.strike .flash{animation:flash .65s ease-out}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}button{border:1px solid #c79a6b77;background:#21191b;color:#f6e6d7;border-radius:999px;padding:13px 20px;font-size:10px;font-weight:850;letter-spacing:.13em;cursor:pointer}button.primary{background:linear-gradient(110deg,#dca56e,#f0d1a5);border:0;color:#1b1110}button:focus-visible{outline:3px solid white;outline-offset:3px}.status{margin-top:12px;min-height:22px;color:#d8b48e;font-size:10px;letter-spacing:.12em}
+@keyframes rotate{to{transform:rotate(360deg)}}@keyframes twinkle{from{opacity:.35}to{opacity:1}}@keyframes mist{to{transform:translateX(10%) scaleY(1.3)}}@keyframes rise{to{transform:translateY(-580px) translateX(25px);opacity:0}}@keyframes alarm{to{opacity:.25;transform:scale(.65)}}@keyframes flash{0%{opacity:0}12%{opacity:.9}28%{opacity:0}45%{opacity:.5}100%{opacity:0}}
+@media(max-width:600px){.wheel{left:-4%;bottom:18%}.bigTop{right:-10%;bottom:19%}.ticketbooth{left:39%;transform:scale(.8);transform-origin:bottom}.moon{width:48px;height:48px;right:8%}.stage{min-height:410px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important}}
 </style>
 </head>
 <body>
 <header><b>TIKNATION · EPIC GIFT TEST</b><a href="./">← GIFT TEST LAB</a></header>
 <main>
-<div class="eyebrow">NEW GIFT CONCEPT · ISOLATED PREVIEW</div>
+<div class="eyebrow">REBUILT GIFT CONCEPT · ISOLATED PREVIEW</div>
 <h1 class="title">The Cursed Carnival</h1>
-<p class="intro">A deserted midway under a cold moon. The Ferris wheel turns, the big top glows, and the carnival lights flicker as if someone has just arrived. Trigger the curse to reveal what happens after closing time.</p>
-<section class="scene" id="scene" aria-label="A spooky carnival with a rotating Ferris wheel and striped circus tent">
-<div class="skyglow"></div><div class="moon"></div><div class="lightning"></div><div class="embers" id="embers" aria-hidden="true"></div><div class="sign">THE MIDNIGHT MIDWAY</div>
-<div class="bulbs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-<div class="wheel" aria-hidden="true">
-<svg viewBox="0 0 300 300">
-<g class="wheelspin">
-<circle class="rim" cx="150" cy="150" r="124"/><circle class="rim" cx="150" cy="150" r="91" opacity=".55"/>
-<g class="spokes"><line x1="150" y1="150" x2="274" y2="150"/><line x1="150" y1="150" x2="264.56106203139956" y2="197.45274561327113"/><line x1="150" y1="150" x2="237.68124086713192" y2="237.6812408671319"/><line x1="150" y1="150" x2="197.45274561327113" y2="264.56106203139956"/><line x1="150" y1="150" x2="150" y2="274"/><line x1="150" y1="150" x2="102.54725438672887" y2="264.56106203139956"/><line x1="150" y1="150" x2="62.31875913286811" y2="237.68124086713192"/><line x1="150" y1="150" x2="35.43893796860044" y2="197.45274561327113"/><line x1="150" y1="150" x2="26" y2="150.00000000000003"/><line x1="150" y1="150" x2="35.43893796860043" y2="102.54725438672888"/><line x1="150" y1="150" x2="62.31875913286808" y2="62.31875913286811"/><line x1="150" y1="150" x2="102.5472543867288" y2="35.43893796860047"/><line x1="150" y1="150" x2="149.99999999999997" y2="26"/><line x1="150" y1="150" x2="197.45274561327116" y2="35.438937968600456"/><line x1="150" y1="150" x2="237.68124086713186" y2="62.31875913286808"/><line x1="150" y1="150" x2="264.5610620313995" y2="102.54725438672878"/></g>
-<g><g transform="translate(264,153)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(254.56106203139956,200.45274561327113)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(227.68124086713192,240.6812408671319)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(187.45274561327113,267.56106203139956)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(140,277)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(92.54725438672887,267.56106203139956)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(52.31875913286811,240.68124086713192)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(25.43893796860044,200.45274561327113)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(16,153.00000000000003)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(25.438937968600428,105.54725438672888)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(52.31875913286808,65.31875913286811)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(92.5472543867288,38.43893796860047)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(139.99999999999997,29)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(187.45274561327116,38.438937968600456)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(227.68124086713186,65.31875913286808)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(254.5610620313995,105.54725438672878)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g></g>
-<circle class="hub" cx="150" cy="150" r="12"/>
-</g>
-<path d="M120 274L150 150l30 124M100 274h100" fill="none" stroke="#8e6c53" stroke-width="8" stroke-linecap="round"/>
-</svg></div>
-<div class="tent" aria-hidden="true">
-<svg viewBox="0 0 360 300">
-<defs><linearGradient id="tentshade" x2="0" y2="1"><stop stop-color="#b74435"/><stop offset="1" stop-color="#35151b"/></linearGradient></defs>
-<path d="M20 270L180 26 340 270Z" fill="#26151a" stroke="#d5a36f" stroke-width="3"/>
-<path d="M180 26L180 270H20Z" fill="url(#tentshade)"/><path d="M180 26L260 270H180Z" fill="#e1c5a0"/><path d="M180 26L340 270H260Z" fill="#7e2829"/>
-<path d="M180 26L100 270H20Z" fill="#e1c5a0" opacity=".85"/>
-<path d="M180 26V270M20 270H340" stroke="#d9b17e" stroke-width="4"/>
-<path d="M151 270v-80q29-45 58 0v80" fill="#100d11" stroke="#d8aa79" stroke-width="4"/>
-<path d="M180 26l-12-17h24z" fill="#e8c48c"/><circle cx="180" cy="9" r="5" fill="#fff0c9"/>
-<g fill="#f3d19b"><circle cx="28" cy="270" r="3"/><circle cx="53" cy="265.8588952783597" r="3"/><circle cx="78" cy="262" r="3"/><circle cx="103" cy="258.68629150101526" r="3"/><circle cx="128" cy="256.143593539449" r="3"/><circle cx="153" cy="254.54518677937492" r="3"/><circle cx="178" cy="254" r="3"/><circle cx="203" cy="254.54518677937492" r="3"/><circle cx="228" cy="256.143593539449" r="3"/><circle cx="253" cy="258.68629150101526" r="3"/><circle cx="278" cy="262" r="3"/><circle cx="303" cy="265.8588952783597" r="3"/><circle cx="328" cy="270" r="3"/></g>
-</svg></div>
-<div class="fog"></div><div class="ground"></div><div class="reflection"></div>
-<div class="banner" id="banner">TONIGHT · ONE LAST SHOW</div>
+<p class="intro">The last lights of the midway are still burning. The Ferris wheel turns above the empty boardwalk. Then the music starts again… though nobody is there to play it.</p>
+<section class="stage" id="stage" aria-label="A deserted haunted carnival beneath a moonlit sky">
+<div class="stars"></div><div class="moon"></div><div class="midwaySign">WELCOME TO THE MIDNIGHT MIDWAY</div>
+<div class="bulbs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<div class="wheel" aria-hidden="true"><svg viewBox="0 0 300 300"><g class="wheelrot"><circle class="rim" cx="150" cy="150" r="124"/><circle class="rim" cx="150" cy="150" r="92" opacity=".45"/>
+<g class="spoke"><path d="M150 26V274M26 150H274M62 62L238 238M238 62L62 238M102 35L198 265M198 35L102 265M35 102L265 198M265 102L35 198" fill="none"/></g>
+<g fill="#30242a" stroke="#d2a475" stroke-width="2"><path d="M140 22h20l-2 22h-16zM264 140h20l-2 22h-16zM140 264h20l-2 22h-16zM16 140h20l-2 22H18zM50 50h20l-2 22H52zM230 50h20l-2 22h-16zM50 230h20l-2 22H52zM230 230h20l-2 22h-16z"/></g><circle cx="150" cy="150" r="12" fill="#e3bf8b" stroke="#62452f" stroke-width="4"/></g><path class="support" d="M111 278L150 150l39 128M94 278H206"/></svg></div>
+<div class="ticketbooth" aria-hidden="true"></div>
+<div class="bigTop" aria-hidden="true"><svg viewBox="0 0 390 310"><defs><linearGradient id="red" x2="0" y2="1"><stop stop-color="#b94c40"/><stop offset="1" stop-color="#421a23"/></linearGradient></defs><path d="M20 278L195 27 370 278Z" fill="#26151b" stroke="#d7aa7b" stroke-width="4"/><path d="M195 27L195 278H20Z" fill="url(#red)"/><path d="M195 27L282 278H195Z" fill="#e4c8a2"/><path d="M195 27L370 278H282Z" fill="#762a30"/><path d="M195 27L108 278H20Z" fill="#d9bd99"/><path d="M195 27V278M20 278H370" stroke="#d9b17e" stroke-width="4"/><path d="M162 278v-83q33-52 66 0v83" fill="#100d12" stroke="#d8aa79" stroke-width="4"/><path d="M195 27l-14-19h28z" fill="#e8c48c"/><circle cx="195" cy="8" r="6" fill="#fff0c9"/><g fill="#f6d6a1"><circle cx="30" cy="278" r="4"/><circle cx="62" cy="274" r="4"/><circle cx="94" cy="270" r="4"/><circle cx="126" cy="267" r="4"/><circle cx="158" cy="264" r="4"/><circle cx="195" cy="263" r="4"/><circle cx="232" cy="264" r="4"/><circle cx="264" cy="267" r="4"/><circle cx="296" cy="270" r="4"/><circle cx="328" cy="274" r="4"/><circle cx="360" cy="278" r="4"/></g></svg></div>
+<div class="horizon"></div><div class="mist"></div><div class="floor"><div class="planks"></div></div><div class="sparks" id="sparks"></div><div class="flash"></div><div class="banner" id="banner">TONIGHT · ONE LAST SHOW</div>
 </section>
-<div class="controls"><button class="primary" id="curse" type="button">UNLEASH THE CURSE</button><button id="sound" type="button">ENABLE CARNIVAL SOUND</button><button id="reset" type="button">RESET THE MIDWAY</button></div>
-<div class="status" id="status" role="status" aria-live="polite">THE CARNIVAL IS QUIET · TAP TO BEGIN</div>
-<p class="intro" style="font-size:11px;margin-top:18px;color:#968982">Preview only. This does not send a gift or change the live gift catalog. Sound is generated in the browser and starts only after you tap Enable Carnival Sound.</p>
+<div class="controls"><button class="primary" id="curse">UNLEASH THE CURSE</button><button id="sound">START THE MIDWAY MUSIC</button><button id="reset">RESET THE MIDWAY</button></div>
+<div class="status" id="status" role="status" aria-live="polite">THE MIDWAY IS SILENT · SOUND IS OFF</div>
+<p class="intro" style="font-size:11px;margin-top:18px;color:#968982">Preview only. Sound begins after you tap the music button. It is a continuous repeating musical loop generated in your browser; no external audio file is loaded.</p>
 </main>
 <script>
-const scene=document.getElementById('scene'),status=document.getElementById('status'),banner=document.getElementById('banner');
-const emberBox=document.getElementById('embers');
-for(let i=0;i<34;i++){const e=document.createElement('i');e.className='ember';e.style.left=(Math.random()*100)+'%';e.style.setProperty('--dur',(5+Math.random()*8)+'s');e.style.setProperty('--delay',(-Math.random()*12)+'s');emberBox.appendChild(e);}
-let audio=null,master=null,bellTimer=null,windLevel=null;
-async function startAudio(){
- const AC=window.AudioContext||window.webkitAudioContext;
- if(!AC){status.textContent='AUDIO IS NOT SUPPORTED IN THIS BROWSER';return;}
- try{
-  if(!audio){audio=new AC();master=audio.createGain();master.gain.value=.72;master.connect(audio.destination);
-   const sub=audio.createOscillator(),subGain=audio.createGain(),subFilter=audio.createBiquadFilter();
-   sub.type='sawtooth';sub.frequency.value=55;subFilter.type='lowpass';subFilter.frequency.value=170;subGain.gain.value=.11;sub.connect(subFilter).connect(subGain).connect(master);sub.start();
-   const overtone=audio.createOscillator(),overGain=audio.createGain();overtone.type='sine';overtone.frequency.value=110;overGain.gain.value=.035;overtone.connect(overGain).connect(master);overtone.start();
-   const lfo=audio.createOscillator(),lfoGain=audio.createGain();lfo.frequency.value=.16;lfoGain.gain.value=18;lfo.connect(lfoGain).connect(sub.frequency);lfo.start();
-   const buffer=audio.createBuffer(1,audio.sampleRate*3,audio.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
-   const noise=audio.createBufferSource(),high=audio.createBiquadFilter(),low=audio.createBiquadFilter();noise.buffer=buffer;noise.loop=true;high.type='highpass';high.frequency.value=180;low.type='lowpass';low.frequency.value=950;windLevel=audio.createGain();windLevel.gain.value=.16;noise.connect(high).connect(low).connect(windLevel).connect(master);noise.start();
-   bellTimer=window.setInterval(()=>{if(audio&&audio.state==='running')playBell();},4200);
-  }
-  if(audio.state!=='running')await audio.resume();
-  if(audio.state==='running'){document.getElementById('sound').textContent='CARNIVAL SOUND ON';status.textContent='CONTINUOUS DRONE AND WIND · DISTANT BELLS EVERY FEW SECONDS';}
-  else status.textContent='TAP ENABLE SOUND AGAIN TO START AUDIO';
- }catch(err){status.textContent='AUDIO COULD NOT START · TAP ENABLE SOUND AGAIN';}
+const stage=document.getElementById('stage'),status=document.getElementById('status'),banner=document.getElementById('banner'),soundButton=document.getElementById('sound');
+const sparks=document.getElementById('sparks');
+for(let i=0;i<42;i++){const e=document.createElement('i');e.className='spark';e.style.left=(Math.random()*100)+'%';e.style.setProperty('--speed',(5+Math.random()*8)+'s');e.style.setProperty('--delay',(-Math.random()*12)+'s');sparks.appendChild(e);}
+let ctx=null,master=null,loopTimer=null,nextBeat=0,step=0,active=false;
+const melody=[659.25,783.99,987.77,783.99,698.46,880,1046.5,880,587.33,698.46,880,698.46,523.25,659.25,783.99,659.25];
+function note(freq,at,duration=.48,volume=.075,wave='triangle'){
+ const osc=ctx.createOscillator(),gain=ctx.createGain(),vib=ctx.createOscillator(),vibGain=ctx.createGain();
+ osc.type=wave;osc.frequency.setValueAtTime(freq,at);vib.frequency.value=5.2;vibGain.gain.value=3;vib.connect(vibGain).connect(osc.frequency);
+ gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(volume,at+.035);gain.gain.exponentialRampToValueAtTime(.0001,at+duration);
+ osc.connect(gain).connect(master);osc.start(at);vib.start(at);osc.stop(at+duration+.04);vib.stop(at+duration+.04);
 }
-function playBell(){
- if(!audio||audio.state!=='running')return;
- const now=audio.currentTime,freq=[523.25,659.25,783.99][Math.floor(Math.random()*3)];
- for(const [ratio,level] of [[1,.10],[2.01,.035],[2.98,.018]]){
-  const o=audio.createOscillator(),g=audio.createGain(),filter=audio.createBiquadFilter();o.type='sine';o.frequency.value=freq*ratio;filter.type='lowpass';filter.frequency.value=2600;g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(level,now+.035);g.gain.exponentialRampToValueAtTime(.0001,now+2.8);o.connect(filter).connect(g).connect(master);o.start(now);o.stop(now+2.9);
+function bell(at,freq=1318.5){
+ for(const [ratio,level] of [[1,.045],[2.4,.018],[3.9,.009]]){const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=freq*ratio;g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(level,at+.015);g.gain.exponentialRampToValueAtTime(.0001,at+1.8);o.connect(g).connect(master);o.start(at);o.stop(at+1.85);}
+}
+function musicStep(){
+ if(!ctx||ctx.state!=='running')return;
+ const now=ctx.currentTime;
+ while(nextBeat<now+0.18){
+  const n=step%melody.length,at=nextBeat;
+  note(melody[n],at,.39,.065,'triangle');
+  if(n%4===0){note(melody[n]*.5,at,.9,.035,'sine');note(melody[n]*1.5,at,.65,.018,'sine');}
+  if(n===7||n===15)bell(at+.05,n===7?1174.66:1567.98);
+  nextBeat+=.48;step++;
  }
 }
-function thunder(){
- if(!audio||audio.state!=='running')return;const n=Math.floor(audio.sampleRate*2.2),b=audio.createBuffer(1,n,audio.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);
- const s=audio.createBufferSource(),f=audio.createBiquadFilter(),g=audio.createGain();s.buffer=b;f.type='lowpass';f.frequency.value=180;g.gain.setValueAtTime(.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.75,audio.currentTime+.08);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+2.1);s.connect(f).connect(g).connect(master);s.start();
+async function startMusic(){
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent='THIS BROWSER DOES NOT SUPPORT WEB AUDIO';return;}
+ try{
+  if(!ctx){ctx=new AC();master=ctx.createGain();master.gain.value=.68;master.connect(ctx.destination);}
+  if(ctx.state!=='running')await ctx.resume();
+  if(ctx.state!=='running'){status.textContent='BROWSER PAUSED AUDIO · TAP START MUSIC AGAIN';return;}
+  if(!active){active=true;nextBeat=ctx.currentTime+.05;step=0;loopTimer=window.setInterval(musicStep,80);}
+  soundButton.textContent='MIDWAY MUSIC ON';status.textContent='CALLIOPE MELODY PLAYING · BELLS IN THE DISTANCE';
+ }catch(e){status.textContent='COULD NOT START MUSIC · TAP AGAIN';}
 }
-document.getElementById('sound').addEventListener('click',startAudio);
-document.getElementById('curse').addEventListener('click',()=>{scene.classList.add('cursed');scene.classList.remove('strike');void scene.offsetWidth;scene.classList.add('strike');banner.textContent='THE SHOW NEVER ENDS';status.textContent='THE CURSE IS LOOSE · THE MIDWAY HAS AWAKENED';if(audio&&audio.state==='running'){thunder();playBell();}});
-document.getElementById('reset').addEventListener('click',()=>{scene.classList.remove('cursed','strike');banner.textContent='TONIGHT · ONE LAST SHOW';status.textContent=audio&&audio.state==='running'?'THE MIDWAY IS QUIET · CARNIVAL SOUND CONTINUES':'THE CARNIVAL IS QUIET · TAP TO BEGIN';if(audio&&audio.state==='running')playBell();});
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&audio&&audio.state==='suspended'){status.textContent='AUDIO PAUSED BY THE BROWSER · TAP ENABLE SOUND TO RESUME';}});
+function mechanicalClank(){
+ if(!ctx||ctx.state!=='running')return;
+ const at=ctx.currentTime,osc=ctx.createOscillator(),g=ctx.createGain(),filter=ctx.createBiquadFilter();
+ osc.type='square';osc.frequency.setValueAtTime(185,at);osc.frequency.exponentialRampToValueAtTime(72,at+.32);filter.type='lowpass';filter.frequency.value=430;g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.12,at+.025);g.gain.exponentialRampToValueAtTime(.0001,at+.38);osc.connect(filter).connect(g).connect(master);osc.start(at);osc.stop(at+.4);
+}
+function sting(){
+ if(!ctx||ctx.state!=='running')return;
+ const at=ctx.currentTime;[196,246.94,293.66,369.99].forEach((f,i)=>note(f,at+i*.025,2.1,.055,'sawtooth'));bell(at+.08,1046.5);mechanicalClank();
+}
+soundButton.addEventListener('click',startMusic);
+document.getElementById('curse').addEventListener('click',()=>{stage.classList.add('cursed');stage.classList.remove('strike');void stage.offsetWidth;stage.classList.add('strike');banner.textContent='THE SHOW NEVER ENDS';status.textContent='THE CURSE HAS AWAKENED';if(ctx&&ctx.state==='running')sting();});
+document.getElementById('reset').addEventListener('click',()=>{stage.classList.remove('cursed','strike');banner.textContent='TONIGHT · ONE LAST SHOW';status.textContent=active?'THE MIDWAY MUSIC CONTINUES':'THE MIDWAY IS SILENT · SOUND IS OFF';if(ctx&&ctx.state==='running')bell(ctx.currentTime,783.99);});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&ctx&&ctx.state==='suspended')status.textContent='MUSIC PAUSED BY THE BROWSER · TAP START MUSIC TO RESUME';});
 </script>
 </body></html>
