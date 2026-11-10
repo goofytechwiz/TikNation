@@ -73,26 +73,39 @@ main{width:min(960px,94vw);margin:25px auto 40px}.eyebrow{font-size:10px;letter-
 const scene=document.getElementById('scene'),status=document.getElementById('status'),banner=document.getElementById('banner');
 const emberBox=document.getElementById('embers');
 for(let i=0;i<34;i++){const e=document.createElement('i');e.className='ember';e.style.left=(Math.random()*100)+'%';e.style.setProperty('--dur',(5+Math.random()*8)+'s');e.style.setProperty('--delay',(-Math.random()*12)+'s');emberBox.appendChild(e);}
-let audio=null,master=null,drone=null,windGain=null;
-function startAudio(){
- if(audio){if(audio.state==='suspended')audio.resume();return;}
- const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent='AUDIO IS NOT SUPPORTED IN THIS BROWSER';return;}
- audio=new AC();master=audio.createGain();master.gain.value=.34;master.connect(audio.destination);
- const low=audio.createOscillator(),lowGain=audio.createGain();low.type='sawtooth';low.frequency.value=49;lowGain.gain.value=.035;low.connect(lowGain).connect(master);low.start();drone=low;
- const lfo=audio.createOscillator(),lfoGain=audio.createGain();lfo.frequency.value=.13;lfoGain.gain.value=13;lfo.connect(lfoGain).connect(low.frequency);lfo.start();
- const buffer=audio.createBuffer(1,audio.sampleRate*2,audio.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
- const noise=audio.createBufferSource();noise.buffer=buffer;noise.loop=true;const filter=audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=380;windGain=audio.createGain();windGain.gain.value=.025;noise.connect(filter).connect(windGain).connect(master);noise.start();
- document.getElementById('sound').textContent='CARNIVAL SOUND ON';status.textContent='LOW CARNIVAL DRONE · WIND · BELLS ENABLED';
+let audio=null,master=null,bellTimer=null,windLevel=null;
+async function startAudio(){
+ const AC=window.AudioContext||window.webkitAudioContext;
+ if(!AC){status.textContent='AUDIO IS NOT SUPPORTED IN THIS BROWSER';return;}
+ try{
+  if(!audio){audio=new AC();master=audio.createGain();master.gain.value=.72;master.connect(audio.destination);
+   const sub=audio.createOscillator(),subGain=audio.createGain(),subFilter=audio.createBiquadFilter();
+   sub.type='sawtooth';sub.frequency.value=55;subFilter.type='lowpass';subFilter.frequency.value=170;subGain.gain.value=.11;sub.connect(subFilter).connect(subGain).connect(master);sub.start();
+   const overtone=audio.createOscillator(),overGain=audio.createGain();overtone.type='sine';overtone.frequency.value=110;overGain.gain.value=.035;overtone.connect(overGain).connect(master);overtone.start();
+   const lfo=audio.createOscillator(),lfoGain=audio.createGain();lfo.frequency.value=.16;lfoGain.gain.value=18;lfo.connect(lfoGain).connect(sub.frequency);lfo.start();
+   const buffer=audio.createBuffer(1,audio.sampleRate*3,audio.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
+   const noise=audio.createBufferSource(),high=audio.createBiquadFilter(),low=audio.createBiquadFilter();noise.buffer=buffer;noise.loop=true;high.type='highpass';high.frequency.value=180;low.type='lowpass';low.frequency.value=950;windLevel=audio.createGain();windLevel.gain.value=.16;noise.connect(high).connect(low).connect(windLevel).connect(master);noise.start();
+   bellTimer=window.setInterval(()=>{if(audio&&audio.state==='running')playBell();},4200);
+  }
+  if(audio.state!=='running')await audio.resume();
+  if(audio.state==='running'){document.getElementById('sound').textContent='CARNIVAL SOUND ON';status.textContent='CONTINUOUS DRONE AND WIND · DISTANT BELLS EVERY FEW SECONDS';}
+  else status.textContent='TAP ENABLE SOUND AGAIN TO START AUDIO';
+ }catch(err){status.textContent='AUDIO COULD NOT START · TAP ENABLE SOUND AGAIN';}
 }
-function chime(freq=660,when=0){
- if(!audio)return;const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.setValueAtTime(freq,audio.currentTime+when);g.gain.setValueAtTime(.0001,audio.currentTime+when);g.gain.exponentialRampToValueAtTime(.18,audio.currentTime+when+.025);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+when+2.1);o.connect(g).connect(master);o.start(audio.currentTime+when);o.stop(audio.currentTime+when+2.2);
+function playBell(){
+ if(!audio||audio.state!=='running')return;
+ const now=audio.currentTime,freq=[523.25,659.25,783.99][Math.floor(Math.random()*3)];
+ for(const [ratio,level] of [[1,.10],[2.01,.035],[2.98,.018]]){
+  const o=audio.createOscillator(),g=audio.createGain(),filter=audio.createBiquadFilter();o.type='sine';o.frequency.value=freq*ratio;filter.type='lowpass';filter.frequency.value=2600;g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(level,now+.035);g.gain.exponentialRampToValueAtTime(.0001,now+2.8);o.connect(filter).connect(g).connect(master);o.start(now);o.stop(now+2.9);
+ }
 }
 function thunder(){
- if(!audio)return;const n=Math.floor(audio.sampleRate*1.8),b=audio.createBuffer(1,n,audio.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);
- const s=audio.createBufferSource(),f=audio.createBiquadFilter(),g=audio.createGain();s.buffer=b;f.type='lowpass';f.frequency.value=150;g.gain.setValueAtTime(.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.65,audio.currentTime+.06);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+1.8);s.connect(f).connect(g).connect(master);s.start();
+ if(!audio||audio.state!=='running')return;const n=Math.floor(audio.sampleRate*2.2),b=audio.createBuffer(1,n,audio.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);
+ const s=audio.createBufferSource(),f=audio.createBiquadFilter(),g=audio.createGain();s.buffer=b;f.type='lowpass';f.frequency.value=180;g.gain.setValueAtTime(.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.75,audio.currentTime+.08);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+2.1);s.connect(f).connect(g).connect(master);s.start();
 }
-document.getElementById('sound').addEventListener('click',()=>{startAudio();});
-document.getElementById('curse').addEventListener('click',()=>{scene.classList.add('cursed');scene.classList.remove('strike');void scene.offsetWidth;scene.classList.add('strike');banner.textContent='THE SHOW NEVER ENDS';status.textContent='THE CURSE IS LOOSE · THE MIDWAY HAS AWAKENED';if(audio){thunder();chime(880,.18);chime(554,.55);}});
-document.getElementById('reset').addEventListener('click',()=>{scene.classList.remove('cursed','strike');banner.textContent='TONIGHT · ONE LAST SHOW';status.textContent=audio?'THE MIDWAY IS QUIET · SOUND REMAINS ON':'THE CARNIVAL IS QUIET · TAP TO BEGIN';if(audio)chime(440,0);});
+document.getElementById('sound').addEventListener('click',startAudio);
+document.getElementById('curse').addEventListener('click',()=>{scene.classList.add('cursed');scene.classList.remove('strike');void scene.offsetWidth;scene.classList.add('strike');banner.textContent='THE SHOW NEVER ENDS';status.textContent='THE CURSE IS LOOSE · THE MIDWAY HAS AWAKENED';if(audio&&audio.state==='running'){thunder();playBell();}});
+document.getElementById('reset').addEventListener('click',()=>{scene.classList.remove('cursed','strike');banner.textContent='TONIGHT · ONE LAST SHOW';status.textContent=audio&&audio.state==='running'?'THE MIDWAY IS QUIET · CARNIVAL SOUND CONTINUES':'THE CARNIVAL IS QUIET · TAP TO BEGIN';if(audio&&audio.state==='running')playBell();});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&audio&&audio.state==='suspended'){status.textContent='AUDIO PAUSED BY THE BROWSER · TAP ENABLE SOUND TO RESUME';}});
 </script>
 </body></html>
