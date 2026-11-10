@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101525"><title>WONDER SHIT · Rebuilt Gift Preview</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1020;color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid #ffffff20;font-size:10px;letter-spacing:.16em;color:#d9e4f5}
+a{color:#c9f67b;text-decoration:none}main{width:min(96%,1040px);margin:22px auto}.eyebrow{font-size:10px;letter-spacing:.22em;color:#c7f36e;font-weight:900}
+h1{font-size:clamp(38px,8vw,72px);line-height:.9;letter-spacing:-.06em;margin:10px 0}h1 span{color:#c7f36e}
+.desc{max-width:720px;color:#bdc9dc;font-size:13px;line-height:1.6}
+.stage{height:min(67vw,590px);min-height:370px;max-height:590px;position:relative;overflow:hidden;border-radius:26px;margin-top:18px;border:1px solid #ffffff30;background:linear-gradient(180deg,#a7d9f2 0%,#d8edeb 55%,#f7c98c 100%);box-shadow:0 24px 75px #0009;isolation:isolate}
+.sun{position:absolute;right:11%;top:9%;width:clamp(70px,14vw,150px);aspect-ratio:1;border-radius:50%;background:#fff1bd;box-shadow:0 0 70px #fff5b7}
+.cloud{position:absolute;bottom:5%;height:28%;width:120%;left:-10%;background:#fff9;border-radius:50% 50% 0 0;filter:blur(8px)}
+.cloud:before,.cloud:after{content:"";position:absolute;background:#fff9;border-radius:50%;width:38%;height:110%;top:-40%}.cloud:before{left:12%}.cloud:after{right:13%;top:-15%}
+.headline{position:absolute;z-index:9;top:5%;left:0;right:0;text-align:center;font-weight:1000;letter-spacing:.14em;font-size:clamp(11px,2vw,18px);text-shadow:0 2px 10px #24405c}
+.headline span{display:inline-block;background:#101b31c9;border:1px solid #fff8;border-radius:999px;padding:10px 17px}
+.hero{position:absolute;z-index:5;width:min(75%,700px);height:70%;left:50%;top:48%;transform:translate(-50%,-50%);object-fit:contain;filter:drop-shadow(0 20px 14px #24415b66);mix-blend-mode:multiply}
+.cape{position:absolute;z-index:3;left:17%;top:35%;width:36%;height:34%;background:linear-gradient(115deg,#ffb2a0,#d82443 58%,#791b38);clip-path:polygon(72% 0,100% 7%,75% 48%,100% 100%,30% 78%,0 94%,28% 42%,0 8%);transform-origin:82% 10%;filter:drop-shadow(0 7px 5px #62233c66)}
+.suit-glint{position:absolute;z-index:6;left:48%;top:44%;width:12%;height:17%;border-radius:50% 35% 40% 30%;background:linear-gradient(140deg,#58b8ff,#1450a1 65%,#0c2b62);border:3px solid #f6d66d;box-shadow:0 0 0 2px #0e315b;transform:rotate(-12deg);opacity:.96}
+.emblem{position:absolute;z-index:7;left:52%;top:47%;width:4.5%;aspect-ratio:1;transform:rotate(45deg);background:#ffe98c;border:2px solid #fff4bd;box-shadow:0 0 14px #fff8}
+.poop{position:absolute;z-index:8;left:19%;top:52%;font-size:clamp(35px,6vw,68px);opacity:0;filter:drop-shadow(0 4px 3px #44220e);transform:rotate(0)}
+.stink{position:absolute;z-index:7;left:12%;bottom:8%;font-size:clamp(70px,15vw,150px);opacity:0;filter:drop-shadow(0 0 18px #aaff4e)}
+.flies{position:absolute;z-index:8;left:12%;bottom:30%;font-size:clamp(16px,3vw,26px);opacity:0}
+.speed{position:absolute;z-index:2;left:-40%;top:48%;width:55%;height:3px;background:linear-gradient(90deg,transparent,#fff,transparent);transform:rotate(-7deg);opacity:0}
+.stage.play .hero{animation:flight 6.2s cubic-bezier(.2,.7,.2,1) forwards}
+.stage.play .cape{animation:cape .32s ease-in-out infinite alternate}
+.stage.play .speed{animation:streak 1.2s linear infinite}
+.stage.play .poop{animation:launch 1.6s ease-out 2.8s forwards}
+.stage.play .stink{animation:blast 3s ease-out 4s forwards}
+.stage.play .flies{animation:appear .4s ease 5s forwards}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button{border:1px solid #d6f58c99;background:#1c2940;color:white;border-radius:999px;padding:13px 19px;font-weight:900;font-size:10px;letter-spacing:.12em;cursor:pointer}
+button.primary{background:#c7f36e;color:#17220f;border:0}
+.status{min-height:22px;margin:12px 2px;color:#d4f58b;font-size:10px;letter-spacing:.12em}
+.note{border-top:1px solid #ffffff25;padding-top:12px;color:#98a9c0;font-size:10px;line-height:1.6;margin-top:16px}
+@keyframes flight{0%{left:-30%;top:70%;transform:translate(-50%,-50%) scale(.5)}25%{left:24%;top:52%;transform:translate(-50%,-50%) scale(.78)}60%{left:65%;top:40%;transform:translate(-50%,-50%) scale(1.02)}82%{left:90%;top:34%;transform:translate(-50%,-50%) scale(1.05)}100%{left:75%;top:37%;transform:translate(-50%,-50%) scale(1)}}
+@keyframes cape{from{transform:skewY(-10deg) rotate(-8deg)}to{transform:skewY(12deg) rotate(8deg)}}
+@keyframes streak{to{left:130%;opacity:.8}}
+@keyframes launch{0%{opacity:0;left:19%;top:52%;transform:scale(.2) rotate(0)}15%{opacity:1}75%{opacity:1;left:12%;top:68%;transform:scale(1) rotate(500deg)}100%{opacity:0;left:8%;top:72%;transform:scale(.3) rotate(700deg)}}
+@keyframes blast{0%{opacity:0;transform:scale(.2)}20%{opacity:1;transform:scale(1.2)}70%{opacity:1;transform:scale(1.5)}100%{opacity:.9;transform:scale(1.45)}}
+@keyframes appear{to{opacity:1}}
+@media(max-width:600px){.stage{min-height:340px}.hero{width:92%;height:62%}.cape{left:5%;top:38%;width:45%;height:30%}.suit-glint{left:48%;top:45%;width:15%;height:16%}.emblem{left:54%;top:48%;width:5%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style></head><body>
+<header><b>TIKNATION · GIFT REBUILD</b><a href="./">← BACK TO GIFT LAB</a></header>
+<main><div class="eyebrow">FRESH BUILD · NEW FLIGHT SEQUENCE</div><h1>WONDER <span>SHIT</span> 💩</h1>
+<p class="desc">A real golden retriever photo leads the new design. The hero flies forward, cape streaming behind, then launches the ridiculous stink attack.</p>
+<section class="stage" id="stage" aria-label="Wonder Shit rebuilt gift animation">
+<div class="sun"></div><div class="cloud"></div><div class="headline"><span id="headline">THE STINK-SAVING HERO!</span></div>
+<div class="cape"></div>
+<img class="hero" src="https://images.rawpixel.com/image_png_social_landscape/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTA5L3Jhd3BpeGVsb2ZmaWNlNF9yZWFsaXN0aWNfc2lkZV92aWV3X3Bob3RvX29mX2FfZ29sZGVuX3JldHJpZXZlcl9iZWIxOTMyNy00ZTJiLTQ2MGItOThiYS02NjcxMDZkYjAwY2EucG5n.png" alt="Photographic golden retriever leaping forward">
+<div class="suit-glint" aria-hidden="true"></div><div class="emblem" aria-hidden="true"></div>
+<div class="speed"></div><div class="poop" aria-hidden="true">💩</div><div class="stink" aria-hidden="true">💨</div><div class="flies" aria-hidden="true">🪰　🪰　🪰</div>
+</section>
+<div class="controls"><button class="primary" id="play">💥 PLAY REBUILT GIFT</button><button id="stop">STOP</button><button id="sound">SOUND: ON</button></div>
+<div class="status" id="status" role="status" aria-live="polite">READY · TAP PLAY</div>
+<p class="note">Standalone preview only. No coins are charged and no gift is sent. This is a fresh rebuild of the preview, not yet connected to the live gift catalog.</p>
+</main>
+<script>
+const stage=document.getElementById('stage'),headline=document.getElementById('headline'),status=document.getElementById('status');let soundOn=true,timers=[],audio=[];
+const sounds={whoosh:'https://sfxmint.com/dl/transition-swoosh-63.mp3',bark:'https://sfxmint.com/dl/animal-dog-bark-25.mp3',blast:'https://sfxmint.com/dl/fart-03.mp3',splat:'https://sfxmint.com/dl/fart-08.mp3'};
+function clear(){timers.forEach(clearTimeout);timers=[];audio.forEach(a=>{a.pause();a.currentTime=0});audio=[]}
+function stop(){stage.classList.remove('play');clear();status.textContent='STOPPED'}
+function play(){stop();void stage.offsetWidth;stage.classList.add('play');headline.textContent='THE STINK-SAVING HERO!';status.textContent='HERO DOG TAKING OFF…';
+const say=(h,s)=>{headline.textContent=h;status.textContent=s};const later=(ms,fn)=>timers.push(setTimeout(fn,ms));const sound=k=>{if(!soundOn)return;const a=new Audio(sounds[k]);audio.push(a);a.volume=1;a.play().catch(()=>status.textContent='SOUND BLOCKED · TAP PLAY AGAIN')};
+sound('whoosh');later(650,()=>sound('bark'));later(3100,()=>{sound('blast');say('MEGA STINK BLAST!!!','THE STINK CLOUD HAS LANDED 😂')});later(4500,()=>sound('splat'));later(6700,()=>say('SMELL YA LATER!','MISSION ACCOMPLISHED'));later(9200,()=>{stage.classList.remove('play');status.textContent='FINISHED · TAP PLAY TO REPLAY'})}
+document.getElementById('play').onclick=play;document.getElementById('stop').onclick=stop;document.getElementById('sound').onclick=()=>{soundOn=!soundOn;document.getElementById('sound').textContent='SOUND: '+(soundOn?'ON':'OFF');if(!soundOn)clear();status.textContent='SOUND '+(soundOn?'ON':'OFF')};
+</script></body></html>
