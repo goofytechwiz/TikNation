@@ -1,96 +1,63 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#090b0d">
-<title>The Last Patient · TikNation Gift Lab</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080b0d"><title>The Last Patient · TikNation</title>
 <style>
-:root{color-scheme:dark;--cold:#b9d5d5;--red:#a62e36}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#050608;color:#e6eeee;font-family:Arial,sans-serif}
-body{min-height:100svh;display:grid;place-items:center;overflow:hidden}
-.stage{position:relative;width:min(100vw,980px);height:min(100svh,760px);min-height:570px;overflow:hidden;isolation:isolate;background:linear-gradient(90deg,#080b0d 0%,#1b2427 18%,#20292c 50%,#151d20 82%,#07090b 100%);box-shadow:0 0 90px #000}
-.ceiling{position:absolute;inset:0 0 auto;height:28%;background:linear-gradient(180deg,#050709,#1a2226 72%,transparent);clip-path:polygon(0 0,100% 0,82% 100%,18% 100%)}
-.floor{position:absolute;left:-15%;right:-15%;bottom:-2%;height:57%;background:repeating-linear-gradient(90deg,transparent 0 98px,#d9e0df0a 99px 101px),repeating-linear-gradient(0deg,#171c1e 0 46px,#30383a 47px 49px),linear-gradient(180deg,#323a3b,#090c0e);transform:perspective(390px) rotateX(58deg);transform-origin:bottom;box-shadow:inset 0 40px 70px #000}
-.wall{position:absolute;inset:12% 0 20%;background:linear-gradient(90deg,#080b0d 0 5%,#384144 5% 6%,#171f22 6% 18%,#20292b 18% 49%,#1a2225 51% 82%,#11191c 82% 94%,#394244 94% 95%,#080b0d 95%);clip-path:polygon(0 0,100% 0,82% 100%,18% 100%)}
-.perspective-lines{position:absolute;inset:18% 0 0;background:linear-gradient(90deg,transparent 49.7%,#b8c7c711 50%,transparent 50.3%),linear-gradient(180deg,transparent 65%,#b8c7c70c 65.2%,transparent 65.5%);pointer-events:none}
-.doors{position:absolute;inset:18% 0 22%;display:flex;justify-content:space-between;padding:0 8%;pointer-events:none}
-.door{position:relative;width:15%;height:72%;background:linear-gradient(90deg,#080b0c,#596365 5%,#242d30 10%,#131a1c 88%,#050708);border:5px solid #394346;box-shadow:inset 0 0 0 2px #8b9695,inset 0 0 20px #000,0 0 24px #000}
-.door:before{content:"";position:absolute;inset:9%;border:2px solid #536063;box-shadow:inset 0 0 14px #000}
-.door:after{content:"";position:absolute;right:12%;top:52%;width:7px;height:7px;border-radius:50%;background:#b1a27c;box-shadow:0 0 8px #b1a27c}
-.sign{position:absolute;top:17%;left:50%;transform:translateX(-50%);padding:7px 13px;border:1px solid #77818155;background:#111719;color:#9da9a8;font-size:8px;letter-spacing:.28em;white-space:nowrap}
-.light{position:absolute;top:8%;left:50%;transform:translateX(-50%);width:72px;height:18px;border-radius:50%;background:#d6e3d5;box-shadow:0 0 12px 7px #d5e2d455,0 20px 90px 28px #b6d0d033;animation:flicker 8s infinite}
-@keyframes flicker{0%,3%,6%,40%,43%,100%{opacity:.95}4%,42%{opacity:.12}5%{opacity:.65}}
-.far-door{position:absolute;z-index:2;left:50%;top:26%;transform:translateX(-50%);width:18%;height:36%;background:linear-gradient(90deg,#050607,#283033 15%,#111719 85%,#050607);border:5px solid #465153;box-shadow:0 0 35px #000,inset 0 0 25px #000}
-.far-door:before{content:"";position:absolute;inset:8%;border:1px solid #697475}
-.window-glow{position:absolute;left:50%;top:35%;transform:translateX(-50%);width:10%;height:17%;background:radial-gradient(ellipse,#c5d7d366,transparent 70%);filter:blur(9px)}
-.haze{position:absolute;z-index:4;inset:35% -10% 0;background:radial-gradient(ellipse at 25% 75%,#c3d4d41b,transparent 42%),radial-gradient(ellipse at 70% 70%,#c3d4d41b,transparent 40%);filter:blur(15px);animation:haze 9s ease-in-out infinite alternate}
-@keyframes haze{to{transform:translate3d(3%,-12px,0) scale(1.08);opacity:.55}}
-.gurney{position:absolute;z-index:8;left:50%;bottom:15%;width:min(62%,540px);height:31%;transform:translateX(-50%) scale(.7);transform-origin:center bottom;filter:drop-shadow(0 22px 17px #000);transition:transform 4s cubic-bezier(.2,.7,.1,1)}
-.stage.released .gurney{transform:translateX(-50%) translateY(13%) scale(1.12)}
-.frame{position:absolute;left:8%;right:8%;top:49%;height:12px;background:linear-gradient(#b5c2c1,#394548 45%,#151b1e);border:2px solid #7a8989;border-radius:5px;box-shadow:0 5px 8px #000}
-.mattress{position:absolute;left:10%;right:10%;top:28%;height:26%;border-radius:12px 12px 5px 5px;background:repeating-linear-gradient(175deg,#bfc7c1 0 3px,#aab4ad 4px 7px,#858f8b 8px 10px);border:2px solid #c4cdca;box-shadow:inset 0 5px 9px #fff5,0 8px 10px #000}
-.sheet{position:absolute;left:17%;right:17%;top:22%;height:25%;border-radius:48% 48% 18% 18%;background:repeating-linear-gradient(170deg,#d8dcd4 0 4px,#c1c9c0 5px 9px,#a1aaa3 10px 14px);box-shadow:inset 0 8px 12px #fff7,0 5px 8px #0007}
-.head{position:absolute;left:42%;top:12%;width:16%;height:19%;border-radius:48% 48% 42% 42%;background:radial-gradient(ellipse at 34% 23%,#c7c2b7 0%,#a19d94 30%,#777a75 65%,#282e30 100%);box-shadow:0 3px 9px #000;transform:rotate(-7deg)}
-.sheet-fold{position:absolute;left:25%;right:22%;top:31%;height:15%;background:linear-gradient(180deg,#f0f0e8,#aeb6af);clip-path:polygon(0 0,100% 20%,92% 100%,8% 100%)}
-.rail{position:absolute;top:23%;height:34%;width:4px;border-radius:3px;background:linear-gradient(90deg,#283437 0%,#aebbb8 18%,#e0e4dc 42%,#647174 65%,#20292c 100%);box-shadow:0 0 4px #000}
-.rail.l{left:8%}.rail.r{right:8%}
-.leg{position:absolute;top:56%;width:5px;height:34%;background:linear-gradient(90deg,#354245,#c2ceca,#394649);transform-origin:top}
-.leg.a{left:16%;transform:rotate(7deg)}.leg.b{right:16%;transform:rotate(-7deg)}
-.wheel{position:absolute;top:81%;width:34px;height:34px;border:5px solid #222b2e;border-radius:50%;background:radial-gradient(circle,#d1d5cb 0 9%,#647174 11% 19%,#171f22 22% 55%,#050809 58% 70%,#394346 72% 78%,#090d0f 80%);box-shadow:0 3px 4px #000}
-.wheel.a{left:12%}.wheel.b{right:12%}
-.straps{position:absolute;top:29%;left:32%;right:32%;height:5px;background:#4e5552;box-shadow:0 18px #4e5552}
-.foot{position:absolute;z-index:7;left:50%;bottom:13%;width:54%;height:7%;transform:translateX(-50%);background:radial-gradient(ellipse,#000b,transparent 72%)}
-.patient-shadow{position:absolute;z-index:6;left:50%;top:24%;width:13%;height:42%;transform:translateX(-50%) scale(.3);opacity:0;transition:all 2s ease;filter:blur(2px)}
-.patient-shadow:before{content:"";position:absolute;left:32%;top:0;width:36%;height:23%;border-radius:50%;background:#020304;box-shadow:0 0 25px 8px #000}
-.patient-shadow:after{content:"";position:absolute;left:5%;right:5%;top:20%;bottom:0;background:linear-gradient(90deg,transparent,#030405 22%,#050708 50%,#030405 78%,transparent);clip-path:polygon(35% 0,65% 0,85% 12%,100% 100%,0 100%,15% 12%)}
-.stage.released .patient-shadow{opacity:.72;transform:translateX(-50%) scale(1)}
-.eye-points{position:absolute;z-index:7;left:50%;top:29%;display:flex;gap:18px;transform:translateX(-50%);opacity:0}
-.eye-points i{width:8px;height:4px;background:#b8d0c9;border-radius:50%;box-shadow:0 0 4px 1px #a9c5c0}
-.stage.released .eye-points{opacity:.9;animation:blink 4s infinite}
-@keyframes blink{0%,92%,100%{opacity:.9}94%{opacity:0}}
-.stamp{position:absolute;z-index:9;top:8%;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:.34em;color:#aab8b8;text-shadow:0 0 12px #d4e6e6;white-space:nowrap}
-.red-alert{position:absolute;z-index:10;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 50% 50%,#9d12151b,transparent 65%)}
-.stage.released .red-alert{opacity:1;animation:alert 3s ease-in-out infinite}
-@keyframes alert{50%{opacity:.85}}
-.scan{position:absolute;z-index:11;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,#dce8e803 4px);opacity:.4}
-.vignette{position:absolute;z-index:12;inset:0;pointer-events:none;background:radial-gradient(ellipse,transparent 35%,#0009 100%)}
-.stage.released .light{animation:flicker .45s infinite}
-.stage.released .far-door{box-shadow:0 0 45px #b7d6d655,inset 0 0 35px #000}
-.caption{position:absolute;z-index:20;bottom:7%;left:0;width:100%;text-align:center;font:10px Georgia,serif;letter-spacing:.22em;color:#b7c4c1;text-shadow:0 2px 8px #000}
-.controls{position:absolute;z-index:30;left:0;right:0;bottom:18px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding:0 12px}
-button{border:1px solid #a9c0bf66;border-radius:3px;background:#121a1d;color:#dce8e6;padding:13px 18px;font-size:9px;font-weight:700;letter-spacing:.18em;cursor:pointer}
-button.primary{background:#dce5df;color:#101618;border-color:#fff}
-button:focus-visible{outline:2px solid #fff;outline-offset:4px}
-.status{position:absolute;z-index:30;bottom:68px;left:0;right:0;text-align:center;min-height:14px;color:#9eafad;font-size:8px;letter-spacing:.2em}
-@media(max-width:560px){.stage{min-height:570px}.gurney{width:82%;height:28%;bottom:19%}.doors{padding:0 4%}.door{width:17%}.stamp{font-size:8px}.caption{bottom:10%}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-</style>
-</head>
-<body>
-<main class="stage" id="stage" aria-label="The Last Patient horror gift preview">
-<div class="ceiling"></div><div class="wall"></div><div class="floor"></div><div class="perspective-lines"></div>
-<div class="doors"><div class="door"></div><div class="door"></div></div>
-<div class="light"></div><div class="sign">WARD 09 · RESTRICTED</div><div class="far-door"></div><div class="window-glow"></div>
-<div class="patient-shadow"></div><div class="eye-points"><i></i><i></i></div>
-<div class="gurney" aria-hidden="true"><div class="rail l"></div><div class="rail r"></div><div class="mattress"></div><div class="sheet"></div><div class="head"></div><div class="sheet-fold"></div><div class="straps"></div><div class="frame"></div><div class="leg a"></div><div class="leg b"></div><div class="wheel a"></div><div class="wheel b"></div></div>
-<div class="foot"></div><div class="haze"></div><div class="red-alert"></div><div class="scan"></div><div class="vignette"></div>
-<div class="stamp">PATIENT STATUS: UNKNOWN</div><div class="caption" id="caption">THE WARD HAS BEEN EMPTY FOR THIRTY YEARS</div>
-<div class="status" id="status" role="status" aria-live="polite">PREVIEW READY · NO GIFT SENT</div>
-<div class="controls"><button class="primary" id="release">UNLOCK WARD 09</button><button id="reset">RESET SCENE</button></div>
-</main>
-<script>
-const stage=document.getElementById('stage'),status=document.getElementById('status'),caption=document.getElementById('caption');
-let audio=null,oscillators=[];
-function stopAudio(){if(audio&&audio.state!=='closed'){try{audio.close()}catch(e){}}audio=null;oscillators=[]}
-function cue(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;try{audio=new AC();const ctx=audio;const now=ctx.currentTime;
-const master=ctx.createGain();master.gain.value=.16;master.connect(ctx.destination);
-const low=ctx.createOscillator(),lg=ctx.createGain(),lf=ctx.createBiquadFilter();low.type='sawtooth';low.frequency.setValueAtTime(54,now);low.frequency.exponentialRampToValueAtTime(31,now+3.2);lf.type='lowpass';lf.frequency.value=105;lg.gain.setValueAtTime(.001,now);lg.gain.linearRampToValueAtTime(.42,now+.8);lg.gain.exponentialRampToValueAtTime(.001,now+4.8);low.connect(lf);lf.connect(lg);lg.connect(master);low.start(now);low.stop(now+5);oscillators.push(low);
-const metal=ctx.createOscillator(),mg=ctx.createGain(),mf=ctx.createBiquadFilter();metal.type='sine';metal.frequency.setValueAtTime(880,now+.65);metal.frequency.exponentialRampToValueAtTime(230,now+2.4);mf.type='bandpass';mf.frequency.value=740;mg.gain.setValueAtTime(.001,now+.65);mg.gain.linearRampToValueAtTime(.2,now+.72);mg.gain.exponentialRampToValueAtTime(.001,now+2.8);metal.connect(mf);mf.connect(mg);mg.connect(master);metal.start(now+.65);metal.stop(now+2.9);oscillators.push(metal);
-const hit=ctx.createOscillator(),hg=ctx.createGain();hit.type='sine';hit.frequency.setValueAtTime(92,now+2.7);hit.frequency.exponentialRampToValueAtTime(26,now+3.4);hg.gain.setValueAtTime(.28,now+2.7);hg.gain.exponentialRampToValueAtTime(.001,now+3.7);hit.connect(hg);hg.connect(master);hit.start(now+2.7);hit.stop(now+3.8);oscillators.push(hit);
-}catch(e){status.textContent='VISUAL PREVIEW ACTIVE · AUDIO UNAVAILABLE'}}
-document.getElementById('release').addEventListener('click',()=>{stage.classList.add('released');caption.textContent='IT WAS NEVER EMPTY';status.textContent='WARD 09 OPEN · THE LAST PATIENT IS AWAKE';stopAudio();cue()});
-document.getElementById('reset').addEventListener('click',()=>{stage.classList.remove('released');caption.textContent='THE WARD HAS BEEN EMPTY FOR THIRTY YEARS';status.textContent='PREVIEW READY · NO GIFT SENT';stopAudio()});
-</script>
-</body></html>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050708;color:#e5eceb;font-family:Arial,sans-serif}.stage{position:relative;width:100%;height:100%;min-height:540px;background:#080b0d}canvas{display:block;width:100%;height:100%;outline:0}.hud{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;align-items:center}.top{margin-top:max(18px,env(safe-area-inset-top));font-size:10px;letter-spacing:.34em;color:#b6c2c1;text-shadow:0 2px 8px #000;text-align:center}.bottom{margin-top:auto;margin-bottom:calc(102px + env(safe-area-inset-bottom));font:italic 14px Georgia,serif;letter-spacing:.12em;color:#d1d8d4;text-shadow:0 2px 10px #000;text-align:center;padding:0 18px}.status{position:absolute;bottom:calc(78px + env(safe-area-inset-bottom));width:100%;text-align:center;font-size:9px;letter-spacing:.2em;color:#b4c1bf;text-shadow:0 2px 8px #000}.controls{position:absolute;bottom:calc(16px + env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:center;gap:10px;padding:0 12px}button{pointer-events:auto;border:1px solid #a9b9b788;background:#11191b;color:#e5eceb;padding:14px 18px;font-size:9px;font-weight:bold;letter-spacing:.16em;border-radius:3px}button.primary{background:#d7e0db;color:#111819;border-color:#fff}button:focus-visible{outline:2px solid white;outline-offset:3px}.shade{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse,transparent 42%,#0009 100%)}.fallback{position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:30px;color:#d6dfdc;font-size:13px;line-height:1.6}
+@media(max-width:560px){.bottom{font-size:12px;margin-bottom:calc(110px + env(safe-area-inset-bottom))}button{padding:13px 14px;font-size:8px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style></head><body><main class="stage" id="stage"><div id="fallback" class="fallback">The 3D scene couldn't load in this browser session.<br>Check your connection and refresh to try again.</div><div class="hud"><div class="top">WARD 09 · RESTRICTED · PATIENT STATUS UNKNOWN</div><div class="bottom" id="caption">THE WARD HAS BEEN EMPTY FOR THIRTY YEARS</div></div><div class="status" id="status" role="status" aria-live="polite">3D PREVIEW READY · NO GIFT SENT</div><div class="controls"><button class="primary" id="unlock">UNLOCK WARD 09</button><button id="reset">RESET SCENE</button></div><div class="shade"></div></main>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+const stage=document.getElementById('stage'),status=document.getElementById('status'),caption=document.getElementById('caption'),fallback=document.getElementById('fallback');
+let scene,camera,renderer,bed,patient,shadowFigure,redLight,clock,unlocked=false,audioCtx=null,raf;
+const mat=(color,roughness=.8,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
+function box(parent,name,pos,size,material,bevel=0){const geo=new THREE.BoxGeometry(...size);const m=new THREE.Mesh(geo,material);m.name=name;m.position.set(...pos);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
+function cylinder(parent,pos,r1,r2,len,material,rot=[0,0,0],segments=20){const m=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,len,segments),material);m.position.set(...pos);m.rotation.set(...rot);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
+function sphere(parent,pos,scale,material,segments=24){const m=new THREE.Mesh(new THREE.SphereGeometry(1,segments,16),material);m.position.set(...pos);m.scale.set(...scale);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
+function makeWallTexture(){const c=document.createElement('canvas');c.width=512;c.height=512;const x=c.getContext('2d');x.fillStyle='#9ba09a';x.fillRect(0,0,512,512);for(let i=0;i<15000;i++){const v=100+Math.random()*90;x.fillStyle='rgba('+v+','+v+','+v+',.10)';x.fillRect(Math.random()*512,Math.random()*512,1+Math.random()*3,1+Math.random()*3)}for(let y=0;y<512;y+=128){x.fillStyle='rgba(30,40,40,.12)';x.fillRect(0,y,512,2)}const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(2,2);return t}
+function init(){
+scene=new THREE.Scene();scene.background=new THREE.Color(0x111719);scene.fog=new THREE.FogExp2(0x111719,.035);
+camera=new THREE.PerspectiveCamera(52,stage.clientWidth/stage.clientHeight,.1,80);camera.position.set(0,3.1,10.8);camera.lookAt(0,1.6,-1.5);
+renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(stage.clientWidth,stage.clientHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;stage.prepend(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xc8d5d6,0x171b1d,1.25));const key=new THREE.DirectionalLight(0xdce6df,2.1);key.position.set(-3,8,5);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key);
+const wallMat=new THREE.MeshStandardMaterial({map:makeWallTexture(),color:0xb5bbb4,roughness:.95}),dark=mat(0x30393b),trim=mat(0x586264,.55),steel=mat(0x8b9999,.28,.82),rubber=mat(0x171c1e),tile=mat(0x343d3f,.65),doorMat=mat(0x293234),sheetMat=mat(0xc1c7bd,.98),skin=mat(0x9c9b8d,.92),black=mat(0x080b0c);
+const floor=box(scene,'floor',[0,-.16,-7],[14,.3,30],mat(0x343a39,.95));floor.receiveShadow=true;
+for(let x of [-7,7])box(scene,'side wall',[x,3,-6],[.25,6,26],wallMat);
+box(scene,'back wall',[0,3,-18],[14,6,.3],wallMat);
+box(scene,'ceiling',[0,6,-6],[14,.25,26],mat(0x252d2f));
+for(let z=4;z>-17;z-=3){box(scene,'ceiling panel',[0,5.84,z],[3.5,.05,2.4],mat(0x596365));box(scene,'fluorescent fixture',[0,5.72,z],[1.7,.06,.28],mat(0xd9e4dc,.3));const l=new THREE.PointLight(0xc8dbd7,1.1,8);l.position.set(0,5.3,z);scene.add(l)}
+// repeating wall panels, doors, rails and clinical details
+for(let side of [-1,1]){for(let z=3;z>-16;z-=5){box(scene,'ward door',[side*6.82,2.1,z],[.12,4.2,2.6],doorMat);box(scene,'door inset',[side*6.73,2.15,z],[.06,3.6,2.05],dark);cylinder(scene,[side*6.62,1.8,z+.8],.06,.06,.12,steel,[Math.PI/2,0,0]);box(scene,'wall bumper',[side*6.72,.8,z],[.12,.16,4],trim);box(scene,'wall rail',[side*6.68,1.15,z],[.13,.1,4],steel)}}
+const endDoor=box(scene,'ward 09 door',[0,2.3,-17.78],[3.3,4.6,.16],doorMat);box(scene,'door window',[0,3.2,-17.68],[.85,1.1,.04],mat(0x81918d,.3));box(scene,'ward sign',[0,4.95,-17.65],[2.5,.4,.12],mat(0x182224)); 
+// cabinet, medical monitor, wall oxygen and IV stand
+box(scene,'medical cabinet',[-5.9,1.7,-4],[.65,2.8,1.8],mat(0x929b96));box(scene,'cabinet glass',[-5.53,1.9,-4],[.035,1.8,1.35],mat(0x536568,.25));box(scene,'monitor arm',[5.9,2.7,-5],[.12,.12,.9],steel);box(scene,'monitor',[5.85,3.3,-5],[.18,1.1,1.5],black);box(scene,'monitor screen',[5.73,3.3,-5],[.025,.86,1.28],mat(0x18302e,.25));box(scene,'monitor trace',[5.71,3.35,-5],[.03,.035,.95],mat(0x65b5a3,.3));
+const iv=new THREE.Group();iv.position.set(2.3,0,1);scene.add(iv);cylinder(iv,[0,2.4,0],.035,.035,4,steel);cylinder(iv,[0,4.4,0],.025,.025,.7,steel,[0,0,Math.PI/2]);for(let x of [-.25,.25])cylinder(iv,[x,4.4,0],.02,.02,.5,steel,[0,0,Math.PI/2]);cylinder(iv,[0,.12,0],.06,.06,.2,rubber);for(let x of [-.3,.3]){cylinder(iv,[x,.1,0],.035,.035,.12,rubber,[Math.PI/2,0,0])}
+function buildBed(){
+bed=new THREE.Group();bed.position.set(0,0,1.1);scene.add(bed);
+const frameMat=steel,blackRubber=rubber;
+box(bed,'bed base',[0,1.28,0],[2.5,.17,5.0],frameMat);box(bed,'mattress',[0,1.62,0],[2.45,.48,4.8],mat(0x9da7a1,.95));box(bed,'mattress seam',[0,1.86,0],[2.35,.025,4.65],mat(0xc5ccc4));
+box(bed,'pillow',[0,1.97,-1.82],[1.35,.25,.75],sheetMat);
+const cover=box(bed,'rumpled patient blanket',[0,2.02,-.15],[2.22,.34,3.25],sheetMat);cover.rotation.x=-.025;
+for(let i=0;i<5;i++){const fold=box(bed,'blanket folds',[(i-2)*.34,2.2,-.2],[.045,.018,2.65],mat(0xa8b1aa));fold.rotation.z=(i-2)*.025}
+for(let side of [-1,1]){box(bed,'side rail',[side*1.24,2.15,.1],[.08,.12,3.9],steel);for(let z of [-1.75,-.9,0,.9,1.75])cylinder(bed,[side*1.24,1.96,z],.035,.035,.4,steel);for(let z of [-2.15,2.15]){box(bed,'end guard',[side*1.24,1.95,z],[.09,.55,.1],steel)}}
+for(let x of [-.9,.9])for(let z of [-1.9,1.9]){cylinder(bed,[x,.76,z],.065,.065,.95,steel);cylinder(bed,[x,.22,z],.22,.22,.13,rubber,[Math.PI/2,0,0]);cylinder(bed,[x,.22,z],.09,.09,.14,steel,[Math.PI/2,0,0])}
+box(bed,'lower chassis',[0,.67,0],[1.9,.12,3.8],dark);for(let x of [-.75,.75]){box(bed,'hydraulic lift',[x,.95,0],[.09,.55,.09],steel);box(bed,'crossbar',[x,.62,0],[.08,.08,3.8],steel)}
+// visible patient anatomy under drape: shoulder/torso and a natural head profile
+patient=new THREE.Group();patient.position.set(0,0,0);bed.add(patient);
+sphere(patient,[0,2.02,-1.83],[.34,.28,.42],skin);sphere(patient,[0,2.12,-1.86],[.3,.16,.33],mat(0xaaa99e));sphere(patient,[0,2.04,-1.5],[.65,.22,.7],sheetMat);
+const ear=sphere(patient,[.31,2.03,-1.83],[.07,.1,.1],skin);sphere(patient,[-.31,2.03,-1.83],[.07,.1,.1],skin);
+for(let x of [-.12,.12])sphere(patient,[x,2.11,-2.06],[.045,.025,.025],black);
+}
+buildBed();
+// figure standing behind the bed, modeled as a physical silhouette in the far doorway
+shadowFigure=new THREE.Group();shadowFigure.position.set(0,0,-15.7);scene.add(shadowFigure);const figureMat=mat(0x090d0e,1);sphere(shadowFigure,[0,3.25,0],[.42,.53,.34],figureMat);const torso=sphere(shadowFigure,[0,2.15,0],[.68,1.05,.38],figureMat);cylinder(shadowFigure,[-.45,1.7,0],.12,.17,1.7,figureMat,[0,0,-.12]);cylinder(shadowFigure,[.45,1.7,0],.12,.17,1.7,figureMat,[0,0,.12]);for(let x of [-.15,.15])sphere(shadowFigure,[x,3.3,.31],[.045,.025,.02],mat(0x9eaaa2,.25));
+redLight=new THREE.PointLight(0x8e171b,0,12);redLight.position.set(0,4,-12);scene.add(redLight);
+const hazeMat=new THREE.MeshBasicMaterial({color:0x9eaeaa,transparent:true,opacity:.055,depthWrite:false});for(let i=0;i<10;i++){const h=new THREE.Mesh(new THREE.SphereGeometry(1,16,12),hazeMat);h.position.set((Math.random()-.5)*8,.3+Math.random()*2,-9+Math.random()*15);h.scale.set(1.8,.25,1);scene.add(h);h.userData.drift=.1+Math.random()*.15}
+clock=new THREE.Clock();window.addEventListener('resize',resize);animate();
+}
+function resize(){if(!renderer)return;camera.aspect=stage.clientWidth/stage.clientHeight;camera.updateProjectionMatrix();renderer.setSize(stage.clientWidth,stage.clientHeight)}
+function animate(){raf=requestAnimationFrame(animate);const t=clock.getElapsedTime();if(unlocked){bed.position.z=1.1+Math.min(t*.18,1.2);redLight.intensity=1.5+Math.sin(t*8)*.7;camera.position.x=Math.sin(t*.35)*.035}else{redLight.intensity=0;camera.position.x=Math.sin(t*.18)*.012}camera.lookAt(0,1.7,-2);renderer.render(scene,camera)}
+function sound(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;try{audioCtx=new AC();const ctx=audioCtx,now=ctx.currentTime;const gain=ctx.createGain();gain.gain.value=.14;gain.connect(ctx.destination);const osc=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();osc.type='sawtooth';osc.frequency.setValueAtTime(48,now);osc.frequency.exponentialRampToValueAtTime(29,now+4);f.type='lowpass';f.frequency.value=100;g.gain.setValueAtTime(.001,now);g.gain.linearRampToValueAtTime(.4,now+.7);g.gain.exponentialRampToValueAtTime(.001,now+4.5);osc.connect(f);f.connect(g);g.connect(gain);osc.start();osc.stop(now+4.6);const hit=ctx.createOscillator(),hg=ctx.createGain();hit.frequency.setValueAtTime(130,now+1.8);hit.frequency.exponentialRampToValueAtTime(34,now+2.5);hg.gain.setValueAtTime(.2,now+1.8);hg.gain.exponentialRampToValueAtTime(.001,now+2.8);hit.connect(hg);hg.connect(gain);hit.start(now+1.8);hit.stop(now+2.9)}catch(e){}}
+document.getElementById('unlock').addEventListener('click',()=>{if(unlocked)return;unlocked=true;clock.start();caption.textContent='IT WAS NEVER EMPTY';status.textContent='WARD 09 OPEN · THE LAST PATIENT IS AWAKE';sound()});
+document.getElementById('reset').addEventListener('click',()=>{unlocked=false;if(bed)bed.position.z=1.1;if(redLight)redLight.intensity=0;if(audioCtx){audioCtx.close().catch(()=>{});audioCtx=null}caption.textContent='THE WARD HAS BEEN EMPTY FOR THIRTY YEARS';status.textContent='3D PREVIEW READY · NO GIFT SENT'});
+try{init()}catch(e){console.error(e);fallback.style.display='grid'}
+</script></body></html>
