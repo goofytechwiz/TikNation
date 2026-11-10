@@ -26,7 +26,7 @@ main{width:min(960px,94vw);margin:25px auto 40px}.eyebrow{font-size:10px;letter-
 .controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}button{border:1px solid #c79a6b77;background:#21191b;color:#f6e6d7;border-radius:999px;padding:13px 20px;font-size:10px;font-weight:850;letter-spacing:.13em;cursor:pointer}button.primary{background:linear-gradient(110deg,#dca56e,#f0d1a5);border:0;color:#1b1110}button:focus-visible{outline:3px solid white;outline-offset:3px}
 .status{margin-top:12px;min-height:22px;color:#d8b48e;font-size:10px;letter-spacing:.12em}
 .scene.cursed{background:linear-gradient(#08070d,#211018 54%,#120b10)}.scene.cursed .skyglow{background:radial-gradient(ellipse at 50% 65%,#b52c1c44,transparent 58%)}.scene.cursed .moon{background:#a9a0a0;box-shadow:0 0 34px #d6d0d077}.scene.cursed .tent{filter:drop-shadow(0 0 18px #d42c1d88) brightness(.75) saturate(1.5)}.scene.cursed .wheel{filter:drop-shadow(0 0 18px #c72e2588) sepia(.3)}.scene.cursed .bulbs i{background:#ff4b35;box-shadow:0 0 17px #ff3020;animation:alarm .35s infinite alternate}.scene.cursed .fog{background:linear-gradient(transparent,#b21f242e 45%,transparent);animation-duration:5s}.scene.cursed .banner{color:#ffb5a0;text-shadow:0 0 16px #ff301d}
-.scene.cursed:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#0000 0 3px,#00000012 4px);animation:film 1.5s steps(2) infinite}
+.scene.cursed:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#0000 0 3px,#00000012 4px);animation:film 1.5s steps(2) infinite}\n.scene.cursed{animation:haunt 5s ease-in-out infinite}.scene.cursed .moon{animation:moonPulse 3s ease-in-out infinite alternate}.scene.cursed .wheelspin{animation-duration:13s}.scene.cursed .tent:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,#ff2b1c55,transparent 55%);mix-blend-mode:screen;animation:flare 2s infinite alternate}.lightning{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;background:#fff;mix-blend-mode:screen}.scene.strike .lightning{animation:flash .55s ease-out}.embers{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden}.ember{position:absolute;bottom:-12px;width:4px;height:4px;border-radius:50%;background:#ffb15d;box-shadow:0 0 12px #ff4b22;animation:rise var(--dur) linear infinite;animation-delay:var(--delay)}.scene.cursed .ember{background:#ff593d;box-shadow:0 0 15px #ff2418}\n@keyframes haunt{0%,100%{filter:none}48%{filter:contrast(1.12)}50%{filter:contrast(1.35) brightness(1.2)}53%{filter:contrast(1.05)}}@keyframes moonPulse{to{box-shadow:0 0 55px #e5b8b877,0 0 120px #e5b8b855}}@keyframes flare{to{opacity:.2}}@keyframes flash{0%{opacity:0}12%{opacity:.95}25%{opacity:0}38%{opacity:.55}100%{opacity:0}}@keyframes rise{to{transform:translateY(-560px) translateX(35px);opacity:0}}
 @keyframes wheel{to{transform:rotate(360deg)}}@keyframes blink{0%{opacity:.35}100%{opacity:1}}@keyframes alarm{to{opacity:.25;transform:scale(.65)}}@keyframes fog{to{transform:translateX(9%) scaleY(1.25)}}@keyframes film{50%{opacity:.35}}
 @media(max-width:600px){.wheel{left:-3%;bottom:19%}.tent{right:-7%;bottom:19%}.moon{right:8%;top:12%;width:42px;height:42px}.scene{min-height:390px}.sign{top:6%}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important}}
@@ -39,7 +39,7 @@ main{width:min(960px,94vw);margin:25px auto 40px}.eyebrow{font-size:10px;letter-
 <h1 class="title">The Cursed Carnival</h1>
 <p class="intro">A deserted midway under a cold moon. The Ferris wheel turns, the big top glows, and the carnival lights flicker as if someone has just arrived. Trigger the curse to reveal what happens after closing time.</p>
 <section class="scene" id="scene" aria-label="A spooky carnival with a rotating Ferris wheel and striped circus tent">
-<div class="skyglow"></div><div class="moon"></div><div class="sign">THE MIDNIGHT MIDWAY</div>
+<div class="skyglow"></div><div class="moon"></div><div class="lightning"></div><div class="embers" id="embers" aria-hidden="true"></div><div class="sign">THE MIDNIGHT MIDWAY</div>
 <div class="bulbs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
 <div class="wheel" aria-hidden="true">
 <svg viewBox="0 0 300 300">
@@ -65,13 +65,34 @@ main{width:min(960px,94vw);margin:25px auto 40px}.eyebrow{font-size:10px;letter-
 <div class="fog"></div><div class="ground"></div><div class="reflection"></div>
 <div class="banner" id="banner">TONIGHT · ONE LAST SHOW</div>
 </section>
-<div class="controls"><button class="primary" id="curse" type="button">UNLEASH THE CURSE</button><button id="reset" type="button">RESET THE MIDWAY</button></div>
+<div class="controls"><button class="primary" id="curse" type="button">UNLEASH THE CURSE</button><button id="sound" type="button">ENABLE CARNIVAL SOUND</button><button id="reset" type="button">RESET THE MIDWAY</button></div>
 <div class="status" id="status" role="status" aria-live="polite">THE CARNIVAL IS QUIET · TAP TO BEGIN</div>
-<p class="intro" style="font-size:11px;margin-top:18px;color:#968982">Preview only. This does not send a gift or change the live gift catalog. Visual effects are built into this page; no external media or sound is required.</p>
+<p class="intro" style="font-size:11px;margin-top:18px;color:#968982">Preview only. This does not send a gift or change the live gift catalog. Sound is generated in the browser and starts only after you tap Enable Carnival Sound.</p>
 </main>
 <script>
 const scene=document.getElementById('scene'),status=document.getElementById('status'),banner=document.getElementById('banner');
-document.getElementById('curse').addEventListener('click',()=>{scene.classList.add('cursed');banner.textContent='THE SHOW NEVER ENDS';status.textContent='THE CURSE IS LOOSE · THE MIDWAY HAS AWAKENED';});
-document.getElementById('reset').addEventListener('click',()=>{scene.classList.remove('cursed');banner.textContent='TONIGHT · ONE LAST SHOW';status.textContent='THE CARNIVAL IS QUIET · TAP TO BEGIN';});
+const emberBox=document.getElementById('embers');
+for(let i=0;i<34;i++){const e=document.createElement('i');e.className='ember';e.style.left=(Math.random()*100)+'%';e.style.setProperty('--dur',(5+Math.random()*8)+'s');e.style.setProperty('--delay',(-Math.random()*12)+'s');emberBox.appendChild(e);}
+let audio=null,master=null,drone=null,windGain=null;
+function startAudio(){
+ if(audio){if(audio.state==='suspended')audio.resume();return;}
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent='AUDIO IS NOT SUPPORTED IN THIS BROWSER';return;}
+ audio=new AC();master=audio.createGain();master.gain.value=.34;master.connect(audio.destination);
+ const low=audio.createOscillator(),lowGain=audio.createGain();low.type='sawtooth';low.frequency.value=49;lowGain.gain.value=.035;low.connect(lowGain).connect(master);low.start();drone=low;
+ const lfo=audio.createOscillator(),lfoGain=audio.createGain();lfo.frequency.value=.13;lfoGain.gain.value=13;lfo.connect(lfoGain).connect(low.frequency);lfo.start();
+ const buffer=audio.createBuffer(1,audio.sampleRate*2,audio.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
+ const noise=audio.createBufferSource();noise.buffer=buffer;noise.loop=true;const filter=audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=380;windGain=audio.createGain();windGain.gain.value=.025;noise.connect(filter).connect(windGain).connect(master);noise.start();
+ document.getElementById('sound').textContent='CARNIVAL SOUND ON';status.textContent='LOW CARNIVAL DRONE · WIND · BELLS ENABLED';
+}
+function chime(freq=660,when=0){
+ if(!audio)return;const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.setValueAtTime(freq,audio.currentTime+when);g.gain.setValueAtTime(.0001,audio.currentTime+when);g.gain.exponentialRampToValueAtTime(.18,audio.currentTime+when+.025);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+when+2.1);o.connect(g).connect(master);o.start(audio.currentTime+when);o.stop(audio.currentTime+when+2.2);
+}
+function thunder(){
+ if(!audio)return;const n=Math.floor(audio.sampleRate*1.8),b=audio.createBuffer(1,n,audio.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);
+ const s=audio.createBufferSource(),f=audio.createBiquadFilter(),g=audio.createGain();s.buffer=b;f.type='lowpass';f.frequency.value=150;g.gain.setValueAtTime(.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.65,audio.currentTime+.06);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+1.8);s.connect(f).connect(g).connect(master);s.start();
+}
+document.getElementById('sound').addEventListener('click',()=>{startAudio();});
+document.getElementById('curse').addEventListener('click',()=>{scene.classList.add('cursed');scene.classList.remove('strike');void scene.offsetWidth;scene.classList.add('strike');banner.textContent='THE SHOW NEVER ENDS';status.textContent='THE CURSE IS LOOSE · THE MIDWAY HAS AWAKENED';if(audio){thunder();chime(880,.18);chime(554,.55);}});
+document.getElementById('reset').addEventListener('click',()=>{scene.classList.remove('cursed','strike');banner.textContent='TONIGHT · ONE LAST SHOW';status.textContent=audio?'THE MIDWAY IS QUIET · SOUND REMAINS ON':'THE CARNIVAL IS QUIET · TAP TO BEGIN';if(audio)chime(440,0);});
 </script>
 </body></html>
