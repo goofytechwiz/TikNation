@@ -8,7 +8,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
 const $=id=>document.getElementById(id);
 try{
 const renderer=new THREE.WebGLRenderer({canvas:$('c'),antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.38;
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x061016);scene.fog=new THREE.FogExp2(0x31515a,.018);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x31515a);scene.fog=new THREE.FogExp2(0x31515a,.018);
 const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,.1,70);camera.position.set(0,3.55,10.8);camera.lookAt(0,3,0);
 scene.add(new THREE.HemisphereLight(0xd8f2f3,0x53656a,2.1));
 const moon=new THREE.DirectionalLight(0xffe7c5,3.4);moon.position.set(-4,9,5);moon.castShadow=true;scene.add(moon);
