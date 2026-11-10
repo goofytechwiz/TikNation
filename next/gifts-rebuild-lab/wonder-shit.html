@@ -22,10 +22,16 @@ h1 span{color:var(--lime);text-shadow:0 0 28px #c9ff7240}
 .sun{position:absolute;right:12%;top:10%;width:clamp(70px,12vw,128px);aspect-ratio:1;border-radius:50%;background:#fff0b4;box-shadow:0 0 75px 25px #ffd88955}
 .topline{position:absolute;z-index:10;left:0;right:0;top:20px;text-align:center;font-size:clamp(10px,1.7vw,14px);letter-spacing:.22em;font-weight:1000;text-shadow:0 2px 12px #08111d}
 .topline span{display:inline-block;padding:10px 18px;border:1px solid #ffffff5c;border-radius:999px;background:#071323a8;backdrop-filter:blur(8px)}
-.hero-wrap{position:absolute;z-index:5;left:50%;top:51%;width:min(91%,880px);height:75%;transform:translate(-50%,-50%);filter:drop-shadow(0 24px 15px #07152277)}
+.hero-wrap{position:absolute;z-index:5;left:50%;top:51%;width:min(91%,880px);height:75%;transform:translate(-50%,-50%);filter:drop-shadow(0 24px 15px #07152277);display:grid;place-items:center}
+.real-dog{width:100%;height:100%;background:transparent;--poster-color:transparent;filter:drop-shadow(0 18px 16px #07152266)}
+.model-loading{color:#d9efff;font:900 11px system-ui;letter-spacing:.18em;padding:16px;border:1px solid #ffffff44;border-radius:20px;background:#081321bb}
+.cape-3d{position:absolute;z-index:-1;left:5%;top:25%;width:45%;height:55%;background:linear-gradient(135deg,#ff8e82,#d82046 50%,#67142d);clip-path:polygon(100% 0,70% 35%,100% 100%,0 78%,20% 45%,0 8%);filter:drop-shadow(0 12px 12px #050b18);transform-origin:90% 15%;opacity:.95}
+.hero-emblem{position:absolute;z-index:6;left:46%;top:45%;width:clamp(28px,5vw,52px);aspect-ratio:1;display:grid;place-items:center;border-radius:50%;background:linear-gradient(145deg,#fff3a6,#dba833);color:#9b1735;font-size:clamp(17px,3vw,30px);border:3px solid #fff2bd;box-shadow:0 0 20px #ffd96b99;pointer-events:none}
+.model-note{position:absolute;z-index:8;bottom:12px;left:12px;padding:7px 10px;border-radius:8px;background:#06101bbd;color:#c9eaff;font-size:9px;letter-spacing:.12em}
 .dog{width:100%;height:100%;overflow:visible}
 .cape{transform-origin:43% 34%;animation:none}
-.stage.play .cape{animation:capeFlutter .28s ease-in-out infinite alternate}
+.stage.play .cape-3d{animation:capeFlutter .28s ease-in-out infinite alternate}
+.stage.play .real-dog{animation:dogGlide 8s cubic-bezier(.2,.65,.25,1) forwards}
 .stage.play .hero-wrap{animation:heroFlight 8s cubic-bezier(.2,.65,.25,1) forwards}
 .streak{position:absolute;z-index:2;width:36%;height:3px;left:-40%;top:55%;background:linear-gradient(90deg,transparent,#fff,#a6f2ff,transparent);transform:rotate(-7deg);opacity:0}
 .stage.play .streak{animation:streak 1.2s linear infinite}
@@ -45,6 +51,7 @@ button.primary{background:var(--lime);border-color:var(--lime);color:#101a0b;box
 .info b{display:block;color:#e9f3ff;font-size:10px;letter-spacing:.14em;margin-bottom:6px}.info span{font-size:11px;color:#91a4bd;line-height:1.5}
 .foot{margin-top:18px;padding-top:14px;border-top:1px solid #ffffff1b;color:#8293aa;font-size:10px;line-height:1.6}
 @keyframes heroFlight{0%{left:-32%;top:69%;transform:translate(-50%,-50%) scale(.52)}22%{left:22%;top:56%;transform:translate(-50%,-50%) scale(.72)}55%{left:58%;top:43%;transform:translate(-50%,-50%) scale(.94)}78%{left:88%;top:36%;transform:translate(-50%,-50%) scale(1.03)}100%{left:73%;top:40%;transform:translate(-50%,-50%) scale(1)}}
+@keyframes dogGlide{0%{transform:rotate(-8deg) scale(.88)}35%{transform:rotate(-2deg) scale(1)}70%{transform:rotate(2deg) scale(1.04)}100%{transform:rotate(0) scale(1)}}
 @keyframes capeFlutter{from{transform:skewY(-8deg) rotate(-5deg)}to{transform:skewY(10deg) rotate(7deg)}}
 @keyframes streak{to{left:135%;opacity:.85}}
 @keyframes launch{0%{opacity:0;transform:translate(0,0) scale(.25) rotate(0)}12%{opacity:1}75%{opacity:1;transform:translate(-30px,105px) scale(1) rotate(480deg)}100%{opacity:0;transform:translate(-65px,145px) scale(.35) rotate(700deg)}}
@@ -53,79 +60,30 @@ button.primary{background:var(--lime);border-color:var(--lime);color:#101a0b;box
 @media(max-width:650px){main{width:94vw}.stage{height:420px}.hero-wrap{width:118%;height:66%;top:52%}.info{grid-template-columns:1fr}.topline{top:13px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
 </head>
 <body>
 <header><b>TIKNATION · GIFT LAB</b><a href="./">← BACK TO GIFT LAB</a></header>
 <main>
 <div class="kicker">ORIGINAL CHARACTER · FULL REBUILD</div>
 <h1>WONDER <span>SHIT</span> 💩</h1>
-<p class="intro">A ridiculous superhero with a serious mission. A golden retriever launches into a forward flight, cape snapping in the wind, then unleashes the ultimate stink-powered save.</p>
+<p class="intro">A ridiculous superhero with a serious mission. A real-time 3D dog model takes center stage, with a flying entrance, superhero cape, and the ultimate stink-powered save.</p>
 <section class="stage" id="stage" aria-label="Wonder Shit superhero gift animation">
 <div class="stars"></div><div class="sun"></div><div class="city"></div><div class="horizon"></div>
 <div class="topline"><span id="headline">THE CITY'S LAST LINE OF DEFENSE</span></div>
 <div class="streak"></div>
 <div class="hero-wrap">
-<svg class="dog" viewBox="0 0 1000 600" role="img" aria-label="Original detailed golden retriever superhero flying toward the right" xmlns="http://www.w3.org/2000/svg">
-<defs>
- <linearGradient id="gold" x1=".1" y1="0" x2=".85" y2="1"><stop stop-color="#fff1c5"/><stop offset=".2" stop-color="#f4d08b"/><stop offset=".46" stop-color="#d99a51"/><stop offset=".73" stop-color="#a95e2d"/><stop offset="1" stop-color="#65351d"/></linearGradient>
- <linearGradient id="cream" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#fff9e8"/><stop offset=".55" stop-color="#efd3a0"/><stop offset="1" stop-color="#bd8148"/></linearGradient>
- <linearGradient id="blue" x1=".1" y1="0" x2=".9" y2="1"><stop stop-color="#83e4ff"/><stop offset=".3" stop-color="#247ec0"/><stop offset=".7" stop-color="#123e75"/><stop offset="1" stop-color="#071c3c"/></linearGradient>
- <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb8a5"/><stop offset=".38" stop-color="#e32c4b"/><stop offset=".78" stop-color="#9b1735"/><stop offset="1" stop-color="#4e1429"/></linearGradient>
- <radialGradient id="eye"><stop stop-color="#9b6338"/><stop offset=".7" stop-color="#4c2b19"/><stop offset="1" stop-color="#171311"/></radialGradient>
- <filter id="fur"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="2" seed="12" result="n"/><feColorMatrix in="n" type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .1"/></feComponentTransfer><feBlend in="SourceGraphic" mode="soft-light"/></filter>
- <filter id="blur"><feGaussianBlur stdDeviation="10"/></filter>
-</defs>
-<!-- cape behind body -->
-<g class="cape">
-<path d="M395 258 C285 205 195 132 65 100 C143 188 128 282 44 390 C185 347 276 430 360 462 C320 360 386 308 465 292Z" fill="url(#red)" stroke="#72152d" stroke-width="9"/>
-<path d="M372 275 C270 222 195 170 122 132 M331 354 Q225 348 130 405" fill="none" stroke="#ffb5a7" stroke-width="8" opacity=".48" stroke-linecap="round"/>
-</g>
-<ellipse cx="490" cy="520" rx="300" ry="24" fill="#07111c" opacity=".3" filter="url(#blur)"/>
-<!-- tail -->
-<path d="M292 310 C225 277 184 230 151 190 C133 170 109 184 119 208 C146 276 203 332 278 357Z" fill="url(#gold)" stroke="#91552c" stroke-width="8"/>
-<path d="M147 200 Q123 178 117 196 M180 250l-25 8m65 41l-24 12" fill="none" stroke="#fff0c8" stroke-width="7" stroke-linecap="round"/>
-<!-- hind legs in running/flying pose -->
-<path d="M337 351 C285 377 245 419 207 460 C189 481 205 500 229 486 C286 456 341 423 387 391Z" fill="url(#gold)" stroke="#92552c" stroke-width="8"/>
-<path d="M213 459 Q188 478 205 493 Q226 503 247 482" fill="none" stroke="#fff0ce" stroke-width="7"/>
-<path d="M330 327 C268 325 233 294 197 267 C174 250 154 268 169 292 C208 351 263 382 337 383Z" fill="url(#gold)" stroke="#92552c" stroke-width="8"/>
-<!-- long torso -->
-<path d="M285 245 C355 193 461 190 554 220 C620 244 645 307 608 368 C564 426 430 430 335 387 C263 356 242 292 285 245Z" fill="url(#gold)" stroke="#92552c" stroke-width="9" filter="url(#fur)"/>
-<!-- fitted hero suit -->
-<path d="M300 255 C372 210 470 207 548 239 C594 259 611 307 582 351 C527 392 415 390 337 355 C293 333 276 290 300 255Z" fill="url(#blue)" stroke="#0b2a50" stroke-width="10"/>
-<path d="M328 259 Q421 214 527 245" fill="none" stroke="#b8efff" stroke-width="9" opacity=".58" stroke-linecap="round"/>
-<path d="M335 349 Q441 396 562 351" fill="none" stroke="#061a39" stroke-width="10" opacity=".7"/>
-<!-- front legs reaching forward -->
-<path d="M515 245 C578 207 641 175 705 163 C734 157 748 177 726 201 C688 239 620 280 556 302Z" fill="url(#gold)" stroke="#92552c" stroke-width="8"/>
-<path d="M526 342 C589 368 647 397 708 410 C738 416 741 443 711 454 C672 467 589 423 522 391Z" fill="url(#gold)" stroke="#92552c" stroke-width="8"/>
-<path d="M702 163 Q744 141 770 167 Q786 188 757 207 Q725 222 700 196Z" fill="url(#cream)" stroke="#92552c" stroke-width="7"/>
-<path d="M705 410 Q747 400 771 426 Q782 450 751 463 Q714 470 696 444Z" fill="url(#cream)" stroke="#92552c" stroke-width="7"/>
-<!-- neck and skull -->
-<path d="M498 239 Q528 155 624 142 Q706 133 748 191 Q763 255 690 315 Q604 326 530 285Z" fill="url(#cream)" stroke="#a56a38" stroke-width="8"/>
-<path d="M573 177 C574 107 637 59 720 76 C803 92 850 151 836 225 C825 286 772 323 701 304 C633 286 579 247 573 177Z" fill="url(#gold)" stroke="#92552c" stroke-width="9" filter="url(#fur)"/>
-<!-- retriever ears -->
-<path d="M644 122 C596 64 548 52 526 86 C508 126 547 190 603 205 C637 184 657 151 644 122Z" fill="#925027" stroke="#6d3c23" stroke-width="8"/>
-<path d="M623 122 Q575 87 553 96 Q562 145 610 175" fill="none" stroke="#d99a59" stroke-width="11" opacity=".7"/>
-<path d="M783 108 C824 52 880 70 891 117 C890 167 850 209 807 213 C779 181 771 142 783 108Z" fill="#94512b" stroke="#6d3c23" stroke-width="8"/>
-<path d="M810 117 Q855 88 872 113 Q853 163 815 184" fill="none" stroke="#d99a59" stroke-width="11" opacity=".65"/>
-<!-- long retriever muzzle -->
-<path d="M705 204 C760 174 830 186 865 224 C886 250 858 293 818 304 C759 314 704 286 681 253Z" fill="url(#cream)" stroke="#a56a38" stroke-width="7"/>
-<path d="M715 239 Q779 213 838 240" fill="none" stroke="#fff9e9" stroke-width="12" opacity=".8" stroke-linecap="round"/>
-<path d="M842 218 Q875 208 891 232 Q891 252 865 261 Q838 261 827 243 Q827 228 842 218Z" fill="#211a18" stroke="#583d32" stroke-width="5"/>
-<path d="M850 224 Q871 218 881 233" fill="none" stroke="#a99a8d" stroke-width="4" stroke-linecap="round"/>
-<path d="M838 275 Q810 309 778 292" fill="none" stroke="#613c2c" stroke-width="7" stroke-linecap="round"/>
-<path d="M809 296 Q827 291 831 305 Q832 323 812 326 Q793 319 798 304Z" fill="#df6976" stroke="#a83f50" stroke-width="4"/>
-<!-- expressive eye -->
-<path d="M724 158 Q753 133 784 157" fill="none" stroke="#744323" stroke-width="10" stroke-linecap="round"/>
-<ellipse cx="755" cy="178" rx="22" ry="28" fill="#fffdf3" stroke="#80502e" stroke-width="5"/>
-<ellipse cx="760" cy="180" rx="13" ry="19" fill="url(#eye)"/><circle cx="766" cy="169" r="5" fill="#fff"/>
-<!-- chest badge -->
-<path d="M426 255 L470 231 L515 255 L506 311 L470 342 L435 311Z" fill="#f6cf63" stroke="#fff1b7" stroke-width="7"/>
-<path d="M470 245 L486 280 L470 316 L454 280Z" fill="#c91e43"/>
-<!-- layered fur details -->
-<g fill="none" stroke-linecap="round">
-<g stroke="#fff0ce" stroke-width="5" opacity=".8"><path d="M299 271l-25 18m51-46l-22 23m64-33l-21 20m-84 65l-28-17m79 69l-23-18m-59-14l-22-20m259-170l-15 21m52-14l-15 19m82 11l-12 18m-45 125l-17 18m-47 1l-12 17m172-194l-12 17m65-3l-13 18m-12 89l-18 13"/></g>
-<g stroke="#874a25" stroke-width="4" opacity=".45"><path d="M322 301l-20 16m55 31l-17 14m-66-46l-17-15m321-81l-13 16m-39 147l-17 13m-37-6l-12 14m-14-189l-10 14"/></g></g>
-</svg>
+<div class="cape-3d" aria-hidden="true"></div>
+<model-viewer class="real-dog" src="https://grab3d.com/dl/dog/dog-light.glb"
+  alt="Realistic detailed 3D dog model used as the Wonder Shit superhero"
+  camera-controls auto-rotate auto-rotate-delay="0" rotation-per-second="18deg"
+  camera-orbit="35deg 75deg 2.7m" min-camera-orbit="auto auto 1.8m"
+  max-camera-orbit="auto auto 4m" camera-target="0m 0.32m 0m"
+  shadow-intensity="1" exposure="1.15" environment-image="neutral"
+  interaction-prompt="none" disable-zoom>
+  <div slot="poster" class="model-loading">LOADING REAL 3D DOG…</div>
+</model-viewer>
+<div class="hero-emblem" aria-hidden="true">★</div>
 </div>
 <div class="projectile" aria-hidden="true">💩</div><div class="cloudblast" aria-hidden="true">💨</div><div class="flies" aria-hidden="true">🪰　🪰　🪰</div>
 </section>
