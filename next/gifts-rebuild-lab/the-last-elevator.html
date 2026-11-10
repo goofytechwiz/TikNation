@@ -63,13 +63,30 @@ const mirrorMat=new THREE.MeshStandardMaterial({color:0x30383a,metalness:.96,rou
 plane(cab,1.55,2.65,mirrorMat,0,2.18,-1.91);
 for(const x of [-.82,.82])cube(cab,.035,2.78,.035,trim,x,2.18,-1.87,false);
 for(const y of [.79,3.57])cube(cab,1.68,.035,.035,trim,0,y,-1.87,false);
-// Front doors, two independently sliding heavy panels
+// Heavy, flush elevator doors with vertical brushed-steel grain and a clean centre split
 const doorRig=new THREE.Group();scene.add(doorRig);
-const doorL=cube(doorRig,2.35,4.12,.2,metal,-1.175,2.15,2.02),doorR=cube(doorRig,2.35,4.12,.2,metal,1.175,2.15,2.02);
-for(let y=.22;y<4.15;y+=.16){cube(doorRig,2.28,.007,.012,mat(0x777a79,.8,.3),-1.175,y,2.13,false);cube(doorRig,2.28,.007,.012,mat(0x777a79,.8,.3),1.175,y,2.13,false)}
-for(const x of [-2.42,2.42])cube(doorRig,.12,4.35,.27,trim,x,2.15,2.02);
-// Door threshold and guide rail
-cube(doorRig,4.75,.08,.42,trim,0,.12,2.05);cube(doorRig,4.75,.04,.12,black,0,.2,2.08);
+const doorMetal=new THREE.MeshStandardMaterial({map:noiseTexture('#3b3e3f'),metalness:.88,roughness:.31});
+const doorL=cube(doorRig,2.35,4.12,.19,doorMetal,-1.175,2.15,2.02);
+const doorR=cube(doorRig,2.35,4.12,.19,doorMetal,1.175,2.15,2.02);
+for(const [panel,side] of [[doorL,1],[doorR,-1]]){
+  // Narrow recessed vertical reveals and fine edge bevels; no ribbed or striped face
+  cube(panel, .018,3.92,.012,mat(0x171a1b,.62,.38),side*1.105,0,.101,false);
+  cube(panel, .012,3.88,.014,mat(0x85847d,.9,.24),side*1.075,0,.105,false);
+  cube(panel, .012,3.88,.014,mat(0x242829,.7,.42),-side*1.075,0,.105,false);
+  // Soft, narrow vertical reflection on the brushed face
+  const sheen=new THREE.MeshBasicMaterial({color:0xb9bdba,transparent:true,opacity:.055});
+  const reflection=new THREE.Mesh(new THREE.PlaneGeometry(.11,3.72),sheen);
+  reflection.position.set(-side*.36,0,.101);panel.add(reflection);
+}
+for(const x of [-2.42,2.42]){
+  cube(doorRig,.13,4.38,.3,mat(0x25292a,.82,.3),x,2.15,2.02);
+  cube(doorRig,.018,4.24,.018,trim,x+(x<0?.075:-.075),2.15,2.17,false);
+}
+// Substantial upper header, dark centre gasket, and recessed sill
+cube(doorRig,4.86,.16,.32,mat(0x202425,.82,.3),0,4.34,2.02);
+cube(doorRig,.025,4.05,.035,black,0,2.15,2.14,false);
+cube(doorRig,4.78,.075,.42,mat(0x555955,.78,.34),0,.12,2.05);
+cube(doorRig,4.72,.025,.16,black,0,.19,2.08,false);
 // ceiling diffuser
 cube(cab,1.9,.055,.75,mat(0xc8c5b8,.05,.3),0,4.25,.15,false);
 const cabinLamp=new THREE.PointLight(0xd8d2be,25,7);cabinLamp.position.set(0,4,.1);cab.add(cabinLamp);
@@ -79,9 +96,7 @@ cube(cab,.3,.25,.025,black,2.18,2.84,.84);
 const displayMat=new THREE.MeshStandardMaterial({color:0xff3a25,emissive:0xa51a10,emissiveIntensity:1.5});
 cube(cab,.16,.06,.02,displayMat,2.18,2.84,.81,false);
 for(let i=0;i<5;i++){const b=new THREE.Mesh(new THREE.CylinderGeometry(.065,.065,.035,24),mat(0xaaa79c,.7,.3));b.rotation.x=Math.PI/2;b.position.set(2.18,2.45-i*.23,.83);cab.add(b);}
-// Fine scratches on metal doors and cabin wall
-const scratchMat=new THREE.MeshBasicMaterial({color:0xaaa99e,transparent:true,opacity:.18});
-for(let i=0;i<75;i++){const h=.02+Math.random()*.26;const s=new THREE.Mesh(new THREE.PlaneGeometry(.006,h),scratchMat);s.position.set((Math.random()-.5)*4.25,.4+Math.random()*3.45,2.125);doorRig.add(s)}
+// Very restrained wear is kept on the cabin, not painted across the door faces
 // The passenger: silhouette, coat hem, long arms and dim eyes. Hidden until reveal.
 const stranger=new THREE.Group();scene.add(stranger);
 const cloth=new THREE.MeshStandardMaterial({color:0x070809,roughness:1});
