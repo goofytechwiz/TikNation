@@ -75,10 +75,10 @@ button:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
 <div class="hero" id="hero">
 <div class="cape" aria-hidden="true"></div>
 <model-viewer class="dog" id="dog" src="https://cdn.3dassets.dev/assets/28137/v1/model.glb" alt="Golden retriever puppy 3D model"
-camera-controls camera-orbit="0deg 75deg 2.1m" camera-target="0m 0.25m 0m"
-min-camera-orbit="auto auto 1.2m" max-camera-orbit="auto auto 3.5m"
-shadow-intensity="1" exposure="1.1" environment-image="neutral"
-interaction-prompt="none" disable-zoom>
+camera-controls camera-orbit="0deg 78deg 1.55m" camera-target="0m 0.42m 0m"
+field-of-view="28deg" min-camera-orbit="auto auto 1.1m" max-camera-orbit="auto auto 2.4m"
+shadow-intensity="1.25" exposure="1.25" environment-image="neutral"
+loading="eager" reveal="auto" interaction-prompt="none" disable-zoom>
 <div slot="poster" class="poster">LOADING THE GOLDEN PUP HERO…</div>
 </model-viewer>
 <div class="emblem" aria-hidden="true">★</div>
@@ -95,7 +95,11 @@ interaction-prompt="none" disable-zoom>
 <p class="foot">Preview only · No coins charged · No gift sent · The dog is a real-time 3D golden retriever puppy model. The model itself is a posed study; the flight and cape are animated in the scene.</p>
 </main>
 <script>
-const scene=document.getElementById('scene'),headline=document.getElementById('headline'),status=document.getElementById('status');
+const scene=document.getElementById('scene'),headline=document.getElementById('headline'),status=document.getElementById('status'),dog=document.getElementById('dog');
+let modelLoaded=false;
+dog.addEventListener('load',()=>{modelLoaded=true;status.textContent='GOLDEN PUP LOADED · READY FOR SUPERHERO DUTY';});
+dog.addEventListener('error',()=>{status.textContent='THE 3D PUP COULD NOT LOAD · TRY RELOADING ON WI-FI';headline.textContent='HERO SIGNAL LOST';});
+setTimeout(()=>{if(!modelLoaded&&!dog.loaded)status.textContent='CONNECTING TO THE 3D HERO… IF THIS STAYS HERE, THE MODEL SERVER IS NOT RESPONDING';},9000);
 let soundOn=true,timers=[],ctx=null;
 function stop(){timers.forEach(clearTimeout);timers=[];scene.classList.remove('play');status.textContent='RESET · READY TO FLY';headline.textContent='THE CITY NEEDS A HERO'}
 function tone(freq,duration,type='sine',volume=.08,slide=0){if(!soundOn)return;try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,ctx.currentTime);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(35,freq+slide),ctx.currentTime+duration);g.gain.setValueAtTime(volume,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+duration)}catch(e){}}
@@ -106,7 +110,7 @@ function play(){stop();void scene.offsetWidth;scene.classList.add('play');headli
 document.getElementById('play').addEventListener('click',play);
 document.getElementById('stop').addEventListener('click',stop);
 document.getElementById('sound').addEventListener('click',()=>{soundOn=!soundOn;document.getElementById('sound').textContent='SOUND: '+(soundOn?'ON':'OFF');status.textContent='SOUND '+(soundOn?'ON':'OFF')});
-document.getElementById('dog').addEventListener('error',()=>{status.textContent='3D MODEL FAILED TO LOAD · CHECK CONNECTION';});
+
 </script>
 </body>
 </html>
