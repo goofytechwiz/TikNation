@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#09070d"><title>The Cursed Carnival · TikNation Gift Preview</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#08070b;color:#f7e9dc;font-family:system-ui,sans-serif}body{min-height:100vh;background:radial-gradient(ellipse at 50% 65%,#34201f 0,#110e12 52%,#07070a 100%);overflow-x:hidden}
+header{height:54px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff20;color:#c7b9b0;font-size:10px;letter-spacing:.18em}a{color:#e7c6a9;text-decoration:none}
+main{width:min(960px,94vw);margin:25px auto 40px}.eyebrow{font-size:10px;letter-spacing:.25em;color:#d5a87d}.title{font:clamp(34px,7vw,58px)/1.05 Georgia,serif;margin:8px 0}.intro{max-width:680px;color:#c8bcb6;font-size:13px;line-height:1.6}
+.scene{position:relative;height:min(65vh,570px);min-height:370px;margin-top:20px;border:1px solid #c68f6244;border-radius:18px;overflow:hidden;background:linear-gradient(#100f18 0%,#28202a 54%,#161116 100%);box-shadow:0 24px 75px #000a,inset 0 0 90px #000b;isolation:isolate}
+.skyglow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 62%,#9d552b33,transparent 58%),radial-gradient(ellipse at 80% 18%,#6b315022,transparent 40%)}
+.moon{position:absolute;right:12%;top:9%;width:58px;height:58px;border-radius:50%;background:#e6d5b6;box-shadow:0 0 24px #e6d5b677,0 0 90px #e6d5b633;opacity:.78}
+.fog{position:absolute;left:-20%;right:-20%;bottom:7%;height:32%;background:linear-gradient(transparent,#c5b6b022 45%,transparent);filter:blur(18px);animation:fog 13s ease-in-out infinite alternate}
+.ground{position:absolute;left:0;right:0;bottom:0;height:23%;background:linear-gradient(#20191b,#09090c);border-top:1px solid #d8a36a22}
+.reflection{position:absolute;left:0;right:0;bottom:0;height:20%;background:repeating-linear-gradient(100deg,transparent 0 34px,#d39b5520 35px 37px,transparent 38px 74px);opacity:.5;transform:skewY(-3deg)}
+.wheel{position:absolute;width:min(37vw,285px);height:min(37vw,285px);min-width:190px;min-height:190px;left:7%;bottom:17%;filter:drop-shadow(0 0 10px #d8a05b44)}
+.wheel svg{width:100%;height:100%;overflow:visible}
+.rim{fill:none;stroke:#c89b6d;stroke-width:4}.spokes{stroke:#a77e5c;stroke-width:2}.hub{fill:#e6c28e;stroke:#573a2a;stroke-width:5}.gondola{fill:#30242b;stroke:#d3a16c;stroke-width:2}
+.wheelspin{transform-origin:150px 150px;animation:wheel 34s linear infinite}
+.tent{position:absolute;width:min(44vw,350px);min-width:220px;right:7%;bottom:17%;filter:drop-shadow(0 12px 20px #000a)}
+.sign{position:absolute;left:50%;top:5%;transform:translateX(-50%);width:min(84%,500px);text-align:center;color:#f6d4a6;font-size:clamp(10px,2vw,15px);letter-spacing:.28em;text-shadow:0 0 12px #e9a35a}
+.bulbs{position:absolute;left:50%;top:15%;transform:translateX(-50%);display:flex;gap:clamp(8px,2vw,18px)}
+.bulbs i{width:6px;height:6px;border-radius:50%;background:#eac18b;box-shadow:0 0 12px #ffc77a;animation:blink 2.2s infinite alternate}
+.bulbs i:nth-child(2n){animation-delay:.7s}.bulbs i:nth-child(3n){animation-delay:1.3s}
+.banner{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);font:clamp(13px,2.4vw,21px) Georgia,serif;letter-spacing:.2em;color:#f4d6b1;text-shadow:0 2px 12px #000;width:100%;text-align:center}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}button{border:1px solid #c79a6b77;background:#21191b;color:#f6e6d7;border-radius:999px;padding:13px 20px;font-size:10px;font-weight:850;letter-spacing:.13em;cursor:pointer}button.primary{background:linear-gradient(110deg,#dca56e,#f0d1a5);border:0;color:#1b1110}button:focus-visible{outline:3px solid white;outline-offset:3px}
+.status{margin-top:12px;min-height:22px;color:#d8b48e;font-size:10px;letter-spacing:.12em}
+.scene.cursed{background:linear-gradient(#08070d,#211018 54%,#120b10)}.scene.cursed .skyglow{background:radial-gradient(ellipse at 50% 65%,#b52c1c44,transparent 58%)}.scene.cursed .moon{background:#a9a0a0;box-shadow:0 0 34px #d6d0d077}.scene.cursed .tent{filter:drop-shadow(0 0 18px #d42c1d88) brightness(.75) saturate(1.5)}.scene.cursed .wheel{filter:drop-shadow(0 0 18px #c72e2588) sepia(.3)}.scene.cursed .bulbs i{background:#ff4b35;box-shadow:0 0 17px #ff3020;animation:alarm .35s infinite alternate}.scene.cursed .fog{background:linear-gradient(transparent,#b21f242e 45%,transparent);animation-duration:5s}.scene.cursed .banner{color:#ffb5a0;text-shadow:0 0 16px #ff301d}
+.scene.cursed:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#0000 0 3px,#00000012 4px);animation:film 1.5s steps(2) infinite}
+@keyframes wheel{to{transform:rotate(360deg)}}@keyframes blink{0%{opacity:.35}100%{opacity:1}}@keyframes alarm{to{opacity:.25;transform:scale(.65)}}@keyframes fog{to{transform:translateX(9%) scaleY(1.25)}}@keyframes film{50%{opacity:.35}}
+@media(max-width:600px){.wheel{left:-3%;bottom:19%}.tent{right:-7%;bottom:19%}.moon{right:8%;top:12%;width:42px;height:42px}.scene{min-height:390px}.sign{top:6%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><b>TIKNATION · EPIC GIFT TEST</b><a href="./">← GIFT TEST LAB</a></header>
+<main>
+<div class="eyebrow">NEW GIFT CONCEPT · ISOLATED PREVIEW</div>
+<h1 class="title">The Cursed Carnival</h1>
+<p class="intro">A deserted midway under a cold moon. The Ferris wheel turns, the big top glows, and the carnival lights flicker as if someone has just arrived. Trigger the curse to reveal what happens after closing time.</p>
+<section class="scene" id="scene" aria-label="A spooky carnival with a rotating Ferris wheel and striped circus tent">
+<div class="skyglow"></div><div class="moon"></div><div class="sign">THE MIDNIGHT MIDWAY</div>
+<div class="bulbs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<div class="wheel" aria-hidden="true">
+<svg viewBox="0 0 300 300">
+<g class="wheelspin">
+<circle class="rim" cx="150" cy="150" r="124"/><circle class="rim" cx="150" cy="150" r="91" opacity=".55"/>
+<g class="spokes"><line x1="150" y1="150" x2="274" y2="150"/><line x1="150" y1="150" x2="264.56106203139956" y2="197.45274561327113"/><line x1="150" y1="150" x2="237.68124086713192" y2="237.6812408671319"/><line x1="150" y1="150" x2="197.45274561327113" y2="264.56106203139956"/><line x1="150" y1="150" x2="150" y2="274"/><line x1="150" y1="150" x2="102.54725438672887" y2="264.56106203139956"/><line x1="150" y1="150" x2="62.31875913286811" y2="237.68124086713192"/><line x1="150" y1="150" x2="35.43893796860044" y2="197.45274561327113"/><line x1="150" y1="150" x2="26" y2="150.00000000000003"/><line x1="150" y1="150" x2="35.43893796860043" y2="102.54725438672888"/><line x1="150" y1="150" x2="62.31875913286808" y2="62.31875913286811"/><line x1="150" y1="150" x2="102.5472543867288" y2="35.43893796860047"/><line x1="150" y1="150" x2="149.99999999999997" y2="26"/><line x1="150" y1="150" x2="197.45274561327116" y2="35.438937968600456"/><line x1="150" y1="150" x2="237.68124086713186" y2="62.31875913286808"/><line x1="150" y1="150" x2="264.5610620313995" y2="102.54725438672878"/></g>
+<g><g transform="translate(264,153)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(254.56106203139956,200.45274561327113)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(227.68124086713192,240.6812408671319)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(187.45274561327113,267.56106203139956)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(140,277)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(92.54725438672887,267.56106203139956)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(52.31875913286811,240.68124086713192)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(25.43893796860044,200.45274561327113)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(16,153.00000000000003)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(25.438937968600428,105.54725438672888)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(52.31875913286808,65.31875913286811)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(92.5472543867288,38.43893796860047)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(139.99999999999997,29)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(187.45274561327116,38.438937968600456)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(227.68124086713186,65.31875913286808)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g><g transform="translate(254.5610620313995,105.54725438672878)"><path class="gondola" d="M0 0h20l-3 22H3z"/><path d="M2 1h16" stroke="#f2d5ad" stroke-width="2"/></g></g>
+<circle class="hub" cx="150" cy="150" r="12"/>
+</g>
+<path d="M120 274L150 150l30 124M100 274h100" fill="none" stroke="#8e6c53" stroke-width="8" stroke-linecap="round"/>
+</svg></div>
+<div class="tent" aria-hidden="true">
+<svg viewBox="0 0 360 300">
+<defs><linearGradient id="tentshade" x2="0" y2="1"><stop stop-color="#b74435"/><stop offset="1" stop-color="#35151b"/></linearGradient></defs>
+<path d="M20 270L180 26 340 270Z" fill="#26151a" stroke="#d5a36f" stroke-width="3"/>
+<path d="M180 26L180 270H20Z" fill="url(#tentshade)"/><path d="M180 26L260 270H180Z" fill="#e1c5a0"/><path d="M180 26L340 270H260Z" fill="#7e2829"/>
+<path d="M180 26L100 270H20Z" fill="#e1c5a0" opacity=".85"/>
+<path d="M180 26V270M20 270H340" stroke="#d9b17e" stroke-width="4"/>
+<path d="M151 270v-80q29-45 58 0v80" fill="#100d11" stroke="#d8aa79" stroke-width="4"/>
+<path d="M180 26l-12-17h24z" fill="#e8c48c"/><circle cx="180" cy="9" r="5" fill="#fff0c9"/>
+<g fill="#f3d19b"><circle cx="28" cy="270" r="3"/><circle cx="53" cy="265.8588952783597" r="3"/><circle cx="78" cy="262" r="3"/><circle cx="103" cy="258.68629150101526" r="3"/><circle cx="128" cy="256.143593539449" r="3"/><circle cx="153" cy="254.54518677937492" r="3"/><circle cx="178" cy="254" r="3"/><circle cx="203" cy="254.54518677937492" r="3"/><circle cx="228" cy="256.143593539449" r="3"/><circle cx="253" cy="258.68629150101526" r="3"/><circle cx="278" cy="262" r="3"/><circle cx="303" cy="265.8588952783597" r="3"/><circle cx="328" cy="270" r="3"/></g>
+</svg></div>
+<div class="fog"></div><div class="ground"></div><div class="reflection"></div>
+<div class="banner" id="banner">TONIGHT · ONE LAST SHOW</div>
+</section>
+<div class="controls"><button class="primary" id="curse" type="button">UNLEASH THE CURSE</button><button id="reset" type="button">RESET THE MIDWAY</button></div>
+<div class="status" id="status" role="status" aria-live="polite">THE CARNIVAL IS QUIET · TAP TO BEGIN</div>
+<p class="intro" style="font-size:11px;margin-top:18px;color:#968982">Preview only. This does not send a gift or change the live gift catalog. Visual effects are built into this page; no external media or sound is required.</p>
+</main>
+<script>
+const scene=document.getElementById('scene'),status=document.getElementById('status'),banner=document.getElementById('banner');
+document.getElementById('curse').addEventListener('click',()=>{scene.classList.add('cursed');banner.textContent='THE SHOW NEVER ENDS';status.textContent='THE CURSE IS LOOSE · THE MIDWAY HAS AWAKENED';});
+document.getElementById('reset').addEventListener('click',()=>{scene.classList.remove('cursed');banner.textContent='TONIGHT · ONE LAST SHOW';status.textContent='THE CARNIVAL IS QUIET · TAP TO BEGIN';});
+</script>
+</body></html>
