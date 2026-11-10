@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#05090c"><title>THE DROWNED BELL · TikNation</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05090c;color:#e5e8e8;font-family:Arial,sans-serif}canvas{position:fixed;inset:0;width:100%;height:100%}.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 25%,#0008 70%,#000e),linear-gradient(180deg,#0008,transparent 25% 70%,#000c)}.heading{position:fixed;top:max(18px,env(safe-area-inset-top));width:100%;text-align:center;font-size:9px;letter-spacing:.34em;color:#b9c8cc}.story{position:fixed;bottom:calc(120px + env(safe-area-inset-bottom));left:16px;right:16px;text-align:center;font:italic 15px Georgia,serif;letter-spacing:.08em;text-shadow:0 2px 12px #000}.status{position:fixed;bottom:calc(88px + env(safe-area-inset-bottom));width:100%;text-align:center;font-size:9px;letter-spacing:.16em;color:#9fb4b9}.controls{position:fixed;bottom:calc(15px + env(safe-area-inset-bottom));width:100%;display:flex;justify-content:center;gap:8px;padding:0 10px}button{height:43px;padding:0 16px;border:1px solid #8da4a988;border-radius:2px;background:#111a20;color:#e2e9e9;font-size:9px;font-weight:bold;letter-spacing:.13em}button.primary{background:#c4d2d2;color:#101719}button:disabled{opacity:.35}#fallback{display:none;position:fixed;inset:0;place-items:center;text-align:center;padding:25px}@media(max-width:520px){.story{font-size:12px}.controls{gap:5px}button{padding:0 10px;font-size:8px}}
+</style></head><body><canvas id="c"></canvas><div class="vignette"></div><div class="heading" id="heading">TIKNATION · AFTER DARK · THE DROWNED BELL</div><div class="story" id="story">THE CHAPEL SANK BENEATH THE LAKE IN 1912</div><div class="status" id="status">INTERACTIVE PREVIEW · NO GIFT SENT</div><div class="controls"><button class="primary" id="listen">APPROACH THE BELL</button><button id="touch" disabled>TOUCH THE ROPE</button><button id="reset">RESTART</button></div><div id="fallback">The 3D scene could not start. Check your connection and reload.</div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+const $=id=>document.getElementById(id);
+try{
+const renderer=new THREE.WebGLRenderer({canvas:$('c'),antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x061016);scene.fog=new THREE.FogExp2(0x07141b,.055);
+const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,.1,70);camera.position.set(0,3.4,10);camera.lookAt(0,3,0);
+scene.add(new THREE.HemisphereLight(0x8aa9b5,0x080c10,.8));
+const moon=new THREE.DirectionalLight(0x9dbacb,2.3);moon.position.set(-4,9,5);moon.castShadow=true;scene.add(moon);
+const poolLight=new THREE.PointLight(0x1d7184,22,12);poolLight.position.set(0,1,1);scene.add(poolLight);
+const stone=new THREE.MeshStandardMaterial({color:0x333c3e,roughness:.94}),edge=new THREE.MeshStandardMaterial({color:0x687477,roughness:.8}),dark=new THREE.MeshStandardMaterial({color:0x090e11,roughness:1}),bronze=new THREE.MeshStandardMaterial({color:0x66543b,metalness:.78,roughness:.3}),waterMat=new THREE.MeshStandardMaterial({color:0x0a3039,metalness:.55,roughness:.19,transparent:true,opacity:.83});
+function box(p,w,h,d,m,x,y,z){let o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;p.add(o);return o}
+const chapel=new THREE.Group();scene.add(chapel);
+// flooded nave and broken masonry
+box(chapel,11,.3,10,stone,0,.0,-1);box(chapel,10,.12,9,waterMat,0,.42,-1);
+for(let x of [-3.8,3.8]){box(chapel,.65,7,.75,stone,x,3.4,-1.8);box(chapel,.82,.32,.9,edge,x,6.85,-1.8);box(chapel,.55,6,.55,stone,x,3.1,1.7)}
+// pointed arch framing the bell chamber
+for(let x of [-2.9,2.9])box(chapel,.35,5.7,.45,edge,x,3.2,-2.4);
+const arch=new THREE.Mesh(new THREE.TorusGeometry(2.9,.18,10,40,Math.PI),edge);arch.position.set(0,5.7,-2.4);arch.rotation.z=Math.PI;chapel.add(arch);
+box(chapel,7,.3,.6,stone,0,6.0,-2.4);
+// tall lancet windows with cold moonlit glass
+const glass=new THREE.MeshStandardMaterial({color:0x193e4a,emissive:0x0b2934,emissiveIntensity:.8,metalness:.2,roughness:.18});
+for(let x of [-3.78,3.78]){let w=box(chapel,.05,2.5,.9,glass,x,4.4,-1.35);w.rotation.z=.0;box(chapel,.12,2.7,.08,edge,x,4.4,-.83)}
+// huge suspended bronze bell
+const bell=new THREE.Group();bell.position.set(0,5.05,-2.2);chapel.add(bell);
+const bellMesh=new THREE.Mesh(new THREE.CylinderGeometry(.48,.98,1.45,48,1,true),bronze);bellMesh.position.y=-.68;bell.add(bellMesh);
+const lip=new THREE.Mesh(new THREE.TorusGeometry(.94,.085,12,48),bronze);lip.position.y=-1.38;bell.add(lip);
+const crown= new THREE.Mesh(new THREE.CylinderGeometry(.22,.32,.25,24),bronze);crown.position.y=.1;bell.add(crown);
+const hanger=box(bell,.16,.75,.16,bronze,0,.48,0);
+const clapper=new THREE.Mesh(new THREE.SphereGeometry(.14,20,16),bronze);clapper.position.y=-1.52;bell.add(clapper);
+const ropeMat=new THREE.MeshStandardMaterial({color:0x4b3828,roughness:1});
+const rope=new THREE.Mesh(new THREE.CylinderGeometry(.035,.045,3.7,10),ropeMat);rope.position.set(0,2.1,-2.2);scene.add(rope);
+const ropeEnd=new THREE.Mesh(new THREE.SphereGeometry(.13,12,10),ropeMat);ropeEnd.position.set(0,.22,-2.2);scene.add(ropeEnd);
+// Broken pews partly submerged
+for(let z=1;z<4;z+=1.25)for(let x of [-2.2,2.2]){let pew=box(chapel,2.1,.16,.42,edge,x,.65,z);pew.rotation.z=(Math.random()-.5)*.08;box(chapel,.13,.7,.13,stone,x-.8,.32,z);box(chapel,.13,.7,.13,stone,x+.8,.32,z)}
+// A pale hand appears below the water only after the rope is pulled
+const hand=new THREE.Group();scene.add(hand);const skin=new THREE.MeshStandardMaterial({color:0x87989a,roughness:.85});
+let palm=new THREE.Mesh(new THREE.SphereGeometry(.3,20,16),skin);palm.scale.set(1,.55,1.25);hand.add(palm);
+for(let i=0;i<4;i++){let f=new THREE.Mesh(new THREE.CylinderGeometry(.045,.07,.72,10),skin);f.position.set((i-1.5)*.13,.13,-.48);f.rotation.x=-.35;hand.add(f)}
+let wrist=new THREE.Mesh(new THREE.CylinderGeometry(.13,.18,.7,12),skin);wrist.position.y=-.42;hand.add(wrist);hand.position.set(.1,.38,.7);hand.rotation.x=-.25;hand.visible=false;
+// surface ripples and suspended particles
+const ripples=[];for(let i=0;i<5;i++){let r=new THREE.Mesh(new THREE.TorusGeometry(.5+i*.22,.012,6,64),new THREE.MeshBasicMaterial({color:0x75aeb5,transparent:true,opacity:.24-i*.03}));r.rotation.x=Math.PI/2;r.position.set(0,.48,-.5);scene.add(r);ripples.push(r)}
+const dustGeo=new THREE.BufferGeometry(),n=160,arr=new Float32Array(n*3);for(let i=0;i<n;i++){arr[i*3]=(Math.random()-.5)*8;arr[i*3+1]=Math.random()*6;arr[i*3+2]=(Math.random()-.5)*7-1}dustGeo.setAttribute('position',new THREE.BufferAttribute(arr,3));const dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:0xa6c1c4,size:.022,transparent:true,opacity:.48}));scene.add(dust);
+let phase=0,t=0,swing=0,target=0;const clock=new THREE.Clock();
+function say(s,line){$('status').textContent=s;$('story').textContent=line}
+function animate(){requestAnimationFrame(animate);let dt=Math.min(clock.getDelta(),.04);t+=dt;swing+=(target-swing)*dt*1.7;bell.rotation.z=Math.sin(t*1.3)*.015+swing;clapper.rotation.z=-bell.rotation.z*1.6;rope.rotation.z=swing*.65;poolLight.intensity=phase>1?24+Math.sin(t*8)*3:18+Math.sin(t*1.2)*2;for(let i=0;i<ripples.length;i++){let s=1+((t*.22+i*.23)%1)*1.7;ripples[i].scale.setScalar(s);ripples[i].material.opacity=.2*(1-(s-1)/1.7)}let a=dustGeo.attributes.position;for(let i=0;i<n;i++){a.array[i*3+1]+=.06*dt;if(a.array[i*3+1]>6)a.array[i*3+1]=0}a.needsUpdate=true;camera.position.x=Math.sin(t*.12)*.025;camera.lookAt(0,3,0);renderer.render(scene,camera)}
+animate();
+$('listen').onclick=()=>{if(phase!==0)return;phase=1;$('listen').disabled=true;$('touch').disabled=false;$('heading').textContent='CHAPEL OF THE DROWNED · BELL CHAMBER';say('THE BELL IS MOVING','THERE IS NO WIND DOWN HERE.');target=.08};
+$('touch').onclick=()=>{if(phase!==1)return;phase=2;$('touch').disabled=true;target=.32;hand.visible=true;poolLight.color.setHex(0x8db9c0);say('SOMETHING HAS TAKEN HOLD','A HAND IS REACHING UP THROUGH THE WATER.');setTimeout(()=>{target=-.24;},900);setTimeout(()=>{target=.02;},1900);setTimeout(()=>{if(phase!==2)return;hand.position.y=.9; say('THE WATER IS RISING','THE BELL HAS STOPPED. SOMETHING HAS NOT.');},2600)};
+$('reset').onclick=()=>{phase=0;target=0;hand.visible=false;hand.position.y=.38;poolLight.color.setHex(0x1d7184);$('listen').disabled=false;$('touch').disabled=true;$('heading').textContent='TIKNATION · AFTER DARK · THE DROWNED BELL';say('INTERACTIVE PREVIEW · NO GIFT SENT','THE CHAPEL SANK BENEATH THE LAKE IN 1912')};
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.6))});
+}catch(e){$('fallback').style.display='grid';$('status').textContent='3D SCENE FAILED TO LOAD'}
+</script></body></html>
