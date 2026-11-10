@@ -64,7 +64,7 @@ button:focus-visible,input:focus-visible{outline:3px solid white;outline-offset:
 @media(max-width:560px){.scene{height:97svh;min-height:700px}.bin{width:76%;height:26%;bottom:31%}.lid{width:82%;bottom:56%}.vapor{width:98%;bottom:48%}.status{bottom:184px}.panel{gap:6px;padding:8px}.panel button{font-size:9px;min-height:40px}}
 @media(prefers-reduced-motion:reduce){.scene .fly,.scene .wisp,.scene .odor-label{animation:none!important}.scene.release-on .real-fly-footage{filter:contrast(1.12) saturate(1.15)}.scene.release-on .vapor{opacity:.7}}
 
-.real-fly-footage{position:absolute;z-index:13;overflow:hidden;border:2px solid #9ca58c88;border-radius:12px;background:#050805;box-shadow:0 10px 28px #000b}
+.real-fly-footage{opacity:0;transition:opacity .5s;position:absolute;z-index:13;overflow:hidden;border:2px solid #9ca58c88;border-radius:12px;background:#050805;box-shadow:0 10px 28px #000b}
 .real-fly-footage video{display:block;width:100%;height:100%;object-fit:cover}
 .fly-macro{left:5%;top:34%;width:34%;height:23%;transform:rotate(-3deg)}
 .fly-swarm{right:5%;top:36%;width:38%;height:19%;transform:rotate(2deg)}
