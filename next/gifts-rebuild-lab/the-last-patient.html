@@ -10,13 +10,13 @@
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:#050608;color:#e6eeee;font-family:Arial,sans-serif}
 body{min-height:100svh;display:grid;place-items:center;overflow:hidden}
-.stage{position:relative;width:min(100vw,980px);height:min(100svh,760px);min-height:570px;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 50% 35%,#293137 0,#141b20 35%,#080b0e 76%);box-shadow:0 0 90px #000}
+.stage{position:relative;width:min(100vw,980px);height:min(100svh,760px);min-height:570px;overflow:hidden;isolation:isolate;background:linear-gradient(90deg,#080b0d 0%,#1b2427 18%,#20292c 50%,#151d20 82%,#07090b 100%);box-shadow:0 0 90px #000}
 .ceiling{position:absolute;inset:0 0 auto;height:28%;background:linear-gradient(180deg,#050709,#1a2226 72%,transparent);clip-path:polygon(0 0,100% 0,82% 100%,18% 100%)}
-.floor{position:absolute;left:-15%;right:-15%;bottom:-2%;height:57%;background:repeating-linear-gradient(90deg,transparent 0 98px,#d9e0df0a 99px 101px),repeating-linear-gradient(0deg,#151a1d 0 46px,#242b2e 47px 49px);transform:perspective(390px) rotateX(58deg);transform-origin:bottom;box-shadow:inset 0 40px 70px #000}
-.wall{position:absolute;inset:12% 0 20%;background:linear-gradient(90deg,#070a0d 0 5%,#20292d 5% 7%,#11181c 7% 18%,transparent 18% 82%,#11181c 82% 93%,#20292d 93% 95%,#070a0d 95%);clip-path:polygon(0 0,100% 0,82% 100%,18% 100%)}
+.floor{position:absolute;left:-15%;right:-15%;bottom:-2%;height:57%;background:repeating-linear-gradient(90deg,transparent 0 98px,#d9e0df0a 99px 101px),repeating-linear-gradient(0deg,#171c1e 0 46px,#30383a 47px 49px),linear-gradient(180deg,#323a3b,#090c0e);transform:perspective(390px) rotateX(58deg);transform-origin:bottom;box-shadow:inset 0 40px 70px #000}
+.wall{position:absolute;inset:12% 0 20%;background:linear-gradient(90deg,#080b0d 0 5%,#384144 5% 6%,#171f22 6% 18%,#20292b 18% 49%,#1a2225 51% 82%,#11191c 82% 94%,#394244 94% 95%,#080b0d 95%);clip-path:polygon(0 0,100% 0,82% 100%,18% 100%)}
 .perspective-lines{position:absolute;inset:18% 0 0;background:linear-gradient(90deg,transparent 49.7%,#b8c7c711 50%,transparent 50.3%),linear-gradient(180deg,transparent 65%,#b8c7c70c 65.2%,transparent 65.5%);pointer-events:none}
 .doors{position:absolute;inset:18% 0 22%;display:flex;justify-content:space-between;padding:0 8%;pointer-events:none}
-.door{position:relative;width:15%;height:72%;background:linear-gradient(90deg,#070a0b,#30383a 12%,#151c1f 82%,#050709);border:5px solid #30393b;box-shadow:inset 0 0 0 2px #687274,0 0 24px #000}
+.door{position:relative;width:15%;height:72%;background:linear-gradient(90deg,#080b0c,#596365 5%,#242d30 10%,#131a1c 88%,#050708);border:5px solid #394346;box-shadow:inset 0 0 0 2px #8b9695,inset 0 0 20px #000,0 0 24px #000}
 .door:before{content:"";position:absolute;inset:9%;border:2px solid #536063;box-shadow:inset 0 0 14px #000}
 .door:after{content:"";position:absolute;right:12%;top:52%;width:7px;height:7px;border-radius:50%;background:#b1a27c;box-shadow:0 0 8px #b1a27c}
 .sign{position:absolute;top:17%;left:50%;transform:translateX(-50%);padding:7px 13px;border:1px solid #77818155;background:#111719;color:#9da9a8;font-size:8px;letter-spacing:.28em;white-space:nowrap}
@@ -30,31 +30,31 @@ body{min-height:100svh;display:grid;place-items:center;overflow:hidden}
 .gurney{position:absolute;z-index:8;left:50%;bottom:15%;width:min(62%,540px);height:31%;transform:translateX(-50%) scale(.7);transform-origin:center bottom;filter:drop-shadow(0 22px 17px #000);transition:transform 4s cubic-bezier(.2,.7,.1,1)}
 .stage.released .gurney{transform:translateX(-50%) translateY(13%) scale(1.12)}
 .frame{position:absolute;left:8%;right:8%;top:49%;height:12px;background:linear-gradient(#b5c2c1,#394548 45%,#151b1e);border:2px solid #7a8989;border-radius:5px;box-shadow:0 5px 8px #000}
-.mattress{position:absolute;left:10%;right:10%;top:28%;height:26%;border-radius:12px 12px 5px 5px;background:linear-gradient(180deg,#d2d8d2,#858f8b 60%,#404b4b);border:2px solid #c4cdca;box-shadow:inset 0 5px 9px #fff5,0 8px 10px #000}
-.sheet{position:absolute;left:17%;right:17%;top:22%;height:25%;border-radius:48% 48% 18% 18%;background:linear-gradient(180deg,#e2e5dd,#9fa9a2 70%,#697571);box-shadow:inset 0 8px 12px #fff7,0 5px 8px #0007}
-.head{position:absolute;left:42%;top:12%;width:16%;height:19%;border-radius:48% 48% 42% 42%;background:radial-gradient(ellipse at 35% 25%,#c5c5b8,#777f7b 64%,#252b2d);box-shadow:0 3px 9px #000;transform:rotate(-7deg)}
+.mattress{position:absolute;left:10%;right:10%;top:28%;height:26%;border-radius:12px 12px 5px 5px;background:repeating-linear-gradient(175deg,#bfc7c1 0 3px,#aab4ad 4px 7px,#858f8b 8px 10px);border:2px solid #c4cdca;box-shadow:inset 0 5px 9px #fff5,0 8px 10px #000}
+.sheet{position:absolute;left:17%;right:17%;top:22%;height:25%;border-radius:48% 48% 18% 18%;background:repeating-linear-gradient(170deg,#d8dcd4 0 4px,#c1c9c0 5px 9px,#a1aaa3 10px 14px);box-shadow:inset 0 8px 12px #fff7,0 5px 8px #0007}
+.head{position:absolute;left:42%;top:12%;width:16%;height:19%;border-radius:48% 48% 42% 42%;background:radial-gradient(ellipse at 34% 23%,#c7c2b7 0%,#a19d94 30%,#777a75 65%,#282e30 100%);box-shadow:0 3px 9px #000;transform:rotate(-7deg)}
 .sheet-fold{position:absolute;left:25%;right:22%;top:31%;height:15%;background:linear-gradient(180deg,#f0f0e8,#aeb6af);clip-path:polygon(0 0,100% 20%,92% 100%,8% 100%)}
-.rail{position:absolute;top:23%;height:34%;width:4px;border-radius:3px;background:linear-gradient(90deg,#647477,#d0d9d4,#384447);box-shadow:0 0 4px #000}
+.rail{position:absolute;top:23%;height:34%;width:4px;border-radius:3px;background:linear-gradient(90deg,#283437 0%,#aebbb8 18%,#e0e4dc 42%,#647174 65%,#20292c 100%);box-shadow:0 0 4px #000}
 .rail.l{left:8%}.rail.r{right:8%}
 .leg{position:absolute;top:56%;width:5px;height:34%;background:linear-gradient(90deg,#354245,#c2ceca,#394649);transform-origin:top}
 .leg.a{left:16%;transform:rotate(7deg)}.leg.b{right:16%;transform:rotate(-7deg)}
-.wheel{position:absolute;top:81%;width:34px;height:34px;border:5px solid #222b2e;border-radius:50%;background:radial-gradient(circle,#9ca9a5 0 13%,#384346 17% 55%,#101518 59%);box-shadow:0 3px 4px #000}
+.wheel{position:absolute;top:81%;width:34px;height:34px;border:5px solid #222b2e;border-radius:50%;background:radial-gradient(circle,#d1d5cb 0 9%,#647174 11% 19%,#171f22 22% 55%,#050809 58% 70%,#394346 72% 78%,#090d0f 80%);box-shadow:0 3px 4px #000}
 .wheel.a{left:12%}.wheel.b{right:12%}
 .straps{position:absolute;top:29%;left:32%;right:32%;height:5px;background:#4e5552;box-shadow:0 18px #4e5552}
 .foot{position:absolute;z-index:7;left:50%;bottom:13%;width:54%;height:7%;transform:translateX(-50%);background:radial-gradient(ellipse,#000b,transparent 72%)}
 .patient-shadow{position:absolute;z-index:6;left:50%;top:24%;width:13%;height:42%;transform:translateX(-50%) scale(.3);opacity:0;transition:all 2s ease;filter:blur(2px)}
 .patient-shadow:before{content:"";position:absolute;left:32%;top:0;width:36%;height:23%;border-radius:50%;background:#020304;box-shadow:0 0 25px 8px #000}
 .patient-shadow:after{content:"";position:absolute;left:5%;right:5%;top:20%;bottom:0;background:linear-gradient(90deg,transparent,#030405 22%,#050708 50%,#030405 78%,transparent);clip-path:polygon(35% 0,65% 0,85% 12%,100% 100%,0 100%,15% 12%)}
-.stage.released .patient-shadow{opacity:.9;transform:translateX(-50%) scale(1)}
+.stage.released .patient-shadow{opacity:.72;transform:translateX(-50%) scale(1)}
 .eye-points{position:absolute;z-index:7;left:50%;top:29%;display:flex;gap:18px;transform:translateX(-50%);opacity:0}
-.eye-points i{width:8px;height:4px;background:#d5eeee;border-radius:50%;box-shadow:0 0 9px 4px #b7e4e4}
+.eye-points i{width:8px;height:4px;background:#b8d0c9;border-radius:50%;box-shadow:0 0 4px 1px #a9c5c0}
 .stage.released .eye-points{opacity:.9;animation:blink 4s infinite}
 @keyframes blink{0%,92%,100%{opacity:.9}94%{opacity:0}}
 .stamp{position:absolute;z-index:9;top:8%;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:.34em;color:#aab8b8;text-shadow:0 0 12px #d4e6e6;white-space:nowrap}
 .red-alert{position:absolute;z-index:10;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 50% 50%,#9d12151b,transparent 65%)}
 .stage.released .red-alert{opacity:1;animation:alert 3s ease-in-out infinite}
 @keyframes alert{50%{opacity:.85}}
-.scan{position:absolute;z-index:11;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,#dce8e808 4px);opacity:.4}
+.scan{position:absolute;z-index:11;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 3px,#dce8e803 4px);opacity:.4}
 .vignette{position:absolute;z-index:12;inset:0;pointer-events:none;background:radial-gradient(ellipse,transparent 35%,#0009 100%)}
 .stage.released .light{animation:flicker .45s infinite}
 .stage.released .far-door{box-shadow:0 0 45px #b7d6d655,inset 0 0 35px #000}
@@ -76,7 +76,7 @@ button:focus-visible{outline:2px solid #fff;outline-offset:4px}
 <div class="patient-shadow"></div><div class="eye-points"><i></i><i></i></div>
 <div class="gurney" aria-hidden="true"><div class="rail l"></div><div class="rail r"></div><div class="mattress"></div><div class="sheet"></div><div class="head"></div><div class="sheet-fold"></div><div class="straps"></div><div class="frame"></div><div class="leg a"></div><div class="leg b"></div><div class="wheel a"></div><div class="wheel b"></div></div>
 <div class="foot"></div><div class="haze"></div><div class="red-alert"></div><div class="scan"></div><div class="vignette"></div>
-<div class="stamp">PATIENT STATUS: UNKNOWN</div><div class="caption" id="caption">THE WARD HAS BEEN EMPTY FOR  thirty YEARS</div>
+<div class="stamp">PATIENT STATUS: UNKNOWN</div><div class="caption" id="caption">THE WARD HAS BEEN EMPTY FOR THIRTY YEARS</div>
 <div class="status" id="status" role="status" aria-live="polite">PREVIEW READY · NO GIFT SENT</div>
 <div class="controls"><button class="primary" id="release">UNLOCK WARD 09</button><button id="reset">RESET SCENE</button></div>
 </main>
