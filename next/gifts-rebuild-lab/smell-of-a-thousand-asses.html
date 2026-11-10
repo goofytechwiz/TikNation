@@ -51,6 +51,8 @@ body{min-height:100svh;display:grid;place-items:center;padding:8px}
 .scene.odor-on .odor-label,.scene.release-on .odor-label{opacity:1;animation:glow 1s ease-in-out infinite alternate}
 @keyframes glow{to{transform:scale(1.08);text-shadow:0 0 25px #d7ff65,0 2px 4px #000}}
 .scene.flies-on .real-fly-footage,.scene.release-on .real-fly-footage{opacity:1}
+.scene.flies-on .fly-swarm,.scene.release-on .fly-swarm{animation:swarm-flight 7s ease-in-out infinite}
+@keyframes swarm-flight{0%{transform:translate(0,0) rotate(2deg) scale(.92)}18%{transform:translate(-24vw,7vh) rotate(-8deg) scale(1.05)}42%{transform:translate(-34vw,-8vh) rotate(5deg) scale(.9)}68%{transform:translate(-8vw,-14vh) rotate(-5deg) scale(1.08)}100%{transform:translate(0,0) rotate(2deg) scale(.92)}}
 
 .status{position:absolute;z-index:25;left:10px;right:10px;bottom:184px;min-height:22px;text-align:center;font-size:12px;font-weight:850;color:#e5f0cd;text-shadow:0 2px 5px #000}
 .panel{position:absolute;z-index:30;left:9px;right:9px;bottom:9px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:10px;border:1px solid #82965c;border-radius:14px;background:#08100def;box-shadow:0 8px 30px #000c}
@@ -69,7 +71,7 @@ button:focus-visible,input:focus-visible{outline:3px solid white;outline-offset:
 .fly-macro{left:5%;top:34%;width:34%;height:23%;transform:rotate(-3deg)}
 .fly-swarm{right:5%;top:36%;width:38%;height:19%;transform:rotate(2deg)}
 .footage-tag{position:absolute;z-index:14;left:7px;bottom:5px;padding:3px 6px;border-radius:4px;background:#050805d9;color:#f1f1dc;font-size:8px;font-weight:900;letter-spacing:.1em}
-.real-buzz{grid-column:1/-1;display:block;width:100%;height:90px;border:1px solid #82965c;border-radius:10px;background:#0b120d}
+.real-buzz{grid-column:1/-1;display:block;width:100%;height:124px;border:1px solid #82965c;border-radius:10px;background:#0b120d}
 .real-buzz-label{grid-column:1/-1;text-align:center;font-size:9px;color:#e7efcf;letter-spacing:.1em;font-weight:900}
 @media(max-width:560px){.fly-macro{left:3%;top:36%;width:39%;height:19%}.fly-swarm{right:3%;top:39%;width:42%;height:17%}}
 </style>
@@ -95,9 +97,9 @@ button:focus-visible,input:focus-visible{outline:3px solid white;outline-offset:
 <div class="status" id="status" aria-live="polite">THE BIN IS SEALED. YOUR NOSE IS SAFE… FOR NOW.</div>
 <section class="panel" aria-label="Gift test controls">
 <div class="panel-title">GIFT TEST CONTROL PANEL</div>
-<div class="real-buzz-label">REAL HOUSEFLY FIELD RECORDING · TAP PLAY</div>
+<div class="real-buzz-label">REAL HOUSEFLY BUZZ · PRESS PLAY INSIDE THIS PLAYER</div>
 <iframe class="real-buzz" title="Real housefly buzzing field recording" src="https://freesound.org/embed/sound/iframe/717567/simple/medium/" loading="lazy" allow="autoplay"></iframe>
-<button id="sound">▶ TEST SOUND</button><button id="flies">🪰 TEST FLY SWARM</button>
+<button id="sound">▶ TEST STENCH SOUND</button><button id="flies">🪰 RELEASE FLY SWARM</button>
 <button id="odor">☣ TEST ODOR CLOUD</button><button class="primary" id="release">💨 FULL STENCH RELEASE</button>
 <div class="volume"><span>VOLUME</span><input id="volume" type="range" min="0" max="100" value="85" aria-label="Sound volume"><span id="volText">85%</span></div>
 <button id="reset">↺ RESET / RECONTAIN</button>
@@ -107,11 +109,12 @@ button:focus-visible,input:focus-visible{outline:3px solid white;outline-offset:
 (()=>{
 const scene=document.getElementById('scene'),sfx=document.getElementById('sfx'),status=document.getElementById('status'),fill=document.getElementById('fill'),meterText=document.getElementById('meterText'),volume=document.getElementById('volume'),volText=document.getElementById('volText');
 const say=t=>status.textContent=t;
-async function playSound(){sfx.volume=Number(volume.value)/100;try{sfx.pause();sfx.currentTime=0;await sfx.play();say('RECORDED SOUND EFFECT PLAYING.');return true}catch(err){say('AUDIO COULD NOT PLAY. CHECK THE DEVICE MEDIA VOLUME AND TRY AGAIN.');return false}}
+async function playSound(){sfx.volume=Number(volume.value)/100;try{sfx.pause();sfx.currentTime=0;await sfx.play();say('STENCH SOUND EFFECT PLAYING.');return true}catch(err){say('STENCH SOUND FAILED TO PLAY. CHECK DEVICE MEDIA VOLUME.');return false}}
+function startFlyVideos(){document.querySelectorAll('.real-fly-footage video').forEach(v=>{v.muted=true;v.loop=true;v.playsInline=true;const p=v.play();if(p&&p.catch)p.catch(()=>say('FLY VIDEO BLOCKED. TAP THE VIDEO TO START IT.'))})}
 document.getElementById('sound').addEventListener('click',playSound);
-document.getElementById('flies').addEventListener('click',()=>{scene.classList.toggle('flies-on');say(scene.classList.contains('flies-on')?'REAL FLY FOOTAGE: ACTIVE.':'REAL FLY FOOTAGE: OFF.')});
+document.getElementById('flies').addEventListener('click',()=>{scene.classList.toggle('flies-on');if(scene.classList.contains('flies-on')){startFlyVideos();say('FLY SWARM RELEASED — REAL INSECT FOOTAGE IS MOVING AROUND THE SCENE.')}else say('FLY SWARM CONTAINED.')});
 document.getElementById('odor').addEventListener('click',()=>{scene.classList.toggle('odor-on');say(scene.classList.contains('odor-on')?'ODOR CLOUD TEST: ACTIVE.':'ODOR CLOUD TEST: OFF.')});
-document.getElementById('release').addEventListener('click',()=>{scene.classList.add('release-on','flies-on','odor-on');fill.style.width='100%';meterText.textContent='0% · AIR QUALITY: EXTINCTION EVENT';playSound();});
+document.getElementById('release').addEventListener('click',()=>{scene.classList.add('release-on','flies-on','odor-on');startFlyVideos();fill.style.width='100%';meterText.textContent='0% · AIR QUALITY: EXTINCTION EVENT';playSound();});
 volume.addEventListener('input',()=>{sfx.volume=Number(volume.value)/100;volText.textContent=volume.value+'%'});
 document.getElementById('reset').addEventListener('click',()=>{scene.classList.remove('release-on','flies-on','odor-on');fill.style.width='0';meterText.textContent='100% · AIR QUALITY: QUESTIONABLE';sfx.pause();sfx.currentTime=0;say('CONTAINMENT RESTORED. THE MEMORY REMAINS.')});
 sfx.addEventListener('error',()=>say('THE REMOTE SOUND FILE FAILED TO LOAD. VISUAL TESTS ARE STILL AVAILABLE.'));
