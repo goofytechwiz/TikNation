@@ -1,69 +1,113 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#07090b"><title>The Last Elevator · TikNation Gift Lab</title>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08090a"><title>THE LAST ELEVATOR · TikNation</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050607;color:#eee;font-family:Arial,sans-serif}#view{position:fixed;inset:0;width:100%;height:100%;display:block}.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 48%,transparent 38%,#0009 100%),linear-gradient(180deg,#0005,transparent 25% 75%,#0009)}.hud{position:fixed;inset:0;pointer-events:none;display:flex;flex-direction:column;align-items:center}.brand{margin-top:max(18px,env(safe-area-inset-top));font-size:9px;letter-spacing:.3em;color:#d1cec4;text-shadow:0 2px 8px #000}.caption{margin-top:auto;margin-bottom:calc(116px + env(safe-area-inset-bottom));font:italic 14px Georgia,serif;letter-spacing:.12em;text-align:center;text-shadow:0 2px 12px #000;padding:0 22px;max-width:600px}.status{position:fixed;bottom:calc(82px + env(safe-area-inset-bottom));left:0;width:100%;text-align:center;font-size:9px;letter-spacing:.16em;color:#d2cbbd;text-shadow:0 2px 8px #000}.controls{position:fixed;bottom:calc(15px + env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:center;gap:9px;padding:0 8px;pointer-events:auto}button{border:1px solid #c8c2b277;background:#171a1b;color:#f0ede5;padding:13px 14px;font-size:9px;font-weight:800;letter-spacing:.12em;border-radius:3px}button.primary{background:#d8d1be;color:#111;border-color:#fff}#fallback{display:none;position:fixed;inset:0;place-items:center;color:#ddd;background:#090b0d;padding:30px;text-align:center}@media(max-width:560px){.caption{font-size:12px}.controls{gap:6px}button{padding:12px 9px;font-size:8px}}@media(prefers-reduced-motion:reduce){.vignette{background:#0005}}
-</style></head><body>
-<canvas id="view"></canvas><div class="vignette"></div><div class="hud"><div class="brand">TIKNATION · HORROR GIFT LAB · RESTRICTED LEVEL</div><div class="caption" id="caption">THE ELEVATOR HAS BEEN OUT OF SERVICE FOR YEARS</div></div><div class="status" id="status">PREVIEW READY · NO GIFT SENT · VISUAL EFFECTS ONLY</div><div class="controls"><button class="primary" id="call">CALL ELEVATOR</button><button id="enter">ENTER THE LIFT</button><button id="reset">RESET</button></div><div id="fallback">The 3D scene could not load. Check your internet connection and refresh.</div>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08090a;color:#eee;font-family:Arial,Helvetica,sans-serif}
+#scene{position:fixed;inset:0;width:100%;height:100%;display:block}
+.shade{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 28%,#0008 76%,#000e 100%),linear-gradient(180deg,#0007,transparent 24% 72%,#000b)}
+.top{position:fixed;top:max(18px,env(safe-area-inset-top));left:0;right:0;text-align:center;font-size:9px;letter-spacing:.32em;color:#c7c3b9;text-shadow:0 2px 8px #000}
+.copy{position:fixed;left:18px;right:18px;bottom:calc(124px + env(safe-area-inset-bottom));text-align:center;font:italic 15px Georgia,serif;letter-spacing:.12em;text-shadow:0 2px 12px #000;min-height:20px}
+.state{position:fixed;left:0;right:0;bottom:calc(91px + env(safe-area-inset-bottom));text-align:center;font-size:9px;letter-spacing:.15em;color:#d3cabb;text-shadow:0 2px 9px #000}
+.controls{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:center;gap:8px;padding:0 10px}
+button{min-height:42px;padding:0 15px;border:1px solid #aaa69a88;border-radius:2px;background:#17191a;color:#e8e4db;font-size:9px;font-weight:800;letter-spacing:.13em}
+button.primary{background:#d0c8b6;color:#111;border-color:#e7dfce}
+button:disabled{opacity:.35}
+#fallback{display:none;position:fixed;inset:0;place-items:center;padding:28px;text-align:center;background:#090b0c;color:#ddd}
+@media(max-width:520px){.copy{font-size:12px;bottom:calc(126px + env(safe-area-inset-bottom))}.controls{gap:5px}button{padding:0 9px;font-size:8px}}
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas><div class="shade"></div>
+<div class="top" id="topline">TIKNATION · AFTER DARK · SERVICE LIFT 09</div>
+<div class="copy" id="copy">THE BUILDING HAS BEEN EMPTY SINCE 1998</div>
+<div class="state" id="state">INTERACTIVE PREVIEW · NO GIFT SENT</div>
+<div class="controls"><button class="primary" id="call">CALL THE LIFT</button><button id="enter" disabled>STEP INSIDE</button><button id="reset">RESTART</button></div>
+<div id="fallback">The 3D scene could not start. Please check your connection and reload.</div>
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-const canvas=document.getElementById('view'),status=document.getElementById('status'),caption=document.getElementById('caption'),fallback=document.getElementById('fallback');
+const $=id=>document.getElementById(id);
 try{
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x090b0d);scene.fog=new THREE.Fog(0x090b0d,7,19);
-const camera=new THREE.PerspectiveCamera(43,innerWidth/innerHeight,.1,60);camera.position.set(0,2.35,8.4);camera.lookAt(0,1.55,0);
-scene.add(new THREE.HemisphereLight(0xb7c1c5,0x171310,1.0));
-const key=new THREE.SpotLight(0xe5e0ce,95,18,Math.PI/5,.55,1.4);key.position.set(0,5.7,3.5);key.target.position.set(0,1.5,0);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key,key.target);
-const fill=new THREE.PointLight(0x8a9aa1,8,8);fill.position.set(-2.8,2.8,1.2);scene.add(fill);
-function mat(color,metal=0,rough=.65){return new THREE.MeshStandardMaterial({color,metalness:metal,roughness:rough})}
-function box(w,h,d,m,x,y,z,parent=scene){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
-function brushed(base){const c=document.createElement('canvas');c.width=256;c.height=512;const x=c.getContext('2d');x.fillStyle=base;x.fillRect(0,0,256,512);for(let i=0;i<1700;i++){const a=Math.random()*.12;x.fillStyle='rgba(255,255,255,'+a+')';x.fillRect(Math.random()*256,Math.random()*512,1,Math.random()*18+2)}const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(2,1);return new THREE.MeshStandardMaterial({map:t,metalness:.78,roughness:.38})}
-const steel=brushed('#343638'),dark=mat(0x111416,.65,.48),trim=mat(0x77766e,.82,.27),floorMat=mat(0x292a29,.35,.55),black=mat(0x050607,.15,.7);
-box(12,.2,16,black,0,-.13,-2);box(12,.2,16,black,0,5.4,-2);
-box(12,5.4,.25,dark,0,2.6,-8);box(.25,5.4,16,dark,-6,2.6,-1);box(.25,5.4,16,dark,6,2.6,-1);
-// distant shaft guide rails and repeating floor ribs
-for(const x of [-2.7,2.7]){box(.09,5.1,.12,trim,x,2.55,-5.8);box(.18,.08,.2,trim,x,4.8,-5.8)}
-// cabin body
-const cabin=new THREE.Group();scene.add(cabin);
-box(4.8,.18,3.5,dark,0,.12,0,cabin);box(4.8,.16,3.5,dark,0,4.2,0,cabin);
-box(.16,4.1,3.5,steel,-2.32,2.15,0,cabin);box(.16,4.1,3.5,steel,2.32,2.15,0,cabin);
-box(4.5,4.1,.14,steel,0,2.15,-1.68,cabin);
-box(4.48,.12,3.2,mat(0x33312d,.35,.55),0,.25,.03,cabin);
-for(let i=0;i<7;i++)box(4.25,.008,.012,mat(0x77736b,.3,.5),0,.34,-1.35+i*.43,cabin);
-// rear mirror panel with smudged dark mirror
-const mirror=new THREE.Mesh(new THREE.PlaneGeometry(1.55,2.65),new THREE.MeshStandardMaterial({color:0x252b2d,metalness:.9,roughness:.2}));mirror.position.set(0,2.05,-1.59);cabin.add(mirror);
-for(const x of [-.86,.86])box(.045,2.75,.04,trim,x,2.05,-1.55,cabin);
-for(const y of [.68,3.42])box(1.78,.045,.04,trim,0,y,-1.55,cabin);
-// doors on front, heavy steel slabs, slide apart
-const doors=new THREE.Group();scene.add(doors);
-const left=box(2.35,4.05,.16,steel,-1.175,2.12,1.78,doors),right=box(2.35,4.05,.16,steel,1.175,2.12,1.78,doors);
-for(const x of [-2.39,2.39])box(.13,4.3,.23,trim,x,2.13,1.76,doors);
-box(.035,4.05,.04,black,0,2.12,1.88,doors);
-for(let y=.3;y<4;y+=.18){box(2.25,.008,.012,mat(0x555753,.8,.3),-1.175,y,1.87,doors);box(2.25,.008,.012,mat(0x555753,.8,.3),1.175,y,1.87,doors)}
-// overhead recessed fluorescent panel
-box(1.65,.07,.65,mat(0xc7c4b0,.05,.3),0,4.08,.1,cabin);
-const lamp=new THREE.PointLight(0xd9d5c1,28,7);lamp.position.set(0,3.9,.1);cabin.add(lamp);
-// outside floor and perspective corridor
-for(let i=0;i<10;i++){box(8,.018,.06,mat(0x292d2e,.2,.8),0,.005,-7+i*.75)}
-// wall-mounted call panel
-box(.58,1.6,.12,dark,2.85,2.2,1.4);box(.46,.34,.035,black,2.85,2.77,1.32);
-const ledMat=new THREE.MeshStandardMaterial({color:0xff3b22,emissive:0x9e1207,emissiveIntensity:1.7});const led=box(.22,.09,.025,ledMat,2.85,2.78,1.29);
-for(let i=0;i<5;i++){const b=new THREE.Mesh(new THREE.CylinderGeometry(.075,.075,.045,24),mat(0x8b8b82,.7,.3));b.rotation.x=Math.PI/2;b.position.set(2.85,2.35-i*.24,1.31);scene.add(b);const ring=new THREE.Mesh(new THREE.TorusGeometry(.095,.009,8,24),mat(0xb1aa91,.8,.3));ring.position.set(2.85,2.35-i*.24,1.28);scene.add(ring)}
-// grime streaks and small floor debris
-for(let i=0;i<34;i++){const g=new THREE.Mesh(new THREE.BoxGeometry(.012,Math.random()*.65+.1,.006),new THREE.MeshBasicMaterial({color:0x0a0b0b,transparent:true,opacity:.18+Math.random()*.25}));g.position.set((Math.random()-.5)*4.35,Math.random()*3.8,1.87);scene.add(g)}
-// sinister figure stands deep inside the cabin, hidden until reveal
-const figure=new THREE.Group();scene.add(figure);const bodyMat=new THREE.MeshStandardMaterial({color:0x030405,roughness:1});
-const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.36,.95,6,10),bodyMat);torso.position.y=1.25;figure.add(torso);
-const head=new THREE.Mesh(new THREE.SphereGeometry(.22,20,16),bodyMat);head.position.y=2.08;figure.add(head);
-for(const x of [-.085,.085]){const eye=new THREE.Mesh(new THREE.SphereGeometry(.025,10,8),new THREE.MeshBasicMaterial({color:0x8e1712}));eye.position.set(x,2.1,.205);figure.add(eye)}
-figure.position.set(0,.35,-.95);figure.visible=false;
-let phase=0,doorTarget=0,doorPos=0,figureOn=false,elapsed=0;const clock=new THREE.Clock();
-function setDoor(v){doorTarget=v}
-function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);elapsed+=dt;doorPos+=(doorTarget-doorPos)*Math.min(1,dt*1.35);left.position.x=-1.175-doorPos*2.15;right.position.x=1.175+doorPos*2.15;figure.position.y=.35+Math.sin(elapsed*1.3)*.018;figure.rotation.y=Math.sin(elapsed*.7)*.08;lamp.intensity=phase===0?(Math.sin(elapsed*1.2)>0?26:23):(Math.sin(elapsed*9)>-.94?25:5);ledMat.emissiveIntensity=1.1+Math.sin(elapsed*4)*.3;camera.position.x=Math.sin(elapsed*.17)*.035;camera.position.y=2.35+Math.sin(elapsed*.24)*.018;camera.lookAt(0,1.85,0);renderer.render(scene,camera)}
-animate();
-function setStatus(a,b){status.textContent=a;caption.textContent=b}
-document.getElementById('call').onclick=()=>{if(phase!==0)return;phase=1;setStatus('CALL BUTTON PRESSED · SHAFT MOTOR ENGAGED','SOMETHING IS COMING UP FROM BELOW');ledMat.color.set(0xff2c16);let n=3;const step=()=>{if(phase!==1)return;ledMat.emissiveIntensity=2.2;led.position.y=2.78;const digits=['− 2','− 1','0'];document.querySelector('.brand').textContent='TIKNATION · LEVEL '+digits[3-n];n--;if(n>=0)setTimeout(step,1050);else{phase=2;setDoor(1);setStatus('LEVEL 0 · DOORS OPENING','NOBODY CALLED THIS ELEVATOR');}};step()};
-document.getElementById('enter').onclick=()=>{if(phase!==2)return;phase=3;figure.visible=true;setStatus('MOVEMENT DETECTED INSIDE THE CABIN','THERE IS SOMEONE STANDING IN THE MIRROR');setTimeout(()=>{if(phase!==3)return;setDoor(0);setStatus('DESCENDING · LEVEL −3','DO NOT LOOK BEHIND YOU');},2600);setTimeout(()=>{if(phase!==3)return;phase=4;setStatus('LEVEL −3 · NO EXIT REGISTERED','THE ELEVATOR HAS ONE MORE PASSENGER');},5400)};
-document.getElementById('reset').onclick=()=>{phase=0;setDoor(0);figure.visible=false;ledMat.color.set(0xff3b22);document.querySelector('.brand').textContent='TIKNATION · HORROR GIFT LAB · RESTRICTED LEVEL';setStatus('PREVIEW READY · NO GIFT SENT · VISUAL EFFECTS ONLY','THE ELEVATOR HAS BEEN OUT OF SERVICE FOR YEARS')};
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.8))});
-}catch(e){fallback.style.display='grid';status.textContent='3D ENGINE ERROR · '+e.message}
-</script></body></html>
+const renderer=new THREE.WebGLRenderer({canvas:$('scene'),antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x090b0c);scene.fog=new THREE.FogExp2(0x090b0c,.045);
+const camera=new THREE.PerspectiveCamera(39,innerWidth/innerHeight,.1,70);camera.position.set(0,2.35,9.4);camera.lookAt(0,2,0);
+scene.add(new THREE.HemisphereLight(0xc4cbd0,0x17120e,.85));
+const ambient=new THREE.PointLight(0x75818a,5,18);ambient.position.set(0,3.5,3);scene.add(ambient);
+const ceilingLight=new THREE.SpotLight(0xe5dfcc,110,16,Math.PI/4,.65,1.5);ceilingLight.position.set(-.5,6,4);ceilingLight.target.position.set(0,1.7,-.5);ceilingLight.castShadow=true;ceilingLight.shadow.mapSize.set(1024,1024);scene.add(ceilingLight,ceilingLight.target);
+const redGlow=new THREE.PointLight(0x9c1710,0,5);redGlow.position.set(0,2.1,-1.2);scene.add(redGlow);
+const mat=(c,m=0,r=.6)=>new THREE.MeshStandardMaterial({color:c,metalness:m,roughness:r});
+function noiseTexture(base,streaks=true){const c=document.createElement('canvas');c.width=512;c.height=512;const x=c.getContext('2d');x.fillStyle=base;x.fillRect(0,0,512,512);for(let i=0;i<5500;i++){let a=Math.random()*.13;x.fillStyle=Math.random()>.5?'rgba(255,255,255,'+a+')':'rgba(0,0,0,'+a+')';let px=Math.random()*512,py=Math.random()*512;x.fillRect(px,py,streaks?1:2,Math.random()*(streaks?20:3)+1)}return new THREE.CanvasTexture(c)}
+const metal=new THREE.MeshStandardMaterial({map:noiseTexture('#373a3b'),metalness:.82,roughness:.42});
+const wall= new THREE.MeshStandardMaterial({map:noiseTexture('#282a29',false),metalness:.35,roughness:.86});
+const floorMat=new THREE.MeshStandardMaterial({map:noiseTexture('#242422',false),metalness:.28,roughness:.42});
+const trim=mat(0x8a877e,.85,.26),black=mat(0x080a0b,.2,.7);
+function cube(parent,w,h,d,material,x,y,z,cast=true){const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);o.position.set(x,y,z);o.castShadow=cast;o.receiveShadow=true;parent.add(o);return o}
+function plane(parent,w,h,material,x,y,z,rx=0){const o=new THREE.Mesh(new THREE.PlaneGeometry(w,h),material);o.position.set(x,y,z);o.rotation.x=rx;parent.add(o);return o}
+// Building corridor outside the lift: tile floor, stained walls, distant dead light
+const corridor=new THREE.Group();scene.add(corridor);
+cube(corridor,9,.18,12,floorMat,0,-.12,-3,false);cube(corridor,9,.18,12,black,0,5.35,-3,false);
+cube(corridor,.18,5.5,12,wall,-4.5,2.6,-3);cube(corridor,.18,5.5,12,wall,4.5,2.6,-3);
+cube(corridor,9,5.5,.18,wall,0,2.6,-9);
+for(let z=-1;z>-8;z-=1.35){cube(corridor,8.8,.018,.025,mat(0x55534d,.15,.9),0,.005,z,false)}
+// elevator cabin, deep enough to read as a real room
+const cab=new THREE.Group();scene.add(cab);
+cube(cab,4.7,.16,4.0,black,0,.1,-.05);cube(cab,4.7,.15,4.0,black,0,4.35,-.05);
+cube(cab,.15,4.25,4,metal,-2.28,2.2,-.05);cube(cab,.15,4.25,4,metal,2.28,2.2,-.05);
+cube(cab,4.55,4.25,.14,metal,0,2.2,-2.0);
+cube(cab,4.45,.08,3.8,floorMat,0,.22,-.02);
+for(let i=0;i<10;i++)cube(cab,4.3,.008,.012,mat(0x77766e,.55,.48),0,.27,-1.72+i*.36,false);
+// rear mirror, polished but dark, with edge frame and a thin vertical seam
+const mirrorMat=new THREE.MeshStandardMaterial({color:0x30383a,metalness:.96,roughness:.13});
+plane(cab,1.55,2.65,mirrorMat,0,2.18,-1.91);
+for(const x of [-.82,.82])cube(cab,.035,2.78,.035,trim,x,2.18,-1.87,false);
+for(const y of [.79,3.57])cube(cab,1.68,.035,.035,trim,0,y,-1.87,false);
+// Front doors, two independently sliding heavy panels
+const doorRig=new THREE.Group();scene.add(doorRig);
+const doorL=cube(doorRig,2.35,4.12,.2,metal,-1.175,2.15,2.02),doorR=cube(doorRig,2.35,4.12,.2,metal,1.175,2.15,2.02);
+for(let y=.22;y<4.15;y+=.16){cube(doorRig,2.28,.007,.012,mat(0x777a79,.8,.3),-1.175,y,2.13,false);cube(doorRig,2.28,.007,.012,mat(0x777a79,.8,.3),1.175,y,2.13,false)}
+for(const x of [-2.42,2.42])cube(doorRig,.12,4.35,.27,trim,x,2.15,2.02);
+// Door threshold and guide rail
+cube(doorRig,4.75,.08,.42,trim,0,.12,2.05);cube(doorRig,4.75,.04,.12,black,0,.2,2.08);
+// ceiling diffuser
+cube(cab,1.9,.055,.75,mat(0xc8c5b8,.05,.3),0,4.25,.15,false);
+const cabinLamp=new THREE.PointLight(0xd8d2be,25,7);cabinLamp.position.set(0,4,.1);cab.add(cabinLamp);
+// Control panel mounted on right cabin wall; lit floor indicator and tactile buttons
+cube(cab,.42,1.55,.08,black,2.18,2.25,.9);
+cube(cab,.3,.25,.025,black,2.18,2.84,.84);
+const displayMat=new THREE.MeshStandardMaterial({color:0xff3a25,emissive:0xa51a10,emissiveIntensity:1.5});
+cube(cab,.16,.06,.02,displayMat,2.18,2.84,.81,false);
+for(let i=0;i<5;i++){const b=new THREE.Mesh(new THREE.CylinderGeometry(.065,.065,.035,24),mat(0xaaa79c,.7,.3));b.rotation.x=Math.PI/2;b.position.set(2.18,2.45-i*.23,.83);cab.add(b);}
+// Fine scratches on metal doors and cabin wall
+const scratchMat=new THREE.MeshBasicMaterial({color:0xaaa99e,transparent:true,opacity:.18});
+for(let i=0;i<75;i++){const h=.02+Math.random()*.26;const s=new THREE.Mesh(new THREE.PlaneGeometry(.006,h),scratchMat);s.position.set((Math.random()-.5)*4.25,.4+Math.random()*3.45,2.125);doorRig.add(s)}
+// The passenger: silhouette, coat hem, long arms and dim eyes. Hidden until reveal.
+const stranger=new THREE.Group();scene.add(stranger);
+const cloth=new THREE.MeshStandardMaterial({color:0x070809,roughness:1});
+const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.32,.92,8,12),cloth);torso.position.y=1.35;stranger.add(torso);
+const head=new THREE.Mesh(new THREE.SphereGeometry(.205,24,18),cloth);head.position.y=2.05;stranger.add(head);
+for(const side of [-1,1]){const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.085,.72,5,8),cloth);arm.position.set(side*.39,1.25,.01);arm.rotation.z=side*-.08;stranger.add(arm);const eye=new THREE.Mesh(new THREE.SphereGeometry(.022,12,10),new THREE.MeshBasicMaterial({color:0xb31d14}));eye.position.set(side*.075,2.07,.19);stranger.add(eye)}
+const hem=new THREE.Mesh(new THREE.ConeGeometry(.48,.75,8,1,true),cloth);hem.position.y=.55;stranger.add(hem);stranger.position.set(0,.25,-.85);stranger.visible=false;
+// Dust motes drift through the light cone
+const dustGeo=new THREE.BufferGeometry(),dustCount=180,dustPos=new Float32Array(dustCount*3),dustVel=[];
+for(let i=0;i<dustCount;i++){dustPos[i*3]=(Math.random()-.5)*4.3;dustPos[i*3+1]=Math.random()*4.2;dustPos[i*3+2]=Math.random()*3-1;dustVel.push(.08+Math.random()*.18)}
+dustGeo.setAttribute('position',new THREE.BufferAttribute(dustPos,3));const dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:0xb7b0a1,size:.018,transparent:true,opacity:.38,depthWrite:false}));scene.add(dust);
+let phase=0,opening=0,openingTarget=0,t=0,shake=0,lightFlicker=0;
+const clock=new THREE.Clock();
+function label(state,line){$('state').textContent=state;$('copy').textContent=line}
+function tick(){requestAnimationFrame(tick);const dt=Math.min(clock.getDelta(),.04);t+=dt;opening+=(openingTarget-opening)*Math.min(1,dt*1.05);
+doorL.position.x=-1.175-opening*2.22;doorR.position.x=1.175+opening*2.22;
+cabinLamp.intensity=phase===0?24+Math.sin(t*1.7)*.7:phase===1?20+Math.sin(t*11)*3:21+Math.sin(t*3)*1.5;
+redGlow.intensity=phase>=2?1.8:0;stranger.position.y=.25+Math.sin(t*1.2)*.012;stranger.rotation.y=Math.sin(t*.55)*.035;
+const a=dustGeo.attributes.position;for(let i=0;i<dustCount;i++){a.array[i*3+1]+=dustVel[i]*dt*.18;if(a.array[i*3+1]>4.25)a.array[i*3+1]=.2}a.needsUpdate=true;
+if(shake>0){camera.position.x=(Math.random()-.5)*shake;camera.position.y=2.35+(Math.random()-.5)*shake;shake*=.9}else{camera.position.x=Math.sin(t*.15)*.012;camera.position.y=2.35+Math.sin(t*.2)*.01}
+camera.lookAt(0,1.95,0);renderer.render(scene,camera)}
+tick();
+$('call').onclick=()=>{if(phase!==0)return;phase=1;$('call').disabled=true;label('CALL REGISTERED · LIFT APPROACHING','THE MOTOR IS RUNNING. BUT THE BUILDING HAS NO POWER.');let count=3;const timer=()=>{if(phase!==1)return;$('topline').textContent='SERVICE LIFT 09 · FLOOR '+['B2','B1','G'][3-count];count--;shake=.045;if(count>=0)setTimeout(timer,1150);else{phase=2;openingTarget=1;$('enter').disabled=false;$('topline').textContent='SERVICE LIFT 09 · GROUND FLOOR';label('DOORS OPEN · CABIN OCCUPIED?','YOU CAN SEE YOUR OWN REFLECTION. SOMETHING ELSE IS IN IT.')}};timer()};
+$('enter').onclick=()=>{if(phase!==2)return;phase=3;$('enter').disabled=true;stranger.visible=true;shake=.075;redGlow.intensity=2.5;label('PASSENGER DETECTED · DOORS CLOSING','YOU DID NOT ENTER ALONE.');setTimeout(()=>{if(phase!==3)return;openingTarget=0;shake=.035;$('topline').textContent='SERVICE LIFT 09 · DESCENDING';label('DESCENDING · FLOOR B3','THE FLOOR INDICATOR IS COUNTING BELOW THE BASEMENT.');},2300);setTimeout(()=>{if(phase!==3)return;phase=4;$('topline').textContent='SERVICE LIFT 09 · NO SIGNAL';label('LIFT STOPPED · FLOOR UNKNOWN','THE FIGURE IS GONE. YOUR REFLECTION IS STILL THERE.');stranger.visible=false;redGlow.intensity=.4;},6000)};
+$('reset').onclick=()=>{phase=0;openingTarget=0;stranger.visible=false;redGlow.intensity=0;shake=0;$('call').disabled=false;$('enter').disabled=true;$('topline').textContent='TIKNATION · AFTER DARK · SERVICE LIFT 09';label('INTERACTIVE PREVIEW · NO GIFT SENT','THE BUILDING HAS BEEN EMPTY SINCE 1998')};
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7))});
+}catch(err){$('fallback').style.display='grid';$('state').textContent='3D SCENE FAILED TO LOAD';}
+</script>
+</body></html>
