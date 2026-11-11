@@ -988,74 +988,65 @@ function renderHauntedMansionGift(gift,opts,overlay){
 
 
 function renderEclipseLeviathanGift(gift,opts,overlay){
- const sid="tn-eclipse-leviathan-v2";let style=document.getElementById(sid);
+ const sid="tn-eclipse-leviathan-3d";let style=document.getElementById(sid);
  if(!style){style=document.createElement("style");style.id=sid;document.head.appendChild(style);}
- style.textContent=[
- "#tiknation-gift-engine[data-style=eclipse_leviathan]{display:block!important;padding:0!important;background:#020812!important}",
- "#tiknation-gift-engine .el-world{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,#050b18 0%,#101d30 45%,#071523 72%,#02070e 100%);isolation:isolate}",
- "#tiknation-gift-engine .el-sky{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 23%,#34465c88,transparent 43%),linear-gradient(180deg,#03091488,transparent 58%)}",
- "#tiknation-gift-engine .el-eclipse{position:absolute;left:50%;top:7%;width:clamp(115px,24vw,230px);aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,#01040a 0 62%,#34445b 64%,#c4d2dc 66%,#526a83 68%,transparent 73%);box-shadow:0 0 65px 24px #8db5dc44;opacity:.72}",
- "#tiknation-gift-engine .el-sea{position:absolute;left:-12%;right:-12%;bottom:-7%;height:37%;border-radius:50% 50% 0 0;background:radial-gradient(ellipse at 50% 0%,#547b8c 0,#17394c 28%,#081c2c 64%,#020811 100%);box-shadow:0 -15px 60px #6cc8e844}",
- "#tiknation-gift-engine .el-scene{position:absolute;inset:0;width:100%;height:100%;}",
- "#tiknation-gift-engine .el-coil{fill:none;stroke:url(#el-hide);stroke-width:122;stroke-linecap:round;stroke-linejoin:round;filter:url(#el-depth);stroke-dasharray:2600;stroke-dashoffset:2600;animation:el-emerge 3.9s cubic-bezier(.16,.72,.2,1) forwards}",
- "#tiknation-gift-engine .el-coil-mid{fill:none;stroke:url(#el-hide);stroke-width:91;stroke-linecap:round;stroke-linejoin:round;opacity:.96;filter:url(#el-depth);stroke-dasharray:1800;stroke-dashoffset:1800;animation:el-emerge 3.6s .25s cubic-bezier(.16,.72,.2,1) forwards}",
- "#tiknation-gift-engine .el-scales{fill:none;stroke:url(#el-scale-pattern);stroke-width:103;stroke-linecap:round;stroke-dasharray:2600;stroke-dashoffset:2600;animation:el-emerge 3.9s forwards}",
- "#tiknation-gift-engine .el-highlight{fill:none;stroke:#b6d0d6;stroke-width:8;stroke-linecap:round;opacity:.32;filter:blur(2px)}",
- "#tiknation-gift-engine .el-headgroup{transform-box:fill-box;transform-origin:50% 80%;opacity:0;animation:el-rise 1.7s 1.25s cubic-bezier(.16,.8,.2,1) forwards,el-sway 4s 3s ease-in-out infinite}",
- "#tiknation-gift-engine .el-eye{fill:#f7d98b;filter:url(#el-eye-glow)}",
- "#tiknation-gift-engine .el-water{fill:none;stroke:#a9d9e8;stroke-width:5;opacity:0;stroke-linecap:round;filter:url(#el-water-glow);animation:el-splash 1.4s 2.1s ease-out forwards}",
- "#tiknation-gift-engine .el-title{position:absolute;z-index:8;bottom:5%;left:0;right:0;text-align:center;color:#e5f3fa;font:900 clamp(20px,4.6vw,42px)/1 Georgia,serif;letter-spacing:.13em;text-shadow:0 3px 12px #000,0 0 25px #9edfff}",
- "#tiknation-gift-engine .el-title small{display:block;margin-top:10px;font:800 10px/1.4 system-ui;letter-spacing:.28em;color:#b5cbd9}",
- "@keyframes el-emerge{to{stroke-dashoffset:0}}@keyframes el-rise{from{opacity:0;transform:translateY(130px) scale(.68)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes el-sway{50%{transform:translateY(-10px) rotate(-1.3deg)}}@keyframes el-splash{0%{opacity:0;stroke-dasharray:1 500}30%{opacity:.9}100%{opacity:0;stroke-dasharray:260 500;transform:translateY(-22px)}}",
- "@media(max-width:650px){#tiknation-gift-engine .el-eclipse{top:8%;width:clamp(105px,24vw,180px)}#tiknation-gift-engine .el-title{bottom:4%;letter-spacing:.07em}#tiknation-gift-engine .el-scene{inset:4% -15% 5%;width:130%;height:91%}}",
- "@media(prefers-reduced-motion:reduce){#tiknation-gift-engine .el-coil,#tiknation-gift-engine .el-coil-mid,#tiknation-gift-engine .el-scales,#tiknation-gift-engine .el-headgroup,#tiknation-gift-engine .el-water{animation:none!important;stroke-dashoffset:0;opacity:1;transform:none}}"
- ].join("");
+ style.textContent=String.raw\`
+ #tiknation-gift-engine[data-style=eclipse_leviathan]{display:block!important;padding:0!important;background:#020711!important}
+ #tiknation-gift-engine[data-style=eclipse_leviathan] .el-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#20384c 0,#081522 55%,#01050b 100%)}
+ #tiknation-gift-engine[data-style=eclipse_leviathan] canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+ #tiknation-gift-engine[data-style=eclipse_leviathan] .el-title{position:absolute;z-index:4;bottom:4%;left:0;right:0;text-align:center;color:#e4f4fa;font:900 clamp(19px,4.8vw,42px)/1 Georgia,serif;letter-spacing:.12em;text-shadow:0 3px 14px #000,0 0 25px #7bc8e8;pointer-events:none}
+ #tiknation-gift-engine[data-style=eclipse_leviathan] .el-title small{display:block;margin-top:9px;font:800 10px/1.4 system-ui;letter-spacing:.26em;color:#b6d0dc}
+ #tiknation-gift-engine[data-style=eclipse_leviathan] .el-loading{position:absolute;inset:0;display:grid;place-items:center;color:#b9d8e7;font:700 12px system-ui;letter-spacing:.2em}
+ @media(max-width:650px){#tiknation-gift-engine[data-style=eclipse_leviathan] .el-title{bottom:3%;letter-spacing:.06em}}
+ \`;
  const world=document.createElement("div");world.className="el-world";
- world.innerHTML=
- '<div class="el-sky"></div><div class="el-eclipse"></div><div class="el-sea"></div>'+
- '<svg class="el-scene" viewBox="0 0 1000 820" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'+
- '<defs>'+
- '<linearGradient id="el-hide" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071522"/><stop offset=".18" stop-color="#31566b"/><stop offset=".34" stop-color="#7895a0"/><stop offset=".48" stop-color="#1a394e"/><stop offset=".68" stop-color="#496e7d"/><stop offset=".84" stop-color="#0b1c2c"/><stop offset="1" stop-color="#020811"/></linearGradient>'+
- '<linearGradient id="el-scale-pattern" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d3e1df" stop-opacity=".5"/><stop offset=".28" stop-color="#b1c9ce" stop-opacity=".08"/><stop offset=".65" stop-color="#020a13" stop-opacity=".45"/><stop offset="1" stop-color="#9ab5bf" stop-opacity=".2"/></linearGradient>'+
- '<linearGradient id="el-armor" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d6e4e2"/><stop offset=".18" stop-color="#7899a6"/><stop offset=".42" stop-color="#29485b"/><stop offset=".7" stop-color="#102638"/><stop offset="1" stop-color="#020914"/></linearGradient>'+
- '<linearGradient id="el-under" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#9ab4ba"/><stop offset=".45" stop-color="#536f7b"/><stop offset="1" stop-color="#172d3c"/></linearGradient>'+
- '<linearGradient id="el-horn" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0eee0"/><stop offset=".35" stop-color="#8fa8ad"/><stop offset="1" stop-color="#1c3544"/></linearGradient>'+
- '<pattern id="el-scale-tiles" width="28" height="24" patternUnits="userSpaceOnUse"><path d="M0 12Q7 -1 14 12Q21 25 28 12M-14 12Q-7 -1 0 12Q7 25 14 12" fill="none" stroke="#d1e0df" stroke-opacity=".36" stroke-width="2"/></pattern>'+
- '<filter id="el-depth" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="16" result="blur"/><feColorMatrix in="blur" values="0 0 0 0 .02 0 0 0 0 .18 0 0 0 0 .28 0 0 0 .9 0"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
- '<filter id="el-eye-glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
- '<filter id="el-water-glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
- '</defs>'+
- '<path class="el-coil" d="M-100 700 C70 640 95 470 235 465 C365 460 365 700 520 690 C675 680 640 420 790 400 C920 385 1000 555 1110 510"/>'+
- '<path class="el-scales" d="M-100 700 C70 640 95 470 235 465 C365 460 365 700 520 690 C675 680 640 420 790 400 C920 385 1000 555 1110 510"/>'+
- '<path class="el-highlight" d="M-100 670 C70 610 95 440 235 435 C365 430 365 670 520 660 C675 650 640 390 790 370 C920 355 1000 525 1110 480"/>'+
- '<path class="el-coil-mid" d="M-80 775 C140 760 205 615 360 600 C510 585 555 765 710 730 C845 700 855 560 1030 580"/>'+
- '<path d="M-80 775 C140 760 205 615 360 600 C510 585 555 765 710 730 C845 700 855 560 1030 580" fill="none" stroke="url(#el-scale-tiles)" stroke-width="86" stroke-linecap="round"/>'+
- '<g fill="url(#el-horn)" stroke="#a8c2c8" stroke-width="4" opacity=".96">'+
- '<path d="M100 617Q78 558 45 520Q104 536 132 594Z"/><path d="M165 535Q150 470 160 420Q198 477 194 527Z"/><path d="M290 518Q310 452 348 420Q346 489 320 536Z"/><path d="M438 683Q453 616 490 581Q490 650 467 700Z"/><path d="M604 661Q630 585 680 557Q662 637 628 681Z"/><path d="M755 447Q774 375 823 347Q807 423 778 465Z"/>'+
- '</g>'+
- '<g class="el-headgroup" transform="translate(645 360)">'+
- '<path d="M-65 32Q-118-8-96-92Q-83-159-17-190Q53-218 113-164Q160-119 135-54Q125-23 180 5Q214 22 194 61Q167 94 91 81L48 145Q-18 121-65 32Z" fill="url(#el-armor)" stroke="#b2c8cc" stroke-width="8"/>'+
- '<path d="M-68-120Q-130-206-208-218Q-173-144-133-77Q-113-108-68-120Z" fill="url(#el-horn)" stroke="#b7cbca" stroke-width="7"/>'+
- '<path d="M58-158Q105-238 187-246Q152-167 119-91Q88-133 58-158Z" fill="url(#el-horn)" stroke="#b7cbca" stroke-width="7"/>'+
- '<path d="M-104-85Q-57-143 8-143Q78-145 120-88Q71-107 23-93Q-36-72-104-85Z" fill="#06111c" stroke="#819fa9" stroke-width="7"/>'+
- '<path d="M-66-96Q-31-117 5-112Q42-111 70-91" fill="none" stroke="#d6e2df" stroke-width="8" opacity=".55"/>'+
- '<ellipse class="el-eye" cx="47" cy="-105" rx="17" ry="11"/><ellipse cx="49" cy="-105" rx="4" ry="10" fill="#02070d"/>'+
- '<path d="M-105-40Q-48-5 25-23Q87-40 146-4Q116 53 42 58Q-40 56-105-40Z" fill="url(#el-under)" stroke="#91aab0" stroke-width="6"/>'+
- '<path d="M-72-4Q-5 26 66 5Q103-5 137 12" fill="none" stroke="#d1dcda" stroke-width="5" opacity=".55"/>'+
- '<path d="M-55 5L-44 48L-28 18L-15 57L1 22L18 59L33 19L49 54L64 11L80 42L94 0" fill="#e5e8dc" stroke="#9aafb0" stroke-width="3"/>'+
- '<path d="M-92-54L-124-22M-76-34L-102 8M100-48L135-25M-42-149L-70-174M77-166L103-190" fill="none" stroke="#d8e2dc" stroke-width="6" stroke-linecap="round" opacity=".55"/>'+
- '<path d="M-88 8Q-116 28-122 66M-69 28Q-87 63-82 93" fill="none" stroke="#9eb6bd" stroke-width="9" stroke-linecap="round"/>'+
- '<path d="M-8 80Q15 144 45 172Q67 124 91 78" fill="url(#el-armor)" stroke="#9ab2b9" stroke-width="6"/>'+
- '<path d="M-130 15Q-160 35-174 68M-123 32Q-153 65-154 91" fill="none" stroke="#b8cbd0" stroke-width="7" stroke-linecap="round"/>'+
- '</g>'+
- '<g class="el-water"><path d="M390 570Q340 485 300 500Q355 535 350 590M690 560Q735 455 790 480Q730 510 735 585M520 690Q470 625 430 650Q480 655 485 715M850 580Q900 500 945 535Q895 545 900 610"/></g>'+
- '<g fill="#b5dbe4" opacity=".7"><circle cx="275" cy="550" r="5"><animate attributeName="cy" values="550;480;550" dur="3s" repeatCount="indefinite"/></circle><circle cx="820" cy="520" r="4"><animate attributeName="cy" values="520;445;520" dur="2.4s" repeatCount="indefinite"/></circle></g>'+
- '</svg><div class="el-title">ECLIPSE LEVIATHAN<small>AN ANCIENT POWER HAS AWAKENED</small></div>';
+ world.innerHTML='<div class="el-loading">THE DEEP IS AWAKENING</div><div class="el-title">ECLIPSE LEVIATHAN<small>AN ANCIENT POWER HAS AWAKENED</small></div>';
  overlay.appendChild(world);document.body.appendChild(overlay);
- if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}
- const duration=Math.max(9000,Number(opts.duration)||10500);
- setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .65s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),680)}},duration);
- return overlay;
+ const duration=Math.max(10000,Number(opts.duration)||12500);
+ function boot(){
+  const T=window.THREE;if(!T||!world.isConnected)return;
+  const loading=world.querySelector(".el-loading");if(loading)loading.remove();
+  const scene=new T.Scene();scene.fog=new T.FogExp2(0x071522,.035);
+  const camera=new T.PerspectiveCamera(42,1,.1,100);camera.position.set(0,1.4,12);camera.lookAt(0,.2,0);
+  let renderer;try{renderer=new T.WebGLRenderer({alpha:true,antialias:true,powerPreference:"high-performance"});}catch(e){world.insertAdjacentHTML("afterbegin",'<div class="el-loading">3D GRAPHICS UNAVAILABLE</div>');return;}
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));renderer.setSize(world.clientWidth,world.clientHeight);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;world.insertBefore(renderer.domElement,world.firstChild);
+  const ambient=new T.HemisphereLight(0x9fc9df,0x07101a,2.0);scene.add(ambient);
+  const key=new T.DirectionalLight(0xc6e8ff,3.2);key.position.set(-5,7,8);scene.add(key);
+  const rim=new T.PointLight(0x26a9e0,90,18);rim.position.set(4,1,2);scene.add(rim);
+  const warm=new T.PointLight(0xffd49a,34,12);warm.position.set(-4,4,2);scene.add(warm);
+  const eclipse=new T.Mesh(new T.CircleGeometry(1.15,96),new T.MeshBasicMaterial({color:0x02050a}));eclipse.position.set(0,3.7,-5);scene.add(eclipse);
+  const halo=new T.Mesh(new T.TorusGeometry(1.2,.035,12,100),new T.MeshBasicMaterial({color:0x9dbed5}));halo.position.copy(eclipse.position);scene.add(halo);
+  const textureCanvas=document.createElement("canvas");textureCanvas.width=512;textureCanvas.height=256;const cx=textureCanvas.getContext("2d");
+  const grad=cx.createLinearGradient(0,0,512,256);grad.addColorStop(0,"#b6c8c6");grad.addColorStop(.22,"#426879");grad.addColorStop(.5,"#102b40");grad.addColorStop(.72,"#587b86");grad.addColorStop(1,"#091725");cx.fillStyle=grad;cx.fillRect(0,0,512,256);
+  for(let y=-12;y<270;y+=24){for(let x=-14;x<530;x+=28){cx.beginPath();cx.moveTo(x,y+12);cx.quadraticCurveTo(x+14,y-9,x+28,y+12);cx.quadraticCurveTo(x+14,y+34,x,y+12);cx.closePath();cx.fillStyle="rgba(4,15,24,.26)";cx.fill();cx.strokeStyle="rgba(213,232,229,.38)";cx.lineWidth=2;cx.stroke();}}
+  const skinTex=new T.CanvasTexture(textureCanvas);skinTex.wrapS=T.RepeatWrapping;skinTex.wrapT=T.RepeatWrapping;skinTex.repeat.set(3,1);
+  const skin=new T.MeshStandardMaterial({map:skinTex,color:0x9dbbc2,metalness:.34,roughness:.38});
+  const belly=new T.MeshStandardMaterial({color:0x6f8990,metalness:.2,roughness:.55});
+  const hornMat=new T.MeshStandardMaterial({color:0xb8c9c4,metalness:.28,roughness:.3});
+  const dark=new T.MeshStandardMaterial({color:0x07131e,roughness:.4});
+  const gold=new T.MeshStandardMaterial({color:0xffd57c,emissive:0xff8c25,emissiveIntensity:2.2});
+  const curve=new T.CatmullRomCurve3([new T.Vector3(-6,-2.7,-.6),new T.Vector3(-4.6,-1.5,-.3),new T.Vector3(-3.8,.8,-.4),new T.Vector3(-2.1,1.3,-.5),new T.Vector3(-.9,-1.1,-.6),new T.Vector3(.7,-2.2,-.3),new T.Vector3(2.3,-1.3,-.5),new T.Vector3(2.8,1.1,-.5),new T.Vector3(4.2,1.9,-.1),new T.Vector3(5.7,.7,-.2)]);
+  const body=new T.Mesh(new T.TubeGeometry(curve,220,.76,24,false),skin);scene.add(body);
+  const bellyCurve=new T.CatmullRomCurve3([new T.Vector3(-4.5,-1.55,.12),new T.Vector3(-3.5,.45,.1),new T.Vector3(-2.2,.75,.05),new T.Vector3(-1.1,-.95,.05),new T.Vector3(.6,-1.9,.1),new T.Vector3(2.1,-1.05,.1),new T.Vector3(2.55,.8,.05)]);
+  scene.add(new T.Mesh(new T.TubeGeometry(bellyCurve,150,.38,16,false),belly));
+  const head=new T.Group();head.position.set(3.25,2.0,.2);scene.add(head);
+  const skull=new T.Mesh(new T.SphereGeometry(1,40,32),skin);skull.scale.set(1.05,.82,1.0);head.add(skull);
+  const muzzle=new T.Mesh(new T.SphereGeometry(1,36,24),skin);muzzle.scale.set(1.12,.43,.78);muzzle.position.set(.55,-.42,.18);head.add(muzzle);
+  const jaw=new T.Mesh(new T.SphereGeometry(1,32,24),belly);jaw.scale.set(.93,.27,.72);jaw.position.set(.55,-.76,.2);head.add(jaw);
+  function horn(x,y,z,rot){const m=new T.Mesh(new T.ConeGeometry(.27,1.65,20),hornMat);m.position.set(x,y,z);m.rotation.z=rot;m.rotation.x=.18;head.add(m);}
+  horn(-.62,.95,-.05,-.48);horn(.42,1.02,-.05,.52);
+  for(const side of [-1,1]){const eye=new T.Mesh(new T.SphereGeometry(.14,20,16),gold);eye.position.set(.36,.18,side*.73);head.add(eye);const pupil=new T.Mesh(new T.SphereGeometry(.055,12,12),dark);pupil.position.set(.4,.18,side*.84);head.add(pupil);const brow=new T.Mesh(new T.BoxGeometry(.56,.16,.18),skin);brow.position.set(.31,.39,side*.7);brow.rotation.z=-.18;head.add(brow);for(let i=0;i<4;i++){const tooth=new T.Mesh(new T.ConeGeometry(.075,.32,12),hornMat);tooth.position.set(.78-i*.24,-.58,side*.44);tooth.rotation.z=Math.PI;head.add(tooth);}}
+  const nostrilGeo=new T.SphereGeometry(.07,12,10);for(let i=0;i<2;i++){const n=new T.Mesh(nostrilGeo,dark);n.position.set(1.12,-.24,(i?1:-1)*.32);head.add(n);}
+  const spineGroup=new T.Group();scene.add(spineGroup);for(let i=0;i<24;i++){const t=.1+i*.033,p=curve.getPoint(t),tangent=curve.getTangent(t),spike=new T.Mesh(new T.ConeGeometry(.17,.7+(Math.sin(i*2)*.18),12),hornMat);spike.position.copy(p);spike.position.y+=.72;spike.rotation.z=-tangent.x*.45;spineGroup.add(spike);}
+  const water=new T.Mesh(new T.PlaneGeometry(40,20),new T.MeshStandardMaterial({color:0x08283a,metalness:.52,roughness:.22,transparent:true,opacity:.82}));water.rotation.x=-Math.PI/2;water.position.set(0,-3.25,0);scene.add(water);
+  const splash=new T.Group();scene.add(splash);const ringMat=new T.MeshBasicMaterial({color:0x8ad9ef,transparent:true,opacity:.72,side:T.DoubleSide});for(let i=0;i<18;i++){const a=i/18*Math.PI*2,arc=new T.Mesh(new T.TorusGeometry(.65,.025,6,24,Math.PI*.7),ringMat);arc.position.set(Math.cos(a)*2.6,-2.6,Math.sin(a)*.6);arc.rotation.set(Math.PI/2,0,a);splash.add(arc);}
+  const particles=new T.BufferGeometry(),count=180,positions=new Float32Array(count*3);for(let i=0;i<count;i++){positions[i*3]=(Math.random()-.5)*13;positions[i*3+1]=-2.4+Math.random()*5;positions[i*3+2]=(Math.random()-.5)*4;}particles.setAttribute("position",new T.BufferAttribute(positions,3));const spray=new T.Points(particles,new T.PointsMaterial({color:0xa9e5f2,size:.055,transparent:true,opacity:.8}));scene.add(spray);
+  const start=performance.now();function resize(){const w=Math.max(1,world.clientWidth),h=Math.max(1,world.clientHeight);camera.aspect=w/h;camera.position.z=w/h<.65?15:12;camera.updateProjectionMatrix();renderer.setSize(w,h);}const ro=new ResizeObserver(resize);ro.observe(world);resize();
+  function tick(now){if(!world.isConnected){ro.disconnect();renderer.dispose();return;}const t=(now-start)/1000;head.position.y=2+Math.sin(t*1.25)*.12;head.rotation.z=Math.sin(t*.7)*.045;body.rotation.z=Math.sin(t*.38)*.025;spineGroup.rotation.z=body.rotation.z;splash.rotation.y=t*.22;spray.rotation.y=t*.12;rim.intensity=70+Math.sin(t*3)*18;renderer.render(scene,camera);requestAnimationFrame(tick);}requestAnimationFrame(tick);
+  if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}
+ }
+ function load(){if(window.THREE){boot();return;}let script=document.querySelector('script[data-el-three="1"]');if(script){script.addEventListener("load",boot,{once:true});return;}script=document.createElement("script");script.src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js";script.dataset.elThree="1";script.onload=boot;script.onerror=()=>{const l=world.querySelector(".el-loading");if(l)l.textContent="3D ENGINE COULD NOT LOAD";};document.head.appendChild(script);}
+ load();setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .7s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),740)}},duration);return overlay;
 }
 function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="eclipse_leviathan"){return renderEclipseLeviathanGift(gift,opts,overlay);}if(gift.style==="ghostship"){return renderGhostShipGift(gift,opts,overlay);}if(gift.style==="phoenix"){return renderPhoenixGift(gift,opts,overlay);}if(gift.style==="infernal_castle"){return renderInfernalCastleGift(gift,opts,overlay);}if(gift.style==="fingerdeath"){return renderCinematicGift(gift,opts,overlay);}if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedmansion")return renderHauntedMansionGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
 
