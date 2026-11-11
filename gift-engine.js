@@ -1007,7 +1007,7 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
   const T=window.THREE;if(!T||!world.isConnected)return;
   const loading=world.querySelector(".el-loading");if(loading)loading.remove();
   const scene=new T.Scene();scene.fog=new T.FogExp2(0x071522,.035);
-  const camera=new T.PerspectiveCamera(55,1,.1,100);camera.position.set(0,1.9,24);camera.lookAt(0,.45,0);
+  const camera=new T.PerspectiveCamera(42,1,.1,100);camera.position.set(0,.65,18.2);camera.lookAt(0,.25,0);
   let renderer;try{renderer=new T.WebGLRenderer({alpha:true,antialias:true,powerPreference:"high-performance"});}catch(e){world.insertAdjacentHTML("afterbegin",'<div class="el-loading">3D GRAPHICS UNAVAILABLE</div>');return;}
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));renderer.setSize(world.clientWidth,world.clientHeight);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;world.insertBefore(renderer.domElement,world.firstChild);
   const ambient=new T.HemisphereLight(0x9fc9df,0x07101a,2.0);scene.add(ambient);
@@ -1025,11 +1025,11 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
   const hornMat=new T.MeshStandardMaterial({color:0xb8c9c4,metalness:.28,roughness:.3});
   const dark=new T.MeshStandardMaterial({color:0x07131e,roughness:.4});
   const gold=new T.MeshStandardMaterial({color:0xffd57c,emissive:0xff8c25,emissiveIntensity:2.2});
-  const curve=new T.CatmullRomCurve3([new T.Vector3(-6,-2.7,-.6),new T.Vector3(-4.6,-1.5,-.3),new T.Vector3(-3.8,.8,-.4),new T.Vector3(-2.1,1.3,-.5),new T.Vector3(-.9,-1.1,-.6),new T.Vector3(.7,-2.2,-.3),new T.Vector3(2.3,-1.3,-.5),new T.Vector3(2.8,1.1,-.5),new T.Vector3(4.2,1.9,-.1),new T.Vector3(5.7,.7,-.2)]);
+  const curve=new T.CatmullRomCurve3([new T.Vector3(-3,-3.25,-.6),new T.Vector3(-2.3,-1.8,-.3),new T.Vector3(-1.9,1.0,-.4),new T.Vector3(-1.05,1.55,-.5),new T.Vector3(-.45,-1.35,-.6),new T.Vector3(.35,-2.65,-.3),new T.Vector3(1.15,-1.55,-.5),new T.Vector3(1.4,1.3,-.5),new T.Vector3(2.1,2.25,-.1),new T.Vector3(2.85,.8,-.2)]);
   const body=new T.Mesh(new T.TubeGeometry(curve,220,.76,24,false),skin);scene.add(body);
-  const bellyCurve=new T.CatmullRomCurve3([new T.Vector3(-4.5,-1.55,.12),new T.Vector3(-3.5,.45,.1),new T.Vector3(-2.2,.75,.05),new T.Vector3(-1.1,-.95,.05),new T.Vector3(.6,-1.9,.1),new T.Vector3(2.1,-1.05,.1),new T.Vector3(2.55,.8,.05)]);
+  const bellyCurve=new T.CatmullRomCurve3([new T.Vector3(-2.25,-1.85,.12),new T.Vector3(-1.75,.55,.1),new T.Vector3(-1.1,.9,.05),new T.Vector3(-.55,-1.15,.05),new T.Vector3(.3,-2.3,.1),new T.Vector3(1.05,-1.25,.1),new T.Vector3(1.28,.95,.05)]);
   scene.add(new T.Mesh(new T.TubeGeometry(bellyCurve,150,.38,16,false),belly));
-  const head=new T.Group();head.position.set(3.25,1.72,.35);head.rotation.y=.42;scene.add(head);
+  const head=new T.Group();head.position.set(1.65,1.8,.35);head.rotation.y=.42;scene.add(head);
   const skull=new T.Mesh(new T.SphereGeometry(1,48,36),skin);skull.scale.set(1.02,.72,.82);head.add(skull);
   const muzzle=new T.Mesh(new T.SphereGeometry(1,44,28),skin);muzzle.scale.set(1.05,.34,.62);muzzle.position.set(.72,-.28,.2);head.add(muzzle);
   const jaw=new T.Mesh(new T.SphereGeometry(1,40,28),belly);jaw.scale.set(.88,.23,.58);jaw.position.set(.68,-.56,.18);head.add(jaw);
@@ -1041,7 +1041,7 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
   const waterGeo=new T.PlaneGeometry(40,24,80,48);const waterPos=waterGeo.attributes.position;for(let i=0;i<waterPos.count;i++){const x=waterPos.getX(i),z=waterPos.getY(i);waterPos.setZ(i,Math.sin(x*.55)*.045+Math.cos(z*.7)*.025);}waterGeo.computeVertexNormals();const water=new T.Mesh(waterGeo,new T.MeshStandardMaterial({color:0x07334a,metalness:.34,roughness:.2,transparent:true,opacity:.62,side:T.DoubleSide}));water.rotation.x=-Math.PI/2;water.position.set(0,-1.48,0);scene.add(water);
   const splash=new T.Group();scene.add(splash);const ringMat=new T.MeshBasicMaterial({color:0x8ad9ef,transparent:true,opacity:.72,side:T.DoubleSide});for(let i=0;i<18;i++){const a=i/18*Math.PI*2,arc=new T.Mesh(new T.TorusGeometry(.65,.025,6,24,Math.PI*.7),ringMat);arc.position.set(Math.cos(a)*2.6,-1.43,Math.sin(a)*.6);arc.rotation.set(Math.PI/2,0,a);splash.add(arc);}
   const particles=new T.BufferGeometry(),count=180,positions=new Float32Array(count*3);for(let i=0;i<count;i++){positions[i*3]=(Math.random()-.5)*13;positions[i*3+1]=-1.35+Math.random()*3.8;positions[i*3+2]=(Math.random()-.5)*4;}particles.setAttribute("position",new T.BufferAttribute(positions,3));const spray=new T.Points(particles,new T.PointsMaterial({color:0xa9e5f2,size:.055,transparent:true,opacity:.8}));scene.add(spray);
-  const start=performance.now();function resize(){const w=Math.max(1,world.clientWidth),h=Math.max(1,world.clientHeight);camera.aspect=w/h;camera.position.z=w/h<.65?25.5:19;camera.updateProjectionMatrix();renderer.setSize(w,h);}const ro=new ResizeObserver(resize);ro.observe(world);resize();
+  const start=performance.now();function resize(){const w=Math.max(1,world.clientWidth),h=Math.max(1,world.clientHeight);camera.aspect=w/h;camera.position.z=w/h<.65?18.2:14.5;camera.updateProjectionMatrix();renderer.setSize(w,h);}const ro=new ResizeObserver(resize);ro.observe(world);resize();
   function tick(now){if(!world.isConnected){ro.disconnect();renderer.dispose();return;}const t=(now-start)/1000;head.position.y=1.72+Math.sin(t*1.25)*.12;head.rotation.z=Math.sin(t*.7)*.045;body.rotation.z=Math.sin(t*.38)*.025;spineGroup.rotation.z=body.rotation.z;splash.rotation.y=t*.22;spray.rotation.y=t*.12;waterGeo.attributes.position.needsUpdate=true;for(let i=0;i<waterPos.count;i++){const x=waterPos.getX(i),z=waterPos.getY(i);waterPos.setZ(i,Math.sin(x*.55+t*1.3)*.045+Math.cos(z*.7+t*.9)*.025);}waterGeo.computeVertexNormals();rim.intensity=70+Math.sin(t*3)*18;renderer.render(scene,camera);requestAnimationFrame(tick);}requestAnimationFrame(tick);
   if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}
  }
