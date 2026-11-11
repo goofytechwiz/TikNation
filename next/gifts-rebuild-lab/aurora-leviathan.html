@@ -54,7 +54,8 @@ const particles=new THREE.Group();scene.add(particles);for(let i=0;i<120;i++){co
 const bubbles=[];const bubbleMat=new THREE.MeshBasicMaterial({color:0x9deeff,transparent:true,opacity:.48});
 for(let i=0;i<44;i++){const b=new THREE.Mesh(new THREE.SphereGeometry(.035+Math.random()*.055,10,8),bubbleMat);b.position.set((Math.random()-.5)*7,-2.8-Math.random()*3,(Math.random()-.5)*3);scene.add(b);bubbles.push(b)}
 const halo=new THREE.PointLight(0x43dfff,10,12);halo.position.set(0,1.2,2);whale.add(halo);
-let start=performance.now(),soundOn=false,audio=null,drag=false,lastX=0,lastY=0,targetX=0,targetY=0,lastCue=-1;\nconst cueTimes=[.35,2.1,6.7,9.7,11.2];
+let start=performance.now(),soundOn=false,audio=null,drag=false,lastX=0,lastY=0,targetX=0,targetY=0,lastCue=-1;
+const cueTimes=[.35,2.1,6.7,9.7,11.2];
 function replay(){start=performance.now();lastCue=0;msg.textContent='A LIGHT STIRS BENEATH THE STARS';whale.position.set(-.5,-.1,0);whale.scale.setScalar(.78);if(soundOn)playCue(0)}
 document.querySelector('#replay').addEventListener('click',replay);
 document.querySelector('#sound').addEventListener('click',()=>{soundOn=!soundOn;document.querySelector('#sound').textContent='♫ Sound: '+(soundOn?'On':'Off');if(soundOn){audio=audio||new (window.AudioContext||window.webkitAudioContext)();audio.resume();tone(220,.45)}});
