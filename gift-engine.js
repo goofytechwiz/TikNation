@@ -1004,7 +1004,7 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
   const T=window.THREE;if(!T||!world.isConnected)return;
   const loading=world.querySelector(".el-loading");if(loading)loading.remove();
   const scene=new T.Scene();scene.fog=new T.FogExp2(0x061522,.022);
-  const camera=new T.PerspectiveCamera(46,1,.1,100);camera.position.set(0,.45,17.2);camera.lookAt(0,.1,0);
+  const camera=new T.PerspectiveCamera(46,1,.1,100);camera.position.set(0,.45,20.5);camera.lookAt(0,.1,0);
   let renderer;try{renderer=new T.WebGLRenderer({alpha:true,antialias:true,powerPreference:"high-performance"});}catch(e){world.insertAdjacentHTML("afterbegin",'<div class="el-loading">3D GRAPHICS UNAVAILABLE</div>');return;}
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));renderer.setSize(world.clientWidth,world.clientHeight);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;world.insertBefore(renderer.domElement,world.firstChild);
   scene.add(new T.HemisphereLight(0xa9d9f0,0x07111c,2.15));
@@ -1084,7 +1084,7 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
   const mistGeo=new T.BufferGeometry(),mistCount=240,mistPos=new Float32Array(mistCount*3);for(let i=0;i<mistCount;i++){mistPos[i*3]=(Math.random()-.5)*12;mistPos[i*3+1]=-1.2+Math.random()*3.8;mistPos[i*3+2]=(Math.random()-.5)*3;}mistGeo.setAttribute("position",new T.BufferAttribute(mistPos,3));const mist=new T.Points(mistGeo,new T.PointsMaterial({color:0xa8d5e4,size:.035,transparent:true,opacity:.55}));scene.add(mist);
   const rainGeo=new T.BufferGeometry(),rainCount=500,rainPos=new Float32Array(rainCount*3);for(let i=0;i<rainCount;i++){rainPos[i*3]=(Math.random()-.5)*15;rainPos[i*3+1]=Math.random()*10-2;rainPos[i*3+2]=-2-Math.random()*8;}rainGeo.setAttribute("position",new T.Float32BufferAttribute(rainPos,3));const rain=new T.Points(rainGeo,new T.PointsMaterial({color:0x9cc7dc,size:.018,transparent:true,opacity:.4}));scene.add(rain);
   const start=performance.now();let raf=0;
-  function resize(){const w=Math.max(1,world.clientWidth),h=Math.max(1,world.clientHeight);camera.aspect=w/h;camera.position.z=w/h<.7?18.5:15.2;camera.updateProjectionMatrix();renderer.setSize(w,h);}
+  function resize(){const w=Math.max(1,world.clientWidth),h=Math.max(1,world.clientHeight);camera.aspect=w/h;camera.position.z=w/h<.7?22.5:18;camera.updateProjectionMatrix();renderer.setSize(w,h);}
   const ro=new ResizeObserver(resize);ro.observe(world);resize();
   function tick(now){
    if(!world.isConnected){cancelAnimationFrame(raf);ro.disconnect();renderer.dispose();bodyGeo.dispose();waterGeo.dispose();return;}
