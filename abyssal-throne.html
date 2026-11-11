@@ -21,7 +21,7 @@ body{padding:18px;display:grid;place-items:center}.wrap{width:min(1100px,100%);t
 (()=>{
 const canvas=document.getElementById('view'),loading=document.getElementById('loading');
 if(!window.THREE){loading.innerHTML='<div class="error">3D ENGINE COULD NOT LOAD. Check your connection and reopen this preview.</div>';return;}
-const THREE=window.THREE,scene=new THREE.Scene();scene.background=new THREE.Color(0x071522);scene.fog=new THREE.FogExp2(0x0b1c2b,.012);
+const THREE=window.THREE,scene=new THREE.Scene();scene.background=new THREE.Color(0x080d28);scene.fog=new THREE.FogExp2(0x101b36,.010);
 const camera=new THREE.PerspectiveCamera(42,1,.1,1200);camera.position.set(0,24,94);camera.lookAt(0,20,0);
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputEncoding=THREE.sRGBEncoding;
 scene.add(new THREE.HemisphereLight(0x9cc9df,0x07101b,1.0));
@@ -75,6 +75,25 @@ for(let i=0;i<44;i++){const x=(Math.random()-.5)*240,y=38+Math.random()*28,z=-75
 // Sea spray particles around island.
 const sprayCount=650,arr=new Float32Array(sprayCount*3);for(let i=0;i<sprayCount;i++){const a=Math.random()*Math.PI*2,r=28+Math.random()*32;arr[i*3]=Math.cos(a)*r;arr[i*3+1]=Math.random()*14;arr[i*3+2]=Math.sin(a)*r;}
 const sprayGeo=new THREE.BufferGeometry();sprayGeo.setAttribute('position',new THREE.BufferAttribute(arr,3));const spray=new THREE.Points(sprayGeo,new THREE.PointsMaterial({color:0xa8e7f5,size:.38,transparent:true,opacity:.55}));scene.add(spray);
+// Arcane spectacle: aurora curtains, rotating sigil rings, and a living rune field.
+const arcaneGroup=new THREE.Group();scene.add(arcaneGroup);arcaneGroup.position.set(0,31,0);
+const ringMats=[
+ new THREE.MeshBasicMaterial({color:0x24eaff,transparent:true,opacity:.72}),
+ new THREE.MeshBasicMaterial({color:0xb45cff,transparent:true,opacity:.62}),
+ new THREE.MeshBasicMaterial({color:0xffd477,transparent:true,opacity:.52})
+];
+const sigilRings=[];
+[25,29,33].forEach((r,i)=>{const ring=new THREE.Mesh(new THREE.TorusGeometry(r,.16,8,180),ringMats[i]);ring.rotation.x=Math.PI/2+(i-1)*.18;ring.rotation.y=i*.55;arcaneGroup.add(ring);sigilRings.push(ring);});
+const runeGeo=new THREE.BufferGeometry(),runePositions=new Float32Array(900*3),runePhases=[];
+for(let i=0;i<900;i++){const a=Math.random()*Math.PI*2,r=18+Math.random()*28;runePositions[i*3]=Math.cos(a)*r;runePositions[i*3+1]=(Math.random()-.5)*46;runePositions[i*3+2]=Math.sin(a)*r;runePhases.push(Math.random()*Math.PI*2);}
+runeGeo.setAttribute('position',new THREE.BufferAttribute(runePositions,3));
+const runeField=new THREE.Points(runeGeo,new THREE.PointsMaterial({color:0x8defff,size:.7,transparent:true,opacity:.88,blending:THREE.AdditiveBlending,depthWrite:false}));scene.add(runeField);
+const auroraMat=new THREE.MeshBasicMaterial({color:0x28bfff,transparent:true,opacity:.13,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,depthWrite:false});
+const aurora=new THREE.Mesh(new THREE.PlaneGeometry(190,65,1,1),auroraMat);aurora.position.set(0,62,-65);scene.add(aurora);
+const violetLight=new THREE.PointLight(0x9c42ff,2.6,110);violetLight.position.set(-30,42,8);scene.add(violetLight);
+const aquaLight=new THREE.PointLight(0x00eaff,2.2,100);aquaLight.position.set(28,32,12);scene.add(aquaLight);
+const magicBeams=new THREE.Group();scene.add(magicBeams);
+for(let i=0;i<8;i++){const a=i*Math.PI/4;const beam=new THREE.Mesh(new THREE.CylinderGeometry(.08,.5,42,8,1,true),new THREE.MeshBasicMaterial({color:i%2?0x7e4dff:0x29eaff,transparent:true,opacity:.18,blending:THREE.AdditiveBlending,depthWrite:false}));beam.position.set(Math.cos(a)*22,26,Math.sin(a)*22);beam.rotation.z=Math.cos(a)*.22;beam.rotation.x=Math.sin(a)*.22;magicBeams.add(beam);}
 // Lightning bolts, hidden until random flashes.
 function bolt(){const pts=[];let x=(Math.random()-.5)*150,y=85,z=-55;pts.push(new THREE.Vector3(x,y,z));for(let i=0;i<6;i++){x+=(Math.random()-.5)*12;y-=12;pts.push(new THREE.Vector3(x,y,z));}const geo=new THREE.BufferGeometry().setFromPoints(pts);const line=new THREE.Line(geo,new THREE.LineBasicMaterial({color:0xd8f6ff,transparent:true,opacity:0}));scene.add(line);return line;}
 const bolts=[bolt(),bolt(),bolt()];let flashUntil=0,flashLight=new THREE.PointLight(0xb9e9ff,0,260);flashLight.position.set(0,65,-25);scene.add(flashLight);
@@ -83,6 +102,12 @@ function resize(){const r=canvas.getBoundingClientRect();renderer.setSize(r.widt
 function animate(t){requestAnimationFrame(animate);const s=(t-start)/1000;
 if(replaying){const k=Math.min(1,s/4);stoneGroup.position.y=-30*(1-k)*(1-k);if(k>=1)replaying=false;}
 const p=waterGeo.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),z=p.getZ(i);p.setY(i,base[i]+Math.sin(x*.055+s*1.5)*.34+Math.cos(z*.07+s*1.1)*.25);}p.needsUpdate=true;waterGeo.computeVertexNormals();
+sigilRings.forEach((r,i)=>{r.rotation.z=s*(i%2?.13:-.1)*(i+1);r.rotation.x=Math.PI/2+Math.sin(s*.4+i)*.08;});
+runeField.rotation.y=s*.035;runeField.rotation.x=Math.sin(s*.2)*.035;
+const rp=runeGeo.attributes.position;for(let i=0;i<rp.count;i++){rp.setY(i,runePositions[i*3+1]+Math.sin(s*1.2+runePhases[i])*1.8);}rp.needsUpdate=true;
+aurora.material.opacity=.09+Math.sin(s*.65)*.045;aurora.rotation.z=Math.sin(s*.18)*.08;
+magicBeams.rotation.y=-s*.12;violetLight.intensity=2.1+Math.sin(s*1.7)*.8;aquaLight.intensity=1.8+Math.sin(s*2.1+1)*.8;
+
 water.position.y=-1+Math.sin(s*1.2)*.12;stoneGroup.rotation.y=Math.sin(s*.12)*.025;
 warm.intensity=2.1+Math.sin(s*2)*.35;coreLight.intensity=3.8+Math.sin(s*3)*.9;
 if(Math.random()<.003){flashUntil=t+180;bolts.forEach((b,i)=>b.material.opacity=i===Math.floor(Math.random()*3)?.95:0);flashLight.intensity=3.8;}
