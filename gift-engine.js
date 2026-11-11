@@ -1007,7 +1007,7 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
   const T=window.THREE;if(!T||!world.isConnected)return;
   const loading=world.querySelector(".el-loading");if(loading)loading.remove();
   const scene=new T.Scene();scene.fog=new T.FogExp2(0x071522,.035);
-  const camera=new T.PerspectiveCamera(42,1,.1,100);camera.position.set(0,1.4,12);camera.lookAt(0,.2,0);
+  const camera=new T.PerspectiveCamera(55,1,.1,100);camera.position.set(0,1.4,24);camera.lookAt(0,.2,0);
   let renderer;try{renderer=new T.WebGLRenderer({alpha:true,antialias:true,powerPreference:"high-performance"});}catch(e){world.insertAdjacentHTML("afterbegin",'<div class="el-loading">3D GRAPHICS UNAVAILABLE</div>');return;}
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));renderer.setSize(world.clientWidth,world.clientHeight);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;world.insertBefore(renderer.domElement,world.firstChild);
   const ambient=new T.HemisphereLight(0x9fc9df,0x07101a,2.0);scene.add(ambient);
@@ -1041,7 +1041,7 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
   const water=new T.Mesh(new T.PlaneGeometry(40,20),new T.MeshStandardMaterial({color:0x08283a,metalness:.52,roughness:.22,transparent:true,opacity:.82}));water.rotation.x=-Math.PI/2;water.position.set(0,-3.25,0);scene.add(water);
   const splash=new T.Group();scene.add(splash);const ringMat=new T.MeshBasicMaterial({color:0x8ad9ef,transparent:true,opacity:.72,side:T.DoubleSide});for(let i=0;i<18;i++){const a=i/18*Math.PI*2,arc=new T.Mesh(new T.TorusGeometry(.65,.025,6,24,Math.PI*.7),ringMat);arc.position.set(Math.cos(a)*2.6,-2.6,Math.sin(a)*.6);arc.rotation.set(Math.PI/2,0,a);splash.add(arc);}
   const particles=new T.BufferGeometry(),count=180,positions=new Float32Array(count*3);for(let i=0;i<count;i++){positions[i*3]=(Math.random()-.5)*13;positions[i*3+1]=-2.4+Math.random()*5;positions[i*3+2]=(Math.random()-.5)*4;}particles.setAttribute("position",new T.BufferAttribute(positions,3));const spray=new T.Points(particles,new T.PointsMaterial({color:0xa9e5f2,size:.055,transparent:true,opacity:.8}));scene.add(spray);
-  const start=performance.now();function resize(){const w=Math.max(1,world.clientWidth),h=Math.max(1,world.clientHeight);camera.aspect=w/h;camera.position.z=w/h<.65?15:12;camera.updateProjectionMatrix();renderer.setSize(w,h);}const ro=new ResizeObserver(resize);ro.observe(world);resize();
+  const start=performance.now();function resize(){const w=Math.max(1,world.clientWidth),h=Math.max(1,world.clientHeight);camera.aspect=w/h;camera.position.z=w/h<.65?27:19;camera.updateProjectionMatrix();renderer.setSize(w,h);}const ro=new ResizeObserver(resize);ro.observe(world);resize();
   function tick(now){if(!world.isConnected){ro.disconnect();renderer.dispose();return;}const t=(now-start)/1000;head.position.y=2+Math.sin(t*1.25)*.12;head.rotation.z=Math.sin(t*.7)*.045;body.rotation.z=Math.sin(t*.38)*.025;spineGroup.rotation.z=body.rotation.z;splash.rotation.y=t*.22;spray.rotation.y=t*.12;rim.intensity=70+Math.sin(t*3)*18;renderer.render(scene,camera);requestAnimationFrame(tick);}requestAnimationFrame(tick);
   if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}
  }
