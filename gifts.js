@@ -28,6 +28,7 @@ const TIKNATION_GIFT_CATALOG = {
   dragons_revenge:{name:"Dragon's Revenge",emoji:"🐲",category:"Legendary",cost:200,style:"dragonrevenge",sound:"dragon"},
   finger_of_death:{name:"Finger of Death",emoji:"💀",category:"Legendary",cost:250,style:"fingerdeath",sound:"fingerdeath"},
   eclipse_leviathan:{name:"Eclipse Leviathan",emoji:"🌑",category:"Legendary",cost:250,style:"eclipse_leviathan",sound:"eclipse_leviathan"},
+  infinity_guardian:{name:"Infinity Guardian",emoji:"♾️",category:"Mythic",cost:250,style:"infinity_guardian",sound:"infinity_guardian"},
   clouds_of_mystery:{name:"Clouds of Mystery",emoji:"☁️",category:"Magical",cost:50,style:"storm",sound:"mystery"},
   hammer_of_pain:{name:"Hammer of Pain",emoji:"🔨",category:"Special Effects",cost:50,style:"hammer",sound:"hammer"},
   thunder_ass:{name:"Thunder Ass",emoji:"💨",category:"Surprises",cost:69,style:"deathass",sound:"stinkdeath"},
@@ -97,6 +98,13 @@ async function playTikNationGiftSound(gift) {
     if (context.state !== "running") return;
     const now = context.currentTime;
 
+    if (gift.style === "infinity_guardian") {
+      const length=Math.floor(context.sampleRate*8),buffer=context.createBuffer(1,length,context.sampleRate),data=buffer.getChannelData(0);
+      for(let i=0;i<length;i++){data[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/length);}
+      const source=context.createBufferSource(),filter=context.createBiquadFilter(),gain=context.createGain();source.buffer=buffer;filter.type="lowpass";filter.frequency.setValueAtTime(140,now);filter.frequency.exponentialRampToValueAtTime(1500,now+2.8);filter.frequency.exponentialRampToValueAtTime(220,now+7.5);gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(.16,now+1.8);gain.gain.setValueAtTime(.12,now+4);gain.gain.exponentialRampToValueAtTime(.0001,now+7.9);source.connect(filter);filter.connect(gain);gain.connect(context.destination);source.start(now);source.stop(now+8);
+      [0.9,1.7,2.5,3.3,4.1,4.9].forEach((delay,index)=>{const o=context.createOscillator(),g=context.createGain(),f=context.createBiquadFilter();o.type="sine";o.frequency.setValueAtTime([196,261.63,329.63,392,523.25,659.25][index],now+delay);f.type="lowpass";f.frequency.value=1300;g.gain.setValueAtTime(.0001,now+delay);g.gain.linearRampToValueAtTime(.045,now+delay+.12);g.gain.exponentialRampToValueAtTime(.0001,now+delay+1.25);o.connect(f);f.connect(g);g.connect(context.destination);o.start(now+delay);o.stop(now+delay+1.3);});
+      const chime=context.createOscillator(),cg=context.createGain();chime.type="sine";chime.frequency.setValueAtTime(783.99,now+7.9);chime.frequency.exponentialRampToValueAtTime(1174.66,now+8.7);cg.gain.setValueAtTime(.0001,now+7.9);cg.gain.linearRampToValueAtTime(.08,now+8.05);cg.gain.exponentialRampToValueAtTime(.0001,now+9.4);chime.connect(cg);cg.connect(context.destination);chime.start(now+7.9);chime.stop(now+9.5);return;
+    }
     if (gift.style === "eclipse_leviathan") {
       const length=Math.floor(context.sampleRate*7.2),buffer=context.createBuffer(1,length,context.sampleRate),data=buffer.getChannelData(0);
       for(let i=0;i<length;i++){const fade=Math.min(1,i/(context.sampleRate*.8))*Math.max(0,1-i/length);data[i]=(Math.random()*2-1)*fade;}
@@ -453,7 +461,7 @@ function ensureTikNationGiftEngine() {
   if (window.tikNationGiftEnginePromise) return window.tikNationGiftEnginePromise;
   window.tikNationGiftEnginePromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "./gift-engine.js?v=leviathan-zoomout-v5";
+    script.src = "./gift-engine.js?v=infinity-guardian-v1";
     script.onload = () => window.TikNationGiftEngine ? resolve(window.TikNationGiftEngine) : reject(new Error("Gift engine did not initialize."));
     script.onerror = () => reject(new Error("Gift animation engine could not load."));
     document.head.appendChild(script);
@@ -466,7 +474,7 @@ function showTikNationGiftEffect(gift) {
     engine.show(gift, {
       meta: "TIKNATION GIFT · TEST COINS ONLY",
       onSound: () => playTikNationGiftSound(gift),
-      duration: gift.style === "eclipse_leviathan" ? 10500 : gift.style === "ghostship" ? 8800 : gift.style === "storm_of_the_world" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
+      duration: gift.style === "infinity_guardian" ? 13200 : gift.style === "eclipse_leviathan" ? 10500 : gift.style === "ghostship" ? 8800 : gift.style === "storm_of_the_world" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
     });
   }).catch(error => console.error("TikNation gift effect unavailable:", error));
 }
@@ -499,7 +507,7 @@ async function sendTikNationGift(recipientId, giftCode) {
       panel.classList.remove("gift-flash", "gift-signature");
       void panel.offsetWidth;
       panel.classList.add("gift-flash");
-      if (["creator_crown", "infinity_crystal", "symphony", "dragon_spirit", "galaxy_gift"].includes(giftCode)) panel.classList.add("gift-signature");
+      if (["creator_crown", "infinity_crystal", "symphony", "dragon_spirit", "galaxy_gift", "infinity_guardian"].includes(giftCode)) panel.classList.add("gift-signature");
     }
     showTikNationGiftEffect(gift);
     if (status) { status.className = "gift-status success"; status.textContent = "✨ " + gift.name + " sent! Test gifts have no cash value."; }
