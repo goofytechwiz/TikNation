@@ -28,13 +28,13 @@ a{color:#9befff;text-decoration:none;font-size:12px}footer{margin-top:26px}
 <h1>INFINITY GUARDIAN</h1>
 <p>A cosmic portal opens. A luminous guardian spreads its wings, releases a wave of starlight, and leaves the infinity mark behind.</p>
 <div class="rarity">MYTHIC · ONE OF A KIND</div>
-<button id="awaken" type="button">AWAKEN THE GUARDIAN</button>
+<button id="awaken" type="button">AWAKEN THE GUARDIAN</button>\n<div class="note" id="status" role="status" aria-live="polite">Tap to open the portal and summon the Guardian.</div>
 <div class="note">Preview only · 250 test coins in the TikNation gift catalog · No coins are charged here</div>
 <footer><a href="./next/">Return to TikNation</a></footer>
 </main>
 <script>
 (function(){
- const button=document.getElementById("awaken");
+ const button=document.getElementById("awaken");\n const status=document.getElementById("status");
  function playSound(){
   try{
    const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
@@ -46,10 +46,10 @@ a{color:#9befff;text-decoration:none;font-size:12px}footer{margin-top:26px}
   }catch(_){}
  }
  button.addEventListener("click",function(){
-  if(!window.TikNationGiftEngine||!window.TikNationGiftEngine.show){button.textContent="PREVIEW STILL LOADING";return;}
+  if(!window.TikNationGiftEngine||!window.TikNationGiftEngine.show){button.textContent="PREVIEW STILL LOADING";status.textContent="The gift engine did not load. Refresh this page and try again.";return;}
   button.disabled=true;button.textContent="THE GUARDIAN IS AWAKENING…";
-  window.TikNationGiftEngine.show({name:"Infinity Guardian",emoji:"♾️",style:"infinity_guardian"},{duration:13200,onSound:playSound});
-  setTimeout(()=>{button.disabled=false;button.textContent="AWAKEN THE GUARDIAN";},14500);
+  const started=window.TikNationGiftEngine.show({name:"Infinity Guardian",emoji:"♾️",style:"infinity_guardian"},{duration:13200,onSound:playSound});\n  status.textContent=started?"Portal opened — the Guardian is arriving.":"The animation could not start. Please refresh and try again.";
+  setTimeout(()=>{button.disabled=false;button.textContent="AWAKEN THE GUARDIAN";status.textContent="Ready for another awakening.";},14500);
  });
 })();
 </script>
