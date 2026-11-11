@@ -78,7 +78,7 @@ let ctx=null,master=null,buzz=null,rumble=null,soundOn=false;
 const trainSample=new Audio('https://sfxmint.com/dl/steam-train-motion-01.mp3');
 const whistleSample=new Audio('https://sfxmint.com/dl/train-whistle-04.mp3');
 const blastSample=new Audio('https://assets.sfx.woven.video/sfx/explosion.wav');
-[trainSample,whistleSample,blastSample].forEach(a=>{a.preload='auto';a.crossOrigin='anonymous';a.volume=.85});
+[trainSample,whistleSample,blastSample].forEach(a=>{a.preload='auto';a.volume=.85});
 function playClip(a,volume=1){if(!soundOn)return;a.pause();a.currentTime=0;a.volume=volume;const p=a.play();if(p&&p.catch)p.catch(()=>{});}
 
 function noiseBuffer(seconds){const b=ctx.createBuffer(1,Math.floor(ctx.sampleRate*seconds),ctx.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;return b}
@@ -87,7 +87,7 @@ buzz=ctx.createGain();buzz.gain.value=.0001;buzz.connect(master);
 [48,96,144].forEach((hz,i)=>{const o=ctx.createOscillator(),g=ctx.createGain(),filter=ctx.createBiquadFilter();o.type=i===0?'triangle':'sawtooth';o.frequency.value=hz;o.detune.value=i===2?3:0;filter.type='lowpass';filter.frequency.value=i===0?180:260;g.gain.value=[.34,.10,.025][i];o.connect(filter);filter.connect(g);g.connect(buzz);o.start()});
 const wob=ctx.createOscillator(),wg=ctx.createGain();wob.frequency.value=4.2;wg.gain.value=1.2;wob.connect(wg);wg.connect(buzz.gain);wob.start();
 const src=ctx.createBufferSource(),f=ctx.createBiquadFilter();rumble=ctx.createGain();src.buffer=noiseBuffer(3);src.loop=true;f.type='lowpass';f.frequency.value=105;f.Q.value=.5;src.connect(f);f.connect(rumble);rumble.connect(master);rumble.gain.value=.0001;src.start()}
-function enableSound(){soundSetup();ctx.resume();soundOn=true;[trainSample,whistleSample,blastSample].forEach(a=>{const p=a.play();if(p&&p.then)p.then(()=>{a.pause();a.currentTime=0}).catch(()=>{})});document.getElementById('sound').textContent='♫ SOUND ON'}
+function enableSound(){soundSetup();ctx.resume();soundOn=true;document.getElementById('sound').textContent='♫ SOUND ON'}
 function trainWhistle(){playClip(whistleSample,.68)}
 function boom(){if(!soundOn)return;buzz.gain.setTargetAtTime(.0001,ctx.currentTime,.035);rumble.gain.setTargetAtTime(.0001,ctx.currentTime,.05);playClip(blastSample,1)}
 document.getElementById('sound').onclick=()=>{if(!soundOn)enableSound();else{soundOn=false;master.gain.setTargetAtTime(.0001,ctx.currentTime,.08);document.getElementById('sound').textContent='♫ ENABLE SOUND'}};
