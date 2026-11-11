@@ -988,17 +988,14 @@ function renderHauntedMansionGift(gift,opts,overlay){
 
 
 function renderEclipseLeviathanGift(gift,opts,overlay){
- const sid="tn-eclipse-leviathan-3d";let style=document.getElementById(sid);
+ const sid="tn-eclipse-leviathan-rebuild";let style=document.getElementById(sid);
  if(!style){style=document.createElement("style");style.id=sid;document.head.appendChild(style);}
- style.textContent=String.raw`
- #tiknation-gift-engine[data-style=eclipse_leviathan]{display:block!important;padding:0!important;background:#020711!important}
- #tiknation-gift-engine[data-style=eclipse_leviathan] .el-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#20384c 0,#081522 55%,#01050b 100%)}
- #tiknation-gift-engine[data-style=eclipse_leviathan] canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
- #tiknation-gift-engine[data-style=eclipse_leviathan] .el-title{position:absolute;z-index:4;bottom:4%;left:0;right:0;text-align:center;color:#e4f4fa;font:900 clamp(19px,4.8vw,42px)/1 Georgia,serif;letter-spacing:.12em;text-shadow:0 3px 14px #000,0 0 25px #7bc8e8;pointer-events:none}
- #tiknation-gift-engine[data-style=eclipse_leviathan] .el-title small{display:block;margin-top:9px;font:800 10px/1.4 system-ui;letter-spacing:.26em;color:#b6d0dc}
- #tiknation-gift-engine[data-style=eclipse_leviathan] .el-loading{position:absolute;inset:0;display:grid;place-items:center;color:#b9d8e7;font:700 12px system-ui;letter-spacing:.2em}
- @media(max-width:650px){#tiknation-gift-engine[data-style=eclipse_leviathan] .el-title{bottom:3%;letter-spacing:.06em}}
- `;
+ style.textContent="#tiknation-gift-engine[data-style=eclipse_leviathan]{display:block!important;padding:0!important;background:#020711!important}\n"+
+ "#tiknation-gift-engine[data-style=eclipse_leviathan] .el-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 34%,#29485a 0,#102536 37%,#061321 73%,#01050b 100%)}\n"+
+ "#tiknation-gift-engine[data-style=eclipse_leviathan] canvas{position:absolute;inset:0;width:100%;height:100%;display:block}\n"+
+ "#tiknation-gift-engine[data-style=eclipse_leviathan] .el-title{position:absolute;z-index:4;bottom:3.5%;left:0;right:0;text-align:center;color:#e8f7ff;font:900 clamp(19px,4.8vw,42px)/1 Georgia,serif;letter-spacing:.1em;text-shadow:0 3px 16px #000,0 0 25px #7bc8e8;pointer-events:none}\n"+
+ "#tiknation-gift-engine[data-style=eclipse_leviathan] .el-title small{display:block;margin-top:9px;font:800 10px/1.4 system-ui;letter-spacing:.25em;color:#b6d0dc}\n"+
+ "#tiknation-gift-engine[data-style=eclipse_leviathan] .el-loading{position:absolute;inset:0;display:grid;place-items:center;color:#b9d8e7;font:700 12px system-ui;letter-spacing:.2em}";
  const world=document.createElement("div");world.className="el-world";
  world.innerHTML='<div class="el-loading">THE DEEP IS AWAKENING</div><div class="el-title">ECLIPSE LEVIATHAN<small>AN ANCIENT POWER HAS AWAKENED</small></div>';
  overlay.appendChild(world);document.body.appendChild(overlay);
@@ -1006,47 +1003,115 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
  function boot(){
   const T=window.THREE;if(!T||!world.isConnected)return;
   const loading=world.querySelector(".el-loading");if(loading)loading.remove();
-  const scene=new T.Scene();scene.fog=new T.FogExp2(0x071522,.035);
-  const camera=new T.PerspectiveCamera(42,1,.1,100);camera.position.set(0,.65,18.2);camera.lookAt(0,.25,0);
+  const scene=new T.Scene();scene.fog=new T.FogExp2(0x061522,.022);
+  const camera=new T.PerspectiveCamera(46,1,.1,100);camera.position.set(0,.45,15.5);camera.lookAt(0,.1,0);
   let renderer;try{renderer=new T.WebGLRenderer({alpha:true,antialias:true,powerPreference:"high-performance"});}catch(e){world.insertAdjacentHTML("afterbegin",'<div class="el-loading">3D GRAPHICS UNAVAILABLE</div>');return;}
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));renderer.setSize(world.clientWidth,world.clientHeight);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;world.insertBefore(renderer.domElement,world.firstChild);
-  const ambient=new T.HemisphereLight(0x9fc9df,0x07101a,2.0);scene.add(ambient);
-  const key=new T.DirectionalLight(0xc6e8ff,3.2);key.position.set(-5,7,8);scene.add(key);
-  const rim=new T.PointLight(0x26a9e0,90,18);rim.position.set(4,1,2);scene.add(rim);
-  const warm=new T.PointLight(0xffd49a,34,12);warm.position.set(-4,4,2);scene.add(warm);
-  const eclipse=new T.Mesh(new T.CircleGeometry(1.15,96),new T.MeshBasicMaterial({color:0x02050a}));eclipse.position.set(0,3.7,-5);scene.add(eclipse);
-  const halo=new T.Mesh(new T.TorusGeometry(1.2,.035,12,100),new T.MeshBasicMaterial({color:0x9dbed5}));halo.position.copy(eclipse.position);scene.add(halo);
-  const textureCanvas=document.createElement("canvas");textureCanvas.width=512;textureCanvas.height=256;const cx=textureCanvas.getContext("2d");
-  const grad=cx.createLinearGradient(0,0,512,256);grad.addColorStop(0,"#b6c8c6");grad.addColorStop(.22,"#426879");grad.addColorStop(.5,"#102b40");grad.addColorStop(.72,"#587b86");grad.addColorStop(1,"#091725");cx.fillStyle=grad;cx.fillRect(0,0,512,256);
-  for(let y=-12;y<270;y+=24){for(let x=-14;x<530;x+=28){cx.beginPath();cx.moveTo(x,y+12);cx.quadraticCurveTo(x+14,y-9,x+28,y+12);cx.quadraticCurveTo(x+14,y+34,x,y+12);cx.closePath();cx.fillStyle="rgba(4,15,24,.26)";cx.fill();cx.strokeStyle="rgba(213,232,229,.38)";cx.lineWidth=2;cx.stroke();}}
-  const skinTex=new T.CanvasTexture(textureCanvas);skinTex.wrapS=T.RepeatWrapping;skinTex.wrapT=T.RepeatWrapping;skinTex.repeat.set(3,1);
-  const skin=new T.MeshStandardMaterial({map:skinTex,color:0x9dbbc2,metalness:.34,roughness:.38});
-  const belly=new T.MeshStandardMaterial({color:0x6f8990,metalness:.2,roughness:.55});
-  const hornMat=new T.MeshStandardMaterial({color:0xb8c9c4,metalness:.28,roughness:.3});
-  const dark=new T.MeshStandardMaterial({color:0x07131e,roughness:.4});
-  const gold=new T.MeshStandardMaterial({color:0xffd57c,emissive:0xff8c25,emissiveIntensity:2.2});
-  const curve=new T.CatmullRomCurve3([new T.Vector3(-3,-3.25,-.6),new T.Vector3(-2.3,-1.8,-.3),new T.Vector3(-1.9,1.0,-.4),new T.Vector3(-1.05,1.55,-.5),new T.Vector3(-.45,-1.35,-.6),new T.Vector3(.35,-2.65,-.3),new T.Vector3(1.15,-1.55,-.5),new T.Vector3(1.4,1.3,-.5),new T.Vector3(2.1,2.25,-.1),new T.Vector3(2.85,.8,-.2)]);
-  const body=new T.Mesh(new T.TubeGeometry(curve,220,.76,24,false),skin);scene.add(body);
-  const bellyCurve=new T.CatmullRomCurve3([new T.Vector3(-2.25,-1.85,.12),new T.Vector3(-1.75,.55,.1),new T.Vector3(-1.1,.9,.05),new T.Vector3(-.55,-1.15,.05),new T.Vector3(.3,-2.3,.1),new T.Vector3(1.05,-1.25,.1),new T.Vector3(1.28,.95,.05)]);
-  scene.add(new T.Mesh(new T.TubeGeometry(bellyCurve,150,.38,16,false),belly));
-  const head=new T.Group();head.position.set(1.65,1.8,.35);head.rotation.y=.42;scene.add(head);
-  const skull=new T.Mesh(new T.SphereGeometry(1,48,36),skin);skull.scale.set(1.02,.72,.82);head.add(skull);
-  const muzzle=new T.Mesh(new T.SphereGeometry(1,44,28),skin);muzzle.scale.set(1.05,.34,.62);muzzle.position.set(.72,-.28,.2);head.add(muzzle);
-  const jaw=new T.Mesh(new T.SphereGeometry(1,40,28),belly);jaw.scale.set(.88,.23,.58);jaw.position.set(.68,-.56,.18);head.add(jaw);
-  function horn(x,y,z,rot){const m=new T.Mesh(new T.ConeGeometry(.27,1.65,20),hornMat);m.position.set(x,y,z);m.rotation.z=rot;m.rotation.x=.18;head.add(m);}
-  horn(-.58,.82,-.05,-.68);horn(.28,.88,-.05,.42);
-  for(const side of [-1,1]){const eye=new T.Mesh(new T.SphereGeometry(.14,20,16),gold);eye.position.set(.28,.12,side*.66);head.add(eye);const pupil=new T.Mesh(new T.SphereGeometry(.055,12,12),dark);pupil.position.set(.34,.12,side*.75);head.add(pupil);const brow=new T.Mesh(new T.BoxGeometry(.56,.16,.18),skin);brow.position.set(.26,.32,side*.64);brow.rotation.z=-.18;head.add(brow);for(let i=0;i<4;i++){const tooth=new T.Mesh(new T.ConeGeometry(.075,.32,12),hornMat);tooth.position.set(.86-i*.23,-.43,side*.37);tooth.rotation.z=Math.PI;head.add(tooth);}}
-  const nostrilGeo=new T.SphereGeometry(.07,12,10);for(let i=0;i<2;i++){const n=new T.Mesh(nostrilGeo,dark);n.position.set(1.12,-.24,(i?1:-1)*.32);head.add(n);}
-  const spineGroup=new T.Group();scene.add(spineGroup);for(let i=0;i<24;i++){const t=.1+i*.033,p=curve.getPoint(t),tangent=curve.getTangent(t),spike=new T.Mesh(new T.ConeGeometry(.17,.7+(Math.sin(i*2)*.18),12),hornMat);spike.position.copy(p);spike.position.y+=.72;spike.rotation.z=-tangent.x*.45;spineGroup.add(spike);}
-  const waterGeo=new T.PlaneGeometry(40,24,80,48);const waterPos=waterGeo.attributes.position;for(let i=0;i<waterPos.count;i++){const x=waterPos.getX(i),z=waterPos.getY(i);waterPos.setZ(i,Math.sin(x*.55)*.045+Math.cos(z*.7)*.025);}waterGeo.computeVertexNormals();const water=new T.Mesh(waterGeo,new T.MeshStandardMaterial({color:0x07334a,metalness:.34,roughness:.2,transparent:true,opacity:.62,side:T.DoubleSide}));water.rotation.x=-Math.PI/2;water.position.set(0,-1.48,0);scene.add(water);
-  const splash=new T.Group();scene.add(splash);const ringMat=new T.MeshBasicMaterial({color:0x8ad9ef,transparent:true,opacity:.72,side:T.DoubleSide});for(let i=0;i<18;i++){const a=i/18*Math.PI*2,arc=new T.Mesh(new T.TorusGeometry(.65,.025,6,24,Math.PI*.7),ringMat);arc.position.set(Math.cos(a)*2.6,-1.43,Math.sin(a)*.6);arc.rotation.set(Math.PI/2,0,a);splash.add(arc);}
-  const particles=new T.BufferGeometry(),count=180,positions=new Float32Array(count*3);for(let i=0;i<count;i++){positions[i*3]=(Math.random()-.5)*13;positions[i*3+1]=-1.35+Math.random()*3.8;positions[i*3+2]=(Math.random()-.5)*4;}particles.setAttribute("position",new T.BufferAttribute(positions,3));const spray=new T.Points(particles,new T.PointsMaterial({color:0xa9e5f2,size:.055,transparent:true,opacity:.8}));scene.add(spray);
-  const start=performance.now();function resize(){const w=Math.max(1,world.clientWidth),h=Math.max(1,world.clientHeight);camera.aspect=w/h;camera.position.z=w/h<.65?18.2:14.5;camera.updateProjectionMatrix();renderer.setSize(w,h);}const ro=new ResizeObserver(resize);ro.observe(world);resize();
-  function tick(now){if(!world.isConnected){ro.disconnect();renderer.dispose();return;}const t=(now-start)/1000;head.position.y=1.72+Math.sin(t*1.25)*.12;head.rotation.z=Math.sin(t*.7)*.045;body.rotation.z=Math.sin(t*.38)*.025;spineGroup.rotation.z=body.rotation.z;splash.rotation.y=t*.22;spray.rotation.y=t*.12;waterGeo.attributes.position.needsUpdate=true;for(let i=0;i<waterPos.count;i++){const x=waterPos.getX(i),z=waterPos.getY(i);waterPos.setZ(i,Math.sin(x*.55+t*1.3)*.045+Math.cos(z*.7+t*.9)*.025);}waterGeo.computeVertexNormals();rim.intensity=70+Math.sin(t*3)*18;renderer.render(scene,camera);requestAnimationFrame(tick);}requestAnimationFrame(tick);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));renderer.setSize(world.clientWidth,world.clientHeight);renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;world.insertBefore(renderer.domElement,world.firstChild);
+  scene.add(new T.HemisphereLight(0xa9d9f0,0x07111c,2.15));
+  const moonLight=new T.DirectionalLight(0xc3eaff,3.3);moonLight.position.set(-4,7,8);scene.add(moonLight);
+  const blueRim=new T.PointLight(0x168bc4,85,22);blueRim.position.set(4,1,4);scene.add(blueRim);
+  const silver=new T.PointLight(0xb5e4f3,45,18);silver.position.set(-5,3,3);scene.add(silver);
+  const eclipseGroup=new T.Group();eclipseGroup.position.set(-.1,3.35,-5.5);scene.add(eclipseGroup);
+  const eclipse=new T.Mesh(new T.CircleGeometry(1.08,96),new T.MeshBasicMaterial({color:0x01040a}));eclipseGroup.add(eclipse);
+  const halo=new T.Mesh(new T.TorusGeometry(1.16,.045,12,128),new T.MeshBasicMaterial({color:0xa9d7ed}));halo.position.z=-.04;eclipseGroup.add(halo);
+  const haloGlow=new T.PointLight(0x80c9ef,18,7);eclipseGroup.add(haloGlow);
+  const skinCanvas=document.createElement("canvas");skinCanvas.width=512;skinCanvas.height=512;const c=skinCanvas.getContext("2d");
+  const bg=c.createLinearGradient(0,0,512,512);bg.addColorStop(0,"#8daeb3");bg.addColorStop(.25,"#426e82");bg.addColorStop(.6,"#17394e");bg.addColorStop(1,"#0a1d2c");c.fillStyle=bg;c.fillRect(0,0,512,512);
+  for(let y=-24;y<560;y+=34){for(let x=-24;x<560;x+=38){c.beginPath();c.moveTo(x,y+17);c.bezierCurveTo(x+2,y-3,x+35,y-3,x+38,y+17);c.bezierCurveTo(x+34,y+38,x+4,y+38,x,y+17);c.closePath();c.fillStyle="rgba(5,20,31,.38)";c.fill();c.strokeStyle="rgba(190,224,226,.52)";c.lineWidth=2;c.stroke();c.beginPath();c.moveTo(x+6,y+14);c.quadraticCurveTo(x+18,y+2,x+31,y+14);c.strokeStyle="rgba(229,245,241,.27)";c.lineWidth=1.5;c.stroke();}}
+  const skinTex=new T.CanvasTexture(skinCanvas);skinTex.wrapS=T.RepeatWrapping;skinTex.wrapT=T.RepeatWrapping;skinTex.repeat.set(2.2,1.4);
+  const skin=new T.MeshStandardMaterial({map:skinTex,color:0xb2cbd0,metalness:.25,roughness:.48});
+  const bellyMat=new T.MeshStandardMaterial({color:0x8da8aa,metalness:.12,roughness:.68});
+  const ridgeMat=new T.MeshStandardMaterial({color:0x9fb6b7,metalness:.38,roughness:.34});
+  const darkMat=new T.MeshStandardMaterial({color:0x06121c,roughness:.38});
+  const eyeMat=new T.MeshStandardMaterial({color:0xffd17a,emissive:0xff8b19,emissiveIntensity:2.8,roughness:.2});
+  const mouthMat=new T.MeshStandardMaterial({color:0x180e13,roughness:.8});
+  const creature=new T.Group();scene.add(creature);
+  const path=new T.CatmullRomCurve3([
+   new T.Vector3(-4.35,-2.45,-.2),new T.Vector3(-4.1,-1.15,-.1),new T.Vector3(-3.45,.55,-.25),
+   new T.Vector3(-2.35,1.18,-.35),new T.Vector3(-1.25,.45,-.5),new T.Vector3(-.65,-1.15,-.55),
+   new T.Vector3(.55,-1.82,-.35),new T.Vector3(1.65,-.85,-.25),new T.Vector3(1.8,.65,-.1),
+   new T.Vector3(2.5,1.5,.1),new T.Vector3(3.2,1.25,.25)
+  ],false,"catmullrom",.45);
+  const segments=240,sides=32,verts=[],normals=[],uvs=[],indices=[],colors=[];
+  const base=new T.Color(0x6d9aaa),under=new T.Color(0x9eb6b4);
+  for(let i=0;i<=segments;i++){
+   const t=i/segments,p=path.getPointAt(t),tan=path.getTangentAt(t).normalize();
+   const axis=new T.Vector3(0,0,1),normal=new T.Vector3().crossVectors(tan,axis).normalize();
+   const binormal=new T.Vector3().crossVectors(tan,normal).normalize();
+   const radius=.12+.67*Math.pow(Math.sin(Math.PI*(.08+.84*t)),.38)*(1-.22*t);
+   for(let j=0;j<=sides;j++){
+    const a=j/sides*Math.PI*2,cs=Math.cos(a),sn=Math.sin(a);
+    const n=normal.clone().multiplyScalar(cs).addScaledVector(binormal,sn).normalize();
+    const v=p.clone().addScaledVector(n,radius);
+    verts.push(v.x,v.y,v.z);normals.push(n.x,n.y,n.z);uvs.push(t*4,j/sides*2.8);
+    const col=T.MathUtils.smoothstep(n.y,-.35,-.8);const color=base.clone().lerp(under,col*.8);colors.push(color.r,color.g,color.b);
+    if(i<segments&&j<sides){const a0=i*(sides+1)+j,b0=a0+sides+1;indices.push(a0,b0,a0+1,b0,b0+1,a0+1);}
+   }
+  }
+  const bodyGeo=new T.BufferGeometry();bodyGeo.setAttribute("position",new T.Float32BufferAttribute(verts,3));bodyGeo.setAttribute("normal",new T.Float32BufferAttribute(normals,3));bodyGeo.setAttribute("uv",new T.Float32BufferAttribute(uvs,2));bodyGeo.setAttribute("color",new T.Float32BufferAttribute(colors,3));bodyGeo.setIndex(indices);
+  const bodyMat=new T.MeshStandardMaterial({map:skinTex,vertexColors:true,metalness:.25,roughness:.42});
+  const body=new T.Mesh(bodyGeo,bodyMat);creature.add(body);
+  const ridgeGroup=new T.Group();creature.add(ridgeGroup);
+  for(let i=12;i<220;i+=5){const t=i/240,p=path.getPointAt(t),tan=path.getTangentAt(t);const size=.22+.2*Math.sin(Math.PI*t);const fin=new T.Mesh(new T.ConeGeometry(size*.55,size*1.65,5),ridgeMat);fin.position.copy(p);fin.position.y+=.58;fin.rotation.z=-tan.x*.45;fin.rotation.x=.18;ridgeGroup.add(fin);}
+  const head=new T.Group();head.position.set(3.12,1.2,.4);creature.add(head);
+  function ellipsoid(parent,scale,pos,mat,detail=32){const m=new T.Mesh(new T.SphereGeometry(1,detail,Math.max(16,detail-8)),mat);m.scale.set(...scale);m.position.set(...pos);parent.add(m);return m;}
+  ellipsoid(head,[.92,.72,.72],[0,0,0],skin,48);
+  ellipsoid(head,[.67,.34,.72],[0,-.37,.53],skin,40);
+  const jawGroup=new T.Group();jawGroup.position.set(0,-.48,.42);head.add(jawGroup);
+  ellipsoid(jawGroup,[.68,.19,.72],[0,-.13,.18],bellyMat,36);
+  ellipsoid(jawGroup,[.55,.11,.52],[0,-.045,.2],mouthMat,32);
+  for(let side of [-1,1]){
+   ellipsoid(head,[.19,.16,.105],[side*.53,.18,.61],darkMat,24);
+   ellipsoid(head,[.105,.105,.07],[side*.53,.18,.69],eyeMat,24);
+   ellipsoid(head,[.035,.09,.025],[side*.53,.18,.75],darkMat,16);
+   const brow=ellipsoid(head,[.29,.105,.14],[side*.5,.39,.58],ridgeMat,24);brow.rotation.z=-side*.16;
+   const horn=new T.Mesh(new T.ConeGeometry(.23,1.05,16),ridgeMat);horn.position.set(side*.55,.83,-.12);horn.rotation.z=-side*.34;horn.rotation.x=-.12;head.add(horn);
+   for(let k=0;k<4;k++){const fang=new T.Mesh(new T.ConeGeometry(.065,.27,12),new T.MeshStandardMaterial({color:0xd5dfd4,roughness:.35}));fang.position.set(side*(.42-k*.22),-.44,.92-(k%2)*.12);fang.rotation.x=Math.PI;head.add(fang);}
+   for(let k=0;k<3;k++){const slit=new T.Mesh(new T.TorusGeometry(.13+k*.035,.018,6,18,Math.PI),ridgeMat);slit.position.set(side*(.72+k*.045),-.12-k*.12,.22);slit.rotation.y=side*.9;slit.rotation.z=Math.PI*.08;head.add(slit);}
+   const fin=new T.Mesh(new T.ConeGeometry(.26,.92,5),ridgeMat);fin.position.set(side*.87,-.12,-.02);fin.rotation.z=side*Math.PI*.44;fin.rotation.x=-.22;head.add(fin);
+  }
+  for(let side of [-1,1])ellipsoid(head,[.075,.055,.07],[side*.24,-.12,1.04],darkMat,16);
+  const crest=new T.Mesh(new T.ConeGeometry(.24,.68,6),ridgeMat);crest.position.set(0,.69,-.3);crest.rotation.x=-.3;head.add(crest);
+  const tailFin=new T.Group();tailFin.position.copy(path.getPointAt(.015));tailFin.rotation.z=-.45;creature.add(tailFin);
+  for(let k=-1;k<=1;k++){const fin=new T.Mesh(new T.ConeGeometry(.42,.95,5),ridgeMat);fin.position.set(k*.27,-.08,0);fin.rotation.z=k*.42;tailFin.add(fin);}
+  const waterGeo=new T.PlaneGeometry(34,24,90,64),waterPos=waterGeo.attributes.position;
+  const waterMat=new T.MeshPhysicalMaterial({color:0x07364c,metalness:.34,roughness:.19,clearcoat:.9,clearcoatRoughness:.14,transparent:true,opacity:.84,side:T.DoubleSide});
+  const water=new T.Mesh(waterGeo,waterMat);water.rotation.x=-Math.PI/2;water.position.set(0,-1.58,-.25);scene.add(water);
+  const splashGroup=new T.Group();scene.add(splashGroup);
+  const sprayMat=new T.MeshBasicMaterial({color:0xa9e9f5,transparent:true,opacity:.82});
+  for(let n=0;n<28;n++){const a=n/28*Math.PI*2;const drop=new T.Mesh(new T.SphereGeometry(.045+Math.random()*.05,8,8),sprayMat);drop.position.set(Math.cos(a)*1.15,-1.32,Math.sin(a)*.75);drop.userData={phase:Math.random()*6.28,baseY:drop.position.y};splashGroup.add(drop);}
+  const rings=[];for(let n=0;n<4;n++){const ring=new T.Mesh(new T.TorusGeometry(.8+n*.38,.018,6,80),new T.MeshBasicMaterial({color:0x6dc9e6,transparent:true,opacity:.36-n*.06}));ring.rotation.x=Math.PI/2;ring.position.set(-.4,-1.48,.1);splashGroup.add(ring);rings.push(ring);}
+  const mistGeo=new T.BufferGeometry(),mistCount=240,mistPos=new Float32Array(mistCount*3);for(let i=0;i<mistCount;i++){mistPos[i*3]=(Math.random()-.5)*12;mistPos[i*3+1]=-1.2+Math.random()*3.8;mistPos[i*3+2]=(Math.random()-.5)*3;}mistGeo.setAttribute("position",new T.BufferAttribute(mistPos,3));const mist=new T.Points(mistGeo,new T.PointsMaterial({color:0xa8d5e4,size:.035,transparent:true,opacity:.55}));scene.add(mist);
+  const rainGeo=new T.BufferGeometry(),rainCount=500,rainPos=new Float32Array(rainCount*3);for(let i=0;i<rainCount;i++){rainPos[i*3]=(Math.random()-.5)*15;rainPos[i*3+1]=Math.random()*10-2;rainPos[i*3+2]=-2-Math.random()*8;}rainGeo.setAttribute("position",new T.Float32BufferAttribute(rainPos,3));const rain=new T.Points(rainGeo,new T.PointsMaterial({color:0x9cc7dc,size:.018,transparent:true,opacity:.4}));scene.add(rain);
+  const start=performance.now();let raf=0;
+  function resize(){const w=Math.max(1,world.clientWidth),h=Math.max(1,world.clientHeight);camera.aspect=w/h;camera.position.z=w/h<.7?16.8:13.8;camera.updateProjectionMatrix();renderer.setSize(w,h);}
+  const ro=new ResizeObserver(resize);ro.observe(world);resize();
+  function tick(now){
+   if(!world.isConnected){cancelAnimationFrame(raf);ro.disconnect();renderer.dispose();bodyGeo.dispose();waterGeo.dispose();return;}
+   const t=(now-start)/1000;
+   head.position.y=1.2+Math.sin(t*1.15)*.07;head.rotation.y=Math.sin(t*.48)*.08;head.rotation.z=Math.sin(t*.8)*.025;
+   jawGroup.rotation.x=.07+Math.max(0,Math.sin(t*1.5))*.16;
+   creature.rotation.z=Math.sin(t*.42)*.022;tailFin.rotation.z=-.45+Math.sin(t*1.2)*.12;
+   for(let i=0;i<waterPos.count;i++){const x=waterPos.getX(i),z=waterPos.getY(i);waterPos.setZ(i,Math.sin(x*.48+t*1.1)*.045+Math.cos(z*.62+t*.8)*.028);}
+   waterGeo.attributes.position.needsUpdate=true;waterGeo.computeVertexNormals();
+   splashGroup.children.slice(0,28).forEach(d=>{d.position.y=d.userData.baseY+Math.abs(Math.sin(t*2.1+d.userData.phase))*.38;});
+   rings.forEach((r,i)=>{const q=(t*.22+i*.25)%1;r.scale.setScalar(.75+q*1.5);r.material.opacity=(1-q)*.34;});
+   mist.rotation.y=t*.025;rain.position.y=-(t%3)*.3;blueRim.intensity=78+Math.sin(t*2.8)*18;
+   moonLight.intensity=Math.sin(t*1.7)>.995?5.2:3.3;
+   renderer.render(scene,camera);raf=requestAnimationFrame(tick);
+  }
+  raf=requestAnimationFrame(tick);
   if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}
  }
- function load(){if(window.THREE){boot();return;}let script=document.querySelector('script[data-el-three="1"]');if(script){script.addEventListener("load",boot,{once:true});return;}script=document.createElement("script");script.src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js";script.dataset.elThree="1";script.onload=boot;script.onerror=()=>{const l=world.querySelector(".el-loading");if(l)l.textContent="3D ENGINE COULD NOT LOAD";};document.head.appendChild(script);}
- load();setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .7s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),740)}},duration);return overlay;
+ function load(){
+  if(window.THREE){boot();return;}
+  let script=document.querySelector('script[data-el-three="1"]');
+  if(script){script.addEventListener("load",boot,{once:true});script.addEventListener("error",()=>{const l=world.querySelector(".el-loading");if(l)l.textContent="3D ENGINE COULD NOT LOAD";},{once:true});return;}
+  script=document.createElement("script");script.src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js";script.dataset.elThree="1";script.onload=boot;script.onerror=()=>{const l=world.querySelector(".el-loading");if(l)l.textContent="3D ENGINE COULD NOT LOAD";};document.head.appendChild(script);
+ }
+ load();
+ setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),820)}},duration);
+ return overlay;
 }
 function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="eclipse_leviathan"){return renderEclipseLeviathanGift(gift,opts,overlay);}if(gift.style==="ghostship"){return renderGhostShipGift(gift,opts,overlay);}if(gift.style==="phoenix"){return renderPhoenixGift(gift,opts,overlay);}if(gift.style==="infernal_castle"){return renderInfernalCastleGift(gift,opts,overlay);}if(gift.style==="fingerdeath"){return renderCinematicGift(gift,opts,overlay);}if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedmansion")return renderHauntedMansionGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
 
