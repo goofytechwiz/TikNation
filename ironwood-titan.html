@@ -50,6 +50,7 @@ a{color:#c9e7a7;text-decoration:none;font-weight:700;display:inline-block;margin
  <radialGradient id="mist"><stop stop-color="#9acb85" stop-opacity=".55"/><stop offset="1" stop-color="#9acb85" stop-opacity="0"/></radialGradient>
  <filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
  <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="organic" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".035 .12" numOctaves="3" seed="8" result="noise"/><feColorMatrix in="noise" type="saturate" values="0" result="mono"/><feComponentTransfer><feFuncA type="table" tableValues="0 .16"/></feComponentTransfer><feBlend in="SourceGraphic" in2="mono" mode="soft-light"/></filter>
  <pattern id="grain" width="28" height="50" patternUnits="userSpaceOnUse"><path d="M8 0q-7 15 2 25t-3 25M21 0q-5 10 2 20t-2 30" fill="none" stroke="#d4b17b" stroke-opacity=".23" stroke-width="2"/></pattern>
 </defs>
 <rect width="900" height="675" fill="#0b1715"/>
@@ -65,7 +66,7 @@ a{color:#c9e7a7;text-decoration:none;font-weight:700;display:inline-block;margin
  <path d="M450 500Q350 530 270 620Q210 650 90 655M450 505Q550 535 640 625Q710 655 825 650M430 520Q350 590 350 670M470 520Q550 590 550 670M400 520Q290 560 190 585M500 520Q610 560 720 585" stroke-width="38"/>
  <path d="M450 500Q350 530 270 620Q210 650 90 655M450 505Q550 535 640 625Q710 655 825 650" stroke="#c29b62" stroke-opacity=".45" stroke-width="5"/>
 </g>
-<g id="titan" stroke-linejoin="round">
+<g id="titan" stroke-linejoin="round" filter="url(#organic)">
  <!-- hanging moss and shoulder branches -->
  <path d="M330 285Q270 250 240 315L295 360M570 285Q630 250 660 315L605 360" fill="none" stroke="#617b42" stroke-width="25"/>
  <path d="M330 300Q245 250 195 305M570 300Q655 250 705 305" fill="none" stroke="#9dbd68" stroke-width="8"/>
@@ -94,10 +95,31 @@ a{color:#c9e7a7;text-decoration:none;font-weight:700;display:inline-block;margin
 <g id="pulse" opacity="0" transform-origin="450px 365px" filter="url(#glow)"><circle cx="450" cy="365" r="115" fill="none" stroke="#e5d68d" stroke-width="5" stroke-dasharray="8 18"/></g>
 <g fill="#c9e39b" opacity=".7"><circle cx="110" cy="350" r="3"/><circle cx="760" cy="300" r="3"/><circle cx="210" cy="420" r="2"/><circle cx="690" cy="390" r="2"/></g>
 <ellipse cx="450" cy="570" rx="280" ry="60" fill="#b6d987" opacity=".13" filter="url(#soft)"/>
+
+<g fill="none" stroke-linecap="round" stroke-linejoin="round" pointer-events="none">
+ <g stroke="#171f16" stroke-width="10" opacity=".72">
+  <path d="M385 292Q365 340 390 370T374 452M420 280Q400 335 424 370T408 465M475 278Q495 328 472 365T493 470M520 290Q540 340 516 380T535 450"/>
+  <path d="M350 320Q320 350 345 390M550 320Q580 350 555 390M370 465Q395 445 410 470M530 465Q505 445 490 470"/>
+  <path d="M395 170Q410 190 395 218M505 170Q490 190 505 218M420 235Q450 250 480 235"/>
+ </g>
+ <g stroke="#d5b982" stroke-width="3" opacity=".58">
+  <path d="M382 295Q370 340 394 367M417 288Q402 330 427 360M478 286Q490 330 468 365M518 298Q532 340 510 376"/>
+  <path d="M347 322Q330 350 350 378M553 322Q570 350 550 378M377 463Q396 449 408 474M523 463Q504 449 492 474"/>
+  <path d="M410 163q-18 22-3 44M490 163q18 22 3 44"/>
+ </g>
+ <g stroke="#a4c16e" stroke-width="9" opacity=".8"><path d="M330 300q-26 20-25 58M570 300q26 20 25 58M382 282q-12 20-5 39M518 282q12 20 5 39"/></g>
+ <g stroke="#304d2b" stroke-width="5" opacity=".9"><path d="M315 330q-30 38-10 70t-5 45M585 330q30 38 10 70t5 45M395 465q-22 20-12 42M505 465q22 20 12 42"/></g>
+</g>
+<g fill="none" stroke="#e3bd79" stroke-width="3" opacity=".7">
+ <path d="M450 285l-12 18 12 12 12-12ZM450 330l-10 13 10 13 10-13ZM450 390l-14 18 14 12 14-12"/>
+ <path d="M355 405l16-8 8 13-14 8ZM545 405l-16-8-8 13 14 8Z"/>
+</g>
+<g fill="#b5cb7a" opacity=".85"><path d="M320 286q-30-20-45 6 25 2 45-6ZM580 286q30-20 45 6-25 2-45-6Z"/><path d="M355 450q-26-15-35 12 22-2 35-12ZM545 450q26-15 35 12-22-2-35-12Z"/></g>
+<g fill="none" stroke="#e7c783" stroke-width="5" opacity=".75"><path d="M230 430q-20 25-8 49M670 430q20 25 8 49M190 500l-24 12m564-12l24 12"/><path d="M380 580l-12 28m152-28l12 28M435 620l-8 30m46-30l8 30"/></g>
 </svg>
 </div>
 <div class="controls"><button id="awaken">▶ AWAKEN THE TITAN</button><button class="secondary" id="sound">♫ SOUND: ON</button></div>
-<div class="status" id="status" role="status">THE FOREST IS HOLDING ITS BREATH</div>
+<div class="status" id="status" role="status">THE OLD WOOD REMEMBERS</div>
 <div class="note">PREVIEW ONLY · 300 TEST COINS · NO COINS ARE CHARGED</div>
 <a href="./next/">← RETURN TO TIKNATION</a>
 </main>
@@ -108,7 +130,7 @@ a{color:#c9e7a7;text-decoration:none;font-weight:700;display:inline-block;margin
  function tone(freq,dur,type='sine',gain=.06,delay=0){if(!audioOn)return;try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,ctx.currentTime+delay);o.frequency.exponentialRampToValueAtTime(Math.max(25,freq*.48),ctx.currentTime+delay+dur);g.gain.setValueAtTime(.0001,ctx.currentTime+delay);g.gain.exponentialRampToValueAtTime(gain,ctx.currentTime+delay+.08);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+delay+dur);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+delay);o.stop(ctx.currentTime+delay+dur+.03)}catch(e){}}
  function noise(dur,gain=.04,delay=0){if(!audioOn)return;try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();const n=Math.floor(ctx.sampleRate*dur),b=ctx.createBuffer(1,n,ctx.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);const src=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();src.buffer=b;f.type='lowpass';f.frequency.value=420;g.gain.setValueAtTime(gain,ctx.currentTime+delay);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+delay+dur);src.connect(f);f.connect(g);g.connect(ctx.destination);src.start(ctx.currentTime+delay)}catch(e){}}
  function soundtrack(){noise(2.6,.12);tone(72,2.8,'sawtooth',.08,.2);tone(110,2.2,'triangle',.05,1.1);noise(1.8,.1,2.1);tone(196,1.5,'sine',.045,3.2);tone(261,2,'triangle',.05,5.7);tone(392,2.2,'sine',.04,6.1);noise(1.1,.08,6.4);tone(130,2.5,'sine',.04,8)}
- awaken.addEventListener('click',()=>{stage.classList.remove('awake');void stage.offsetWidth;stage.classList.add('awake');status.textContent='ANCIENT ROOTS ARE BREAKING THE EARTH…';soundtrack();awaken.textContent='↻ REPLAY THE AWAKENING';setTimeout(()=>status.textContent='THE IRONWOOD TITAN HAS AWAKENED',7600)});
+ awaken.addEventListener('click',()=>{stage.classList.remove('awake');void stage.offsetWidth;stage.classList.add('awake');status.textContent='THE EARTH SPLITS. THE OLD GUARDIAN RISES…';soundtrack();awaken.textContent='↻ REPLAY THE AWAKENING';setTimeout(()=>status.textContent='THE IRONWOOD TITAN HAS AWAKENED',7600)});
  sound.addEventListener('click',()=>{audioOn=!audioOn;sound.textContent=audioOn?'♫ SOUND: ON':'♫ SOUND: OFF';if(audioOn){ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume()}});
 })();
 </script>
