@@ -1011,8 +1011,8 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
  @keyframes el-eye{to{opacity:.35}}
  @keyframes el-flash{0%,82%,100%{opacity:0}84%{opacity:.9}86%{opacity:.1}88%{opacity:.7}90%{opacity:0}}
  @keyframes el-fog{to{transform:translateX(8%) scale(1.15);opacity:.55}}
- @media(max-width:650px){#tiknation-gift-engine[data-style=eclipse_leviathan] .el-scene{width:145%;left:-22.5%}#tiknation-gift-engine[data-style=eclipse_leviathan] .el-title{letter-spacing:.09em}}
- @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=eclipse_leviathan] *{animation:none!important}#tiknation-gift-engine[data-style=eclipse_leviathan] .el-body,#tiknation-gift-engine[data-style=eclipse_leviathan] .el-ridge{stroke-dashoffset:0}}
+ @media(max-width:650px){#tiknation-gift-engine[data-style=eclipse_leviathan] .el-scene{width:100%;height:100%;left:0}#tiknation-gift-engine[data-style=eclipse_leviathan] .el-title{letter-spacing:.09em}}
+ @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=eclipse_leviathan] *{animation:none!important}#tiknation-gift-engine[data-style=eclipse_leviathan] .el-body,#tiknation-gift-engine[data-style=eclipse_leviathan] .el-ridge{stroke-dashoffset:0}#tiknation-gift-engine[data-style=eclipse_leviathan] .el-head{opacity:1;transform:none}#tiknation-gift-engine[data-style=eclipse_leviathan] .el-eclipse{transform:translateX(-50%)}#tiknation-gift-engine[data-style=eclipse_leviathan] .el-eye{opacity:1}}
  `;
  const world=document.createElement("div");world.className="el-world";
  world.innerHTML=`
