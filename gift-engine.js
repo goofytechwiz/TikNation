@@ -990,7 +990,7 @@ function renderHauntedMansionGift(gift,opts,overlay){
 function renderEclipseLeviathanGift(gift,opts,overlay){
  const sid="tn-eclipse-leviathan-v1";let style=document.getElementById(sid);
  if(!style){style=document.createElement("style");style.id=sid;document.head.appendChild(style);}
- style.textContent=String.raw\`
+ style.textContent=String.raw`
  #tiknation-gift-engine[data-style=eclipse_leviathan]{display:block!important;padding:0!important;background:radial-gradient(ellipse at 50% 30%,#24314b 0,#080d1b 48%,#010308 100%)!important}
  #tiknation-gift-engine[data-style=eclipse_leviathan] .el-world{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,#090d1c 0%,#111a2c 54%,#02060c 100%)}
  #tiknation-gift-engine[data-style=eclipse_leviathan] .el-eclipse{position:absolute;width:clamp(130px,28vw,260px);aspect-ratio:1;border-radius:50%;left:50%;top:10%;transform:translateX(-50%);background:radial-gradient(circle at 48% 48%,#03050b 0 59%,#172239 61%,#9aa7b5 63%,#25314a 66%,transparent 72%);filter:drop-shadow(0 0 25px #8ba3c8);animation:el-eclipse 8s ease-in-out infinite}
@@ -1013,9 +1013,9 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
  @keyframes el-fog{to{transform:translateX(8%) scale(1.15);opacity:.55}}
  @media(max-width:650px){#tiknation-gift-engine[data-style=eclipse_leviathan] .el-scene{width:145%;left:-22.5%}#tiknation-gift-engine[data-style=eclipse_leviathan] .el-title{letter-spacing:.09em}}
  @media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=eclipse_leviathan] *{animation:none!important}#tiknation-gift-engine[data-style=eclipse_leviathan] .el-body,#tiknation-gift-engine[data-style=eclipse_leviathan] .el-ridge{stroke-dashoffset:0}}
- \`;
+ `;
  const world=document.createElement("div");world.className="el-world";
- world.innerHTML=\`
+ world.innerHTML=`
  <div class="el-eclipse"></div><div class="el-fog"></div>
  <svg class="el-scene" viewBox="0 0 1000 720" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
  <defs><linearGradient id="el-scale" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d4e0e4"/><stop offset=".16" stop-color="#526e83"/><stop offset=".38" stop-color="#182c42"/><stop offset=".58" stop-color="#7994a2"/><stop offset=".8" stop-color="#17263b"/><stop offset="1" stop-color="#050b16"/></linearGradient>
@@ -1025,7 +1025,7 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
  <path class="el-body" d="M-80 610 C110 590 130 410 290 470 S470 650 610 545 S760 350 920 430 S1060 580 1110 505"/>
  <path class="el-ridge" d="M-80 610 C110 590 130 410 290 470 S470 650 610 545 S760 350 920 430 S1060 580 1110 505"/>
  <g class="el-head" transform="translate(820 350)"><path d="M-15 15 Q-70 -15 -45 -70 Q-15 -125 45 -98 Q95 -75 65 -18 L95 8 Q75 35 30 30 L8 75 Q-12 62 -15 15Z" fill="url(#el-scale)" stroke="#a8c2d0" stroke-width="5"/><path d="M-38 -65L-93 -115L-58 -42M38 -78L90 -120L66 -35" fill="#334e63" stroke="#9db5c3" stroke-width="7"/><path d="M-20 -52Q8 -72 42 -52" fill="none" stroke="#06101d" stroke-width="12"/><ellipse class="el-eye" cx="20" cy="-58" rx="9" ry="5"/><path d="M8 17Q48 34 77 12" fill="none" stroke="#d6e7ec" stroke-width="4"/><path d="M15 32l8 18m18-21 7 18" stroke="#dce9ed" stroke-width="4"/></g>
- </svg><div class="el-title">ECLIPSE LEVIATHAN<small>AN ANCIENT POWER HAS AWAKENED</small></div>\`;
+ </svg><div class="el-title">ECLIPSE LEVIATHAN<small>AN ANCIENT POWER HAS AWAKENED</small></div>`;
  overlay.appendChild(world);document.body.appendChild(overlay);
  if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}
  const duration=Math.max(9000,Number(opts.duration)||10500);
