@@ -694,24 +694,6 @@ function playLiveGiftSound(event, gift) {
       oscillator.connect(gain); gain.connect(ctx.destination);
       oscillator.start(at); oscillator.stop(at + duration + 0.02);
     };
-    if (code === "titanfall_colossus") {
-      // Raw cinematic foley: subterranean pressure, grinding slabs, three massive footfalls and a final stone fracture.
-      // Keep the spectrum dark; no musical beeps or bright synthetic chimes.
-      playNoiseSweep(now, 5.8, 0.34, 150, 38);
-      playNoiseSweep(now + 0.35, 4.6, 0.24, 520, 48);
-      playNoiseSweep(now + 0.9, 3.1, 0.18, 2100, 130);
-      [2.15, 3.05, 3.95].forEach((delay, index) => {
-        playNoiseSweep(now + delay, 1.05, 0.36 - index * 0.035, 340, 42);
-        playNoiseSweep(now + delay + 0.045, 0.58, 0.22, 1800, 210);
-        softTone(now + delay, [42, 36, 31][index], 1.55, 0.48, "sine");
-      });
-      // Slow, strained stone-and-metal groan as the giant locks into place.
-      softTone(now + 1.15, 73, 2.9, 0.12, "sawtooth");
-      softTone(now + 1.2, 51, 3.2, 0.19, "triangle");
-      playNoiseSweep(now + 4.65, 1.7, 0.28, 980, 65);
-      playNoiseSweep(now + 5.0, 1.1, 0.2, 260, 32);
-      return;
-    }
     if (gift.style === "ghostship" || code === "storm_of_the_world") {
       // Ghost Ship: rigging wind, timber groans, bell and cannon reports.
       playNoiseSweep(now, 6.0, 0.24, 320, 180);
@@ -793,7 +775,7 @@ function renderLiveGiftEvent(event) {
     if(window.TikNationGiftEngine?.show){
       rendered=Boolean(window.TikNationGiftEngine.show(gift,{
         meta:(event.sender_name||"A TIKNATION MEMBER")+" · LIVE GIFT",
-        duration:["meteor","infernal_castle","fingerdeath","ghostship","titanfall_colossus"].includes(gift.style)?10000:6800
+        duration:["meteor","infernal_castle","fingerdeath","ghostship"].includes(gift.style)?10000:6800
       }));
     }
   }catch(error){console.warn("Cinematic gift renderer unavailable; using fallback.",error);}
