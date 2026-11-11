@@ -996,7 +996,7 @@ function renderTitanfallColossusGift(gift,opts,overlay){
  "#tiknation-gift-engine .tc-ground{position:absolute;left:-15%;right:-15%;bottom:-12%;height:43%;background:linear-gradient(#34414c,#111b27 35%,#050912);clip-path:polygon(0 24%,12% 13%,22% 22%,36% 4%,49% 20%,61% 8%,78% 22%,90% 10%,100% 25%,100% 100%,0 100%)}"+
  "#tiknation-gift-engine .tc-rift{position:absolute;left:50%;bottom:13%;width:min(76vw,820px);height:25%;transform:translateX(-50%);border:4px solid #7deaff;border-radius:50%;box-shadow:0 0 22px #44d9ff,0 0 80px #16b9ff99,inset 0 0 35px #38caff;animation:tc-rift 2.8s ease-out infinite}"+
  "#tiknation-gift-engine .tc-giant{position:absolute;z-index:4;left:50%;bottom:8%;width:min(88vw,900px);height:min(82vh,740px);transform:translateX(-50%);filter:drop-shadow(0 25px 30px #000e);animation:tc-rise 2.1s cubic-bezier(.14,.78,.2,1) both}"+
- "#tiknation-gift-engine .tc-body{transform-origin:50% 90%;animation:tc-settle 1.2s 2.1s ease-out both}"+
+ "#tiknation-gift-engine .tc-body{transform-origin:50% 90%;animation:tc-settle 1.2s 2.1s ease-out both,tc-idle 5.2s 3.3s ease-in-out infinite}"+
  "#tiknation-gift-engine .tc-arm-left{transform-box:fill-box;transform-origin:78% 18%;animation:tc-left 2.4s 2s ease-in-out both}"+
  "#tiknation-gift-engine .tc-arm-right{transform-box:fill-box;transform-origin:22% 18%;animation:tc-right 2.4s 2s ease-in-out both}"+
  "#tiknation-gift-engine .tc-core{transform-box:fill-box;transform-origin:center;animation:tc-core 1.6s 2.4s ease-in-out infinite}"+
@@ -1007,7 +1007,7 @@ function renderTitanfallColossusGift(gift,opts,overlay){
  "#tiknation-gift-engine .tc-title{position:absolute;z-index:8;left:0;right:0;top:4%;text-align:center;color:#eafaff;font-weight:1000;letter-spacing:.18em;font-size:clamp(17px,3vw,29px);text-shadow:0 0 18px #54dfff,0 3px 18px #000;animation:tc-title 1s 2.4s both}"+
  "#tiknation-gift-engine .tc-title small{display:block;margin-top:8px;color:#9beeff;font-size:clamp(9px,1.5vw,13px);letter-spacing:.3em}"+
  "@keyframes tc-rise{0%{transform:translate(-50%,75%) scale(.55);opacity:0}45%{opacity:1}72%{transform:translate(-50%,-3%) scale(1.04)}100%{transform:translate(-50%,0) scale(1)}}"+
- "@keyframes tc-settle{0%{transform:translateY(-8px)}35%{transform:translateY(12px)}65%{transform:translateY(-4px)}100%{transform:translateY(0)}}"+
+ "@keyframes tc-settle{0%{transform:translateY(-8px)}35%{transform:translateY(12px)}65%{transform:translateY(-4px)}100%{transform:translateY(0)}}@keyframes tc-idle{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.003)}}"+
  "@keyframes tc-left{0%{transform:rotate(38deg)}45%{transform:rotate(-14deg)}70%{transform:rotate(8deg)}100%{transform:rotate(0)}}"+
  "@keyframes tc-right{0%{transform:rotate(-38deg)}45%{transform:rotate(14deg)}70%{transform:rotate(-8deg)}100%{transform:rotate(0)}}"+
  "@keyframes tc-core{0%,100%{opacity:.7;transform:scale(.92)}50%{opacity:1;transform:scale(1.18)}}"+
@@ -1041,7 +1041,7 @@ function renderTitanfallColossusGift(gift,opts,overlay){
  '<path d="M390 211L450 165 510 211 496 243 450 260 404 243Z" fill="#243441" stroke="#9aabb5" stroke-width="8"/>'+
  '<g filter="url(#tc-glow)"><path d="M405 219L438 210 438 228 407 238Z M462 210L495 219 493 238 462 228Z" fill="#8ef5ff"/><circle cx="422" cy="223" r="6" fill="#fff"/><circle cx="478" cy="223" r="6" fill="#fff"/></g>'+
  '<path d="M390 165L358 111 402 135 450 88 498 135 542 111 510 165" fill="#647681" stroke="#1b2a35" stroke-width="11"/>'+
- '<path class="tc-crack" d="M450 280L430 323 452 354 430 388 450 416 430 456 M450 350L480 368 466 400 492 430 M345 327L374 354 362 385 M555 327L526 354 538 385 M390 520L410 552 397 583 M510 520L490 552 503 583"/>'+
+ '<g opacity=".9" fill="none" stroke="#172936" stroke-width="7" stroke-linejoin="round"><path d="M300 303L365 326 390 348M600 303L535 326 510 348M320 455L365 485 392 493M580 455L535 485 508 493M370 548L350 594 374 625M530 548L550 594 526 625"/><path d="M335 267L375 286 405 278M565 267L525 286 495 278" stroke="#b7c5ca" stroke-width="4" opacity=".65"/></g><g fill="#263844" stroke="#111e29" stroke-width="8"><path d="M300 300L352 277 392 315 374 358 320 348Z"/><path d="M600 300L548 277 508 315 526 358 580 348Z"/><path d="M356 510L410 526 400 572 350 560Z"/><path d="M544 510L490 526 500 572 550 560Z"/></g><g fill="#d2dde0" opacity=".22"><path d="M333 294L365 285 385 307 359 300Z"/><path d="M567 294L535 285 515 307 541 300Z"/><path d="M372 536L398 542 390 555Z"/><path d="M528 536L502 542 510 555Z"/></g><path class="tc-crack" d="M450 280L430 323 452 354 430 388 450 416 430 456 M450 350L480 368 466 400 492 430 M345 327L374 354 362 385 M555 327L526 354 538 385 M390 520L410 552 397 583 M510 520L490 552 503 583"/>'+
  '</g></svg><div class="tc-ground"></div><div class="tc-lightning"></div><div class="tc-fog"></div>'+
  '<div class="tc-title">TITANFALL COLOSSUS<small>THE EARTH REMEMBERS ITS GUARDIAN</small></div>';
  for(let i=0;i<32;i++){const shard=document.createElement("i");shard.className="tc-debris";shard.style.setProperty("--s",(7+(i%6)*4)+"px");shard.style.setProperty("--t",(1.5+(i%5)*.35)+"s");shard.style.setProperty("--d",(2.05+(i%8)*.035)+"s");shard.style.setProperty("--dx",((i%2?1:-1)*(65+(i%7)*45))+"px");shard.style.setProperty("--dy",(-110-(i%6)*45)+"px");shard.style.left=(8+(i*29)%84)+"%";world.appendChild(shard);}
