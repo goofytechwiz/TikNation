@@ -27,7 +27,6 @@ const TIKNATION_GIFT_CATALOG = {
   phoenix_rebirth:{name:"Phoenix Rebirth",emoji:"🔥",category:"Legendary",cost:175,style:"phoenix",sound:"phoenix"},
   dragons_revenge:{name:"Dragon's Revenge",emoji:"🐲",category:"Legendary",cost:200,style:"dragonrevenge",sound:"dragon"},
   finger_of_death:{name:"Finger of Death",emoji:"💀",category:"Legendary",cost:250,style:"fingerdeath",sound:"fingerdeath"},
-  titanfall_colossus:{name:"Titanfall Colossus",emoji:"🗿",category:"Legendary",cost:200,style:"titanfall_colossus",sound:"titanfall_colossus",message:"An ancient stone guardian erupts from the earth."},
   clouds_of_mystery:{name:"Clouds of Mystery",emoji:"☁️",category:"Magical",cost:50,style:"storm",sound:"mystery"},
   hammer_of_pain:{name:"Hammer of Pain",emoji:"🔨",category:"Special Effects",cost:50,style:"hammer",sound:"hammer"},
   thunder_ass:{name:"Thunder Ass",emoji:"💨",category:"Surprises",cost:69,style:"deathass",sound:"stinkdeath"},
@@ -96,38 +95,6 @@ async function playTikNationGiftSound(gift) {
     if (context.state === "suspended") await context.resume();
     if (context.state !== "running") return;
     const now = context.currentTime;
-
-    if (gift.style === "titanfall_colossus") {
-      const length = Math.floor(context.sampleRate * 4.5);
-      const buffer = context.createBuffer(1, length, context.sampleRate);
-      const samples = buffer.getChannelData(0);
-      for (let i = 0; i < length; i++) samples[i] = (Math.random() * 2 - 1) * Math.max(0, 1 - i / length);
-      const rumble = context.createBufferSource(), rumbleFilter = context.createBiquadFilter(), rumbleGain = context.createGain();
-      rumble.buffer = buffer; rumbleFilter.type = "lowpass"; rumbleFilter.frequency.setValueAtTime(180, now);
-      rumbleFilter.frequency.exponentialRampToValueAtTime(48, now + 4.2);
-      rumbleGain.gain.setValueAtTime(0.0001, now); rumbleGain.gain.linearRampToValueAtTime(0.22, now + 0.5);
-      rumbleGain.gain.exponentialRampToValueAtTime(0.0001, now + 4.35);
-      rumble.connect(rumbleFilter); rumbleFilter.connect(rumbleGain); rumbleGain.connect(context.destination);
-      rumble.start(now); rumble.stop(now + 4.4);
-      [2.0, 2.7, 3.4].forEach((delay, index) => {
-        const impact = context.createOscillator(), gain = context.createGain(), filter = context.createBiquadFilter();
-        impact.type = "sawtooth"; impact.frequency.setValueAtTime([62, 52, 43][index], now + delay);
-        impact.frequency.exponentialRampToValueAtTime(30, now + delay + 0.9);
-        filter.type = "lowpass"; filter.frequency.setValueAtTime(180, now + delay);
-        gain.gain.setValueAtTime(0.0001, now + delay); gain.gain.linearRampToValueAtTime(0.22, now + delay + 0.025);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + delay + 1.0);
-        impact.connect(filter); filter.connect(gain); gain.connect(context.destination);
-        impact.start(now + delay); impact.stop(now + delay + 1.05);
-      });
-      const rise = context.createOscillator(), riseGain = context.createGain(), riseFilter = context.createBiquadFilter();
-      rise.type = "triangle"; rise.frequency.setValueAtTime(74, now + 0.5); rise.frequency.exponentialRampToValueAtTime(440, now + 3.9);
-      riseFilter.type = "lowpass"; riseFilter.frequency.setValueAtTime(220, now + 0.5); riseFilter.frequency.exponentialRampToValueAtTime(1400, now + 3.9);
-      riseGain.gain.setValueAtTime(0.0001, now + 0.5); riseGain.gain.linearRampToValueAtTime(0.065, now + 2.6);
-      riseGain.gain.exponentialRampToValueAtTime(0.0001, now + 4.2);
-      rise.connect(riseFilter); riseFilter.connect(riseGain); riseGain.connect(context.destination);
-      rise.start(now + 0.5); rise.stop(now + 4.25);
-      return;
-    }
 
     if (gift.style === "storm_of_the_world") {
       // A layered cinematic wing rush, rising fire roar and ember crackle.
