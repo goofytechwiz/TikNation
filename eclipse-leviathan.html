@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070b17">
+<title>Eclipse Leviathan · TikNation Gift Preview</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 10%,#1c2942,#080d19 55%,#02040a);color:#e7f5ff;font-family:system-ui,sans-serif;display:grid;place-items:center;text-align:center;padding:24px}
+main{width:min(100%,650px);padding:clamp(24px,6vw,48px);border:1px solid #668aa8;border-radius:26px;background:#091426d9;box-shadow:0 0 60px #3a7ca733}
+.mark{font-size:clamp(58px,15vw,100px);filter:drop-shadow(0 0 24px #8fdcff)}
+h1{font:900 clamp(27px,7vw,48px)/1.05 Georgia,serif;letter-spacing:.08em;margin:14px 0;color:#d8efff;text-shadow:0 0 20px #70caff}
+p{color:#b7cadd;line-height:1.6}.tag{font-size:12px;letter-spacing:.22em;color:#9db6d1;text-transform:uppercase}
+button{margin-top:18px;border:1px solid #a9dfff;border-radius:999px;padding:15px 26px;background:linear-gradient(110deg,#183c60,#382d69);color:white;font-weight:800;font-size:16px;box-shadow:0 0 24px #60caff55;cursor:pointer}
+button:active{transform:scale(.98)}small{display:block;margin-top:18px;color:#839bb5}
+</style>
+</head>
+<body>
+<main>
+<div class="mark" aria-hidden="true">🌑</div>
+<div class="tag">TikNation · Legendary Gift · 250 test coins</div>
+<h1>ECLIPSE LEVIATHAN</h1>
+<p>An ancient sea serpent rises beneath a blackened eclipse, coils through the storm, and answers with a deep cinematic roar.</p>
+<button id="play" type="button">UNLEASH THE LEVIATHAN</button>
+<small>Tap to play the animation and sound. Sound starts only after your tap.</small>
+</main>
+<script src="./gift-engine.js?v=eclipse-leviathan-v1"></script>
+<script>
+(function(){
+ const button=document.getElementById("play");
+ function sound(){
+  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+  const ctx=new AC();if(ctx.state==="suspended")ctx.resume();
+  const now=ctx.currentTime;
+  const length=Math.floor(ctx.sampleRate*7.2),buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);
+  for(let i=0;i<length;i++){const fade=Math.min(1,i/(ctx.sampleRate*.8))*Math.max(0,1-i/length);data[i]=(Math.random()*2-1)*fade;}
+  const wind=ctx.createBufferSource(),wf=ctx.createBiquadFilter(),wg=ctx.createGain();wind.buffer=buffer;wf.type="lowpass";wf.frequency.setValueAtTime(180,now);wf.frequency.exponentialRampToValueAtTime(1050,now+2.4);wf.frequency.exponentialRampToValueAtTime(130,now+6.8);wg.gain.setValueAtTime(.0001,now);wg.gain.linearRampToValueAtTime(.13,now+1.2);wg.gain.exponentialRampToValueAtTime(.0001,now+7);wind.connect(wf);wf.connect(wg);wg.connect(ctx.destination);wind.start(now);wind.stop(now+7.05);
+  const roar=ctx.createOscillator(),rf=ctx.createBiquadFilter(),rg=ctx.createGain();roar.type="sawtooth";roar.frequency.setValueAtTime(68,now+2.2);roar.frequency.exponentialRampToValueAtTime(24,now+5.8);rf.type="lowpass";rf.frequency.setValueAtTime(230,now+2.2);rf.frequency.exponentialRampToValueAtTime(70,now+5.9);rg.gain.setValueAtTime(.0001,now+2.2);rg.gain.linearRampToValueAtTime(.14,now+2.8);rg.gain.exponentialRampToValueAtTime(.0001,now+6.1);roar.connect(rf);rf.connect(rg);rg.connect(ctx.destination);roar.start(now+2.2);roar.stop(now+6.2);
+  [3.15,4.55].forEach((delay,index)=>{const osc=ctx.createOscillator(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();osc.type="triangle";osc.frequency.setValueAtTime(index?48:58,now+delay);osc.frequency.exponentialRampToValueAtTime(20,now+delay+1.1);filter.type="lowpass";filter.frequency.value=125;gain.gain.setValueAtTime(.0001,now+delay);gain.gain.linearRampToValueAtTime(.12,now+delay+.04);gain.gain.exponentialRampToValueAtTime(.0001,now+delay+1.25);osc.connect(filter);filter.connect(gain);gain.connect(ctx.destination);osc.start(now+delay);osc.stop(now+delay+1.3);});
+  setTimeout(()=>ctx.close().catch(()=>{}),8500);
+ }
+ button.addEventListener("click",function(){
+  if(!window.TikNationGiftEngine){button.textContent="Gift engine unavailable — refresh";return;}
+  sound();
+  window.TikNationGiftEngine.show({name:"Eclipse Leviathan",emoji:"🌑",style:"eclipse_leviathan",message:"An ancient power has awakened."},{duration:10500,meta:"TIKNATION LIVE · LEGENDARY GIFT"});
+ });
+})();
+</script>
+</body>
+</html>
