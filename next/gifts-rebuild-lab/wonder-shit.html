@@ -1,148 +1,90 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080d1b">
-<title>WONDER SHIT — TikNation Gift Lab</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080d18"><title>Wonder Shit — TikNation Gift Lab</title>
 <style>
-:root{color-scheme:dark;--lime:#c9ff70;--cyan:#7cecff}
-*{box-sizing:border-box}
-body{margin:0;background:#080d1b;color:#f5f7ff;font-family:Inter,system-ui,Segoe UI,sans-serif;overflow-x:hidden}
-header{height:58px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff20;background:#080e1c}
-header strong{font-size:11px;letter-spacing:.2em}header a{color:var(--lime);font-size:11px;text-decoration:none}
-main{width:min(1120px,94vw);margin:24px auto 44px}
-.eyebrow{font-size:10px;font-weight:900;letter-spacing:.3em;color:var(--cyan)}
-h1{font-size:clamp(43px,8vw,88px);line-height:.88;letter-spacing:-.075em;margin:12px 0}
-h1 span{color:var(--lime);text-shadow:0 0 35px #c9ff7050}
-.intro{max-width:680px;color:#aebbd0;line-height:1.6;font-size:14px;margin:0 0 20px}
-.scene{height:clamp(430px,62vw,650px);position:relative;overflow:hidden;border:1px solid #a3d8ff55;border-radius:25px;background:linear-gradient(180deg,#101b38 0%,#30466d 48%,#e18c68 100%);isolation:isolate;box-shadow:0 30px 90px #0009}
-.scene:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 78% 22%,#fff0c9 0 4%,#ffe7a055 10%,transparent 28%),linear-gradient(180deg,transparent 50%,#08101cbb);z-index:0;pointer-events:none}
-.moon{position:absolute;right:12%;top:9%;width:clamp(62px,10vw,112px);aspect-ratio:1;border-radius:50%;background:#fff0c9;box-shadow:0 0 65px 24px #ffdfa044}
-.stars{position:absolute;inset:0;opacity:.8;background-image:radial-gradient(2px 2px at 9% 19%,white 55%,transparent),radial-gradient(1px 1px at 22% 9%,white 55%,transparent),radial-gradient(2px 2px at 43% 25%,white 55%,transparent),radial-gradient(1px 1px at 61% 13%,white 55%,transparent),radial-gradient(2px 2px at 89% 42%,white 55%,transparent),radial-gradient(1px 1px at 76% 58%,white 55%,transparent)}
-.skyline{position:absolute;bottom:15%;left:0;right:0;height:31%;opacity:.82;background:linear-gradient(90deg,transparent 0 2%,#101c32 2% 8%,transparent 8% 11%,#14213b 11% 18%,transparent 18% 21%,#0e1a31 21% 29%,transparent 29% 33%,#14213b 33% 42%,transparent 42% 46%,#101b31 46% 54%,transparent 54% 58%,#14213b 58% 67%,transparent 67% 71%,#101b31 71% 79%,transparent 79% 83%,#14213b 83% 91%,transparent 91%)}
-.skyline:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 17px,#f7d58c88 18px 20px,transparent 21px 34px);mask-image:linear-gradient(#000,transparent)}
-.rooftop{position:absolute;bottom:-15%;left:-10%;width:120%;height:38%;border-radius:50% 50% 0 0;background:linear-gradient(#35495a,#101d2b 75%);box-shadow:0 -10px 50px #a8e9ff20}
-.banner{position:absolute;z-index:5;top:20px;left:0;right:0;text-align:center;font-size:clamp(10px,1.7vw,14px);font-weight:1000;letter-spacing:.2em;text-shadow:0 2px 12px #000}
-.banner span{display:inline-block;padding:10px 17px;border:1px solid #ffffff55;border-radius:999px;background:#081323bb;backdrop-filter:blur(8px)}
-#hero3d{position:absolute;inset:0;width:100%;height:100%;z-index:3;display:block}
-.vapor{position:absolute;z-index:2;left:7%;top:56%;font-size:clamp(48px,8vw,90px);opacity:0;filter:drop-shadow(0 0 18px #c9ff70);pointer-events:none}
-.scene.play .vapor{animation:vapor 2.7s ease-out 4s forwards}
-@keyframes vapor{0%{opacity:0;transform:scale(.2)}25%{opacity:.9;transform:scale(1.1)}100%{opacity:.65;transform:scale(1.45) translateX(-25px)}}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-button{border:1px solid #ffffff44;background:#17243b;color:#f7fbff;border-radius:999px;padding:14px 20px;font-size:10px;font-weight:1000;letter-spacing:.13em;cursor:pointer}
-button.primary{background:var(--lime);border-color:var(--lime);color:#111b08}
-button:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
-.status{min-height:24px;margin:13px 2px 0;color:var(--lime);font-size:10px;font-weight:900;letter-spacing:.16em}
-.features{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
-.features div{padding:14px;border:1px solid #ffffff20;border-radius:14px;background:#ffffff08}
-.features b{display:block;font-size:10px;letter-spacing:.14em;margin-bottom:7px}.features span{font-size:11px;line-height:1.5;color:#9eafc6}
-.foot{border-top:1px solid #ffffff20;margin-top:18px;padding-top:13px;color:#8797ad;font-size:10px;line-height:1.6}
-@media(max-width:650px){main{margin-top:20px}.scene{height:470px}.banner{top:13px}.features{grid-template-columns:1fr}}
-@media(prefers-reduced-motion:reduce){.vapor{animation:none!important}}
+*{box-sizing:border-box}body{margin:0;background:#080d18;color:#f4f7fb;font-family:Inter,system-ui,Arial,sans-serif}header{height:58px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff20}header b{font-size:11px;letter-spacing:.2em}header a{color:#c9ef9b;text-decoration:none;font-size:11px}main{width:min(1100px,94vw);margin:24px auto 48px}.eyebrow{color:#b8e68d;font-size:10px;font-weight:900;letter-spacing:.28em}h1{font-size:clamp(42px,8vw,82px);line-height:.9;letter-spacing:-.07em;margin:12px 0}h1 span{color:#c9ef9b}.intro{color:#aebbd0;max-width:680px;font-size:14px;line-height:1.65}.stage{height:clamp(430px,62vw,650px);position:relative;overflow:hidden;border:1px solid #a3d8ff44;border-radius:22px;background:radial-gradient(ellipse at 74% 20%,#ffe8b4 0 4%,#e4a26b55 12%,transparent 29%),linear-gradient(#15233d 0%,#4b5874 55%,#b97860 100%);box-shadow:0 28px 80px #0009}.stage:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 56%,#07111de8);pointer-events:none}.moon{position:absolute;right:13%;top:10%;width:90px;aspect-ratio:1;border-radius:50%;background:#fff0c9;box-shadow:0 0 65px 22px #ffe4ae55}.city{position:absolute;left:0;right:0;bottom:13%;height:34%;background:linear-gradient(90deg,transparent 0 3%,#17243b 3% 9%,transparent 9% 12%,#202e49 12% 20%,transparent 20% 23%,#142139 23% 33%,transparent 33% 37%,#1a2942 37% 46%,transparent 46% 50%,#17243b 50% 61%,transparent 61% 65%,#202e49 65% 76%,transparent 76% 80%,#17243b 80% 92%,transparent 92%)}.city:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 16px,#ffdc9a88 17px 19px,transparent 20px 33px);mask-image:linear-gradient(#000,transparent)}.roofs{position:absolute;bottom:-14%;left:-10%;width:120%;height:33%;border-radius:50% 50% 0 0;background:linear-gradient(#39495c,#111d2b 75%)}.stageTitle{position:absolute;z-index:5;top:20px;left:0;right:0;text-align:center;font-size:11px;font-weight:1000;letter-spacing:.2em}.stageTitle span{display:inline-block;padding:10px 17px;border:1px solid #ffffff55;border-radius:99px;background:#071323bb}canvas{position:absolute;inset:0;width:100%;height:100%;z-index:3}.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}button{border:1px solid #ffffff44;background:#17243b;color:white;border-radius:99px;padding:14px 20px;font-size:10px;font-weight:900;letter-spacing:.12em}button.primary{background:#c9ef9b;color:#17200d;border-color:#c9ef9b}.status{color:#c9ef9b;font-size:10px;letter-spacing:.15em;font-weight:900;min-height:25px;margin:13px 2px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.grid article{background:#ffffff08;border:1px solid #ffffff20;border-radius:14px;padding:15px}.grid b{font-size:10px;letter-spacing:.12em}.grid p{font-size:11px;line-height:1.55;color:#9eafc6;margin-bottom:0}.note{font-size:10px;color:#8493a8;border-top:1px solid #ffffff20;margin-top:18px;padding-top:13px;line-height:1.6}@media(max-width:650px){.stage{height:465px}.grid{grid-template-columns:1fr}.moon{width:64px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<header><strong>TIKNATION · GIFT LAB</strong><a href="./">← BACK TO GIFT LAB</a></header>
+<header><b>TIKNATION · GIFT LAB</b><a href="./">← BACK TO GIFT LAB</a></header>
 <main>
-<div class="eyebrow">A BRAND-NEW SUPERHERO GIFT</div>
-<h1>WONDER <span>SHIT</span> 💩</h1>
-<p class="intro">A golden retriever with a hero's heart and the world's weirdest superpower. This version uses a newly built 3D character instead of relying on a broken third-party dog model.</p>
-<section class="scene" id="scene" aria-label="Wonder Shit 3D superhero dog preview">
-<div class="stars"></div><div class="moon"></div><div class="skyline"></div><div class="rooftop"></div>
-<div class="banner"><span id="headline">THE CITY NEEDS A HERO</span></div>
-<canvas id="hero3d" aria-label="Animated three-dimensional golden retriever superhero"></canvas>
-<div class="vapor" aria-hidden="true">💨</div>
+<div class="eyebrow">THE FINAL CHARACTER REDESIGN</div>
+<h1>WONDER <span>SHIT</span></h1>
+<p class="intro">A golden retriever superhero. Real dog proportions, warm layered coat detail, floppy ears, a proper muzzle and a red cape. The joke is his superpower — not the dog.</p>
+<section class="stage" id="stage" aria-label="Three-dimensional golden retriever superhero in flight">
+<div class="moon"></div><div class="city"></div><div class="roofs"></div>
+<div class="stageTitle"><span id="headline">THE CITY NEEDS A HERO</span></div>
+<canvas id="view"></canvas>
 </section>
-<div class="controls"><button class="primary" id="play">▶ PLAY THE GIFT</button><button id="stop">■ RESET</button><button id="sound">SOUND: ON</button></div>
-<div class="status" id="status" role="status" aria-live="polite">BUILDING THE HERO · PLEASE WAIT</div>
-<div class="features">
-<div><b>01 · HERO ARRIVAL</b><span>A golden retriever flies nose-first across the skyline, with moving legs, a wagging tail and a cape streaming behind.</span></div>
-<div><b>02 · SUPERPOWER</b><span>A playful green stink-blast bursts behind the pup, away from his face and flight path.</span></div>
-<div><b>03 · GRAND FINALE</b><span>A glowing vapor cloud, comic-book impact and a cheeky victory line.</span></div>
+<div class="controls"><button class="primary" id="play">▶ PLAY GIFT</button><button id="reset">↺ RESET</button><button id="sound">SOUND: ON</button></div>
+<div class="status" id="status" role="status" aria-live="polite">PREPARING THE HERO…</div>
+<div class="grid">
+<article><b>THE HERO</b><p>Golden coat, retriever head shape, hanging ears, dark expressive eyes, broad chest and natural paws.</p></article>
+<article><b>THE FLIGHT</b><p>Forward-facing flight with a swimming gallop, tail movement and cape streaming behind him.</p></article>
+<article><b>THE SUPERPOWER</b><p>A comic green vapor burst trails behind the dog, then a quick victory pose.</p></article>
 </div>
-<p class="foot">Preview only · No coins charged · No gift sent. The dog is a custom procedural 3D character built for this preview; it does not depend on an external dog-model host.</p>
+<p class="note">Preview only · No coins charged · No gift sent. This is a custom procedural 3D character; it is not a photogrammetry scan or a downloaded photorealistic dog asset.</p>
 </main>
 <script type="module">
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-const canvas=document.getElementById('hero3d'),sceneEl=document.getElementById('scene'),status=document.getElementById('status'),headline=document.getElementById('headline');
-let renderer,world,camera,dog,legs=[],cape,tail,clouds=[],clock=new THREE.Clock(),playing=false,started=0,soundOn=true,audio=null,raf=0;
-const mat=(color,roughness=.82,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
-const gold=mat('#c98736'),goldLight=mat('#e4a64f'),goldDark=mat('#8b4b20'),cream=mat('#f3d9ae'),black=mat('#211a17',.35),eye=mat('#17110d',.2),white=mat('#fff4d9'),red=mat('#c91f43',.55),redDark=mat('#74132d');
-function ell(parent,name,pos,scale,material,seg=32){const m=new THREE.Mesh(new THREE.SphereGeometry(1,seg,Math.max(16,seg/2)),material);m.name=name;m.position.set(...pos);m.scale.set(...scale);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
-function limb(parent,name,a,b,r1,r2,material){const g=new THREE.Group();g.position.set(...a);parent.add(g);const v=new THREE.Vector3(b[0]-a[0],b[1]-a[1],b[2]-a[2]);const mesh=new THREE.Mesh(new THREE.CapsuleGeometry(r1,v.length(),5,12),material);mesh.position.copy(v.multiplyScalar(.5));mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),v.clone().normalize());mesh.castShadow=true;g.add(mesh);return g}
-function buildDog(){
- dog=new THREE.Group();world.add(dog);
- // Body silhouette: deep chest, tucked waist, broad shoulders.
- ell(dog,'ribcage',[-.05,0,0],[1.05,.48,.43],gold,48);
- ell(dog,'shoulder',[-.55,.02,0],[.48,.52,.45],goldLight,40);
- ell(dog,'haunch',[.58,-.02,0],[.49,.45,.42],gold,40);
- ell(dog,'chest',[-.72,-.18,.015],[.35,.42,.38],cream,36);
- // Neck and expressive retriever head, muzzle points to the right.
- const neck=ell(dog,'neck',[.67,.34,0],[.36,.52,.34],goldLight,40);neck.rotation.z=-.42;
- ell(dog,'head',[.98,.61,0],[.48,.39,.36],goldLight,48);
- ell(dog,'cheek',[1.12,.42,0],[.31,.25,.31],gold,36);
- ell(dog,'muzzle',[1.34,.48,0],[.31,.19,.245],cream,40);
- ell(dog,'nose',[1.58,.55,0],[.105,.085,.14],black,28);
- ell(dog,'jaw',[1.34,.34,0],[.23,.09,.18],goldDark,28);
- // Hanging ears on both sides.
- const ear1=ell(dog,'near ear',[.82,.62,.29],[.19,.34,.105],goldDark,32);ear1.rotation.z=-.5;
- const ear2=ell(dog,'far ear',[.82,.62,-.29],[.19,.34,.105],gold,32);ear2.rotation.z=-.5;
- // Eyes, brows and tiny catchlights.
- ell(dog,'near eye',[1.12,.68,.315],[.073,.09,.035],eye,24);
- ell(dog,'far eye',[1.12,.68,-.315],[.073,.09,.035],eye,24);
- ell(dog,'eye glint',[1.14,.715,.345],[.022,.025,.012],white,16);
- const brow=ell(dog,'brow',[1.1,.79,.31],[.12,.035,.045],goldDark,20);brow.rotation.z=.18;
- // Four articulated legs with paws; their pivots animate in a swimming gallop.
- const specs=[[-.62,-.2,.29, -.68,-.72,.34],[-.62,-.2,-.29,-.68,-.72,-.34],[.58,-.2,.28,.7,-.69,.33],[.58,-.2,-.28,.7,-.69,-.33]];
- specs.forEach((s,i)=>{const front=i<2;const pivot=new THREE.Group();pivot.position.set(s[0],s[1],s[2]);dog.add(pivot);const upper=new THREE.Mesh(new THREE.CapsuleGeometry(front?.105:.13,.31,5,14),goldLight);upper.position.y=-.18;upper.rotation.z=front?-.18:.25;upper.castShadow=true;pivot.add(upper);const knee=new THREE.Group();knee.position.set(front?.025:.06,-.35,0);pivot.add(knee);const lower=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.28,5,12),gold);lower.position.y=-.15;lower.castShadow=true;knee.add(lower);const paw=ell(knee,'paw',[.055,-.31,.015],[.16,.095,.12],goldDark,24);legs.push({pivot,knee,front,phase:i%2?Math.PI:0});});
- // Long feathered tail, sweeping backward.
- const tailCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(.88,.12,0),new THREE.Vector3(1.17,.24,0),new THREE.Vector3(1.43,.46,0),new THREE.Vector3(1.68,.43,0)]);
- tail=new THREE.Mesh(new THREE.TubeGeometry(tailCurve,24,.095,10,false),goldLight);tail.castShadow=true;dog.add(tail);
- // Flowing red cape on the trailing side.
- const capeGeo=new THREE.PlaneGeometry(1.35,1.08,18,16);capeGeo.translate(-.53,-.05,0);
- const pos=capeGeo.attributes.position;for(let i=0;i<pos.count;i++){const x=pos.getX(i),y=pos.getY(i);pos.setZ(i,-.13*Math.sin((x+1)*2.2)*(1-Math.abs(y)/.7));}capeGeo.computeVertexNormals();
- cape=new THREE.Mesh(capeGeo,new THREE.MeshStandardMaterial({color:'#d51f46',roughness:.65,side:THREE.DoubleSide,metalness:.04}));cape.position.set(-.48,.28,-.02);cape.rotation.y=.03;cape.castShadow=true;dog.add(cape);
- // Golden clasp and shield emblem.
- ell(dog,'cape clasp',[-.32,.36,.37],[.12,.12,.055],mat('#f6d36f',.3,.45),24);
- const badge=new THREE.Mesh(new THREE.CylinderGeometry(.13,.13,.045,6),mat('#f8d56e',.35,.35));badge.rotation.x=Math.PI/2;badge.position.set(-.32,.36,.42);dog.add(badge);
- const starShape=new THREE.Shape();for(let i=0;i<10;i++){const a=i*Math.PI/5-Math.PI/2,r=i%2?.045:.105;const x=Math.cos(a)*r,y=Math.sin(a)*r;i?starShape.lineTo(x,y):starShape.moveTo(x,y)}starShape.closePath();
- const star=new THREE.Mesh(new THREE.ShapeGeometry(starShape),mat('#9a4b17',.5));star.position.set(-.32,.36,.45);dog.add(star);
+const canvas=document.querySelector('#view'),status=document.querySelector('#status'),headline=document.querySelector('#headline'),stage=document.querySelector('#stage');
+let renderer,scene,camera,hero,tail,cape,legs=[],earPivots=[],playing=false,start=0,soundOn=true,ctx=null,raf=0;
+const mat=(c,r=.82,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+const coat=mat('#c58a43'),coatHi=mat('#e4b36d'),coatShade=mat('#98602f'),cream=mat('#f0d6a7'),noseMat=mat('#211a17',.24),eyeMat=mat('#160f0b',.12),black=mat('#201914'),red=mat('#a91532',.62),gold=mat('#f2c96b',.3,.35);
+function ball(parent,name,p,s,m,detail=40){const o=new THREE.Mesh(new THREE.SphereGeometry(1,detail,Math.max(16,detail/2)),m);o.name=name;o.position.set(...p);o.scale.set(...s);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
+function capsule(parent,p,r,len,m){const o=new THREE.Mesh(new THREE.CapsuleGeometry(r,len,6,16),m);o.position.set(...p);o.castShadow=true;parent.add(o);return o}
+function furOn(parent,center,scale,count,material){const geo=new THREE.ConeGeometry(.009,.075,3);const inst=new THREE.InstancedMesh(geo,material,count);const dummy=new THREE.Object3D();for(let i=0;i<count;i++){const y=2*Math.random()-1,a=Math.random()*Math.PI*2,q=Math.sqrt(1-y*y),nx=q*Math.cos(a),nz=q*Math.sin(a);dummy.position.set(center[0]+nx*scale[0],center[1]+y*scale[1],center[2]+nz*scale[2]);dummy.position.x+=nx*.018;dummy.position.y+=y*.018;dummy.position.z+=nz*.018;dummy.rotation.set(Math.atan2(nz,Math.max(.1,Math.abs(y))),0,-Math.atan2(nx,Math.max(.1,Math.abs(y))));dummy.scale.set(.7+Math.random()*.7,.55+Math.random()*.9,.7+Math.random()*.7);dummy.updateMatrix();inst.setMatrixAt(i,dummy.matrix)}inst.instanceMatrix.needsUpdate=true;inst.castShadow=true;parent.add(inst)}
+function buildHero(){
+ hero=new THREE.Group();scene.add(hero);
+ // Layered anatomy: torso, chest, shoulders, flank and hindquarters.
+ ball(hero,'ribcage',[-.08,0,0],[.98,.43,.4],coat,64);
+ ball(hero,'deep chest',[-.64,-.05,0],[.42,.52,.42],coatHi,56);
+ ball(hero,'cream bib',[-.72,-.22,.018],[.28,.36,.34],cream,48);
+ ball(hero,'near haunch',[.57,-.02,.16],[.43,.4,.29],coat,48);
+ ball(hero,'far haunch',[.57,-.02,-.16],[.43,.4,.29],coatShade,48);
+ // Neck rises into a broad retriever skull.
+ const neck=ball(hero,'neck',[.58,.32,0],[.34,.52,.32],coatHi,56);neck.rotation.z=-.38;
+ ball(hero,'skull',[.94,.61,0],[.43,.36,.34],coatHi,64);
+ ball(hero,'cheeks',[1.08,.42,0],[.32,.23,.29],coat,48);
+ ball(hero,'muzzle bridge',[1.28,.52,0],[.32,.16,.205],cream,48);
+ ball(hero,'lower muzzle',[1.29,.39,0],[.25,.105,.19],coatHi,40);
+ ball(hero,'nose',[1.55,.55,0],[.105,.078,.13],noseMat,32);
+ ball(hero,'nostril near',[1.59,.57,.07],[.025,.018,.018],black,16);
+ ball(hero,'nostril far',[1.59,.57,-.07],[.025,.018,.018],black,16);
+ // Mouth line and warm jowls.
+ const mouth= new THREE.Mesh(new THREE.TorusGeometry(.12,.012,8,24,Math.PI),black);mouth.position.set(1.39,.355,.145);mouth.rotation.set(Math.PI/2,0,.1);mouth.scale.set(1.3,.65,1);hero.add(mouth);
+ // Eyes, eyelids and brows.
+ for(const z of [.285,-.285]){ball(hero,'eye socket',[1.06,.68,z],[.11,.115,.045],coatShade,28);ball(hero,'eye',[1.095,.69,z*1.12],[.065,.075,.038],eyeMat,28);ball(hero,'catchlight',[1.115,.72,z*1.24],[.019,.022,.012],mat('#fff1d6',.2),16)}
+ // Long floppy ears with inner warm shading.
+ for(const z of [.29,-.29]){const pivot=new THREE.Group();pivot.position.set(.78,.72,z);hero.add(pivot);const ear=ball(pivot,'floppy ear',[.01,-.22,z>0?.035:-.035],[.17,.32,.105],coatShade,40);ear.rotation.z=-.32;const inner=ball(pivot,'ear velvet',[.025,-.22,z>0?.105:-.105],[.105,.23,.025],coat,32);inner.rotation.z=-.32;earPivots.push(pivot)}
+ // Four articulated legs with jointed lower limbs and broad paws.
+ const configs=[[-.61,-.24,.28,true],[-.61,-.24,-.28,true],[.58,-.2,.25,false],[.58,-.2,-.25,false]];
+ configs.forEach((c,i)=>{const pivot=new THREE.Group();pivot.position.set(c[0],c[1],c[2]);hero.add(pivot);capsule(pivot,[0,-.19,0],c[3]?.105:.13,.28,coatHi);const joint=new THREE.Group();joint.position.set(.015,-.34,0);pivot.add(joint);capsule(joint,[.025,-.13,0],.075,.2,coat);ball(joint,'paw',[.11,-.27,.015],[.16,.09,.12],coatShade,28);for(let k=0;k<3;k++)ball(joint,'toe',[.19,-.285,(k-1)*.055],[.045,.035,.025],coatHi,16);legs.push({pivot,joint,front:c[3],phase:i%2?Math.PI:0})});
+ // Feathered retriever tail.
+ const tailCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(.85,.12,0),new THREE.Vector3(1.12,.22,0),new THREE.Vector3(1.38,.38,0),new THREE.Vector3(1.62,.34,0)]);tail=new THREE.Mesh(new THREE.TubeGeometry(tailCurve,30,.095,12,false),coatHi);tail.castShadow=true;hero.add(tail);
+ // Feathered golden coat detail, short strands over torso/head/neck.
+ furOn(hero,[-.08,0,0],[.94,.42,.39],1450,coatHi);
+ furOn(hero,[-.64,-.05,0],[.4,.5,.4],650,coatHi);
+ furOn(hero,[.94,.61,0],[.42,.35,.33],620,coatHi);
+ furOn(hero,[.58,.32,0],[.33,.5,.31],500,coat);
+ // Flowing cloth cape behind shoulders, dynamically rippled.
+ const geo=new THREE.PlaneGeometry(1.45,1.12,24,20);geo.translate(-.68,-.05,0);cape=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:'#a91532',roughness:.72,side:THREE.DoubleSide}));cape.position.set(-.46,.3,-.02);cape.castShadow=true;hero.add(cape);
+ ball(hero,'cape clasp',[-.35,.39,.34],[.105,.11,.05],gold,24);
+ const shield=new THREE.Mesh(new THREE.CylinderGeometry(.14,.14,.045,6),gold);shield.rotation.x=Math.PI/2;shield.position.set(-.35,.39,.38);hero.add(shield);
 }
 function init(){
- try{
-  renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;
-  world=new THREE.Scene();camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(0,1.15,8.8);camera.lookAt(0,.25,0);
-  world.add(new THREE.HemisphereLight('#d9eaff','#452b22',2.1));
-  const key=new THREE.DirectionalLight('#fff0d6',3.1);key.position.set(-2,5,5);key.castShadow=true;key.shadow.mapSize.set(1024,1024);world.add(key);
-  const rim=new THREE.DirectionalLight('#79dcff',2.3);rim.position.set(2,2,-4);world.add(rim);
-  const fill=new THREE.PointLight('#ffbf70',35,12);fill.position.set(2,1,4);world.add(fill);
-  buildDog();resize();status.textContent='HERO READY · CUSTOM 3D GOLDEN RETRIEVER BUILT';animate();
- }catch(e){status.textContent='3D PREVIEW COULD NOT START · PLEASE RELOAD';console.error(e)}
-}
+ try{renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.18;
+ scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(35,1,.1,100);camera.position.set(0,1.2,8.5);camera.lookAt(0,.22,0);
+ scene.add(new THREE.HemisphereLight('#f3e7d2','#382a25',2.2));const key=new THREE.DirectionalLight('#ffe2b2',3.4);key.position.set(-3,5,5);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key);const rim=new THREE.DirectionalLight('#85dfff',2.2);rim.position.set(2,3,-4);scene.add(rim);const fill=new THREE.PointLight('#ffb96f',28,12);fill.position.set(2,1,4);scene.add(fill);
+ buildHero();resize();status.textContent='HERO READY · GOLDEN RETRIEVER REDESIGN';animate()}catch(e){console.error(e);status.textContent='3D PREVIEW FAILED TO START'}}
 function resize(){if(!renderer)return;const w=canvas.clientWidth,h=canvas.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
 new ResizeObserver(resize).observe(canvas);
-function animate(){
- raf=requestAnimationFrame(animate);const t=clock.getElapsedTime();const elapsed=playing?(performance.now()-started)/1000:0;
- if(dog){
-  let x=-.25,y=.1,scale=1,bank=-.07;
-  if(playing){const p=Math.min(elapsed/7.7,1);x=THREE.MathUtils.lerp(-4.1,3.5,p);y=.1+Math.sin(p*Math.PI)*.45;scale=.9+.1*Math.sin(p*Math.PI);bank=-.04+Math.sin(p* Math.PI*2)*.045;if(p>=1&&playing){playing=false;status.textContent='CITY SAVED · HERO PUP WINS';headline.textContent='SMELL YA LATER!';}}
-  dog.position.set(x,y+Math.sin(t*2.1)*.035,0);dog.scale.setScalar(scale);dog.rotation.z=bank;
-  legs.forEach(l=>{const swing=Math.sin(t*8+l.phase+(playing?elapsed*3:0));l.pivot.rotation.z=(l.front?-.22:.22)+swing*(playing?.62:.08);l.knee.rotation.z=Math.max(0,swing)*-.65;});
-  tail.rotation.z=Math.sin(t*5)*.22-.18;
-  const a=cape.geometry.attributes.position;for(let i=0;i<a.count;i++){const xx=a.getX(i),yy=a.getY(i);a.setZ(i,-.1*Math.sin(t*8+xx*4)*(Math.max(0,1-Math.abs(yy)/.7)));}a.needsUpdate=true;cape.geometry.computeVertexNormals();cape.rotation.y=Math.sin(t*4)*.09;cape.rotation.z=Math.sin(t*5)*.08;
-  cape.scale.x=playing?1.08:1;
- }
- renderer.render(world,camera);
-}
-let soundCtx;
-function tone(freq,duration,type='sine',volume=.07,slide=0){if(!soundOn)return;try{soundCtx=soundCtx||new(window.AudioContext||window.webkitAudioContext)();if(soundCtx.state==='suspended')soundCtx.resume();const o=soundCtx.createOscillator(),g=soundCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,soundCtx.currentTime);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(35,freq+slide),soundCtx.currentTime+duration);g.gain.setValueAtTime(volume,soundCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,soundCtx.currentTime+duration);o.connect(g);g.connect(soundCtx.destination);o.start();o.stop(soundCtx.currentTime+duration)}catch(e){}}
-function stop(){playing=false;sceneEl.classList.remove('play');headline.textContent='THE CITY NEEDS A HERO';status.textContent='RESET · READY TO FLY';if(dog){dog.position.set(-.25,.1,0)}}
-function play(){stop();playing=true;started=performance.now();sceneEl.classList.add('play');headline.textContent='THE CITY NEEDS A HERO';status.textContent='WONDER SHIT IS TAKING FLIGHT!';tone(180,.65,'sawtooth',.04,440);tone(125,.22,'triangle',.09,-65);setTimeout(()=>{if(playing){headline.textContent='STINK POWER… ACTIVATE!';status.textContent='SPECIAL DELIVERY INCOMING 😂';tone(78,.8,'sawtooth',.11,-35);tone(55,.5,'square',.045,25)}},3900);setTimeout(()=>{if(playing)tone(140,.45,'sine',.08,-75)},5200)}
-document.getElementById('play').addEventListener('click',play);document.getElementById('stop').addEventListener('click',stop);
-document.getElementById('sound').addEventListener('click',()=>{soundOn=!soundOn;document.getElementById('sound').textContent='SOUND: '+(soundOn?'ON':'OFF');status.textContent='SOUND '+(soundOn?'ON':'OFF')});
-window.addEventListener('pagehide',()=>cancelAnimationFrame(raf));
-init();
+function animate(){raf=requestAnimationFrame(animate);const t=performance.now()/1000,elapsed=playing?(performance.now()-start)/1000:0;if(hero){let x=-.2,y=.12;if(playing){const p=Math.min(elapsed/7.2,1);x=THREE.MathUtils.lerp(-4.3,3.7,p);y=.08+Math.sin(p*Math.PI)*.42;if(p>=1){playing=false;headline.textContent='SMELL YA LATER!';status.textContent='HEROIC MISSION COMPLETE'}}hero.position.set(x,y+Math.sin(t*2)*.025,0);hero.rotation.z=playing?Math.sin(t*3)*.035:-.025;legs.forEach(l=>{const s=Math.sin(t*7+l.phase);l.pivot.rotation.z=(l.front?-.16:.2)+s*(playing?.48:.035);l.joint.rotation.z=Math.max(0,s)*-.5});tail.rotation.z=Math.sin(t*4.5)*.22;earPivots.forEach((e,i)=>e.rotation.z=Math.sin(t*5+i)*.08);const p=cape.geometry.attributes.position;for(let i=0;i<p.count;i++){const xx=p.getX(i),yy=p.getY(i);p.setZ(i,-.13*Math.sin(t*7+xx*3.7)*(1-Math.min(1,Math.abs(yy)/.7)))}p.needsUpdate=true;cape.geometry.computeVertexNormals();cape.rotation.y=Math.sin(t*3)*.07}renderer.render(scene,camera)}
+function tone(f,d,type='sine',v=.07,slide=0){if(!soundOn)return;try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(f,ctx.currentTime);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(35,f+slide),ctx.currentTime+d);g.gain.setValueAtTime(v,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+d)}catch(e){}}
+function reset(){playing=false;headline.textContent='THE CITY NEEDS A HERO';status.textContent='READY WHEN YOU ARE';hero.position.set(-.2,.12,0);stage.classList.remove('playing')}
+function play(){reset();playing=true;start=performance.now();headline.textContent='HERE COMES YOUR HERO';status.textContent='WONDER SHIT IS AIRBORNE';stage.classList.add('playing');tone(175,.6,'sawtooth',.035,400);setTimeout(()=>{if(playing){headline.textContent='STINK BLAST!';status.textContent='SUPERPOWER DEPLOYED 😂';tone(75,.75,'sawtooth',.1,-30)}},3600);setTimeout(()=>{if(playing)tone(160,.4,'triangle',.06,100)},5100)}
+document.querySelector('#play').addEventListener('click',play);document.querySelector('#reset').addEventListener('click',reset);document.querySelector('#sound').addEventListener('click',e=>{soundOn=!soundOn;e.currentTarget.textContent='SOUND: '+(soundOn?'ON':'OFF');status.textContent='SOUND '+(soundOn?'ON':'OFF')});window.addEventListener('pagehide',()=>cancelAnimationFrame(raf));init();
 </script>
-</body>
-</html>
+</body></html>
