@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="./icons/tiknation.svg">
 <title>TikNation Live</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./gift-engine.js?v=titanfall-colossus-v1"></script>
+<script src="./gift-engine.js?v=titanfall-colossus-v3"></script>
 <script src="./gifts.js?v=titanfall-colossus-v2"></script>
 <style>
 :root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
@@ -695,21 +695,21 @@ function playLiveGiftSound(event, gift) {
       oscillator.start(at); oscillator.stop(at + duration + 0.02);
     };
     if (code === "titanfall_colossus") {
-      // A cavernous emergence: sub-bass earth rumble, rising energy, three stone impacts and a metallic guardian groan.
-      playNoiseSweep(now, 4.8, 0.28, 190, 42);
-      playNoiseSweep(now + 0.45, 3.4, 0.13, 1450, 115);
-      [2.05, 2.72, 3.38].forEach((delay, index) => {
-        playNoiseSweep(now + delay, 0.72, 0.30 - index * 0.035, 720, 75);
-        softTone(now + delay, [58, 49, 42][index], 1.05, 0.34, "sawtooth");
-        softTone(now + delay + 0.035, [92, 78, 66][index], 0.72, 0.12, "triangle");
+      // Raw cinematic foley: subterranean pressure, grinding slabs, three massive footfalls and a final stone fracture.
+      // Keep the spectrum dark; no musical beeps or bright synthetic chimes.
+      playNoiseSweep(now, 5.8, 0.34, 150, 38);
+      playNoiseSweep(now + 0.35, 4.6, 0.24, 520, 48);
+      playNoiseSweep(now + 0.9, 3.1, 0.18, 2100, 130);
+      [2.15, 3.05, 3.95].forEach((delay, index) => {
+        playNoiseSweep(now + delay, 1.05, 0.36 - index * 0.035, 340, 42);
+        playNoiseSweep(now + delay + 0.045, 0.58, 0.22, 1800, 210);
+        softTone(now + delay, [42, 36, 31][index], 1.55, 0.48, "sine");
       });
-      [0.9, 2.35].forEach((delay, index) => {
-        softTone(now + delay, index ? 44 : 68, 1.65, 0.16, "sawtooth");
-        softTone(now + delay + 0.12, index ? 118 : 165, 1.1, 0.055, "triangle");
-      });
-      [3.85, 4.15, 4.45, 4.75].forEach((delay, index) =>
-        softTone(now + delay, [220, 330, 440, 660][index], 0.62, 0.085, "sine")
-      );
+      // Slow, strained stone-and-metal groan as the giant locks into place.
+      softTone(now + 1.15, 73, 2.9, 0.12, "sawtooth");
+      softTone(now + 1.2, 51, 3.2, 0.19, "triangle");
+      playNoiseSweep(now + 4.65, 1.7, 0.28, 980, 65);
+      playNoiseSweep(now + 5.0, 1.1, 0.2, 260, 32);
       return;
     }
     if (gift.style === "ghostship" || code === "storm_of_the_world") {
