@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050817">
+<title>Infinity Guardian · TikNation Mythic Gift</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#050817;color:#f5f7ff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:22px;background:radial-gradient(ellipse at 50% 15%,#24376b 0,#101735 38%,#050817 78%);overflow-x:hidden}
+main{width:min(100%,760px);text-align:center;padding:clamp(24px,6vw,52px);border:1px solid #8ceaff55;border-radius:28px;background:linear-gradient(145deg,#101b39dd,#0a0d22f2);box-shadow:0 28px 90px #0008,0 0 65px #665cff22;position:relative;overflow:hidden}
+main:before,main:after{content:"";position:absolute;left:50%;top:42%;width:min(75vw,460px);aspect-ratio:1;border:1px solid #82f6e833;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
+main:after{width:min(88vw,550px);border-color:#b9a4ff22}
+.eyebrow{color:#8cf7ef;font-size:10px;font-weight:900;letter-spacing:.3em}.mark{font-size:clamp(62px,13vw,104px);line-height:1.2;margin:18px 0 10px;color:#d7fbff;text-shadow:0 0 18px #67eaff,0 0 45px #7967ff}
+h1{position:relative;margin:0;font:400 clamp(30px,6vw,48px)/1.1 Georgia,serif;letter-spacing:.08em}
+p{position:relative;max-width:560px;margin:14px auto 0;color:#c5cce8;font-size:14px;line-height:1.7}
+.rarity{display:inline-block;margin:22px 0 0;padding:8px 14px;border:1px solid #d3aaff88;border-radius:99px;color:#e3d2ff;font-size:10px;font-weight:900;letter-spacing:.18em}
+button{position:relative;display:block;width:min(100%,340px);margin:28px auto 0;padding:16px 20px;border:1px solid #a7f8ff;border-radius:14px;background:linear-gradient(100deg,#6ceaff,#9d8bff);color:#071025;font-weight:950;letter-spacing:.12em;box-shadow:0 10px 35px #58dfff44;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}.note{font-size:11px;color:#8e9abf;margin-top:15px}
+a{color:#9befff;text-decoration:none;font-size:12px}footer{margin-top:26px}
+</style>
+<script src="./gift-engine.js?v=infinity-guardian-v1"></script>
+</head>
+<body>
+<main>
+<div class="eyebrow">TIKNATION · ORIGINAL MYTHIC GIFT</div>
+<div class="mark" aria-hidden="true">♾</div>
+<h1>INFINITY GUARDIAN</h1>
+<p>A cosmic portal opens. A luminous guardian spreads its wings, releases a wave of starlight, and leaves the infinity mark behind.</p>
+<div class="rarity">MYTHIC · ONE OF A KIND</div>
+<button id="awaken" type="button">AWAKEN THE GUARDIAN</button>
+<div class="note">Preview only · 250 test coins in the TikNation gift catalog · No coins are charged here</div>
+<footer><a href="./next/">Return to TikNation</a></footer>
+</main>
+<script>
+(function(){
+ const button=document.getElementById("awaken");
+ function playSound(){
+  try{
+   const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+   const c=new C(),now=c.currentTime;
+   const length=Math.floor(c.sampleRate*7.5),buffer=c.createBuffer(1,length,c.sampleRate),data=buffer.getChannelData(0);
+   for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/length);
+   const src=c.createBufferSource(),filter=c.createBiquadFilter(),gain=c.createGain();src.buffer=buffer;filter.type="lowpass";filter.frequency.setValueAtTime(130,now);filter.frequency.exponentialRampToValueAtTime(1350,now+2.5);filter.frequency.exponentialRampToValueAtTime(180,now+7.2);gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(.13,now+1.4);gain.gain.exponentialRampToValueAtTime(.0001,now+7.4);src.connect(filter);filter.connect(gain);gain.connect(c.destination);src.start();src.stop(now+7.5);
+   [196,261.63,329.63,392,523.25].forEach((hz,i)=>{const o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=hz;g.gain.setValueAtTime(.0001,now+1+i*.65);g.gain.linearRampToValueAtTime(.04,now+1.1+i*.65);g.gain.exponentialRampToValueAtTime(.0001,now+2.1+i*.65);o.connect(g);g.connect(c.destination);o.start(now+1+i*.65);o.stop(now+2.2+i*.65);});
+  }catch(_){}
+ }
+ button.addEventListener("click",function(){
+  if(!window.TikNationGiftEngine||!window.TikNationGiftEngine.show){button.textContent="PREVIEW STILL LOADING";return;}
+  button.disabled=true;button.textContent="THE GUARDIAN IS AWAKENING…";
+  window.TikNationGiftEngine.show({name:"Infinity Guardian",emoji:"♾️",style:"infinity_guardian"},{duration:13200,onSound:playSound});
+  setTimeout(()=>{button.disabled=false;button.textContent="AWAKEN THE GUARDIAN";},14500);
+ });
+})();
+</script>
+</body>
+</html>
