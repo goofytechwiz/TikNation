@@ -27,7 +27,7 @@ const TIKNATION_GIFT_CATALOG = {
   phoenix_rebirth:{name:"Phoenix Rebirth",emoji:"🔥",category:"Legendary",cost:175,style:"phoenix",sound:"phoenix"},
   dragons_revenge:{name:"Dragon's Revenge",emoji:"🐲",category:"Legendary",cost:200,style:"dragonrevenge",sound:"dragon"},
   finger_of_death:{name:"Finger of Death",emoji:"💀",category:"Legendary",cost:250,style:"fingerdeath",sound:"fingerdeath"},
-  titanfall_colossus:{name:"Titanfall Colossus",emoji:"🗿",category:"Legendary",cost:300,style:"titanfall_colossus",sound:"titanfall_colossus",message:"An ancient stone guardian erupts from the earth."},
+  titanfall_colossus:{name:"Titanfall Colossus",emoji:"🗿",category:"Legendary",cost:200,style:"titanfall_colossus",sound:"titanfall_colossus",message:"An ancient stone guardian erupts from the earth."},
   clouds_of_mystery:{name:"Clouds of Mystery",emoji:"☁️",category:"Magical",cost:50,style:"storm",sound:"mystery"},
   hammer_of_pain:{name:"Hammer of Pain",emoji:"🔨",category:"Special Effects",cost:50,style:"hammer",sound:"hammer"},
   thunder_ass:{name:"Thunder Ass",emoji:"💨",category:"Surprises",cost:69,style:"deathass",sound:"stinkdeath"},
