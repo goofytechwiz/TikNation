@@ -1115,10 +1115,10 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
 }
 
 function renderInfinityGuardianGift(gift,opts,overlay){
- const sid="tn-infinity-guardian-style-v3";let style=document.getElementById(sid);
+ const sid="tn-infinity-guardian-style-v4";let style=document.getElementById(sid);
  if(!style){style=document.createElement("style");style.id=sid;document.head.appendChild(style);}
  style.textContent="#tiknation-gift-engine[data-style=infinity_guardian]{position:fixed!important;inset:0!important;z-index:2147483647!important;display:block!important;overflow:hidden!important;padding:0!important;background:#020611!important;pointer-events:none!important}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#233b70 0,#101a3b 34%,#050b1d 68%,#01030a 100%);isolation:isolate}"+
+ "#tiknation-gift-engine[data-style=infinity_guardian] .ig-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#405b91 0,#1b2b52 33%,#09152f 68%,#01030a 100%);isolation:isolate}"+
  "#tiknation-gift-engine[data-style=infinity_guardian] .ig-render{position:absolute;inset:0;width:100%;height:100%;display:block}"+
  "#tiknation-gift-engine[data-style=infinity_guardian] .ig-copy{position:absolute;z-index:6;left:5%;right:5%;bottom:5%;text-align:center;color:#f8ffff;text-shadow:0 2px 12px #02040c,0 0 24px #62eaff;font:900 clamp(19px,4.8vw,42px)/1.1 Georgia,serif;letter-spacing:.13em;opacity:0;animation:ig-copy-v3 1.1s ease 6.2s both}"+
  "#tiknation-gift-engine[data-style=infinity_guardian] .ig-copy small{display:block;margin:10px auto 0;max-width:680px;color:#d6e8ff;font:650 clamp(10px,2.4vw,15px)/1.5 system-ui;letter-spacing:.12em}"+
@@ -1141,7 +1141,7 @@ function renderInfinityGuardianGift(gift,opts,overlay){
    renderer.setPixelRatio(Math.min(1.7,window.devicePixelRatio||1));renderer.setSize(world.clientWidth,world.clientHeight,false);
    renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
    scene=new T.Scene();scene.fog=new T.FogExp2(0x07122c,.026);
-   camera=new T.PerspectiveCamera(34,world.clientWidth/world.clientHeight,.1,100);camera.position.set(0,.2,16.8);
+   camera=new T.PerspectiveCamera(34,world.clientWidth/world.clientHeight,.1,100);camera.position.set(0,.15,18.4);
    scene.add(new T.HemisphereLight(0xc8f5ff,0x11152f,2.1));
    const key=new T.DirectionalLight(0xe8fbff,3.5);key.position.set(-5,8,10);scene.add(key);
    const rim=new T.PointLight(0x43dcff,95,24);rim.position.set(5,2,3);scene.add(rim);
@@ -1157,20 +1157,27 @@ function renderInfinityGuardianGift(gift,opts,overlay){
    function mesh(geo,mat,parent=body){const m=new T.Mesh(geo,mat);parent.add(m);return m;}
    function plate(points,depth,mat,z=0,parent=body){const sh=new T.Shape();sh.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)sh.lineTo(points[i][0],points[i][1]);sh.closePath();const g=new T.ExtrudeGeometry(sh,{depth,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.075,bevelThickness:.07});const m=mesh(g,mat,parent);m.position.z=z;return m;}
    function orb(x,y,z,sx,sy,sz,mat,parent=body){const m=mesh(new T.SphereGeometry(1,24,18),mat,parent);m.position.set(x,y,z);m.scale.set(sx,sy,sz);return m;}
-   function feather(x,y,angle,len,width,mat,parent){const g=new T.Group();g.position.set(x,y,0);g.rotation.z=angle;parent.add(g);const m=mesh(new T.SphereGeometry(1,16,12),mat,g);m.scale.set(width,len*.55,.095);m.position.y=len*.38;const spine=mesh(new T.CylinderGeometry(.012,.025,len*.78,6),brightMetal,g);spine.position.y=len*.38;return g;}
+   function feather(x,y,angle,len,width,mat,parent){
+    const g=new T.Group();g.position.set(x,y,0);g.rotation.z=angle;parent.add(g);
+    const sh=new T.Shape();sh.moveTo(0,0);sh.bezierCurveTo(-width*.72,len*.12,-width*.82,len*.62,0,len);sh.bezierCurveTo(width*.82,len*.62,width*.72,len*.12,0,0);
+    const geo=new T.ExtrudeGeometry(sh,{depth:.075,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.025,bevelThickness:.025});
+    const vane=mesh(geo,mat,g);vane.position.z=-.035;
+    const curve=new T.CatmullRomCurve3([new T.Vector3(0,.04,.08),new T.Vector3(0,len*.32,.095),new T.Vector3(0,len*.68,.095),new T.Vector3(0,len*.94,.06)]);
+    mesh(new T.TubeGeometry(curve,18,.014,5,false),brightMetal,g);
+    return g;
+   }
    // Broad articulated wings: layered rows of individual metallic feathers, not flat blades.
    const wings=[];
    for(const side of [-1,1]){
     const wing=new T.Group();wing.position.set(side*1.42,1.05,-.3);body.add(wing);wings.push({wing,side});
-    const basePts=side<0?[[0,.25],[-.65,1.5],[-2.15,2.9],[-4.6,3.65],[-3.55,1.35],[-2.5,.1],[-.6,-.55]]:[[0,.25],[.65,1.5],[2.15,2.9],[4.6,3.65],[3.55,1.35],[2.5,.1],[.6,-.55]];
-    plate(basePts,.22,metal,.0,wing);
-    for(let row=0;row<3;row++){
-     for(let i=0;i<9;i++){
-      const u=i/8,dist=1.0+u*3.0,yy=1.35+Math.sin(u*Math.PI)*.95-row*.54;
-      const x=side*dist*.83;
-      const len=(2.05-u*.72)+(row===0?.35:0);
-      const ang=side*(.56-u*.2)+(row===2?-.15:0);
-      feather(x,yy,ang,len,.18-row*.018,featherMat[(i+row)%featherMat.length],wing);
+    const support=mesh(new T.CapsuleGeometry(.22,2.5,6,12),darkMetal,wing);support.position.set(side*1.45,1.3,-.12);support.rotation.z=side*.82;
+    for(let row=0;row<4;row++){
+     for(let i=0;i<13;i++){
+      const u=i/12,dist=.42+u*3.95,yy=1.55+Math.sin(u*Math.PI)*1.05-row*.48;
+      const x=side*dist*.9;
+      const len=(2.45-u*.85)+(row===0?.5:0);
+      const ang=side*(.68-u*.25)+(row===3?-.19:0);
+      feather(x,yy,ang,len,.26-row*.025,featherMat[(i+row)%featherMat.length],wing);
      }
     }
     // Shoulder root and glowing articulated feather joints.
@@ -1188,9 +1195,9 @@ function renderInfinityGuardianGift(gift,opts,overlay){
    plate([[-.98,1.22],[0,1.48],[.98,1.22],[.82,-1.05],[0,-1.52],[-.82,-1.05]],.24,darkMetal,.72);
    plate([[-.83,1.12],[0,1.35],[.83,1.12],[.68,-.85],[0,-1.22],[-.68,-.85]],.12,goldMat,.99);
    for(const side of [-1,1]){
-    const shoulder=mesh(new T.IcosahedronGeometry(.78,1),brightMetal);shoulder.position.set(side*1.45,.92,.48);shoulder.scale.set(1.05,.8,.72);
+    const shoulder=mesh(new T.SphereGeometry(.72,32,24),brightMetal);shoulder.position.set(side*1.45,.92,.48);shoulder.scale.set(1.18,.88,.78);\n    const pauldron=mesh(new T.SphereGeometry(.68,32,20),metal);pauldron.position.set(side*1.53,1.02,.74);pauldron.scale.set(1.05,.68,.46);\n    const pauldronRim=mesh(new T.TorusGeometry(.52,.045,8,48),goldMat);pauldronRim.position.set(side*1.53,1.02,1.0);pauldronRim.scale.set(1.2,.8,.5);
     const arm=mesh(new T.CapsuleGeometry(.3,.88,5,12),metal);arm.position.set(side*1.72,-.1,.35);arm.rotation.z=side*-.22;
-    const gauntlet=mesh(new T.IcosahedronGeometry(.48,1),brightMetal);gauntlet.position.set(side*1.82,-.85,.52);gauntlet.scale.set(.85,1.1,.7);
+    const gauntlet=mesh(new T.SphereGeometry(.48,24,18),brightMetal);gauntlet.position.set(side*1.82,-.85,.52);gauntlet.scale.set(.85,1.1,.7);
     orb(side*1.8,-.84,.94,.13,.13,.09,glowMat);
    }
    // Neck and monumental helmet.
@@ -1205,11 +1212,11 @@ function renderInfinityGuardianGift(gift,opts,overlay){
     const brow=mesh(new T.BoxGeometry(.66,.12,.16),goldMat);brow.position.set(side*.38,2.82,1.0);brow.rotation.z=side*-.14;
    }
    // Crest and jaw guard.
-   const crest=mesh(new T.OctahedronGeometry(.34,0),goldMat);crest.position.set(0,3.72,.92);crest.scale.set(.65,1.45,.4);
+   const crest=mesh(new T.ConeGeometry(.22,.85,8),goldMat);crest.position.set(0,3.72,.92);crest.scale.set(.65,1.45,.4);
    plate([[-.68,2.15],[0,1.92],[.68,2.15],[.48,1.85],[0,1.72],[-.48,1.85]],.13,goldMat,1.05);
    // Glowing chest core and a real 3D infinity loop.
    const core=mesh(new T.SphereGeometry(.8,32,24),new T.MeshBasicMaterial({color:0x50dcff,transparent:true,opacity:.2}));core.position.set(0,-.05,1.24);core.scale.set(1,.85,.35);
-   const heart=mesh(new T.OctahedronGeometry(.57,2),glowMat);heart.position.set(0,-.05,1.42);heart.scale.set(1.05,1.05,.34);
+   const heart=mesh(new T.SphereGeometry(.57,32,24),glowMat);heart.position.set(0,-.05,1.42);heart.scale.set(1.05,1.05,.34);
    const pts=[];for(let i=0;i<=160;i++){const t=i/160*Math.PI*2;const x=1.02*Math.sin(t)/(1+Math.cos(t)*Math.cos(t));const y=.48*Math.sin(t)*Math.cos(t)/(1+Math.cos(t)*Math.cos(t));pts.push(new T.Vector3(x,y,1.68));}
    const infinityCurve=new T.CatmullRomCurve3(pts,false,"centripetal");const infinity=mesh(new T.TubeGeometry(infinityCurve,220,.065,10,false),new T.MeshStandardMaterial({color:0xe9ffff,emissive:0x59eaff,emissiveIntensity:2.8,metalness:.35,roughness:.18}));infinity.userData.pulse=true;
    // Gold trim and engraved armor lines.
@@ -1221,16 +1228,16 @@ function renderInfinityGuardianGift(gift,opts,overlay){
    for(let i=0;i<4;i++){const ring=mesh(new T.TorusGeometry(4.45+i*.28,.018+(i%2)*.012,8,160),new T.MeshBasicMaterial({color:i%2?0xb18cff:0x70eaff,transparent:true,opacity:.52-i*.07}),portal);ring.rotation.x=(i-1.5)*.08;ring.rotation.y=(i-1.5)*.06;}
    const halo=mesh(new T.TorusGeometry(3.9,.035,10,160),new T.MeshBasicMaterial({color:0x9efaff,transparent:true,opacity:.7}),portal);halo.position.z=-.12;
    // Distant star field.
-   const starGeo=new T.BufferGeometry(),positions=[],colors=[];for(let i=0;i<500;i++){positions.push((Math.random()-.5)*28,(Math.random()-.5)*18,-6-Math.random()*12);colors.push(.5+Math.random()*.5,.65+Math.random()*.35,1);}
+   const starGeo=new T.BufferGeometry(),positions=[],colors=[];for(let i=0;i<900;i++){positions.push((Math.random()-.5)*28,(Math.random()-.5)*18,-6-Math.random()*12);colors.push(.5+Math.random()*.5,.65+Math.random()*.35,1);}
    starGeo.setAttribute("position",new T.Float32BufferAttribute(positions,3));starGeo.setAttribute("color",new T.Float32BufferAttribute(colors,3));
    const starMat=new T.PointsMaterial({size:.035,vertexColors:true,transparent:true,opacity:.9});const starField=new T.Points(starGeo,starMat);scene.add(starField);
    // A floorless energy mist gives scale without obscuring the figure.
    const mist=mesh(new T.PlaneGeometry(20,8),new T.MeshBasicMaterial({color:0x14285c,transparent:true,opacity:.16,depthWrite:false}),scene);mist.position.set(0,-4.5,-1);mist.rotation.x=-.15;
-   guardian.scale.setScalar(.001);guardian.position.y=-.15;
+   guardian.scale.setScalar(.001);guardian.position.y=-.35;
    const start=performance.now();
    function resize(){if(!alive||!renderer)return;const w=world.clientWidth,h=world.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
    resizeFn=resize;window.addEventListener("resize",resizeFn,{passive:true});
-   function tick(now){if(!alive||!world.isConnected)return;const t=(now-start)/1000;const intro=Math.min(1,Math.max(0,t/2.0));guardian.scale.setScalar(.001+(.86-.001)*(1-Math.pow(1-intro,3)));guardian.position.y=-.15+Math.sin(t*1.1)*.08;guardian.rotation.y=Math.sin(t*.45)*.09;guardian.rotation.x=Math.sin(t*.7)*.025;
+   function tick(now){if(!alive||!world.isConnected)return;const t=(now-start)/1000;const intro=Math.min(1,Math.max(0,t/2.4));guardian.scale.setScalar(.001+(.76-.001)*(1-Math.pow(1-intro,3)));guardian.position.y=-.35+Math.sin(t*.9)*.07;guardian.rotation.y=Math.sin(t*.45)*.09;guardian.rotation.x=Math.sin(t*.7)*.025;
     wings.forEach(({wing,side})=>{wing.rotation.z=side*(.035+Math.sin(t*2.1+(side>0?0:Math.PI))*.075);wing.rotation.y=side*(.05+Math.sin(t*1.5)*.035);});
     portal.rotation.z=t*.045;portal.rotation.y=Math.sin(t*.2)*.12;infinity.scale.setScalar(1+Math.sin(t*3)*.045);starField.rotation.y=t*.008;
     renderer.render(scene,camera);raf=requestAnimationFrame(tick);}
