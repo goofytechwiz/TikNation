@@ -1,75 +1,85 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Titanfall Colossus — Cinematic Gift Preview</title>
+<title>Titanfall Colossus — 3D Gift Preview</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05080d;color:#edf7ff;font-family:system-ui,Arial}
-#world{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 55%,#34414a 0,#19232d 34%,#070c13 78%);overflow:hidden}
-#scene{width:100%;height:100%;display:block}
-.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse,transparent 35%,#02050bc9 100%),linear-gradient(0deg,#02050bd9,transparent 38%,#02050b66)}
-.title{position:absolute;top:4%;width:100%;text-align:center;font-size:clamp(15px,2.8vw,27px);font-weight:950;letter-spacing:.23em;text-shadow:0 3px 12px #000,0 0 22px #8ceaff}.title small{display:block;margin-top:8px;font-size:9px;letter-spacing:.34em;color:#9bc4d1}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#03070c;color:#eafaff;font-family:system-ui,Arial}
+#stage{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 67%,#34444a 0,#17242c 34%,#050a11 76%)}
+canvas{display:block;width:100%;height:100%}.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,#02060cf2 0%,transparent 34%,#02060c55 100%),radial-gradient(ellipse,transparent 32%,#02060caa 100%)}
+header{position:absolute;top:4%;left:0;right:0;text-align:center;text-shadow:0 2px 15px #000}h1{margin:0;font-size:clamp(19px,4vw,38px);letter-spacing:.22em;font-weight:950}header p{font-size:9px;letter-spacing:.38em;color:#a9d5e0;margin:10px 0}
+#status{position:absolute;left:0;right:0;bottom:100px;text-align:center;color:#b4d4dc;font-size:9px;letter-spacing:.2em;text-shadow:0 2px 8px #000}
 .controls{position:absolute;bottom:calc(14px + env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:center;gap:9px;flex-wrap:wrap;padding:8px}
-button,a{background:#07121ddd;border:1px solid #86cddd;color:#eafaff;border-radius:30px;padding:12px 17px;font-size:10px;font-weight:850;letter-spacing:.12em;text-decoration:none}
-#hint{width:100%;text-align:center;color:#b5c9d2;font-size:9px;letter-spacing:.18em}
-</style></head><body><main id="world"><canvas id="scene"></canvas><div class="vignette"></div><div class="title">TITANFALL COLOSSUS<small>AN ANCIENT GIANT WAKES BENEATH THE EARTH</small></div></main>
-<div class="controls"><div id="hint">CINEMATIC ENTRANCE · SOUND IS OFF UNTIL ENABLED</div><button id="sound">ENABLE CINEMATIC SOUND</button><button id="replay">REPLAY ENTRANCE</button><a href="../../live.html">BACK TO TIKNATION LIVE</a></div>
-<script>
-(()=>{const c=document.querySelector('#scene'),g=c.getContext('2d');let w=0,h=0,dpr=1,start=performance.now(),audio=null,sound=false,raf=0;
-function resize(){dpr=Math.min(devicePixelRatio||1,1.7);w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;c.style.width=w+'px';c.style.height=h+'px';g.setTransform(dpr,0,0,dpr,0,0)}addEventListener('resize',resize);resize();
-const rand=(a,b)=>a+Math.random()*(b-a);
-function polygon(points,fill,stroke='#111a20',sw=5){g.beginPath();points.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath();g.fillStyle=fill;g.fill();if(stroke){g.lineWidth=sw;g.strokeStyle=stroke;g.stroke()}}
-function rock(x,y,rx,ry,light='#89949a',dark='#26333c'){let q=g.createLinearGradient(x-rx,y-ry,x+rx,y+ry);q.addColorStop(0,light);q.addColorStop(.38,'#56636b');q.addColorStop(1,dark);g.fillStyle=q;g.beginPath();g.moveTo(x-rx*.85,y-ry*.55);g.lineTo(x-rx*.25,y-ry);g.lineTo(x+rx*.75,y-ry*.7);g.lineTo(x+rx,y+ry*.15);g.lineTo(x+rx*.3,y+ry);g.lineTo(x-rx*.75,y+ry*.7);g.closePath();g.fill();g.strokeStyle='#101a22';g.lineWidth=Math.max(2,rx*.09);g.stroke();g.save();g.globalAlpha=.25;g.strokeStyle='#d2dadd';g.lineWidth=2;g.beginPath();g.moveTo(x-rx*.55,y-ry*.45);g.lineTo(x-rx*.08,y-ry*.8);g.lineTo(x+rx*.36,y-ry*.53);g.stroke();g.restore()}
-function limb(x,y,scale,angle){g.save();g.translate(x,y);g.rotate(angle);g.scale(scale,scale);rock(0,0,42,92);rock(0,105,50,72,'#75828a','#1b2932');rock(0,184,36,35,'#4c5a62','#111b22');for(let i=0;i<3;i++)rock(-24+i*23,220,11,32,'#68757b','#17222a');g.restore()}
-function draw(t){const p=Math.min(1,(t-start)/5600),rise=Math.max(0,Math.min(1,(p-.12)/.48)),settle=Math.max(0,1-(p-.62)*2.5);g.clearRect(0,0,w,h);
-let sky=g.createLinearGradient(0,0,0,h);sky.addColorStop(0,'#080e19');sky.addColorStop(.48,'#28343d');sky.addColorStop(1,'#080e14');g.fillStyle=sky;g.fillRect(0,0,w,h);
-// distant ruined ridge and smoke
-for(let i=0;i<8;i++){let x=i*w/7;polygon([[x,h*.68],[x+w*.07,h*(.48+rand(0,.06))],[x+w*.13,h*.68],[x+w*.18,h*.55],[x+w*.25,h*.72],[x+w*.25,h]],'#18242c',null)}
-for(let i=0;i<20;i++){let x=(i*137+t*.008)%w,y=h*.25+(i*71% (h*.35));g.fillStyle='rgba(170,190,195,.025)';g.beginPath();g.ellipse(x,y,80+i%5*25,20+i%4*12,0,0,7);g.fill()}
-let ground=g.createLinearGradient(0,h*.7,0,h);ground.addColorStop(0,'#4b5355');ground.addColorStop(1,'#080d12');g.fillStyle=ground;g.fillRect(0,h*.7,w,h*.3);
-// fissure and blast light
-g.save();g.translate(w/2,h*.79);g.scale(1+rise*.8,1);g.strokeStyle='#71dcf3';g.lineWidth=3;g.shadowBlur=30;g.shadowColor='#4bdfff';g.beginPath();g.ellipse(0,0,w*.17*(.2+rise),h*.035*(.2+rise),0,0,Math.PI*2);g.stroke();g.restore();
-let s=Math.min(w/950,h/760)*1.08,base=h*.84+((1-rise)*h*.18);let bob=rise>0&&rise<1?Math.sin(t*.009)*4:Math.sin(t*.001)*2;
-g.save();g.translate(w/2,base+bob);g.scale(s,s);g.globalAlpha=Math.min(1,rise*2.5);
-// giant shadow
-g.fillStyle='#020609aa';g.beginPath();g.ellipse(0,12,255,34,0,0,7);g.fill();
-// legs with articulated plates
-limb(-83,-165,1,0);limb(83,-165,1,0);
-rock(-83,43,61,25,'#8a969b','#17232b');rock(83,43,61,25,'#8a969b','#17232b');
-// broad armored torso
-polygon([[-145,-410],[-105,-475],[0,-500],[105,-475],[145,-410],[128,-220],[78,-150],[-78,-150],[-128,-220]],'#4c5b63','#101a22',13);
-polygon([[-125,-408],[-85,-458],[0,-474],[85,-458],[125,-408],[90,-335],[0,-300],[-90,-335]],'#829097','#1b2a33',8);
-polygon([[-105,-310],[0,-350],[105,-310],[88,-190],[0,-160],[-88,-190]],'#273640','#111b22',8);
-polygon([[-46,-298],[0,-329],[46,-298],[38,-224],[0,-196],[-38,-224]],'#06121a','#a2b8bf',5);
-g.shadowColor='#59e5ff';g.shadowBlur=24;let core=g.createRadialGradient(0,-264,2,0,-264,42);core.addColorStop(0,'#fff');core.addColorStop(.25,'#a4f5ff');core.addColorStop(.6,'#25c9ec');core.addColorStop(1,'#08759a');g.fillStyle=core;g.beginPath();g.arc(0,-264,34+Math.sin(t*.006)*3,0,7);g.fill();g.shadowBlur=0;
-// shoulders and arms
-rock(-160,-415,66,66,'#a1a9aa','#26343c');rock(160,-415,66,66,'#a1a9aa','#26343c');
-limb(-205,-330,1.12,Math.sin(t*.0007)*.035);limb(205,-330,1.12,-Math.sin(t*.0007)*.035);
-// head and crown
-polygon([[-67,-495],[-56,-558],[0,-598],[56,-558],[67,-495],[38,-455],[-38,-455]],'#68767c','#101b22',9);
-polygon([[-46,-535],[-27,-560],[0,-570],[27,-560],[46,-535],[34,-505],[0,-490],[-34,-505]],'#182832','#a5b4b8',5);
-g.shadowColor='#8cecff';g.shadowBlur=16;g.fillStyle='#a7f4ff';g.fillRect(-36,-532,23,7);g.fillRect(13,-532,23,7);g.shadowBlur=0;
-polygon([[-45,-575],[-80,-635],[-26,-604],[0,-661],[26,-604],[80,-635],[45,-575]],'#6d7b80','#19252c',8);
-// rock texture flecks, scars and seams
-for(let i=0;i<105;i++){let x=rand(-155,155),y=rand(-460,-155);g.fillStyle=i%3?'#d5e0e055':'#050d13aa';g.beginPath();g.ellipse(x,y,rand(1,5),rand(1,8),rand(-1,1),0,7);g.fill()}
-g.strokeStyle='#7fe9fa';g.lineWidth=2.5;g.shadowColor='#39d7f6';g.shadowBlur=10;g.beginPath();g.moveTo(-4,-460);g.lineTo(-19,-420);g.lineTo(5,-385);g.lineTo(-10,-340);g.lineTo(0,-300);g.lineTo(-17,-268);g.stroke();g.beginPath();g.moveTo(5,-385);g.lineTo(36,-370);g.lineTo(27,-340);g.stroke();g.shadowBlur=0;
-g.restore();
-// debris blast at arrival
-if(p>.48&&p<.9){for(let i=0;i<36;i++){let a=i*2.399,dist=(p-.48)*520;let x=w/2+Math.cos(a)*dist*(.6+(i%4)*.2),y=h*.8+Math.sin(a)*dist*.45-(p-.48)*160;g.fillStyle=i%2?'#899398':'#313e45';g.save();g.translate(x,y);g.rotate(a);g.fillRect(-3,-3,rand(4,13),rand(4,12));g.restore()}}
-if(p<1){g.fillStyle='rgba(160,225,240,'+(Math.max(0,1-Math.abs(p-.52)*12)*.17)+')';g.fillRect(0,0,w,h)}
-// drifting dust motes
-for(let i=0;i<45;i++){let x=(i*97+t*.012*(i%2?1:-1))%w,y=(i*53+t*.007)%h;g.fillStyle='rgba(211,228,230,.25)';g.beginPath();g.arc(x,y,1+(i%3),0,7);g.fill()}
-raf=requestAnimationFrame(draw)}
-function noise(ctx,when,dur,vol,cutoff,q=0.7){let n=Math.floor(ctx.sampleRate*dur),b=ctx.createBuffer(1,n,ctx.sampleRate),a=b.getChannelData(0);for(let i=0;i<n;i++){let fade=Math.pow(1-i/n,1.7);a[i]=(Math.random()*2-1)*fade}let src=ctx.createBufferSource(),f=ctx.createBiquadFilter(),gain=ctx.createGain();src.buffer=b;f.type='lowpass';f.frequency.setValueAtTime(cutoff,when);f.Q.value=q;gain.gain.setValueAtTime(.0001,when);gain.gain.linearRampToValueAtTime(vol,when+.12);gain.gain.exponentialRampToValueAtTime(.0001,when+dur);src.connect(f);f.connect(gain);gain.connect(ctx.destination);src.start(when);src.stop(when+dur)}
-function sub(ctx,when,freq,dur,vol){let o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(freq,when);o.frequency.exponentialRampToValueAtTime(Math.max(18,freq*.55),when+dur);g.gain.setValueAtTime(.0001,when);g.gain.linearRampToValueAtTime(vol,when+.08);g.gain.exponentialRampToValueAtTime(.0001,when+dur);o.connect(g);g.connect(ctx.destination);o.start(when);o.stop(when+dur)}
-function cinematicSound(){let AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=audio||new AC();audio.resume();let t=audio.currentTime;
-// subterranean stone movement, not musical synth tones
-noise(audio,t,5.2,.42,240,.4);sub(audio,t,38,4.8,.5);
-noise(audio,t+.55,3.8,.32,680,.8);noise(audio,t+1.1,3.1,.23,1250,.6);
-[2.15,3.25,4.3].forEach((x,i)=>{let at=t+x;noise(audio,at,1.35,.52,420,.8);noise(audio,at+.025,.8,.3,1700,.7);sub(audio,at,54-i*5,1.9,.7);});
-noise(audio,t+2.65,2.2,.38,95,.7);sub(audio,t+2.65,31,2.4,.65);
-noise(audio,t+4.65,2.4,.2,3400,.5);
+button,a{background:#07121de8;border:1px solid #7edcf0;color:#eafaff;border-radius:30px;padding:12px 16px;font-size:10px;font-weight:850;letter-spacing:.1em;text-decoration:none}
+button:active{transform:scale(.97)}#fallback{display:none;position:absolute;inset:40% 10% auto;text-align:center;color:#cceaf2}
+</style></head><body><main id="stage"><div class="shade"></div><header><h1>TITANFALL COLOSSUS</h1><p>THE EARTH BREAKS. THE ANCIENT ONE RISES.</p></header><div id="status">3D CINEMATIC PREVIEW · DRAG TO LOOK AROUND</div><div id="fallback">The 3D scene couldn't load in this browser. Try refreshing with an internet connection.</div></main>
+<div class="controls"><button id="sound">ENABLE CINEMATIC SOUND</button><button id="replay">REPLAY ENTRANCE</button><a href="../../live.html">BACK TO TIKNATION LIVE</a></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+const stage=document.querySelector('#stage'),status=document.querySelector('#status');
+try{
+const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x111b22,.025);
+const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,.1,180);camera.position.set(0,5.5,19);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;stage.prepend(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0x9dbbc7,0x10151a,2.0));
+const key=new THREE.DirectionalLight(0xc5d5d8,3.2);key.position.set(-7,13,9);key.castShadow=true;key.shadow.mapSize.set(2048,2048);scene.add(key);
+const rim=new THREE.DirectionalLight(0x40c8ee,3.5);rim.position.set(8,7,-8);scene.add(rim);
+const coreLight=new THREE.PointLight(0x36d9ff,0,13);coreLight.position.set(0,5.1,1.3);scene.add(coreLight);
+const stone=new THREE.MeshStandardMaterial({color:0x59666a,roughness:.94,metalness:.18}),edge=new THREE.MeshStandardMaterial({color:0x303d43,roughness:.82,metalness:.35}),plate=new THREE.MeshStandardMaterial({color:0x829092,roughness:.78,metalness:.28}),dark=new THREE.MeshStandardMaterial({color:0x101c23,roughness:.7,metalness:.3}),glow=new THREE.MeshStandardMaterial({color:0x54e5ff,emissive:0x13bde9,emissiveIntensity:3,roughness:.3});
+const titan=new THREE.Group();scene.add(titan);
+function part(geo,mat,x,y,z,sx=1,sy=1,sz=1,rx=0,ry=0,rz=0){const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.rotation.set(rx,ry,rz);m.castShadow=true;m.receiveShadow=true;titan.add(m);return m}
+function rock(x,y,z,sx,sy,sz,mat=stone){return part(new THREE.DodecahedronGeometry(1,1),mat,x,y,z,sx,sy,sz,Math.random()*.12,Math.random()*.2,Math.random()*.12)}
+// Massive articulated legs, feet and layered greaves
+for(const side of [-1,1]){let x=side*1.02;
+rock(x,.95,0,.72,1.15,.72,edge);rock(x,1.2,.12,.62,.92,.68,stone);
+rock(x,.25,.25,.78,.3,1.0,plate);rock(x,.18,.82,.55,.45,.35,dark);
+for(let j=0;j<3;j++)rock(x+side*(j-1)*.19,-.12,.68,.16,.27,.3,plate);
+rock(x,2.05,0,.75,.25,.7,dark);
 }
-function replay(){start=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);if(sound)cinematicSound()}
-document.querySelector('#sound').onclick=()=>{sound=!sound;document.querySelector('#sound').textContent=sound?'CINEMATIC SOUND: ON':'ENABLE CINEMATIC SOUND';if(sound)cinematicSound()};
-document.querySelector('#replay').onclick=replay;raf=requestAnimationFrame(draw);
-})();
+// torso silhouette and overlapping breastplate
+rock(0,4.15,0,1.75,1.65,.88,edge);rock(0,4.3,.1,1.52,1.48,.82,stone);
+rock(0,4.45,.72,1.22,1.02,.27,plate);rock(0,3.55,.82,1.08,.58,.25,dark);
+rock(0,3.7,1.0,.72,.43,.12,edge);
+for(let i=0;i<4;i++){rock(-.83+i*.55,4.15,1.0,.19,.58,.12,edge)}
+// shoulder pauldrons and long segmented arms
+for(const side of [-1,1]){const x=side*2.05;
+rock(x,5.05,0,.95,.72,.85,plate);rock(x,5.1,.53,.72,.52,.22,edge);
+rock(side*2.35,4.25,.05,.48,.92,.53,stone);rock(side*2.42,3.55,.16,.56,.68,.58,edge);
+rock(side*2.46,2.92,.27,.46,.5,.46,plate);
+for(let k=0;k<3;k++)rock(side*(2.25+k*.2),2.55,.45,.09,.24,.1,edge);
+}
+// neck, skull, brow, face and broken crown
+rock(0,5.72,0,.64,.48,.57,dark);rock(0,6.42,0,.76,.83,.68,stone);
+rock(0,6.55,.54,.66,.35,.24,plate);rock(0,6.12,.56,.6,.25,.2,edge);
+rock(-.32,6.52,.75,.22,.12,.12,glow);rock(.32,6.52,.75,.22,.12,.12,glow);
+rock(0,6.08,.7,.25,.12,.13,dark);
+for(const side of [-1,1]){let horn=part(new THREE.ConeGeometry(.27,1.25,6),plate,side*.55,7.35,-.02,1,1,1,0,0,side*-.24);horn.rotation.z=side*-.3}
+rock(0,7.12,0,.24,.45,.28,edge);
+// Cracked luminous core recessed into chest
+rock(0,4.25,1.12,.56,.67,.2,dark);const heart=part(new THREE.IcosahedronGeometry(.39,2),glow,0,4.27,1.31,1,1.12,.65);coreLight.position.set(0,4.3,2.2);
+// Fine fissure paths across armor, with pulsing emissive seams
+const crackMat=new THREE.MeshBasicMaterial({color:0x50dcf8});
+function crack(points){const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));const line=new THREE.Mesh(new THREE.TubeGeometry(curve,.0+points.length*8,.018,5,false),crackMat);titan.add(line)}
+crack([[-.1,5.0,1.0],[-.38,4.72,1.12],[-.17,4.48,1.28],[-.4,4.18,1.15],[-.18,3.9,1.15]]);
+crack([[.1,4.95,1.0],[.38,4.68,1.13],[.2,4.4,1.3],[.43,4.12,1.12]]);
+crack([[-2.5,4.7,.45],[-2.2,4.5,.62],[-2.35,4.2,.5]]);
+// Ground, broken stone platform, glowing portal ring
+const floor=new THREE.Mesh(new THREE.CircleGeometry(40,80),new THREE.MeshStandardMaterial({color:0x151d21,roughness:1}));floor.rotation.x=-Math.PI/2;floor.position.y=-.22;floor.receiveShadow=true;scene.add(floor);
+const ring=new THREE.Mesh(new THREE.TorusGeometry(4.2,.09,12,100),new THREE.MeshBasicMaterial({color:0x36d7f5}));ring.rotation.x=Math.PI/2;ring.position.y=-.12;ring.scale.set(1,.45,1);scene.add(ring);
+for(let i=0;i<20;i++){const a=i/20*Math.PI*2;const shard=new THREE.Mesh(new THREE.DodecahedronGeometry(.45,0),edge);shard.position.set(Math.cos(a)*4.5,-.05,Math.sin(a)*2.2);shard.rotation.set(Math.random(),Math.random(),Math.random());shard.scale.set(.7,1.8,.7);scene.add(shard)}
+// Floating ash and debris
+const dustGeo=new THREE.BufferGeometry(),count=650,positions=new Float32Array(count*3);for(let i=0;i<count;i++){positions[i*3]=(Math.random()-.5)*24;positions[i*3+1]=Math.random()*13;positions[i*3+2]=(Math.random()-.5)*18}dustGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));const dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:0xb9d4dc,size:.035,transparent:true,opacity:.48}));scene.add(dust);
+// distant jagged ruined monoliths
+for(let i=0;i<16;i++){const a=new THREE.Mesh(new THREE.ConeGeometry(.6+Math.random()*.9,3+Math.random()*5,5),edge);a.position.set((Math.random()-.5)*28,1.3,-7-Math.random()*8);a.rotation.z=(Math.random()-.5)*.3;scene.add(a)}
+let start=performance.now(),sound=false,ctx=null,drag=false,lastX=0,turn=0,shake=0;
+function reset(){start=performance.now();titan.position.y=-5.8;shake=0}
+function audioCue(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;ctx=ctx||new AC();ctx.resume();const t=ctx.currentTime;
+function rumble(at,dur,vol,cut){const n=ctx.sampleRate*dur|0,b=ctx.createBuffer(1,n,ctx.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,1.8);const s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=b;f.type='lowpass';f.frequency.value=cut;g.gain.setValueAtTime(.0001,at);g.gain.linearRampToValueAtTime(vol,at+.15);g.gain.exponentialRampToValueAtTime(.0001,at+dur);s.connect(f);f.connect(g);g.connect(ctx.destination);s.start(at);s.stop(at+dur)}
+function thud(at,freq,vol){const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(freq,at);o.frequency.exponentialRampToValueAtTime(25,at+.9);g.gain.setValueAtTime(.0001,at);g.gain.linearRampToValueAtTime(vol,at+.025);g.gain.exponentialRampToValueAtTime(.0001,at+1.2);o.connect(g);g.connect(ctx.destination);o.start(at);o.stop(at+1.25)}
+rumble(t,5.5,.5,180);rumble(t+.7,3.5,.28,700);thud(t+2.1,62,.75);thud(t+3.2,55,.8);thud(t+4.25,48,.9);rumble(t+4.6,1.8,.32,1800)}
+document.querySelector('#sound').onclick=()=>{sound=!sound;document.querySelector('#sound').textContent=sound?'CINEMATIC SOUND: ON':'ENABLE CINEMATIC SOUND';if(sound)audioCue()};
+document.querySelector('#replay').onclick=()=>{reset();if(sound)audioCue()};
+renderer.domElement.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;renderer.domElement.setPointerCapture(e.pointerId)});renderer.domElement.addEventListener('pointermove',e=>{if(drag){turn+=(e.clientX-lastX)*.006;lastX=e.clientX}});renderer.domElement.addEventListener('pointerup',()=>drag=false);
+function animate(now){requestAnimationFrame(animate);const p=Math.min(1,(now-start)/5600),rise=1-Math.pow(1-Math.max(0,Math.min(1,(p-.08)/.58)),3);titan.position.y=-5.8+rise*5.8;titan.rotation.y=turn+Math.sin(now*.00025)*.035;titan.rotation.z=Math.sin(now*.0007)*.008*rise;titan.position.x=Math.sin(now*.0006)*.05;heart.scale.setScalar(1+Math.sin(now*.004)*.055);glow.emissiveIntensity=2.2+Math.sin(now*.003)*.8;coreLight.intensity=rise*(5+Math.sin(now*.003)*2);ring.material.opacity=.5+Math.sin(now*.002)*.3;dust.rotation.y=now*.000025;camera.position.x=Math.sin(now*.00018)*.22;camera.lookAt(0,3.4,0);renderer.render(scene,camera);status.textContent=p<.7?'AN ANCIENT COLOSSUS IS BREAKING THROUGH THE RUINS': 'THE COLOSSUS HAS AWAKENED · DRAG TO LOOK AROUND'}
+requestAnimationFrame(animate);reset();
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+}catch(e){document.querySelector('#fallback').style.display='block';status.textContent='3D SCENE UNAVAILABLE';}
 </script></body></html>
