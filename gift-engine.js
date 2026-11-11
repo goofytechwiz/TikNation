@@ -990,7 +990,7 @@ function renderHauntedMansionGift(gift,opts,overlay){
 function renderEclipseLeviathanGift(gift,opts,overlay){
  const sid="tn-eclipse-leviathan-3d";let style=document.getElementById(sid);
  if(!style){style=document.createElement("style");style.id=sid;document.head.appendChild(style);}
- style.textContent=String.raw\`
+ style.textContent=String.raw`
  #tiknation-gift-engine[data-style=eclipse_leviathan]{display:block!important;padding:0!important;background:#020711!important}
  #tiknation-gift-engine[data-style=eclipse_leviathan] .el-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#20384c 0,#081522 55%,#01050b 100%)}
  #tiknation-gift-engine[data-style=eclipse_leviathan] canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
@@ -998,7 +998,7 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
  #tiknation-gift-engine[data-style=eclipse_leviathan] .el-title small{display:block;margin-top:9px;font:800 10px/1.4 system-ui;letter-spacing:.26em;color:#b6d0dc}
  #tiknation-gift-engine[data-style=eclipse_leviathan] .el-loading{position:absolute;inset:0;display:grid;place-items:center;color:#b9d8e7;font:700 12px system-ui;letter-spacing:.2em}
  @media(max-width:650px){#tiknation-gift-engine[data-style=eclipse_leviathan] .el-title{bottom:3%;letter-spacing:.06em}}
- \`;
+ `;
  const world=document.createElement("div");world.className="el-world";
  world.innerHTML='<div class="el-loading">THE DEEP IS AWAKENING</div><div class="el-title">ECLIPSE LEVIATHAN<small>AN ANCIENT POWER HAS AWAKENED</small></div>';
  overlay.appendChild(world);document.body.appendChild(overlay);
