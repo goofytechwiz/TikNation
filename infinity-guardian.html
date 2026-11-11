@@ -7,19 +7,30 @@
 <title>Infinity Guardian · TikNation Mythic Gift</title>
 <style>
 :root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#050817;color:#f5f7ff}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:22px;background:radial-gradient(ellipse at 50% 15%,#24376b 0,#101735 38%,#050817 78%);overflow-x:hidden}
-main{width:min(100%,760px);text-align:center;padding:clamp(24px,6vw,52px);border:1px solid #8ceaff55;border-radius:28px;background:linear-gradient(145deg,#101b39dd,#0a0d22f2);box-shadow:0 28px 90px #0008,0 0 65px #665cff22;position:relative;overflow:hidden}
-main:before,main:after{content:"";position:absolute;left:50%;top:42%;width:min(75vw,460px);aspect-ratio:1;border:1px solid #82f6e833;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
-main:after{width:min(88vw,550px);border-color:#b9a4ff22}
-.eyebrow{color:#8cf7ef;font-size:10px;font-weight:900;letter-spacing:.3em}.mark{font-size:clamp(62px,13vw,104px);line-height:1.2;margin:18px 0 10px;color:#d7fbff;text-shadow:0 0 18px #67eaff,0 0 45px #7967ff}
-h1{position:relative;margin:0;font:400 clamp(30px,6vw,48px)/1.1 Georgia,serif;letter-spacing:.08em}
-p{position:relative;max-width:560px;margin:14px auto 0;color:#c5cce8;font-size:14px;line-height:1.7}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:18px;background:radial-gradient(ellipse at 50% 12%,#283c70 0,#101735 42%,#050817 82%);overflow-x:hidden}
+main{width:min(100%,760px);text-align:center;padding:clamp(22px,6vw,48px);border:1px solid #8ceaff55;border-radius:26px;background:linear-gradient(145deg,#101b39ed,#0a0d22f5);box-shadow:0 28px 90px #0008,0 0 65px #665cff22}
+.eyebrow{color:#8cf7ef;font-size:10px;font-weight:900;letter-spacing:.3em}.mark{font-size:clamp(62px,13vw,100px);line-height:1.2;margin:14px 0;color:#d7fbff;text-shadow:0 0 18px #67eaff,0 0 45px #7967ff}
+h1{margin:0;font:400 clamp(30px,6vw,48px)/1.1 Georgia,serif;letter-spacing:.08em}
+p{max-width:560px;margin:14px auto 0;color:#c5cce8;font-size:14px;line-height:1.7}
 .rarity{display:inline-block;margin:22px 0 0;padding:8px 14px;border:1px solid #d3aaff88;border-radius:99px;color:#e3d2ff;font-size:10px;font-weight:900;letter-spacing:.18em}
-button{position:relative;display:block;width:min(100%,340px);margin:28px auto 0;padding:16px 20px;border:1px solid #a7f8ff;border-radius:14px;background:linear-gradient(100deg,#6ceaff,#9d8bff);color:#071025;font-weight:950;letter-spacing:.12em;box-shadow:0 10px 35px #58dfff44;cursor:pointer}
-button:disabled{opacity:.6;cursor:wait}.note{font-size:11px;color:#8e9abf;margin-top:15px}
-a{color:#9befff;text-decoration:none;font-size:12px}footer{margin-top:26px}
+button{display:block;width:min(100%,340px);margin:28px auto 0;padding:16px 20px;border:1px solid #a7f8ff;border-radius:14px;background:linear-gradient(100deg,#6ceaff,#9d8bff);color:#071025;font-weight:950;letter-spacing:.12em;cursor:pointer}
+.note{font-size:11px;color:#aab6d9;margin-top:14px}a{color:#9befff;text-decoration:none;font-size:12px}footer{margin-top:26px}
+#guardian-show{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 55%,#263f7ddd,#080c20 65%,#02040b);animation:showin .55s ease-out both}
+#guardian-show:before{content:"";position:absolute;width:min(88vw,760px);aspect-ratio:1;border:2px solid #9ceeff88;border-radius:50%;box-shadow:0 0 35px #5bdfff,inset 0 0 50px #746aff88;animation:portal 9s linear infinite}
+.guardian-scene{position:relative;width:min(96vw,850px);height:min(82vh,720px);display:grid;place-items:center}
+.guardian-art{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 24px #6eeaff88);animation:rise 1.8s cubic-bezier(.16,1,.3,1) both}
+.guardian-wings{transform-origin:500px 330px;animation:wings 4s ease-in-out infinite alternate}
+.guardian-core{transform-origin:500px 340px;animation:core 1.8s ease-in-out infinite}
+.guardian-title{position:absolute;bottom:3%;left:0;right:0;text-align:center;font-size:clamp(22px,5vw,42px);font-weight:950;letter-spacing:.15em;color:#f2fbff;text-shadow:0 0 18px #67eaff,0 3px 10px #000}
+.guardian-title small{display:block;margin-top:9px;font-size:10px;letter-spacing:.3em;color:#b6eaff}
+.star{position:absolute;color:#d7fbff;text-shadow:0 0 14px #7ceaff;animation:starfly 3.5s ease-out infinite}
+@keyframes showin{from{opacity:0}to{opacity:1}}@keyframes portal{to{transform:rotate(360deg)}}
+@keyframes rise{from{opacity:0;transform:translateY(120px) scale(.65)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes wings{from{transform:scaleX(.94) translateY(3px)}to{transform:scaleX(1.04) translateY(-5px)}}
+@keyframes core{50%{filter:brightness(1.8);transform:scale(1.12)}}
+@keyframes starfly{0%{opacity:0;transform:translateY(35vh) scale(.3)}20%{opacity:1}100%{opacity:0;transform:translateY(-45vh) scale(1.2)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
-<script src="./gift-engine.js?v=infinity-guardian-v5"></script>
 </head>
 <body>
 <main>
@@ -35,24 +46,27 @@ a{color:#9befff;text-decoration:none;font-size:12px}footer{margin-top:26px}
 </main>
 <script>
 (function(){
- const button=document.getElementById("awaken");
- const status=document.getElementById("status");
- function playSound(){
+ const button=document.getElementById("awaken"),status=document.getElementById("status");
+ function sound(){
   try{
    const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
-   const c=new C(),now=c.currentTime;
-   const length=Math.floor(c.sampleRate*7.5),buffer=c.createBuffer(1,length,c.sampleRate),data=buffer.getChannelData(0);
-   for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/length);
-   const src=c.createBufferSource(),filter=c.createBiquadFilter(),gain=c.createGain();src.buffer=buffer;filter.type="lowpass";filter.frequency.setValueAtTime(130,now);filter.frequency.exponentialRampToValueAtTime(1350,now+2.5);filter.frequency.exponentialRampToValueAtTime(180,now+7.2);gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(.13,now+1.4);gain.gain.exponentialRampToValueAtTime(.0001,now+7.4);src.connect(filter);filter.connect(gain);gain.connect(c.destination);src.start();src.stop(now+7.5);
-   [196,261.63,329.63,392,523.25].forEach((hz,i)=>{const o=c.createOscillator(),g=c.createGain();o.type="sine";o.frequency.value=hz;g.gain.setValueAtTime(.0001,now+1+i*.65);g.gain.linearRampToValueAtTime(.04,now+1.1+i*.65);g.gain.exponentialRampToValueAtTime(.0001,now+2.1+i*.65);o.connect(g);g.connect(c.destination);o.start(now+1+i*.65);o.stop(now+2.2+i*.65);});
-  }catch(_){}
+   const c=new C(),t=c.currentTime;
+   const o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();
+   o.type="sine";o.frequency.setValueAtTime(72,t);o.frequency.exponentialRampToValueAtTime(440,t+1.6);o.frequency.exponentialRampToValueAtTime(110,t+5.2);
+   f.type="lowpass";f.frequency.value=900;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.12,t+.7);g.gain.exponentialRampToValueAtTime(.0001,t+5.5);
+   o.connect(f);f.connect(g);g.connect(c.destination);o.start();o.stop(t+5.6);
+   [261.63,329.63,392,523.25].forEach((hz,i)=>{const n=c.createOscillator(),v=c.createGain();n.type="sine";n.frequency.value=hz;v.gain.setValueAtTime(.0001,t+1+i*.3);v.gain.linearRampToValueAtTime(.035,t+1.2+i*.3);v.gain.exponentialRampToValueAtTime(.0001,t+3.8+i*.3);n.connect(v);v.connect(c.destination);n.start(t+1+i*.3);n.stop(t+4+i*.3);});
+  }catch(e){}
  }
  button.addEventListener("click",function(){
-  if(!window.TikNationGiftEngine||!window.TikNationGiftEngine.show){button.textContent="PREVIEW STILL LOADING";status.textContent="The gift engine did not load. Refresh this page and try again.";return;}
-  button.disabled=true;button.textContent="THE GUARDIAN IS AWAKENING…";
-  const started=window.TikNationGiftEngine.show({name:"Infinity Guardian",emoji:"♾️",style:"infinity_guardian"},{duration:13200,onSound:playSound});
-  status.textContent=started?"Portal opened — the Guardian is arriving.":"The animation could not start. Please refresh and try again.";
-  setTimeout(()=>{button.disabled=false;button.textContent="AWAKEN THE GUARDIAN";status.textContent="Ready for another awakening.";},14500);
+  if(document.getElementById("guardian-show"))return;
+  button.disabled=true;button.textContent="THE GUARDIAN IS AWAKENING…";status.textContent="Portal opened — the Guardian is arriving.";
+  sound();
+  const overlay=document.createElement("div");overlay.id="guardian-show";
+  overlay.innerHTML='<div class="guardian-scene"><svg class="guardian-art" viewBox="0 0 1000 720" role="img" aria-label="A towering silver and blue winged cosmic guardian with a glowing infinity core"><defs><linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f5ffff"/><stop offset=".35" stop-color="#8fc8e8"/><stop offset=".7" stop-color="#456c9e"/><stop offset="1" stop-color="#d8eaff"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff2ae"/><stop offset=".5" stop-color="#d7a94d"/><stop offset="1" stop-color="#fff0b2"/></linearGradient><radialGradient id="light"><stop stop-color="#fff"/><stop offset=".25" stop-color="#a6faff"/><stop offset=".7" stop-color="#4cbbff"/><stop offset="1" stop-color="#625bff" stop-opacity="0"/></radialGradient></defs><g class="guardian-wings" fill="url(#metal)" stroke="#d8f7ff" stroke-width="4" stroke-linejoin="round"><path d="M458 310Q330 135 80 95Q145 165 105 195Q190 185 175 255Q265 220 270 300Q340 270 360 355Q405 315 458 380Z"/><path d="M542 310Q670 135 920 95Q855 165 895 195Q810 185 825 255Q735 220 730 300Q660 270 640 355Q595 315 542 380Z"/><g fill="#c4eaff" stroke="#6e9dc4" stroke-width="3"><path d="M425 340Q285 250 125 130Q190 260 330 385Z"/><path d="M400 370Q255 330 155 235Q205 355 350 415Z"/><path d="M575 340Q715 250 875 130Q810 260 670 385Z"/><path d="M600 370Q745 330 845 235Q795 355 650 415Z"/></g></g><g stroke="url(#gold)" stroke-width="8" stroke-linejoin="round"><path d="M500 170L455 220L465 300L500 330L535 300L545 220Z" fill="url(#metal)"/><path d="M455 225L430 170L500 195L570 170L545 225L500 245Z" fill="url(#gold)"/><path d="M450 310L390 360L415 490L500 555L585 490L610 360L550 310Z" fill="url(#metal)"/><path d="M390 360L335 430L380 485L425 430Z" fill="url(#metal)"/><path d="M610 360L665 430L620 485L575 430Z" fill="url(#metal)"/><path d="M430 500L415 620L485 650L500 560Z" fill="url(#metal)"/><path d="M570 500L585 620L515 650L500 560Z" fill="url(#metal)"/></g><path d="M480 267Q500 250 520 267L515 285L485 285Z" fill="#07152e"/><ellipse cx="486" cy="275" rx="5" ry="7" fill="#a8faff"/><ellipse cx="514" cy="275" rx="5" ry="7" fill="#a8faff"/><g class="guardian-core"><circle cx="500" cy="390" r="78" fill="url(#light)"/><circle cx="500" cy="390" r="37" fill="none" stroke="#e7ffff" stroke-width="8"/><path d="M500 367C465 330 430 380 500 415C570 380 535 330 500 367Z" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/></g><path d="M430 330L500 350L570 330M420 455L500 480L580 455" fill="none" stroke="#ffe6a1" stroke-width="6"/></svg><div class="guardian-title">INFINITY GUARDIAN<small>THE IMPOSSIBLE HAS AWAKENED</small></div></div>';
+  for(let i=0;i<26;i++){const s=document.createElement("span");s.className="star";s.textContent=i%3===0?"✦":"·";s.style.left=(5+(i*37)%90)+"%";s.style.top=(20+(i*19)%70)+"%";s.style.animationDelay=(i*.13)+"s";overlay.appendChild(s);}
+  document.body.appendChild(overlay);
+  setTimeout(()=>{overlay.remove();button.disabled=false;button.textContent="AWAKEN THE GUARDIAN";status.textContent="Ready for another awakening.";},12000);
  });
 })();
 </script>
