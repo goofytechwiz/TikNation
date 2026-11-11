@@ -1115,46 +1115,133 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
 }
 
 function renderInfinityGuardianGift(gift,opts,overlay){
- const sid="tn-infinity-guardian-style-v2";let style=document.getElementById(sid);
+ const sid="tn-infinity-guardian-style-v3";let style=document.getElementById(sid);
  if(!style){style=document.createElement("style");style.id=sid;document.head.appendChild(style);}
- style.textContent="#tiknation-gift-engine[data-style=infinity_guardian]{position:fixed!important;inset:0!important;z-index:2147483647!important;display:block!important;overflow:hidden!important;padding:0!important;background:#030617!important;pointer-events:none!important}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#18295a 0,#0a1232 42%,#030617 78%,#01030b 100%);isolation:isolate}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-portal{position:absolute;left:50%;top:43%;width:min(82vw,720px);aspect-ratio:1;transform:translate(-50%,-50%);border:2px solid #8efaff;border-radius:50%;box-shadow:0 0 22px #42dfff,0 0 75px #695cff88,inset 0 0 65px #5bdfff55;opacity:0;animation:ig-portal 4.8s cubic-bezier(.16,.8,.25,1) .8s both}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-portal:before,#tiknation-gift-engine[data-style=infinity_guardian] .ig-portal:after{content:'';position:absolute;inset:5%;border:1px solid #d5aaff;border-radius:50%;box-shadow:0 0 22px #a98bff;animation:ig-spin 12s linear infinite}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-portal:after{inset:12%;border-color:#8efaff;animation-direction:reverse;animation-duration:9s}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-guardian{position:absolute;z-index:3;left:50%;top:43%;width:min(105vw,1080px);height:auto;transform:translate(-50%,-50%) scale(.62);opacity:0;filter:drop-shadow(0 0 18px #68eaff) drop-shadow(0 0 45px #7964ff88);animation:ig-arrive 5.2s cubic-bezier(.16,.78,.2,1) 1.4s both}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-wing-left{transform-origin:455px 345px;animation:ig-wing-left 3.4s ease-in-out 2.2s infinite alternate}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-wing-right{transform-origin:545px 345px;animation:ig-wing-right 3.4s ease-in-out 2.2s infinite alternate}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-core{animation:ig-core 2.2s ease-in-out infinite alternate;transform-origin:500px 355px}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-wave{position:absolute;z-index:2;left:50%;top:46%;width:8vw;height:8vw;border:2px solid #9ffcff;border-radius:50%;transform:translate(-50%,-50%) scale(.2);opacity:0;box-shadow:0 0 32px #65eaff,inset 0 0 22px #65eaff;animation:ig-wave 2.6s ease-out 7.2s both}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-infinity{position:absolute;z-index:4;left:50%;top:66%;width:clamp(66px,13vw,132px);height:auto;transform:translate(-50%,-50%) scale(.3);opacity:0;filter:drop-shadow(0 0 12px #8cfaff) drop-shadow(0 0 28px #a18aff);animation:ig-symbol 2.3s cubic-bezier(.16,1,.3,1) 8.2s both}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-copy{position:absolute;z-index:6;left:5%;right:5%;bottom:5%;text-align:center;color:#f5f7ff;text-shadow:0 2px 10px #02040c,0 0 22px #6eeaff;font:900 clamp(18px,4.6vw,38px)/1.12 Georgia,serif;letter-spacing:.12em;opacity:0;animation:ig-copy 1.2s ease 8.8s both}"+
- "#tiknation-gift-engine[data-style=infinity_guardian] .ig-copy small{display:block;margin:10px auto 0;max-width:640px;color:#d6d7ff;font:600 clamp(11px,2.5vw,16px)/1.5 system-ui;letter-spacing:.025em}"+
- "@keyframes ig-portal{0%{opacity:0;transform:translate(-50%,-50%) scale(.08) rotate(-70deg)}25%{opacity:1}100%{opacity:.82;transform:translate(-50%,-50%) scale(1) rotate(0)}}"+
- "@keyframes ig-spin{to{transform:rotate(360deg)}}"+
- "@keyframes ig-arrive{0%{opacity:0;transform:translate(-50%,30%) scale(.12)}30%{opacity:1;transform:translate(-50%,-53%) scale(1.05)}48%{transform:translate(-50%,-48%) scale(.98)}68%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}"+
- "@keyframes ig-wing-left{from{transform:rotate(-5deg) scaleY(.94)}to{transform:rotate(8deg) scaleY(1.04)}}"+
- "@keyframes ig-wing-right{from{transform:rotate(5deg) scaleY(.94)}to{transform:rotate(-8deg) scaleY(1.04)}}"+
- "@keyframes ig-core{from{filter:brightness(.85);transform:scale(.96)}to{filter:brightness(1.5);transform:scale(1.06)}}"+
- "@keyframes ig-wave{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}15%{opacity:.95}100%{opacity:0;transform:translate(-50%,-50%) scale(18)}}"+
- "@keyframes ig-symbol{0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(-30deg)}70%{opacity:1;transform:translate(-50%,-50%) scale(1.18) rotate(5deg)}100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}}"+
- "@keyframes ig-copy{from{opacity:0;transform:translateY(22px);filter:blur(7px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}"+
- "@media(max-width:600px){#tiknation-gift-engine[data-style=infinity_guardian] .ig-guardian{width:124vw;top:42%}#tiknation-gift-engine[data-style=infinity_guardian] .ig-portal{width:105vw}#tiknation-gift-engine[data-style=infinity_guardian] .ig-copy{bottom:4%;letter-spacing:.06em}}"+
- "@media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=infinity_guardian] .ig-portal,#tiknation-gift-engine[data-style=infinity_guardian] .ig-portal:before,#tiknation-gift-engine[data-style=infinity_guardian] .ig-portal:after,#tiknation-gift-engine[data-style=infinity_guardian] .ig-guardian,#tiknation-gift-engine[data-style=infinity_guardian] .ig-wave,#tiknation-gift-engine[data-style=infinity_guardian] .ig-infinity,#tiknation-gift-engine[data-style=infinity_guardian] .ig-copy,#tiknation-gift-engine[data-style=infinity_guardian] .ig-wing-left,#tiknation-gift-engine[data-style=infinity_guardian] .ig-wing-right{animation-duration:.01ms!important;animation-delay:0s!important}}";
+ style.textContent="#tiknation-gift-engine[data-style=infinity_guardian]{position:fixed!important;inset:0!important;z-index:2147483647!important;display:block!important;overflow:hidden!important;padding:0!important;background:#020611!important;pointer-events:none!important}"+
+ "#tiknation-gift-engine[data-style=infinity_guardian] .ig-world{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#233b70 0,#101a3b 34%,#050b1d 68%,#01030a 100%);isolation:isolate}"+
+ "#tiknation-gift-engine[data-style=infinity_guardian] .ig-render{position:absolute;inset:0;width:100%;height:100%;display:block}"+
+ "#tiknation-gift-engine[data-style=infinity_guardian] .ig-copy{position:absolute;z-index:6;left:5%;right:5%;bottom:5%;text-align:center;color:#f8ffff;text-shadow:0 2px 12px #02040c,0 0 24px #62eaff;font:900 clamp(19px,4.8vw,42px)/1.1 Georgia,serif;letter-spacing:.13em;opacity:0;animation:ig-copy-v3 1.1s ease 6.2s both}"+
+ "#tiknation-gift-engine[data-style=infinity_guardian] .ig-copy small{display:block;margin:10px auto 0;max-width:680px;color:#d6e8ff;font:650 clamp(10px,2.4vw,15px)/1.5 system-ui;letter-spacing:.12em}"+
+ "#tiknation-gift-engine[data-style=infinity_guardian] .ig-caption{position:absolute;z-index:5;top:7%;left:0;right:0;text-align:center;color:#c7faff;font:800 10px system-ui;letter-spacing:.42em;text-shadow:0 0 18px #65eaff;opacity:0;animation:ig-copy-v3 .8s ease .8s both}"+
+ "@keyframes ig-copy-v3{from{opacity:0;transform:translateY(20px);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}"+
+ "@media(max-width:600px){#tiknation-gift-engine[data-style=infinity_guardian] .ig-copy{bottom:4%;letter-spacing:.07em}#tiknation-gift-engine[data-style=infinity_guardian] .ig-caption{top:5%;letter-spacing:.25em}}"+
+ "@media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=infinity_guardian] .ig-copy,#tiknation-gift-engine[data-style=infinity_guardian] .ig-caption{animation-duration:.01ms!important;animation-delay:0s!important}}";
  const world=document.createElement("div");world.className="ig-world";
- world.innerHTML="\n<canvas class=\"ig-canvas\" aria-hidden=\"true\"></canvas><div class=\"ig-portal\"></div>\n<svg class=\"ig-guardian\" viewBox=\"0 0 1000 760\" role=\"img\" aria-label=\"A towering armored cosmic guardian with two glowing eyes and vast metallic energy wings\">\n<defs>\n<linearGradient id=\"ig-metal\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop stop-color=\"#f2ffff\"/><stop offset=\".18\" stop-color=\"#8ddce9\"/><stop offset=\".42\" stop-color=\"#536f9c\"/><stop offset=\".7\" stop-color=\"#1b2b50\"/><stop offset=\"1\" stop-color=\"#090f24\"/></linearGradient>\n<linearGradient id=\"ig-feather\" x1=\"0\" y1=\"0\" x2=\".8\" y2=\"1\"><stop stop-color=\"#f4ffff\"/><stop offset=\".25\" stop-color=\"#9ceeff\"/><stop offset=\".55\" stop-color=\"#647fbb\"/><stop offset=\"1\" stop-color=\"#242b62\"/></linearGradient>\n<linearGradient id=\"ig-gold\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\"><stop stop-color=\"#fff2bd\"/><stop offset=\".45\" stop-color=\"#c7a66b\"/><stop offset=\"1\" stop-color=\"#5e4c40\"/></linearGradient>\n<radialGradient id=\"ig-heart\"><stop stop-color=\"#fff\"/><stop offset=\".22\" stop-color=\"#baffff\"/><stop offset=\".58\" stop-color=\"#58dfff\"/><stop offset=\"1\" stop-color=\"#6b57ff\" stop-opacity=\"0\"/></radialGradient>\n<filter id=\"ig-blur\"><feGaussianBlur stdDeviation=\"10\"/></filter>\n</defs>\n<g class=\"ig-wing-left\" stroke=\"#b9f7ff\" stroke-width=\"3\" stroke-linejoin=\"round\">\n<path d=\"M468 346 C360 220 185 85 38 90 C100 205 145 300 280 370 C175 336 78 360 32 430 C176 454 316 445 464 410Z\" fill=\"url(#ig-metal)\"/>\n<path d=\"M444 354 Q300 215 96 145 Q170 300 435 420Z\" fill=\"url(#ig-feather)\"/>\n<path d=\"M430 366 Q270 270 70 260 Q198 370 432 434Z\" fill=\"url(#ig-metal)\"/>\n<path d=\"M420 383 Q265 345 95 390 Q248 435 435 448Z\" fill=\"url(#ig-feather)\"/>\n<path d=\"M405 398 Q295 400 180 470 Q315 470 448 450Z\" fill=\"url(#ig-metal)\"/>\n<path d=\"M432 352 L92 130 M430 380 L72 270 M425 405 L98 405\" fill=\"none\" stroke=\"#e9ffff\" stroke-opacity=\".65\" stroke-width=\"5\"/>\n</g>\n<g class=\"ig-wing-right\" stroke=\"#b9f7ff\" stroke-width=\"3\" stroke-linejoin=\"round\">\n<path d=\"M532 346 C640 220 815 85 962 90 C900 205 855 300 720 370 C825 336 922 360 968 430 C824 454 684 445 536 410Z\" fill=\"url(#ig-metal)\"/>\n<path d=\"M556 354 Q700 215 904 145 Q830 300 565 420Z\" fill=\"url(#ig-feather)\"/>\n<path d=\"M570 366 Q730 270 930 260 Q802 370 568 434Z\" fill=\"url(#ig-metal)\"/>\n<path d=\"M580 383 Q735 345 905 390 Q752 435 565 448Z\" fill=\"url(#ig-feather)\"/>\n<path d=\"M595 398 Q705 400 820 470 Q685 470 552 450Z\" fill=\"url(#ig-metal)\"/>\n<path d=\"M568 352 L908 130 M570 380 L928 270 M575 405 L902 405\" fill=\"none\" stroke=\"#e9ffff\" stroke-opacity=\".65\" stroke-width=\"5\"/>\n</g>\n<path d=\"M375 350 L285 390 L330 485 L405 445 M625 350 L715 390 L670 485 L595 445\" fill=\"url(#ig-metal)\" stroke=\"#d4fbff\" stroke-width=\"8\" stroke-linejoin=\"round\"/>\n<path d=\"M390 372 Q500 320 610 372 L665 575 Q500 660 335 575Z\" fill=\"url(#ig-metal)\" stroke=\"#bff7ff\" stroke-width=\"8\" stroke-linejoin=\"round\"/>\n<path d=\"M405 400 L500 365 L595 400 L625 545 L500 605 L375 545Z\" fill=\"#101c3b\" stroke=\"url(#ig-gold)\" stroke-width=\"9\" stroke-linejoin=\"round\"/>\n<path d=\"M500 392 L574 435 L552 540 L500 573 L448 540 L426 435Z\" fill=\"#172f59\" stroke=\"#8cecff\" stroke-width=\"5\"/>\n<g class=\"ig-core\"><circle cx=\"500\" cy=\"480\" r=\"78\" fill=\"url(#ig-heart)\" filter=\"url(#ig-blur)\"/><path d=\"M500 435 C470 400 420 435 444 475 L500 530 L556 475 C580 435 530 400 500 435Z\" fill=\"#f5ffff\" stroke=\"#79edff\" stroke-width=\"8\"/></g>\n<path d=\"M348 398 L290 450 L340 510 L390 450 M652 398 L710 450 L660 510 L610 450\" fill=\"url(#ig-metal)\" stroke=\"#baf7ff\" stroke-width=\"7\"/>\n<path d=\"M408 570 L390 680 L468 694 L500 612 L532 694 L610 680 L592 570Z\" fill=\"url(#ig-metal)\" stroke=\"#baf7ff\" stroke-width=\"7\" stroke-linejoin=\"round\"/>\n<path d=\"M392 665 L365 730 L468 735 L485 690 M608 665 L635 730 L532 735 L515 690\" fill=\"#172849\" stroke=\"#8ddfff\" stroke-width=\"6\"/>\n<path d=\"M500 105 C415 105 372 165 382 245 L408 336 L500 370 L592 336 L618 245 C628 165 585 105 500 105Z\" fill=\"url(#ig-metal)\" stroke=\"#e2ffff\" stroke-width=\"9\" stroke-linejoin=\"round\"/>\n<path d=\"M500 82 L530 140 L500 184 L470 140Z\" fill=\"url(#ig-gold)\" stroke=\"#fff1c5\" stroke-width=\"5\"/>\n<path d=\"M400 194 L350 150 L389 258 L430 232 M600 194 L650 150 L611 258 L570 232\" fill=\"url(#ig-metal)\" stroke=\"#b9f7ff\" stroke-width=\"7\" stroke-linejoin=\"round\"/>\n<path d=\"M405 247 L485 225 L475 274 L415 285Z M595 247 L515 225 L525 274 L585 285Z\" fill=\"#050c1e\" stroke=\"#9cefff\" stroke-width=\"5\"/>\n<g class=\"ig-eyes\"><path d=\"M417 252 L480 236 L469 259 L425 270Z M583 252 L520 236 L531 259 L575 270Z\" fill=\"#f5ffff\"/><path d=\"M420 255 L476 241 M580 255 L524 241\" stroke=\"#6df4ff\" stroke-width=\"7\" stroke-linecap=\"round\"/></g>\n<path d=\"M500 180 L500 350\" stroke=\"#c5faff\" stroke-width=\"5\" opacity=\".65\"/>\n<path d=\"M385 300 L500 330 L615 300\" fill=\"none\" stroke=\"url(#ig-gold)\" stroke-width=\"9\"/>\n<path d=\"M500 340 L530 385 L500 420 L470 385Z\" fill=\"url(#ig-gold)\" stroke=\"#fff1c5\" stroke-width=\"5\"/>\n</svg>\n<div class=\"ig-wave\"></div>\n<svg class=\"ig-infinity\" viewBox=\"0 0 220 110\" aria-hidden=\"true\"><defs><linearGradient id=\"ig-inf\" x1=\"0\" x2=\"1\"><stop stop-color=\"#80faff\"/><stop offset=\".5\" stop-color=\"#fff\"/><stop offset=\"1\" stop-color=\"#c39bff\"/></linearGradient></defs><path d=\"M110 55 C78 10 20 10 20 55 C20 100 78 100 110 55 C142 10 200 10 200 55 C200 100 142 100 110 55\" fill=\"none\" stroke=\"url(#ig-inf)\" stroke-width=\"13\" stroke-linecap=\"round\"/></svg>\n<div class=\"ig-copy\">INFINITY GUARDIAN<small>THE COSMIC SENTINEL · IMAGINATION WITHOUT LIMITS</small></div>";
+ world.innerHTML='<canvas class="ig-render" aria-hidden="true"></canvas><div class="ig-caption">A MYTHIC PRESENCE HAS ARRIVED</div><div class="ig-copy">INFINITY GUARDIAN<small>THE COSMIC SENTINEL · IMAGINATION WITHOUT LIMITS</small></div>';
  overlay.appendChild(world);document.body.appendChild(overlay);
- const canvas=world.querySelector("canvas"),ctx=canvas.getContext("2d");let raf=0,alive=true,start=performance.now(),w=0,h=0,dpr=1,particles=[];
- function resize(){const r=world.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(2,window.devicePixelRatio||1);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);particles=Array.from({length:Math.min(170,Math.round(w*h/6500))},()=>({x:Math.random()*w,y:Math.random()*h,z:.3+Math.random()*.7,s:.5+Math.random()*1.8,a:Math.random()*6.28,v:.2+Math.random()*.8}));}
- function frame(now){if(!alive||!world.isConnected)return;const t=(now-start)/1000;ctx.clearRect(0,0,w,h);const glow=ctx.createRadialGradient(w/2,h*.42,4,w/2,h*.42,Math.max(w,h)*.62);glow.addColorStop(0,"rgba(87,224,255,.13)");glow.addColorStop(.42,"rgba(105,92,255,.07)");glow.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
- particles.forEach(p=>{p.y-=p.v*(.6+p.z);p.x+=Math.sin(t*.45+p.a)*.18;if(p.y< -5){p.y=h+5;p.x=Math.random()*w;}ctx.globalAlpha=.25+p.z*.6;ctx.fillStyle=p.z>.78?"#eaffff":"#88dfff";ctx.beginPath();ctx.arc(p.x,p.y,p.s*p.z,0,Math.PI*2);ctx.fill();});ctx.globalAlpha=1;
- if(t>6.8){const pulse=Math.max(0,1-(t-6.8)/1.7);ctx.strokeStyle="rgba(126,246,255,"+pulse*.85+")";ctx.lineWidth=2+4*pulse;ctx.shadowBlur=28;ctx.shadowColor="#6eeaff";ctx.beginPath();ctx.ellipse(w/2,h*.45,Math.max(0,(t-6.8)*w*.72),Math.max(0,(t-6.8)*h*.54),0,0,Math.PI*2);ctx.stroke();ctx.shadowBlur=0;}raf=requestAnimationFrame(frame);}
- resize();window.addEventListener("resize",resize,{passive:true});raf=requestAnimationFrame(frame);
  if(typeof opts.onSound==="function"){try{opts.onSound();}catch(_){}}
- const duration=Math.max(12000,Number(opts.duration)||13200);setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),850);}},duration);return overlay;
+ let renderer=null,raf=0,alive=true,scene,camera,guardian,portal,stars=[],resizeFn=null;
+ const duration=Math.max(14500,Number(opts.duration)||16500);
+ function fallback(){const c=world.querySelector("canvas"),x=c.getContext("2d");c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;x.scale(devicePixelRatio,devicePixelRatio);x.fillStyle="#07112b";x.fillRect(0,0,innerWidth,innerHeight);x.textAlign="center";x.fillStyle="#bafaff";x.font="bold 26px system-ui";x.fillText("INFINITY GUARDIAN",innerWidth/2,innerHeight*.48);x.font="14px system-ui";x.fillText("THE COSMIC SENTINEL",innerWidth/2,innerHeight*.52);}
+ function boot(){
+  if(!alive||!world.isConnected||!window.THREE)return;
+  const T=window.THREE,canvas=world.querySelector("canvas");
+  try{
+   renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:"high-performance"});
+   renderer.setPixelRatio(Math.min(1.7,window.devicePixelRatio||1));renderer.setSize(world.clientWidth,world.clientHeight,false);
+   renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
+   scene=new T.Scene();scene.fog=new T.FogExp2(0x07122c,.026);
+   camera=new T.PerspectiveCamera(34,world.clientWidth/world.clientHeight,.1,100);camera.position.set(0,.2,16.8);
+   scene.add(new T.HemisphereLight(0xc8f5ff,0x11152f,2.1));
+   const key=new T.DirectionalLight(0xe8fbff,3.5);key.position.set(-5,8,10);scene.add(key);
+   const rim=new T.PointLight(0x43dcff,95,24);rim.position.set(5,2,3);scene.add(rim);
+   const violet=new T.PointLight(0x8065ff,80,22);violet.position.set(-5,-1,-2);scene.add(violet);
+   const gold=new T.PointLight(0xffc978,32,12);gold.position.set(0,3,4);scene.add(gold);
+   const metal=new T.MeshStandardMaterial({color:0x536e9c,metalness:.88,roughness:.24});
+   const brightMetal=new T.MeshStandardMaterial({color:0xc5f5ff,metalness:.82,roughness:.2,emissive:0x17465b,emissiveIntensity:.42});
+   const darkMetal=new T.MeshStandardMaterial({color:0x101d3d,metalness:.9,roughness:.28});
+   const goldMat=new T.MeshStandardMaterial({color:0xd6b474,metalness:.85,roughness:.2,emissive:0x493014,emissiveIntensity:.35});
+   const featherMat=[0x9de9f4,0x6288bd,0xc5f5ff,0x354f83].map(col=>new T.MeshStandardMaterial({color:col,metalness:.7,roughness:.3,emissive:0x12344d,emissiveIntensity:.28,side:T.DoubleSide}));
+   const glowMat=new T.MeshStandardMaterial({color:0xc9ffff,emissive:0x5beaff,emissiveIntensity:3,metalness:.2,roughness:.15});
+   const body=new T.Group();guardian=new T.Group();scene.add(guardian);guardian.add(body);
+   function mesh(geo,mat,parent=body){const m=new T.Mesh(geo,mat);parent.add(m);return m;}
+   function plate(points,depth,mat,z=0,parent=body){const sh=new T.Shape();sh.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)sh.lineTo(points[i][0],points[i][1]);sh.closePath();const g=new T.ExtrudeGeometry(sh,{depth,bevelEnabled:true,bevelSegments:3,steps:1,bevelSize:.075,bevelThickness:.07});const m=mesh(g,mat,parent);m.position.z=z;return m;}
+   function orb(x,y,z,sx,sy,sz,mat,parent=body){const m=mesh(new T.SphereGeometry(1,24,18),mat,parent);m.position.set(x,y,z);m.scale.set(sx,sy,sz);return m;}
+   function feather(x,y,angle,len,width,mat,parent){const g=new T.Group();g.position.set(x,y,0);g.rotation.z=angle;parent.add(g);const m=mesh(new T.SphereGeometry(1,16,12),mat,g);m.scale.set(width,len*.55,.095);m.position.y=len*.38;const spine=mesh(new T.CylinderGeometry(.012,.025,len*.78,6),brightMetal,g);spine.position.y=len*.38;return g;}
+   // Broad articulated wings: layered rows of individual metallic feathers, not flat blades.
+   const wings=[];
+   for(const side of [-1,1]){
+    const wing=new T.Group();wing.position.set(side*1.42,1.05,-.3);body.add(wing);wings.push({wing,side});
+    const basePts=side<0?[[0,.25],[-.65,1.5],[-2.15,2.9],[-4.6,3.65],[-3.55,1.35],[-2.5,.1],[-.6,-.55]]:[[0,.25],[.65,1.5],[2.15,2.9],[4.6,3.65],[3.55,1.35],[2.5,.1],[.6,-.55]];
+    plate(basePts,.22,metal,.0,wing);
+    for(let row=0;row<3;row++){
+     for(let i=0;i<9;i++){
+      const u=i/8,dist=1.0+u*3.0,yy=1.35+Math.sin(u*Math.PI)*.95-row*.54;
+      const x=side*dist*.83;
+      const len=(2.05-u*.72)+(row===0?.35:0);
+      const ang=side*(.56-u*.2)+(row===2?-.15:0);
+      feather(x,yy,ang,len,.18-row*.018,featherMat[(i+row)%featherMat.length],wing);
+     }
+    }
+    // Shoulder root and glowing articulated feather joints.
+    orb(0,.15,.25,.42,.48,.24,brightMetal,wing);
+   }
+   // Legs and boots.
+   for(const side of [-1,1]){
+    const leg=mesh(new T.CapsuleGeometry(.36,1.25,5,12),metal);leg.position.set(side*.55,-2.45,.12);leg.rotation.z=side*-.08;
+    const boot=mesh(new T.BoxGeometry(.92,.38,.72),darkMetal);boot.position.set(side*.58,-3.35,.32);boot.rotation.z=side*-.05;
+    const knee=mesh(new T.SphereGeometry(.42,20,16),brightMetal);knee.position.set(side*.55,-1.78,.42);
+    plate([[side*.55-.28,-2.05],[side*.55+.28,-2.05],[side*.55+.42,-2.7],[side*.55,-2.9],[side*.55-.42,-2.7]],.16,goldMat,.48);
+   }
+   // Torso silhouette, layered breastplate, shoulders and gauntlets.
+   plate([[-1.35,1.35],[-.9,1.72],[0,1.45],[.9,1.72],[1.35,1.35],[1.12,-1.35],[0,-1.85],[-1.12,-1.35]],.42,metal,.25);
+   plate([[-.98,1.22],[0,1.48],[.98,1.22],[.82,-1.05],[0,-1.52],[-.82,-1.05]],.24,darkMetal,.72);
+   plate([[-.83,1.12],[0,1.35],[.83,1.12],[.68,-.85],[0,-1.22],[-.68,-.85]],.12,goldMat,.99);
+   for(const side of [-1,1]){
+    const shoulder=mesh(new T.IcosahedronGeometry(.78,1),brightMetal);shoulder.position.set(side*1.45,.92,.48);shoulder.scale.set(1.05,.8,.72);
+    const arm=mesh(new T.CapsuleGeometry(.3,.88,5,12),metal);arm.position.set(side*1.72,-.1,.35);arm.rotation.z=side*-.22;
+    const gauntlet=mesh(new T.IcosahedronGeometry(.48,1),brightMetal);gauntlet.position.set(side*1.82,-.85,.52);gauntlet.scale.set(.85,1.1,.7);
+    orb(side*1.8,-.84,.94,.13,.13,.09,glowMat);
+   }
+   // Neck and monumental helmet.
+   const neck=mesh(new T.CylinderGeometry(.32,.42,.58,12),goldMat);neck.position.set(0,1.75,.25);
+   const helm=mesh(new T.SphereGeometry(1,32,24),metal);helm.position.set(0,2.55,.2);helm.scale.set(.92,1.13,.72);
+   const face=mesh(new T.SphereGeometry(1,32,20),darkMetal);face.position.set(0,2.43,.72);face.scale.set(.76,.84,.24);
+   plate([[-.88,2.65],[-.58,3.48],[0,3.78],[.58,3.48],[.88,2.65],[.56,1.98],[0,1.78],[-.56,1.98]],.18,brightMetal,1.02);
+   // Two separate luminous eyes, deeply set in the helmet.
+   for(const side of [-1,1]){
+    const socket=mesh(new T.BoxGeometry(.58,.23,.13),darkMetal);socket.position.set(side*.38,2.62,.98);socket.rotation.z=side*-.13;
+    const eye=mesh(new T.BoxGeometry(.38,.105,.08),glowMat);eye.position.set(side*.38,2.62,1.075);eye.rotation.z=side*-.13;
+    const brow=mesh(new T.BoxGeometry(.66,.12,.16),goldMat);brow.position.set(side*.38,2.82,1.0);brow.rotation.z=side*-.14;
+   }
+   // Crest and jaw guard.
+   const crest=mesh(new T.OctahedronGeometry(.34,0),goldMat);crest.position.set(0,3.72,.92);crest.scale.set(.65,1.45,.4);
+   plate([[-.68,2.15],[0,1.92],[.68,2.15],[.48,1.85],[0,1.72],[-.48,1.85]],.13,goldMat,1.05);
+   // Glowing chest core and a real 3D infinity loop.
+   const core=mesh(new T.SphereGeometry(.8,32,24),new T.MeshBasicMaterial({color:0x50dcff,transparent:true,opacity:.2}));core.position.set(0,-.05,1.24);core.scale.set(1,.85,.35);
+   const heart=mesh(new T.OctahedronGeometry(.57,2),glowMat);heart.position.set(0,-.05,1.42);heart.scale.set(1.05,1.05,.34);
+   const pts=[];for(let i=0;i<=160;i++){const t=i/160*Math.PI*2;const x=1.02*Math.sin(t)/(1+Math.cos(t)*Math.cos(t));const y=.48*Math.sin(t)*Math.cos(t)/(1+Math.cos(t)*Math.cos(t));pts.push(new T.Vector3(x,y,1.68));}
+   const infinityCurve=new T.CatmullRomCurve3(pts,false,"centripetal");const infinity=mesh(new T.TubeGeometry(infinityCurve,220,.065,10,false),new T.MeshStandardMaterial({color:0xe9ffff,emissive:0x59eaff,emissiveIntensity:2.8,metalness:.35,roughness:.18}));infinity.userData.pulse=true;
+   // Gold trim and engraved armor lines.
+   for(const side of [-1,1]){
+    const trim=mesh(new T.TorusGeometry(.36,.045,8,48),goldMat);trim.position.set(side*.78,.75,1.22);trim.rotation.y=side*.25;trim.scale.set(1,.65,1);
+   }
+   // Portal rings behind the guardian.
+   portal=new T.Group();scene.add(portal);portal.position.set(0,.15,-2.5);
+   for(let i=0;i<4;i++){const ring=mesh(new T.TorusGeometry(4.45+i*.28,.018+(i%2)*.012,8,160),new T.MeshBasicMaterial({color:i%2?0xb18cff:0x70eaff,transparent:true,opacity:.52-i*.07}),portal);ring.rotation.x=(i-1.5)*.08;ring.rotation.y=(i-1.5)*.06;}
+   const halo=mesh(new T.TorusGeometry(3.9,.035,10,160),new T.MeshBasicMaterial({color:0x9efaff,transparent:true,opacity:.7}),portal);halo.position.z=-.12;
+   // Distant star field.
+   const starGeo=new T.BufferGeometry(),positions=[],colors=[];for(let i=0;i<500;i++){positions.push((Math.random()-.5)*28,(Math.random()-.5)*18,-6-Math.random()*12);colors.push(.5+Math.random()*.5,.65+Math.random()*.35,1);}
+   starGeo.setAttribute("position",new T.Float32BufferAttribute(positions,3));starGeo.setAttribute("color",new T.Float32BufferAttribute(colors,3));
+   const starMat=new T.PointsMaterial({size:.035,vertexColors:true,transparent:true,opacity:.9});const starField=new T.Points(starGeo,starMat);scene.add(starField);
+   // A floorless energy mist gives scale without obscuring the figure.
+   const mist=mesh(new T.PlaneGeometry(20,8),new T.MeshBasicMaterial({color:0x14285c,transparent:true,opacity:.16,depthWrite:false}),scene);mist.position.set(0,-4.5,-1);mist.rotation.x=-.15;
+   guardian.scale.setScalar(.001);guardian.position.y=-.15;
+   const start=performance.now();
+   function resize(){if(!alive||!renderer)return;const w=world.clientWidth,h=world.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+   resizeFn=resize;window.addEventListener("resize",resizeFn,{passive:true});
+   function tick(now){if(!alive||!world.isConnected)return;const t=(now-start)/1000;const intro=Math.min(1,Math.max(0,t/2.0));guardian.scale.setScalar(.001+(.86-.001)*(1-Math.pow(1-intro,3)));guardian.position.y=-.15+Math.sin(t*1.1)*.08;guardian.rotation.y=Math.sin(t*.45)*.09;guardian.rotation.x=Math.sin(t*.7)*.025;
+    wings.forEach(({wing,side})=>{wing.rotation.z=side*(.035+Math.sin(t*2.1+(side>0?0:Math.PI))*.075);wing.rotation.y=side*(.05+Math.sin(t*1.5)*.035);});
+    portal.rotation.z=t*.045;portal.rotation.y=Math.sin(t*.2)*.12;infinity.scale.setScalar(1+Math.sin(t*3)*.045);starField.rotation.y=t*.008;
+    renderer.render(scene,camera);raf=requestAnimationFrame(tick);}
+   raf=requestAnimationFrame(tick);
+  }catch(e){console.warn("Infinity Guardian 3D renderer fallback:",e);fallback();}
+ }
+ function load(){if(window.THREE){boot();return;}let script=document.querySelector("script[data-ig-three]");if(script){script.addEventListener("load",boot,{once:true});script.addEventListener("error",fallback,{once:true});return;}script=document.createElement("script");script.src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js";script.dataset.igThree="1";script.onload=boot;script.onerror=fallback;document.head.appendChild(script);}
+ load();
+ setTimeout(()=>{alive=false;cancelAnimationFrame(raf);if(resizeFn)window.removeEventListener("resize",resizeFn);if(renderer){renderer.dispose();renderer.forceContextLoss();}if(overlay.isConnected){overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),850);}},duration);
+ return overlay;
 }
-
 function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="eclipse_leviathan"){return renderEclipseLeviathanGift(gift,opts,overlay);}if(gift.style==="infinity_guardian"){return renderInfinityGuardianGift(gift,opts,overlay);}if(gift.style==="ghostship"){return renderGhostShipGift(gift,opts,overlay);}if(gift.style==="phoenix"){return renderPhoenixGift(gift,opts,overlay);}if(gift.style==="infernal_castle"){return renderInfernalCastleGift(gift,opts,overlay);}if(gift.style==="fingerdeath"){return renderCinematicGift(gift,opts,overlay);}if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedmansion")return renderHauntedMansionGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
 
 /* Cinematic object renderer: custom shaded vector artwork replaces emoji-only gift posters. */
