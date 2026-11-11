@@ -1020,11 +1020,30 @@ function renderEclipseLeviathanGift(gift,opts,overlay){
  <svg class="el-scene" viewBox="0 0 1000 720" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
  <defs><linearGradient id="el-scale" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d4e0e4"/><stop offset=".16" stop-color="#526e83"/><stop offset=".38" stop-color="#182c42"/><stop offset=".58" stop-color="#7994a2"/><stop offset=".8" stop-color="#17263b"/><stop offset="1" stop-color="#050b16"/></linearGradient>
  <filter id="el-shadow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="13" result="b"/><feColorMatrix in="b" values="0 0 0 0 .12 0 0 0 0 .55 0 0 0 0 .9 0 0 0 .8 0"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <pattern id="el-scales" width="22" height="18" patternUnits="userSpaceOnUse"><path d="M0 9Q5 1 11 9Q17 17 22 9M-11 9Q-6 1 0 9Q6 17 11 9" fill="none" stroke="#c1d5db" stroke-opacity=".32" stroke-width="1.5"/></pattern>
+ <linearGradient id="el-scale" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e3edf0"/><stop offset=".12" stop-color="#7895a6"/><stop offset=".28" stop-color="#263f55"/><stop offset=".48" stop-color="#0b1b2d"/><stop offset=".66" stop-color="#688696"/><stop offset=".82" stop-color="#20394d"/><stop offset="1" stop-color="#030a13"/></linearGradient>
+ <radialGradient id="el-belly"><stop stop-color="#d0dadd"/><stop offset=".5" stop-color="#667d8a"/><stop offset="1" stop-color="#1a2a38"/></radialGradient>
+ <linearGradient id="el-horn" x2="0" y2="1"><stop stop-color="#e1e9e8"/><stop offset=".45" stop-color="#647f8d"/><stop offset="1" stop-color="#172b3c"/></linearGradient>
+ <filter id="el-shadow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="13" result="b"/><feColorMatrix in="b" values="0 0 0 0 .02 0 0 0 0 .23 0 0 0 0 .4 0 0 0 .8 0"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
  <filter id="el-glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
  <path class="el-lightning" d="M130 80L95 180l45-10-65 145M850 55l-35 105 52-12-76 140"/>
  <path class="el-body" d="M-80 610 C110 590 130 410 290 470 S470 650 610 545 S760 350 920 430 S1060 580 1110 505"/>
+ <path d="M-80 610 C110 590 130 410 290 470 S470 650 610 545 S760 350 920 430 S1060 580 1110 505" fill="none" stroke="url(#el-scales)" stroke-width="61" stroke-linecap="round" stroke-dasharray="1900" stroke-dashoffset="1900" style="animation:el-coil 4.8s cubic-bezier(.16,.72,.22,1) forwards"/>
+ <path d="M-80 610 C110 590 130 410 290 470 S470 650 610 545 S760 350 920 430 S1060 580 1110 505" fill="none" stroke="#d6e4e8" stroke-opacity=".28" stroke-width="13" stroke-linecap="round" stroke-dasharray="1900" stroke-dashoffset="1900" style="animation:el-coil 4.8s cubic-bezier(.16,.72,.22,1) forwards"/>
  <path class="el-ridge" d="M-80 610 C110 590 130 410 290 470 S470 650 610 545 S760 350 920 430 S1060 580 1110 505"/>
- <g transform="translate(820 350)"><g class="el-head"><path d="M-15 15 Q-70 -15 -45 -70 Q-15 -125 45 -98 Q95 -75 65 -18 L95 8 Q75 35 30 30 L8 75 Q-12 62 -15 15Z" fill="url(#el-scale)" stroke="#a8c2d0" stroke-width="5"/><path d="M-38 -65L-93 -115L-58 -42M38 -78L90 -120L66 -35" fill="#334e63" stroke="#9db5c3" stroke-width="7"/><path d="M-20 -52Q8 -72 42 -52" fill="none" stroke="#06101d" stroke-width="12"/><ellipse class="el-eye" cx="20" cy="-58" rx="9" ry="5"/><path d="M8 17Q48 34 77 12" fill="none" stroke="#d6e7ec" stroke-width="4"/><path d="M15 32l8 18m18-21 7 18" stroke="#dce9ed" stroke-width="4"/></g></g>
+ <g fill="url(#el-horn)" stroke="#9bb3bd" stroke-width="2" opacity=".95"><path d="M140 525l-28-58 48 42z"/><path d="M180 489l-13-62 35 53z"/><path d="M245 463l4-55 24 55z"/><path d="M330 491l28-55 5 65z"/><path d="M470 603l18-58 17 49z"/><path d="M585 563l40-61-9 68z"/><path d="M710 451l32-58 4 69z"/></g>
+ <g transform="translate(820 350)"><g class="el-head">
+ <path d="M-22 12Q-74-8-60-57Q-54-92-20-112Q18-135 54-105Q83-82 72-42Q68-20 98-2Q114 10 94 27Q69 44 31 34L12 76Q-9 66-22 12Z" fill="url(#el-scale)" stroke="#9bb5c3" stroke-width="5"/>
+ <path d="M-35-83Q-60-120-105-136Q-83-92-65-50Z" fill="url(#el-horn)" stroke="#a8c0ca" stroke-width="4"/><path d="M35-91Q61-132 105-140Q82-96 64-48Z" fill="url(#el-horn)" stroke="#a8c0ca" stroke-width="4"/>
+ <path d="M-53-70Q-25-99 10-91Q41-88 57-62Q28-72 4-65Q-23-56-53-70Z" fill="#071321" stroke="#7896a5" stroke-width="4"/>
+ <ellipse class="el-eye" cx="17" cy="-77" rx="10" ry="6"/><ellipse cx="17" cy="-77" rx="2.5" ry="6" fill="#02060c"/>
+ <path d="M-42-42Q-12-28 20-36Q49-42 69-27" fill="none" stroke="#c0d0d5" stroke-opacity=".55" stroke-width="3"/>
+ <path d="M-26-21Q12-2 55-16Q74-22 94-8Q67 19 31 18Q-3 14-26-21Z" fill="url(#el-belly)" stroke="#8ba4af" stroke-width="3"/>
+ <path d="M-5-2l-2 13m16-10-1 15m16-16 1 14m15-18 3 13" stroke="#d0dce0" stroke-opacity=".42" stroke-width="2"/>
+ <path d="M52-2l11 17 7-14m-35 19 8 17 8-14" fill="none" stroke="#e4edf0" stroke-width="3" stroke-linecap="round"/>
+ <path d="M-49-51l-15 18m26-26-11 22m83-24 18 13" stroke="#d5e1e4" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>
+ <path d="M-55-20l-15 18m-2-33-10 11" stroke="#6d8999" stroke-width="4" stroke-linecap="round"/>
+ </g></g>
  </svg><div class="el-title">ECLIPSE LEVIATHAN<small>AN ANCIENT POWER HAS AWAKENED</small></div>`;
  overlay.appendChild(world);document.body.appendChild(overlay);
  if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}
