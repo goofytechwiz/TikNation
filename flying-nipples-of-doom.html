@@ -163,22 +163,27 @@ function frame(now){const dt=Math.min(40,now-last||16);last=now;time+=dt;backgro
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
 function enableSound(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=audio||new AC();audio.resume();soundOn=true;document.getElementById('sound').textContent='SOUND: ON'}
-function cannonSound(delayMs=0){if(!audio)return;const now=audio.currentTime+delayMs/1000;
- // New goofy arcade "boing-pop": a rubbery pitch bend and a tiny airy pop.
- const o=audio.createOscillator(),g=audio.createGain();
- o.type='sine';o.frequency.setValueAtTime(185,now);o.frequency.exponentialRampToValueAtTime(390,now+.075);o.frequency.exponentialRampToValueAtTime(125,now+.34);
- g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.19,now+.018);g.gain.exponentialRampToValueAtTime(.0001,now+.39);
- o.connect(g).connect(audio.destination);o.start(now);o.stop(now+.41);
- const chirp=audio.createOscillator(),cg=audio.createGain();
- chirp.type='sine';chirp.frequency.setValueAtTime(620,now+.025);chirp.frequency.exponentialRampToValueAtTime(310,now+.16);
- cg.gain.setValueAtTime(.0001,now+.025);cg.gain.exponentialRampToValueAtTime(.055,now+.04);cg.gain.exponentialRampToValueAtTime(.0001,now+.18);
- chirp.connect(cg).connect(audio.destination);chirp.start(now+.025);chirp.stop(now+.2);
- const n=Math.floor(audio.sampleRate*.11),buf=audio.createBuffer(1,n,audio.sampleRate),data=buf.getChannelData(0);
- for(let i=0;i<n;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/n,5);
- const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),ng=audio.createGain();
- src.buffer=buf;filter.type='lowpass';filter.frequency.setValueAtTime(780,now);filter.frequency.exponentialRampToValueAtTime(260,now+.11);
- ng.gain.setValueAtTime(.0001,now);ng.gain.exponentialRampToValueAtTime(.045,now+.008);ng.gain.exponentialRampToValueAtTime(.0001,now+.12);
- src.connect(filter).connect(ng).connect(audio.destination);src.start(now);
+function cannonSound(delayMs=0){if(!audio)return;const t=audio.currentTime+delayMs/1000;
+ // Punchy comic cannon: mechanical clack, deep boom, sharp report and short air-rush.
+ function tone(freq1,freq2,duration,volume,type='sine',offset=0){
+  const o=audio.createOscillator(),g=audio.createGain();o.type=type;
+  o.frequency.setValueAtTime(freq1,t+offset);o.frequency.exponentialRampToValueAtTime(Math.max(1,freq2),t+offset+duration);
+  g.gain.setValueAtTime(.0001,t+offset);g.gain.exponentialRampToValueAtTime(volume,t+offset+.006);
+  g.gain.exponentialRampToValueAtTime(.0001,t+offset+duration);
+  o.connect(g).connect(audio.destination);o.start(t+offset);o.stop(t+offset+duration+.01);
+ }
+ function noise(duration,volume,frequency,q,offset=0){
+  const count=Math.floor(audio.sampleRate*duration),buf=audio.createBuffer(1,count,audio.sampleRate),data=buf.getChannelData(0);
+  for(let i=0;i<count;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/count,2.8);
+  const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),g=audio.createGain();
+  src.buffer=buf;filter.type='lowpass';filter.frequency.setValueAtTime(frequency,t+offset);filter.Q.value=q;
+  g.gain.setValueAtTime(.0001,t+offset);g.gain.exponentialRampToValueAtTime(volume,t+offset+.004);
+  g.gain.exponentialRampToValueAtTime(.0001,t+offset+duration);
+  src.connect(filter).connect(g).connect(audio.destination);src.start(t+offset);
+ }
+ tone(150,48,.28,.48,'sawtooth');tone(920,170,.075,.20,'square',.008);
+ tone(78,38,.42,.34,'sine',.018);noise(.20,.25,2100,.7,.006);
+ noise(.28,.10,650,.4,.045);tone(420,95,.16,.075,'triangle',.055);
 }
 document.getElementById('sound').addEventListener('click',enableSound);
 document.getElementById('launch').addEventListener('click',launch);
