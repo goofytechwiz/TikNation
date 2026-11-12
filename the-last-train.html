@@ -142,13 +142,13 @@ function reset(){elapsed=0;phase=0;exploded=false;started=performance.now();trai
 document.getElementById('replay').addEventListener('click',reset);
 document.getElementById('sound').addEventListener('click',()=>{soundOn=!soundOn;if(soundOn){audioSetup();soundCtx.resume();document.getElementById('sound').textContent='♫ SOUND ON';if(phase===0){phase=1;status.textContent='THE HEADLIGHTS EMERGE FROM THE FOG';playWhistle()}else if(phase===1)playWhistle();if(phase>=2&&phase<3)startEngine()}else{stopAudio();document.getElementById('sound').textContent='♫ ENABLE SOUND'}});
 function animate(now){requestAnimationFrame(animate);elapsed=(now-started)/1000;const t=elapsed;
-if(t<1.15){train.position.z=-53;train.position.y=0}
-else if(t<6.55&&!exploded){const p=(t-1.15)/5.4;const eased=p*p*(3-2*p);train.position.z=-53+59.5*eased;train.position.y=Math.sin(t*12)*.035}
-else if(!exploded){train.position.z=6.5;train.position.y=0}
+if(t<1.15){train.position.z=-53;train.position.y=0;train.scale.setScalar(1)}
+else if(t<6.35&&!exploded){const p=(t-1.15)/5.2;const eased=p*p*(3-2*p);train.position.z=-53+62.2*eased;const closeIn=Math.max(0,(p-.78)/.22);train.scale.setScalar(1+closeIn*.72);train.position.y=Math.sin(t*15)*.045}
+else if(!exploded){train.position.z=9.2;train.scale.setScalar(1.72);train.position.y=0}
 if(t>1.0&&phase===0){phase=1;status.textContent='THE WHISTLE ECHOES THROUGH THE TUNNEL';playWhistle()}
-if(t>1.9&&phase===1){phase=2;status.textContent='THE BLACK LOCOMOTIVE RUSHES OUT OF THE TUNNEL';startEngine()}
-if(t>3.4&&phase===2){phase=3;status.textContent='IT IS COMING STRAIGHT AT YOU'}
-if(t>6.55&&!exploded){explode();}
+if(t>1.65&&phase===1){phase=2;status.textContent='THE BLACK LOCOMOTIVE RUSHES OUT OF THE TUNNEL';startEngine()}
+if(t>3.0&&phase===2){phase=3;status.textContent='IT IS RACING STRAIGHT INTO THE SCREEN'}
+if(t>6.35&&!exploded){explode();}
 // Natural eye tracking, expressive brows, occasional blinks and a speaking/whistling mouth
 const blinkA=Math.pow(Math.max(0,Math.cos(t*.73+1.1)),90),blinkB=Math.pow(Math.max(0,Math.cos(t*.73+1.1)),90);
 eyes.forEach((eye,i)=>{eye.scale.y=.82*(1-.94*(i===0?blinkA:blinkB));});
@@ -160,9 +160,14 @@ wheels.forEach((w)=>w.rotation.x=t*3.8);cars.forEach((c,i)=>{c.position.y=Math.s
 if(Math.random()<.65&&t>1.3&&t<11){const e=steamEmitters[Math.floor(Math.random()*steamEmitters.length)].clone();e.add(train.position);burst(e,2,0xc6d0d5,.4,2.4,.18)}
 for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.age+=.016;p.m.position.addScaledVector(p.v,.016);p.v.y+=.003;p.m.material.opacity=Math.max(0,.65-p.age/p.life);p.m.scale.multiplyScalar(1.004);if(p.age>p.life){scene.remove(p.m);p.m.material.dispose();particles.splice(i,1)}}
 const targetX=lookX*.35,targetY=4.5+lookY*.18;camera.position.x+=(targetX-camera.position.x)*.045;camera.position.y+=(targetY-camera.position.y)*.045;camera.position.z=14;
-const shake=exploded?Math.max(0,1-(now-impactTime)/1100):0;camera.position.x+=(Math.random()-.5)*.42*shake;camera.position.y+=(Math.random()-.5)*.32*shake;
-camera.lookAt(lookX*.12,2.1+lookY*.1,Math.min(-30,train.position.z+1.8));
-if(exploded){const age=(now-impactTime)/1000;flash.style.opacity=String(Math.max(0,.92-age*3.8));warm.intensity=Math.max(0,220-age*95);if(age>.13)train.visible=false}
+const impactAge=exploded?(now-impactTime)/1000:0;const shake=exploded?Math.max(0,1-impactAge/1.45):0;
+const shakeX=(Math.sin(now*.071)+Math.sin(now*.133))*.72*shake;
+const shakeY=(Math.cos(now*.083)+Math.sin(now*.157))*.48*shake;
+camera.position.x+=shakeX;camera.position.y+=shakeY;
+const aimZ=exploded?train.position.z+2.4:Math.min(-8,train.position.z+2.4);
+const aimY=exploded?2.7:2.1;
+camera.lookAt(lookX*.12+shakeX*1.8,aimY+lookY*.1+shakeY*1.8,aimZ);
+if(exploded){const age=impactAge;flash.style.opacity=String(Math.max(0,1-age*3.1));flash.style.background='radial-gradient(circle at 50% 52%, #fff9df 0%, #ffd08a 22%, #ff7a24 48%, rgba(30,8,0,0) 100%)';warm.intensity=Math.max(0,220-age*95);if(age>.22)train.visible=false}
 for(let i=shockRings.length-1;i>=0;i--){const r=shockRings[i];r.age+=.016;r.mesh.scale.setScalar(1+r.age*8);r.mesh.material.opacity=Math.max(0,.95-r.age*.8);if(r.age>1.2){scene.remove(r.mesh);r.mesh.geometry.dispose();r.mesh.material.dispose();shockRings.splice(i,1)}}
 for(let i=debris.length-1;i>=0;i--){const d=debris[i];d.age+=.016;d.mesh.position.addScaledVector(d.v,.016);d.v.y-=.11;d.mesh.rotation.x+=.12;d.mesh.rotation.z+=.09;if(d.age>2.2){scene.remove(d.mesh);d.mesh.geometry.dispose();d.mesh.material.dispose();debris.splice(i,1)}}
 renderer.render(scene,camera)}
