@@ -1,80 +1,79 @@
 <!doctype html>
-<html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#243b3c"><title>THE LAST TRAIN · TikNation</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101a1c"><title>THE LAST TRAIN · TikNation</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#263d40;color:#fff;font-family:Georgia,serif}canvas{position:fixed;inset:0;width:100%;height:100%;touch-action:pan-y}
-header{position:fixed;z-index:2;top:env(safe-area-inset-top,0px);left:0;right:0;text-align:center;padding:13px 8px;text-shadow:0 2px 10px #10191c;pointer-events:none}.eyebrow{font:10px Arial;letter-spacing:.38em;color:#f3d18c}.title{font-size:clamp(27px,7vw,54px);letter-spacing:.14em;margin:4px 0}.sub{font:9px Arial;letter-spacing:.25em;color:#fff}
-#status{position:fixed;z-index:2;bottom:calc(76px + env(safe-area-inset-bottom,0px));left:8px;right:8px;text-align:center;font:10px Arial;letter-spacing:.13em;color:#fff2ce;text-shadow:0 2px 8px #172324}
-.controls{position:fixed;z-index:3;bottom:calc(13px + env(safe-area-inset-bottom,0px));left:0;right:0;display:flex;justify-content:center;gap:10px}.controls button{border:1px solid #e2bd72;background:#152b2d;color:#fff2ce;border-radius:28px;padding:12px 18px;font:10px Arial;letter-spacing:.13em}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#172526;color:#fff;font-family:Georgia,serif}canvas{display:block;width:100%;height:100%;touch-action:pan-y}
+header{position:fixed;z-index:2;top:env(safe-area-inset-top,0px);left:0;right:0;text-align:center;padding:13px 8px;pointer-events:none;text-shadow:0 2px 12px #000}.eyebrow{font:10px Arial;letter-spacing:.4em;color:#f4d18b}.title{font-size:clamp(27px,7vw,52px);letter-spacing:.14em;margin:4px 0}.sub{font:9px Arial;letter-spacing:.25em}
+#status{position:fixed;z-index:2;bottom:calc(77px + env(safe-area-inset-bottom,0px));left:8px;right:8px;text-align:center;font:10px Arial;letter-spacing:.13em;color:#ffedc9;text-shadow:0 2px 8px #000}
+.controls{position:fixed;z-index:3;bottom:calc(13px + env(safe-area-inset-bottom,0px));left:0;right:0;display:flex;justify-content:center;gap:10px}.controls button{border:1px solid #e2bd72;background:rgba(12,27,27,.94);color:#fff2ce;border-radius:28px;padding:12px 18px;font:10px Arial;letter-spacing:.13em}
 </style></head><body>
-<canvas id="scene"></canvas><header><div class="eyebrow">TIKNATION · LEGENDARY GIFT</div><div class="title">THE LAST TRAIN</div><div class="sub">ONE FINAL JOURNEY</div></header>
-<div id="status">A DISTANT WHISTLE CUTS THROUGH THE NIGHT</div><div class="controls"><button id="replay">↻ REPLAY</button><button id="sound">♫ ENABLE SOUND</button></div>
-<script>
+<header><div class="eyebrow">TIKNATION · LEGENDARY GIFT</div><div class="title">THE LAST TRAIN</div><div class="sub">ONE FINAL JOURNEY</div></header>
+<div id="status">A DISTANT STEAM WHISTLE ECHOES</div><div class="controls"><button id="replay">↻ REPLAY</button><button id="sound">♫ ENABLE SOUND</button></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 (()=>{
-const c=document.getElementById('scene'),g=c.getContext('2d'),status=document.getElementById('status');
-let W,H,D=1,start=0,phase=0,sound=false,blast=[],smoke=[],wreck=false,last=0;
-const train=new Audio('https://sfxjar.com/audio/3016.mp3'),whistle=new Audio('https://sfxjar.com/audio/3015.mp3'),boom=new Audio('https://assets.sfx.woven.video/sfx/explosion.wav');
-[train,whistle,boom].forEach(a=>{a.preload='auto';a.volume=.8});
-function size(){D=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*D;c.height=H*D;g.setTransform(D,0,0,D,0,0)}
-addEventListener('resize',size);size();
+const status=document.getElementById('status');
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.18;document.body.insertBefore(renderer.domElement,document.querySelector('header'));
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x9eaaa0);scene.fog=new THREE.Fog(0x9eaaa0,34,115);
+const camera=new THREE.PerspectiveCamera(43,innerWidth/innerHeight,.1,180);camera.position.set(0,5.3,18);camera.lookAt(0,2.3,-2);
+scene.add(new THREE.HemisphereLight(0xe5f0e5,0x35413a,2.0));
+const sun=new THREE.DirectionalLight(0xffe1a8,3.1);sun.position.set(-8,15,10);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);scene.add(sun);
+const fill=new THREE.PointLight(0xffc76e,0,12);fill.position.set(0,3,4);scene.add(fill);
+const mat=(color,metalness=0,roughness=.55)=>new THREE.MeshStandardMaterial({color,metalness,roughness});
+const green=mat(0x08734f,.72,.28),greenDark=mat(0x073c30,.65,.34),brass=mat(0xd5a64e,.8,.25),red=mat(0x70251f,.55,.38),black=mat(0x101716,.55,.35),steel=mat(0x555e5a,.8,.32),glass= new THREE.MeshStandardMaterial({color:0xffc45e,emissive:0xff9f24,emissiveIntensity:1.5,roughness:.25});
+function mesh(geo,material,parent,x=0,y=0,z=0){const o=new THREE.Mesh(geo,material);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
+const ground=mesh(new THREE.PlaneGeometry(180,180),mat(0x34453e),scene,0,-.15,-35);ground.rotation.x=-Math.PI/2;
+const moon=mesh(new THREE.SphereGeometry(2.2,32,24),mat(0xe8dba9,0,.9),scene,17,16,-45);
+const trackMat=mat(0x484a45,.8,.42), sleeperMat=mat(0x493b2d);
+for(let x of [-1.45,1.45]){let rail=mesh(new THREE.BoxGeometry(.13,.16,100),steel,scene,x,.08,-36);rail.position.z=-36}
+for(let z=12;z>-88;z-=1.6)mesh(new THREE.BoxGeometry(4.1,.16,.48),sleeperMat,scene,0,.02,z);
+for(let side of [-1,1])for(let i=0;i<26;i++){let z=-5-i*3.2,x=side*(7+Math.sin(i*.7)*1.1);let trunk=mesh(new THREE.CylinderGeometry(.13,.22,3.4,7),mat(0x453b2d),scene,x,1.5,z);let crown=mesh(new THREE.ConeGeometry(1.7,5,8),mat(i%2?0x29463b:0x345343),scene,x,5,z);crown.castShadow=true}
+const trainRoot=new THREE.Group();scene.add(trainRoot);
+const engine=new THREE.Group();trainRoot.add(engine);
+// tender and passenger coaches behind locomotive
+function coach(z){const group=new THREE.Group();group.position.z=z;trainRoot.add(group);mesh(new THREE.BoxGeometry(3.7,2.7,4.3),red,group,0,2.1,0);mesh(new THREE.BoxGeometry(3.85,.13,4.4),brass,group,0,3.48,0);for(let x of [-1.15,-.4,.4,1.15]){mesh(new THREE.BoxGeometry(.48,.9,.06),glass,group,x,2.55,2.17)}for(let x of [-1.2,1.2]){let w=mesh(new THREE.CylinderGeometry(.48,.48,.22,32),black,group,x,.75,1.2);w.rotation.z=Math.PI/2;let hub=mesh(new THREE.CylinderGeometry(.17,.17,.24,24),brass,group,x,.75,1.2);hub.rotation.z=Math.PI/2;let w2=mesh(new THREE.CylinderGeometry(.48,.48,.22,32),black,group,x,.75,-1.2);w2.rotation.z=Math.PI/2}return group}
+coach(-6);coach(-11);coach(-16);
+// locomotive boiler axis along Z, front faces viewer (+Z)
+mesh(new THREE.BoxGeometry(4.3,1.25,4.5),greenDark,engine,0,1.05,0);
+const boiler=mesh(new THREE.CylinderGeometry(1.35,1.35,4.8,48),green,engine,0,2.35,.15);boiler.rotation.x=Math.PI/2;
+mesh(new THREE.CylinderGeometry(1.43,1.43,.22,48),brass,engine,0,2.35,2.45);
+const face= new THREE.Group();face.position.set(0,2.35,2.59);engine.add(face);
+mesh(new THREE.CircleGeometry(1.22,64),black,face,0,0,.015);
+const rim=mesh(new THREE.TorusGeometry(1.24,.095,14,64),brass,face,0,0,.05);
+const eyes=[];
+for(let x of [-.46,.46]){mesh(new THREE.SphereGeometry(.29,32,24),brass,face,x,.32,.11);const eye=mesh(new THREE.SphereGeometry(.225,32,24),mat(0x080f10,.1,.15),face,x,.32,.19);const pupil=mesh(new THREE.SphereGeometry(.115,24,16),glass,face,x,.32,.31);mesh(new THREE.SphereGeometry(.045,16,12),mat(0xffffff,0,.1),face,x-.045,.39,.4);eyes.push({eye,pupil})}
+const brows=[];for(let x of [-.46,.46]){const b=mesh(new THREE.BoxGeometry(.58,.09,.12),brass,face,x,.72,.16);brows.push(b)}
+const smile=mesh(new THREE.TorusGeometry(.42,.055,12,40,Math.PI),brass,face,0,-.43,.15);smile.rotation.z=Math.PI;
+const chimney=mesh(new THREE.CylinderGeometry(.32,.4,.95,32),black,engine,0,4.02,.65);mesh(new THREE.CylinderGeometry(.43,.43,.12,32),brass,engine,0,4.52,.65);
+const dome=mesh(new THREE.SphereGeometry(.43,32,24),brass,engine,0,3.68,-.65);dome.scale.y=.65;
+mesh(new THREE.BoxGeometry(1.2,.25,.5),brass,engine,0,3.55,2.65);
+const lamp=mesh(new THREE.SphereGeometry(.35,24,20),glass,engine,0,3.3,2.85);const lampLight=new THREE.PointLight(0xffbd56,4,12);lampLight.position.set(0,3.3,4);engine.add(lampLight);
+const wheels=[];for(let x of [-1.55,1.55])for(let z of [-1.45,0,1.45]){const w=mesh(new THREE.CylinderGeometry(.67,.67,.22,40),black,engine,x,.72,z);w.rotation.z=Math.PI/2;const hub=mesh(new THREE.CylinderGeometry(.22,.22,.25,32),brass,engine,x,.72,z);hub.rotation.z=Math.PI/2;wheels.push(w)}
+// connecting rods
+for(let x of [-1.68,1.68]){const rod=mesh(new THREE.BoxGeometry(.12,.12,3.1),brass,engine,x,.72,0)}
+// smoke puffs
+const smokeMat=new THREE.MeshStandardMaterial({color:0x777d78,transparent:true,opacity:.32,roughness:1});const puffs=[];
+for(let i=0;i<9;i++){const p=mesh(new THREE.SphereGeometry(.35+Math.random()*.22,16,12),smokeMat,scene,0,0,0);p.visible=false;puffs.push(p)}
+const fireMat=new THREE.MeshStandardMaterial({color:0xff6a19,emissive:0xff3d08,emissiveIntensity:1.8,transparent:true,opacity:.8});
+const flames=[];for(let i=0;i<5;i++){const f=mesh(new THREE.ConeGeometry(.3,.95,12),fireMat,scene,(i-2)*.48,.4,2.2);f.visible=false;flames.push(f)}
+const sparks=[];const sparkMat=mat(0xffbd58,.1,.2);for(let i=0;i<75;i++){const s=mesh(new THREE.SphereGeometry(.045,8,8),sparkMat,scene);s.visible=false;sparks.push(s)}
+const trainAudio=new Audio('https://sfxjar.com/audio/3016.mp3'),whistleAudio=new Audio('https://sfxjar.com/audio/3015.mp3'),boomAudio=new Audio('https://assets.sfx.woven.video/sfx/explosion.wav');[trainAudio,whistleAudio,boomAudio].forEach(a=>{a.preload='auto';a.volume=.8});
+let sound=false,start=performance.now(),stage=0,exploded=false;
 function play(a,v){if(!sound)return;a.pause();a.currentTime=0;a.volume=v;const p=a.play();if(p?.catch)p.catch(()=>{})}
 function stop(a){a.pause();a.currentTime=0}
-function reset(){[train,whistle,boom].forEach(stop);start=performance.now();phase=0;wreck=false;blast=[];smoke=[];status.textContent='A DISTANT WHISTLE CUTS THROUGH THE NIGHT'}
-document.getElementById('replay').onclick=reset;
-document.getElementById('sound').onclick=()=>{sound=!sound;document.getElementById('sound').textContent=sound?'♫ SOUND ON':'♫ ENABLE SOUND'};
-function path(points,fill,stroke='#182322',lw=2){g.beginPath();points.forEach((p,i)=>i?g.lineTo(...p):g.moveTo(...p));g.closePath();g.fillStyle=fill;g.fill();if(stroke){g.strokeStyle=stroke;g.lineWidth=lw;g.stroke()}}
-function background(t){
-let sky=g.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#8ba4a0');sky.addColorStop(.45,'#aeb6a3');sky.addColorStop(1,'#485d54');g.fillStyle=sky;g.fillRect(0,0,W,H);
-g.fillStyle='rgba(255,231,170,.72)';g.beginPath();g.arc(W*.78,H*.22,Math.min(W,H)*.065,0,Math.PI*2);g.fill();
-for(let i=0;i<36;i++){let x=i*W/35,base=H*.66+(i%3)*8,h=H*(.15+(i%5)*.035);g.fillStyle=i%2?'#29443b':'#355247';g.fillRect(x-4,base-h*.4,8,h*.4);path([[x-35,base-h*.2],[x,base-h],[x+35,base-h*.2]],i%2?'#29443b':'#355247',null);path([[x-28,base-h*.55],[x,base-h*1.2],[x+28,base-h*.55]],'#203b34',null)}
-g.fillStyle='#293c39';g.fillRect(0,H*.68,W,H*.32);
-g.strokeStyle='#d3c6a3';g.lineWidth=5;g.beginPath();g.moveTo(W*.35,H);g.lineTo(W*.48,H*.67);g.moveTo(W*.65,H);g.lineTo(W*.52,H*.67);g.stroke();
-for(let i=0;i<18;i++){let q=i/18,y=H*.69+q*q*H*.3,hw=5+q*W*.3;g.strokeStyle='#574b3d';g.lineWidth=3;g.beginPath();g.moveTo(W/2-hw,y);g.lineTo(W/2+hw,y);g.stroke()}
-}
-function trainDraw(t,damaged){
-const s=Math.min(W/330,H/570)*1.12,cx=W*.5,cy=H*.76;
-g.save();g.translate(cx,cy);g.scale(s,s);
-const bob=damaged?0:Math.sin(t*8)*2;g.translate(0,bob);
-const body='#087b53',dark='#064c3a',gold='#e6bd67';
-/* rear passenger coaches */
-for(let i=2;i>=0;i--){let y=-145-i*43;path([[-104,y],[-95,y-58],[95,y-58],[104,y]],i%2?'#8f302a':'#a53b31','#351d1a',3);g.fillStyle=gold;g.fillRect(-96,y-57,192,5);for(let k=-2;k<=2;k++){g.fillStyle='#f5cf7d';g.fillRect(k*34-8,y-44,16,25)}}
-/* engine body */
-path([[-126,-20],[-117,-124],[-91,-153],[91,-153],[117,-124],[126,-20]],body,'#073c2d',4);
-path([[-111,-124],[-95,-166],[95,-166],[111,-124]],'#9b2f29','#391a17',3);
-g.fillStyle=gold;g.fillRect(-99,-169,198,7);
-g.fillStyle='#073b2e';g.fillRect(-119,-44,238,20);g.fillStyle=gold;g.fillRect(-122,-25,244,7);
-/* smokebox and brass rim */
-let rg=g.createRadialGradient(-18,-135,4,0,-130,92);rg.addColorStop(0,'#59645c');rg.addColorStop(.55,'#172c27');rg.addColorStop(.86,'#0b1715');rg.addColorStop(1,'#d3a957');
-g.fillStyle=rg;g.beginPath();g.ellipse(0,-126,83,72,0,0,Math.PI*2);g.fill();g.strokeStyle=gold;g.lineWidth=8;g.stroke();
-/* face eyes: always bright and prominent */
-const blink=Math.pow(Math.max(0,Math.cos(t*2.2)),22),ey=-145;
-for(const x of [-29,29]){g.fillStyle='#f0ca7a';g.beginPath();g.ellipse(x,ey,21,23,0,0,Math.PI*2);g.fill();g.fillStyle='#101b18';g.beginPath();g.ellipse(x,ey,16,18*(1-.9*blink),0,0,Math.PI*2);g.fill();if(blink<.8){g.fillStyle='#ffcf68';g.beginPath();g.arc(x+Math.sin(t*1.4)*3,ey,9,0,Math.PI*2);g.fill();g.fillStyle='#fff8dc';g.beginPath();g.arc(x-3,ey-5,3.5,0,Math.PI*2);g.fill()}g.strokeStyle='#f0cf86';g.lineWidth=5;g.beginPath();g.moveTo(x-19,ey-24);g.quadraticCurveTo(x,ey-34,x+18,ey-23);g.stroke()}
-g.strokeStyle='#f3d18a';g.lineWidth=5;g.beginPath();g.moveTo(-25,-91);g.quadraticCurveTo(0,-(damaged?77:86+Math.sin(t*3)*3),25,-91);g.stroke();
-/* chimney and headlamp */
-path([[-24,-192],[-20,-231],[20,-231],[24,-192]],'#162522',gold,4);g.fillStyle=gold;g.fillRect(-28,-235,56,8);
-let lamp=g.createRadialGradient(0,-184,1,0,-184,38);lamp.addColorStop(0,'#fff7ce');lamp.addColorStop(.35,'#ffd36b');lamp.addColorStop(1,'rgba(255,190,70,0)');g.fillStyle=lamp;g.beginPath();g.arc(0,-184,38,0,Math.PI*2);g.fill();
-/* wheels */
-for(let x of [-82,-25,25,82]){g.fillStyle='#111a18';g.beginPath();g.arc(x,-5,22,0,Math.PI*2);g.fill();g.strokeStyle=gold;g.lineWidth=5;g.stroke();g.strokeStyle='#b7a06b';g.lineWidth=3;g.beginPath();g.moveTo(x-14,-5);g.lineTo(x+14,-5);g.moveTo(x,-19);g.lineTo(x,9);g.stroke()}
-if(damaged){/* clearly visible broken front plate, not a black overlay */g.strokeStyle='#d69a42';g.lineWidth=5;g.beginPath();g.moveTo(-75,-57);g.lineTo(-45,-40);g.lineTo(-16,-54);g.moveTo(16,-48);g.lineTo(48,-35);g.lineTo(77,-59);g.stroke()}
-g.restore();
-}
-function explode(){wreck=true;status.textContent='THE ENGINE IS WRECKED — BUT ITS FACE IS STILL ALIVE';[train,whistle].forEach(stop);play(boom,1);for(let i=0;i<105;i++){let a=Math.random()*Math.PI*2,v=1+Math.random()*5;blast.push({x:W/2,y:H*.71,vx:Math.cos(a)*v,vy:Math.sin(a)*v-2,age:0,life:35+Math.random()*35,r:2+Math.random()*5})}for(let i=0;i<12;i++)smoke.push({x:W/2+(Math.random()-.5)*90,y:H*.69,vx:(Math.random()-.5)*.35,vy:-.5-Math.random()*.8,age:0,life:160,r:10+Math.random()*12})}
-function effects(dt){
-for(const p of blast){p.age+=dt*60;p.x+=p.vx*dt*60;p.y+=p.vy*dt*60;p.vy+=.1*dt*60;g.globalAlpha=Math.max(0,1-p.age/p.life);g.fillStyle=p.age%2?'#ff9b32':'#ffe0a0';g.beginPath();g.arc(p.x,p.y,p.r,0,Math.PI*2);g.fill()}blast=blast.filter(p=>p.age<p.life);
-for(const p of smoke){p.age+=dt*60;p.x+=p.vx*dt*60;p.y+=p.vy*dt*60;p.r+=.1;g.globalAlpha=.22*Math.max(0,1-p.age/p.life);g.fillStyle='#465452';g.beginPath();g.arc(p.x,p.y,p.r,0,Math.PI*2);g.fill()}smoke=smoke.filter(p=>p.age<p.life);
-g.globalAlpha=1;
-/* small contained flames below the face, never a full-screen flash */
-for(let i=0;i<3;i++){let x=W/2+(i-1)*35,y=H*.83+Math.sin(performance.now()/130+i)*4;let f=g.createRadialGradient(x,y,1,x,y,24);f.addColorStop(0,'rgba(255,226,119,.8)');f.addColorStop(.5,'rgba(255,103,27,.65)');f.addColorStop(1,'rgba(180,35,8,0)');g.fillStyle=f;g.beginPath();g.ellipse(x,y,13,25,0,0,Math.PI*2);g.fill()}
-}
-function frame(now){requestAnimationFrame(frame);let dt=Math.min(.04,(now-last)/1000||.016);last=now;let t=(now-start)/1000;background(t);
-if(t>1.5&&phase===0){phase=1;status.textContent='THE STEAM WHISTLE ECHOES THROUGH THE WOODS';play(whistle,.8)}
-if(t>2.4&&phase===1){phase=2;status.textContent='THE LOCOMOTIVE THUNDERS DOWN THE TRACK';play(train,.7)}
-if(t>7.8&&phase===2){phase=3;status.textContent='THE FINAL IMPACT';}
-if(t>8.15&&phase===3){phase=4;explode()}
-trainDraw(t,wreck);
-if(wreck)effects(dt);
-}
-reset();requestAnimationFrame(frame);
+function reset(){[trainAudio,whistleAudio,boomAudio].forEach(stop);start=performance.now();stage=0;exploded=false;trainRoot.visible=true;trainRoot.position.set(0,0,-9);trainRoot.scale.setScalar(.58);trainRoot.rotation.set(0,0,0);engine.visible=true;flames.forEach(f=>f.visible=false);sparks.forEach(s=>s.visible=false);puffs.forEach(p=>p.visible=false);fill.intensity=0;status.textContent='A DISTANT STEAM WHISTLE ECHOES'}
+document.getElementById('replay').onclick=reset;document.getElementById('sound').onclick=()=>{sound=!sound;document.getElementById('sound').textContent=sound?'♫ SOUND ON':'♫ ENABLE SOUND'};
+function impact(){exploded=true;stage=4;status.textContent='THE ENGINE IS WRECKED — ITS FACE IS STILL ALIVE';play(boomAudio,1);fill.intensity=5;for(let i=0;i<sparks.length;i++){const s=sparks[i];s.visible=true;s.position.set((Math.random()-.5)*3,1+Math.random()*3,3+Math.random()*2);s.userData.v=new THREE.Vector3((Math.random()-.5)*.12,Math.random()*.15,.04+Math.random()*.12)}for(let i=0;i<puffs.length;i++){puffs[i].visible=true;puffs[i].position.set((Math.random()-.5)*2,3+Math.random()*1.5,1+Math.random()*2)}for(let i=0;i<flames.length;i++){flames[i].visible=true;flames[i].position.set((i-2)*.55,.5,2.1)}}
+function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2))}addEventListener('resize',resize);
+function animate(now){requestAnimationFrame(animate);const t=(now-start)/1000;const dt=Math.min(.04,(now-(animate.last||now))/1000);animate.last=now;
+if(t>1.4&&stage===0){stage=1;status.textContent='THE STEAM WHISTLE ECHOES THROUGH THE WOODS';play(whistleAudio,.85)}
+if(t>2.5&&stage===1){stage=2;status.textContent='STEEL WHEELS CLATTER DOWN THE TRACK';play(trainAudio,.72)}
+if(t<8.1){const approach=Math.max(0,Math.min(1,(t-2.2)/5.9));trainRoot.position.z=-9+approach*7.5;trainRoot.scale.setScalar(.58+approach*.48);trainRoot.position.y=Math.sin(t*13)*.025;wheels.forEach((w,i)=>w.rotation.x=t*5*(i%2?1:-1));face.rotation.y=Math.sin(t*1.6)*.025}
+if(t>8.1&&!exploded)impact();
+if(exploded){trainRoot.position.z=-1.5;trainRoot.position.y=-.04;trainRoot.rotation.x=.025;face.rotation.y=Math.sin(t*1.7)*.055;face.rotation.x=Math.sin(t*2.1)*.025;eyes.forEach((e,i)=>{const blink=Math.pow(Math.max(0,Math.cos(t*2.2+i*.03)),28);e.eye.scale.y=1-.88*blink;e.pupil.position.x=(i===0?-.46:.46)+Math.sin(t*1.1)*.035});brows.forEach((b,i)=>b.rotation.z=Math.sin(t*1.8+i)*.035);
+sparks.forEach(s=>{if(s.visible){s.position.addScaledVector(s.userData.v,dt*60);s.userData.v.y-=.003*dt*60;if(s.position.y<.15){s.visible=false}}});
+puffs.forEach((p,i)=>{if(p.visible){p.position.y+=dt*(.25+i*.035);p.scale.multiplyScalar(1+dt*.13);if(p.position.y>7){p.position.y=3;p.scale.setScalar(1)}}});
+flames.forEach((f,i)=>{f.scale.y=.75+Math.sin(t*7+i)*.24;f.position.y=.5+Math.sin(t*5+i)*.08});fill.intensity=1.8+Math.sin(t*3)*.35}
+renderer.render(scene,camera)}
+reset();requestAnimationFrame(animate);
 })();
 </script></body></html>
