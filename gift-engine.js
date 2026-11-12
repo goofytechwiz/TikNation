@@ -1195,7 +1195,9 @@ function renderInfinityGuardianGift(gift,opts,overlay){
    plate([[-.98,1.22],[0,1.48],[.98,1.22],[.82,-1.05],[0,-1.52],[-.82,-1.05]],.24,darkMetal,.72);
    plate([[-.83,1.12],[0,1.35],[.83,1.12],[.68,-.85],[0,-1.22],[-.68,-.85]],.12,goldMat,.99);
    for(const side of [-1,1]){
-    const shoulder=mesh(new T.SphereGeometry(.72,32,24),brightMetal);shoulder.position.set(side*1.45,.92,.48);shoulder.scale.set(1.18,.88,.78);\n    const pauldron=mesh(new T.SphereGeometry(.68,32,20),metal);pauldron.position.set(side*1.53,1.02,.74);pauldron.scale.set(1.05,.68,.46);\n    const pauldronRim=mesh(new T.TorusGeometry(.52,.045,8,48),goldMat);pauldronRim.position.set(side*1.53,1.02,1.0);pauldronRim.scale.set(1.2,.8,.5);
+    const shoulder=mesh(new T.SphereGeometry(.72,32,24),brightMetal);shoulder.position.set(side*1.45,.92,.48);shoulder.scale.set(1.18,.88,.78);
+    const pauldron=mesh(new T.SphereGeometry(.68,32,20),metal);pauldron.position.set(side*1.53,1.02,.74);pauldron.scale.set(1.05,.68,.46);
+    const pauldronRim=mesh(new T.TorusGeometry(.52,.045,8,48),goldMat);pauldronRim.position.set(side*1.53,1.02,1.0);pauldronRim.scale.set(1.2,.8,.5);
     const arm=mesh(new T.CapsuleGeometry(.3,.88,5,12),metal);arm.position.set(side*1.72,-.1,.35);arm.rotation.z=side*-.22;
     const gauntlet=mesh(new T.SphereGeometry(.48,24,18),brightMetal);gauntlet.position.set(side*1.82,-.85,.52);gauntlet.scale.set(.85,1.1,.7);
     orb(side*1.8,-.84,.94,.13,.13,.09,glowMat);
