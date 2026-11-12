@@ -130,7 +130,7 @@ function monster(x,y,r,side,idx){
 function spawnBurst(x,y,color,n=30){for(let i=0;i<n;i++){let a=Math.random()*Math.PI*2,v=1+Math.random()*7;bits.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:35+Math.random()*35,color,r:2+Math.random()*4})}}
 function launch(){
  attackStart=performance.now();shots=[];
- const r=Math.min(W,H)*.19,gap=Math.min(W,H)*.23,y=H*.52;
+ const r=Math.min(W,H)*.19,gap=Math.min(W,H)*.19,y=H*.52;
  for(let side of [-1,1])shots.push({x:W/2+side*gap,y:y+r*.08,vx:side*.9,vy:7,life:1,side});
  spawnBurst(W/2,H*.25,'#ffdc8c',38);if(soundOn){cannonSound(0);cannonSound(145);}
 }
@@ -144,7 +144,7 @@ function drawShots(){
  }
 }
 function frame(now){const dt=Math.min(40,now-last||16);last=now;time+=dt;background();
- const r=Math.min(W,H)*.18,gap=Math.min(W,H)*.235,enter=attackStart<0?1:clamp((now-attackStart)/550,0,1),ease=1-Math.pow(1-enter,3);
+ const r=Math.min(W,H)*.18,gap=Math.min(W,H)*.19,enter=attackStart<0?1:clamp((now-attackStart)/550,0,1),ease=1-Math.pow(1-enter,3);
  const bob=Math.sin(time*.002)*8;
  monster(W/2-gap*ease,H*.52+bob,r, -1,0);monster(W/2+gap*ease,H*.52-bob,r,1,1);
  if(attackStart>=0&&now-attackStart>900&&now-attackStart<2900&&shots.length===0&&now-attackStart<1150){
@@ -158,17 +158,22 @@ function frame(now){const dt=Math.min(40,now-last||16);last=now;time+=dt;backgro
 requestAnimationFrame(frame);
 function enableSound(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=audio||new AC();audio.resume();soundOn=true;document.getElementById('sound').textContent='SOUND: ON'}
 function cannonSound(delayMs=0){if(!audio)return;const now=audio.currentTime+delayMs/1000;
- // Softer, playful cinematic thump with a short airy whoosh; no harsh metallic buzz.
- const osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';
- osc.frequency.setValueAtTime(92,now);osc.frequency.exponentialRampToValueAtTime(42,now+.38);
- gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.2,now+.025);
- gain.gain.exponentialRampToValueAtTime(.0001,now+.48);osc.connect(gain).connect(audio.destination);osc.start(now);osc.stop(now+.5);
- const n=Math.floor(audio.sampleRate*.24),buf=audio.createBuffer(1,n,audio.sampleRate),data=buf.getChannelData(0);
- for(let i=0;i<n;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/n,3);
- const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),ng=audio.createGain();
- src.buffer=buf;filter.type='lowpass';filter.frequency.setValueAtTime(650,now);filter.frequency.exponentialRampToValueAtTime(180,now+.22);
- ng.gain.setValueAtTime(.0001,now);ng.gain.exponentialRampToValueAtTime(.11,now+.018);ng.gain.exponentialRampToValueAtTime(.0001,now+.25);
- src.connect(filter).connect(ng).connect(audio.destination);src.start(now)}
+ // A playful rubbery zip-pop: quick spring glide, tiny sparkle chirp, soft air puff.
+ const makeTone=(type,from,to,peak,duration)=>{
+  const o=audio.createOscillator(),g=audio.createGain();
+  o.type=type;o.frequency.setValueAtTime(from,now);o.frequency.exponentialRampToValueAtTime(to,now+duration*.72);
+  g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(peak,now+.012);g.gain.exponentialRampToValueAtTime(.0001,now+duration);
+  o.connect(g).connect(audio.destination);o.start(now);o.stop(now+duration+.02);
+ };
+ makeTone('triangle',310,118,.16,.28);
+ makeTone('sine',880,520,.045,.13);
+ const n=Math.floor(audio.sampleRate*.16),buf=audio.createBuffer(1,n,audio.sampleRate),data=buf.getChannelData(0);
+ for(let i=0;i<n;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/n,4);
+ const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),g=audio.createGain();
+ src.buffer=buf;filter.type='lowpass';filter.frequency.setValueAtTime(1100,now);filter.frequency.exponentialRampToValueAtTime(360,now+.15);
+ g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.07,now+.01);g.gain.exponentialRampToValueAtTime(.0001,now+.17);
+ src.connect(filter).connect(g).connect(audio.destination);src.start(now);
+}
 document.getElementById('sound').addEventListener('click',enableSound);
 document.getElementById('launch').addEventListener('click',launch);
 })();
