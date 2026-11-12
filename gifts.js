@@ -29,6 +29,7 @@ const TIKNATION_GIFT_CATALOG = {
   finger_of_death:{name:"Finger of Death",emoji:"💀",category:"Legendary",cost:250,style:"fingerdeath",sound:"fingerdeath"},
   eclipse_leviathan:{name:"Eclipse Leviathan",emoji:"🌑",category:"Legendary",cost:250,style:"eclipse_leviathan",sound:"eclipse_leviathan"},
   infinity_guardian:{name:"Infinity Guardian",emoji:"♾️",category:"Mythic",cost:250,style:"infinity_guardian",sound:"infinity_guardian"},
+  reaper_arrival:{name:"The Grim Reaper's Arrival",emoji:"💀",category:"Legendary",cost:250,style:"reaper",sound:"reaper"},
   clouds_of_mystery:{name:"Clouds of Mystery",emoji:"☁️",category:"Magical",cost:50,style:"storm",sound:"mystery"},
   hammer_of_pain:{name:"Hammer of Pain",emoji:"🔨",category:"Special Effects",cost:50,style:"hammer",sound:"hammer"},
   thunder_ass:{name:"Thunder Ass",emoji:"💨",category:"Surprises",cost:69,style:"deathass",sound:"stinkdeath"},
@@ -98,6 +99,14 @@ async function playTikNationGiftSound(gift) {
     if (context.state !== "running") return;
     const now = context.currentTime;
 
+    if (gift.style === "reaper") {
+      const length=Math.floor(context.sampleRate*5.8),buffer=context.createBuffer(1,length,context.sampleRate),data=buffer.getChannelData(0);
+      for(let i=0;i<length;i++){const t=i/context.sampleRate;data[i]=(Math.random()*2-1)*Math.pow(1-t/5.8,1.8);}
+      const noise=context.createBufferSource(),low=context.createBiquadFilter(),gain=context.createGain();noise.buffer=buffer;low.type="lowpass";low.frequency.setValueAtTime(180,now);low.frequency.linearRampToValueAtTime(900,now+1.7);low.frequency.exponentialRampToValueAtTime(120,now+5.6);gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(.12,now+.8);gain.gain.setValueAtTime(.1,now+3.4);gain.gain.exponentialRampToValueAtTime(.0001,now+5.7);noise.connect(low);low.connect(gain);gain.connect(context.destination);noise.start(now);noise.stop(now+5.8);
+      [0,2.4,4.8].forEach((d,i)=>{const o=context.createOscillator(),g=context.createGain(),f=context.createBiquadFilter();o.type="sine";o.frequency.setValueAtTime(48-i*5,now+d);o.frequency.exponentialRampToValueAtTime(29,now+d+.75);f.type="lowpass";f.frequency.value=110;g.gain.setValueAtTime(.0001,now+d);g.gain.linearRampToValueAtTime(.24,now+d+.08);g.gain.exponentialRampToValueAtTime(.0001,now+d+1.1);o.connect(f);f.connect(g);g.connect(context.destination);o.start(now+d);o.stop(now+d+1.15);});
+      [1.2,3.65].forEach((d,i)=>{const o=context.createOscillator(),g=context.createGain(),f=context.createBiquadFilter();o.type="sawtooth";o.frequency.setValueAtTime(520,now+d);o.frequency.exponentialRampToValueAtTime(95,now+d+.65);f.type="lowpass";f.frequency.value=850;g.gain.setValueAtTime(.0001,now+d);g.gain.linearRampToValueAtTime(.055,now+d+.07);g.gain.exponentialRampToValueAtTime(.0001,now+d+.72);o.connect(f);f.connect(g);g.connect(context.destination);o.start(now+d);o.stop(now+d+.75);});
+      return;
+    }
     if (gift.style === "infinity_guardian") {
       const length=Math.floor(context.sampleRate*8),buffer=context.createBuffer(1,length,context.sampleRate),data=buffer.getChannelData(0);
       for(let i=0;i<length;i++){data[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/length);}
