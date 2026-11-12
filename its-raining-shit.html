@@ -23,78 +23,29 @@ button.primary{background:linear-gradient(180deg,#d84c42,#8b211f);border-color:#
 @keyframes snow{to{background-position:0 360px,23px 377px}}
 </style></head>
 <body><main id="stage"><div class="glow"></div><div class="garland" id="garland"></div><canvas id="fx"></canvas><div class="snow"></div>
-<div class="hud"><div class="eyebrow">TIKNATION HOLIDAY GIFT LAB</div><div class="title">THE CHRISTMAS<br>POO PARADE! 🎄</div><div class="sub">A jolly little holiday surprise. Oh, fudge.</div></div>
-<div class="hint" id="hint">Meet the holiday troublemaker. Tap to start the parade!</div>
-<div class="controls"><button id="sound">🔇 SOUND OFF</button><button class="primary" id="launch">🎁 UNLEASH THE POO</button></div></main>
+<div class="hud"><div class="eyebrow">TIKNATION HOLIDAY GIFT LAB</div><div class="title">IT'S RAINING<br>SHIT! 💩</div><div class="sub">A full-on brown weather event.</div></div>
+<div class="hint" id="hint">Tap to unleash the storm.</div>
+<div class="controls"><button id="sound">🔇 SOUND OFF</button><button class="primary" id="launch">💩 MAKE IT RAIN</button></div></main>
 <script>
 (()=>{const c=document.getElementById('fx'),ctx=c.getContext('2d'),hint=document.getElementById('hint'),garland=document.getElementById('garland');let w=0,h=0,dpr=1,things=[],snow=[],running=false,soundOn=false,audio=null,last=0,raf=0,mascotX=0,mascotY=0;
 for(let i=0;i<22;i++){const b=document.createElement('i');b.className='bulb';b.style.left=(i*4.8+1)+'%';b.style.animationDelay=(Math.random()*1.4)+'s';garland.appendChild(b)}
 function resize(){dpr=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;c.style.width=w+'px';c.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);mascotX=w*.5;mascotY=h*.55}addEventListener('resize',resize);resize();
-function mascot(x,y,scale,tilt=0){
-ctx.save();ctx.translate(x,y);ctx.rotate(tilt);ctx.scale(scale,scale);
-// A much taller, slimmer, tapered Mr. Hankey silhouette — sculpted as one organic form.
-ctx.fillStyle='#0009';ctx.beginPath();ctx.ellipse(0,76,25,7,0,0,Math.PI*2);ctx.fill();
-ctx.save();
-ctx.fillStyle='#5a2b16';ctx.strokeStyle='#32170d';ctx.lineWidth=2.5;ctx.lineJoin='round';
-ctx.beginPath();
-ctx.moveTo(-20,65);
-ctx.bezierCurveTo(-29,44,-24,17,-19,-7);
-ctx.bezierCurveTo(-15,-34,-13,-64,-5,-84);
-ctx.bezierCurveTo(1,-99,13,-107,22,-100);
-ctx.bezierCurveTo(31,-94,26,-83,17,-76);
-ctx.bezierCurveTo(8,-69,5,-65,10,-58);
-ctx.bezierCurveTo(23,-42,25,-18,22,7);
-ctx.bezierCurveTo(26,32,29,52,18,67);
-ctx.bezierCurveTo(8,79,-12,79,-20,65);
-ctx.closePath();ctx.fill();ctx.stroke();
-// Sculpted light and shadow create a rounded, wet, deep-brown surface.
-ctx.save();ctx.clip();
-let shade=ctx.createLinearGradient(-29,-20,29,24);
-shade.addColorStop(0,'#d49a60');shade.addColorStop(.17,'#a86637');shade.addColorStop(.43,'#80401f');shade.addColorStop(.72,'#542714');shade.addColorStop(1,'#281109');
-ctx.fillStyle=shade;ctx.fillRect(-35,-115,70,205);
-let rim=ctx.createRadialGradient(-13,-40,2,-5,-24,65);
-rim.addColorStop(0,'#f4c58b99');rim.addColorStop(.28,'#d18a4d66');rim.addColorStop(.7,'#8b4a2680');rim.addColorStop(1,'#210d08cc');
-ctx.fillStyle=rim;ctx.fillRect(-35,-115,70,205);
-// A few irregular natural surface folds, not speckled cartoon dots.
-ctx.strokeStyle='#32170f55';ctx.lineWidth=3;ctx.lineCap='round';
-ctx.beginPath();ctx.moveTo(15,-48);ctx.quadraticCurveTo(22,-25,17,-8);ctx.moveTo(17,29);ctx.quadraticCurveTo(20,43,13,53);ctx.stroke();
-ctx.strokeStyle='#f4c58b66';ctx.lineWidth=4;
-ctx.beginPath();ctx.moveTo(-15,31);ctx.quadraticCurveTo(-20,4,-12,-27);ctx.quadraticCurveTo(-9,-47,-2,-60);ctx.stroke();
-// Distinct wet specular reflections along the curved left shoulder.
-let wet=ctx.createLinearGradient(-20,-72,-2,48);
-wet.addColorStop(0,'#fff0d9');wet.addColorStop(.12,'#ffe0b2dd');wet.addColorStop(.32,'#f6c58b99');wet.addColorStop(.58,'#e6a66a22');wet.addColorStop(1,'#e6a66a00');
-ctx.fillStyle=wet;ctx.beginPath();ctx.ellipse(-13,-18,4.5,52,-.12,0,Math.PI*2);ctx.fill();
-ctx.fillStyle='#fff2dfbb';ctx.beginPath();ctx.ellipse(-9,-76,3.5,8,-.2,0,Math.PI*2);ctx.fill();
-ctx.restore();
-// Small expressive face, set into the front instead of oversized cartoon features.
-ctx.fillStyle='#fff4e8';ctx.strokeStyle='#482414';ctx.lineWidth=1.4;
-ctx.beginPath();ctx.ellipse(-6,-21,5.8,8,-.08,0,Math.PI*2);ctx.ellipse(8,-21,5.8,8,.08,0,Math.PI*2);ctx.fill();ctx.stroke();
-ctx.fillStyle='#160c08';ctx.beginPath();ctx.arc(-5,-20,2.3,0,Math.PI*2);ctx.arc(9,-20,2.3,0,Math.PI*2);ctx.fill();
-ctx.strokeStyle='#29130b';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(-11,0);ctx.quadraticCurveTo(0,8,12,0);ctx.stroke();
-// Short, thin arms with tiny white gloves.
-ctx.strokeStyle='#633319';ctx.lineWidth=5;ctx.lineCap='round';ctx.beginPath();
-ctx.moveTo(-18,13);ctx.quadraticCurveTo(-33,2,-37,-12);
-ctx.moveTo(19,13);ctx.quadraticCurveTo(32,1,36,-12);ctx.stroke();
-for(const side of [-1,1]){ctx.fillStyle='#fff7eb';ctx.strokeStyle='#8e7968';ctx.lineWidth=1;ctx.beginPath();ctx.arc(side*38,-14,5.5,0,Math.PI*2);ctx.fill();ctx.stroke()}
-// Santa hat follows the narrow curled tip.
-const hat=ctx.createLinearGradient(-12,-119,18,-85);
-hat.addColorStop(0,'#ff6258');hat.addColorStop(1,'#9d101b');
-ctx.fillStyle=hat;ctx.strokeStyle='#67121a';ctx.lineWidth=1.5;ctx.beginPath();
-ctx.moveTo(-13,-91);ctx.quadraticCurveTo(-13,-111,3,-116);ctx.quadraticCurveTo(17,-119,24,-107);ctx.quadraticCurveTo(10,-103,12,-88);ctx.closePath();ctx.fill();ctx.stroke();
-ctx.fillStyle='#fff8ee';ctx.strokeStyle='#c8b9a8';ctx.beginPath();ctx.ellipse(0,-89,16,4.5,-.08,0,Math.PI*2);ctx.fill();ctx.stroke();
-ctx.beginPath();ctx.arc(25,-107,5.5,0,Math.PI*2);ctx.fill();ctx.stroke();
-ctx.restore();
-}
-function emoji(x,y,size,rot,alpha=1){ctx.save();ctx.globalAlpha=alpha;ctx.translate(x,y);ctx.rotate(rot);ctx.font=size+'px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('💩',0,0);ctx.restore()}
+function emoji(x,y,size,rot,alpha=1){
+ctx.save();ctx.globalAlpha=alpha;ctx.translate(x,y);ctx.rotate(rot);ctx.scale(size/54,size/54);
+const g=ctx.createLinearGradient(-24,-27,25,24);g.addColorStop(0,'#d39a5b');g.addColorStop(.18,'#a96935');g.addColorStop(.52,'#75401f');g.addColorStop(.82,'#4a2414');g.addColorStop(1,'#291109');
+ctx.shadowColor='#0009';ctx.shadowBlur=8;ctx.shadowOffsetY=5;ctx.fillStyle=g;ctx.strokeStyle='#32170d';ctx.lineWidth=2.2;ctx.lineJoin='round';
+ctx.beginPath();ctx.moveTo(-23,18);ctx.bezierCurveTo(-29,8,-20,-1,-12,-3);ctx.bezierCurveTo(-23,-11,-17,-23,-6,-22);ctx.bezierCurveTo(-3,-33,13,-32,15,-21);ctx.bezierCurveTo(29,-17,27,-4,17,1);ctx.bezierCurveTo(30,10,22,25,8,25);ctx.bezierCurveTo(-5,30,-19,27,-23,18);ctx.closePath();ctx.fill();ctx.stroke();
+ctx.shadowColor='transparent';ctx.strokeStyle='#f5c78eaa';ctx.lineWidth=3.4;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-14,12);ctx.bezierCurveTo(-20,2,-8,-3,-1,-5);ctx.bezierCurveTo(-11,-15,-1,-25,7,-21);ctx.stroke();
+ctx.strokeStyle='#2a120b88';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(16,-10);ctx.quadraticCurveTo(24,0,14,8);ctx.stroke();ctx.restore()}
 function draw(t){ctx.clearRect(0,0,w,h);for(let i=0;i<snow.length;i++){const p=snow[i];p.y+=p.v;p.x+=Math.sin(t*.001+p.phase)*.25;if(p.y>h+5){p.y=-5;p.x=Math.random()*w}ctx.fillStyle='#ffffffaa';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}
-mascotY=h*.56+Math.sin(t*.002)*7;mascot(mascotX,mascotY,Math.min(w/410,1.12),Math.sin(t*.0015)*.035);
+// Character removed: only falling turds fill the scene.
 for(let i=things.length-1;i>=0;i--){const p=things[i];p.x+=p.vx;p.y+=p.vy;p.rot+=p.spin;p.vy+=.045;p.life-=.003;if(p.y>h+60||p.life<=0){things.splice(i,1);continue}emoji(p.x,p.y,p.size,p.rot,Math.min(1,p.life))}
-if(running&&t-last>8000){running=false;hint.textContent='The parade is over. Merry Christmas, you filthy animal.'}raf=requestAnimationFrame(draw)}
+if(running&&t-last>8000){running=false;hint.textContent='The storm has passed. For now.'}raf=requestAnimationFrame(draw)}
 function chime(freq,when,duration=.32){if(!audio)return;const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.setValueAtTime(freq,when);g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(.09,when+.018);g.gain.exponentialRampToValueAtTime(.0001,when+duration);o.connect(g);g.connect(audio.destination);o.start(when);o.stop(when+duration)}
 function jingle(){if(!audio)return;const now=audio.currentTime;[659,784,988,784,880,1047].forEach((f,i)=>chime(f,now+i*.14,.28))}
 function plop(){if(!audio)return;const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.setValueAtTime(125,audio.currentTime);o.frequency.exponentialRampToValueAtTime(42,audio.currentTime+.22);g.gain.setValueAtTime(.22,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.24);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+.25)}
 document.getElementById('sound').addEventListener('click',()=>{soundOn=!soundOn;if(soundOn){audio=audio||new(window.AudioContext||window.webkitAudioContext)();audio.resume();jingle();document.getElementById('sound').textContent='🔊 SOUND ON'}else document.getElementById('sound').textContent='🔇 SOUND OFF'});
-document.getElementById('launch').addEventListener('click',()=>{running=true;last=performance.now();hint.textContent='HO HO HOLY CRAP! 💩';for(let i=0;i<44;i++){things.push({x:Math.random()*w,y:-Math.random()*h*.7,size:24+Math.random()*48,vx:(Math.random()-.5)*3,vy:3+Math.random()*5,rot:Math.random()*6,spin:(Math.random()-.5)*.09,life:1})}if(soundOn){jingle();setTimeout(plop,550);setTimeout(plop,1150)}});
+document.getElementById('launch').addEventListener('click',()=>{running=true;last=performance.now();hint.textContent="IT'S A POO-NAMI! 💩";for(let i=0;i<44;i++){things.push({x:Math.random()*w,y:-Math.random()*h*.7,size:24+Math.random()*48,vx:(Math.random()-.5)*3,vy:3+Math.random()*5,rot:Math.random()*6,spin:(Math.random()-.5)*.09,life:1})}if(soundOn){jingle();setTimeout(plop,550);setTimeout(plop,1150)}});
 for(let i=0;i<95;i++)snow.push({x:Math.random()*w,y:Math.random()*h,v:.35+Math.random()*.9,r:.5+Math.random()*1.5,phase:Math.random()*6});
 cancelAnimationFrame(raf);raf=requestAnimationFrame(draw);
 })();
