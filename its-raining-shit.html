@@ -54,11 +54,24 @@ ctx.bezierCurveTo(21,-52,31,-34,29,-13);
 ctx.bezierCurveTo(34,13,38,38,27,55);
 ctx.bezierCurveTo(16,70,-17,72,-31,55);
 ctx.closePath();ctx.fill();ctx.stroke();
-// Subtle wet-looking highlights and natural brown shading, without a lumpy silhouette.
-const shine=ctx.createRadialGradient(-18,-30,1,-5,5,76);
-shine.addColorStop(0,'#edc58a77');shine.addColorStop(.38,'#d49a5840');shine.addColorStop(1,'#d49a5800');
-ctx.fillStyle=shine;ctx.fill();
-ctx.strokeStyle='#d9a56a66';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-20,31);ctx.quadraticCurveTo(-25,-1,-17,-36);ctx.stroke();
+// Richer natural brown variation and a moist, uneven sheen, clipped to the body.
+ctx.save();ctx.clip();
+const warm=ctx.createLinearGradient(-30,-70,28,65);
+warm.addColorStop(0,'#d69a58aa');warm.addColorStop(.22,'#a96832aa');warm.addColorStop(.55,'#87502555');warm.addColorStop(1,'#32170f99');
+ctx.fillStyle=warm;ctx.fillRect(-45,-110,90,190);
+for(let i=0;i<46;i++){
+const px=Math.sin(i*12.73)*25,py=-70+((i*37)%132);
+ctx.fillStyle=i%3===0?'#32190f24':'#f0bd7a20';
+ctx.beginPath();ctx.ellipse(px,py,1.2+(i%3)*.45,2.2+(i%4)*.5,Math.sin(i)*.5,0,Math.PI*2);ctx.fill();
+}
+const shine=ctx.createRadialGradient(-17,-38,1,-8,-20,54);
+shine.addColorStop(0,'#ffe0a277');shine.addColorStop(.28,'#f0c17a55');shine.addColorStop(1,'#f0c17a00');
+ctx.fillStyle=shine;ctx.beginPath();ctx.ellipse(-13,-17,15,55,-.12,0,Math.PI*2);ctx.fill();
+ctx.strokeStyle='#f5d39a88';ctx.lineWidth=3;ctx.lineCap='round';ctx.beginPath();
+ctx.moveTo(-19,25);ctx.quadraticCurveTo(-25,-5,-17,-48);ctx.stroke();
+ctx.strokeStyle='#32180f55';ctx.lineWidth=4;ctx.beginPath();
+ctx.moveTo(23,-37);ctx.quadraticCurveTo(32,4,25,39);ctx.stroke();
+ctx.restore();
 // Mr. Hankey's familiar wide eyes and happy grin.
 ctx.fillStyle='#fff';ctx.strokeStyle='#4a2918';ctx.lineWidth=1.5;ctx.beginPath();
 ctx.ellipse(-10,-23,9,12,-.08,0,Math.PI*2);ctx.ellipse(10,-23,9,12,.08,0,Math.PI*2);ctx.fill();ctx.stroke();
