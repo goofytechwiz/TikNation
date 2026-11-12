@@ -32,11 +32,32 @@ for(let i=0;i<22;i++){const b=document.createElement('i');b.className='bulb';b.s
 function resize(){dpr=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;c.style.width=w+'px';c.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);mascotX=w*.5;mascotY=h*.55}addEventListener('resize',resize);resize();
 function emoji(x,y,size,rot,alpha=1){
 ctx.save();ctx.globalAlpha=alpha;ctx.translate(x,y);ctx.rotate(rot);ctx.scale(size/54,size/54);
-const g=ctx.createLinearGradient(-24,-27,25,24);g.addColorStop(0,'#d39a5b');g.addColorStop(.18,'#a96935');g.addColorStop(.52,'#75401f');g.addColorStop(.82,'#4a2414');g.addColorStop(1,'#291109');
-ctx.shadowColor='#0009';ctx.shadowBlur=8;ctx.shadowOffsetY=5;ctx.fillStyle=g;ctx.strokeStyle='#32170d';ctx.lineWidth=2.2;ctx.lineJoin='round';
-ctx.beginPath();ctx.moveTo(-23,18);ctx.bezierCurveTo(-29,8,-20,-1,-12,-3);ctx.bezierCurveTo(-23,-11,-17,-23,-6,-22);ctx.bezierCurveTo(-3,-33,13,-32,15,-21);ctx.bezierCurveTo(29,-17,27,-4,17,1);ctx.bezierCurveTo(30,10,22,25,8,25);ctx.bezierCurveTo(-5,30,-19,27,-23,18);ctx.closePath();ctx.fill();ctx.stroke();
-ctx.shadowColor='transparent';ctx.strokeStyle='#f5c78eaa';ctx.lineWidth=3.4;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-14,12);ctx.bezierCurveTo(-20,2,-8,-3,-1,-5);ctx.bezierCurveTo(-11,-15,-1,-25,7,-21);ctx.stroke();
-ctx.strokeStyle='#2a120b88';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(16,-10);ctx.quadraticCurveTo(24,0,14,8);ctx.stroke();ctx.restore()}
+// A single soft, tapered, curved turd — not a pile of round lobes.
+const body=ctx.createLinearGradient(-22,-18,22,22);
+body.addColorStop(0,'#d49a5b');body.addColorStop(.16,'#b8783f');body.addColorStop(.42,'#8b4c27');body.addColorStop(.72,'#633018');body.addColorStop(1,'#35170d');
+ctx.shadowColor='#0009';ctx.shadowBlur=7;ctx.shadowOffsetY=5;
+ctx.fillStyle=body;ctx.strokeStyle='#3a1a0d';ctx.lineWidth=2.1;ctx.lineJoin='round';
+ctx.beginPath();
+ctx.moveTo(-23,15);
+ctx.bezierCurveTo(-28,7,-24,-2,-15,-5);
+ctx.bezierCurveTo(-7,-8,1,-7,6,-12);
+ctx.bezierCurveTo(11,-17,8,-25,14,-29);
+ctx.bezierCurveTo(21,-34,29,-28,26,-20);
+ctx.bezierCurveTo(24,-12,17,-7,14,-1);
+ctx.bezierCurveTo(10,8,18,14,13,22);
+ctx.bezierCurveTo(7,31,-12,29,-20,22);
+ctx.bezierCurveTo(-22,20,-23,18,-23,15);
+ctx.closePath();ctx.fill();ctx.stroke();
+ctx.shadowColor='transparent';
+// Soft rounded underside and a single wet highlight following the curve.
+const underside=ctx.createLinearGradient(0,5,0,29);
+underside.addColorStop(0,'#55271300');underside.addColorStop(1,'#24100899');
+ctx.fillStyle=underside;ctx.fill();
+ctx.strokeStyle='#f4c58b99';ctx.lineWidth=3.2;ctx.lineCap='round';
+ctx.beginPath();ctx.moveTo(-17,9);ctx.bezierCurveTo(-17,1,-8,-1,-1,-1);ctx.bezierCurveTo(8,-2,13,-10,17,-19);ctx.stroke();
+ctx.strokeStyle='#32160c88';ctx.lineWidth=3.5;
+ctx.beginPath();ctx.moveTo(15,3);ctx.quadraticCurveTo(21,11,14,17);ctx.stroke();
+ctx.restore()}
 function draw(t){ctx.clearRect(0,0,w,h);for(let i=0;i<snow.length;i++){const p=snow[i];p.y+=p.v;p.x+=Math.sin(t*.001+p.phase)*.25;if(p.y>h+5){p.y=-5;p.x=Math.random()*w}ctx.fillStyle='#ffffffaa';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}
 // Character removed: only falling turds fill the scene.
 for(let i=things.length-1;i>=0;i--){const p=things[i];p.x+=p.vx;p.y+=p.vy;p.rot+=p.spin;p.vy+=.045;p.life-=.003;if(p.y>h+60||p.life<=0){things.splice(i,1);continue}emoji(p.x,p.y,p.size,p.rot,Math.min(1,p.life))}
