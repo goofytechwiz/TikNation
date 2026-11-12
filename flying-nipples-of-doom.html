@@ -144,7 +144,7 @@ function drawShots(){
  }
 }
 function frame(now){const dt=Math.min(40,now-last||16);last=now;time+=dt;background();
- const r=Math.min(W,H)*.18,gap=Math.min(W,H)*.235,enter=attackStart<0?0:clamp((now-attackStart)/550,0,1),ease=1-Math.pow(1-enter,3);
+ const r=Math.min(W,H)*.18,gap=Math.min(W,H)*.235,enter=attackStart<0?1:clamp((now-attackStart)/550,0,1),ease=1-Math.pow(1-enter,3);
  const bob=Math.sin(time*.002)*8;
  monster(W/2-gap*ease,H*.52+bob,r, -1,0);monster(W/2+gap*ease,H*.52-bob,r,1,1);
  if(attackStart>=0&&now-attackStart>900&&now-attackStart<2900&&shots.length===0&&now-attackStart<1150){
@@ -158,11 +158,17 @@ function frame(now){const dt=Math.min(40,now-last||16);last=now;time+=dt;backgro
 requestAnimationFrame(frame);
 function enableSound(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=audio||new AC();audio.resume();soundOn=true;document.getElementById('sound').textContent='SOUND: ON'}
 function cannonSound(delayMs=0){if(!audio)return;const now=audio.currentTime+delayMs/1000;
- // Metallic firing mechanism click, followed by a deep cannon report and airy blast.
- const click=audio.createOscillator(),cg=audio.createGain();click.type='square';click.frequency.setValueAtTime(920,now);click.frequency.exponentialRampToValueAtTime(260,now+.045);cg.gain.setValueAtTime(.0001,now);cg.gain.exponentialRampToValueAtTime(.09,now+.004);cg.gain.exponentialRampToValueAtTime(.0001,now+.065);click.connect(cg).connect(audio.destination);click.start(now);click.stop(now+.07);
- const osc=audio.createOscillator(),gain=audio.createGain();osc.type='sawtooth';osc.frequency.setValueAtTime(125,now+.025);osc.frequency.exponentialRampToValueAtTime(34,now+.52);gain.gain.setValueAtTime(.0001,now+.02);gain.gain.exponentialRampToValueAtTime(.34,now+.05);gain.gain.exponentialRampToValueAtTime(.0001,now+.62);osc.connect(gain).connect(audio.destination);osc.start(now+.02);osc.stop(now+.64);
- const n=Math.floor(audio.sampleRate*.34),buf=audio.createBuffer(1,n,audio.sampleRate),data=buf.getChannelData(0);for(let i=0;i<n;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);
- const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),ng=audio.createGain();src.buffer=buf;filter.type='lowpass';filter.frequency.setValueAtTime(1500,now);filter.frequency.exponentialRampToValueAtTime(260,now+.3);ng.gain.setValueAtTime(.0001,now);ng.gain.exponentialRampToValueAtTime(.32,now+.012);ng.gain.exponentialRampToValueAtTime(.0001,now+.36);src.connect(filter).connect(ng).connect(audio.destination);src.start(now)}
+ // Softer, playful cinematic thump with a short airy whoosh; no harsh metallic buzz.
+ const osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';
+ osc.frequency.setValueAtTime(92,now);osc.frequency.exponentialRampToValueAtTime(42,now+.38);
+ gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.2,now+.025);
+ gain.gain.exponentialRampToValueAtTime(.0001,now+.48);osc.connect(gain).connect(audio.destination);osc.start(now);osc.stop(now+.5);
+ const n=Math.floor(audio.sampleRate*.24),buf=audio.createBuffer(1,n,audio.sampleRate),data=buf.getChannelData(0);
+ for(let i=0;i<n;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/n,3);
+ const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),ng=audio.createGain();
+ src.buffer=buf;filter.type='lowpass';filter.frequency.setValueAtTime(650,now);filter.frequency.exponentialRampToValueAtTime(180,now+.22);
+ ng.gain.setValueAtTime(.0001,now);ng.gain.exponentialRampToValueAtTime(.11,now+.018);ng.gain.exponentialRampToValueAtTime(.0001,now+.25);
+ src.connect(filter).connect(ng).connect(audio.destination);src.start(now)}
 document.getElementById('sound').addEventListener('click',enableSound);
 document.getElementById('launch').addEventListener('click',launch);
 })();
