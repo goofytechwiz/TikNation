@@ -75,8 +75,8 @@ const particles=[];const pGeo=new THREE.SphereGeometry(.1,6,6);
 function burst(count,color,speed,life,size,origin=new THREE.Vector3(0,2.7,11.8)){for(let i=0;i<count;i++){const mesh=new THREE.Mesh(pGeo,new THREE.MeshBasicMaterial({color,transparent:true,opacity:.95,depthWrite:false}));mesh.position.copy(origin);mesh.scale.setScalar(size*(.5+Math.random()));scene.add(mesh);const v=new THREE.Vector3((Math.random()-.5)*speed,Math.random()*speed*.85,(Math.random()-.5)*speed);particles.push({mesh,v,life,age:0})}}
 let start=performance.now(),t=0,phase=0,exploded=false,blastAge=0,shake=0,lookX=0,lookY=0,drag=false,lastX=0,lastY=0;
 let soundOn=false,trainStarted=false;
-const trainSample=new Audio('https://sfxmint.com/dl/steam-train-motion-01.mp3');
-const whistleSample=new Audio('https://sfxmint.com/dl/train-whistle-04.mp3');
+const trainSample=new Audio('https://sfxjar.com/audio/3009.mp3');
+const whistleSample=new Audio('https://sfxjar.com/audio/3015.mp3');
 const blastSample=new Audio('https://assets.sfx.woven.video/sfx/explosion.wav');
 [trainSample,whistleSample,blastSample].forEach(a=>{a.preload='auto';a.volume=.9});
 trainSample.loop=true;
@@ -84,7 +84,7 @@ function playClip(a,volume=1){if(!soundOn)return;a.pause();a.currentTime=0;a.vol
 function stopTrain(){trainSample.pause();trainSample.currentTime=0;trainStarted=false;}
 function enableSound(){soundOn=true;document.getElementById('sound').textContent='♫ SOUND ON';}
 function trainWhistle(){playClip(whistleSample,.9)}
-function startTrainSound(){if(!soundOn||trainStarted)return;trainStarted=true;trainSample.volume=.95;trainSample.playbackRate=1;const p=trainSample.play();if(p&&p.catch)p.catch(()=>{trainStarted=false;});}
+function startTrainSound(){if(!soundOn||trainStarted)return;trainStarted=true;trainSample.volume=.68;trainSample.playbackRate=1;const p=trainSample.play();if(p&&p.catch)p.catch(()=>{trainStarted=false;});}
 function boom(){if(!soundOn)return;stopTrain();playClip(blastSample,1);}
 document.getElementById('sound').onclick=()=>{soundOn=!soundOn;if(!soundOn){[trainSample,whistleSample,blastSample].forEach(a=>{a.pause();a.currentTime=0});trainStarted=false;document.getElementById('sound').textContent='♫ ENABLE SOUND';}else{document.getElementById('sound').textContent='♫ SOUND ON';}};
 function reset(){start=performance.now();t=0;phase=0;exploded=false;blastAge=0;train.visible=true;train.position.set(0,0,-46);train.scale.setScalar(1);blast.visible=false;flash.style.opacity='0';shock.style.opacity='0';shock.style.transform='translate(-50%,-50%) scale(.1)';status.textContent='DISTANT WHEELS RATTLE OVER THE TRACKS';particles.forEach(p=>{scene.remove(p.mesh);p.mesh.material.dispose()});particles.length=0;;[trainSample,whistleSample,blastSample].forEach(a=>{a.pause();a.currentTime=0});trainStarted=false;}
@@ -97,7 +97,7 @@ else if(t<8.15){const u=(t-6.6)/1.55;train.position.z=-14.2+u*24;train.scale.set
 else if(!exploded){triggerBlast()}
 if(t>1.8&&phase===0){phase=1;status.textContent='A POWERFUL STEAM WHISTLE ECHOES THROUGH THE FOREST';if(soundOn)trainWhistle()}
 if(t>2.35&&phase===1){phase=2;status.textContent='STEEL WHEELS CLATTER AND POUND DOWN THE TRACK';startTrainSound()}
-if(t>6.1&&phase===2){phase=3;status.textContent='THE LOCOMOTIVE ROARS CLOSER — FASTER, LOUDER';if(soundOn)trainSample.playbackRate=1.18}
+if(t>6.1&&phase===2){phase=3;status.textContent='THE LOCOMOTIVE ROARS CLOSER — FASTER, LOUDER';if(soundOn)trainSample.volume=1;}
 if(exploded&&phase===3){phase=4;status.textContent='IMPACT! THE LAST TRAIN ERUPTS IN FIRE AND STEEL'}
 if(exploded){blastAge+=.016;const u=Math.min(1,blastAge/1.55);blast.scale.setScalar(.15+u*8);core.material.opacity=Math.max(0,1-blastAge/1.5);hot.material.opacity=Math.max(0,1-blastAge/1.05);ring.scale.setScalar(.2+u*7);ring.material.opacity=Math.max(0,1-blastAge/1.9);flash.style.opacity=String(Math.max(0,.95-blastAge*2.7));shock.style.opacity=String(Math.max(0,1-blastAge/1.8));shock.style.transform='translate(-50%,-50%) scale('+(.1+u*13)+')';fireLight.intensity=Math.max(0,240-blastAge*100);shake=Math.max(0,1-blastAge/1.7)}
 wheels.forEach((w,i)=>w.rotation.x=t*7);carriages.forEach((c,i)=>c.position.y=Math.sin(t*10-i)*.025);
