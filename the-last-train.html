@@ -36,9 +36,30 @@ requestAnimationFrame(draw)}
 requestAnimationFrame(draw);
 function clearTimers(){timers.forEach(clearTimeout);timers=[]}
 function later(fn,ms){timers.push(setTimeout(fn,ms))}
-function noise(duration,volume,filterFreq,delay=0){if(!audio||!sound)return;let n=audio.createBufferSource(),b=audio.createBuffer(1,audio.sampleRate*duration,audio.sampleRate),a=b.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=(Math.random()*2-1)*(1-i/a.length)**1.6;n.buffer=b;let f=audio.createBiquadFilter();f.type='lowpass';f.frequency.value=filterFreq;let g=audio.createGain();let now=audio.currentTime+delay;g.gain.setValueAtTime(.001,now);g.gain.linearRampToValueAtTime(volume,now+.12);g.gain.exponentialRampToValueAtTime(.001,now+duration);n.connect(f);f.connect(g);g.connect(audio.destination);n.start(now);n.stop(now+duration)}
-function osc(freq,endFreq,duration,volume,type='sine',delay=0){if(!audio||!sound)return;let o=audio.createOscillator(),g=audio.createGain(),now=audio.currentTime+delay;o.type=type;o.frequency.setValueAtTime(freq,now);o.frequency.exponentialRampToValueAtTime(Math.max(18,endFreq),now+duration);g.gain.setValueAtTime(.001,now);g.gain.linearRampToValueAtTime(volume,now+.08);g.gain.exponentialRampToValueAtTime(.001,now+duration);o.connect(g);g.connect(audio.destination);o.start(now);o.stop(now+duration)}
-function play(){clearTimers();start=performance.now();status.textContent='THE SUN BEGINS TO FLICKER…';later(()=>{status.textContent='A SHADOW CROSSES THE CORONA';osc(74,38,2.5,.16,'sine');noise(2.4,.09,180)},1100);later(()=>{status.textContent='A SOLAR FLARE TEARS ACROSS THE SKY';noise(1.8,.13,1400);osc(170,480,1.4,.07,'sawtooth')},2400);later(()=>{status.textContent='INCOMING…';noise(2.8,.18,850);osc(110,32,2.6,.11,'triangle')},3100);later(()=>{status.textContent='THE HEAVENS ERUPT';noise(3.8,.65,190);noise(2.1,.24,1800,.03);osc(48,24,3.5,.36,'sawtooth');osc(68,29,2.8,.25,'sine',.06);noise(1.2,.2,4200,.12)},5200);later(()=>{status.textContent='SOLARIS — A NEW STAR IS BORN';osc(620,310,2,.11,'sine');osc(310,155,2.4,.09,'triangle',.1);noise(2,.08,600)},7800)}
-document.getElementById('sound').onclick=async()=>{if(!audio)audio=new(window.AudioContext||window.webkitAudioContext)();await audio.resume();sound=!sound;document.getElementById('sound').textContent=sound?'♫ SOUND ON':'♫ ENABLE SOUND';if(sound){osc(260,520,.25,.08);noise(1.4,.1,120);}};document.getElementById('replay').onclick=play;play();
+function noise(duration,volume,startFreq,endFreq,delay=0,mode='lowpass',texture='white'){
+ if(!audio||!sound)return;
+ const length=Math.max(1,Math.floor(audio.sampleRate*duration)),buffer=audio.createBuffer(1,length,audio.sampleRate),data=buffer.getChannelData(0);
+ let brown=0;
+ for(let i=0;i<length;i++){const white=Math.random()*2-1;brown=(brown*.975)+(white*.025);data[i]=texture==='brown'?brown*5:white;}
+ const src=audio.createBufferSource();src.buffer=buffer;
+ const filter=audio.createBiquadFilter();filter.type=mode;filter.frequency.setValueAtTime(startFreq,audio.currentTime+delay);filter.frequency.exponentialRampToValueAtTime(Math.max(25,endFreq),audio.currentTime+delay+duration);filter.Q.value=mode==='bandpass'?0.65:0.25;
+ const gain=audio.createGain(),now=audio.currentTime+delay;
+ gain.gain.setValueAtTime(.0001,now);gain.gain.linearRampToValueAtTime(volume,now+Math.min(.9,duration*.28));gain.gain.exponentialRampToValueAtTime(.0001,now+duration);
+ src.connect(filter);filter.connect(gain);gain.connect(audio.destination);src.start(now);src.stop(now+duration);
+}
+function crackle(duration,count,volume,delay=0){
+ if(!audio||!sound)return;
+ for(let i=0;i<count;i++){const at=delay+Math.random()*duration;noise(.035+Math.random()*.11,volume*(.35+Math.random()*.65),1800+Math.random()*2600,700+Math.random()*900,at,'highpass');}
+}
+function play(){
+ clearTimers();start=performance.now();status.textContent='THE SUN BEGINS TO FLICKER…';
+ later(()=>{status.textContent='A SHADOW CROSSES THE CORONA';noise(2.8,.16,150,48,0,'lowpass','brown');noise(2.4,.035,420,170,0,'bandpass')},1100);
+ later(()=>{status.textContent='A SOLAR FLARE TEARS ACROSS THE SKY';noise(2.7,.13,260,1900,0,'bandpass');noise(2.2,.10,700,110,0,'lowpass','brown');crackle(2.3,24,.035,.25)},2400);
+ later(()=>{status.textContent='INCOMING…';noise(3.2,.17,1200,95,0,'lowpass');noise(2.8,.14,170,38,.08,'lowpass','brown')},3100);
+ later(()=>{status.textContent='THE HEAVENS ERUPT';noise(4.5,.42,180,32,0,'lowpass','brown');noise(3.8,.19,950,130,0,'lowpass');noise(2.5,.11,2400,420,.04,'bandpass');crackle(3.8,78,.055,.08)},5200);
+ later(()=>{status.textContent='SOLARIS — A NEW STAR IS BORN';noise(3.8,.12,520,90,0,'lowpass','brown');noise(3.2,.045,3200,1100,.2,'highpass');crackle(2.8,34,.025,.25)},7800);
+}
+document.getElementById('sound').onclick=async()=>{if(!audio)audio=new(window.AudioContext||window.webkitAudioContext)();await audio.resume();sound=!sound;document.getElementById('sound').textContent=sound?'♫ SOUND ON':'♫ ENABLE SOUND';if(sound){noise(2.2,.07,180,65,0,'lowpass','brown');}};
+document.getElementById('replay').onclick=play;play();
 })();
 </script></body></html>
