@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050b12"><title>The Drowned Chapel — TikNation Gift Preview</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050b12;color:#e8f3fa;font-family:Georgia,serif}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+.vignette{position:fixed;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(1,5,10,.55),transparent 34%,rgba(1,5,10,.18) 58%,#02070ddd),radial-gradient(ellipse at 50% 44%,transparent 25%,#01050bbd 100%)}
+.ui{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:max(18px,env(safe-area-inset-top)) 18px max(18px,env(safe-area-inset-bottom));pointer-events:none}
+.top{display:flex;justify-content:space-between;align-items:center;font:10px system-ui;letter-spacing:.22em;text-transform:uppercase;color:#c1d0dc}.top b{color:#a9d9ef}.pill{border:1px solid #a7d9ed55;border-radius:30px;padding:8px 12px;background:#07121bbd}
+.center{position:absolute;left:50%;top:74%;transform:translate(-50%,-50%);width:92%;text-align:center;text-shadow:0 2px 24px #000}
+.kicker{font:10px system-ui;letter-spacing:.4em;color:#9bd6e9;text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,58px);letter-spacing:.14em;margin:8px 0;color:#e5edf0}
+.sub{font:11px system-ui;letter-spacing:.18em;text-transform:uppercase;color:#b2c7d0}
+.controls{display:flex;justify-content:center;gap:10px;margin-top:18px;pointer-events:auto}
+button{border:1px solid #9fd9eb88;border-radius:30px;padding:12px 19px;background:linear-gradient(#17313e,#07121a);color:#f0f8fb;font:700 10px system-ui;letter-spacing:.16em;text-transform:uppercase}
+button.secondary{background:#080e16d9;border-color:#ffffff45}
+button:active{transform:scale(.97)}
+.note{font:9px system-ui;letter-spacing:.14em;text-transform:uppercase;text-align:center;color:#8da3ad}
+@media(max-height:560px){.center{top:82%}h1{font-size:27px}.sub{font-size:9px}.controls{margin-top:9px}}
+</style></head><body>
+<canvas id="world"></canvas><div class="vignette"></div>
+<div class="ui"><div class="top"><span><b>TIKNATION</b> / GIFT PREVIEW</span><span class="pill" id="state">THE WATER IS STILL</span></div>
+<div class="center"><div class="kicker">A forgotten place beneath the tide</div><h1>THE DROWNED CHAPEL</h1><div class="sub">Some prayers never reach the surface</div>
+<div class="controls"><button id="play">Awaken the chapel</button><button class="secondary" id="sound">Sound off</button></div></div>
+<div class="note">Preview only · Not in the live gift catalog</div></div>
+<script>
+(()=>{
+const c=document.getElementById('world'),x=c.getContext('2d'),state=document.getElementById('state');let W,H,D,t=0,active=true,audio=null,soundOn=false,particles=[],rays=[];
+const rand=(a,b)=>a+Math.random()*(b-a);
+function size(){D=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*D;c.height=H*D;x.setTransform(D,0,0,D,0,0);particles=Array.from({length:150},()=>({x:rand(0,W),y:rand(0,H),r:rand(.5,2),v:rand(.15,.7),a:rand(.12,.55)}));}
+function path(points,fill,stroke,lw=1){x.beginPath();points.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.closePath();if(fill){x.fillStyle=fill;x.fill()}if(stroke){x.strokeStyle=stroke;x.lineWidth=lw;x.stroke()}}
+function arch(cx,base,rx,ry){x.beginPath();x.moveTo(cx-rx,base);x.lineTo(cx-rx,base-ry*.56);x.bezierCurveTo(cx-rx,base-ry*1.2,cx+rx,base-ry*1.2,cx+rx,base-ry*.56);x.lineTo(cx+rx,base);x.closePath()}
+function draw(){
+ if(!active)return;t+=.012;
+ const sky=x.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#07111d');sky.addColorStop(.5,'#102331');sky.addColorStop(1,'#07131b');x.fillStyle=sky;x.fillRect(0,0,W,H);
+ // distant submerged haze and moonlit shafts
+ for(let i=0;i<5;i++){const px=W*(.12+i*.19);const beam=x.createLinearGradient(px,0,px+80,H*.8);beam.addColorStop(0,'rgba(139,203,226,0)');beam.addColorStop(.55,'rgba(124,190,215,.045)');beam.addColorStop(1,'rgba(139,203,226,0)');x.fillStyle=beam;x.beginPath();x.moveTo(px-35,0);x.lineTo(px+35,0);x.lineTo(px+160,H*.82);x.lineTo(px-180,H*.82);x.fill();}
+ // chapel silhouette, buttresses and roof
+ const cx=W*.5,scale=Math.min(W/900,H/650),base=H*.72,wallW=Math.min(W*.58,520),left=cx-wallW/2,right=cx+wallW/2,top=H*.19;
+ x.save();x.shadowColor='#000';x.shadowBlur=28;
+ path([[left,base],[left+wallW*.08,top+H*.15],[cx,top],[right-wallW*.08,top+H*.15],[right,base]],'#101b22','#263b46',3);
+ // roof gables
+ path([[left-wallW*.05,top+H*.15],[cx,top-H*.045],[right+wallW*.05,top+H*.15],[right-wallW*.08,top+H*.17],[cx,top+H*.045],[left+wallW*.08,top+H*.17]],'#0a151d','#354a53',2);
+ // stone blocks
+ x.strokeStyle='rgba(150,180,190,.12)';x.lineWidth=1;
+ for(let yy=top+H*.17;yy<base;yy+=22){x.beginPath();x.moveTo(left+8,yy);x.lineTo(right-8,yy);x.stroke();for(let xx=left+20;xx<right;xx+=45){x.beginPath();x.moveTo(xx+(Math.floor(yy/22)%2)*20,yy);x.lineTo(xx+(Math.floor(yy/22)%2)*20,yy+21);x.stroke();}}
+ // towers
+ for(const side of [-1,1]){const tx=cx+side*wallW*.43,tw=wallW*.18;path([[tx-tw/2,base],[tx-tw/2,top+H*.05],[tx,top-H*.10],[tx+tw/2,top+H*.05],[tx+tw/2,base]],'#17252d','#3b525b',2);path([[tx-tw*.6,top+H*.05],[tx,top-H*.15],[tx+tw*.6,top+H*.05]],'#0b151d','#405b66',2);for(let k=-1;k<=1;k++){x.fillStyle='rgba(114,185,210,.25)';arch(tx+k*tw*.22,top+H*.31,tw*.055,H*.12);x.fill();}}
+ // stained glass rose window
+ const wy=top+H*.19,wr=wallW*.105;x.save();arch(cx,wy+wr*1.8,wr,wr*2.5);x.clip();const rg=x.createRadialGradient(cx,wy,1,cx,wy,wr*2.2);rg.addColorStop(0,'#9de4ef');rg.addColorStop(.45,'#326c86');rg.addColorStop(1,'#111b36');x.fillStyle=rg;x.fillRect(cx-wr*1.3,wy-wr*1.2,wr*2.6,wr*3);for(let a=0;a<12;a++){x.save();x.translate(cx,wy);x.rotate(a*Math.PI/6);x.fillStyle=a%2?'rgba(196,231,235,.45)':'rgba(238,183,123,.4)';x.beginPath();x.moveTo(0,0);x.lineTo(-wr*.15,-wr*2);x.lineTo(wr*.15,-wr*2);x.fill();x.restore();}x.restore();arch(cx,wy+wr*1.8,wr,wr*2.5);x.strokeStyle='#526d78';x.lineWidth=5;x.stroke();
+ // main doorway and heavy doors
+ const doorY=base,doorRx=wallW*.205,doorRy=H*.32;arch(cx,doorY,doorRx,doorRy);x.save();x.clip();
+ const glow=x.createRadialGradient(cx,doorY-doorRy*.48,4,cx,doorY-doorRy*.48,doorRx*1.3);glow.addColorStop(0,'rgba(153,224,245,.95)');glow.addColorStop(.5,'rgba(57,133,166,.48)');glow.addColorStop(1,'rgba(5,16,28,0)');x.fillStyle=glow;x.fillRect(cx-doorRx,doorY-doorRy*1.3,doorRx*2,doorRy*1.4);
+ x.fillStyle='#07121b';x.fillRect(cx-doorRx,doorY-doorRy,doorRx*2,doorRy);
+ const opening=Math.max(0,Math.min(1,(t-1.2)/3));const doorAngle=active?opening:0;
+ x.save();x.translate(cx-doorRx,doorY);x.rotate(-.05-doorAngle*.45);x.fillStyle='#18252a';x.fillRect(0,-doorRy,doorRx,doorRy);x.strokeStyle='#64757a';x.lineWidth=4;x.strokeRect(8,-doorRy+8,doorRx-16,doorRy-16);for(let yy=-doorRy+25;yy<0;yy+=28){x.strokeStyle='rgba(155,177,179,.23)';x.beginPath();x.moveTo(12,yy);x.lineTo(doorRx-12,yy);x.stroke()}x.restore();
+ x.save();x.translate(cx+doorRx,doorY);x.rotate(.05+doorAngle*.45);x.fillStyle='#1c292d';x.fillRect(-doorRx,-doorRy,doorRx,doorRy);x.strokeStyle='#64757a';x.lineWidth=4;x.strokeRect(-doorRx+8,-doorRy+8,doorRx-16,doorRy-16);for(let yy=-doorRy+25;yy<0;yy+=28){x.strokeStyle='rgba(155,177,179,.23)';x.beginPath();x.moveTo(-doorRx+12,yy);x.lineTo(-12,yy);x.stroke()}x.restore();x.restore();
+ arch(cx,doorY,doorRx,doorRy);x.strokeStyle='#526b75';x.lineWidth=10;x.stroke();
+ // buttress ribs and narrow lancet windows
+ for(const side of [-1,1]){const bx=cx+side*wallW*.32;path([[bx-18,base],[bx-10,top+H*.22],[bx,top+H*.16],[bx+12,top+H*.22],[bx+20,base]],'#26353b','#4a6068',2);arch(bx,base-H*.09,wallW*.025,H*.12);x.fillStyle='rgba(112,193,218,.35)';x.fill();}
+ x.restore();
+ // waterline and foreground water
+ const waterY=H*.70;const water=x.createLinearGradient(0,waterY,0,H);water.addColorStop(0,'rgba(17,69,86,.60)');water.addColorStop(.15,'rgba(5,34,47,.88)');water.addColorStop(1,'#02090f');x.fillStyle=water;x.fillRect(0,waterY,W,H-waterY);
+ // moving caustic ripples
+ for(let i=0;i<55;i++){const yy=waterY+((i*17+t*9)%(H-waterY));const xx=(i*97+Math.sin(t*1.4+i)*48)%W;const len=rand(12,55);x.strokeStyle='rgba(129,202,218,'+(.025+((i%5)/150))+')';x.lineWidth=1;x.beginPath();x.ellipse(xx,yy,len,2+((i%3)*.8),0,0,Math.PI*2);x.stroke();}
+ // drifting silt and bubbles
+ for(const p of particles){p.y-=p.v;if(p.y<0)p.y=H;p.x+=Math.sin(t+p.y*.01)*.22;x.fillStyle='rgba(190,225,235,'+p.a+')';x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fill();}
+ // mist bands crossing the facade
+ for(let i=0;i<4;i++){const yy=H*(.58+i*.055),off=(t*12+i*150)%(W+350)-175;const mg=x.createLinearGradient(off-170,yy,off+170,yy);mg.addColorStop(0,'rgba(176,218,226,0)');mg.addColorStop(.5,'rgba(169,211,222,.08)');mg.addColorStop(1,'rgba(176,218,226,0)');x.fillStyle=mg;x.fillRect(off-170,yy-15,340,35);}
+ // subtle film grain
+ x.fillStyle='rgba(220,235,240,.018)';for(let i=0;i<70;i++)x.fillRect(rand(0,W),rand(0,H),1,1);
+ requestAnimationFrame(draw);
+}
+function toll(){if(!soundOn)return;try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const now=audio.currentTime;[0,0.22,0.46].forEach((delay,i)=>{const o=audio.createOscillator(),g=audio.createGain(),f=audio.createBiquadFilter();o.type='sine';o.frequency.setValueAtTime(78-i*7,now+delay);o.frequency.exponentialRampToValueAtTime(48-i*5,now+delay+3.8);f.type='lowpass';f.frequency.value=260;g.gain.setValueAtTime(.0001,now+delay);g.gain.exponentialRampToValueAtTime(.13/(i+1),now+delay+.04);g.gain.exponentialRampToValueAtTime(.0001,now+delay+4.5);o.connect(f).connect(g).connect(audio.destination);o.start(now+delay);o.stop(now+delay+4.6);});}catch(e){}}
+document.getElementById('play').addEventListener('click',()=>{t=0;state.textContent='THE DOORS ARE OPENING';toll();setTimeout(()=>state.textContent='THE CHAPEL REMEMBERS',2400);});
+document.getElementById('sound').addEventListener('click',e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?'Sound on':'Sound off';if(soundOn)toll();});
+addEventListener('resize',size);size();requestAnimationFrame(draw);
+})();
+</script></body></html>
