@@ -34,18 +34,30 @@ function roundedLobe(x,y,rx,ry,rot,light,dark){
 ctx.save();ctx.translate(x,y);ctx.rotate(rot);const g=ctx.createRadialGradient(-rx*.38,-ry*.48,1,rx*.12,ry*.18,rx*1.42);g.addColorStop(0,light);g.addColorStop(.22,'#a36a3d');g.addColorStop(.56,'#754322');g.addColorStop(.82,'#4a2918');g.addColorStop(1,dark);ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(-rx*.9,ry*.08);ctx.bezierCurveTo(-rx*1.16,-ry*.48,-rx*.52,-ry*1.08,rx*.04,-ry*.92);ctx.bezierCurveTo(rx*.55,-ry*1.22,rx*1.14,-ry*.62,rx*.91,-ry*.05);ctx.bezierCurveTo(rx*1.22,ry*.48,rx*.52,ry*1.13,-rx*.12,ry*.91);ctx.bezierCurveTo(-rx*.72,ry*1.08,-rx*1.16,ry*.57,-rx*.9,ry*.08);ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#29160d88';ctx.lineWidth=1.3;ctx.stroke();const sheen=ctx.createRadialGradient(-rx*.38,-ry*.45,0,-rx*.2,-ry*.25,rx*.9);sheen.addColorStop(0,'#f2d2a677');sheen.addColorStop(.28,'#e5b98738');sheen.addColorStop(1,'#dca66a00');ctx.fillStyle=sheen;ctx.beginPath();ctx.ellipse(-rx*.18,-ry*.25,rx*.67,ry*.34,-.42,0,Math.PI*2);ctx.fill();for(let i=0;i<16;i++){const px=Math.sin(i*17.31+rx)*rx*.72,py=Math.cos(i*9.17+ry)*ry*.62;ctx.fillStyle=i%3===0?'#26150c33':'#e4b17a24';ctx.beginPath();ctx.ellipse(px,py,1.1,.65,.3,0,Math.PI*2);ctx.fill()}ctx.restore()}
 function mascot(x,y,scale,tilt=0){
 ctx.save();ctx.translate(x,y);ctx.rotate(tilt);ctx.scale(scale,scale);
-ctx.save();ctx.shadowColor='#000';ctx.shadowBlur=24;ctx.shadowOffsetY=17;ctx.fillStyle='#24160f';ctx.beginPath();ctx.ellipse(0,57,64,17,0,0,Math.PI*2);ctx.fill();ctx.restore();
-ctx.shadowColor='#0009';ctx.shadowBlur=20;ctx.shadowOffsetY=9;
-roundedLobe(-4,33,57,31,-.04,'#c08a58','#28170f');roundedLobe(1,7,48,34,.08,'#bd8652','#2b180f');roundedLobe(-3,-18,38,31,-.12,'#c18a57','#301b10');roundedLobe(1,-40,27,27,.12,'#d0a06a','#3a2112');
-ctx.shadowBlur=0;ctx.shadowOffsetY=0;
-const socket=ctx.createRadialGradient(-14,-21,1,-11,-16,17);socket.addColorStop(0,'#3b2115aa');socket.addColorStop(1,'#3b211500');ctx.fillStyle=socket;ctx.beginPath();ctx.ellipse(-13,-17,13,16,-.15,0,Math.PI*2);ctx.ellipse(15,-17,13,16,.15,0,Math.PI*2);ctx.fill();
-ctx.fillStyle='#f4e7d2';ctx.beginPath();ctx.ellipse(-13,-17,7.2,9.2,-.12,0,Math.PI*2);ctx.ellipse(15,-17,7.2,9.2,.12,0,Math.PI*2);ctx.fill();ctx.fillStyle='#21130d';ctx.beginPath();ctx.ellipse(-11,-16,3.4,5,0,0,Math.PI*2);ctx.ellipse(17,-16,3.4,5,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-12,-19,1.7,0,Math.PI*2);ctx.arc(16,-19,1.7,0,Math.PI*2);ctx.fill();
-ctx.strokeStyle='#4a2919';ctx.lineWidth=3.2;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-21,-31);ctx.quadraticCurveTo(-14,-36,-7,-31);ctx.moveTo(8,-31);ctx.quadraticCurveTo(16,-37,22,-30);ctx.stroke();
-ctx.fillStyle='#30170f';ctx.beginPath();ctx.moveTo(-19,1);ctx.quadraticCurveTo(-2,17,19,-1);ctx.quadraticCurveTo(15,22,-1,22);ctx.quadraticCurveTo(-15,19,-19,1);ctx.fill();ctx.fillStyle='#f2dfc8';ctx.beginPath();ctx.moveTo(-12,5);ctx.quadraticCurveTo(0,9,12,4);ctx.quadraticCurveTo(7,12,-1,12);ctx.quadraticCurveTo(-8,11,-12,5);ctx.fill();
-ctx.fillStyle='#4b281a55';ctx.beginPath();ctx.arc(-26,-2,3,0,Math.PI*2);ctx.arc(27,-3,3,0,Math.PI*2);ctx.fill();
-const hat=ctx.createLinearGradient(-25,-91,26,-43);hat.addColorStop(0,'#f04b45');hat.addColorStop(.55,'#b51f29');hat.addColorStop(1,'#64151d');ctx.fillStyle=hat;ctx.beginPath();ctx.moveTo(-30,-48);ctx.quadraticCurveTo(-25,-82,34,-86);ctx.quadraticCurveTo(17,-66,17,-46);ctx.closePath();ctx.fill();ctx.strokeStyle='#651820';ctx.lineWidth=1.4;ctx.stroke();
-const fur=ctx.createLinearGradient(0,-55,0,-38);fur.addColorStop(0,'#fff9ed');fur.addColorStop(1,'#cbbba4');ctx.fillStyle=fur;ctx.beginPath();ctx.ellipse(-5,-48,37,8,-.06,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(35,-85,9,0,Math.PI*2);ctx.fill();
-ctx.strokeStyle='#86522f';ctx.lineWidth=12;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-43,16);ctx.quadraticCurveTo(-69,1,-73,-24);ctx.moveTo(43,16);ctx.quadraticCurveTo(69,1,75,-24);ctx.stroke();ctx.fillStyle='#eee4d4';ctx.beginPath();ctx.arc(-74,-28,9,0,Math.PI*2);ctx.arc(76,-28,9,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#b6a996';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(-78,-29);ctx.lineTo(-71,-29);ctx.moveTo(72,-29);ctx.lineTo(79,-29);ctx.stroke();ctx.restore()}
+// Mr. Hankey-inspired South Park cut-paper silhouette: simple, chunky and instantly readable.
+ctx.save();ctx.fillStyle='#0008';ctx.beginPath();ctx.ellipse(0,61,62,12,0,0,Math.PI*2);ctx.fill();ctx.restore();
+// little brown arms, held out in his familiar cheerful greeting
+ctx.strokeStyle='#80502b';ctx.lineWidth=10;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-37,17);ctx.quadraticCurveTo(-62,1,-70,-19);ctx.moveTo(37,17);ctx.quadraticCurveTo(62,1,70,-19);ctx.stroke();
+function glove(x,y){ctx.fillStyle='#f4eee1';ctx.strokeStyle='#9a8d7c';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,10,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.beginPath();ctx.arc(x-7,y-5,4,0,Math.PI*2);ctx.arc(x+7,y-5,4,0,Math.PI*2);ctx.fill();ctx.stroke()}
+glove(-72,-22);glove(72,-22);
+// signature tapered, stacked poop shape
+const body=ctx.createLinearGradient(-48,-50,46,45);body.addColorStop(0,'#b98243');body.addColorStop(.38,'#98602f');body.addColorStop(.78,'#75421f');body.addColorStop(1,'#4e2b18');
+ctx.fillStyle=body;ctx.strokeStyle='#4a2918';ctx.lineWidth=2.5;ctx.beginPath();
+ctx.moveTo(-49,48);ctx.bezierCurveTo(-65,30,-54,7,-36,2);ctx.bezierCurveTo(-49,-15,-34,-35,-15,-33);ctx.bezierCurveTo(-22,-54,-5,-69,12,-61);ctx.bezierCurveTo(28,-55,30,-40,25,-29);ctx.bezierCurveTo(49,-25,56,-5,42,11);ctx.bezierCurveTo(58,28,49,48,29,52);ctx.bezierCurveTo(8,62,-28,60,-49,48);ctx.closePath();ctx.fill();ctx.stroke();
+// simple warm highlight and small speckles, retaining the flat TV cutout feel
+ctx.fillStyle='#d6a36355';ctx.beginPath();ctx.ellipse(-22,7,17,26,-.35,0,Math.PI*2);ctx.fill();
+for(let i=0;i<10;i++){const px=Math.sin(i*8.3)*34,py=Math.cos(i*4.7)*29+12;ctx.fillStyle='#3e241522';ctx.beginPath();ctx.arc(px,py,1.3,0,Math.PI*2);ctx.fill()}
+// classic big white eyes and black pupils
+ctx.fillStyle='#fff8e9';ctx.strokeStyle='#4a2918';ctx.lineWidth=1.5;ctx.beginPath();ctx.ellipse(-13,-20,10,13,-.08,0,Math.PI*2);ctx.ellipse(13,-20,10,13,.08,0,Math.PI*2);ctx.fill();ctx.stroke();
+ctx.fillStyle='#17100b';ctx.beginPath();ctx.arc(-10,-19,3.8,0,Math.PI*2);ctx.arc(16,-19,3.8,0,Math.PI*2);ctx.fill();
+ctx.strokeStyle='#4b2818';ctx.lineWidth=3;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(-23,-37);ctx.quadraticCurveTo(-14,-42,-6,-37);ctx.moveTo(7,-37);ctx.quadraticCurveTo(16,-42,24,-36);ctx.stroke();
+// wide, unmistakable friendly grin
+ctx.fillStyle='#2b170f';ctx.beginPath();ctx.moveTo(-22,1);ctx.quadraticCurveTo(0,-4,22,1);ctx.quadraticCurveTo(18,26,0,26);ctx.quadraticCurveTo(-18,25,-22,1);ctx.fill();
+ctx.fillStyle='#fff1dc';ctx.beginPath();ctx.moveTo(-16,3);ctx.quadraticCurveTo(0,8,16,3);ctx.quadraticCurveTo(10,11,0,11);ctx.quadraticCurveTo(-10,11,-16,3);ctx.fill();
+// red Santa cap with white trim and pom-pom
+const hat=ctx.createLinearGradient(-25,-91,28,-48);hat.addColorStop(0,'#f24c42');hat.addColorStop(1,'#a91620');ctx.fillStyle=hat;ctx.strokeStyle='#6e171c';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-31,-47);ctx.quadraticCurveTo(-28,-80,31,-82);ctx.quadraticCurveTo(16,-65,19,-46);ctx.closePath();ctx.fill();ctx.stroke();
+ctx.fillStyle='#fff5e7';ctx.strokeStyle='#cfc4b4';ctx.lineWidth=1.2;ctx.beginPath();ctx.ellipse(-6,-48,34,8,-.04,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.beginPath();ctx.arc(33,-81,8,0,Math.PI*2);ctx.fill();ctx.stroke();
+ctx.restore()}
 function emoji(x,y,size,rot,alpha=1){ctx.save();ctx.globalAlpha=alpha;ctx.translate(x,y);ctx.rotate(rot);ctx.font=size+'px "Apple Color Emoji","Segoe UI Emoji",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('💩',0,0);ctx.restore()}
 function draw(t){ctx.clearRect(0,0,w,h);for(let i=0;i<snow.length;i++){const p=snow[i];p.y+=p.v;p.x+=Math.sin(t*.001+p.phase)*.25;if(p.y>h+5){p.y=-5;p.x=Math.random()*w}ctx.fillStyle='#ffffffaa';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}
 mascotY=h*.56+Math.sin(t*.002)*7;mascot(mascotX,mascotY,Math.min(w/410,1.12),Math.sin(t*.0015)*.035);
