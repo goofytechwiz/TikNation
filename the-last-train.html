@@ -75,11 +75,11 @@ const particles=[];const pGeo=new THREE.SphereGeometry(.1,6,6);
 function burst(count,color,speed,life,size,origin=new THREE.Vector3(0,2.7,11.8)){for(let i=0;i<count;i++){const mesh=new THREE.Mesh(pGeo,new THREE.MeshBasicMaterial({color,transparent:true,opacity:.95,depthWrite:false}));mesh.position.copy(origin);mesh.scale.setScalar(size*(.5+Math.random()));scene.add(mesh);const v=new THREE.Vector3((Math.random()-.5)*speed,Math.random()*speed*.85,(Math.random()-.5)*speed);particles.push({mesh,v,life,age:0})}}
 let start=performance.now(),t=0,phase=0,exploded=false,blastAge=0,shake=0,lookX=0,lookY=0,drag=false,lastX=0,lastY=0;
 let soundOn=false,trainStarted=false;
-const trainSample=new Audio('https://sfxjar.com/audio/3009.mp3');
+const trainSample=new Audio('https://sfxjar.com/audio/3016.mp3');
 const whistleSample=new Audio('https://sfxjar.com/audio/3015.mp3');
 const blastSample=new Audio('https://assets.sfx.woven.video/sfx/explosion.wav');
 [trainSample,whistleSample,blastSample].forEach(a=>{a.preload='auto';a.volume=.9});
-trainSample.loop=true;
+trainSample.loop=false;
 function playClip(a,volume=1){if(!soundOn)return;a.pause();a.currentTime=0;a.volume=volume;const p=a.play();if(p&&p.catch)p.catch(()=>{});}
 function stopTrain(){trainSample.pause();trainSample.currentTime=0;trainStarted=false;}
 function enableSound(){soundOn=true;document.getElementById('sound').textContent='♫ SOUND ON';}
