@@ -13,20 +13,20 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
 (()=>{
 const status=document.getElementById('status');
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.18;document.body.insertBefore(renderer.domElement,document.querySelector('header'));
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x9eaaa0);scene.fog=new THREE.Fog(0x9eaaa0,34,115);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x101722);scene.fog=new THREE.Fog(0x17212b,34,115);
 const camera=new THREE.PerspectiveCamera(43,innerWidth/innerHeight,.1,180);camera.position.set(0,5.3,18);camera.lookAt(0,2.3,-2);
-scene.add(new THREE.HemisphereLight(0xe5f0e5,0x35413a,2.0));
-const sun=new THREE.DirectionalLight(0xffe1a8,3.1);sun.position.set(-8,15,10);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);scene.add(sun);
+scene.add(new THREE.HemisphereLight(0xc5d7e8,0x211711,1.65));
+const sun=new THREE.DirectionalLight(0xa9c8e4,2.7);sun.position.set(-8,15,10);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);scene.add(sun);
 const fill=new THREE.PointLight(0xffc76e,0,12);fill.position.set(0,3,4);scene.add(fill);
 const mat=(color,metalness=0,roughness=.55)=>new THREE.MeshStandardMaterial({color,metalness,roughness});
-const green=mat(0x08734f,.72,.28),greenDark=mat(0x073c30,.65,.34),brass=mat(0xd5a64e,.8,.25),red=mat(0x70251f,.55,.38),black=mat(0x101716,.55,.35),steel=mat(0x555e5a,.8,.32),glass= new THREE.MeshStandardMaterial({color:0xffc45e,emissive:0xff9f24,emissiveIntensity:1.5,roughness:.25});
+const green=mat(0x171c22,.86,.28),greenDark=mat(0x080b0f,.55,.4),brass=mat(0xa17b43,.8,.27),red=mat(0x431b1b,.42,.42),black=mat(0x080b0f,.55,.4),steel=mat(0x55585b,.8,.38),glass= new THREE.MeshStandardMaterial({color:0xffc45e,emissive:0xff9f24,emissiveIntensity:1.5,roughness:.25});
 function mesh(geo,material,parent,x=0,y=0,z=0){const o=new THREE.Mesh(geo,material);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
-const ground=mesh(new THREE.PlaneGeometry(180,180),mat(0x34453e),scene,0,-.15,-35);ground.rotation.x=-Math.PI/2;
+const ground=mesh(new THREE.PlaneGeometry(180,180),mat(0x11161b),scene,0,-.15,-35);ground.rotation.x=-Math.PI/2;
 const moon=mesh(new THREE.SphereGeometry(2.2,32,24),mat(0xe8dba9,0,.9),scene,17,16,-45);
 const trackMat=mat(0x484a45,.8,.42), sleeperMat=mat(0x493b2d);
 for(let x of [-1.45,1.45]){let rail=mesh(new THREE.BoxGeometry(.13,.16,100),steel,scene,x,.08,-36);rail.position.z=-36}
 for(let z=12;z>-88;z-=1.6)mesh(new THREE.BoxGeometry(4.1,.16,.48),sleeperMat,scene,0,.02,z);
-for(let side of [-1,1])for(let i=0;i<26;i++){let z=-5-i*3.2,x=side*(7+Math.sin(i*.7)*1.1);let trunk=mesh(new THREE.CylinderGeometry(.13,.22,3.4,7),mat(0x453b2d),scene,x,1.5,z);let crown=mesh(new THREE.ConeGeometry(1.7,5,8),mat(i%2?0x29463b:0x345343),scene,x,5,z);crown.castShadow=true}
+for(let side of [-1,1])for(let i=0;i<26;i++){let z=-5-i*3.2,x=side*(7+Math.sin(i*.7)*1.1);let trunk=mesh(new THREE.CylinderGeometry(.13,.22,3.4,7),mat(0x211c18),scene,x,1.5,z);let crown=mesh(new THREE.ConeGeometry(1.7,5,8),mat(0x101a20),scene,x,5,z);crown.castShadow=true}
 const trainRoot=new THREE.Group();scene.add(trainRoot);
 const engine=new THREE.Group();trainRoot.add(engine);
 // tender and passenger coaches behind locomotive
