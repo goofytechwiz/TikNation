@@ -1,4 +1,5 @@
 const TIKNATION_GIFT_CATALOG = {
+  apocalypse_button:{name:"The Apocalypse Button",emoji:"☢️",category:"Legendary",cost:250,style:"apocalypse_button",sound:"apocalypse"},
   heart_pulse:{name:"Heart Pulse",emoji:"💗",category:"Musical",cost:5,style:"pulse",sound:"heartbeat"},
   melody_note:{name:"Melody Note",emoji:"🎵",category:"Musical",cost:5,style:"notes",sound:[523,659,784,1047]},
   magic_spark:{name:"Magic Spark",emoji:"✨",category:"Magical",cost:10,style:"spark",sound:"spark"},
@@ -99,6 +100,15 @@ async function playTikNationGiftSound(gift) {
     if (context.state !== "running") return;
     const now = context.currentTime;
 
+    if (gift.style === "apocalypse_button") {
+      const len=Math.floor(context.sampleRate*5.5),buf=context.createBuffer(1,len,context.sampleRate),samples=buf.getChannelData(0);
+      for(let i=0;i<len;i++){const t=i/context.sampleRate;samples[i]=(Math.random()*2-1)*Math.pow(Math.max(0,1-t/5.5),1.45);}
+      const siren=context.createOscillator(),sg=context.createGain(),sf=context.createBiquadFilter();siren.type="sawtooth";siren.frequency.setValueAtTime(720,now);siren.frequency.linearRampToValueAtTime(980,now+1.4);siren.frequency.setValueAtTime(720,now+1.7);siren.frequency.linearRampToValueAtTime(1040,now+2.8);sf.type="lowpass";sf.frequency.value=1250;sg.gain.setValueAtTime(.0001,now);sg.gain.linearRampToValueAtTime(.045,now+.15);sg.gain.setValueAtTime(.045,now+2.65);sg.gain.exponentialRampToValueAtTime(.0001,now+3.05);siren.connect(sf);sf.connect(sg);sg.connect(context.destination);siren.start(now);siren.stop(now+3.1);
+      [0,1,2].forEach(d=>{const o=context.createOscillator(),g=context.createGain();o.type="sine";o.frequency.setValueAtTime(880,now+d);o.frequency.exponentialRampToValueAtTime(440,now+d+.22);g.gain.setValueAtTime(.0001,now+d);g.gain.linearRampToValueAtTime(.13,now+d+.025);g.gain.exponentialRampToValueAtTime(.0001,now+d+.28);o.connect(g);g.connect(context.destination);o.start(now+d);o.stop(now+d+.3);});
+      const src=context.createBufferSource(),filter=context.createBiquadFilter(),boom=context.createGain();src.buffer=buf;filter.type="lowpass";filter.frequency.setValueAtTime(180,now+3);filter.frequency.exponentialRampToValueAtTime(1250,now+3.35);filter.frequency.exponentialRampToValueAtTime(90,now+8.2);boom.gain.setValueAtTime(.0001,now+3);boom.gain.linearRampToValueAtTime(.65,now+3.18);boom.gain.exponentialRampToValueAtTime(.0001,now+8.3);src.connect(filter);filter.connect(boom);boom.connect(context.destination);src.start(now+3);src.stop(now+8.4);
+      [42,55,68].forEach((hz,i)=>{const o=context.createOscillator(),g=context.createGain(),f=context.createBiquadFilter();o.type="sine";o.frequency.setValueAtTime(hz,now+3);o.frequency.exponentialRampToValueAtTime(Math.max(24,hz*.58),now+5.8);f.type="lowpass";f.frequency.value=130;g.gain.setValueAtTime(.0001,now+3);g.gain.linearRampToValueAtTime([.55,.28,.16][i],now+3.12);g.gain.exponentialRampToValueAtTime(.0001,now+7.8);o.connect(f);f.connect(g);g.connect(context.destination);o.start(now+3);o.stop(now+7.9);});
+      return;
+    }
     if (gift.style === "reaper") {
       const length=Math.floor(context.sampleRate*5.8),buffer=context.createBuffer(1,length,context.sampleRate),data=buffer.getChannelData(0);
       for(let i=0;i<length;i++){const t=i/context.sampleRate;data[i]=(Math.random()*2-1)*Math.pow(1-t/5.8,1.8);}
@@ -483,7 +493,7 @@ function showTikNationGiftEffect(gift) {
     engine.show(gift, {
       meta: "TIKNATION GIFT · TEST COINS ONLY",
       onSound: () => playTikNationGiftSound(gift),
-      duration: gift.style === "infinity_guardian" ? 13200 : gift.style === "eclipse_leviathan" ? 10500 : gift.style === "ghostship" ? 8800 : gift.style === "storm_of_the_world" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
+      duration: gift.style === "apocalypse_button" ? 11200 : gift.style === "infinity_guardian" ? 13200 : gift.style === "eclipse_leviathan" ? 10500 : gift.style === "ghostship" ? 8800 : gift.style === "storm_of_the_world" ? 9200 : gift.style === "meteor" ? 7800 : gift.style === "grand" ? 7600 : 4300
     });
   }).catch(error => console.error("TikNation gift effect unavailable:", error));
 }
