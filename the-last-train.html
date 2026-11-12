@@ -50,6 +50,21 @@ cyl(loco,1.05,1.05,3.1,iron,0,2.55,1.25,Math.PI/2);
 cyl(loco,.97,.97,.18,brass,0,2.55,2.88,Math.PI/2);
 cyl(loco,.82,.82,.1,dark,0,2.55,2.99,Math.PI/2);
 cyl(loco,.66,.66,.12,glass,0,2.55,3.07,Math.PI/2);
+// Animated locomotive face: expressive eyes and a moving mouth mounted on the round front smokebox
+const faceGroup=new THREE.Group();faceGroup.position.set(0,2.55,3.19);loco.add(faceGroup);
+const eyeWhite=new THREE.MeshStandardMaterial({color:0xe9e2cf,emissive:0x5c4930,emissiveIntensity:.45,roughness:.3});
+const pupilMat=new THREE.MeshStandardMaterial({color:0x090d12,roughness:.18});
+const lidMat=mat(0x171b20,.65,.3),mouthMat=new THREE.MeshStandardMaterial({color:0x090507,roughness:.35});
+const eyes=[],pupils=[],brows=[];
+for(const x of [-.32,.32]){
+ const eye=new THREE.Mesh(new THREE.SphereGeometry(.19,24,18),eyeWhite);eye.scale.set(1,.82,.38);eye.position.set(x,.12,.035);faceGroup.add(eye);eyes.push(eye);
+ const pupil=new THREE.Mesh(new THREE.SphereGeometry(.082,20,16),pupilMat);pupil.position.set(x,.105,.19);faceGroup.add(pupil);pupils.push(pupil);
+ const brow=new THREE.Mesh(new THREE.TorusGeometry(.205,.045,8,24,Math.PI),brass);brow.position.set(x,.27,.035);brow.rotation.z=x<0?-.12:Math.PI+.12;faceGroup.add(brow);brows.push(brow);
+}
+const mouth=new THREE.Mesh(new THREE.SphereGeometry(1,24,16),mouthMat);mouth.position.set(0,-.29,.075);mouth.scale.set(.24,.055,.045);faceGroup.add(mouth);
+const mouthInner=new THREE.Mesh(new THREE.SphereGeometry(1,20,14),new THREE.MeshStandardMaterial({color:0x8b2923,emissive:0x260605}));mouthInner.position.set(0,-.31,.12);mouthInner.scale.set(.13,.012,.018);faceGroup.add(mouthInner);
+const cheekL=new THREE.Mesh(new THREE.SphereGeometry(.075,12,10),brass),cheekR=cheekL.clone();cheekL.position.set(-.57,-.12,.04);cheekR.position.set(.57,-.12,.04);faceGroup.add(cheekL,cheekR);
+
 cyl(loco,.28,.34,1.1,dark,0,3.75,1.6);
 cyl(loco,.38,.42,.55,brass,0,4.42,1.6);
 cyl(loco,.2,.2,.4,dark,0,4.9,1.6);
@@ -120,6 +135,13 @@ else{train.position.z=-38;train.position.y=0}
 if(t>1.2&&phase===0){phase=1;status.textContent='THE WHISTLE ECHOES FROM DEEP WITHIN THE TUNNEL';playWhistle()}
 if(t>4&&phase===1){phase=2;status.textContent='THE BLACK LOCOMOTIVE BEGINS TO EMERGE';startEngine()}
 if(t>8&&phase===2){phase=3;status.textContent='THE ENGINE BURSTS INTO THE MOONLIT NIGHT'}
+// Natural eye tracking, expressive brows, occasional blinks and a speaking/whistling mouth
+const blinkA=Math.pow(Math.max(0,Math.cos(t*.73+1.1)),90),blinkB=Math.pow(Math.max(0,Math.cos(t*.73+1.1)),90);
+eyes.forEach((eye,i)=>{eye.scale.y=.82*(1-.94*(i===0?blinkA:blinkB));});
+pupils.forEach((p,i)=>{p.position.x=(i===0?-.32:.32)+Math.sin(t*.85)*.035;p.position.y=.105+Math.sin(t*1.4)*.018;});
+brows.forEach((b,i)=>{b.position.y=.27+Math.sin(t*1.2+i*.5)*.025;b.rotation.z=(i===0?-.12:Math.PI+.12)+Math.sin(t*.8)*.07;});
+const talk=(Math.sin(t*5.1)+Math.sin(t*2.7))*.5;mouth.scale.y=.055+Math.max(0,talk)*.16;mouthInner.scale.y=.012+Math.max(0,talk)*.045;
+faceGroup.rotation.y=Math.sin(t*.48)*.045;faceGroup.rotation.x=Math.sin(t*.9)*.025;
 wheels.forEach((w)=>w.rotation.x=t*3.8);cars.forEach((c,i)=>{c.position.y=Math.sin(t*5-i)*.015});
 if(Math.random()<.65&&t>1.3&&t<11){const e=steamEmitters[Math.floor(Math.random()*steamEmitters.length)].clone();e.add(train.position);burst(e,2,0xc6d0d5,.4,2.4,.18)}
 for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.age+=.016;p.m.position.addScaledVector(p.v,.016);p.v.y+=.003;p.m.material.opacity=Math.max(0,.65-p.age/p.life);p.m.scale.multiplyScalar(1.004);if(p.age>p.life){scene.remove(p.m);p.m.material.dispose();particles.splice(i,1)}}
