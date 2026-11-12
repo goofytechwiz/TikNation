@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080d12"><title>The Haunted Locomotive · TikNation Gift Preview</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#080d12;color:#e6e9e5;font-family:system-ui,sans-serif}header{display:flex;justify-content:space-between;align-items:center;padding:17px 20px;border-bottom:1px solid #ffffff18;font-size:10px;letter-spacing:.17em;color:#a9bac1}a{color:#d0dfd8;text-decoration:none}main{width:min(94%,760px);margin:34px auto}.eyebrow{font-size:10px;letter-spacing:.24em;color:#a8b9b4}.title{font:400 clamp(28px,6vw,48px)/1.1 Georgia,serif;margin:10px 0}.copy{font-size:13px;line-height:1.65;color:#a9b7b8;max-width:650px}.preview{margin-top:22px;min-height:220px;border:1px solid #aabbb044;border-radius:16px;background:radial-gradient(ellipse at 50% 100%,#303a3c,#0a1014 65%);display:grid;place-items:center;text-align:center;padding:28px}.preview strong{font:700 17px Georgia,serif;letter-spacing:.13em;color:#e0e4d9}.preview small{display:block;margin-top:9px;color:#9caeaa;letter-spacing:.16em;font-size:9px}.controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}button{border:1px solid #b4c8c055;border-radius:999px;background:#1a2529;color:#edf3ed;padding:13px 18px;font-size:10px;font-weight:800;letter-spacing:.14em;cursor:pointer}button.primary{background:#d3ddd4;color:#101816}button:disabled{opacity:.5;cursor:wait}.status{min-height:24px;margin-top:13px;color:#b9cbc0;font-size:10px;letter-spacing:.1em}.fine{margin-top:26px;padding-top:15px;border-top:1px solid #ffffff18;color:#879692;font-size:10px;line-height:1.6}
+</style></head><body><header><b>TIKNATION · EPIC GIFT TEST</b><a href="../live-worlds/">← LIVE WORLDS</a></header>
+<main><div class="eyebrow">NEW GIFT · ISOLATED PREVIEW</div><h1 class="title">The Haunted Locomotive</h1><p class="copy">A full-size, weathered black steam locomotive charges out of a foggy tunnel. Detailed boiler, brass fittings, lit headlamp, steel wheels, connecting rods, drifting steam, sparks, and a deep railway rumble with a haunting whistle.</p>
+<section class="preview"><div><strong>THE LAST TRAIN IS APPROACHING</strong><small>STAND CLEAR OF THE TRACKS</small></div></section>
+<div class="controls"><button class="primary" id="play" type="button" disabled>✦ PLAY THE HAUNTED LOCOMOTIVE</button><button id="stop" type="button">STOP SOUND</button></div>
+<div class="status" id="status" role="status" aria-live="polite">LOADING GIFT ENGINE…</div>
+<p class="fine">Preview only. No gift is sent, no test coins are charged, and the live gift catalog is not changed unless you approve this design.</p></main>
+<script>
+let audioContext=null,nodes=[];
+function stopSound(){nodes.forEach(n=>{try{n.stop()}catch(e){}});nodes=[];if(audioContext&&audioContext.state!=="closed"){audioContext.close().catch(()=>{});audioContext=null;}}
+function playSound(){
+ stopSound();const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+ audioContext=new AC();const c=audioContext;
+ const run=()=>{
+  const now=c.currentTime;
+  const length=Math.floor(c.sampleRate*7),buffer=c.createBuffer(1,length,c.sampleRate),data=buffer.getChannelData(0);
+  for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*Math.pow(Math.max(0,1-i/length),1.35);
+  const rumble=c.createBufferSource(),low=c.createBiquadFilter(),gain=c.createGain();rumble.buffer=buffer;low.type="lowpass";low.frequency.value=180;gain.gain.value=.34;rumble.connect(low);low.connect(gain);gain.connect(c.destination);rumble.start(now);rumble.stop(now+6.8);nodes.push(rumble);
+  const whistle=c.createOscillator(),wf=c.createBiquadFilter(),wg=c.createGain();whistle.type="sawtooth";whistle.frequency.setValueAtTime(510,now+.45);whistle.frequency.linearRampToValueAtTime(690,now+1.5);whistle.frequency.linearRampToValueAtTime(470,now+3.3);wf.type="lowpass";wf.frequency.value=1250;wg.gain.setValueAtTime(.0001,now+.4);wg.gain.linearRampToValueAtTime(.095,now+.8);wg.gain.setValueAtTime(.09,now+2.6);wg.gain.exponentialRampToValueAtTime(.0001,now+4.2);whistle.connect(wf);wf.connect(wg);wg.connect(c.destination);whistle.start(now+.4);whistle.stop(now+4.3);nodes.push(whistle);
+  [0,.45,.9,1.35,1.8,2.25].forEach((d,i)=>{const o=c.createOscillator(),g=c.createGain();o.type="triangle";o.frequency.setValueAtTime(46+(i%2)*9,now+d);o.frequency.exponentialRampToValueAtTime(25,now+d+.28);g.gain.setValueAtTime(.0001,now+d);g.gain.linearRampToValueAtTime(.13,now+d+.035);g.gain.exponentialRampToValueAtTime(.0001,now+d+.32);o.connect(g);g.connect(c.destination);o.start(now+d);o.stop(now+d+.34);nodes.push(o);});
+  document.getElementById("status").textContent="STEAM WHISTLE · HEAVY RAIL RUMBLE · WHEEL CLATTER PLAYING";
+ };
+ if(c.state==="running")run();else c.resume().then(run).catch(()=>{document.getElementById("status").textContent="AUDIO BLOCKED · TAP PLAY AGAIN";});
+}
+const play=document.getElementById("play"),status=document.getElementById("status");
+const engine=document.createElement("script");engine.src="../../gift-engine.js?v=haunted-locomotive-v1";
+engine.onload=()=>{if(window.TikNationGiftEngine){play.disabled=false;status.textContent="READY · TAP PLAY TO START";}else status.textContent="GIFT ENGINE DID NOT INITIALIZE";};
+engine.onerror=()=>status.textContent="GIFT ENGINE FAILED TO LOAD";
+document.head.appendChild(engine);
+play.addEventListener("click",()=>{if(!window.TikNationGiftEngine)return;playSound();window.TikNationGiftEngine.show({id:"haunted_locomotive",name:"The Haunted Locomotive",emoji:"🚂",category:"Legendary",cost:0,style:"haunted_locomotive"},{meta:"TIKNATION GIFT · PREVIEW ONLY",duration:10500});status.textContent="PREVIEW PLAYING · NO GIFT SENT · NO COINS USED";});
+document.getElementById("stop").addEventListener("click",()=>{stopSound();status.textContent="SOUND STOPPED";});
+</script></body></html>
