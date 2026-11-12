@@ -30,15 +30,15 @@ document.getElementById('replay').onclick=reset;
 function poly(points,fill,stroke='#17191b',lw=1){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.lineWidth=lw;ctx.strokeStyle=stroke;ctx.stroke()}}
 function metalGrad(x,y,w,h,a,b){const g=ctx.createLinearGradient(x,y,x+w,y+h);g.addColorStop(0,a);g.addColorStop(.42,b);g.addColorStop(.7,'#0b211b');g.addColorStop(1,a);return g}
 function drawBackground(t){
-const sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#080d17');sky.addColorStop(.55,'#17232b');sky.addColorStop(1,'#07090b');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+const sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#182b3b');sky.addColorStop(.48,'#344d56');sky.addColorStop(.78,'#52605b');sky.addColorStop(1,'#20292b');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
 const moonX=W*.78,moonY=H*.24;const mg=ctx.createRadialGradient(moonX,moonY,2,moonX,moonY,W*.18);mg.addColorStop(0,'rgba(222,226,211,.25)');mg.addColorStop(1,'rgba(180,195,205,0)');ctx.fillStyle=mg;ctx.fillRect(0,0,W,H);
-ctx.fillStyle='#0b1418';for(let i=0;i<38;i++){const x=(i/37)*W+Math.sin(i*12.2)*18,base=H*.62+(i%4)*8,h=H*(.13+(i%7)*.025);ctx.fillRect(x-3,base-h*.35,6,h*.35);poly([[x-34,base-h*.25],[x,base-h],[x+32,base-h*.25]],'#101b1c',null);poly([[x-27,base-h*.52],[x,base-h*1.18],[x+28,base-h*.52]],'#0d1719',null)}
+ctx.fillStyle='#1b3032';for(let i=0;i<38;i++){const x=(i/37)*W+Math.sin(i*12.2)*18,base=H*.62+(i%4)*8,h=H*(.13+(i%7)*.025);ctx.fillRect(x-3,base-h*.35,6,h*.35);poly([[x-34,base-h*.25],[x,base-h],[x+32,base-h*.25]],'#101b1c',null);poly([[x-27,base-h*.52],[x,base-h*1.18],[x+28,base-h*.52]],'#0d1719',null)}
 // tunnel silhouette
-ctx.fillStyle='#05080c';ctx.beginPath();ctx.moveTo(W*.28,H*.57);ctx.lineTo(W*.28,H*.38);ctx.quadraticCurveTo(W*.5,H*.12,W*.72,H*.38);ctx.lineTo(W*.72,H*.57);ctx.closePath();ctx.fill();
-ctx.strokeStyle='rgba(113,125,128,.28)';ctx.lineWidth=8;ctx.beginPath();ctx.arc(W*.5,H*.57,W*.22,Math.PI,Math.PI*2);ctx.stroke();
+ctx.fillStyle='#10191c';ctx.beginPath();ctx.moveTo(W*.28,H*.57);ctx.lineTo(W*.28,H*.38);ctx.quadraticCurveTo(W*.5,H*.12,W*.72,H*.38);ctx.lineTo(W*.72,H*.57);ctx.closePath();ctx.fill();
+ctx.strokeStyle='rgba(181,194,190,.48)';ctx.lineWidth=8;ctx.beginPath();ctx.arc(W*.5,H*.57,W*.22,Math.PI,Math.PI*2);ctx.stroke();
 // converging rails
-ctx.strokeStyle='#687076';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(W*.39,H);ctx.lineTo(W*.485,H*.57);ctx.moveTo(W*.61,H);ctx.lineTo(W*.515,H*.57);ctx.stroke();
-ctx.strokeStyle='#332d27';ctx.lineWidth=3;for(let i=0;i<22;i++){let q=i/22,y=H*.59+q*q*H*.42,half=4+q*W*.21;ctx.beginPath();ctx.moveTo(W/2-half,y);ctx.lineTo(W/2+half,y);ctx.stroke()}
+ctx.strokeStyle='#a8b2ae';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(W*.39,H);ctx.lineTo(W*.485,H*.57);ctx.moveTo(W*.61,H);ctx.lineTo(W*.515,H*.57);ctx.stroke();
+ctx.strokeStyle='#514a3f';ctx.lineWidth=3;for(let i=0;i<22;i++){let q=i/22,y=H*.59+q*q*H*.42,half=4+q*W*.21;ctx.beginPath();ctx.moveTo(W/2-half,y);ctx.lineTo(W/2+half,y);ctx.stroke()}
 }
 function drawTrain(scale,t,after){
 const cx=W*.5+look,cy=H*.72+Math.sin(t*2)*2, s=scale, w=Math.min(W*.72,360)*s,h=H*.43*s;
@@ -56,8 +56,8 @@ const rad=h*.34;const rg=ctx.createRadialGradient(-rad*.25,-h*.43,rad*.05,0,-h*.
 ctx.fillStyle='#d1ad69';for(let i=0;i<15;i++){let a=i/15*Math.PI*2;ctx.beginPath();ctx.arc(Math.cos(a)*rad*.91,-h*.42+Math.sin(a)*rad*.7,2.2*s,0,Math.PI*2);ctx.fill()}
 ctx.strokeStyle='#c39b52';ctx.lineWidth=5*s;ctx.beginPath();ctx.ellipse(0,-h*.42,rad*.86,rad*.69,0,0,Math.PI*2);ctx.stroke();
 // face, prominent but integrated into the smokebox
-const blink=Math.pow(Math.max(0,Math.cos(t*2.1)),36),eyeY=-h*.51,eyeDX=rad*.32;
-for(let side of [-1,1]){let ex=side*eyeDX;ctx.fillStyle='#a98245';ctx.beginPath();ctx.ellipse(ex,eyeY,rad*.19,rad*.16,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#080c0d';ctx.beginPath();ctx.ellipse(ex,eyeY,rad*.145,rad*.12*(1-.88*blink),0,0,Math.PI*2);ctx.fill();if(blink<.8){ctx.fillStyle='#ffbd59';ctx.beginPath();ctx.arc(ex+Math.sin(t*1.1+side)*2*s,eyeY,rad*.065,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff2d0';ctx.beginPath();ctx.arc(ex-2*s,eyeY-3*s,2.5*s,0,Math.PI*2);ctx.fill()}ctx.strokeStyle='#d1aa62';ctx.lineWidth=4*s;ctx.beginPath();ctx.moveTo(ex-rad*.2,eyeY-rad*.2);ctx.lineTo(ex+rad*.2,eyeY-rad*.23);ctx.stroke()}
+const blink=Math.pow(Math.max(0,Math.cos(t*2.1)),24),eyeY=-h*.51,eyeDX=rad*.32;
+for(let side of [-1,1]){let ex=side*eyeDX;ctx.fillStyle='#a98245';ctx.beginPath();ctx.ellipse(ex,eyeY,rad*.22,rad*.19,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#080c0d';ctx.beginPath();ctx.ellipse(ex,eyeY,rad*.17,rad*.145*(1-.88*blink),0,0,Math.PI*2);ctx.fill();if(blink<.8){ctx.fillStyle='#ffbd59';ctx.beginPath();ctx.arc(ex+Math.sin(t*1.1+side)*2*s,eyeY,rad*.09,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff2d0';ctx.beginPath();ctx.arc(ex-3*s,eyeY-4*s,4*s,0,Math.PI*2);ctx.fill()}ctx.strokeStyle='#d1aa62';ctx.lineWidth=4*s;ctx.beginPath();ctx.moveTo(ex-rad*.2,eyeY-rad*.2);ctx.lineTo(ex+rad*.2,eyeY-rad*.23);ctx.stroke()}
 // moving mouth: opens slightly on approach and opens wide on impact
 ctx.strokeStyle='#d4aa60';ctx.lineWidth=5*s;ctx.beginPath();ctx.moveTo(-rad*.22,-h*.29);ctx.quadraticCurveTo(0,-h*(.26+(after?.05:.015*Math.sin(t*3))),rad*.22,-h*.29);ctx.stroke();
 // headlamp and chimney
@@ -69,10 +69,10 @@ for(let side of [-1,1]){let wx=side*bw*.39;for(let j=0;j<3;j++){let x=wx+(j-1)*b
 ctx.fillStyle='#c7a15b';ctx.fillRect(-bw*.49,-h*.08,bw*.98,5*s);
 ctx.restore();
 }
-function spawnBlast(){exploded=true;status.textContent='IMPACT! THE LAST TRAIN ERUPTS IN FIRE AND STEEL';play(trainAudio,0);trainAudio.pause();play(boom,1);for(let i=0;i<180;i++){let a=Math.random()*Math.PI*2,sp=1+Math.random()*8;particles.push({x:W/2,y:H*.67,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-3,life:45+Math.random()*55,age:0,size:2+Math.random()*7,color:Math.random()<.6?'#ff7a20':'#ffd078'})}for(let i=0;i<18;i++)smoke.push({x:W/2+(Math.random()-.5)*W*.35,y:H*.67,vx:(Math.random()-.5)*.8,vy:-1-Math.random()*2,r:12+Math.random()*24,life:260,age:0})}
+function spawnBlast(){exploded=true;status.textContent='THE WRECK SETTLES — ITS EYES ARE STILL ALIVE';stopAudio();play(boom,1);for(let i=0;i<180;i++){let a=Math.random()*Math.PI*2,sp=1+Math.random()*8;particles.push({x:W/2,y:H*.67,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-3,life:45+Math.random()*55,age:0,size:2+Math.random()*7,color:Math.random()<.6?'#ff7a20':'#ffd078'})}for(let i=0;i<18;i++)smoke.push({x:W/2+(Math.random()-.5)*W*.35,y:H*.67,vx:(Math.random()-.5)*.8,vy:-1-Math.random()*2,r:12+Math.random()*24,life:260,age:0})}
 function drawEffects(dt){
 for(const p of particles){p.age+=dt*60;p.x+=p.vx*dt*60;p.y+=p.vy*dt*60;p.vy+=.12*dt*60;ctx.globalAlpha=Math.max(0,1-p.age/p.life);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.size*(1-p.age/p.life*.4),0,Math.PI*2);ctx.fill()}particles=particles.filter(p=>p.age<p.life);
-for(let i=0;i<5;i++){let x=W/2+(Math.random()-.5)*W*.42,y=H*.78+Math.random()*H*.06,r=12+Math.random()*26;let g=ctx.createRadialGradient(x,y,1,x,y,r*2.5);g.addColorStop(0,'rgba(255,235,132,.95)');g.addColorStop(.28,'rgba(255,112,20,.85)');g.addColorStop(1,'rgba(140,20,5,0)');ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(x,y,r*.8,r*2,Math.random()*.4,0,Math.PI*2);ctx.fill()}
+for(let i=0;i<2;i++){let x=W/2+(Math.random()-.5)*W*.25,y=H*.82+Math.random()*H*.035,r=7+Math.random()*13;let g=ctx.createRadialGradient(x,y,1,x,y,r*2.5);g.addColorStop(0,'rgba(255,235,132,.65)');g.addColorStop(.28,'rgba(255,112,20,.5)');g.addColorStop(1,'rgba(140,20,5,0)');ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(x,y,r*.8,r*2,Math.random()*.4,0,Math.PI*2);ctx.fill()}
 for(const p of smoke){p.age+=dt*60;p.x+=p.vx*dt*60;p.y+=p.vy*dt*60;p.r+=.12*dt*60;ctx.globalAlpha=Math.max(0,.3*(1-p.age/p.life));ctx.fillStyle='#687077';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}smoke=smoke.filter(p=>p.age<p.life);
 ctx.globalAlpha=1;
 }
@@ -82,11 +82,11 @@ let approach=Math.min(1,Math.max(0,(t-1.5)/6.3));let scale=.36+approach*.72;
 if(t>1.7&&phase===0){phase=1;status.textContent='A POWERFUL STEAM WHISTLE ECHOES THROUGH THE FOREST';play(whistle,.9)}
 if(t>2.4&&phase===1){phase=2;status.textContent='STEEL WHEELS CLATTER AND POUND DOWN THE TRACKS';play(trainAudio,.68)}
 if(t>6.2&&phase===2){phase=3;status.textContent='THE LOCOMOTIVE ROARS CLOSER — FASTER, LOUDER'}
-if(t>8.1&&!exploded)spawnBlast();
-if(!exploded)drawTrain(scale,t,false);else{drawTrain(.98,t,true);drawEffects(dt);}
+if(t>8.1&&!exploded){spawnBlast();phase=4;}
+if(!exploded)drawTrain(scale,t,false);else{drawTrain(1.16,t,true);if(t<14)drawEffects(dt);}
 // warm glow and sparks continue around the wreck after the initial explosion
-if(exploded){let pulse=.6+.4*Math.sin(t*11);let g=ctx.createRadialGradient(W/2,H*.74,5,W/2,H*.74,W*.42);g.addColorStop(0,'rgba(255,108,22,'+(0.22*pulse)+')');g.addColorStop(1,'rgba(255,65,10,0)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H)}
-if(t>8.1&&t<9.4){ctx.fillStyle='rgba(255,235,190,'+Math.max(0,.55-(t-8.1)*.55)+')';ctx.fillRect(0,0,W,H)}
+if(exploded&&t<14){let pulse=.45+.2*Math.sin(t*4);let g=ctx.createRadialGradient(W/2,H*.77,4,W/2,H*.77,W*.28);g.addColorStop(0,'rgba(255,132,42,'+(0.12*pulse)+')');g.addColorStop(1,'rgba(255,90,20,0)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H)}
+if(t>8.1&&t<8.65){ctx.fillStyle='rgba(255,235,190,'+Math.max(0,.28-(t-8.1)*.5)+')';ctx.fillRect(0,0,W,H)}
 }
 reset();requestAnimationFrame(frame);
 })();
