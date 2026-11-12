@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#10080b"><title>BITCH SLAP — TikNation Gift Preview</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#10080b;color:#fff;font-family:Arial,Helvetica,sans-serif}canvas{position:fixed;inset:0;width:100%;height:100%;display:block}.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 42%,transparent 20%,#0008 75%,#000e 100%),linear-gradient(180deg,#09050988,transparent 35%,#090509dd)}.ui{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:max(15px,env(safe-area-inset-top)) 15px max(15px,env(safe-area-inset-bottom));pointer-events:none}.top,.bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;font:700 10px system-ui;letter-spacing:.2em;text-transform:uppercase;color:#e9d8d8}.pill{padding:8px 11px;border:1px solid #ffb1b155;border-radius:30px;background:#180c10c9}.center{position:absolute;left:50%;bottom:9%;transform:translateX(-50%);width:95%;text-align:center;text-shadow:0 3px 24px #000}.eyebrow{font:700 10px system-ui;letter-spacing:.38em;color:#ffb4a6;text-transform:uppercase}h1{font-size:clamp(32px,7vw,68px);font-weight:1000;letter-spacing:.045em;margin:7px 0 4px;text-transform:uppercase}.sub{font:700 10px system-ui;letter-spacing:.2em;color:#f0c7c1;text-transform:uppercase}.controls{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:17px;pointer-events:auto}button{border:1px solid #ffd0c4;border-radius:30px;padding:13px 19px;background:linear-gradient(180deg,#ff6d55,#9e1e28);box-shadow:0 7px 25px #f33a3440,inset 0 1px #ffffff66;color:#fff;font:900 11px system-ui;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}button.secondary{background:#170d12ed;border-color:#ffffff66;box-shadow:none}button:active{transform:scale(.96)}button:disabled{opacity:.55}.bottom{justify-content:center;color:#b99fa2;font-size:9px}.flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none}.impact{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%) scale(.5) rotate(-8deg);font-weight:1000;font-style:italic;font-size:clamp(40px,13vw,120px);letter-spacing:-.08em;color:#fff;text-shadow:5px 6px 0 #a51f28,0 0 35px #ff7d62;opacity:0;pointer-events:none;white-space:nowrap}.hint{font:9px system-ui;letter-spacing:.1em;color:#c6afb1;margin-top:9px}
+@media(max-height:560px){.center{bottom:3%}h1{font-size:30px}.controls{margin-top:8px}.sub{font-size:9px}}
+</style></head><body>
+<canvas id="scene"></canvas><div class="vignette"></div><div class="flash" id="flash"></div><div class="impact" id="impact">SMACK!</div>
+<div class="ui"><div class="top"><span><b>TIKNATION</b> / GIFT PREVIEW</span><span class="pill" id="status">HAND LOADED</span></div>
+<div class="center"><div class="eyebrow">A little attitude. A lot of impact.</div><h1>BITCH SLAP</h1><div class="sub">Wind up · Whack · Watch the reaction</div><div class="controls"><button id="slap">Deliver the slap</button><button class="secondary" id="sound">Test the smack</button></div><div class="hint">Sound starts only when you tap · Preview only</div></div>
+<div class="bottom">NEW GIFT CONCEPT · NOT IN THE LIVE CATALOG</div></div>
+<script>
+(()=>{
+const c=document.getElementById('scene'),g=c.getContext('2d'),status=document.getElementById('status'),flash=document.getElementById('flash'),impact=document.getElementById('impact'),slapBtn=document.getElementById('slap');
+let W,H,D,t=0,phase='idle',start=0,shake=0,audioCtx=null,particles=[],soundOn=true;
+const rand=(a,b)=>a+Math.random()*(b-a),clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function resize(){D=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*D;c.height=H*D;g.setTransform(D,0,0,D,0,0);particles=Array.from({length:100},()=>({x:rand(0,W),y:rand(0,H),r:rand(.5,2.5),v:rand(.15,.7),a:rand(.12,.55)}))}
+function rounded(x,y,w,h,r,fill,stroke){g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=fill;g.fill();if(stroke){g.strokeStyle=stroke;g.lineWidth=2;g.stroke()}}
+function drawBackdrop(){let bg=g.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#21131a');bg.addColorStop(.48,'#3a1d25');bg.addColorStop(1,'#10090e');g.fillStyle=bg;g.fillRect(0,0,W,H);
+let glow=g.createRadialGradient(W*.5,H*.42,5,W*.5,H*.42,Math.max(W,H)*.65);glow.addColorStop(0,'#ff76551c');glow.addColorStop(1,'#0000');g.fillStyle=glow;g.fillRect(0,0,W,H);
+for(let i=0;i<particles.length;i++){let p=particles[i];p.y-=p.v;if(p.y<0){p.y=H;p.x=rand(0,W)}g.globalAlpha=p.a;g.fillStyle='#ffd5c7';g.beginPath();g.arc(p.x,p.y,p.r,0,Math.PI*2);g.fill()}g.globalAlpha=1;
+ // distant theatrical light banks
+ for(let x of [W*.12,W*.88]){let gr=g.createRadialGradient(x,H*.18,1,x,H*.18,H*.5);gr.addColorStop(0,'#ffb58b22');gr.addColorStop(1,'#ffb58b00');g.fillStyle=gr;g.fillRect(x-H*.5,-H*.3,H,H)}
+}
+function drawTarget(){let cx=W*.52,cy=H*.49,s=Math.min(W/900,H/650);g.save();g.translate(cx,cy);g.scale(s,s);
+ // neutral comic reaction bust silhouette
+ g.shadowColor='#000';g.shadowBlur=30;g.fillStyle='#0a080b';g.beginPath();g.ellipse(0,108,104,135,0,0,Math.PI*2);g.fill();
+ let face=g.createRadialGradient(-22,-30,4,0,0,105);face.addColorStop(0,'#c88b76');face.addColorStop(.7,'#80554f');face.addColorStop(1,'#39252a');g.fillStyle=face;g.beginPath();g.ellipse(0,-20,76,94,0,0,Math.PI*2);g.fill();
+ // hair cap
+ g.fillStyle='#171116';g.beginPath();g.moveTo(-75,-38);g.quadraticCurveTo(-65,-120,0,-116);g.quadraticCurveTo(78,-108,77,-28);g.quadraticCurveTo(25,-64,-8,-56);g.quadraticCurveTo(-45,-48,-75,-38);g.fill();
+ // expressive brows, eyes, nose and mouth
+ g.strokeStyle='#24171a';g.lineWidth=7;g.beginPath();g.moveTo(-48,-33);g.lineTo(-16,-39);g.moveTo(16,-39);g.lineTo(48,-33);g.stroke();
+ g.fillStyle='#f6e6d9';g.beginPath();g.ellipse(-31,-17,12,7,0,0,Math.PI*2);g.ellipse(31,-17,12,7,0,0,Math.PI*2);g.fill();g.fillStyle='#1b1114';g.beginPath();g.arc(-29,-17,4,0,7);g.arc(29,-17,4,0,7);g.fill();
+ g.strokeStyle='#44232a';g.lineWidth=5;g.beginPath();g.moveTo(0,-3);g.quadraticCurveTo(-8,15,3,20);g.stroke();
+ g.fillStyle='#2b1018';g.beginPath();g.ellipse(0,43,23,10,0,0,Math.PI*2);g.fill();
+ g.restore();
+}
+function drawHand(progress){let s=Math.min(W/900,H/650),cx=W*.5,cy=H*.48;let x= W*.5+(1-progress)*W*.78, y=H*.50-progress*H*.02,rot=-.22+(1-progress)*.55;
+ g.save();g.translate(x,y);g.rotate(rot);g.scale(s,s);
+ // forearm
+ let arm=g.createLinearGradient(-170,0,90,0);arm.addColorStop(0,'#6f3936');arm.addColorStop(.35,'#d49a83');arm.addColorStop(.72,'#f0bca2');arm.addColorStop(1,'#a9675b');
+ g.shadowColor='#0009';g.shadowBlur=30;g.fillStyle=arm;g.beginPath();g.moveTo(-220,-39);g.quadraticCurveTo(-130,-55,-74,-44);g.lineTo(-42,50);g.quadraticCurveTo(-140,68,-220,43);g.closePath();g.fill();
+ // palm, thumb and fingers silhouette with layered skin gradients
+ let skin=g.createLinearGradient(-70,-95,80,95);skin.addColorStop(0,'#f3c6ae');skin.addColorStop(.45,'#d9957e');skin.addColorStop(1,'#98574f');
+ g.fillStyle=skin;g.beginPath();g.moveTo(-75,-42);g.quadraticCurveTo(-92,-70,-72,-91);g.quadraticCurveTo(-55,-107,-37,-88);g.lineTo(-20,-62);g.lineTo(-14,-127);g.quadraticCurveTo(-10,-151,9,-150);g.quadraticCurveTo(29,-149,28,-126);g.lineTo(28,-65);g.lineTo(38,-139);g.quadraticCurveTo(43,-161,62,-155);g.quadraticCurveTo(81,-150,76,-127);g.lineTo(65,-57);g.lineTo(84,-111);g.quadraticCurveTo(91,-132,108,-122);g.quadraticCurveTo(124,-113,114,-91);g.lineTo(83,-20);g.quadraticCurveTo(109,16,78,58);g.quadraticCurveTo(30,108,-32,76);g.quadraticCurveTo(-83,49,-75,-42);g.closePath();g.fill();
+ // palm creases / knuckle highlights
+ g.strokeStyle='#713f3b88';g.lineWidth=3;g.beginPath();g.moveTo(-48,-16);g.quadraticCurveTo(-4,7,46,-8);g.moveTo(-40,24);g.quadraticCurveTo(0,48,48,24);g.stroke();
+ g.strokeStyle='#ffe0ca99';g.lineWidth=4;g.beginPath();g.moveTo(-7,-119);g.lineTo(-6,-73);g.moveTo(51,-125);g.lineTo(48,-75);g.moveTo(91,-98);g.lineTo(77,-48);g.stroke();
+ // nails
+ g.fillStyle='#e9b6a4';for(let q of [[-1,-142],[56,-147],[99,-116]]){g.beginPath();g.ellipse(q[0],q[1],7,11,-.1,0,Math.PI*2);g.fill()}
+ g.restore();
+}
+function render(){t+=.016;let elapsed=phase==='idle'?0:(performance.now()-start)/1000;let p=clamp(elapsed/1.18,0,1);let hand=0;
+ if(phase==='windup')hand=0;
+ if(phase==='swing')hand=p;
+ if(phase==='impact'){hand=1;let k=clamp(elapsed/.62,0,1);flash.style.opacity=String((1-k)*.75);impact.style.opacity=String(k<.75?1-k*.35:0);impact.style.transform='translate(-50%,-50%) scale('+(1+k*.65)+') rotate(-8deg)';}
+ if(phase==='recoil'){hand=1-clamp(elapsed/.45,0,1);flash.style.opacity='0';}
+ if(phase!=='idle'&&elapsed>(phase==='windup'?.48:phase==='swing'?.42:phase==='impact'?.62:.45)){if(phase==='windup'){phase='swing';start=performance.now()}else if(phase==='swing'){phase='impact';start=performance.now();shake=1;smack()}else if(phase==='impact'){phase='recoil';start=performance.now()}else{phase='idle';status.textContent='READY FOR ANOTHER';slapBtn.disabled=false;}}
+ let sh=shake;shake*=.82;g.save();if(sh>.02)g.translate(rand(-8,8)*sh,rand(-6,6)*sh);drawBackdrop();drawTarget();if(phase!=='idle')drawHand(phase==='windup'?0:phase==='swing'?p:phase==='impact'?1:1-clamp(elapsed/.45,0,1));g.restore();requestAnimationFrame(render)}
+function audio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}
+function smack(){try{let a=audio(),now=a.currentTime;let n=Math.floor(a.sampleRate*.22),buf=a.createBuffer(1,n,a.sampleRate),d=buf.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2.8);let src=a.createBufferSource();src.buffer=buf;let filter=a.createBiquadFilter();filter.type='lowpass';filter.frequency.value=1450;let gain=a.createGain();gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.95,now+.008);gain.gain.exponentialRampToValueAtTime(.0001,now+.2);src.connect(filter).connect(gain).connect(a.destination);src.start(now);let osc=a.createOscillator(),og=a.createGain();osc.type='sine';osc.frequency.setValueAtTime(105,now);osc.frequency.exponentialRampToValueAtTime(43,now+.14);og.gain.setValueAtTime(.0001,now);og.gain.exponentialRampToValueAtTime(.48,now+.01);og.gain.exponentialRampToValueAtTime(.0001,now+.18);osc.connect(og).connect(a.destination);osc.start(now);osc.stop(now+.2)}catch(e){status.textContent='SOUND UNAVAILABLE'}}
+function startSlap(){if(phase!=='idle')return;audio();phase='windup';start=performance.now();status.textContent='WINDING UP…';slapBtn.disabled=true;impact.style.opacity='0';flash.style.opacity='0'}
+slapBtn.addEventListener('click',startSlap);document.getElementById('sound').addEventListener('click',()=>{smack();status.textContent='SMACK TESTED'});addEventListener('resize',resize);resize();render();
+})();
+</script></body></html>
