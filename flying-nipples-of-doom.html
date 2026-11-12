@@ -117,17 +117,17 @@ function monster(x,y,r,side,idx){
  metal.addColorStop(0,'#fff0c7');metal.addColorStop(.2,'#b8c4c9');metal.addColorStop(.48,'#596b7a');metal.addColorStop(.72,'#d2d8d3');metal.addColorStop(1,'#34404e');
  // Long, narrow barrel runs outward along the rotated local negative-Y axis.
  ctx.fillStyle=metal;ctx.beginPath();
- ctx.moveTo(-r*.105,-r*.07);ctx.lineTo(-r*.105,-r*.405);
- ctx.quadraticCurveTo(-r*.105,-r*.455,0,-r*.455);
- ctx.quadraticCurveTo(r*.105,-r*.455,r*.105,-r*.405);
+ ctx.moveTo(-r*.105,-r*.07);ctx.lineTo(-r*.105,-r*.285);
+ ctx.quadraticCurveTo(-r*.105,-r*.325,0,-r*.325);
+ ctx.quadraticCurveTo(r*.105,-r*.325,r*.105,-r*.285);
  ctx.lineTo(r*.105,-r*.07);ctx.closePath();ctx.fill();
  ctx.strokeStyle='#f4e4c7';ctx.lineWidth=2;
- ctx.beginPath();ctx.ellipse(0,-r*.405,r*.112,r*.055,0,0,Math.PI*2);ctx.stroke();
- const muzzle=ctx.createRadialGradient(-r*.02,-r*.42,1,0,-r*.405,r*.105);
+ ctx.beginPath();ctx.ellipse(0,-r*.285,r*.112,r*.055,0,0,Math.PI*2);ctx.stroke();
+ const muzzle=ctx.createRadialGradient(-r*.02,-r*.30,1,0,-r*.285,r*.105);
  muzzle.addColorStop(0,'#020711');muzzle.addColorStop(.72,'#17202c');muzzle.addColorStop(1,'#75838a');
- ctx.fillStyle=muzzle;ctx.beginPath();ctx.ellipse(0,-r*.405,r*.085,r*.043,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle=muzzle;ctx.beginPath();ctx.ellipse(0,-r*.285,r*.085,r*.043,0,0,Math.PI*2);ctx.fill();
  ctx.strokeStyle='rgba(255,255,255,.8)';ctx.lineWidth=1.8;
- ctx.beginPath();ctx.ellipse(0,-r*.405,r*.112,r*.055,0,Math.PI*1.05,Math.PI*1.9);ctx.stroke();
+ ctx.beginPath();ctx.ellipse(0,-r*.285,r*.112,r*.055,0,Math.PI*1.05,Math.PI*1.9);ctx.stroke();
  ctx.restore();
  // Rim lighting and small wing-root folds visually seat the wings into the body.
  ctx.strokeStyle='rgba(255,190,187,.38)';ctx.lineWidth=2.2;ctx.beginPath();ctx.ellipse(0,0,r*.83,r*.89,0,-2.35,-.72);ctx.stroke();
