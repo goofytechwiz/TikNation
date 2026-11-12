@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tempest Dragon — TikNation Gift Preview</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#07101b;color:#eef7ff;font:16px system-ui;min-height:100vh;display:grid;place-items:center;padding:18px}
+main{width:min(760px,100%);background:linear-gradient(160deg,#102b40,#080e19 68%);border:1px solid #31536a;border-radius:24px;overflow:hidden;box-shadow:0 25px 90px #000b}
+header{padding:22px 22px 8px;text-align:center}small{letter-spacing:.22em;color:#8cdcff;font-weight:700}h1{margin:8px 0;font-size:clamp(28px,6vw,46px);letter-spacing:.04em}p{color:#b8cbd8;line-height:1.5}
+.stage{position:relative;background:radial-gradient(ellipse at 50% 55%,#1d6680 0,#102b43 36%,#081321 75%);height:390px;overflow:hidden}
+svg{width:100%;height:100%;display:block}.bolt{stroke:#baf6ff;stroke-width:4;fill:none;filter:drop-shadow(0 0 10px #63eaff);opacity:0;animation:flash 4s infinite}.bolt.two{animation-delay:2.1s}
+.dragon{transform-origin:50% 50%;animation:glide 5s ease-in-out infinite}.wing{transform-origin:50% 60%;animation:flap 1.3s ease-in-out infinite alternate}
+@keyframes flash{0%,43%,48%,100%{opacity:0}44%,46%{opacity:1}}@keyframes flap{to{transform:scaleY(.68) rotate(-5deg)}}@keyframes glide{0%,100%{transform:translateY(5px) rotate(-2deg)}50%{transform:translateY(-13px) rotate(2deg)}}
+.controls{padding:18px 22px 22px;text-align:center}button{border:0;border-radius:999px;padding:13px 22px;margin:5px;background:#a9edff;color:#061522;font-weight:800;font-size:15px}button.secondary{background:#20394b;color:#e5f6ff;border:1px solid #42647b}.note{font-size:13px;color:#89a5b7}
+</style></head>
+<body><main><header><small>TIKNATION · GIFT PREVIEW</small><h1>TEMPEST DRAGON</h1><p>An ancient storm dragon tears through the clouds, dives toward the viewer, then releases a crackling ring of blue lightning.</p></header>
+<div class="stage"><svg viewBox="0 0 700 390" role="img" aria-label="A blue-black dragon flying through a lightning storm">
+<defs>
+<linearGradient id="body" x2="0" y2="1"><stop stop-color="#9bd9e8"/><stop offset=".35" stop-color="#315b70"/><stop offset="1" stop-color="#0b1a29"/></linearGradient>
+<linearGradient id="wing" x2="1" y2="1"><stop stop-color="#5e9bad"/><stop offset="1" stop-color="#101d31"/></linearGradient>
+<radialGradient id="eye"><stop stop-color="#fff"/><stop offset=".3" stop-color="#8ff8ff"/><stop offset="1" stop-color="#1aa5cb"/></radialGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="8"/></filter>
+</defs>
+<path d="M0 285 Q100 220 210 280T430 260T700 270V390H0Z" fill="#0b1a29" opacity=".8"/>
+<g fill="#132c40" opacity=".8"><ellipse cx="90" cy="85" rx="160" ry="50"/><ellipse cx="600" cy="110" rx="190" ry="65"/><ellipse cx="350" cy="40" rx="180" ry="45"/></g>
+<path class="bolt" d="M130 0L175 85L145 115L210 195L185 230"/><path class="bolt two" d="M550 0L510 80L545 120L480 190"/>
+<g class="dragon">
+<ellipse cx="350" cy="190" rx="118" ry="37" fill="url(#body)" stroke="#b4e5ee" stroke-width="2"/>
+<path d="M260 190Q150 90 95 110Q155 155 120 235Q195 220 270 210Z" fill="url(#wing)" stroke="#8ac6d5" stroke-width="3" class="wing"/>
+<path d="M410 190Q535 70 610 100Q550 160 590 235Q510 220 410 210Z" fill="url(#wing)" stroke="#8ac6d5" stroke-width="3" class="wing"/>
+<path d="M440 195Q555 230 640 165Q595 265 470 230Z" fill="#294c61" stroke="#82c5d5" stroke-width="3"/>
+<path d="M250 185Q190 165 160 205Q220 200 255 205" fill="none" stroke="#a4d9e5" stroke-width="10"/>
+<path d="M260 176Q300 135 355 155Q405 120 455 165L480 193Q440 220 360 220Q290 220 260 198Z" fill="url(#body)" stroke="#b5e7f0" stroke-width="2"/>
+<path d="M430 164Q475 115 520 140L548 165L510 183L482 210L450 194Z" fill="url(#body)" stroke="#b5e7f0" stroke-width="2"/>
+<path d="M475 142L490 110L505 143M505 145L530 120L525 158" stroke="#d3f5f8" stroke-width="7" fill="none"/>
+<path d="M520 174L570 185L520 193Z" fill="#d6f7fa"/><circle cx="505" cy="160" r="8" fill="url(#eye)"/>
+<path d="M300 210L270 260L330 224M385 214L410 255L420 215" fill="#183447" stroke="#8cc6d4" stroke-width="3"/>
+<path d="M155 190Q80 180 50 230Q110 215 155 205" fill="none" stroke="#6fa9bd" stroke-width="12"/>
+</g>
+<circle cx="350" cy="190" r="125" fill="none" stroke="#77eaff" stroke-width="2" opacity=".25" filter="url(#glow)"/>
+</svg></div>
+<div class="controls"><button id="play">▶ Play gift</button><button class="secondary" id="stop">Stop sound</button><p class="note" id="status">Preview only · No gift sent · No coins charged</p></div></main>
+<script>
+let ctx=null, nodes=[];function stop(){nodes.forEach(n=>{try{n.stop()}catch(e){}});nodes=[];if(ctx){ctx.close();ctx=null}document.getElementById('status').textContent='Sound stopped · Preview only'}
+function play(){stop();ctx=new (window.AudioContext||window.webkitAudioContext)();const t=ctx.currentTime;
+function tone(f,type,at,dur,gain,slide=0){const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(f,at);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(20,f+slide),at+dur);g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(gain,at+.04);g.gain.exponentialRampToValueAtTime(.0001,at+dur);o.connect(g).connect(ctx.destination);o.start(at);o.stop(at+dur+.03);nodes.push(o)}
+tone(95,'sawtooth',t,.8,.16,-55);tone(620,'triangle',t+.45,.55,.08,-300);tone(48,'sine',t+1,.9,.24,-18);tone(880,'square',t+1.25,.12,.035,-400);tone(210,'sawtooth',t+1.4,1.1,.12,-100);tone(1320,'sine',t+1.5,.8,.05,-500);
+document.getElementById('status').textContent='Storm dive · thunder impact · lightning crackle'}
+document.getElementById('play').addEventListener('click',play);document.getElementById('stop').addEventListener('click',stop);
+</script></body></html>
