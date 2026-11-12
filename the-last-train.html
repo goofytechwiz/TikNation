@@ -90,24 +90,32 @@ const ticket=new THREE.Group();scene.add(ticket);ticket.position.set(0,2,-13);ti
 const paper=new THREE.Mesh(new THREE.BoxGeometry(1.25,.04,.62),new THREE.MeshStandardMaterial({color:0xd8b76c,metalness:.25,roughness:.4}));ticket.add(paper);
 const ticketEdge=new THREE.EdgesGeometry(new THREE.BoxGeometry(1.25,.05,.62));ticket.add(new THREE.LineSegments(ticketEdge,new THREE.LineBasicMaterial({color:0xffe5a1})));
 for(const x of [-.4,.4]){const seal=new THREE.Mesh(new THREE.CircleGeometry(.09,16),new THREE.MeshBasicMaterial({color:0x765126}));seal.rotation.x=-Math.PI/2;seal.position.set(x,.03,0);ticket.add(seal)}
-const trainAudio=new Audio('https://sfxjar.com/audio/3016.mp3');
 const whistleAudio=new Audio('https://sfxjar.com/audio/3015.mp3');
-[trainAudio,whistleAudio].forEach(a=>{a.preload='auto';a.volume=.8});
-trainAudio.loop=true;
+whistleAudio.preload='auto';whistleAudio.volume=.8;
+let soundCtx=null,master=null,engineNodes=[],engineOn=false;
 let elapsed=0,phase=0,started=performance.now(),soundOn=false,drag=false,lastX=0,lastY=0,lookX=0,lookY=0;
-function playClip(a,volume=1){if(!soundOn)return;a.pause();a.currentTime=0;a.volume=volume;const p=a.play();if(p&&p.catch)p.catch(()=>{});}
-function stopAudio(){[trainAudio,whistleAudio].forEach(a=>{a.pause();a.currentTime=0});}
-function reset(){elapsed=0;phase=0;started=performance.now();train.position.z=-37;ticket.visible=false;ticket.position.set(0,2,-13);stopAudio();status.textContent='A DISTANT WHISTLE BREAKS THE SILENCE';}
+function audioSetup(){if(soundCtx)return;soundCtx=new (window.AudioContext||window.webkitAudioContext)();master=soundCtx.createGain();master.gain.value=.72;master.connect(soundCtx.destination)}
+function startEngine(){if(!soundOn||!soundCtx||engineOn)return;engineOn=true;
+ const rumble=soundCtx.createOscillator(),rumbleGain=soundCtx.createGain(),rumbleFilter=soundCtx.createBiquadFilter();
+ rumble.type='triangle';rumble.frequency.value=48;rumbleFilter.type='lowpass';rumbleFilter.frequency.value=145;rumbleGain.gain.value=.16;rumble.connect(rumbleFilter);rumbleFilter.connect(rumbleGain);rumbleGain.connect(master);rumble.start();engineNodes.push(rumble,rumbleGain,rumbleFilter);
+ const length=2*soundCtx.sampleRate,buffer=soundCtx.createBuffer(1,length,soundCtx.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*.7;
+ const noise=soundCtx.createBufferSource(),low=soundCtx.createBiquadFilter(),noiseGain=soundCtx.createGain(),pulse=soundCtx.createOscillator(),pulseGain=soundCtx.createGain();noise.buffer=buffer;noise.loop=true;low.type='lowpass';low.frequency.value=260;noiseGain.gain.value=.10;pulse.type='sine';pulse.frequency.value=3.2;pulseGain.gain.value=.055;pulse.connect(pulseGain);pulseGain.connect(noiseGain.gain);noise.connect(low);low.connect(noiseGain);noiseGain.connect(master);noise.start();pulse.start();engineNodes.push(noise,low,noiseGain,pulse,pulseGain);
+ const clatter=soundCtx.createBufferSource(),band=soundCtx.createBiquadFilter(),clatterGain=soundCtx.createGain(),clackPulse=soundCtx.createOscillator(),clackDepth=soundCtx.createGain();clatter.buffer=buffer;clatter.loop=true;band.type='bandpass';band.frequency.value=420;band.Q.value=.65;clatterGain.gain.value=.018;clackPulse.type='sine';clackPulse.frequency.value=6.4;clackDepth.gain.value=.012;clackPulse.connect(clackDepth);clackDepth.connect(clatterGain.gain);clatter.connect(band);band.connect(clatterGain);clatterGain.connect(master);clatter.start();clackPulse.start();engineNodes.push(clatter,band,clatterGain,clackPulse,clackDepth);
+}
+function stopEngine(){engineOn=false;engineNodes.forEach(n=>{try{if(n.stop)n.stop()}catch(e){}});engineNodes=[]}
+function playWhistle(){if(!soundOn)return;whistleAudio.pause();whistleAudio.currentTime=0;const p=whistleAudio.play();if(p&&p.catch)p.catch(()=>{})}
+function stopAudio(){stopEngine();whistleAudio.pause();whistleAudio.currentTime=0}
+function reset(){elapsed=0;phase=0;started=performance.now();train.position.z=-37;ticket.visible=false;ticket.position.set(0,2,-13);stopAudio();status.textContent='A DISTANT WHISTLE BREAKS THE SILENCE'}
 document.getElementById('replay').addEventListener('click',reset);
-document.getElementById('sound').addEventListener('click',()=>{soundOn=!soundOn;if(!soundOn){stopAudio();document.getElementById('sound').textContent='♫ ENABLE SOUND'}else{document.getElementById('sound').textContent='♫ SOUND ON';if(phase>=2)playClip(trainAudio,.8)}});
+document.getElementById('sound').addEventListener('click',()=>{soundOn=!soundOn;if(soundOn){audioSetup();soundCtx.resume();document.getElementById('sound').textContent='♫ SOUND ON';if(phase>=2&&phase<3)startEngine()}else{stopAudio();document.getElementById('sound').textContent='♫ ENABLE SOUND'}});
 function animate(now){requestAnimationFrame(animate);const dt=Math.min(.04,(now-started)/1000-elapsed);elapsed=(now-started)/1000;const t=elapsed;
 if(t<1.4){train.position.z=-37+Math.max(0,t)*.2}
 else if(t<9){train.position.z=-37+(t-1.4)*4.1;train.position.y=Math.sin(t*9)*.025}
 else if(t<11.2){train.position.z=-5.9+(t-9)*.55;train.position.y=Math.sin(t*15)*.012}
 else{train.position.z=-4.7+Math.sin((t-11.2)*.5)*.04;ticket.visible=true;ticket.position.y=2.4+Math.sin(t*1.3)*.22;ticket.rotation.y=Math.sin(t*.5)*.18}
-if(t>1.2&&t<2&&phase===0){phase=1;status.textContent='THE HEADLIGHTS EMERGE FROM THE FOG';playClip(whistleAudio,.9)}
-if(t>4&&phase===1){phase=2;status.textContent='STEEL WHEELS THUNDER THROUGH THE NIGHT';playClip(trainAudio,.78)}
-if(t>9.2&&phase===2){phase=3;status.textContent='THE TRAIN GRINDS TO A HALT';trainAudio.pause();}
+if(t>1.2&&t<2&&phase===0){phase=1;status.textContent='THE HEADLIGHTS EMERGE FROM THE FOG';playWhistle()}
+if(t>4&&phase===1){phase=2;status.textContent='STEEL WHEELS THUNDER THROUGH THE NIGHT';startEngine()}
+if(t>9.2&&phase===2){phase=3;status.textContent='THE TRAIN GRINDS TO A HALT';stopEngine();}
 wheels.forEach((w,i)=>w.rotation.x=t*3.8);cars.forEach((c,i)=>{c.position.y=Math.sin(t*7-i)*.018});
 if(Math.random()<.7&&t>1.3&&t<12){const e=steamEmitters[Math.floor(Math.random()*steamEmitters.length)].clone();e.add(train.position);burst(e,2,0xc6d0d5,.55,2.4,.22)}
 if(Math.random()<.55&&t>3&&t<10){const p=new THREE.Vector3((Math.random()-.5)*2.7,.2+Math.random()*.7,train.position.z+2.5);burst(p,2,0xffa04a,1.2,.8,.07)}
