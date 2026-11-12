@@ -124,17 +124,31 @@ function playWhistle(){if(!soundOn||!soundCtx)return;whistleAudio.pause();whistl
 function stopAudio(){stopEngine();[whistleAudio,boomAudio].forEach(a=>{a.pause();a.currentTime=0})}
 function playBoom(){if(!soundOn)return;boomAudio.pause();boomAudio.currentTime=0;const p=boomAudio.play();if(p&&p.catch)p.catch(()=>{})}
 let exploded=false;
-const flash=document.getElementById('impactFlash');let impactTime=0;function explode(){if(exploded)return;exploded=true;phase=4;impactTime=performance.now();stopEngine();status.textContent='ONE FINAL THUNDEROUS DEPARTURE';playBoom();warm.intensity=180;const origin=new THREE.Vector3(0,2.1,train.position.z+3.0);burst(origin,150,0xff8a32,5.2,2.1,.2);burst(new THREE.Vector3(0,3.1,train.position.z+2.1),95,0x9da4a8,1.25,4.4,.38);burst(new THREE.Vector3(0,1.1,train.position.z+3.2),90,0xffd17a,3.8,1.8,.13);burst(new THREE.Vector3(0,2.4,train.position.z+2.7),55,0x171b20,1.6,3.8,.32)}
-function reset(){elapsed=0;phase=0;exploded=false;started=performance.now();train.position.z=-53;ticket.visible=false;ticket.position.set(0,2,-13);stopAudio();status.textContent='A HEADLIGHT GLOWS DEEP INSIDE THE TUNNEL'}
+const flash=document.getElementById('impactFlash');let impactTime=0,shockRings=[],debris=[];
+function explode(){
+ if(exploded)return;exploded=true;phase=4;impactTime=performance.now();stopEngine();
+ status.textContent='THE LAST TRAIN — IMPACT';playBoom();warm.intensity=220;
+ const origin=new THREE.Vector3(0,2.2,train.position.z+2.7);
+ burst(origin,210,0xff7624,7.4,2.4,.24);
+ burst(new THREE.Vector3(0,3.0,train.position.z+2.2),145,0x9da4a8,1.65,5.2,.42);
+ burst(new THREE.Vector3(0,1.0,train.position.z+3.0),150,0xffd17a,5.4,2.1,.15);
+ burst(new THREE.Vector3(0,2.4,train.position.z+2.4),85,0x171b20,2.1,4.6,.36);
+ const ring=new THREE.Mesh(new THREE.TorusGeometry(1.1,.12,10,64),new THREE.MeshBasicMaterial({color:0xffbd69,transparent:true,opacity:.95,side:THREE.DoubleSide}));
+ ring.position.copy(origin);scene.add(ring);shockRings.push({mesh:ring,age:0});
+ for(let i=0;i<28;i++){const bit=new THREE.Mesh(new THREE.BoxGeometry(.12+Math.random()*.22,.12+Math.random()*.22,.12+Math.random()*.3),i%2?brass:dark);bit.position.copy(origin);scene.add(bit);debris.push({mesh:bit,v:new THREE.Vector3((Math.random()-.5)*8,Math.random()*6,(Math.random()-.5)*5),age:0})}
+ if(soundOn&&soundCtx){const now=soundCtx.currentTime,o=soundCtx.createOscillator(),g=soundCtx.createGain(),f=soundCtx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(95,now);o.frequency.exponentialRampToValueAtTime(24,now+.8);f.type='lowpass';f.frequency.value=180;g.gain.setValueAtTime(.8,now);g.gain.exponentialRampToValueAtTime(.001,now+1.15);o.connect(f);f.connect(g);g.connect(master);o.start(now);o.stop(now+1.2)}
+}
+function reset(){elapsed=0;phase=0;exploded=false;started=performance.now();train.visible=true;train.position.z=-53;ticket.visible=false;ticket.position.set(0,2,-13);shockRings.forEach(x=>scene.remove(x.mesh));shockRings=[];debris.forEach(x=>scene.remove(x.mesh));debris=[];flash.style.opacity=0;warm.intensity=45;stopAudio();status.textContent='A HEADLIGHT GLOWS DEEP INSIDE THE TUNNEL'}
 document.getElementById('replay').addEventListener('click',reset);
 document.getElementById('sound').addEventListener('click',()=>{soundOn=!soundOn;if(soundOn){audioSetup();soundCtx.resume();document.getElementById('sound').textContent='♫ SOUND ON';if(phase===0){phase=1;status.textContent='THE HEADLIGHTS EMERGE FROM THE FOG';playWhistle()}else if(phase===1)playWhistle();if(phase>=2&&phase<3)startEngine()}else{stopAudio();document.getElementById('sound').textContent='♫ ENABLE SOUND'}});
 function animate(now){requestAnimationFrame(animate);elapsed=(now-started)/1000;const t=elapsed;
-if(t<1.5){train.position.z=-53;train.position.y=0}
-else if(t<10.5){const p=(t-1.5)/9;const eased=p*p*(3-2*p);train.position.z=-53+15*eased;train.position.y=Math.sin(t*7)*.018}
-else{train.position.z=-38;train.position.y=0}
-if(t>1.2&&phase===0){phase=1;status.textContent='THE WHISTLE ECHOES FROM DEEP WITHIN THE TUNNEL';playWhistle()}
-if(t>4&&phase===1){phase=2;status.textContent='THE BLACK LOCOMOTIVE BEGINS TO EMERGE';startEngine()}
-if(t>8&&phase===2){phase=3;status.textContent='THE ENGINE BURSTS INTO THE MOONLIT NIGHT'}
+if(t<1.15){train.position.z=-53;train.position.y=0}
+else if(t<6.55&&!exploded){const p=(t-1.15)/5.4;const eased=p*p*(3-2*p);train.position.z=-53+59.5*eased;train.position.y=Math.sin(t*12)*.035}
+else if(!exploded){train.position.z=6.5;train.position.y=0}
+if(t>1.0&&phase===0){phase=1;status.textContent='THE WHISTLE ECHOES THROUGH THE TUNNEL';playWhistle()}
+if(t>1.9&&phase===1){phase=2;status.textContent='THE BLACK LOCOMOTIVE RUSHES OUT OF THE TUNNEL';startEngine()}
+if(t>3.4&&phase===2){phase=3;status.textContent='IT IS COMING STRAIGHT AT YOU'}
+if(t>6.55&&!exploded){explode();}
 // Natural eye tracking, expressive brows, occasional blinks and a speaking/whistling mouth
 const blinkA=Math.pow(Math.max(0,Math.cos(t*.73+1.1)),90),blinkB=Math.pow(Math.max(0,Math.cos(t*.73+1.1)),90);
 eyes.forEach((eye,i)=>{eye.scale.y=.82*(1-.94*(i===0?blinkA:blinkB));});
@@ -145,7 +159,13 @@ faceGroup.rotation.y=Math.sin(t*.48)*.045;faceGroup.rotation.x=Math.sin(t*.9)*.0
 wheels.forEach((w)=>w.rotation.x=t*3.8);cars.forEach((c,i)=>{c.position.y=Math.sin(t*5-i)*.015});
 if(Math.random()<.65&&t>1.3&&t<11){const e=steamEmitters[Math.floor(Math.random()*steamEmitters.length)].clone();e.add(train.position);burst(e,2,0xc6d0d5,.4,2.4,.18)}
 for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.age+=.016;p.m.position.addScaledVector(p.v,.016);p.v.y+=.003;p.m.material.opacity=Math.max(0,.65-p.age/p.life);p.m.scale.multiplyScalar(1.004);if(p.age>p.life){scene.remove(p.m);p.m.material.dispose();particles.splice(i,1)}}
-const targetX=lookX*.5,targetY=4.5+lookY*.28;camera.position.x+=(targetX-camera.position.x)*.035;camera.position.y+=(targetY-camera.position.y)*.035;camera.position.z=14;camera.lookAt(lookX*.2,1.2+lookY*.15,-30);renderer.render(scene,camera)}
+const targetX=lookX*.35,targetY=4.5+lookY*.18;camera.position.x+=(targetX-camera.position.x)*.045;camera.position.y+=(targetY-camera.position.y)*.045;camera.position.z=14;
+const shake=exploded?Math.max(0,1-(now-impactTime)/1100):0;camera.position.x+=(Math.random()-.5)*.42*shake;camera.position.y+=(Math.random()-.5)*.32*shake;
+camera.lookAt(lookX*.12,2.1+lookY*.1,Math.min(-30,train.position.z+1.8));
+if(exploded){const age=(now-impactTime)/1000;flash.style.opacity=String(Math.max(0,.92-age*3.8));warm.intensity=Math.max(0,220-age*95);if(age>.13)train.visible=false}
+for(let i=shockRings.length-1;i>=0;i--){const r=shockRings[i];r.age+=.016;r.mesh.scale.setScalar(1+r.age*8);r.mesh.material.opacity=Math.max(0,.95-r.age*.8);if(r.age>1.2){scene.remove(r.mesh);r.mesh.geometry.dispose();r.mesh.material.dispose();shockRings.splice(i,1)}}
+for(let i=debris.length-1;i>=0;i--){const d=debris[i];d.age+=.016;d.mesh.position.addScaledVector(d.v,.016);d.v.y-=.11;d.mesh.rotation.x+=.12;d.mesh.rotation.z+=.09;if(d.age>2.2){scene.remove(d.mesh);d.mesh.geometry.dispose();d.mesh.material.dispose();debris.splice(i,1)}}
+renderer.render(scene,camera)}
 
 requestAnimationFrame(animate);
 renderer.domElement.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;renderer.domElement.setPointerCapture(e.pointerId)});
