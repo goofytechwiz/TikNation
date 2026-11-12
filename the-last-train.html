@@ -113,13 +113,22 @@ const boomAudio=new Audio('https://assets.sfx.woven.video/sfx/explosion.wav');
 let soundCtx=null,master=null,engineNodes=[],engineOn=false;
 let elapsed=0,phase=0,started=performance.now(),soundOn=false,drag=false,lastX=0,lastY=0,lookX=0,lookY=0;
 function audioSetup(){if(soundCtx)return;soundCtx=new (window.AudioContext||window.webkitAudioContext)();master=soundCtx.createGain();master.gain.value=1.35;master.connect(soundCtx.destination)}
+let trackClackGain=null,trackRushGain=null;
 function startEngine(){if(!soundOn||!soundCtx||engineOn)return;engineOn=true;
  const rumble=soundCtx.createOscillator(),rumbleGain=soundCtx.createGain(),rumbleFilter=soundCtx.createBiquadFilter();
  rumble.type='triangle';rumble.frequency.value=48;rumbleFilter.type='lowpass';rumbleFilter.frequency.value=145;rumbleGain.gain.value=.34;rumble.connect(rumbleFilter);rumbleFilter.connect(rumbleGain);rumbleGain.connect(master);rumble.start();engineNodes.push(rumble,rumbleGain,rumbleFilter);
  const length=2*soundCtx.sampleRate,buffer=soundCtx.createBuffer(1,length,soundCtx.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<length;i++)data[i]=(Math.random()*2-1)*.7;
  const noise=soundCtx.createBufferSource(),low=soundCtx.createBiquadFilter(),noiseGain=soundCtx.createGain(),pulse=soundCtx.createOscillator(),pulseGain=soundCtx.createGain();noise.buffer=buffer;noise.loop=true;low.type='lowpass';low.frequency.value=260;noiseGain.gain.value=.22;pulse.type='sine';pulse.frequency.value=3.2;pulseGain.gain.value=.10;pulse.connect(pulseGain);pulseGain.connect(noiseGain.gain);noise.connect(low);low.connect(noiseGain);noiseGain.connect(master);noise.start();pulse.start();engineNodes.push(noise,low,noiseGain,pulse,pulseGain);const buzz=soundCtx.createOscillator(),buzzFilter=soundCtx.createBiquadFilter(),buzzGain=soundCtx.createGain();buzz.type='square';buzz.frequency.value=82;buzzFilter.type='lowpass';buzzFilter.frequency.value=190;buzzGain.gain.value=.055;buzz.connect(buzzFilter);buzzFilter.connect(buzzGain);buzzGain.connect(master);buzz.start();engineNodes.push(buzz,buzzFilter,buzzGain);
+ // Rhythmic rail-joint clatter and rushing air: low, weighty, never a sharp squeal.
+ const clack=soundCtx.createOscillator(),clackFilter=soundCtx.createBiquadFilter(),clackGain=soundCtx.createGain();
+ clack.type='square';clack.frequency.value=74;clackFilter.type='bandpass';clackFilter.frequency.value=235;clackFilter.Q.value=.7;clackGain.gain.value=.0001;
+ clack.connect(clackFilter);clackFilter.connect(clackGain);clackGain.connect(master);clack.start();trackClackGain=clackGain;engineNodes.push(clack,clackFilter,clackGain);
+ const clackPulse=soundCtx.createOscillator(),clackPulseGain=soundCtx.createGain();clackPulse.type='sine';clackPulse.frequency.value=5.2;clackPulseGain.gain.value=.035;clackPulse.connect(clackPulseGain);clackPulseGain.connect(clackGain.gain);clackPulse.start();engineNodes.push(clackPulse,clackPulseGain);
+ const rush=soundCtx.createBufferSource(),rushFilter=soundCtx.createBiquadFilter(),rushGain=soundCtx.createGain();
+ const rushBuffer=soundCtx.createBuffer(1,length,soundCtx.sampleRate),rushData=rushBuffer.getChannelData(0);for(let i=0;i<length;i++)rushData[i]=(Math.random()*2-1)*.45;
+ rush.buffer=rushBuffer;rush.loop=true;rushFilter.type='highpass';rushFilter.frequency.value=520;rushGain.gain.value=.0001;rush.connect(rushFilter);rushFilter.connect(rushGain);rushGain.connect(master);rush.start();trackRushGain=rushGain;engineNodes.push(rush,rushFilter,rushGain);
 }
-function stopEngine(){engineOn=false;engineNodes.forEach(n=>{try{if(n.stop)n.stop()}catch(e){}});engineNodes=[]}
+function stopEngine(){engineOn=false;trackClackGain=null;trackRushGain=null;engineNodes.forEach(n=>{try{if(n.stop)n.stop()}catch(e){}});engineNodes=[]}
 function playWhistle(){if(!soundOn||!soundCtx)return;whistleAudio.pause();whistleAudio.currentTime=0;const p=whistleAudio.play();if(p&&p.catch)p.catch(()=>{});const now=soundCtx.currentTime;[370,493,740].forEach((f,i)=>{const o=soundCtx.createOscillator(),g=soundCtx.createGain(),filter=soundCtx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(f,now);o.frequency.exponentialRampToValueAtTime(f*.91,now+2.8);filter.type='lowpass';filter.frequency.value=1800;g.gain.setValueAtTime(.001,now);g.gain.linearRampToValueAtTime(i===2?.12:.24,now+.18);g.gain.setValueAtTime(i===2?.12:.24,now+2.1);g.gain.exponentialRampToValueAtTime(.001,now+3.2);o.connect(filter);filter.connect(g);g.connect(master);o.start(now);o.stop(now+3.25)})}
 function stopAudio(){stopEngine();[whistleAudio,boomAudio].forEach(a=>{a.pause();a.currentTime=0})}
 function playBoom(){if(!soundOn)return;boomAudio.pause();boomAudio.currentTime=0;const p=boomAudio.play();if(p&&p.catch)p.catch(()=>{})}
@@ -148,6 +157,7 @@ else if(!exploded){train.position.z=12.2;train.scale.setScalar(2.45);camera.fov=
 if(t>1.0&&phase===0){phase=1;status.textContent='THE WHISTLE ECHOES THROUGH THE TUNNEL';playWhistle()}
 if(t>1.65&&phase===1){phase=2;status.textContent='THE BLACK LOCOMOTIVE RUSHES OUT OF THE TUNNEL';startEngine()}
 if(t>3.0&&phase===2){phase=3;status.textContent='IT IS RACING STRAIGHT INTO THE SCREEN'}
+if(engineOn&&soundCtx){const approach=Math.max(0,Math.min(1,(t-1.65)/4.7));const swell=.65+approach*1.7;if(trackClackGain)trackClackGain.gain.setTargetAtTime(.018*swell,soundCtx.currentTime,.12);if(trackRushGain)trackRushGain.gain.setTargetAtTime(.012*swell,soundCtx.currentTime,.16);}
 if(t>6.35&&!exploded){explode();}
 // Natural eye tracking, expressive brows, occasional blinks and a speaking/whistling mouth
 const blinkA=Math.pow(Math.max(0,Math.cos(t*.73+1.1)),90),blinkB=Math.pow(Math.max(0,Math.cos(t*.73+1.1)),90);
