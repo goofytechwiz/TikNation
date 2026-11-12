@@ -47,7 +47,7 @@ main{width:min(100% - 28px,980px);margin:auto;padding:24px 0 56px}header{padding
 (function(){
 "use strict";
 const status=document.getElementById("labStatus"),grid=document.getElementById("giftGrid"),filters=document.getElementById("filters");
-const catalog={...(window.TIKNATION_GIFT_CATALOG||{})};for(const key of Object.keys(catalog)){const item=catalog[key]||{};if(key==="haunted_carousel"||key==="hauntedcarousel"||item.style==="hauntedcarousel"||item.name==="The Haunted Carousel")delete catalog[key];}delete catalog.storm_of_the_world;catalog.void_rift={name:"The Void Rift",emoji:"🌀",category:"Epic",cost:100,style:"voidrift",message:"Reality has split open."};catalog.living_tombstones={name:"The Night of the Living Tombstones",emoji:"🪦",category:"Epic",cost:100,style:"livingtombstones",message:"The dead will not stay buried."};catalog.haunted_hearse={name:"The Haunted Hearse",emoji:"🚘",category:"Epic",cost:100,style:"hauntedhearse",message:"Some passengers never arrive."};catalog.carnevil={name:"CARNEVIL",emoji:"🎪",category:"Epic",cost:150,style:"carnevil",message:"Step right up… if you dare."};catalog.phantom_train={name:"The Phantom Train",emoji:"🚂",category:"Epic",cost:175,style:"phantomtrain",message:"The last train leaves at midnight."};const engine=window.TikNationGiftEngine;
+const catalog={...(window.TIKNATION_GIFT_CATALOG||{})};for(const key of Object.keys(catalog)){const item=catalog[key]||{};if(key==="haunted_carousel"||key==="hauntedcarousel"||item.style==="hauntedcarousel"||item.name==="The Haunted Carousel")delete catalog[key];}delete catalog.storm_of_the_world;catalog.void_rift={name:"The Void Rift",emoji:"🌀",category:"Epic",cost:100,style:"voidrift",message:"Reality has split open."};catalog.living_tombstones={name:"The Night of the Living Tombstones",emoji:"🪦",category:"Epic",cost:100,style:"livingtombstones",message:"The dead will not stay buried."};catalog.haunted_hearse={name:"The Haunted Hearse",emoji:"🚘",category:"Epic",cost:100,style:"hauntedhearse",message:"Some passengers never arrive."};catalog.carnevil={name:"CARNEVIL",emoji:"🎪",category:"Epic",cost:150,style:"carnevil",message:"Step right up… if you dare."};catalog.phantom_train={name:"The Phantom Train",emoji:"🚂",category:"Epic",cost:175,style:"phantomtrain",message:"The last train leaves at midnight."};catalog.reaper_arrival={name:"The Grim Reaper's Arrival",emoji:"💀",category:"Legendary",cost:250,style:"reaper",sound:"reaper",message:"The final hour has arrived."};const engine=window.TikNationGiftEngine;
 let selected="All",soundOn=true,audio=null,lastSound="Not started";
 const entries=Object.entries(catalog),categories=["All",...new Set(entries.map(([,g])=>g.category||"Other"))];
 function say(message,isError){status.textContent=message;status.classList.toggle("error",!!isError);}
@@ -203,6 +203,23 @@ function startSoundInGesture(gift){
    window.__tiknationHearseTimers=[timer];
    return Promise.resolve(true);
   }catch(err){setAudioState("Hearse audio error");say("Hearse sound error: "+err.message,true);return Promise.resolve(false);}
+ }
+ if(gift.style==="reaper"){
+  const C=window.AudioContext||window.webkitAudioContext;
+  if(!C){setAudioState("Unsupported");return Promise.resolve(false);}
+  try{
+   if(!audio||audio.state==="closed")audio=new C();
+   const ctx=audio;
+   const resume=ctx.state==="suspended"?ctx.resume():Promise.resolve();
+   return resume.then(()=>{
+    const t=ctx.currentTime+.03;
+    const master=ctx.createGain();master.gain.setValueAtTime(.0001,t);master.gain.exponentialRampToValueAtTime(.32,t+.35);master.gain.setValueAtTime(.24,t+2.1);master.gain.exponentialRampToValueAtTime(.0001,t+5.8);master.connect(ctx.destination);
+    const low=ctx.createOscillator(),lg=ctx.createGain();low.type="sawtooth";low.frequency.setValueAtTime(68,t);low.frequency.exponentialRampToValueAtTime(34,t+5.4);lg.gain.value=.32;low.connect(lg);lg.connect(master);low.start(t);low.stop(t+5.9);
+    const sweep=ctx.createOscillator(),sg=ctx.createGain();sweep.type="triangle";sweep.frequency.setValueAtTime(420,t+3.2);sweep.frequency.exponentialRampToValueAtTime(72,t+4.5);sg.gain.setValueAtTime(.0001,t+3.2);sg.gain.exponentialRampToValueAtTime(.8,t+3.35);sg.gain.exponentialRampToValueAtTime(.0001,t+4.8);sweep.connect(sg);sg.connect(master);sweep.start(t+3.2);sweep.stop(t+4.9);
+    setAudioState("Playing · dark arrival rumble + scythe sweep");
+    return true;
+   }).catch(err=>{setAudioState("Reaper audio blocked");say("The browser blocked the Reaper sound: "+err.message,true);return false;});
+  }catch(err){setAudioState("Reaper audio error");say("Reaper sound error: "+err.message,true);return Promise.resolve(false);}
  }
  if(gift.style==="storm"){
   try{
