@@ -6,7 +6,40 @@
 <script>
 (()=>{const c=document.getElementById('fx'),ctx=c.getContext('2d'),bolt=document.getElementById('bolt'),splat=document.getElementById('splat'),hint=document.getElementById('hint');let w=0,h=0,dpr=1,items=[],active=false,soundOn=false,audio=null,last=0,raf=0;
 function resize(){dpr=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;c.style.width=w+'px';c.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}addEventListener('resize',resize);resize();
-function poop(x,y,s,rot=0){ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.scale(s,s);ctx.shadowColor='#080604';ctx.shadowBlur=12;ctx.shadowOffsetY=5;const g=ctx.createLinearGradient(-18,-25,22,24);g.addColorStop(0,'#b18a61');g.addColorStop(.18,'#81502d');g.addColorStop(.52,'#60391f');g.addColorStop(.82,'#392116');g.addColorStop(1,'#21140e');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(-20,13);ctx.bezierCurveTo(-24,5,-19,-3,-10,-5);ctx.bezierCurveTo(-15,-13,-8,-20,0,-16);ctx.bezierCurveTo(4,-25,16,-21,17,-12);ctx.bezierCurveTo(26,-8,25,2,19,7);ctx.bezierCurveTo(21,17,10,22,0,19);ctx.bezierCurveTo(-9,23,-20,20,-20,13);ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#d1a77b55';ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(-12,1);ctx.bezierCurveTo(-8,-5,-1,-6,5,-2);ctx.stroke();ctx.strokeStyle='#1c100b88';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(5,11);ctx.bezierCurveTo(12,8,15,5,15,1);ctx.stroke();ctx.fillStyle='#e0c09a55';ctx.beginPath();ctx.ellipse(-8,-9,5,2.2,-.4,0,Math.PI*2);ctx.fill();ctx.restore()}
+function poop(x,y,s,rot=0){
+ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.scale(s,s);
+ctx.shadowColor='#080503';ctx.shadowBlur=13;ctx.shadowOffsetY=7;
+// A compact, irregular cluster of separate soft, tapered lobes rather than one cartoon blob.
+const lobes=[
+ {x:-10,y:7,rx:12,ry:10,a:-.35,c1:'#a8794c',c2:'#422516'},
+ {x:5,y:9,rx:12,ry:9,a:.22,c1:'#95613a',c2:'#321b10'},
+ {x:-3,y:-3,rx:10,ry:12,a:-.18,c1:'#ad794b',c2:'#3c2113'},
+ {x:8,y:-8,rx:8,ry:11,a:.42,c1:'#9b693e',c2:'#321b10'},
+ {x:-8,y:-12,rx:7,ry:9,a:-.5,c1:'#b18456',c2:'#472817'}
+];
+for(let i=0;i<lobes.length;i++){
+ const p=lobes[i];ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.a);
+ const g=ctx.createRadialGradient(-p.rx*.42,-p.ry*.55,1,p.rx*.15,p.ry*.2,p.rx*1.5);
+ g.addColorStop(0,p.c1);g.addColorStop(.34,'#80502f');g.addColorStop(.72,'#59351f');g.addColorStop(1,p.c2);
+ ctx.fillStyle=g;ctx.beginPath();
+ ctx.moveTo(-p.rx*.88,p.ry*.08);
+ ctx.bezierCurveTo(-p.rx*1.18,-p.ry*.55,-p.rx*.38,-p.ry*1.2,p.rx*.12,-p.ry*.9);
+ ctx.bezierCurveTo(p.rx*.72,-p.ry*1.08,p.rx*1.18,-p.ry*.35,p.rx*.82,p.ry*.22);
+ ctx.bezierCurveTo(p.rx*.95,p.ry*.86,p.rx*.12,p.ry*1.12,-p.rx*.5,p.ry*.72);
+ ctx.bezierCurveTo(-p.rx*1.04,p.ry*.65,-p.rx*1.18,p.ry*.32,-p.rx*.88,p.ry*.08);
+ ctx.closePath();ctx.fill();
+ ctx.shadowBlur=0;
+ ctx.strokeStyle='#2b180e88';ctx.lineWidth=1.1;ctx.stroke();
+ // Soft moist specular sheen, kept narrow so the form reads as rounded, not plastic.
+ const shine=ctx.createRadialGradient(-p.rx*.38,-p.ry*.42,0,-p.rx*.25,-p.ry*.35,p.rx*.72);
+ shine.addColorStop(0,'#f0d0a477');shine.addColorStop(.38,'#d3a47730');shine.addColorStop(1,'#d3a47700');
+ ctx.fillStyle=shine;ctx.beginPath();ctx.ellipse(-p.rx*.2,-p.ry*.28,p.rx*.66,p.ry*.34,-.5,0,Math.PI*2);ctx.fill();
+ ctx.restore();
+}
+ctx.shadowBlur=0;
+const base=ctx.createRadialGradient(-7,1,2,1,9,25);base.addColorStop(0,'#b4875d55');base.addColorStop(1,'#21130d00');
+ctx.fillStyle=base;ctx.beginPath();ctx.ellipse(0,9,20,10,0,0,Math.PI*2);ctx.fill();
+ctx.restore()}
 function draw(t){ctx.clearRect(0,0,w,h);for(let i=items.length-1;i>=0;i--){let p=items[i];p.x+=p.vx;p.y+=p.vy;p.rot+=p.spin;p.vy+=.035;if(p.y>h+45){items.splice(i,1);continue}poop(p.x,p.y,p.s,p.rot)}if(active&&Math.random()<.22){items.push({x:Math.random()*w,y:-35,s:.45+Math.random()*.75,vx:(Math.random()-.5)*1.8,vy:3+Math.random()*4,rot:Math.random(),spin:(Math.random()-.5)*.08})}if(active&&t-last>7800){active=false;hint.textContent='The storm has passed. Unfortunately, the evidence remains.'}raf=requestAnimationFrame(draw)}
 function noise(duration,filterFreq,gain,kind='rumble'){if(!audio)return;const n=Math.floor(audio.sampleRate*duration),buf=audio.createBuffer(1,n,audio.sampleRate),d=buf.getChannelData(0);let prev=0;for(let i=0;i<n;i++){const white=Math.random()*2-1;prev=kind==='rumble'?prev*.985+white*.015:white;const env=Math.pow(1-i/n,kind==='splash'?.65:1.8);d[i]=prev*env}const src=audio.createBufferSource(),f=audio.createBiquadFilter(),g=audio.createGain();src.buffer=buf;f.type=kind==='splash'?'bandpass':'lowpass';f.frequency.value=filterFreq;f.Q.value=kind==='splash'?.7:.5;g.gain.setValueAtTime(gain,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);src.connect(f);f.connect(g);g.connect(audio.destination);src.start()}
 function thunder(){if(!audio)return;noise(2.8,150,.52,'rumble');setTimeout(()=>noise(1.8,95,.34,'rumble'),180)}
