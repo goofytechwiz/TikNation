@@ -23,23 +23,6 @@ function background(){let g=x.createLinearGradient(0,0,0,h);g.addColorStop(0,'#0
 function frame(now){let dt=Math.min(40,now-last||16);last=now;t+=dt;background();let p=phase===0?0:Math.min(1,(now-phase)/3600);if(phase){
  let p=Math.min(1,(now-phase)/3600),ease=p*p*(3-2*p),r=Math.min(w,h)*(.075+ease*.24),y=h*.52+(1-ease)*-h*.2,gap=r*.92;
  orb(w/2-gap,y,r,Math.sin(t*.004)*.08);orb(w/2+gap,y,r,Math.sin(t*.004+1)*-.08);
- if(p>.08&&p<.94){
-  let q=(p-.08)/.86,cy=y+r*.12,travel=Math.pow(q,1.55),dist=travel*h*.82,shotSize=10+travel*Math.min(w,h)*.19,spread=12+travel*Math.min(w,h)*.16;
-  x.save();x.globalCompositeOperation='lighter';
-  let muzzle=x.createRadialGradient(w/2,cy,2,w/2,cy,r*.62);muzzle.addColorStop(0,'#fff');muzzle.addColorStop(.18,'#d9ffe9');muzzle.addColorStop(.48,'#45ffc0');muzzle.addColorStop(1,'rgba(20,255,150,0)');
-  x.fillStyle=muzzle;x.beginPath();x.arc(w/2,cy,r*.62,0,Math.PI*2);x.fill();
-  x.strokeStyle='#baffdf';x.lineWidth=4;x.shadowColor='#39ffb0';x.shadowBlur=28;x.beginPath();x.arc(w/2,cy,r*.48+Math.sin(t*.04)*5,0,Math.PI*2);x.stroke();
-  for(let k=-2;k<=2;k++){x.strokeStyle=k===0?'rgba(235,255,245,.95)':'rgba(65,255,180,.8)';x.lineWidth=k===0?5:2.5;x.beginPath();x.moveTo(w/2+k*5,cy);x.lineTo(w/2+k*spread,cy+dist);x.stroke()}
-  let py=cy+dist,pr=shotSize*(.72+Math.sin(t*.05)*.04),shot=x.createRadialGradient(w/2-pr*.22,py-pr*.25,1,w/2,py,pr*1.55);
-  shot.addColorStop(0,'#fff');shot.addColorStop(.22,'#eaffd8');shot.addColorStop(.48,'#5dffb7');shot.addColorStop(.78,'#12d986');shot.addColorStop(1,'rgba(0,255,150,0)');
-  x.fillStyle=shot;x.shadowColor='#43ffb6';x.shadowBlur=45;x.beginPath();x.arc(w/2,py,pr*1.55,0,Math.PI*2);x.fill();
-  x.strokeStyle='#efffea';x.lineWidth=Math.max(2,pr*.12);x.beginPath();x.arc(w/2,py,pr*.72,0,Math.PI*2);x.stroke();
-  for(let k=0;k<10;k++){let ang=t*.025+k*Math.PI/5,rr=pr*(1.15+Math.sin(t*.04+k)*.18);x.fillStyle='#caffdf';x.beginPath();x.arc(w/2+Math.cos(ang)*rr,py+Math.sin(ang)*rr,Math.max(1,pr*.07),0,Math.PI*2);x.fill()}
-  x.restore();
-  if(q>.94&&q<.97){burst(w/2,h*.88,100,'#75ffd0');burst(w/2,h*.88,55,'#fff')}
- }
- if(p>.82&&p<.84){burst(w/2,h*.52,100,'#ffb45f');burst(w/2,h*.52,80,'#ff315f')}
- if(p>=1){phase=0;burst(w/2,h*.52,24,'#ff8c62')}
 
  // Fire two separate glowing cannonballs straight from the protruding barrels
  if(phase){
