@@ -1,81 +1,78 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050b12"><title>The Drowned Chapel — TikNation Gift Preview</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#030a10"><title>The Drowned Chapel — TikNation Gift Preview</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050b12;color:#e8f3fa;font-family:Georgia,serif}
-canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
-.vignette{position:fixed;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(1,5,10,.55),transparent 34%,rgba(1,5,10,.18) 58%,#02070ddd),radial-gradient(ellipse at 50% 44%,transparent 25%,#01050bbd 100%)}
-.ui{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:max(18px,env(safe-area-inset-top)) 18px max(18px,env(safe-area-inset-bottom));pointer-events:none}
-.top{display:flex;justify-content:space-between;align-items:center;font:10px system-ui;letter-spacing:.22em;text-transform:uppercase;color:#c1d0dc}.top b{color:#a9d9ef}.pill{border:1px solid #a7d9ed55;border-radius:30px;padding:8px 12px;background:#07121bbd}
-.center{position:absolute;left:50%;top:74%;transform:translate(-50%,-50%);width:92%;text-align:center;text-shadow:0 2px 24px #000}
-.kicker{font:10px system-ui;letter-spacing:.4em;color:#9bd6e9;text-transform:uppercase}
-h1{font-size:clamp(30px,6vw,58px);letter-spacing:.14em;margin:8px 0;color:#e5edf0}
-.sub{font:11px system-ui;letter-spacing:.18em;text-transform:uppercase;color:#b2c7d0}
-.controls{display:flex;justify-content:center;gap:10px;margin-top:18px;pointer-events:auto}
-button{border:1px solid #9fd9eb88;border-radius:30px;padding:12px 19px;background:linear-gradient(#17313e,#07121a);color:#f0f8fb;font:700 10px system-ui;letter-spacing:.16em;text-transform:uppercase}
-button.secondary{background:#080e16d9;border-color:#ffffff45}
-button:active{transform:scale(.97)}
-.note{font:9px system-ui;letter-spacing:.14em;text-transform:uppercase;text-align:center;color:#8da3ad}
-@media(max-height:560px){.center{top:82%}h1{font-size:27px}.sub{font-size:9px}.controls{margin-top:9px}}
-</style></head><body>
-<canvas id="world"></canvas><div class="vignette"></div>
-<div class="ui"><div class="top"><span><b>TIKNATION</b> / GIFT PREVIEW</span><span class="pill" id="state">THE WATER IS STILL</span></div>
-<div class="center"><div class="kicker">A forgotten place beneath the tide</div><h1>THE DROWNED CHAPEL</h1><div class="sub">Some prayers never reach the surface</div>
-<div class="controls"><button id="play">Awaken the chapel</button><button class="secondary" id="sound">Sound off</button></div></div>
-<div class="note">Preview only · Not in the live gift catalog</div></div>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#030a10;color:#e9f5f8;font-family:Georgia,serif}canvas{position:fixed;inset:0;width:100%;height:100%;display:block}.shade{position:fixed;inset:0;pointer-events:none;background:linear-gradient(180deg,#02070c88 0%,transparent 26%,transparent 58%,#01060de8 100%),radial-gradient(ellipse at 50% 45%,transparent 28%,#000b 100%)}.ui{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));pointer-events:none}.top{display:flex;justify-content:space-between;gap:8px;font:10px system-ui;letter-spacing:.2em;text-transform:uppercase;color:#c2d4da}.top b{color:#9bd9ed}.pill{padding:8px 10px;border:1px solid #a9d9e555;border-radius:30px;background:#07141bbd}.center{position:absolute;left:50%;top:77%;transform:translate(-50%,-50%);width:94%;text-align:center;text-shadow:0 2px 22px #000}.kicker{font:10px system-ui;letter-spacing:.38em;color:#a7d8e7;text-transform:uppercase}h1{font-size:clamp(27px,5.8vw,55px);letter-spacing:.12em;margin:8px 0}.sub{font:10px system-ui;letter-spacing:.16em;text-transform:uppercase;color:#b5cbd1}.controls{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:16px;pointer-events:auto}button{border:1px solid #a6dced99;border-radius:28px;padding:12px 16px;background:linear-gradient(#1d4352,#081722);color:#f2fbff;font:700 10px system-ui;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}button.secondary{background:#071018ed;border-color:#ffffff55}button:active{transform:scale(.97)}.note{text-align:center;font:9px system-ui;letter-spacing:.13em;color:#9aafb6;text-transform:uppercase}@media(max-height:570px){.center{top:81%}h1{font-size:26px}.controls{margin-top:8px}.sub{font-size:9px}}
+</style></head><body><canvas id="scene"></canvas><div class="shade"></div><div class="ui"><div class="top"><span><b>TIKNATION</b> / GIFT PREVIEW</span><span class="pill" id="status">THE TIDE IS RISING</span></div><div class="center"><div class="kicker">A place the sea refused to keep</div><h1>THE DROWNED CHAPEL</h1><div class="sub">The bell rings beneath the black water</div><div class="controls"><button id="sequence">Open the chapel + sound</button><button class="secondary" id="test">Test bell sound</button></div></div><div class="note">Rebuilt preview · Not in the live gift catalog</div></div>
 <script>
 (()=>{
-const c=document.getElementById('world'),x=c.getContext('2d'),state=document.getElementById('state');let W,H,D,t=0,active=true,audio=null,soundOn=false,particles=[],rays=[];
+const c=document.getElementById('scene'),g=c.getContext('2d'),status=document.getElementById('status');let W,H,D,t=0,door=0,sequence=false,particles=[],audio=null;
 const rand=(a,b)=>a+Math.random()*(b-a);
-function size(){D=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*D;c.height=H*D;x.setTransform(D,0,0,D,0,0);particles=Array.from({length:150},()=>({x:rand(0,W),y:rand(0,H),r:rand(.5,2),v:rand(.15,.7),a:rand(.12,.55)}));}
-function path(points,fill,stroke,lw=1){x.beginPath();points.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.closePath();if(fill){x.fillStyle=fill;x.fill()}if(stroke){x.strokeStyle=stroke;x.lineWidth=lw;x.stroke()}}
-function arch(cx,base,rx,ry){x.beginPath();x.moveTo(cx-rx,base);x.lineTo(cx-rx,base-ry*.56);x.bezierCurveTo(cx-rx,base-ry*1.2,cx+rx,base-ry*1.2,cx+rx,base-ry*.56);x.lineTo(cx+rx,base);x.closePath()}
+function resize(){D=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*D;c.height=H*D;g.setTransform(D,0,0,D,0,0);particles=Array.from({length:260},()=>({x:rand(0,W),y:rand(0,H),r:rand(.35,2),v:rand(.12,.65),a:rand(.1,.55),drift:rand(-.3,.3)}));}
+function poly(p,fill,stroke,lw=1){g.beginPath();p.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]));g.closePath();if(fill){g.fillStyle=fill;g.fill()}if(stroke){g.strokeStyle=stroke;g.lineWidth=lw;g.stroke()}}
+function archPath(cx,base,rx,ry){g.beginPath();g.moveTo(cx-rx,base);g.lineTo(cx-rx,base-ry*.57);g.bezierCurveTo(cx-rx,base-ry*1.25,cx+rx,base-ry*1.25,cx+rx,base-ry*.57);g.lineTo(cx+rx,base);g.closePath()}
+function stoneTexture(x,y,w,h,seed){g.save();g.beginPath();g.rect(x,y,w,h);g.clip();for(let i=0;i<Math.floor(w*h/220);i++){const px=x+((i*73+seed*29)%(w||1)),py=y+((i*47+seed*13)%(h||1));g.fillStyle=i%3?'rgba(170,190,191,.045)':'rgba(0,0,0,.12)';g.fillRect(px,py,rand(1,4),rand(1,3));}g.restore();}
 function draw(){
- if(!active)return;t+=.012;
- const sky=x.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#07111d');sky.addColorStop(.5,'#102331');sky.addColorStop(1,'#07131b');x.fillStyle=sky;x.fillRect(0,0,W,H);
- // distant submerged haze and moonlit shafts
- for(let i=0;i<5;i++){const px=W*(.12+i*.19);const beam=x.createLinearGradient(px,0,px+80,H*.8);beam.addColorStop(0,'rgba(139,203,226,0)');beam.addColorStop(.55,'rgba(124,190,215,.045)');beam.addColorStop(1,'rgba(139,203,226,0)');x.fillStyle=beam;x.beginPath();x.moveTo(px-35,0);x.lineTo(px+35,0);x.lineTo(px+160,H*.82);x.lineTo(px-180,H*.82);x.fill();}
- // chapel silhouette, buttresses and roof
- const cx=W*.5,scale=Math.min(W/900,H/650),base=H*.72,wallW=Math.min(W*.58,520),left=cx-wallW/2,right=cx+wallW/2,top=H*.19;
- x.save();x.shadowColor='#000';x.shadowBlur=28;
- path([[left,base],[left+wallW*.08,top+H*.15],[cx,top],[right-wallW*.08,top+H*.15],[right,base]],'#101b22','#263b46',3);
- // roof gables
- path([[left-wallW*.05,top+H*.15],[cx,top-H*.045],[right+wallW*.05,top+H*.15],[right-wallW*.08,top+H*.17],[cx,top+H*.045],[left+wallW*.08,top+H*.17]],'#0a151d','#354a53',2);
- // stone blocks
- x.strokeStyle='rgba(150,180,190,.12)';x.lineWidth=1;
- for(let yy=top+H*.17;yy<base;yy+=22){x.beginPath();x.moveTo(left+8,yy);x.lineTo(right-8,yy);x.stroke();for(let xx=left+20;xx<right;xx+=45){x.beginPath();x.moveTo(xx+(Math.floor(yy/22)%2)*20,yy);x.lineTo(xx+(Math.floor(yy/22)%2)*20,yy+21);x.stroke();}}
- // towers
- for(const side of [-1,1]){const tx=cx+side*wallW*.43,tw=wallW*.18;path([[tx-tw/2,base],[tx-tw/2,top+H*.05],[tx,top-H*.10],[tx+tw/2,top+H*.05],[tx+tw/2,base]],'#17252d','#3b525b',2);path([[tx-tw*.6,top+H*.05],[tx,top-H*.15],[tx+tw*.6,top+H*.05]],'#0b151d','#405b66',2);for(let k=-1;k<=1;k++){x.fillStyle='rgba(114,185,210,.25)';arch(tx+k*tw*.22,top+H*.31,tw*.055,H*.12);x.fill();}}
- // stained glass rose window
- const wy=top+H*.19,wr=wallW*.105;x.save();arch(cx,wy+wr*1.8,wr,wr*2.5);x.clip();const rg=x.createRadialGradient(cx,wy,1,cx,wy,wr*2.2);rg.addColorStop(0,'#9de4ef');rg.addColorStop(.45,'#326c86');rg.addColorStop(1,'#111b36');x.fillStyle=rg;x.fillRect(cx-wr*1.3,wy-wr*1.2,wr*2.6,wr*3);for(let a=0;a<12;a++){x.save();x.translate(cx,wy);x.rotate(a*Math.PI/6);x.fillStyle=a%2?'rgba(196,231,235,.45)':'rgba(238,183,123,.4)';x.beginPath();x.moveTo(0,0);x.lineTo(-wr*.15,-wr*2);x.lineTo(wr*.15,-wr*2);x.fill();x.restore();}x.restore();arch(cx,wy+wr*1.8,wr,wr*2.5);x.strokeStyle='#526d78';x.lineWidth=5;x.stroke();
- // main doorway and heavy doors
- const doorY=base,doorRx=wallW*.205,doorRy=H*.32;arch(cx,doorY,doorRx,doorRy);x.save();x.clip();
- const glow=x.createRadialGradient(cx,doorY-doorRy*.48,4,cx,doorY-doorRy*.48,doorRx*1.3);glow.addColorStop(0,'rgba(153,224,245,.95)');glow.addColorStop(.5,'rgba(57,133,166,.48)');glow.addColorStop(1,'rgba(5,16,28,0)');x.fillStyle=glow;x.fillRect(cx-doorRx,doorY-doorRy*1.3,doorRx*2,doorRy*1.4);
- x.fillStyle='#07121b';x.fillRect(cx-doorRx,doorY-doorRy,doorRx*2,doorRy);
- const opening=Math.max(0,Math.min(1,(t-1.2)/3));const doorAngle=active?opening:0;
- x.save();x.translate(cx-doorRx,doorY);x.rotate(-.05-doorAngle*.45);x.fillStyle='#18252a';x.fillRect(0,-doorRy,doorRx,doorRy);x.strokeStyle='#64757a';x.lineWidth=4;x.strokeRect(8,-doorRy+8,doorRx-16,doorRy-16);for(let yy=-doorRy+25;yy<0;yy+=28){x.strokeStyle='rgba(155,177,179,.23)';x.beginPath();x.moveTo(12,yy);x.lineTo(doorRx-12,yy);x.stroke()}x.restore();
- x.save();x.translate(cx+doorRx,doorY);x.rotate(.05+doorAngle*.45);x.fillStyle='#1c292d';x.fillRect(-doorRx,-doorRy,doorRx,doorRy);x.strokeStyle='#64757a';x.lineWidth=4;x.strokeRect(-doorRx+8,-doorRy+8,doorRx-16,doorRy-16);for(let yy=-doorRy+25;yy<0;yy+=28){x.strokeStyle='rgba(155,177,179,.23)';x.beginPath();x.moveTo(-doorRx+12,yy);x.lineTo(-12,yy);x.stroke()}x.restore();x.restore();
- arch(cx,doorY,doorRx,doorRy);x.strokeStyle='#526b75';x.lineWidth=10;x.stroke();
- // buttress ribs and narrow lancet windows
- for(const side of [-1,1]){const bx=cx+side*wallW*.32;path([[bx-18,base],[bx-10,top+H*.22],[bx,top+H*.16],[bx+12,top+H*.22],[bx+20,base]],'#26353b','#4a6068',2);arch(bx,base-H*.09,wallW*.025,H*.12);x.fillStyle='rgba(112,193,218,.35)';x.fill();}
- x.restore();
- // waterline and foreground water
- const waterY=H*.70;const water=x.createLinearGradient(0,waterY,0,H);water.addColorStop(0,'rgba(17,69,86,.60)');water.addColorStop(.15,'rgba(5,34,47,.88)');water.addColorStop(1,'#02090f');x.fillStyle=water;x.fillRect(0,waterY,W,H-waterY);
- // moving caustic ripples
- for(let i=0;i<55;i++){const yy=waterY+((i*17+t*9)%(H-waterY));const xx=(i*97+Math.sin(t*1.4+i)*48)%W;const len=rand(12,55);x.strokeStyle='rgba(129,202,218,'+(.025+((i%5)/150))+')';x.lineWidth=1;x.beginPath();x.ellipse(xx,yy,len,2+((i%3)*.8),0,0,Math.PI*2);x.stroke();}
- // drifting silt and bubbles
- for(const p of particles){p.y-=p.v;if(p.y<0)p.y=H;p.x+=Math.sin(t+p.y*.01)*.22;x.fillStyle='rgba(190,225,235,'+p.a+')';x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fill();}
- // mist bands crossing the facade
- for(let i=0;i<4;i++){const yy=H*(.58+i*.055),off=(t*12+i*150)%(W+350)-175;const mg=x.createLinearGradient(off-170,yy,off+170,yy);mg.addColorStop(0,'rgba(176,218,226,0)');mg.addColorStop(.5,'rgba(169,211,222,.08)');mg.addColorStop(1,'rgba(176,218,226,0)');x.fillStyle=mg;x.fillRect(off-170,yy-15,340,35);}
- // subtle film grain
- x.fillStyle='rgba(220,235,240,.018)';for(let i=0;i<70;i++)x.fillRect(rand(0,W),rand(0,H),1,1);
+ t+=.012;g.fillStyle='#030910';g.fillRect(0,0,W,H);
+ const cx=W*.5,scale=Math.min(W/950,H/700),base=H*.75,wallW=Math.min(W*.65,620),L=cx-wallW/2,R=cx+wallW/2,top=H*.17;
+ let sky=g.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#030914');sky.addColorStop(.48,'#102b3b');sky.addColorStop(1,'#06131d');g.fillStyle=sky;g.fillRect(0,0,W,H);
+ // distant submerged moon glow and volumetric light shafts
+ let moon=g.createRadialGradient(W*.52,H*.20,1,W*.52,H*.20,H*.52);moon.addColorStop(0,'rgba(151,220,239,.23)');moon.addColorStop(.35,'rgba(67,140,170,.09)');moon.addColorStop(1,'rgba(10,28,42,0)');g.fillStyle=moon;g.fillRect(0,0,W,H);
+ for(let i=0;i<7;i++){let xx=W*(.07+i*.145),beam=g.createLinearGradient(xx,0,xx+rand(50,110),H*.78);beam.addColorStop(0,'rgba(155,217,234,0)');beam.addColorStop(.55,'rgba(131,203,224,.055)');beam.addColorStop(1,'rgba(155,217,234,0)');poly([[xx-24,0],[xx+24,0],[xx+150,H*.78],[xx-160,H*.78]],beam);}
+ // silhouette of distant broken spires
+ for(let i=0;i<9;i++){let xx=W*(i/8),hh=rand(H*.10,H*.24);poly([[xx-22,H*.69],[xx-10,H*.69],[xx-8,H*.69-hh*.8],[xx,H*.69-hh],[xx+7,H*.69-hh*.78],[xx+13,H*.69]],'#08151e','#1b303b',1)}
+ // chapel body with perspective shoulders and deep masonry
+ g.save();g.shadowColor='#000';g.shadowBlur=32;
+ poly([[L,base],[L+wallW*.035,top+H*.13],[cx,top-H*.015],[R-wallW*.035,top+H*.13],[R,base]],'#1b292f','#52636a',3);
+ poly([[L-wallW*.07,top+H*.14],[cx,top-H*.12],[R+wallW*.07,top+H*.14],[R-wallW*.035,top+H*.18],[cx,top+H*.055],[L+wallW*.035,top+H*.18]],'#101c25','#485a63',3);
+ // roof stone courses
+ for(let i=0;i<9;i++){let yy=top+H*.02+i*H*.014;g.strokeStyle='rgba(150,179,187,.14)';g.lineWidth=1;g.beginPath();g.moveTo(cx-wallW*.48+i*2,yy);g.lineTo(cx+wallW*.48-i*2,yy);g.stroke();}
+ // masonry joints and varied weather stains
+ for(let row=0;row<13;row++){let yy=top+H*.18+row*(base-top-H*.18)/13;g.strokeStyle='rgba(0,0,0,.28)';g.beginPath();g.moveTo(L+8,yy);g.lineTo(R-8,yy);g.stroke();for(let col=0;col<14;col++){let xx=L+col*wallW/14+(row%2)*wallW/28;g.strokeStyle='rgba(168,192,195,.12)';g.beginPath();g.moveTo(xx,yy);g.lineTo(xx,yy+(base-top-H*.18)/13);g.stroke();}}
+ stoneTexture(L,top+H*.16,wallW,base-top-H*.16,4);
+ // twin towers, recessed belfry arches, stone caps
+ for(let side of [-1,1]){let tx=cx+side*wallW*.43,tw=wallW*.18;poly([[tx-tw*.52,base],[tx-tw*.52,top+H*.02],[tx,top-H*.18],[tx+tw*.52,top+H*.02],[tx+tw*.52,base]],'#17252d','#566a71',2);poly([[tx-tw*.64,top+H*.03],[tx,top-H*.22],[tx+tw*.64,top+H*.03]],'#0b1821','#536770',2);for(let k=-1;k<=1;k++){let wx=tx+k*tw*.22;archPath(wx,top+H*.34,tw*.06,H*.13);g.fillStyle='#030b12';g.fill();g.strokeStyle='#6b8289';g.lineWidth=2;g.stroke();g.fillStyle='rgba(132,206,229,.3)';g.fillRect(wx-3,top+H*.25,6,H*.08);}}
+ // buttresses with angled faces
+ for(let side of [-1,1])for(let k=0;k<3;k++){let bx=cx+side*wallW*(.28+k*.115),bh=H*(.38-k*.06);poly([[bx-22,base],[bx-12,base-bh],[bx,base-bh-18],[bx+12,base-bh],[bx+25,base]],'#25363e','#63757a',2);poly([[bx-12,base-bh],[bx,base-bh-18],[bx+12,base-bh]],'#53636a','#7b8989',1);}
+ // rose window, individually leaded stained glass
+ const wy=top+H*.20,wr=wallW*.105;g.save();archPath(cx,wy+wr*1.8,wr,wr*2.5);g.clip();let glass=g.createRadialGradient(cx,wy,1,cx,wy,wr*2.4);glass.addColorStop(0,'#b5eaf0');glass.addColorStop(.34,'#377c91');glass.addColorStop(.72,'#182d54');glass.addColorStop(1,'#080e20');g.fillStyle=glass;g.fillRect(cx-wr*1.4,wy-wr*1.3,wr*2.8,wr*3.2);for(let i=0;i<16;i++){g.save();g.translate(cx,wy);g.rotate(i*Math.PI/8);g.fillStyle=i%2?'rgba(218,237,227,.48)':'rgba(202,163,111,.45)';g.beginPath();g.moveTo(0,0);g.lineTo(-wr*.12,-wr*2.2);g.lineTo(wr*.12,-wr*2.2);g.closePath();g.fill();g.restore();}g.restore();archPath(cx,wy+wr*1.8,wr,wr*2.5);g.strokeStyle='#81969a';g.lineWidth=6;g.stroke();
+ // deep main portal, cold light, carved archivolt
+ const dr=wallW*.205,dh=H*.34,open=Math.min(1,door);archPath(cx,base,dr,dh);g.fillStyle='#030b12';g.fill();g.save();archPath(cx,base,dr,dh);g.clip();
+ let inner=g.createRadialGradient(cx,base-dh*.48,2,cx,base-dh*.48,dr*1.45);inner.addColorStop(0,'rgba(170,231,245,.95)');inner.addColorStop(.42,'rgba(64,142,173,.50)');inner.addColorStop(1,'rgba(3,13,24,.02)');g.fillStyle=inner;g.fillRect(cx-dr,base-dh*1.2,dr*2,dh*1.3);
+ // receding nave ribs and floor reflection
+ for(let i=0;i<5;i++){let yy=base-dh*(.22+i*.15),ww=dr*(.7-i*.12);g.strokeStyle='rgba(172,222,233,'+(.16-i*.02)+')';g.lineWidth=3;g.beginPath();g.moveTo(cx-ww,yy);g.quadraticCurveTo(cx,yy-dh*.14,cx+ww,yy);g.stroke();}
+ g.restore();
+ // doors swing inward with strong beveled frames and iron straps
+ function doorLeaf(side){g.save();g.translate(cx+side*dr,base);g.rotate(side*(.025+open*.48));g.scale(side,1);let q=g.createLinearGradient(0,0,dr,0);q.addColorStop(0,'#26383d');q.addColorStop(.45,'#111e25');q.addColorStop(1,'#34454a');g.fillStyle=q;g.fillRect(0,-dh,dr,dh);g.strokeStyle='#718187';g.lineWidth=5;g.strokeRect(7,-dh+8,dr-14,dh-16);g.strokeStyle='#0a1117';g.lineWidth=3;g.strokeRect(15,-dh+17,dr-30,dh-34);for(let yy=-dh+30;yy<0;yy+=38){g.fillStyle='#43545a';g.fillRect(12,yy,dr-24,5);g.fillStyle='#111b20';g.fillRect(12,yy+5,dr-24,2);}for(let yy=-dh+45;yy<0;yy+=70){g.fillStyle='#a3b0ad';g.beginPath();g.arc(dr*.82,yy,3,0,Math.PI*2);g.fill();}g.restore();}
+ doorLeaf(-1);doorLeaf(1);
+ archPath(cx,base,dr,dh);g.strokeStyle='#687d82';g.lineWidth=12;g.stroke();archPath(cx,base,dr+10,dh+10);g.strokeStyle='rgba(151,179,184,.32)';g.lineWidth=2;g.stroke();
+ // sculpted stone columns framing entrance
+ for(let side of [-1,1]){let xx=cx+side*(dr+25);g.fillStyle='#34464c';g.fillRect(xx-9,base-dh,18,dh);g.fillStyle='#607277';g.fillRect(xx-15,base-dh,30,9);g.fillRect(xx-15,base-10,30,10);for(let yy=base-dh+18;yy<base-15;yy+=35){g.strokeStyle='rgba(0,0,0,.3)';g.beginPath();g.moveTo(xx-8,yy);g.lineTo(xx+8,yy);g.stroke();}}
+ // cross silhouette above roof
+ g.fillStyle='#a4b7ba';g.fillRect(cx-2,top-H*.18,4,H*.08);g.fillRect(cx-H*.018,top-H*.15,H*.036,4);
+ g.restore();
+ // ocean surface covers the lower foundation, reflections from open portal
+ const waterY=H*.72;let water=g.createLinearGradient(0,waterY,0,H);water.addColorStop(0,'rgba(19,74,91,.82)');water.addColorStop(.18,'rgba(7,38,53,.95)');water.addColorStop(1,'#01070c');g.fillStyle=water;g.fillRect(0,waterY,W,H-waterY);
+ if(open>.05){let refl=g.createLinearGradient(cx,waterY,cx,H);refl.addColorStop(0,'rgba(154,225,241,.35)');refl.addColorStop(1,'rgba(99,187,214,0)');g.fillStyle=refl;g.beginPath();g.moveTo(cx-dr*.5,waterY);g.lineTo(cx+dr*.5,waterY);g.lineTo(cx+dr*1.8,H);g.lineTo(cx-dr*1.8,H);g.fill();}
+ for(let i=0;i<90;i++){let yy=waterY+((i*13+t*9)%(H-waterY)),xx=(i*113+Math.sin(t+i)*45)%W;g.strokeStyle='rgba(143,210,226,'+(.025+(i%6)*.012)+')';g.lineWidth=rand(.5,1.5);g.beginPath();g.ellipse(xx,yy,rand(8,48),rand(1,3),0,0,Math.PI*2);g.stroke();}
+ // silt, bubbles, sea mist
+ for(let p of particles){p.y-=p.v;p.x+=p.drift+Math.sin(t+p.y*.008)*.12;if(p.y<0){p.y=H;p.x=rand(0,W)}g.fillStyle='rgba(193,225,234,'+p.a+')';g.beginPath();g.arc(p.x,p.y,p.r,0,Math.PI*2);g.fill();}
+ for(let i=0;i<5;i++){let yy=H*(.61+i*.055),xx=((t*14+i*205)%(W+400))-200,mg=g.createLinearGradient(xx-220,yy,xx+220,yy);mg.addColorStop(0,'rgba(165,212,224,0)');mg.addColorStop(.5,'rgba(174,220,230,.095)');mg.addColorStop(1,'rgba(165,212,224,0)');g.fillStyle=mg;g.fillRect(xx-220,yy-19,440,40);}
+ // distant lightning flash
+ if(Math.sin(t*.42)> .996){g.fillStyle='rgba(173,224,245,.12)';g.fillRect(0,0,W,H);}
  requestAnimationFrame(draw);
 }
-function toll(){if(!soundOn)return;try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const now=audio.currentTime;[0,0.22,0.46].forEach((delay,i)=>{const o=audio.createOscillator(),g=audio.createGain(),f=audio.createBiquadFilter();o.type='sine';o.frequency.setValueAtTime(78-i*7,now+delay);o.frequency.exponentialRampToValueAtTime(48-i*5,now+delay+3.8);f.type='lowpass';f.frequency.value=260;g.gain.setValueAtTime(.0001,now+delay);g.gain.exponentialRampToValueAtTime(.13/(i+1),now+delay+.04);g.gain.exponentialRampToValueAtTime(.0001,now+delay+4.5);o.connect(f).connect(g).connect(audio.destination);o.start(now+delay);o.stop(now+delay+4.6);});}catch(e){}}
-document.getElementById('play').addEventListener('click',()=>{t=0;state.textContent='THE DOORS ARE OPENING';toll();setTimeout(()=>state.textContent='THE CHAPEL REMEMBERS',2400);});
-document.getElementById('sound').addEventListener('click',e=>{soundOn=!soundOn;e.currentTarget.textContent=soundOn?'Sound on':'Sound off';if(soundOn)toll();});
-addEventListener('resize',size);size();requestAnimationFrame(draw);
+async function sound(){try{const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent='AUDIO NOT SUPPORTED';return;}audio=audio||new AC();if(audio.state!=='running')await audio.resume();const now=audio.currentTime;
+ // bell made from layered inharmonic partials, with a long resonant tail
+ const master=audio.createGain();master.gain.setValueAtTime(.0001,now);master.gain.exponentialRampToValueAtTime(.72,now+.035);master.gain.exponentialRampToValueAtTime(.0001,now+7);master.connect(audio.destination);
+ [74,111,183,247,302].forEach((hz,i)=>{const o=audio.createOscillator(),gain=audio.createGain(),filter=audio.createBiquadFilter();o.type='sine';o.frequency.value=hz;filter.type='lowpass';filter.frequency.value=900;gain.gain.value=[.42,.22,.13,.07,.035][i];o.connect(filter).connect(gain).connect(master);o.start(now);o.stop(now+7);});
+ // underwater rumble and splash/noise transient
+ const len=Math.floor(audio.sampleRate*2.8),buf=audio.createBuffer(1,len,audio.sampleRate),data=buf.getChannelData(0);for(let i=0;i<len;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/len,2);
+ const noise=audio.createBufferSource(),ng=audio.createGain(),lp=audio.createBiquadFilter();noise.buffer=buf;lp.type='lowpass';lp.frequency.value=420;ng.gain.setValueAtTime(.0001,now);ng.gain.exponentialRampToValueAtTime(.32,now+.03);ng.gain.exponentialRampToValueAtTime(.0001,now+2.8);noise.connect(lp).connect(ng).connect(audio.destination);noise.start(now);
+ const sub=audio.createOscillator(),sg=audio.createGain();sub.type='sine';sub.frequency.setValueAtTime(43,now);sub.frequency.exponentialRampToValueAtTime(27,now+5);sg.gain.setValueAtTime(.0001,now);sg.gain.exponentialRampToValueAtTime(.25,now+.5);sg.gain.exponentialRampToValueAtTime(.0001,now+5.5);sub.connect(sg).connect(audio.destination);sub.start(now);sub.stop(now+5.6);
+ status.textContent='BELL TOLLING · AUDIO PLAYING';setTimeout(()=>{if(status.textContent.startsWith('BELL'))status.textContent='THE CHAPEL REMEMBERS';},4500);
+ }catch(e){status.textContent='TAP TEST BELL TO ENABLE AUDIO';}}
+document.getElementById('sequence').addEventListener('click',()=>{sequence=true;door=0;status.textContent='THE GREAT DOORS ARE OPENING';sound();let start=performance.now();function open(now){door=Math.min(1,(now-start)/3200);if(door<1)requestAnimationFrame(open);else status.textContent='THE CHAPEL HAS AWAKENED';}requestAnimationFrame(open);});
+document.getElementById('test').addEventListener('click',sound);
+addEventListener('resize',resize);resize();requestAnimationFrame(draw);
 })();
 </script></body></html>
