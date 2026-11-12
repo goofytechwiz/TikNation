@@ -69,8 +69,14 @@ shine.addColorStop(0,'#ffe0a277');shine.addColorStop(.28,'#f0c17a55');shine.addC
 ctx.fillStyle=shine;ctx.beginPath();ctx.ellipse(-13,-17,15,55,-.12,0,Math.PI*2);ctx.fill();
 ctx.strokeStyle='#f5d39a88';ctx.lineWidth=3;ctx.lineCap='round';ctx.beginPath();
 ctx.moveTo(-19,25);ctx.quadraticCurveTo(-25,-5,-17,-48);ctx.stroke();
-ctx.strokeStyle='#32180f55';ctx.lineWidth=4;ctx.beginPath();
+ctx.strokeStyle='#32180f88';ctx.lineWidth=7;ctx.beginPath();
 ctx.moveTo(23,-37);ctx.quadraticCurveTo(32,4,25,39);ctx.stroke();
+// Pronounced dimensional wet sheen: bright reflected strip and soft rounded glints.
+const gloss=ctx.createLinearGradient(-24,-60,8,45);
+gloss.addColorStop(0,'#fff0c9cc');gloss.addColorStop(.12,'#ffe0a288');gloss.addColorStop(.34,'#f4c27a22');gloss.addColorStop(1,'#f4c27a00');
+ctx.fillStyle=gloss;ctx.beginPath();ctx.ellipse(-17,-16,7,48,-.13,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#fff1d4aa';ctx.beginPath();ctx.ellipse(-20,-53,4,10,-.3,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#f3c17a55';ctx.beginPath();ctx.ellipse(17,35,8,13,.25,0,Math.PI*2);ctx.fill();
 ctx.restore();
 // Mr. Hankey's familiar wide eyes and happy grin.
 ctx.fillStyle='#fff';ctx.strokeStyle='#4a2918';ctx.lineWidth=1.5;ctx.beginPath();
