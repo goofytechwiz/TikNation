@@ -158,7 +158,7 @@ else if(!exploded){train.position.z=12.2;train.scale.setScalar(2.45);camera.fov=
 if(t>1.0&&phase===0){phase=1;status.textContent='THE WHISTLE ECHOES THROUGH THE TUNNEL';playWhistle()}
 if(t>1.65&&phase===1){phase=2;status.textContent='THE BLACK LOCOMOTIVE RUSHES OUT OF THE TUNNEL';startEngine()}
 if(t>3.0&&phase===2){phase=3;status.textContent='IT IS RACING STRAIGHT INTO THE SCREEN'}
-if(engineOn&&soundCtx){const approach=Math.max(0,Math.min(1,(t-1.65)/4.7));const swell=.65+approach*1.7;if(trackClackGain)trackClackGain.gain.setTargetAtTime(.018*swell,soundCtx.currentTime,.12);if(trackRushGain)trackRushGain.gain.setTargetAtTime(.012*swell,soundCtx.currentTime,.16);}
+if(engineOn&&soundCtx){const approach=Math.max(0,Math.min(1,(t-1.65)/4.7));const swell=.65+approach*1.7;if(trackClackGain)trackClackGain.gain.setTargetAtTime(.085*swell,soundCtx.currentTime,.12);if(trackRushGain)trackRushGain.gain.setTargetAtTime(.055*swell,soundCtx.currentTime,.16);}
 if(t>6.35&&!exploded){explode();}
 // Natural eye tracking, expressive brows, occasional blinks and a speaking/whistling mouth
 const blinkA=Math.pow(Math.max(0,Math.cos(t*.73+1.1)),90),blinkB=Math.pow(Math.max(0,Math.cos(t*.73+1.1)),90);
