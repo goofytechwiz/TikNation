@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08090d"><title>THE END IS NEAR — TikNation Gift Preview</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08090d;color:#f4eee7;font-family:Arial,sans-serif}
+#scene{position:fixed;inset:0;overflow:hidden;background:radial-gradient(ellipse at 52% 30%,#63382d 0,#271d20 24%,#10131a 58%,#05070b 100%)}
+#sky{position:absolute;inset:0;background:linear-gradient(180deg,#11151d 0%,#4a2928 32%,#211a20 59%,#090c12 100%);transition:filter 1.5s}
+#sun{position:absolute;width:min(44vw,390px);aspect-ratio:1;border-radius:50%;left:50%;top:11%;transform:translateX(-50%);background:radial-gradient(circle at 48% 46%,#fff0c6 0 9%,#f2a15c 23%,#a43f32 58%,#401e26 73%,transparent 74%);box-shadow:0 0 60px #f17b4a77,0 0 160px #b73d2b55;filter:saturate(.8)}
+#sun:after{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(174deg,transparent 0 17px,#261b22 18px 22px,transparent 23px 35px);mix-blend-mode:multiply;opacity:.8}
+#clouds{position:absolute;inset:0;background:radial-gradient(ellipse at 15% 28%,#0a0c12dd 0 14%,transparent 34%),radial-gradient(ellipse at 82% 25%,#0a0c12dd 0 17%,transparent 37%),radial-gradient(ellipse at 55% 48%,#17131add 0 13%,transparent 38%);filter:blur(16px);animation:cloud 16s ease-in-out infinite alternate}
+@keyframes cloud{to{transform:translate(-3%,2%) scale(1.08)}}
+#city{position:absolute;bottom:18%;left:0;width:100%;height:34%;background:linear-gradient(180deg,transparent,#080a0e 72%),linear-gradient(90deg,transparent 2%,#080a0e 2% 7%,transparent 7% 9%,#0b0d12 9% 16%,transparent 16% 18%,#090b10 18% 27%,transparent 27% 30%,#080a0f 30% 38%,transparent 38% 41%,#0a0c11 41% 50%,transparent 50% 53%,#090b10 53% 62%,transparent 62% 65%,#080a0f 65% 73%,transparent 73% 76%,#0a0c11 76% 86%,transparent 86% 89%,#080a0e 89% 97%,transparent 97%);clip-path:polygon(0 40%,5% 40%,5% 15%,10% 15%,10% 50%,15% 50%,15% 27%,20% 27%,20% 5%,24% 5%,24% 48%,30% 48%,30% 22%,36% 22%,36% 0,41% 0,41% 54%,47% 54%,47% 20%,53% 20%,53% 45%,59% 45%,59% 12%,64% 12%,64% 53%,71% 53%,71% 30%,77% 30%,77% 7%,82% 7%,82% 52%,89% 52%,89% 25%,94% 25%,94% 42%,100% 42%,100% 100%,0 100%)}
+#ground{position:absolute;bottom:-15%;left:-10%;width:120%;height:45%;background:linear-gradient(180deg,#1b1718,#090b0e 55%);clip-path:polygon(0 35%,22% 18%,45% 28%,66% 13%,100% 31%,100% 100%,0 100%)}
+#crack{position:absolute;bottom:9%;left:50%;width:44%;height:20%;transform:translateX(-50%);background:linear-gradient(110deg,transparent 0 47%,#f3a05c 48%,#ffdb9c 49%,#a94230 50%,transparent 51%),linear-gradient(75deg,transparent 0 38%,#b94d35 39%,transparent 40%);filter:drop-shadow(0 0 12px #f37c43);opacity:0}
+#meteor{position:absolute;top:-20%;left:78%;width:8px;height:170px;background:linear-gradient(transparent,#fff0c0,#e65c38);transform:rotate(38deg);filter:drop-shadow(0 0 18px #ff6c3b);opacity:0}
+#flash{position:absolute;inset:0;background:#fff2d7;opacity:0;pointer-events:none}
+#embers{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,#ffb36c 0 1px,transparent 2px),radial-gradient(circle,#e45c3e 0 1px,transparent 2px);background-size:83px 107px,131px 149px;background-position:0 0,30px 40px;opacity:.38;animation:embers 8s linear infinite}
+@keyframes embers{to{background-position:0 -220px,30px -280px}}
+header{position:fixed;z-index:5;top:0;left:0;right:0;padding:17px 20px;display:flex;justify-content:space-between;align-items:center;font-size:9px;font-weight:900;letter-spacing:.22em;color:#e6d7ca}
+.tag{border:1px solid #ffffff45;border-radius:30px;padding:8px 12px;background:#090b10a8}
+.panel{position:fixed;z-index:6;left:50%;bottom:7%;transform:translateX(-50%);width:min(94%,650px);text-align:center;text-shadow:0 2px 24px #000}
+.kicker{font-size:10px;font-weight:900;letter-spacing:.42em;color:#f3a16d}
+h1{font-size:clamp(42px,10vw,94px);line-height:.85;letter-spacing:-.055em;margin:14px 0 12px;font-weight:1000}
+.sub{font-size:10px;letter-spacing:.2em;font-weight:800;color:#e2d2c7}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:19px}
+button{border:1px solid #e68a5d;border-radius:3px;padding:14px 22px;background:linear-gradient(135deg,#a74630,#4c1c20);color:#fff;font-size:10px;font-weight:900;letter-spacing:.16em;cursor:pointer;box-shadow:0 8px 30px #0009}
+button.alt{background:#11141b;border-color:#ffffff55}button:disabled{opacity:.5}
+small{display:block;margin-top:10px;font-size:9px;letter-spacing:.08em;color:#c3b5ad}
+#event{position:fixed;z-index:4;top:40%;left:50%;transform:translate(-50%,-50%);font-size:clamp(23px,6vw,62px);font-weight:1000;letter-spacing:.13em;text-align:center;white-space:nowrap;color:#fff0d8;text-shadow:0 0 25px #f28b54;opacity:0;transition:opacity .4s}
+#scene.hit #flash{animation:flash .55s ease-out}#scene.hit #meteor{opacity:1;animation:fall 1.5s ease-in forwards}#scene.hit #crack{opacity:1;animation:split 1.1s ease-out}#scene.hit #sun{filter:saturate(1.7) brightness(1.35)}
+@keyframes flash{0%{opacity:.9}100%{opacity:0}}@keyframes fall{to{top:68%;left:22%;opacity:0}}@keyframes split{0%{transform:translateX(-50%) scaleX(.1)}100%{transform:translateX(-50%) scaleX(1)}}
+#scene.after #sky{filter:hue-rotate(-18deg) brightness(.6)}#scene.after #city{transform:translateY(9px);filter:brightness(.55)}#scene.after #event{opacity:1}
+#scene.after #sun{box-shadow:0 0 90px #ff4e2c99,0 0 220px #a6282888}
+@media(max-width:600px){#sun{width:62vw;top:14%}#city{height:29%;bottom:22%}.panel{bottom:8%}header{padding:13px;font-size:8px}.kicker{font-size:8px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style></head><body>
+<div id="scene"><div id="sky"></div><div id="sun"></div><div id="clouds"></div><div id="city"></div><div id="ground"></div><div id="crack"></div><div id="meteor"></div><div id="embers"></div><div id="flash"></div><div id="event">THE WORLD IS ENDING</div></div>
+<header><span>TIKNATION / GIFT PREVIEW</span><span class="tag" id="status">DORMANT</span></header>
+<section class="panel"><div class="kicker">NO ONE IS COMING TO SAVE US</div><h1>THE END<br>IS NEAR</h1><div class="sub">A FINAL-DAY APOCALYPSE EVENT</div><div class="actions"><button id="start">UNLEASH THE END</button><button class="alt" id="audioTest">TEST IMPACT SOUND</button></div><small>Tap to begin · Sound is generated after interaction · Preview only</small></section>
+<script>
+(()=>{const scene=document.getElementById('scene'),status=document.getElementById('status'),start=document.getElementById('start');let ac=null,busy=false;
+function audio(){if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();return ac}
+function impact(){try{const c=audio(),t=c.currentTime;const n=c.createBuffer(1,c.sampleRate*1.8,c.sampleRate),d=n.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2);const src=c.createBufferSource(),lp=c.createBiquadFilter(),g=c.createGain();src.buffer=n;lp.type='lowpass';lp.frequency.setValueAtTime(180,t);lp.frequency.exponentialRampToValueAtTime(42,t+1.5);g.gain.setValueAtTime(.001,t);g.gain.exponentialRampToValueAtTime(.9,t+.025);g.gain.exponentialRampToValueAtTime(.001,t+1.8);src.connect(lp).connect(g).connect(c.destination);src.start(t);const sub=c.createOscillator(),sg=c.createGain();sub.type='sine';sub.frequency.setValueAtTime(48,t);sub.frequency.exponentialRampToValueAtTime(25,t+1.6);sg.gain.setValueAtTime(.001,t);sg.gain.exponentialRampToValueAtTime(.65,t+.04);sg.gain.exponentialRampToValueAtTime(.001,t+1.7);sub.connect(sg).connect(c.destination);sub.start(t);sub.stop(t+1.8);src.stop(t+1.8)}catch(e){status.textContent='AUDIO UNAVAILABLE'}}
+function run(){if(busy)return;busy=true;start.disabled=true;audio();scene.classList.remove('hit','after');status.textContent='WARNING: IMPACT DETECTED';setTimeout(()=>{scene.classList.add('hit');impact();status.textContent='ATMOSPHERIC BREACH'},650);setTimeout(()=>{scene.classList.add('after');status.textContent='CIVILIZATION LOST'},2400);setTimeout(()=>{scene.classList.remove('hit','after');status.textContent='DORMANT';start.disabled=false;busy=false},6500)}
+start.addEventListener('click',run);document.getElementById('audioTest').addEventListener('click',()=>{impact();status.textContent='IMPACT AUDIO TEST'});})();
+</script></body></html>
