@@ -81,20 +81,29 @@ button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 <p class="note">Isolated TikNation Next preview. It does not spend coins or publish a gift to the live catalog. Sound is generated in-browser after you tap the button; no external audio file is required. This remains an isolated preview and is not yet connected to the live gift engine.</p>
 </main>
 <script>
-const screenEl=document.getElementById('screen'),monitor=document.getElementById('monitor'),statusEl=document.getElementById('status');let ctx=null,nodes=[],timers=[];
+const screenEl=document.getElementById('screen'),monitor=document.getElementById('monitor'),statusEl=document.getElementById('status');let ctx=null,nodes=[],timers=[],audioBus=null;
 function clearTimers(){timers.forEach(clearTimeout);timers=[]}
-function stopAudio(){nodes.forEach(n=>{try{n.stop?.()}catch(e){}try{n.disconnect?.()}catch(e){}});nodes=[];if(ctx){ctx.close().catch(()=>{});ctx=null}}
-function oscillator(freq,when,duration,shape,peak,endFreq,filterFreq){const o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type=shape;o.frequency.setValueAtTime(freq,when);if(endFreq)o.frequency.exponentialRampToValueAtTime(endFreq,when+duration);f.type='lowpass';f.frequency.value=filterFreq||2200;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(peak,when+.08);g.gain.setValueAtTime(peak,when+duration*.68);g.gain.exponentialRampToValueAtTime(.0001,when+duration);o.connect(f).connect(g).connect(ctx.destination);o.start(when);o.stop(when+duration+.03);nodes.push(o,f,g)}
-function noiseBurst(when,duration,peak,center){const size=Math.ceil(ctx.sampleRate*duration),buf=ctx.createBuffer(1,size,ctx.sampleRate),d=buf.getChannelData(0);let last=0;for(let i=0;i<size;i++){const w=Math.random()*2-1;last=last*.86+w*.14;d[i]=w*.35+last*.65}const s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=buf;f.type='bandpass';f.frequency.value=center;f.Q.value=.7;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(peak,when+.035);g.gain.exponentialRampToValueAtTime(.0001,when+duration);s.connect(f).connect(g).connect(ctx.destination);s.start(when);s.stop(when+duration+.02);nodes.push(s,f,g)}
-async function playBroadcast(){stopAudio();const AC=window.AudioContext||window.webkitAudioContext;if(!AC){statusEl.textContent='AUDIO NOT SUPPORTED IN THIS BROWSER';return}ctx=new AC();await ctx.resume();const t=ctx.currentTime;
-const master=ctx.createDynamicsCompressor();master.threshold.value=-24;master.knee.value=20;master.ratio.value=5;master.attack.value=.006;master.release.value=.22;master.connect(ctx.destination);
-// Narrow-band radio carrier, warning pulses, low transformer hum and short bursts of receiver static.
-const hum=ctx.createOscillator(),hg=ctx.createGain(),hf=ctx.createBiquadFilter();hum.type='sawtooth';hum.frequency.setValueAtTime(54,t);hum.frequency.linearRampToValueAtTime(48,t+6);hf.type='lowpass';hf.frequency.value=135;hg.gain.setValueAtTime(.0001,t);hg.gain.linearRampToValueAtTime(.12,t+.7);hg.gain.setValueAtTime(.09,t+5.5);hg.gain.linearRampToValueAtTime(.0001,t+7.5);hum.connect(hf).connect(hg).connect(master);hum.start(t);hum.stop(t+7.55);nodes.push(hum,hg,hf);
-[0,.52,1.04,2.05,2.57,3.09].forEach((d,i)=>oscillator(i<3?853:960,t+d,.38,'sine',.12,i<3?853:740,1800));
-noiseBurst(t+.08,1.8,.13,1450);noiseBurst(t+1.65,.55,.22,2400);noiseBurst(t+3.25,1.4,.16,850);noiseBurst(t+5.2,.7,.2,3200);
-oscillator(72,t+3.5,3.2,'triangle',.13,31,110);
-oscillator(430,t+4.8,1.4,'sawtooth',.035,110,600);
-statusEl.textContent='CARRIER BREAK · EMERGENCY TONE · SECURITY FEED OVERRIDE';
+function stopAudio(){nodes.forEach(n=>{try{n.stop?.()}catch(e){}try{n.disconnect?.()}catch(e){}});nodes=[];if(ctx){ctx.close().catch(()=>{});ctx=null}audioBus=null}
+function oscillator(freq,when,duration,shape,peak,endFreq,filterFreq){const o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type=shape;o.frequency.setValueAtTime(freq,when);if(endFreq)o.frequency.exponentialRampToValueAtTime(endFreq,when+duration);f.type='lowpass';f.frequency.value=filterFreq||2200;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(peak,when+.08);g.gain.setValueAtTime(peak,when+duration*.68);g.gain.exponentialRampToValueAtTime(.0001,when+duration);o.connect(f).connect(g).connect(audioBus||ctx.destination);o.start(when);o.stop(when+duration+.03);nodes.push(o,f,g)}
+function noiseBurst(when,duration,peak,center){const size=Math.ceil(ctx.sampleRate*duration),buf=ctx.createBuffer(1,size,ctx.sampleRate),d=buf.getChannelData(0);let last=0;for(let i=0;i<size;i++){const w=Math.random()*2-1;last=last*.86+w*.14;d[i]=w*.35+last*.65}const s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=buf;f.type='bandpass';f.frequency.value=center;f.Q.value=.7;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(peak,when+.035);g.gain.exponentialRampToValueAtTime(.0001,when+duration);s.connect(f).connect(g).connect(audioBus||ctx.destination);s.start(when);s.stop(when+duration+.02);nodes.push(s,f,g)}
+async function playBroadcast(){
+ stopAudio();const AC=window.AudioContext||window.webkitAudioContext;
+ if(!AC){statusEl.textContent='AUDIO NOT SUPPORTED IN THIS BROWSER';return}
+ ctx=new AC();await ctx.resume();const t=ctx.currentTime;
+ const master=ctx.createDynamicsCompressor();master.threshold.value=-27;master.knee.value=18;master.ratio.value=7;master.attack.value=.004;master.release.value=.24;
+ const out=ctx.createGain();out.gain.value=.68;master.connect(out).connect(ctx.destination);audioBus=master;
+ // Electrical transformer drone: two slightly detuned low oscillators with a slow sag.
+ const a=ctx.createOscillator(),b=ctx.createOscillator(),g=ctx.createGain(),lp=ctx.createBiquadFilter();
+ a.type='sawtooth';b.type='sine';a.frequency.setValueAtTime(48,t);a.frequency.linearRampToValueAtTime(43,t+6.8);b.frequency.setValueAtTime(49.4,t);b.frequency.linearRampToValueAtTime(44.2,t+6.8);
+ lp.type='lowpass';lp.frequency.value=118;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.20,t+.9);g.gain.setValueAtTime(.16,t+5.5);g.gain.linearRampToValueAtTime(.0001,t+7.4);
+ a.connect(lp);b.connect(lp);lp.connect(g).connect(master);a.start(t);b.start(t);a.stop(t+7.45);b.stop(t+7.45);nodes.push(a,b,lp,g);
+ // Broadband receiver hiss and irregular tuning bursts.
+ noiseBurst(t,6.5,.035,1250);noiseBurst(t+.28,.24,.20,2850);noiseBurst(t+1.36,.16,.15,1800);noiseBurst(t+2.82,.38,.22,3300);noiseBurst(t+4.35,.26,.19,950);noiseBurst(t+5.35,.65,.17,2300);
+ // Dual emergency signal, followed by a bass-heavy feed takeover.
+ [0,.48,.96,1.92,2.40,2.88].forEach((d,i)=>oscillator(i<3?853:960,t+d,.34,'square',.065,i<3?853:740,2100));
+ oscillator(64,t+3.38,2.6,'sine',.26,28,90);oscillator(118,t+3.4,.75,'triangle',.10,42,180);
+ oscillator(1650,t+4.72,.9,'sawtooth',.022,780,1900);
+ statusEl.textContent='RADIO CARRIER · DUAL EMERGENCY TONE · LOW-FREQUENCY IMPACT';
 }
 function phase(name,label){monitor.dataset.phase=name;statusEl.textContent=label}
 document.getElementById('start').addEventListener('click',async()=>{clearTimers();stopAudio();screenEl.classList.remove('active');void screenEl.offsetWidth;screenEl.classList.add('active');phase('intrusion','SIGNAL LOST · REACQUIRING CAMERA 07…');try{await playBroadcast();timers.push(setTimeout(()=>phase('warning','EMERGENCY ALERT · UNKNOWN SUBJECT IN FRAME'),1900));timers.push(setTimeout(()=>phase('reveal','CAMERA 07 · SUBJECT HAS MOVED CLOSER'),4700));timers.push(setTimeout(()=>{phase('reveal','TRANSMISSION TERMINATED · SOURCE STILL ACTIVE');stopAudio()},7900))}catch(e){statusEl.textContent='PREVIEW ERROR · '+e.message}});
