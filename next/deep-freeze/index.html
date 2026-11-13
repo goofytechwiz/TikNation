@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#06121b"><title>DEEP FREEZE — TikNation Gift Preview</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02080e;color:#e9f8ff;font-family:Arial,sans-serif}
+#scene{position:fixed;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#26485a 0,#102633 35%,#06111b 72%,#02060b 100%);perspective:900px}
+#horizon{position:absolute;left:-10%;right:-10%;bottom:17%;height:38%;background:linear-gradient(180deg,#8dc8df12,#02070d 78%);clip-path:polygon(0 40%,18% 10%,34% 34%,52% 0,70% 28%,87% 8%,100% 35%,100% 100%,0 100%);filter:blur(2px)}
+#ground{position:absolute;left:-20%;right:-20%;bottom:-22%;height:55%;transform:rotateX(63deg);transform-origin:bottom;background:repeating-linear-gradient(0deg,#a9e7ff12 0 2px,transparent 2px 55px),linear-gradient(180deg,#142d3b,#03080d);box-shadow:0 -30px 80px #9ce5ff18}
+#storm{position:absolute;inset:-20%;opacity:0;background:repeating-linear-gradient(105deg,transparent 0 18px,#d9f6ff55 19px 20px,transparent 21px 42px);filter:blur(1px);transform:translateX(-12%);transition:opacity 1s}
+#ice{position:absolute;inset:0;opacity:0;transition:opacity 1s;background:radial-gradient(ellipse at 50% 50%,transparent 0 25%,#a8eaff22 50%,#c8f5ff88 100%)}
+#fractures{position:absolute;inset:0;opacity:0;transition:opacity .7s;background:linear-gradient(32deg,transparent 47%,#e5fbff 47.2%,#8bd9f7 47.5%,transparent 48%),linear-gradient(112deg,transparent 55%,#e5fbff 55.2%,#8bd9f7 55.5%,transparent 56%),linear-gradient(166deg,transparent 38%,#e5fbff 38.2%,#8bd9f7 38.5%,transparent 39%),linear-gradient(72deg,transparent 68%,#e5fbff 68.2%,#8bd9f7 68.5%,transparent 69%);filter:drop-shadow(0 0 8px #8de5ff)}
+#crystal{position:absolute;left:50%;top:48%;width:min(58vw,440px);height:min(65vw,480px);transform:translate(-50%,-50%) scale(.08) rotate(-12deg);opacity:0;transition:transform 1.4s cubic-bezier(.15,.8,.2,1),opacity .6s;filter:drop-shadow(0 0 35px #9beaff88)}
+#crystal:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#efffffdd 0 5%,#6cc5e877 13%,#153b51aa 28%,#b6f4ffbb 35%,#27566c 48%,#d9fbffcc 56%,#19465c 70%,#9be9ff99 82%,#efffffcc);clip-path:polygon(50% 0,67% 12%,82% 10%,90% 31%,100% 48%,82% 65%,77% 88%,52% 100%,29% 85%,21% 68%,0 51%,16% 33%,22% 13%,39% 17%);border:2px solid #e8fcff;box-shadow:inset 0 0 45px #e4fbff}
+#crystal:after{content:"";position:absolute;inset:10% 23%;background:linear-gradient(90deg,transparent,#efffff99,transparent);clip-path:polygon(48% 0,64% 45%,50% 100%,34% 44%);filter:blur(2px)}
+#flash{position:absolute;inset:0;background:#e9fbff;opacity:0;pointer-events:none}
+#vignette{position:absolute;inset:0;box-shadow:inset 0 0 150px 45px #000b;pointer-events:none}
+header{position:fixed;z-index:5;top:0;left:0;right:0;padding:18px 20px;display:flex;justify-content:space-between;font:800 10px Arial;letter-spacing:.2em;color:#c7eaff}
+.pill{border:1px solid #a7e6ff55;border-radius:30px;padding:8px 12px;background:#07141dcc}
+.panel{position:fixed;z-index:6;bottom:6%;left:50%;transform:translateX(-50%);width:min(92%,580px);text-align:center;text-shadow:0 2px 20px #000}
+.kicker{font-size:10px;font-weight:900;letter-spacing:.38em;color:#9ee9ff}
+h1{font-size:clamp(42px,10vw,84px);letter-spacing:.08em;line-height:.9;margin:12px 0}
+.desc{font-size:10px;letter-spacing:.2em;color:#c4e3ef;font-weight:700}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}
+button{border:1px solid #b6efff;border-radius:30px;padding:14px 23px;background:linear-gradient(145deg,#32718a,#102e40);color:white;font-weight:900;font-size:11px;letter-spacing:.14em;cursor:pointer;box-shadow:0 8px 30px #000a}
+button.alt{background:#07131dcc;border-color:#8ab9cc88}button:disabled{opacity:.5}
+.note{font-size:9px;color:#a7c6d5;margin-top:10px;letter-spacing:.08em}
+#caption{position:fixed;z-index:4;top:37%;left:50%;transform:translate(-50%,-50%);font-size:clamp(24px,6vw,56px);font-weight:900;letter-spacing:.22em;white-space:nowrap;color:#e8fbff;text-shadow:0 0 30px #8ee8ff;opacity:0;transition:opacity .5s}
+#scene.active #storm{opacity:.85;animation:blow .35s linear infinite}
+#scene.active #ice{opacity:1}
+#scene.active #crystal{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}
+#scene.cracked #fractures{opacity:.95}
+@keyframes blow{to{transform:translateX(12%)}}
+@media(max-width:600px){header{padding:13px;font-size:8px}.panel{bottom:7%}#crystal{width:74vw;height:78vw}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
+</style></head><body>
+<div id="scene"><div id="horizon"></div><div id="ground"></div><div id="storm"></div><div id="ice"></div><div id="crystal"></div><div id="fractures"></div><div id="flash"></div><div id="vignette"></div></div>
+<div id="caption">TEMPERATURE: ZERO</div>
+<header><span>TIKNATION / GIFT PREVIEW</span><span class="pill" id="status">STANDBY</span></header>
+<section class="panel"><div class="kicker">THE WORLD STOPS BREATHING</div><h1>DEEP FREEZE</h1><div class="desc">A CINEMATIC GLACIAL IMPACT</div><div class="actions"><button id="trigger">Release the freeze</button><button class="alt" id="sound">Test the ice crack</button></div><div class="note">Sound begins only after tapping · No autoplay · Preview only</div></section>
+<script>
+(()=>{const scene=document.getElementById('scene'),status=document.getElementById('status'),trigger=document.getElementById('trigger'),caption=document.getElementById('caption'),flash=document.getElementById('flash');let ac=null,busy=false;
+function audio(){if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();return ac}
+function noise(a,t,dur,vol,filterFreq){const n=Math.floor(a.sampleRate*dur),buf=a.createBuffer(1,n,a.sampleRate),data=buf.getChannelData(0);for(let i=0;i<n;i++)data[i]=Math.random()*2-1;const src=a.createBufferSource(),f=a.createBiquadFilter(),g=a.createGain();src.buffer=buf;f.type='lowpass';f.frequency.value=filterFreq;g.gain.setValueAtTime(.001,t);g.gain.exponentialRampToValueAtTime(vol,t+.05);g.gain.exponentialRampToValueAtTime(.001,t+dur);src.connect(f).connect(g).connect(a.destination);src.start(t);src.stop(t+dur)}
+function crack(){try{const a=audio(),t=a.currentTime;noise(a,t,.8,.75,900);noise(a,t+.1,.42,.5,2600);const o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(82,t);o.frequency.exponentialRampToValueAtTime(27,t+.75);g.gain.setValueAtTime(.001,t);g.gain.exponentialRampToValueAtTime(.7,t+.025);g.gain.exponentialRampToValueAtTime(.001,t+.9);o.connect(g).connect(a.destination);o.start(t);o.stop(t+1)}catch(e){status.textContent='AUDIO UNAVAILABLE'}}
+function wind(){try{const a=audio(),t=a.currentTime;noise(a,t,2.2,.25,520);const o=a.createOscillator(),g=a.createGain();o.type='sawtooth';o.frequency.setValueAtTime(62,t);o.frequency.linearRampToValueAtTime(118,t+1.2);o.frequency.linearRampToValueAtTime(44,t+2.1);g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(.18,t+.5);g.gain.linearRampToValueAtTime(.001,t+2.2);o.connect(g).connect(a.destination);o.start(t);o.stop(t+2.3)}catch(e){}}
+function run(){if(busy)return;busy=true;trigger.disabled=true;audio();scene.classList.remove('active','cracked');caption.style.opacity=0;flash.style.opacity=0;status.textContent='PRESSURE FALLING';wind();setTimeout(()=>{scene.classList.add('active');status.textContent='FREEZING';},450);setTimeout(()=>{caption.style.opacity=1;status.textContent='ZERO DEGREES';crack()},1500);setTimeout(()=>{scene.classList.add('cracked');status.textContent='ICE FRACTURE';crack();flash.style.opacity=.75;setTimeout(()=>flash.style.opacity=0,130)},2600);setTimeout(()=>{status.textContent='FROZEN';},3400);setTimeout(()=>{scene.classList.remove('active','cracked');caption.style.opacity=0;status.textContent='STANDBY';trigger.disabled=false;busy=false},5700)}
+trigger.addEventListener('click',run);document.getElementById('sound').addEventListener('click',()=>{crack();status.textContent='ICE CRACK TEST'})})();
+</script></body></html>
