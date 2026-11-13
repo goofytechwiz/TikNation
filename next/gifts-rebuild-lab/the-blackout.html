@@ -16,8 +16,58 @@
 <p class="note">Audio: <a href="https://commons.wikimedia.org/wiki/File:Aggressive_electric_buzzing.ogg" target="_blank" rel="noopener">Aggressive Electric Buzzing — public domain</a> · <a href="https://commons.wikimedia.org/wiki/File:Monster_growls_2.ogg" target="_blank" rel="noopener">Monster Growls 2 — public domain</a>.</p></main>
 <audio id="buzz" preload="none" crossorigin="anonymous" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Aggressive%20electric%20buzzing.ogg"></audio><audio id="growl" preload="none" crossorigin="anonymous" src="https://upload.wikimedia.org/wikipedia/commons/3/36/Monster_growls_2.ogg"></audio>
 <script>
-(()=>{const $=id=>document.getElementById(id),stage=$('stage'),caption=$('caption'),status=$('status'),progress=$('progress'),play=$('play'),buzz=$('buzz'),growl=$('growl');let muted=false,busy=false,timers=[];function wait(ms){return new Promise(resolve=>{const t=setTimeout(resolve,ms);timers.push(t)})}function say(t){caption.textContent=t;caption.classList.add('show')}function hide(){caption.classList.remove('show')}function volume(){[buzz,growl].forEach(a=>a.volume=muted?0:1)}function stop(){[buzz,growl].forEach(a=>{a.pause();a.currentTime=0})}function reset(){timers.forEach(clearTimeout);timers=[];stop();stage.className='stage';caption.className='caption';status.textContent='CAMERA FEED · STANDBY';progress.style.width='0%';play.disabled=false;busy=false}
-async function flash(level,red=false){stage.classList.toggle('lit',!red);stage.classList.toggle('red',red);stage.classList.remove('reveal1','reveal2','reveal3');if(level)stage.classList.add('reveal'+level);await wait(260);stage.classList.remove('lit','red');}
-async function run(){if(busy)return;reset();busy=true;play.disabled=true;try{volume();say('');status.textContent='POWER FAILURE';buzz.currentTime=0;await buzz.play();await wait(850);buzz.pause();stage.classList.remove('lit');status.textContent='NO POWER';say('');await wait(1300);status.textContent='BACKUP LIGHT ACTIVE';say('DID YOU SEE THAT?');await flash(1,true);progress.style.width='20%';await wait(900);say('IT MOVED');await flash(2,true);progress.style.width='42%';await wait(1000);status.textContent='MOTION DETECTED';say('IT IS CLOSER');await flash(3,true);progress.style.width='65%';await wait(1200);status.textContent='SIGNAL INTERFERENCE';say('DON’T LOOK AWAY');await flash(3,false);await wait(900);status.textContent='PROXIMITY ALERT';stage.classList.add('lit','reveal3');say('IT’S RIGHT THERE');growl.currentTime=0;await growl.play();await wait(1150);stage.classList.add('hit');say('');await wait(850);stage.classList.add('impact');await wait(300);stage.classList.remove('impact','hit','lit');stage.classList.add('red','reveal3');status.textContent='CAMERA SIGNAL LOST';say('THE BLACKOUT');progress.style.width='100%';await wait(1700);growl.pause();play.disabled=false;busy=false}catch(e){status.textContent='AUDIO UNAVAILABLE · CHECK CONNECTION';play.disabled=false;busy=false;stop()}}
-play.addEventListener('click',run);$('reset').addEventListener('click',reset);$('sound').addEventListener('click',e=>{muted=!muted;e.currentTarget.textContent='SOUND: '+(muted?'OFF':'ON');volume()});buzz.addEventListener('error',()=>{status.textContent='ELECTRICAL RECORDING UNAVAILABLE'});growl.addEventListener('error',()=>{status.textContent='CREATURE RECORDING UNAVAILABLE'});reset()})();
+(()=> {
+ const $=id=>document.getElementById(id);
+ const stage=$('stage'),caption=$('caption'),status=$('status'),progress=$('progress'),play=$('play'),buzz=$('buzz'),growl=$('growl'),sound=$('sound'),resetButton=$('reset');
+ let muted=false,busy=false,runId=0,timers=[];
+ const wait=(ms,id)=>new Promise(resolve=>{const t=setTimeout(()=>resolve(id===runId),ms);timers.push(t)});
+ const say=t=>{caption.textContent=t;caption.classList.toggle('show',!!t)};
+ const stopAudio=()=>[buzz,growl].forEach(a=>{try{a.pause();a.currentTime=0}catch(_){}});
+ const volume=()=>[buzz,growl].forEach(a=>{a.volume=muted?0:1});
+ const safePlay=async a=>{try{a.volume=muted?0:1;await a.play();return true}catch(_){return false}};
+ function reset(){
+   runId++;timers.forEach(clearTimeout);timers=[];stopAudio();
+   stage.className='stage';caption.className='caption';status.textContent='CAMERA FEED · STANDBY';
+   progress.style.width='0%';play.disabled=false;busy=false;play.textContent='▶ TRIGGER THE BLACKOUT';
+ }
+ async function flash(level,red,id){
+   stage.classList.toggle('lit',!red);stage.classList.toggle('red',!!red);
+   stage.classList.remove('reveal1','reveal2','reveal3');
+   if(level)stage.classList.add('reveal'+level);
+   return wait(300,id);
+ }
+ async function run(){
+   if(busy)return;
+   reset();busy=true;const id=runId;play.disabled=true;play.textContent='BLACKOUT IN PROGRESS…';
+   status.textContent='POWER FAILURE';say('');
+   safePlay(buzz);
+   if(!await wait(850,id))return;
+   buzz.pause();stage.classList.remove('lit');status.textContent='NO POWER';
+   if(!await wait(1200,id))return;
+   status.textContent='BACKUP LIGHT ACTIVE';say('DID YOU SEE THAT?');
+   if(!await flash(1,true,id))return;progress.style.width='20%';
+   if(!await wait(850,id))return;say('IT MOVED');
+   if(!await flash(2,true,id))return;progress.style.width='42%';
+   if(!await wait(900,id))return;status.textContent='MOTION DETECTED';say('IT IS CLOSER');
+   if(!await flash(3,true,id))return;progress.style.width='65%';
+   if(!await wait(1000,id))return;status.textContent='SIGNAL INTERFERENCE';say('DON’T LOOK AWAY');
+   if(!await flash(3,false,id))return;
+   if(!await wait(800,id))return;status.textContent='PROXIMITY ALERT';
+   stage.classList.add('lit','reveal3');say('IT’S RIGHT THERE');
+   safePlay(growl);
+   if(!await wait(1100,id))return;stage.classList.add('hit');say('');
+   if(!await wait(750,id))return;stage.classList.add('impact');
+   if(!await wait(300,id))return;stage.classList.remove('impact','hit','lit');
+   stage.classList.add('red','reveal3');status.textContent='CAMERA SIGNAL LOST';
+   say('THE BLACKOUT');progress.style.width='100%';
+   if(!await wait(1600,id))return;
+   stopAudio();busy=false;play.disabled=false;play.textContent='▶ PLAY AGAIN';
+ }
+ play.addEventListener('click',run);
+ resetButton.addEventListener('click',reset);
+ sound.addEventListener('click',()=>{muted=!muted;sound.textContent='SOUND: '+(muted?'OFF':'ON');volume()});
+ buzz.addEventListener('error',()=>{status.textContent='AUDIO UNAVAILABLE · VISUAL SHOW CONTINUES'});
+ growl.addEventListener('error',()=>{status.textContent='CREATURE AUDIO UNAVAILABLE · VISUAL SHOW CONTINUES'});
+ reset();
+})();
 </script></body></html>
