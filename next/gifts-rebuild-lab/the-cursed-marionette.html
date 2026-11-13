@@ -1,49 +1,59 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#09090c"><title>The Cursed Marionette · TikNation Preview</title>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080709"><title>The Cursed Marionette · TikNation Preview</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08090c;color:#eee;font-family:Arial,sans-serif}.stage{position:relative;width:100%;height:100%;background:#09090c}canvas{display:block;width:100%;height:100%}.hud{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:18px 14px calc(14px + env(safe-area-inset-bottom));text-align:center}.eyebrow{font-size:10px;letter-spacing:.32em;color:#c4a77c;text-shadow:0 2px 8px #000}.controls{display:flex;gap:10px;pointer-events:auto;flex-wrap:wrap;justify-content:center}button{background:linear-gradient(#403027,#171316);border:1px solid #a88a63;color:#f5e8d1;padding:13px 18px;font-size:11px;font-weight:bold;letter-spacing:.15em;cursor:pointer;min-width:132px}.status,.hint{font-size:10px;letter-spacing:.12em;color:#d0c1aa;text-shadow:0 2px 6px #000;margin-top:9px}
-</style></head><body><main class="stage"><canvas id="scene"></canvas><div class="hud"><div class="eyebrow">TIKNATION · GIFT REBUILD LAB</div><div><div class="hint">THE PUPPET IS ALREADY MOVING · DRAG TO LOOK</div><div class="controls"><button id="trigger">TRIGGER GIFT</button><button id="sound">SOUND: OFF</button></div><div class="status" id="status">A FIGURE WAITS BEHIND THE CURTAIN</div></div></div></main>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080709;color:#eee;font-family:Arial,sans-serif}
+.stage{position:relative;width:100%;height:100%;min-height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 34%,#60483a 0,#30221f 31%,#100d11 72%,#050507 100%)}
+.wall{position:absolute;inset:0 7% 19%;border:12px ridge #33231f;background:repeating-linear-gradient(90deg,transparent 0 10%,#100d0d55 10.2% 10.7%),linear-gradient(#241a1b,#392925 60%,#171113);box-shadow:inset 0 0 90px #000}
+.curtain{position:absolute;z-index:2;top:0;bottom:14%;width:23%;background:repeating-linear-gradient(90deg,#18090e 0 9px,#531923 12px,#2a0e16 24px);filter:drop-shadow(0 0 15px #000)}.curtain.left{left:0;clip-path:polygon(0 0,100% 0,84% 100%,0 100%)}.curtain.right{right:0;clip-path:polygon(0 0,100% 0,100% 100%,16% 100%)}
+.spot{position:absolute;z-index:1;top:-18%;left:50%;width:70vw;height:90vh;transform:translateX(-50%);background:linear-gradient(180deg,#e7c99b38,transparent 78%);clip-path:polygon(44% 0,56% 0,100% 100%,0 100%);animation:spot 7s ease-in-out infinite alternate}
+.floor{position:absolute;bottom:0;left:0;right:0;height:23%;background:repeating-linear-gradient(95deg,#211714 0 70px,#493329 72px,#171012 76px);border-top:8px solid #4c3328}
+.chair{position:absolute;z-index:3;left:50%;top:49%;width:180px;height:28%;transform:translateX(-50%);border:12px solid #77543a;border-bottom:0;border-radius:55px 55px 0 0;background:linear-gradient(90deg,#160f12,#54262d,#1b1014);box-shadow:0 0 22px #000}.chair:after{content:"";position:absolute;left:-25px;right:-25px;bottom:0;height:13px;background:#694a32;box-shadow:0 0 0 3px #211713}
+.puppet{position:absolute;z-index:5;left:50%;top:22%;width:190px;height:390px;transform:translateX(-50%);transform-origin:50% 30%;animation:bodySway 3.7s ease-in-out infinite}
+.string{position:absolute;top:-20vh;height:26vh;width:1px;background:linear-gradient(#d6c6a1aa,#c4ad7a22);transform-origin:top}.string.s1{left:24%;transform:rotate(-5deg)}.string.s2{left:50%}.string.s3{left:76%;transform:rotate(5deg)}
+.head{position:absolute;z-index:3;top:0;left:50%;width:90px;height:105px;transform:translateX(-50%);border-radius:48% 48% 45% 45%;background:radial-gradient(circle at 32% 25%,#e3c9a1,#9a795a 45%,#493329 82%);border:3px solid #2a1b17;box-shadow:inset -12px -8px 15px #160d0c;animation:headTurn 4.4s ease-in-out infinite}
+.head:before{content:"";position:absolute;left:-7px;right:-7px;top:-10px;height:33px;border-radius:55% 55% 15% 15%;background:linear-gradient(90deg,#100d10,#3a2021,#100d10)}
+.eye{position:absolute;top:48px;width:13px;height:9px;border-radius:50%;background:#080709;box-shadow:0 0 5px #000}.eye:after{content:"";position:absolute;inset:2px 4px;background:#e5d7b8;border-radius:50%}.eye.one{left:21px}.eye.two{right:21px}
+.nose{position:absolute;left:43px;top:55px;width:5px;height:18px;background:#72513d;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.mouth{position:absolute;left:33px;top:81px;width:25px;height:4px;background:#291313;border-radius:50%;box-shadow:0 2px 0 #d2b38a}
+.neck{position:absolute;top:94px;left:calc(50% - 10px);width:20px;height:28px;background:linear-gradient(90deg,#443027,#b08b65,#33231e)}
+.torso{position:absolute;top:116px;left:50%;width:92px;height:132px;transform:translateX(-50%);border-radius:35px 35px 15px 15px;background:linear-gradient(90deg,#171319,#50303a 45%,#21151c);border:3px solid #24171a;box-shadow:inset 0 0 18px #080609}
+.torso:after{content:"";position:absolute;left:50%;top:12px;height:100px;width:2px;background:#b18b62;box-shadow:0 0 5px #d7b98b}
+.arm{position:absolute;top:127px;width:22px;height:112px;border-radius:15px;background:linear-gradient(90deg,#33231d,#b18d68,#4a3225);transform-origin:50% 8px;box-shadow:inset 0 0 5px #140d0c}
+.arm.left{left:37px;animation:armL 2.4s ease-in-out infinite}.arm.right{right:37px;animation:armR 2.1s ease-in-out infinite}
+.arm:after{content:"";position:absolute;bottom:-25px;left:-4px;width:30px;height:34px;border-radius:45%;background:linear-gradient(90deg,#38271f,#c0a17a,#483125);border:2px solid #2a1b16}
+.leg{position:absolute;top:235px;width:28px;height:122px;border-radius:15px;background:linear-gradient(90deg,#261a1b,#78513f,#2a1c1b);transform-origin:50% 5px}
+.leg.left{left:64px;animation:legL 2.8s ease-in-out infinite}.leg.right{right:64px;animation:legR 2.8s ease-in-out infinite}
+.leg:after{content:"";position:absolute;bottom:-8px;left:-12px;width:49px;height:18px;border-radius:50% 50% 30% 30%;background:#191317;border:2px solid #8a674b}
+.joint{position:absolute;z-index:4;width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#d1b18a,#654a35 65%,#1a1110);border:2px solid #261915}
+.joint.el{top:222px;left:36px}.joint.er{top:222px;right:36px}.joint.kl{top:230px;left:83px}.joint.kr{top:230px;right:83px}
+.triggered .puppet{animation:jerk .48s ease-in-out 7,bodySway 3.7s ease-in-out infinite}.triggered .head{animation:violentHead .65s ease-in-out 5}.triggered .arm.left{animation:armL 0.48s ease-in-out 8}.triggered .arm.right{animation:armR 0.55s ease-in-out 8}
+.hud{position:absolute;z-index:10;inset:0;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:18px 14px calc(14px + env(safe-area-inset-bottom));text-align:center}
+.eyebrow{font-size:10px;letter-spacing:.3em;color:#e0c49b;text-shadow:0 2px 8px #000}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;pointer-events:auto}
+button{background:linear-gradient(#49332b,#171115);border:1px solid #b08b65;color:#f5e8d1;padding:14px 18px;font-size:11px;font-weight:bold;letter-spacing:.13em;min-width:135px;touch-action:manipulation}
+.status,.hint{font-size:10px;letter-spacing:.12em;color:#e0d0b8;text-shadow:0 2px 6px #000;margin-top:10px}
+@keyframes bodySway{0%,100%{transform:translateX(-50%) rotate(-1deg) translateY(0)}50%{transform:translateX(-50%) rotate(1.5deg) translateY(7px)}}
+@keyframes headTurn{0%,100%{rotate:-4deg}50%{rotate:7deg}}
+@keyframes armL{0%,100%{rotate:15deg}50%{rotate:-27deg}}@keyframes armR{0%,100%{rotate:-15deg}50%{rotate:28deg}}
+@keyframes legL{0%,100%{rotate:-4deg}50%{rotate:9deg}}@keyframes legR{0%,100%{rotate:4deg}50%{rotate:-9deg}}
+@keyframes spot{0%{transform:translateX(-58%) rotate(-5deg);opacity:.65}100%{transform:translateX(-42%) rotate(5deg);opacity:1}}
+@keyframes jerk{0%,100%{translate:0 0}35%{translate:-15px 8px}65%{translate:12px -5px}}
+@keyframes violentHead{0%,100%{rotate:-18deg}50%{rotate:25deg}}
+@media(max-width:480px){.puppet{top:25%;transform:translateX(-50%) scale(.82);transform-origin:top center}.chair{top:54%;width:150px}.wall{inset:0 4% 18%}.eyebrow{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.puppet,.head,.arm,.leg,.spot{animation-duration:8s}}
+</style></head>
+<body><main class="stage" id="stage"><div class="wall"></div><div class="spot"></div><div class="curtain left"></div><div class="curtain right"></div><div class="floor"></div><div class="chair"></div>
+<div class="puppet" aria-label="Animated wooden marionette">
+<div class="string s1"></div><div class="string s2"></div><div class="string s3"></div>
+<div class="head"><i class="eye one"></i><i class="eye two"></i><i class="nose"></i><i class="mouth"></i></div><div class="neck"></div><div class="torso"></div>
+<div class="arm left"></div><div class="arm right"></div><div class="joint el"></div><div class="joint er"></div><div class="leg left"></div><div class="leg right"></div><div class="joint kl"></div><div class="joint kr"></div></div>
+<div class="hud"><div class="eyebrow">TIKNATION · GIFT REBUILD LAB</div><div><div class="hint">WATCH THE STRINGS · THE PUPPET NEVER STOPS MOVING</div><div class="controls"><button id="trigger">TRIGGER GIFT</button><button id="sound">SOUND: OFF</button></div><div class="status" id="status">IT IS WATCHING FROM THE STAGE</div></div></div></main>
 <script>
-(()=>{const c=document.getElementById('scene'),ctx=c.getContext('2d'),status=document.getElementById('status'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound');let W=0,H=0,dpr=1,audio=null,audioOn=false,busy=false,started=performance.now(),look=0,drag=false,lastX=0;
-function resize(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}addEventListener('resize',resize);resize();
-c.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;c.setPointerCapture(e.pointerId)});c.addEventListener('pointermove',e=>{if(drag){look=Math.max(-.25,Math.min(.25,look+(e.clientX-lastX)*.001));lastX=e.clientX}});c.addEventListener('pointerup',()=>drag=false);c.addEventListener('pointercancel',()=>drag=false);
-function grad(x,y,r,stops){const g=ctx.createRadialGradient(x-r*.2,y-r*.3,2,x,y,r);for(const [p,col] of stops)g.addColorStop(p,col);return g}
-function line(x1,y1,x2,y2,w,color){ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.lineWidth=w;ctx.lineCap='round';ctx.strokeStyle=color;ctx.stroke()}
-function ellipse(x,y,rx,ry,fill,stroke){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.lineWidth=2;ctx.strokeStyle=stroke;ctx.stroke()}}
-function limb(x,y,len,angle,width,wood){const ex=x+Math.sin(angle)*len,ey=y+Math.cos(angle)*len;line(x+2,y+2,ex+2,ey+2,width+4,'#080708');line(x,y,ex,ey,width,wood);ellipse(ex,ey,width*.72,width*.72,grad(ex,ey,width,[ [0,'#c2a17b'],[.55,'#76563e'],[1,'#241815'] ]),'#241713');return [ex,ey]}
-function draw(t){const s=Math.min(W/900,H/650),cx=W/2+look*W*.45,base=H*.78;ctx.clearRect(0,0,W,H);ctx.save();ctx.scale(s,s);const w=W/s,h=H/s,ox=(w-900)/2,oy=(h-650)/2;ctx.translate(ox,oy);
-const bg=ctx.createLinearGradient(0,0,0,650);bg.addColorStop(0,'#161519');bg.addColorStop(.48,'#3b2b27');bg.addColorStop(1,'#08090c');ctx.fillStyle=bg;ctx.fillRect(0,0,900,650);
-const glow=ctx.createRadialGradient(450,180,10,450,260,390);glow.addColorStop(0,'#b59a7540');glow.addColorStop(1,'#00000000');ctx.fillStyle=glow;ctx.fillRect(0,0,900,650);
-// paneled rear wall
-ctx.fillStyle='#291e1b';ctx.fillRect(65,70,770,430);for(let x=80;x<840;x+=95){ctx.fillStyle='#120f10';ctx.fillRect(x,85,5,390);ctx.strokeStyle='#80664b66';ctx.lineWidth=2;ctx.strokeRect(x+8,100,78,340)}
-// curtains and valance
-for(let side=0;side<2;side++){const x=side?770:0;const g=ctx.createLinearGradient(x,0,x+130,0);g.addColorStop(0,'#09070a');g.addColorStop(.5,'#551a22');g.addColorStop(1,'#16090d');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x+130,0);ctx.lineTo(x+95,510);ctx.lineTo(x+20,510);ctx.closePath();ctx.fill();for(let j=0;j<5;j++)line(x+j*23+15,0,x+j*18+18,500,5,'#12080b88')}
-ctx.fillStyle='#45151d';ctx.fillRect(0,0,900,42);
-// stage light beam
-ctx.save();ctx.globalAlpha=.2;ctx.fillStyle='#e9d2a8';ctx.beginPath();ctx.moveTo(390,0);ctx.lineTo(510,0);ctx.lineTo(730,540);ctx.lineTo(170,540);ctx.closePath();ctx.fill();ctx.restore();
-// floorboards
-ctx.fillStyle='#211714';ctx.fillRect(0,500,900,150);for(let x=0;x<900;x+=95)line(x,505,x-30,650,3,'#5a4030');
-// chair
-ctx.fillStyle='#171012';ctx.fillRect(345,330,210,170);ctx.fillStyle='#50262a';ctx.fillRect(365,350,170,125);ctx.strokeStyle='#9b7651';ctx.lineWidth=9;ctx.strokeRect(345,330,210,170);ctx.fillStyle='#3b281e';ctx.fillRect(325,475,250,28);for(const x of [345,555]){ctx.fillRect(x,495,15,85);ellipse(x+7,330,12,18,'#8b6746')}
-// puppet coordinates and animation
-const idle=t*.001,phase=busy?Math.min(1,(t-started)/5100):0,sw=busy?Math.sin(phase*19)*.14:Math.sin(idle*1.5)*.025,turn=busy?Math.sin(phase*8)*.55:Math.sin(idle*.7)*.08;const px=450+Math.sin(idle*.8)*3,py=busy?Math.sin(phase*19)*8:Math.sin(idle*1.3)*2;
-// strings and crossbar
-ctx.save();ctx.translate(px,py);ctx.rotate(busy?Math.sin(phase*14)*.04:Math.sin(idle)*.006);line(-92,82,92,82,12,'#503923');line(-92,82,92,82,5,'#a18057');const headX=turn*18;
-const anchors=[[-75,85,-45,245],[-28,85,headX,150],[28,85,45,245],[75,85,75,430]];for(const [x1,y1,x2,y2] of anchors){line(x1,y1,x2,y2,1.5,'#c9b38b99')}
-// body
-ellipse(0,325,58,93,grad(0,325,95,[[0,'#80604b'],[.5,'#39262b'],[1,'#100e11']]),'#1a1113');ctx.fillStyle='#1c1519';ctx.beginPath();ctx.moveTo(-45,255);ctx.lineTo(45,255);ctx.lineTo(62,390);ctx.lineTo(-62,390);ctx.closePath();ctx.fill();line(0,270,0,375,3,'#b18d61');
-// head pivot
-ctx.save();ctx.translate(headX,200);ctx.rotate(turn*.42);ellipse(0,0,48,57,grad(0,0,62,[[0,'#e0c9a4'],[.5,'#9b8064'],[1,'#423128']]),'#30221b');ellipse(0,-39,52,27,'#201719');for(const x of [-19,19]){ellipse(x,5,10,7,'#09090b');ellipse(x,5,3,3,'#d9c9a5')}line(-7,27,7,27,3,'#3a2520');line(-24,-18,-12,-30,2,'#57402f');line(10,18,22,30,2,'#57402f');ctx.restore();
-// arms with clearly articulated motion
-const leftA=busy?-.9*Math.sin(phase*Math.PI/2):Math.sin(idle*1.1)*.06,rightA=busy?.85*Math.sin(phase*Math.PI/2):-Math.sin(idle*1.1)*.06;
-const l=limb(-48,275,85,leftA,.20*35,'#a48665'),r=limb(48,275,85,-rightA,.20*35,'#987957');limb(l[0],l[1],67,leftA-.25,.13*35,'#76583f');limb(r[0],r[1],67,-rightA+.25,.13*35,'#76583f');
-// legs
-const legSwing=busy?Math.sin(phase*15)*.18:Math.sin(idle*1.2)*.025;const ll=limb(-24,405,91,legSwing,.34*27,'#503a36'),rr=limb(24,405,91,-legSwing,.34*27,'#503a36');limb(ll[0],ll[1],62,-legSwing*.5,.22*27,'#74553d');limb(rr[0],rr[1],62,legSwing*.5,.22*27,'#74553d');ctx.restore();
-// vignette
-const v=ctx.createRadialGradient(450,310,180,450,310,550);v.addColorStop(0,'#00000000');v.addColorStop(1,'#000000b8');ctx.fillStyle=v;ctx.fillRect(0,0,900,650);
-ctx.restore();requestAnimationFrame(draw)}
-function creak(freq,delay,dur,vol){if(!audioOn||!audio)return;const o=audio.createOscillator(),g=audio.createGain(),f=audio.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(freq,audio.currentTime+delay);o.frequency.exponentialRampToValueAtTime(freq*.6,audio.currentTime+delay+dur);f.type='lowpass';f.frequency.value=380;g.gain.setValueAtTime(.0001,audio.currentTime+delay);g.gain.exponentialRampToValueAtTime(vol,audio.currentTime+delay+.12);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+dur);o.connect(f);f.connect(g);g.connect(audio.destination);o.start(audio.currentTime+delay);o.stop(audio.currentTime+delay+dur+.04)}
-sound.onclick=async()=>{audioOn=!audioOn;if(audioOn){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){audioOn=false;status.textContent='AUDIO NOT SUPPORTED'}else{audio=audio||new AC();if(audio.state==='suspended')await audio.resume();creak(130,0,.25,.025)}}sound.textContent='SOUND: '+(audioOn?'ON':'OFF')};
-trigger.onclick=()=>{if(busy)return;busy=true;started=performance.now();status.textContent='THE STRINGS SNAP TAUT…';if(audioOn){if(audio.state==='suspended')audio.resume();creak(82,0,2,.07);creak(190,1.1,.8,.04);creak(125,2.3,1.2,.07);creak(68,3.8,1.4,.08)}setTimeout(()=>status.textContent='IT TURNS ITS HEAD TOWARD YOU',2100);setTimeout(()=>{busy=false;status.textContent='PREVIEW COMPLETE · LIVE ANIMATION · SYNTH SOUND'},5300)};
-requestAnimationFrame(draw);
-})();</script></body></html>
+(()=>{const stage=document.getElementById('stage'),status=document.getElementById('status'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound');let audio=null,on=false,lock=false;
+function tone(freq,start,duration,volume,type='sawtooth'){if(!on||!audio)return;const o=audio.createOscillator(),g=audio.createGain(),f=audio.createBiquadFilter();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime+start);o.frequency.exponentialRampToValueAtTime(Math.max(25,freq*.55),audio.currentTime+start+duration);f.type='lowpass';f.frequency.value=420;g.gain.setValueAtTime(.0001,audio.currentTime+start);g.gain.exponentialRampToValueAtTime(volume,audio.currentTime+start+.08);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+start+duration);o.connect(f);f.connect(g);g.connect(audio.destination);o.start(audio.currentTime+start);o.stop(audio.currentTime+start+duration+.03)}
+sound.addEventListener('click',async()=>{on=!on;if(on){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){on=false;status.textContent='AUDIO NOT SUPPORTED'}else{audio=audio||new AC();if(audio.state==='suspended')await audio.resume();tone(115,0,.3,.025,'triangle')}}sound.textContent='SOUND: '+(on?'ON':'OFF')});
+trigger.addEventListener('click',()=>{if(lock)return;lock=true;stage.classList.add('triggered');status.textContent='THE STRINGS ARE PULLING…';tone(72,0,1.8,.09);tone(155,.5,1.2,.045);tone(92,1.4,1.7,.075);tone(210,2.6,.8,.035,'triangle');setTimeout(()=>status.textContent='IT IS MOVING WITHOUT A HANDLER',1700);setTimeout(()=>{stage.classList.remove('triggered');status.textContent='THE PUPPET IS STILL WATCHING';lock=false},4700)});
+})();
+</script></body></html>
