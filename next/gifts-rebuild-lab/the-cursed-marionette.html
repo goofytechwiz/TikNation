@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TikNation Gift Preview — The Cursed Marionette</title>
+<style>
+:root{color-scheme:dark;--gold:#d7b56e;--red:#6e171d}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#08090d;color:#f4eee4;font-family:Georgia,serif}
+body{display:grid;place-items:center;min-height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 34%,#28202a 0,#101016 42%,#050609 100%)}
+.scene{position:relative;width:min(100vw,980px);height:min(100svh,680px);min-height:540px;overflow:hidden;background:linear-gradient(#111018 0 12%,#24161a 35%,#09090d 100%);isolation:isolate}
+.curtain{position:absolute;inset:0 0 auto;height:72%;background:repeating-linear-gradient(90deg,#260d13 0 7%,#4a171e 8%,#230b11 13%,#3b1018 18%);clip-path:polygon(0 0,100% 0,91% 100%,9% 100%);filter:brightness(.7);z-index:-1}
+.proscenium{position:absolute;inset:5% 8% 14%;border:12px ridge #60452f;box-shadow:inset 0 0 35px #000,0 0 30px #000;background:radial-gradient(ellipse at 50% 28%,#4a3b35 0,#21191b 44%,#0a0a0e 85%);overflow:hidden}
+.stagefloor{position:absolute;bottom:0;left:-10%;width:120%;height:20%;background:repeating-linear-gradient(90deg,#241a17 0 9%,#3b2a22 10%,#211713 19%);transform:perspective(260px) rotateX(16deg);transform-origin:bottom}
+.spot{position:absolute;top:-7%;left:50%;width:75%;height:94%;transform:translateX(-50%);background:conic-gradient(from 165deg at 50% 0%,transparent 0 29%,#f5d9a51c 34%,#f9e7bf33 50%,#f5d9a51c 66%,transparent 71%);filter:blur(9px);opacity:.75}
+.dust{position:absolute;inset:0;background-image:radial-gradient(#e9d4ae88 1px,transparent 1.5px);background-size:71px 83px;opacity:.16;animation:dust 18s linear infinite}
+@keyframes dust{to{background-position:100px -220px}}
+.puppet{position:absolute;width:220px;height:390px;left:50%;bottom:13%;transform:translateX(-50%);transform-origin:50% 10%;filter:drop-shadow(0 18px 18px #000);transition:filter .4s}
+.head{position:absolute;top:0;left:66px;width:88px;height:105px;border-radius:47% 47% 43% 43%;background:radial-gradient(ellipse at 33% 25%,#e7cda6,#a9825e 48%,#49362f 90%);box-shadow:inset -12px -8px 18px #241714}
+.hair{position:absolute;top:-8px;left:57px;width:105px;height:56px;border-radius:55% 55% 18% 20%;background:repeating-linear-gradient(100deg,#171316 0 8px,#302329 9px 13px)}
+.eye{position:absolute;top:43px;width:9px;height:5px;border-radius:50%;background:#160e0d;box-shadow:0 0 4px #100}
+.eye.left{left:88px}.eye.right{left:124px}
+.cheek{position:absolute;top:61px;left:93px;width:33px;height:3px;background:#765044;transform:rotate(4deg)}
+.neck{position:absolute;top:95px;left:102px;width:18px;height:22px;background:#9a7759}
+.body{position:absolute;top:112px;left:57px;width:106px;height:145px;clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);background:linear-gradient(90deg,#211b20,#66505a 42%,#30202a 72%,#130f15);border-top:4px solid #b18a59}
+.coatline{position:absolute;top:119px;left:108px;height:134px;width:3px;background:#b69a72}
+.arm{position:absolute;top:124px;width:24px;height:125px;border-radius:15px;background:linear-gradient(90deg,#1b1519,#8c6a58,#241a1d);transform-origin:top center}
+.arm.l{left:52px;transform:rotate(22deg)}.arm.r{right:52px;transform:rotate(-24deg)}
+.hand{position:absolute;bottom:-8px;left:3px;width:19px;height:27px;border-radius:45%;background:#b38d6b}
+.leg{position:absolute;top:246px;width:31px;height:123px;border-radius:10px;background:linear-gradient(90deg,#171419,#514047,#171419)}
+.leg.l{left:76px;transform:rotate(4deg)}.leg.r{right:76px;transform:rotate(-5deg)}
+.shoe{position:absolute;bottom:-3px;left:-13px;width:53px;height:20px;border-radius:50% 35% 20% 20%;background:#171216;border-bottom:4px solid #8d6d4d}
+.string{position:absolute;top:-90px;width:1px;height:220px;background:linear-gradient(#c5b18b,#bda77c66);transform-origin:top}
+.string.s1{left:72px}.string.s2{left:110px}.string.s3{left:149px}.string.s4{left:56px;top:25px;height:180px}.string.s5{left:165px;top:25px;height:180px}
+.crossbar{position:absolute;top:-100px;left:39px;width:145px;height:13px;border-radius:5px;background:linear-gradient(#806b4e,#2b211b);box-shadow:0 3px 6px #000}
+.puppet.active{animation:jerk 5.5s ease-in-out forwards}
+.puppet.active .head{animation:turn 2.1s 1.4s ease-in-out forwards}
+.puppet.active .arm.l{animation:lift 1.4s 2.5s ease-in-out forwards}
+.puppet.active .arm.r{animation:lift2 1.5s 2.8s ease-in-out forwards}
+.puppet.active .string{animation:twitch 1.2s 2.4s ease-in-out 2}
+@keyframes jerk{0%,18%{transform:translateX(-50%) translateY(0) rotate(0)}28%{transform:translateX(-50%) translateY(-12px) rotate(2deg)}42%{transform:translateX(-50%) translateY(0) rotate(-3deg)}55%{transform:translateX(-50%) translateY(0) rotate(0)}68%{transform:translateX(-50%) translateY(5px) rotate(1deg)}80%,100%{transform:translateX(-50%) translateY(0) rotate(0)}}
+@keyframes turn{to{transform:rotate(24deg) translateX(5px)}}
+@keyframes lift{to{transform:rotate(75deg)}}
+@keyframes lift2{to{transform:rotate(-70deg)}}
+@keyframes twitch{0%,100%{transform:rotate(0)}40%{transform:rotate(5deg)}70%{transform:rotate(-4deg)}}
+.title{position:absolute;top:2.8%;left:0;right:0;text-align:center;letter-spacing:.28em;font:600 12px Arial,sans-serif;color:#d7b56e;text-shadow:0 0 12px #d7b56e66}
+.caption{position:absolute;bottom:5%;left:5%;right:5%;text-align:center;font:11px Arial,sans-serif;letter-spacing:.18em;color:#bda98b}
+.controls{position:absolute;bottom:9%;left:50%;transform:translateX(-50%);display:flex;gap:12px;align-items:center;z-index:5}
+button{border:1px solid #b99a64;background:linear-gradient(#392a25,#171216);color:#f7e8ca;padding:14px 22px;border-radius:3px;font:600 12px Arial,sans-serif;letter-spacing:.14em;cursor:pointer;box-shadow:0 5px 18px #0008}
+button:active{transform:translateY(1px)}button:disabled{opacity:.5}
+.status{position:absolute;bottom:2%;left:0;right:0;text-align:center;font:10px Arial,sans-serif;letter-spacing:.12em;color:#9e8d78}
+.flash{position:absolute;inset:0;background:#fff2d5;opacity:0;pointer-events:none;z-index:4}
+.flash.hit{animation:flash .35s ease-out}
+@keyframes flash{0%{opacity:.8}100%{opacity:0}}
+@media(max-width:600px){.scene{min-height:520px}.proscenium{inset:8% 3% 17%;border-width:7px}.puppet{transform:translateX(-50%) scale(.82);transform-origin:50% 100%;bottom:13%}.puppet.active{animation:jerkMobile 5.5s ease-in-out forwards}@keyframes jerkMobile{0%,18%{transform:translateX(-50%) scale(.82) translateY(0)}28%{transform:translateX(-50%) scale(.82) translateY(-12px) rotate(2deg)}42%{transform:translateX(-50%) scale(.82) translateY(0) rotate(-3deg)}55%,100%{transform:translateX(-50%) scale(.82)}}.title{font-size:10px;letter-spacing:.18em}.controls{bottom:9%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="scene" aria-label="The Cursed Marionette gift preview">
+ <div class="curtain"></div><div class="title">TIKNATION · GIFT REBUILD LAB</div>
+ <section class="proscenium"><div class="spot"></div><div class="dust"></div>
+  <div class="puppet" id="puppet">
+   <div class="crossbar"></div><i class="string s1"></i><i class="string s2"></i><i class="string s3"></i><i class="string s4"></i><i class="string s5"></i>
+   <div class="hair"></div><div class="head"></div><i class="eye left"></i><i class="eye right"></i><i class="cheek"></i><div class="neck"></div><div class="body"></div><i class="coatline"></i>
+   <div class="arm l"><div class="hand"></div></div><div class="arm r"><div class="hand"></div></div>
+   <div class="leg l"><div class="shoe"></div></div><div class="leg r"><div class="shoe"></div></div>
+  </div><div class="stagefloor"></div>
+ </section>
+ <div class="flash" id="flash"></div>
+ <div class="caption">THE CURSED MARIONETTE · THE STRINGS ARE NOT EMPTY</div>
+ <div class="controls"><button id="trigger">TRIGGER GIFT</button><button id="sound">SOUND: OFF</button></div>
+ <div class="status" id="status">PREVIEW ONLY · NOT CONNECTED TO LIVE GIFT CATALOG</div>
+</main>
+<script>
+const puppet=document.getElementById('puppet'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound'),status=document.getElementById('status'),flash=document.getElementById('flash');
+let audioOn=false,ctx=null,busy=false;
+function tone(freq,duration,gain,type='sine',delay=0){if(!audioOn||!ctx)return;const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,ctx.currentTime+delay);g.gain.setValueAtTime(.0001,ctx.currentTime+delay);g.gain.exponentialRampToValueAtTime(gain,ctx.currentTime+delay+.04);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+delay+duration);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+delay);o.stop(ctx.currentTime+delay+duration+.05)}
+function noise(duration,gain,delay=0,filter=500){if(!audioOn||!ctx)return;const n=Math.floor(ctx.sampleRate*duration),b=ctx.createBuffer(1,n,ctx.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);const s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=b;f.type='lowpass';f.frequency.value=filter;g.gain.value=gain;s.connect(f);f.connect(g);g.connect(ctx.destination);s.start(ctx.currentTime+delay)}
+sound.onclick=async()=>{audioOn=!audioOn;if(audioOn){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){audioOn=false;status.textContent='AUDIO NOT SUPPORTED IN THIS BROWSER';return}ctx=ctx||new AC();if(ctx.state==='suspended')await ctx.resume();tone(110,.18,.035,'triangle')}sound.textContent='SOUND: '+(audioOn?'ON':'OFF');};
+trigger.onclick=()=>{if(busy)return;busy=true;trigger.disabled=true;puppet.classList.remove('active');void puppet.offsetWidth;puppet.classList.add('active');status.textContent='THE PUPPET IS MOVING…';if(audioOn){if(ctx.state==='suspended')ctx.resume();noise(2.8,.17,0,260);tone(58,2.2,.12,'sawtooth',.1);tone(310,.13,.08,'triangle',1.4);tone(190,.35,.09,'square',2.55);tone(74,1.2,.15,'sawtooth',3.3);noise(.55,.2,4.65,1200);tone(880,.16,.08,'sine',4.7)}setTimeout(()=>{flash.classList.add('hit');setTimeout(()=>flash.classList.remove('hit'),380)},4650);setTimeout(()=>{puppet.classList.remove('active');status.textContent='PREVIEW COMPLETE · SOUND IS SYNTHESIZED IN-BROWSER';trigger.disabled=false;busy=false},5600)};
+</script>
+</body></html>
