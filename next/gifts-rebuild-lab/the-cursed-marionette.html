@@ -1,82 +1,69 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>TikNation Gift Preview — The Cursed Marionette</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>The Cursed Marionette — TikNation Gift Preview</title>
 <style>
-:root{color-scheme:dark;--gold:#d7b56e;--red:#6e171d}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#08090d;color:#f4eee4;font-family:Georgia,serif}
-body{display:grid;place-items:center;min-height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 34%,#28202a 0,#101016 42%,#050609 100%)}
-.scene{position:relative;width:min(100vw,980px);height:min(100svh,680px);min-height:540px;overflow:hidden;background:linear-gradient(#111018 0 12%,#24161a 35%,#09090d 100%);isolation:isolate}
-.curtain{position:absolute;inset:0 0 auto;height:72%;background:repeating-linear-gradient(90deg,#260d13 0 7%,#4a171e 8%,#230b11 13%,#3b1018 18%);clip-path:polygon(0 0,100% 0,91% 100%,9% 100%);filter:brightness(.7);z-index:-1}
-.proscenium{position:absolute;inset:5% 8% 14%;border:12px ridge #60452f;box-shadow:inset 0 0 35px #000,0 0 30px #000;background:radial-gradient(ellipse at 50% 28%,#4a3b35 0,#21191b 44%,#0a0a0e 85%);overflow:hidden}
-.stagefloor{position:absolute;bottom:0;left:-10%;width:120%;height:20%;background:repeating-linear-gradient(90deg,#241a17 0 9%,#3b2a22 10%,#211713 19%);transform:perspective(260px) rotateX(16deg);transform-origin:bottom}
-.spot{position:absolute;top:-7%;left:50%;width:75%;height:94%;transform:translateX(-50%);background:conic-gradient(from 165deg at 50% 0%,transparent 0 29%,#f5d9a51c 34%,#f9e7bf33 50%,#f5d9a51c 66%,transparent 71%);filter:blur(9px);opacity:.75}
-.dust{position:absolute;inset:0;background-image:radial-gradient(#e9d4ae88 1px,transparent 1.5px);background-size:71px 83px;opacity:.16;animation:dust 18s linear infinite}
-@keyframes dust{to{background-position:100px -220px}}
-.puppet{position:absolute;width:220px;height:390px;left:50%;bottom:13%;transform:translateX(-50%);transform-origin:50% 10%;filter:drop-shadow(0 18px 18px #000);transition:filter .4s}
-.head{position:absolute;top:0;left:66px;width:88px;height:105px;border-radius:47% 47% 43% 43%;background:radial-gradient(ellipse at 33% 25%,#e7cda6,#a9825e 48%,#49362f 90%);box-shadow:inset -12px -8px 18px #241714}
-.hair{position:absolute;top:-8px;left:57px;width:105px;height:56px;border-radius:55% 55% 18% 20%;background:repeating-linear-gradient(100deg,#171316 0 8px,#302329 9px 13px)}
-.eye{position:absolute;top:43px;width:9px;height:5px;border-radius:50%;background:#160e0d;box-shadow:0 0 4px #100}
-.eye.left{left:88px}.eye.right{left:124px}
-.cheek{position:absolute;top:61px;left:93px;width:33px;height:3px;background:#765044;transform:rotate(4deg)}
-.neck{position:absolute;top:95px;left:102px;width:18px;height:22px;background:#9a7759}
-.body{position:absolute;top:112px;left:57px;width:106px;height:145px;clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);background:linear-gradient(90deg,#211b20,#66505a 42%,#30202a 72%,#130f15);border-top:4px solid #b18a59}
-.coatline{position:absolute;top:119px;left:108px;height:134px;width:3px;background:#b69a72}
-.arm{position:absolute;top:124px;width:24px;height:125px;border-radius:15px;background:linear-gradient(90deg,#1b1519,#8c6a58,#241a1d);transform-origin:top center}
-.arm.l{left:52px;transform:rotate(22deg)}.arm.r{right:52px;transform:rotate(-24deg)}
-.hand{position:absolute;bottom:-8px;left:3px;width:19px;height:27px;border-radius:45%;background:#b38d6b}
-.leg{position:absolute;top:246px;width:31px;height:123px;border-radius:10px;background:linear-gradient(90deg,#171419,#514047,#171419)}
-.leg.l{left:76px;transform:rotate(4deg)}.leg.r{right:76px;transform:rotate(-5deg)}
-.shoe{position:absolute;bottom:-3px;left:-13px;width:53px;height:20px;border-radius:50% 35% 20% 20%;background:#171216;border-bottom:4px solid #8d6d4d}
-.string{position:absolute;top:-90px;width:1px;height:220px;background:linear-gradient(#c5b18b,#bda77c66);transform-origin:top}
-.string.s1{left:72px}.string.s2{left:110px}.string.s3{left:149px}.string.s4{left:56px;top:25px;height:180px}.string.s5{left:165px;top:25px;height:180px}
-.crossbar{position:absolute;top:-100px;left:39px;width:145px;height:13px;border-radius:5px;background:linear-gradient(#806b4e,#2b211b);box-shadow:0 3px 6px #000}
-.puppet.active{animation:jerk 5.5s ease-in-out forwards}
-.puppet.active .head{animation:turn 2.1s 1.4s ease-in-out forwards}
-.puppet.active .arm.l{animation:lift 1.4s 2.5s ease-in-out forwards}
-.puppet.active .arm.r{animation:lift2 1.5s 2.8s ease-in-out forwards}
-.puppet.active .string{animation:twitch 1.2s 2.4s ease-in-out 2}
-@keyframes jerk{0%,18%{transform:translateX(-50%) translateY(0) rotate(0)}28%{transform:translateX(-50%) translateY(-12px) rotate(2deg)}42%{transform:translateX(-50%) translateY(0) rotate(-3deg)}55%{transform:translateX(-50%) translateY(0) rotate(0)}68%{transform:translateX(-50%) translateY(5px) rotate(1deg)}80%,100%{transform:translateX(-50%) translateY(0) rotate(0)}}
-@keyframes turn{to{transform:rotate(24deg) translateX(5px)}}
-@keyframes lift{to{transform:rotate(75deg)}}
-@keyframes lift2{to{transform:rotate(-70deg)}}
-@keyframes twitch{0%,100%{transform:rotate(0)}40%{transform:rotate(5deg)}70%{transform:rotate(-4deg)}}
-.title{position:absolute;top:2.8%;left:0;right:0;text-align:center;letter-spacing:.28em;font:600 12px Arial,sans-serif;color:#d7b56e;text-shadow:0 0 12px #d7b56e66}
-.caption{position:absolute;bottom:5%;left:5%;right:5%;text-align:center;font:11px Arial,sans-serif;letter-spacing:.18em;color:#bda98b}
-.controls{position:absolute;bottom:9%;left:50%;transform:translateX(-50%);display:flex;gap:12px;align-items:center;z-index:5}
-button{border:1px solid #b99a64;background:linear-gradient(#392a25,#171216);color:#f7e8ca;padding:14px 22px;border-radius:3px;font:600 12px Arial,sans-serif;letter-spacing:.14em;cursor:pointer;box-shadow:0 5px 18px #0008}
-button:active{transform:translateY(1px)}button:disabled{opacity:.5}
-.status{position:absolute;bottom:2%;left:0;right:0;text-align:center;font:10px Arial,sans-serif;letter-spacing:.12em;color:#9e8d78}
-.flash{position:absolute;inset:0;background:#fff2d5;opacity:0;pointer-events:none;z-index:4}
-.flash.hit{animation:flash .35s ease-out}
-@keyframes flash{0%{opacity:.8}100%{opacity:0}}
-@media(max-width:600px){.scene{min-height:520px}.proscenium{inset:8% 3% 17%;border-width:7px}.puppet{transform:translateX(-50%) scale(.82);transform-origin:50% 100%;bottom:13%}.puppet.active{animation:jerkMobile 5.5s ease-in-out forwards}@keyframes jerkMobile{0%,18%{transform:translateX(-50%) scale(.82) translateY(0)}28%{transform:translateX(-50%) scale(.82) translateY(-12px) rotate(2deg)}42%{transform:translateX(-50%) scale(.82) translateY(0) rotate(-3deg)}55%,100%{transform:translateX(-50%) scale(.82)}}.title{font-size:10px;letter-spacing:.18em}.controls{bottom:9%}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
-</style>
-</head>
-<body>
-<main class="scene" aria-label="The Cursed Marionette gift preview">
- <div class="curtain"></div><div class="title">TIKNATION · GIFT REBUILD LAB</div>
- <section class="proscenium"><div class="spot"></div><div class="dust"></div>
-  <div class="puppet" id="puppet">
-   <div class="crossbar"></div><i class="string s1"></i><i class="string s2"></i><i class="string s3"></i><i class="string s4"></i><i class="string s5"></i>
-   <div class="hair"></div><div class="head"></div><i class="eye left"></i><i class="eye right"></i><i class="cheek"></i><div class="neck"></div><div class="body"></div><i class="coatline"></i>
-   <div class="arm l"><div class="hand"></div></div><div class="arm r"><div class="hand"></div></div>
-   <div class="leg l"><div class="shoe"></div></div><div class="leg r"><div class="shoe"></div></div>
-  </div><div class="stagefloor"></div>
- </section>
- <div class="flash" id="flash"></div>
- <div class="caption">THE CURSED MARIONETTE · THE STRINGS ARE NOT EMPTY</div>
- <div class="controls"><button id="trigger">TRIGGER GIFT</button><button id="sound">SOUND: OFF</button></div>
- <div class="status" id="status">PREVIEW ONLY · NOT CONNECTED TO LIVE GIFT CATALOG</div>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#050608;color:#eee8dc;font-family:Arial,sans-serif}body{display:grid;place-items:center;overflow:hidden}.frame{position:relative;width:min(100vw,1050px);height:min(100svh,720px);min-height:560px;overflow:hidden;background:radial-gradient(ellipse at 51% 38%,#4b3b31 0,#211b1a 37%,#090a0d 78%);isolation:isolate}
+.room{position:absolute;inset:0;background:linear-gradient(90deg,#07090b 0,#171515 15%,transparent 32%,transparent 70%,#15100f 88%,#050608),linear-gradient(#090b0d 0 13%,transparent 35%,#08090b 94%);z-index:-3}
+.backwall{position:absolute;inset:9% 11% 13%;background:linear-gradient(90deg,#251b19,#49372c 48%,#211a19);box-shadow:inset 0 0 70px #000,0 0 50px #000;z-index:-2}
+.wallpanel{position:absolute;inset:14% 15% 16%;border:1px solid #79604a55;background:repeating-linear-gradient(90deg,transparent 0 24%,#120e0d66 24.2% 24.5%),linear-gradient(90deg,#2c211e,#4c3a2e 50%,#261d1b);box-shadow:inset 0 0 55px #080707}
+.velvet{position:absolute;inset:0 0 auto;height:76%;background:linear-gradient(90deg,#10080b 0 7%,#40141b 12%,#210b11 20%,#4a171d 48%,#200a10 79%,#3c1118 90%,#10080b);clip-path:polygon(0 0,100% 0,94% 100%,6% 100%);filter:brightness(.65);z-index:2;pointer-events:none}
+.velvet:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,#0008 0 4%,#d7a06a18 5%,transparent 9%);filter:blur(5px)}
+.beam{position:absolute;z-index:1;top:0;left:50%;width:65%;height:90%;transform:translateX(-50%);background:conic-gradient(from 160deg at 50% -5%,transparent 0 31%,#f1d8b51c 39%,#f5dfc733 50%,#f1d8b51c 61%,transparent 69%);filter:blur(13px)}
+.floor{position:absolute;bottom:-2%;left:-5%;width:110%;height:27%;background:repeating-linear-gradient(90deg,#171211 0 9%,#30221c 10%,#120e0d 19%);transform:perspective(300px) rotateX(17deg);transform-origin:bottom;box-shadow:0 -20px 50px #000}
+.rug{position:absolute;bottom:8%;left:22%;width:56%;height:13%;background:linear-gradient(90deg,#1b1113,#4a2428,#1b1113);clip-path:polygon(7% 0,93% 0,100% 100%,0 100%);border-top:2px solid #9a7352;opacity:.9}
+.chair{position:absolute;bottom:21%;left:50%;transform:translateX(-50%);width:240px;height:245px;z-index:2}
+.chairback{position:absolute;left:36px;top:0;width:168px;height:180px;border:13px ridge #4c3324;border-radius:70px 70px 12px 12px;background:linear-gradient(90deg,#170f10,#42242a,#170f10);box-shadow:inset 0 0 25px #000}
+.chairseat{position:absolute;bottom:25px;left:16px;width:208px;height:42px;border-radius:8px;background:linear-gradient(#604331,#241714);border:5px ridge #513927}
+.chairleg{position:absolute;bottom:0;width:14px;height:55px;background:linear-gradient(90deg,#1b110e,#795538,#1b110e)}.chairleg.l{left:30px}.chairleg.r{right:30px}
+.puppet{position:absolute;z-index:4;left:50%;bottom:24%;width:206px;height:375px;transform:translateX(-50%);filter:drop-shadow(0 18px 16px #000);transform-origin:50% 5%}
+.rope{position:absolute;top:-135px;width:1px;height:260px;background:linear-gradient(#bda77c88,#bda77c20);transform-origin:top;z-index:5}
+.r1{left:61px}.r2{left:102px}.r3{left:145px}.r4{left:27px;top:-40px;height:190px}.r5{left:179px;top:-40px;height:190px}
+.controlbar{position:absolute;top:-140px;left:28px;width:150px;height:12px;border-radius:4px;background:linear-gradient(#8b765a,#241a15);box-shadow:0 4px 8px #000}
+.skull{position:absolute;top:0;left:58px;width:91px;height:108px;border-radius:46% 46% 43% 43%;background:radial-gradient(ellipse at 33% 25%,#d8c6a7 0,#a78d70 34%,#65503f 69%,#30241e 100%);box-shadow:inset -12px -10px 17px #241713, inset 5px 4px 10px #f4dfc344;border:1px solid #31241c}
+.skull:before{content:"";position:absolute;left:17px;top:44px;width:13px;height:8px;border-radius:50%;background:#09090b;box-shadow:36px 0 #09090b,0 0 5px #000,36px 0 5px #000}
+.skull:after{content:"";position:absolute;left:39px;top:56px;width:8px;height:12px;background:#30221b;clip-path:polygon(50% 0,0 100%,100% 100%)}
+.cranium{position:absolute;z-index:2;top:-9px;left:52px;width:103px;height:62px;border-radius:60% 60% 22% 22%;background:repeating-linear-gradient(105deg,#100e0e 0 8px,#34231e 9px 12px,#171112 13px 19px);box-shadow:0 6px 8px #000}
+.ear{position:absolute;top:44px;width:17px;height:25px;border-radius:50%;background:#987a5f;border:3px solid #4d3b30}.ear.l{left:49px}.ear.r{right:49px}
+.neck{position:absolute;top:97px;left:94px;width:25px;height:32px;background:linear-gradient(90deg,#4d392d,#a18566,#4b382d)}
+.torso{position:absolute;top:119px;left:44px;width:119px;height:146px;background:linear-gradient(90deg,#191518,#3a2930 23%,#70534a 48%,#2d2025 78%,#110e11);clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);border-top:4px solid #8e6b4d}
+.torso:after{content:"";position:absolute;inset:8px 50% 0 auto;width:2px;background:#b39770}
+.collar{position:absolute;top:115px;left:69px;width:70px;height:35px;background:#191418;clip-path:polygon(0 0,50% 55%,100% 0,83% 100%,17% 100%)}
+.jointarm{position:absolute;top:133px;width:25px;height:111px;border-radius:13px;background:linear-gradient(90deg,#171316,#90715a 46%,#291c1b);transform-origin:top center}
+.jointarm.l{left:42px;transform:rotate(17deg)}.jointarm.r{right:42px;transform:rotate(-18deg)}
+.elbow{position:absolute;bottom:24px;left:2px;width:21px;height:21px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#b99978,#392720 75%);border:2px solid #291c19}
+.palm{position:absolute;bottom:-17px;left:2px;width:22px;height:34px;border-radius:45%;background:linear-gradient(90deg,#4b362b,#b29372,#4b362b)}
+.leg{position:absolute;top:254px;width:35px;height:104px;border-radius:8px;background:linear-gradient(90deg,#151216,#5a4240 48%,#171216);transform-origin:top}
+.leg.l{left:65px;transform:rotate(3deg)}.leg.r{right:65px;transform:rotate(-4deg)}
+.knee{position:absolute;top:43px;left:4px;width:27px;height:19px;border-radius:50%;background:#4c3531;border:2px solid #171216}
+.boot{position:absolute;bottom:-12px;left:-11px;width:57px;height:22px;border-radius:55% 30% 18% 20%;background:linear-gradient(#49352a,#100d0e);border-bottom:4px solid #806143}
+.stagehaze{position:absolute;inset:0;z-index:6;pointer-events:none;background:radial-gradient(ellipse at 50% 72%,transparent 25%,#0008 100%)}
+.title{position:absolute;top:3%;left:0;right:0;text-align:center;z-index:8;color:#d8bd91;font-size:11px;letter-spacing:.3em;text-shadow:0 2px 10px #000}
+.controls{position:absolute;z-index:10;bottom:5%;left:50%;transform:translateX(-50%);display:flex;gap:10px;white-space:nowrap}
+button{padding:13px 19px;background:linear-gradient(#3b2923,#151114);border:1px solid #a88a63;color:#f4e5c9;letter-spacing:.13em;font-size:11px;font-weight:bold;cursor:pointer}button:disabled{opacity:.45}
+.status{position:absolute;z-index:10;bottom:1.5%;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.12em;color:#b6a48b}
+.puppet.move{animation:puppetMove 5.4s ease-in-out forwards}.puppet.move .skull{animation:headTurn 2s 1.3s ease-in-out forwards}.puppet.move .jointarm.l{animation:armL 1.3s 2.3s ease-in-out forwards}.puppet.move .jointarm.r{animation:armR 1.3s 2.5s ease-in-out forwards}.puppet.move .rope{animation:cord 1s 2.4s ease-in-out 2}
+@keyframes puppetMove{0%,16%{transform:translateX(-50%) translateY(0) rotate(0)}25%{transform:translateX(-50%) translateY(-8px) rotate(1deg)}37%{transform:translateX(-50%) translateY(0) rotate(-2deg)}54%{transform:translateX(-50%) translateY(0) rotate(0)}69%{transform:translateX(-50%) translateY(4px) rotate(1deg)}82%,100%{transform:translateX(-50%) translateY(0)}}
+@keyframes headTurn{to{transform:rotate(19deg) translateX(4px)}}
+@keyframes armL{to{transform:rotate(62deg)}}@keyframes armR{to{transform:rotate(-58deg)}}@keyframes cord{40%{transform:rotate(4deg)}70%{transform:rotate(-3deg)}}
+@media(max-width:600px){.frame{min-height:560px}.backwall{inset:11% 3% 13%}.puppet{transform:translateX(-50%) scale(.83);transform-origin:50% 100%;bottom:23%}.puppet.move{animation:mobileMove 5.4s ease-in-out forwards}@keyframes mobileMove{0%,16%{transform:translateX(-50%) scale(.83)}25%{transform:translateX(-50%) scale(.83) translateY(-8px) rotate(1deg)}37%{transform:translateX(-50%) scale(.83) rotate(-2deg)}54%,100%{transform:translateX(-50%) scale(.83)}}.chair{transform:translateX(-50%) scale(.85);transform-origin:bottom}.title{font-size:9px;letter-spacing:.18em}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style></head>
+<body><main class="frame">
+<div class="room"></div><div class="backwall"><div class="wallpanel"></div></div><div class="beam"></div><div class="velvet"></div>
+<div class="title">TIKNATION · GIFT REBUILD LAB</div>
+<div class="chair"><div class="chairback"></div><div class="chairseat"></div><div class="chairleg l"></div><div class="chairleg r"></div></div>
+<div class="puppet" id="puppet">
+<i class="controlbar"></i><i class="rope r1"></i><i class="rope r2"></i><i class="rope r3"></i><i class="rope r4"></i><i class="rope r5"></i>
+<i class="cranium"></i><i class="ear l"></i><i class="ear r"></i><div class="skull"></div><div class="neck"></div><div class="collar"></div><div class="torso"></div>
+<div class="jointarm l"><i class="elbow"></i><i class="palm"></i></div><div class="jointarm r"><i class="elbow"></i><i class="palm"></i></div>
+<div class="leg l"><i class="knee"></i><i class="boot"></i></div><div class="leg r"><i class="knee"></i><i class="boot"></i></div>
+</div><div class="floor"></div><div class="rug"></div><div class="stagehaze"></div>
+<div class="controls"><button id="trigger">TRIGGER GIFT</button><button id="sound">SOUND: OFF</button></div>
+<div class="status" id="status">PREVIEW ONLY · NOT CONNECTED TO LIVE GIFT CATALOG</div>
 </main>
 <script>
-const puppet=document.getElementById('puppet'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound'),status=document.getElementById('status'),flash=document.getElementById('flash');
-let audioOn=false,ctx=null,busy=false;
-function tone(freq,duration,gain,type='sine',delay=0){if(!audioOn||!ctx)return;const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,ctx.currentTime+delay);g.gain.setValueAtTime(.0001,ctx.currentTime+delay);g.gain.exponentialRampToValueAtTime(gain,ctx.currentTime+delay+.04);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+delay+duration);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+delay);o.stop(ctx.currentTime+delay+duration+.05)}
-function noise(duration,gain,delay=0,filter=500){if(!audioOn||!ctx)return;const n=Math.floor(ctx.sampleRate*duration),b=ctx.createBuffer(1,n,ctx.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);const s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=b;f.type='lowpass';f.frequency.value=filter;g.gain.value=gain;s.connect(f);f.connect(g);g.connect(ctx.destination);s.start(ctx.currentTime+delay)}
-sound.onclick=async()=>{audioOn=!audioOn;if(audioOn){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){audioOn=false;status.textContent='AUDIO NOT SUPPORTED IN THIS BROWSER';return}ctx=ctx||new AC();if(ctx.state==='suspended')await ctx.resume();tone(110,.18,.035,'triangle')}sound.textContent='SOUND: '+(audioOn?'ON':'OFF');};
-trigger.onclick=()=>{if(busy)return;busy=true;trigger.disabled=true;puppet.classList.remove('active');void puppet.offsetWidth;puppet.classList.add('active');status.textContent='THE PUPPET IS MOVING…';if(audioOn){if(ctx.state==='suspended')ctx.resume();noise(2.8,.17,0,260);tone(58,2.2,.12,'sawtooth',.1);tone(310,.13,.08,'triangle',1.4);tone(190,.35,.09,'square',2.55);tone(74,1.2,.15,'sawtooth',3.3);noise(.55,.2,4.65,1200);tone(880,.16,.08,'sine',4.7)}setTimeout(()=>{flash.classList.add('hit');setTimeout(()=>flash.classList.remove('hit'),380)},4650);setTimeout(()=>{puppet.classList.remove('active');status.textContent='PREVIEW COMPLETE · SOUND IS SYNTHESIZED IN-BROWSER';trigger.disabled=false;busy=false},5600)};
-</script>
-</body></html>
+const puppet=document.getElementById('puppet'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound'),status=document.getElementById('status');let audioOn=false,ctx=null,busy=false;
+function noise(seconds,volume,cutoff,delay=0){if(!audioOn||!ctx)return;const len=Math.floor(ctx.sampleRate*seconds),buf=ctx.createBuffer(1,len,ctx.sampleRate),data=buf.getChannelData(0);for(let i=0;i<len;i++)data[i]=(Math.random()*2-1)*(1-i/len);const src=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();src.buffer=buf;filter.type='lowpass';filter.frequency.value=cutoff;gain.gain.value=volume;src.connect(filter);filter.connect(gain);gain.connect(ctx.destination);src.start(ctx.currentTime+delay)}
+function creak(freq,delay,duration,volume){if(!audioOn||!ctx)return;const o=ctx.createOscillator(),g=ctx.createGain();o.type='sawtooth';o.frequency.setValueAtTime(freq,ctx.currentTime+delay);o.frequency.exponentialRampToValueAtTime(freq*.58,ctx.currentTime+delay+duration);g.gain.setValueAtTime(.0001,ctx.currentTime+delay);g.gain.exponentialRampToValueAtTime(volume,ctx.currentTime+delay+.08);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+delay+duration);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+delay);o.stop(ctx.currentTime+delay+duration+.03)}
+sound.onclick=async()=>{audioOn=!audioOn;if(audioOn){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){audioOn=false;status.textContent='AUDIO NOT SUPPORTED IN THIS BROWSER'}else{ctx=ctx||new AC();if(ctx.state==='suspended')await ctx.resume();creak(170,0,.16,.025)}}sound.textContent='SOUND: '+(audioOn?'ON':'OFF')};
+trigger.onclick=()=>{if(busy)return;busy=true;trigger.disabled=true;puppet.classList.remove('move');void puppet.offsetWidth;puppet.classList.add('move');status.textContent='THE STRINGS TIGHTEN…';if(audioOn){if(ctx.state==='suspended')ctx.resume();noise(3.8,.12,180);creak(92,.15,1.8,.08);creak(210,1.4,.55,.045);noise(.35,.08,900,2.45);creak(145,2.65,.8,.07);creak(70,3.45,1.3,.1);noise(.8,.12,2400,4.5)}setTimeout(()=>{status.textContent='IT LOOKED AT YOU';},2800);setTimeout(()=>{puppet.classList.remove('move');status.textContent='PREVIEW COMPLETE · IN-BROWSER SYNTHESIZED SOUND';trigger.disabled=false;busy=false},5500)};
+</script></body></html>
