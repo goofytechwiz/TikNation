@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080b10">
+<title>The Last Broadcast · TikNation Next Gift Preview</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#080b10;color:#f2f4f5;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+body{background:radial-gradient(ellipse at 50% 0,#292a31 0,#11151a 43%,#07090c 100%);padding-bottom:32px}
+header{height:58px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff20;color:#aeb8c0;font-size:9px;font-weight:850;letter-spacing:.2em}
+a{color:#d5e1e6;text-decoration:none}
+main{width:min(94%,920px);margin:34px auto}.eyebrow{color:#e15c55;font-size:9px;font-weight:900;letter-spacing:.28em}
+h1{font:500 clamp(42px,8vw,76px)/.98 Georgia,serif;letter-spacing:-.045em;margin:12px 0 14px;text-shadow:0 0 35px #e14d3d33}
+.intro{max-width:650px;color:#b9c0c7;font-size:13px;line-height:1.7}
+.screen{position:relative;isolation:isolate;overflow:hidden;min-height:440px;margin-top:26px;border:1px solid #89929a55;border-radius:18px;background:linear-gradient(145deg,#1a2027,#080b10 70%);box-shadow:0 28px 90px #000c,inset 0 0 60px #ffffff08}
+.screen:before{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;opacity:.18;background:repeating-linear-gradient(0deg,transparent 0 3px,#dce6ed 4px,transparent 5px 7px);mix-blend-mode:screen}
+.screen:after{content:"";position:absolute;inset:-30%;z-index:4;pointer-events:none;background:linear-gradient(110deg,transparent 35%,#d7e1e41b 48%,transparent 58%);transform:translateX(-70%);opacity:0}
+.screen.active:after{opacity:1;animation:signalSweep 2.6s linear infinite}
+.topbar{position:absolute;z-index:2;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:14px 17px;border-bottom:1px solid #ffffff20;color:#c5cdd1;font-size:9px;letter-spacing:.16em;font-weight:900}
+.rec{display:flex;align-items:center;gap:7px}.dot{width:7px;height:7px;border-radius:50%;background:#e34e45;box-shadow:0 0 12px #e34e45}
+.monitor{position:absolute;inset:64px 6% 68px;display:grid;place-items:center;overflow:hidden;border:1px solid #a6b3bd35;background:radial-gradient(ellipse at 50% 50%,#39424a 0,#1b232b 45%,#090d12 100%);box-shadow:inset 0 0 75px #000b}
+.static{position:absolute;inset:-10%;opacity:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");background-size:180px 180px;mix-blend-mode:screen}
+.active .static{opacity:.28;animation:staticFlicker .12s steps(2) infinite}
+.alert{position:relative;z-index:2;width:min(88%,560px);padding:clamp(18px,4vw,32px);text-align:center;border:1px solid #e35c5366;background:linear-gradient(145deg,#200f12dd,#0a0c10eF);box-shadow:0 0 55px #d9342b22;transform:translateY(8px);transition:transform .4s,box-shadow .4s}
+.active .alert{transform:translateY(0);box-shadow:0 0 70px #f0443b33, inset 0 0 28px #e34d4310;animation:alertJitter 4s steps(1) infinite}
+.alert-kicker{font-size:9px;font-weight:950;letter-spacing:.32em;color:#ff8177}.alert h2{font:700 clamp(24px,5vw,44px)/1.04 Georgia,serif;margin:14px 0 10px;color:#f5eeee;text-shadow:0 0 18px #f04b4144}.alert p{max-width:430px;margin:0 auto;color:#c8c2c4;font-size:12px;line-height:1.65}
+.signal{margin-top:18px;color:#ff9b8e;font:900 9px system-ui;letter-spacing:.2em}
+.glitch{display:inline-block}.active .glitch{animation:glitch 1.8s steps(2) infinite}
+.bottomline{position:absolute;z-index:2;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:12px;padding:13px 17px;border-top:1px solid #ffffff20;color:#9da8b0;font-size:8px;letter-spacing:.13em;font-weight:850}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+button{min-height:48px;padding:0 19px;border-radius:999px;border:1px solid #aebbc455;background:#141a20;color:#f0f3f5;font-size:9px;font-weight:900;letter-spacing:.14em;cursor:pointer}
+button.primary{border:0;background:linear-gradient(110deg,#f5d9d4,#d75a50);color:#1c0b0c;box-shadow:0 8px 28px #d64b4238}
+button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.status{min-height:22px;margin-top:15px;color:#ffaaa0;font-size:9px;font-weight:850;letter-spacing:.13em}
+.note{margin-top:18px;color:#818b93;font-size:10px;line-height:1.7}
+@keyframes staticFlicker{0%{transform:translate(0,0)}25%{transform:translate(-2%,1%)}50%{transform:translate(1%,-2%)}75%{transform:translate(2%,1%)}100%{transform:translate(-1%,0)}}
+@keyframes signalSweep{to{transform:translateX(70%)}}
+@keyframes alertJitter{0%,94%,100%{filter:none}95%{filter:hue-rotate(25deg) contrast(1.3);transform:translate(2px,-1px)}97%{filter:contrast(1.5);transform:translate(-2px,1px)}}
+@keyframes glitch{0%,90%,100%{transform:none;text-shadow:none}92%{transform:translateX(2px);text-shadow:-3px 0 #70e6df,3px 0 #e34e45}95%{transform:translateX(-2px);text-shadow:3px 0 #70e6df,-3px 0 #e34e45}}
+@media(max-width:560px){main{margin-top:26px}.screen{min-height:400px}.monitor{inset:60px 4% 62px}.bottomline{font-size:7px}.controls button{flex:1 1 100%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header><b>TIKNATION NEXT · GIFT PREVIEW</b><a href="../live-worlds/">← LIVE WORLDS</a></header>
+<main>
+<div class="eyebrow">NEW CINEMATIC GIFT CONCEPT · PREVIEW ONLY</div>
+<h1>THE LAST BROADCAST</h1>
+<p class="intro">A hijacked emergency transmission takes over the stream. The picture tears, the warning signal swells, and a message appears from somewhere that should not be broadcasting.</p>
+<section class="screen" id="screen" aria-label="Emergency broadcast takeover visual preview">
+<div class="topbar"><span>EMERGENCY NETWORK · CHANNEL 07</span><span class="rec"><i class="dot"></i>LIVE SIGNAL</span></div>
+<div class="monitor"><div class="static"></div><div class="alert">
+<div class="alert-kicker">UNAUTHORIZED TRANSMISSION</div>
+<h2><span class="glitch">THIS IS NOT A TEST</span></h2>
+<p>Remain calm. Do not attempt to restore the signal. If you can hear this message, the broadcast has already found you.</p>
+<div class="signal">▰ SIGNAL OVERRIDE · ORIGIN UNKNOWN ▰</div>
+</div></div>
+<div class="bottomline"><span>TX: 00:00:00 · SOURCE UNVERIFIED</span><span>DO NOT ANSWER THE SIGNAL</span></div>
+</section>
+<div class="controls"><button class="primary" id="start">HIJACK THE BROADCAST</button><button id="stop">STOP EFFECT + SOUND</button><button id="reset">RESET SCREEN</button></div>
+<div class="status" id="status" role="status" aria-live="polite">STANDBY · SOUND OFF UNTIL YOU ACTIVATE THE PREVIEW</div>
+<p class="note">Isolated TikNation Next preview. It does not spend coins or publish a gift to the live catalog. Sound is generated in-browser after you tap the button; no external audio file is required. This preview is not yet connected to the live gift engine.</p>
+</main>
+<script>
+const screenEl=document.getElementById('screen'),statusEl=document.getElementById('status');let ctx=null,nodes=[],stopTimer=null;
+function stopAudio(){if(stopTimer)clearTimeout(stopTimer);stopTimer=null;nodes.forEach(n=>{try{n.stop?.()}catch(e){}try{n.disconnect?.()}catch(e){}});nodes=[];if(ctx){ctx.close().catch(()=>{});ctx=null}}
+function tone(freq,start,duration,type,volume,slideTo){const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,start);if(slideTo)o.frequency.exponentialRampToValueAtTime(slideTo,start+duration);g.gain.setValueAtTime(.0001,start);g.gain.exponentialRampToValueAtTime(volume,start+.025);g.gain.setValueAtTime(volume,start+duration*.72);g.gain.exponentialRampToValueAtTime(.0001,start+duration);o.connect(g).connect(ctx.destination);o.start(start);o.stop(start+duration+.02);nodes.push(o,g)}
+async function playBroadcast(){stopAudio();const AC=window.AudioContext||window.webkitAudioContext;if(!AC){statusEl.textContent='AUDIO NOT SUPPORTED IN THIS BROWSER';return}ctx=new AC();await ctx.resume();const now=ctx.currentTime;
+const len=Math.floor(ctx.sampleRate*2.5),buf=ctx.createBuffer(1,len,ctx.sampleRate),data=buf.getChannelData(0);let prev=0;for(let i=0;i<len;i++){const w=Math.random()*2-1;prev=prev*.72+w*.28;data[i]=w*.72+prev*.28}
+const noise=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),ng=ctx.createGain();noise.buffer=buf;noise.loop=true;filter.type='bandpass';filter.frequency.setValueAtTime(1700,now);filter.frequency.exponentialRampToValueAtTime(360,now+5);filter.Q.value=.72;ng.gain.setValueAtTime(.0001,now);ng.gain.exponentialRampToValueAtTime(.24,now+.25);ng.gain.setValueAtTime(.18,now+3.6);ng.gain.exponentialRampToValueAtTime(.0001,now+6.4);noise.connect(filter).connect(ng).connect(ctx.destination);noise.start(now);noise.stop(now+6.5);nodes.push(noise,filter,ng);
+tone(880,now+.15,.85,'sine',.11,620);tone(880,now+1.25,.85,'sine',.11,620);tone(740,now+2.35,1.15,'sine',.12,520);
+const sub=ctx.createOscillator(),sg=ctx.createGain(),sf=ctx.createBiquadFilter();sub.type='sawtooth';sub.frequency.setValueAtTime(62,now);sub.frequency.exponentialRampToValueAtTime(29,now+6);sf.type='lowpass';sf.frequency.value=170;sg.gain.setValueAtTime(.0001,now);sg.gain.exponentialRampToValueAtTime(.15,now+.7);sg.gain.exponentialRampToValueAtTime(.0001,now+6.5);sub.connect(sf).connect(sg).connect(ctx.destination);sub.start(now);sub.stop(now+6.55);nodes.push(sub,sg,sf);
+statusEl.textContent='SIGNAL HIJACKED · WARNING TONE + RADIO STATIC PLAYING';stopTimer=setTimeout(()=>{statusEl.textContent='TRANSMISSION ENDED · SIGNAL LOST';stopAudio()},6800)}
+document.getElementById('start').addEventListener('click',async()=>{screenEl.classList.remove('active');void screenEl.offsetWidth;screenEl.classList.add('active');statusEl.textContent='CONNECTING TO UNKNOWN SOURCE…';try{await playBroadcast()}catch(e){statusEl.textContent='PREVIEW ERROR · '+e.message}});
+document.getElementById('stop').addEventListener('click',()=>{stopAudio();screenEl.classList.remove('active');statusEl.textContent='EFFECT AND SOUND STOPPED'});
+document.getElementById('reset').addEventListener('click',()=>{stopAudio();screenEl.classList.remove('active');statusEl.textContent='STANDBY · SOUND OFF UNTIL YOU ACTIVATE THE PREVIEW'});
+</script>
+</body></html>
