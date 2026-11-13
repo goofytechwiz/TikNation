@@ -377,54 +377,61 @@ function renderStormWorld(gift,opts,overlay){
 }
 function renderVoidRiftGift(gift,opts,overlay){
  const scene=document.createElement("div");
- scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#02030a;isolation:isolate";
- scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 48%,transparent 5%,rgba(0,0,0,.28) 48%,#000 100%);pointer-events:none"></div><div style="position:absolute;z-index:5;left:0;right:0;bottom:9%;text-align:center;color:#f1eaff;font:1000 clamp(25px,6vw,48px)/1.1 system-ui;letter-spacing:.16em;text-shadow:0 0 22px #a98aff,0 3px 10px #000">THE VOID RIFT<div style="font-size:clamp(10px,2vw,14px);letter-spacing:.25em;margin-top:10px;color:#c7b6ff">REALITY HAS SPLIT OPEN</div></div>';
+ scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#010208;isolation:isolate";
+ scene.innerHTML='<canvas style="position:absolute;inset:0;width:100%;height:100%"></canvas><div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 48%,transparent 12%,rgba(0,0,0,.18) 48%,#000 100%)"></div><div style="position:absolute;z-index:5;left:0;right:0;bottom:8%;text-align:center;color:#f5f0ff;font:1000 clamp(24px,6vw,50px)/1.05 system-ui;letter-spacing:.18em;text-shadow:0 0 28px #9b73ff,0 4px 14px #000">THE VOID RIFT<div style="font-size:clamp(10px,2vw,14px);letter-spacing:.3em;margin-top:12px;color:#c8b8ff">EVERYTHING GETS PULLED IN</div></div>';
  overlay.appendChild(scene);document.body.appendChild(overlay);
- // Start the user-authorized cemetery sound from the same Play gesture.
- // Audio is started only by the lab's explicit Play button; never autoplay here.
  const canvas=scene.querySelector("canvas"),ctx=canvas.getContext("2d");
  let w=0,h=0,dpr=1,raf=0,alive=true,start=performance.now(),last=start,particles=[];
  const rand=(a,b)=>a+Math.random()*(b-a);
- function resize(){dpr=Math.min(2,window.devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
+ function resize(){dpr=Math.min(2,window.devicePixelRatio||1);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}
  resize();window.addEventListener("resize",resize);
- for(let i=0;i<190;i++){const a=rand(0,Math.PI*2),r=rand(90,Math.max(w,h)*.7);particles.push({a,r,size:rand(.6,3.2),speed:rand(.3,1.3),tone:Math.random()});}
+ for(let i=0;i<260;i++){const angle=rand(0,Math.PI*2),radius=rand(Math.min(w,h)*.16,Math.max(w,h)*.82);particles.push({a:angle,r:radius,size:rand(.7,4.2),speed:rand(.7,1.8),spin:rand(.4,1.6),tone:Math.random(),shape:Math.random()});}
  function frame(now){
   if(!alive||!overlay.isConnected)return;
-  const t=(now-start)/1000,dt=Math.min(.04,(now-last)/1000);last=now;
+  const t=(now-start)/1000,dt=Math.min(.035,(now-last)/1000);last=now;
+  const cx=w*.5,cy=h*.46,scale=Math.min(1.12,Math.min(w/390,h/720)),rx=Math.min(w*.19,150)*scale,ry=Math.min(h*.29,225)*scale;
   ctx.clearRect(0,0,w,h);
-  const cx=w*.5,cy=h*.46,open=Math.min(1,t/.95),suction=Math.min(1,t/1.1);
-  const pulse=1+Math.sin(t*2.1)*.025,rx=Math.min(w*.235,185)*pulse,ry=Math.min(h*.34,265)*pulse;
-  const bg=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(w,h)*.78);bg.addColorStop(0,"rgba(35,22,76,.38)");bg.addColorStop(.48,"rgba(8,9,24,.5)");bg.addColorStop(1,"#010207");ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
-  // Dust and fractured debris accelerate inward and vanish into the vacuum.
+  const atmosphere=ctx.createRadialGradient(cx,cy,4,cx,cy,Math.max(w,h)*.82);
+  atmosphere.addColorStop(0,"rgba(37,23,74,.58)");atmosphere.addColorStop(.35,"rgba(12,13,31,.68)");atmosphere.addColorStop(1,"#010208");ctx.fillStyle=atmosphere;ctx.fillRect(0,0,w,h);
+  // Inward gravitational stream: every fragment spirals faster as it approaches the event horizon.
   for(const p of particles){
-   p.a+=dt*(.62+p.speed*.58);p.r-=dt*(38+p.speed*78)*(.35+suction*1.9);
+   const oldR=p.r;p.a+=dt*(.55+p.spin*.52)*(1+Math.max(0,1-p.r/(Math.max(w,h)*.8))*2.2);
+   p.r-=dt*(34+p.speed*72)*(1+Math.max(0,1-p.r/(Math.max(w,h)*.8))*2.8);
    const x=cx+Math.cos(p.a)*p.r,y=cy+Math.sin(p.a)*p.r*.78;
-   ctx.save();ctx.translate(x,y);ctx.rotate(p.a+t);ctx.fillStyle=p.tone>.72?"rgba(198,174,255,.9)":"rgba(116,151,210,.7)";ctx.shadowColor="#a78bff";ctx.shadowBlur=12;
-   ctx.fillRect(-p.size*1.7,-p.size*.55,p.size*3.4,p.size*1.1);ctx.restore();
-   if(p.r<10){p.a=rand(0,Math.PI*2);p.r=rand(Math.max(w,h)*.48,Math.max(w,h)*.82);}
+   const tailX=cx+Math.cos(p.a-.13)*Math.min(oldR,p.r+22),tailY=cy+Math.sin(p.a-.13)*Math.min(oldR,p.r+22)*.78;
+   ctx.save();ctx.globalAlpha=Math.min(1,.28+p.speed*.34);ctx.strokeStyle=p.tone>.72?"rgba(213,196,255,.95)":"rgba(103,150,224,.8)";ctx.lineWidth=p.size*.65;ctx.beginPath();ctx.moveTo(tailX,tailY);ctx.lineTo(x,y);ctx.stroke();
+   ctx.translate(x,y);ctx.rotate(p.a+t*p.spin);
+   ctx.fillStyle=p.tone>.72?"#d8c9ff":p.tone>.35?"#7699d8":"#59627e";ctx.shadowColor="#a78bff";ctx.shadowBlur=10;
+   if(p.shape>.78){ctx.beginPath();ctx.moveTo(-p.size*2,-p.size);ctx.lineTo(p.size*1.8,-p.size*.7);ctx.lineTo(p.size*1.2,p.size*1.6);ctx.lineTo(-p.size*1.4,p.size);ctx.closePath();ctx.fill();}
+   else ctx.fillRect(-p.size*1.6,-p.size*.65,p.size*3.2,p.size*1.3);
+   ctx.restore();
+   if(p.r<Math.max(10,rx*.08)){p.a=rand(0,Math.PI*2);p.r=rand(Math.max(w,h)*.48,Math.max(w,h)*.86);p.size=rand(.7,4.2);}
   }
-  // Luminous fracture rim with jagged edges and a deep, lightless center.
-  ctx.save();ctx.translate(cx,cy);ctx.rotate(Math.sin(t*.31)*.035);
-  for(let layer=0;layer<4;layer++){
-   ctx.beginPath();const count=150;
-   for(let i=0;i<=count;i++){const a=i/count*Math.PI*2;const jag=1+Math.sin(a*17+t*1.4+layer)*.035+Math.sin(a*39-t*.8)*.018;const x=Math.cos(a)*rx*jag,y=Math.sin(a)*ry*jag;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}
-   ctx.closePath();ctx.strokeStyle=["rgba(203,178,255,.92)","rgba(126,91,220,.72)","rgba(74,128,255,.36)","rgba(236,221,255,.22)"][layer];ctx.lineWidth=[2.2,8,19,34][layer];ctx.shadowColor="#a17bff";ctx.shadowBlur=[18,28,38,48][layer];ctx.stroke();
+  // A deep vertical tear, with layered hot edges and a black core.
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(Math.sin(t*.42)*.025);
+  for(let layer=3;layer>=0;layer--){
+   ctx.beginPath();const count=180;
+   for(let i=0;i<=count;i++){const a=i/count*Math.PI*2;const jag=1+Math.sin(a*13+t*1.7+layer)*.045+Math.sin(a*31-t*1.1)*.022+Math.sin(a*57+t*.7)*.009;const x=Math.cos(a)*rx*jag,y=Math.sin(a)*ry*jag;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}
+   ctx.closePath();ctx.strokeStyle=["rgba(230,214,255,.98)","rgba(164,119,255,.82)","rgba(91,103,255,.5)","rgba(120,82,220,.2)"][layer];ctx.lineWidth=[2,7,18,34][layer];ctx.shadowColor="#a77aff";ctx.shadowBlur=[18,28,42,55][layer];ctx.stroke();
   }
-  const hole=ctx.createRadialGradient(0,0,2,0,0,Math.max(rx,ry)*.78);hole.addColorStop(0,"#000");hole.addColorStop(.58,"#03020b");hole.addColorStop(.84,"rgba(8,5,22,.9)");hole.addColorStop(1,"rgba(8,5,22,0)");ctx.fillStyle=hole;ctx.beginPath();ctx.ellipse(0,0,rx*.99,ry*.99,0,0,Math.PI*2);ctx.fill();
-  // Fine fracture filaments flicker around the perimeter.
-  ctx.globalCompositeOperation="lighter";for(let i=0;i<22;i++){const a=i/22*Math.PI*2+Math.sin(t+i)*.025;const x=Math.cos(a)*rx*.92,y=Math.sin(a)*ry*.92;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+Math.cos(a+.45)*rand(12,38),y+Math.sin(a+.45)*rand(12,38));ctx.strokeStyle="rgba(185,157,255,.48)";ctx.lineWidth=1.2;ctx.stroke();}
+  const core=ctx.createRadialGradient(0,0,3,0,0,Math.max(rx,ry)*.9);core.addColorStop(0,"#000");core.addColorStop(.55,"#010106");core.addColorStop(.82,"rgba(5,3,17,.98)");core.addColorStop(1,"rgba(16,8,38,0)");ctx.fillStyle=core;ctx.beginPath();ctx.ellipse(0,0,rx*.99,ry*.99,0,0,Math.PI*2);ctx.fill();
+  // Bright filaments bend toward the center instead of bursting outward.
+  ctx.globalCompositeOperation="lighter";
+  for(let i=0;i<34;i++){const angle=i/34*Math.PI*2+t*.08,outer=rand(.78,.99),inner=rand(.3,.68),x1=Math.cos(angle)*rx*outer,y1=Math.sin(angle)*ry*outer,x2=Math.cos(angle+.28)*rx*inner,y2=Math.sin(angle+.28)*ry*inner;ctx.beginPath();ctx.moveTo(x1,y1);ctx.quadraticCurveTo(x1*.3,y1*.3,x2,y2);ctx.strokeStyle="rgba(190,160,255,"+rand(.16,.55)+")";ctx.lineWidth=rand(.7,1.8);ctx.stroke();}
+  // Rotating gravitational lens rings.
+  for(let i=0;i<3;i++){ctx.beginPath();ctx.ellipse(0,0,rx*(1.2+i*.19),ry*(.24+i*.045),Math.sin(t*.4+i)*.12,0,Math.PI*2);ctx.strokeStyle="rgba(128,116,255,"+(.22-i*.045)+")";ctx.lineWidth=1.5;ctx.shadowBlur=18;ctx.stroke();}
   ctx.restore();
-  // No outward shockwave: the rift keeps pulling loose matter inward.
+  // Strong inward streaks at the screen edges sell the vacuum force.
+  ctx.save();ctx.globalCompositeOperation="lighter";
+  for(let i=0;i<42;i++){const a=i/42*Math.PI*2+t*.025,outer=Math.max(w,h)*.72,inner=Math.max(rx,ry)*1.12;ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*outer,cy+Math.sin(a)*outer*.78);ctx.lineTo(cx+Math.cos(a+.06)*inner,cy+Math.sin(a+.06)*inner*.78);ctx.strokeStyle="rgba(133,139,255,.16)";ctx.lineWidth=rand(.5,1.4);ctx.stroke();}
+  ctx.restore();
   raf=requestAnimationFrame(frame);
  }
  raf=requestAnimationFrame(frame);
- const duration=Math.max(6500,Number(opts.duration)||8200);
- setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .7s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),730);}},duration);
+ const duration=Math.max(7200,Number(opts.duration)||9000);
+ setTimeout(()=>{alive=false;cancelAnimationFrame(raf);window.removeEventListener("resize",resize);if(overlay.isConnected){overlay.style.transition="opacity .65s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),680);}},duration);
  return overlay;
 }
-
-
-
 
 function renderCarnevilGift(gift,opts,overlay){
  const scene=document.createElement("div");scene.style.cssText="position:absolute;inset:0;overflow:hidden;background:#050307;isolation:isolate";
