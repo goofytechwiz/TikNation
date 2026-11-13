@@ -19,6 +19,25 @@ h1{font:500 clamp(42px,8vw,76px)/.98 Georgia,serif;letter-spacing:-.045em;margin
 .topbar{position:absolute;z-index:2;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:14px 17px;border-bottom:1px solid #ffffff20;color:#c5cdd1;font-size:9px;letter-spacing:.16em;font-weight:900}
 .rec{display:flex;align-items:center;gap:7px}.dot{width:7px;height:7px;border-radius:50%;background:#e34e45;box-shadow:0 0 12px #e34e45}
 .monitor{position:absolute;inset:64px 6% 68px;display:grid;place-items:center;overflow:hidden;border:1px solid #a6b3bd35;background:radial-gradient(ellipse at 50% 50%,#39424a 0,#1b232b 45%,#090d12 100%);box-shadow:inset 0 0 75px #000b}
+.feed{position:absolute;inset:0;opacity:0;transition:opacity .6s;background:linear-gradient(180deg,#111b20,#05090c 75%);overflow:hidden}
+.active .feed{opacity:1}
+.corridor{position:absolute;inset:0;background:linear-gradient(90deg,#030608 0 12%,transparent 12% 88%,#030608 88%),linear-gradient(180deg,#101a20 0 12%,transparent 12% 78%,#020405 78%);clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);opacity:.9}
+.corridor:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 19%,#a9d4df18 19.2% 19.5%,transparent 19.8% 39%),linear-gradient(180deg,transparent 50%,#a9d4df14);transform:perspective(250px) rotateX(4deg)}
+.corridor:after{content:"";position:absolute;left:50%;top:8%;width:2px;height:90%;background:#b8d2d522;box-shadow:-90px 0 0 #a9d4df18,90px 0 0 #a9d4df18;transform:perspective(200px) rotateX(18deg)}
+.figure{position:absolute;z-index:1;left:50%;bottom:13%;width:clamp(30px,5vw,48px);height:clamp(95px,22vw,160px);opacity:0;transform:translateX(-50%) scale(.55);transition:opacity 1.8s,transform 5s;filter:blur(1px);background:linear-gradient(90deg,#020304,#111719 45%,#020304);clip-path:polygon(35% 0,65% 0,78% 13%,72% 28%,88% 45%,100% 100%,0 100%,12% 45%,28% 28%,22% 13%)}
+.active .figure{opacity:.94;transform:translateX(-50%) scale(1)}
+.active .figure:after{content:"";position:absolute;left:27%;top:15%;width:46%;height:3px;background:#c5e2df;box-shadow:0 0 8px #e2ffff}
+.scanbar{position:absolute;z-index:3;left:0;right:0;height:3px;top:-5px;background:#d9faff77;box-shadow:0 0 18px #c5ffff;opacity:0}
+.active .scanbar{opacity:.7;animation:scanDown 3.8s linear infinite}
+.interference{position:absolute;z-index:4;inset:0;pointer-events:none;opacity:0;background:linear-gradient(transparent 44%,#dffcff55 45%,transparent 47%),linear-gradient(90deg,#e5ffff22,transparent 15%,#e45b5522 80%,transparent)}
+.active .interference{animation:interference .18s steps(2) infinite}
+.monitor .alert{transition:opacity .3s,transform .3s}
+.active .monitor .alert{animation:alertJitter 4s steps(1) infinite}
+.active[data-phase="intrusion"] .alert{opacity:0;transform:scale(.96)}
+.active[data-phase="warning"] .alert{opacity:1;transform:scale(1)}
+.active[data-phase="warning"] .figure{opacity:.14}
+.active[data-phase="reveal"] .figure{opacity:1;transform:translateX(-50%) scale(1.18)}
+.active[data-phase="reveal"] .alert{border-color:#e35c53aa;box-shadow:0 0 90px #e3342d55}
 .static{position:absolute;inset:-10%;opacity:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");background-size:180px 180px;mix-blend-mode:screen}
 .active .static{opacity:.28;animation:staticFlicker .12s steps(2) infinite}
 .alert{position:relative;z-index:2;width:min(88%,560px);padding:clamp(18px,4vw,32px);text-align:center;border:1px solid #e35c5366;background:linear-gradient(145deg,#200f12dd,#0a0c10eF);box-shadow:0 0 55px #d9342b22;transform:translateY(8px);transition:transform .4s,box-shadow .4s}
@@ -33,7 +52,7 @@ button.primary{border:0;background:linear-gradient(110deg,#f5d9d4,#d75a50);color
 button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 .status{min-height:22px;margin-top:15px;color:#ffaaa0;font-size:9px;font-weight:850;letter-spacing:.13em}
 .note{margin-top:18px;color:#818b93;font-size:10px;line-height:1.7}
-@keyframes staticFlicker{0%{transform:translate(0,0)}25%{transform:translate(-2%,1%)}50%{transform:translate(1%,-2%)}75%{transform:translate(2%,1%)}100%{transform:translate(-1%,0)}}
+@keyframes scanDown{to{top:105%}}@keyframes interference{0%{transform:translateX(-2%);opacity:.2}50%{transform:translateX(2%);opacity:.7}100%{transform:translateX(-1%);opacity:.15}}\n@keyframes staticFlicker{0%{transform:translate(0,0)}25%{transform:translate(-2%,1%)}50%{transform:translate(1%,-2%)}75%{transform:translate(2%,1%)}100%{transform:translate(-1%,0)}}
 @keyframes signalSweep{to{transform:translateX(70%)}}
 @keyframes alertJitter{0%,94%,100%{filter:none}95%{filter:hue-rotate(25deg) contrast(1.3);transform:translate(2px,-1px)}97%{filter:contrast(1.5);transform:translate(-2px,1px)}}
 @keyframes glitch{0%,90%,100%{transform:none;text-shadow:none}92%{transform:translateX(2px);text-shadow:-3px 0 #70e6df,3px 0 #e34e45}95%{transform:translateX(-2px);text-shadow:3px 0 #70e6df,-3px 0 #e34e45}}
@@ -46,33 +65,39 @@ button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 <main>
 <div class="eyebrow">NEW CINEMATIC GIFT CONCEPT · PREVIEW ONLY</div>
 <h1>THE LAST BROADCAST</h1>
-<p class="intro">A hijacked emergency transmission takes over the stream. The picture tears, the warning signal swells, and a message appears from somewhere that should not be broadcasting.</p>
+<p class="intro">A live emergency feed is interrupted by an unknown signal. First the carrier tone breaks, then a security-camera image appears—with something moving at the far end of the corridor.</p>
 <section class="screen" id="screen" aria-label="Emergency broadcast takeover visual preview">
 <div class="topbar"><span>EMERGENCY NETWORK · CHANNEL 07</span><span class="rec"><i class="dot"></i>LIVE SIGNAL</span></div>
-<div class="monitor"><div class="static"></div><div class="alert">
+<div class="monitor" id="monitor" data-phase="idle"><div class="feed"><div class="corridor"></div><div class="figure"></div></div><div class="static"></div><div class="scanbar"></div><div class="interference"></div><div class="alert">
 <div class="alert-kicker">UNAUTHORIZED TRANSMISSION</div>
 <h2><span class="glitch">THIS IS NOT A TEST</span></h2>
 <p>Remain calm. Do not attempt to restore the signal. If you can hear this message, the broadcast has already found you.</p>
 <div class="signal">▰ SIGNAL OVERRIDE · ORIGIN UNKNOWN ▰</div>
 </div></div>
-<div class="bottomline"><span>TX: 00:00:00 · SOURCE UNVERIFIED</span><span>DO NOT ANSWER THE SIGNAL</span></div>
+<div class="bottomline"><span>TX: 00:00:00 · CAMERA 07</span><span>SUBJECT DETECTED · NO RESPONSE</span></div>
 </section>
 <div class="controls"><button class="primary" id="start">HIJACK THE BROADCAST</button><button id="stop">STOP EFFECT + SOUND</button><button id="reset">RESET SCREEN</button></div>
 <div class="status" id="status" role="status" aria-live="polite">STANDBY · SOUND OFF UNTIL YOU ACTIVATE THE PREVIEW</div>
-<p class="note">Isolated TikNation Next preview. It does not spend coins or publish a gift to the live catalog. Sound is generated in-browser after you tap the button; no external audio file is required. This preview is not yet connected to the live gift engine.</p>
+<p class="note">Isolated TikNation Next preview. It does not spend coins or publish a gift to the live catalog. Sound is generated in-browser after you tap the button; no external audio file is required. This remains an isolated preview and is not yet connected to the live gift engine.</p>
 </main>
 <script>
-const screenEl=document.getElementById('screen'),statusEl=document.getElementById('status');let ctx=null,nodes=[],stopTimer=null;
-function stopAudio(){if(stopTimer)clearTimeout(stopTimer);stopTimer=null;nodes.forEach(n=>{try{n.stop?.()}catch(e){}try{n.disconnect?.()}catch(e){}});nodes=[];if(ctx){ctx.close().catch(()=>{});ctx=null}}
-function tone(freq,start,duration,type,volume,slideTo){const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,start);if(slideTo)o.frequency.exponentialRampToValueAtTime(slideTo,start+duration);g.gain.setValueAtTime(.0001,start);g.gain.exponentialRampToValueAtTime(volume,start+.025);g.gain.setValueAtTime(volume,start+duration*.72);g.gain.exponentialRampToValueAtTime(.0001,start+duration);o.connect(g).connect(ctx.destination);o.start(start);o.stop(start+duration+.02);nodes.push(o,g)}
-async function playBroadcast(){stopAudio();const AC=window.AudioContext||window.webkitAudioContext;if(!AC){statusEl.textContent='AUDIO NOT SUPPORTED IN THIS BROWSER';return}ctx=new AC();await ctx.resume();const now=ctx.currentTime;
-const len=Math.floor(ctx.sampleRate*2.5),buf=ctx.createBuffer(1,len,ctx.sampleRate),data=buf.getChannelData(0);let prev=0;for(let i=0;i<len;i++){const w=Math.random()*2-1;prev=prev*.72+w*.28;data[i]=w*.72+prev*.28}
-const noise=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),ng=ctx.createGain();noise.buffer=buf;noise.loop=true;filter.type='bandpass';filter.frequency.setValueAtTime(1700,now);filter.frequency.exponentialRampToValueAtTime(360,now+5);filter.Q.value=.72;ng.gain.setValueAtTime(.0001,now);ng.gain.exponentialRampToValueAtTime(.24,now+.25);ng.gain.setValueAtTime(.18,now+3.6);ng.gain.exponentialRampToValueAtTime(.0001,now+6.4);noise.connect(filter).connect(ng).connect(ctx.destination);noise.start(now);noise.stop(now+6.5);nodes.push(noise,filter,ng);
-tone(880,now+.15,.85,'sine',.11,620);tone(880,now+1.25,.85,'sine',.11,620);tone(740,now+2.35,1.15,'sine',.12,520);
-const sub=ctx.createOscillator(),sg=ctx.createGain(),sf=ctx.createBiquadFilter();sub.type='sawtooth';sub.frequency.setValueAtTime(62,now);sub.frequency.exponentialRampToValueAtTime(29,now+6);sf.type='lowpass';sf.frequency.value=170;sg.gain.setValueAtTime(.0001,now);sg.gain.exponentialRampToValueAtTime(.15,now+.7);sg.gain.exponentialRampToValueAtTime(.0001,now+6.5);sub.connect(sf).connect(sg).connect(ctx.destination);sub.start(now);sub.stop(now+6.55);nodes.push(sub,sg,sf);
-statusEl.textContent='SIGNAL HIJACKED · WARNING TONE + RADIO STATIC PLAYING';stopTimer=setTimeout(()=>{statusEl.textContent='TRANSMISSION ENDED · SIGNAL LOST';stopAudio()},6800)}
-document.getElementById('start').addEventListener('click',async()=>{screenEl.classList.remove('active');void screenEl.offsetWidth;screenEl.classList.add('active');statusEl.textContent='CONNECTING TO UNKNOWN SOURCE…';try{await playBroadcast()}catch(e){statusEl.textContent='PREVIEW ERROR · '+e.message}});
-document.getElementById('stop').addEventListener('click',()=>{stopAudio();screenEl.classList.remove('active');statusEl.textContent='EFFECT AND SOUND STOPPED'});
-document.getElementById('reset').addEventListener('click',()=>{stopAudio();screenEl.classList.remove('active');statusEl.textContent='STANDBY · SOUND OFF UNTIL YOU ACTIVATE THE PREVIEW'});
-</script>
+const screenEl=document.getElementById('screen'),monitor=document.getElementById('monitor'),statusEl=document.getElementById('status');let ctx=null,nodes=[],timers=[];
+function clearTimers(){timers.forEach(clearTimeout);timers=[]}
+function stopAudio(){nodes.forEach(n=>{try{n.stop?.()}catch(e){}try{n.disconnect?.()}catch(e){}});nodes=[];if(ctx){ctx.close().catch(()=>{});ctx=null}}
+function oscillator(freq,when,duration,shape,peak,endFreq,filterFreq){const o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type=shape;o.frequency.setValueAtTime(freq,when);if(endFreq)o.frequency.exponentialRampToValueAtTime(endFreq,when+duration);f.type='lowpass';f.frequency.value=filterFreq||2200;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(peak,when+.08);g.gain.setValueAtTime(peak,when+duration*.68);g.gain.exponentialRampToValueAtTime(.0001,when+duration);o.connect(f).connect(g).connect(ctx.destination);o.start(when);o.stop(when+duration+.03);nodes.push(o,f,g)}
+function noiseBurst(when,duration,peak,center){const size=Math.ceil(ctx.sampleRate*duration),buf=ctx.createBuffer(1,size,ctx.sampleRate),d=buf.getChannelData(0);let last=0;for(let i=0;i<size;i++){const w=Math.random()*2-1;last=last*.86+w*.14;d[i]=w*.35+last*.65}const s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=buf;f.type='bandpass';f.frequency.value=center;f.Q.value=.7;g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(peak,when+.035);g.gain.exponentialRampToValueAtTime(.0001,when+duration);s.connect(f).connect(g).connect(ctx.destination);s.start(when);s.stop(when+duration+.02);nodes.push(s,f,g)}
+async function playBroadcast(){stopAudio();const AC=window.AudioContext||window.webkitAudioContext;if(!AC){statusEl.textContent='AUDIO NOT SUPPORTED IN THIS BROWSER';return}ctx=new AC();await ctx.resume();const t=ctx.currentTime;
+const master=ctx.createDynamicsCompressor();master.threshold.value=-24;master.knee.value=20;master.ratio.value=5;master.attack.value=.006;master.release.value=.22;master.connect(ctx.destination);
+// Narrow-band radio carrier, warning pulses, low transformer hum and short bursts of receiver static.
+const hum=ctx.createOscillator(),hg=ctx.createGain(),hf=ctx.createBiquadFilter();hum.type='sawtooth';hum.frequency.setValueAtTime(54,t);hum.frequency.linearRampToValueAtTime(48,t+6);hf.type='lowpass';hf.frequency.value=135;hg.gain.setValueAtTime(.0001,t);hg.gain.linearRampToValueAtTime(.12,t+.7);hg.gain.setValueAtTime(.09,t+5.5);hg.gain.linearRampToValueAtTime(.0001,t+7.5);hum.connect(hf).connect(hg).connect(master);hum.start(t);hum.stop(t+7.55);nodes.push(hum,hg,hf);
+[0,.52,1.04,2.05,2.57,3.09].forEach((d,i)=>oscillator(i<3?853:960,t+d,.38,'sine',.12,i<3?853:740,1800));
+noiseBurst(t+.08,1.8,.13,1450);noiseBurst(t+1.65,.55,.22,2400);noiseBurst(t+3.25,1.4,.16,850);noiseBurst(t+5.2,.7,.2,3200);
+oscillator(72,t+3.5,3.2,'triangle',.13,31,110);
+oscillator(430,t+4.8,1.4,'sawtooth',.035,110,600);
+statusEl.textContent='CARRIER BREAK · EMERGENCY TONE · SECURITY FEED OVERRIDE';
+}
+function phase(name,label){monitor.dataset.phase=name;statusEl.textContent=label}
+document.getElementById('start').addEventListener('click',async()=>{clearTimers();stopAudio();screenEl.classList.remove('active');void screenEl.offsetWidth;screenEl.classList.add('active');phase('intrusion','SIGNAL LOST · REACQUIRING CAMERA 07…');try{await playBroadcast();timers.push(setTimeout(()=>phase('warning','EMERGENCY ALERT · UNKNOWN SUBJECT IN FRAME'),1900));timers.push(setTimeout(()=>phase('reveal','CAMERA 07 · SUBJECT HAS MOVED CLOSER'),4700));timers.push(setTimeout(()=>{phase('reveal','TRANSMISSION TERMINATED · SOURCE STILL ACTIVE');stopAudio()},7900))}catch(e){statusEl.textContent='PREVIEW ERROR · '+e.message}});
+document.getElementById('stop').addEventListener('click',()=>{clearTimers();stopAudio();screenEl.classList.remove('active');phase('idle','EFFECT AND SOUND STOPPED')});
+document.getElementById('reset').addEventListener('click',()=>{clearTimers();stopAudio();screenEl.classList.remove('active');phase('idle','STANDBY · SOUND OFF UNTIL YOU ACTIVATE THE PREVIEW')});</script>
 </body></html>
