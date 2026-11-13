@@ -392,16 +392,16 @@ function renderVoidRiftGift(gift,opts,overlay){
   if(!alive||!overlay.isConnected)return;
   const t=(now-start)/1000,dt=Math.min(.04,(now-last)/1000);last=now;
   ctx.clearRect(0,0,w,h);
-  const cx=w*.5,cy=h*.46,open=Math.min(1,t/.95),collapse=Math.max(0,Math.min(1,(t-4.5)/1.05)),burst=Math.max(0,Math.min(1,(t-5.25)/.9));
-  const pulse=1+Math.sin(t*2.1)*.025,rx=Math.min(w*.235,185)*pulse*(1-collapse*.72),ry=Math.min(h*.34,265)*pulse*(1-collapse*.72);
+  const cx=w*.5,cy=h*.46,open=Math.min(1,t/.95),suction=Math.min(1,t/1.1);
+  const pulse=1+Math.sin(t*2.1)*.025,rx=Math.min(w*.235,185)*pulse,ry=Math.min(h*.34,265)*pulse;
   const bg=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(w,h)*.78);bg.addColorStop(0,"rgba(35,22,76,.38)");bg.addColorStop(.48,"rgba(8,9,24,.5)");bg.addColorStop(1,"#010207");ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
-  // Dust and fractured debris spiral toward the tear, then fly outward with the release.
+  // Dust and fractured debris accelerate inward and vanish into the vacuum.
   for(const p of particles){
-   p.a+=dt*(.38+p.speed*.38);p.r=Math.max(8,p.r-dt*(25+p.speed*48)*(1-collapse)+dt*burst*620);
+   p.a+=dt*(.62+p.speed*.58);p.r-=dt*(38+p.speed*78)*(.35+suction*1.9);
    const x=cx+Math.cos(p.a)*p.r,y=cy+Math.sin(p.a)*p.r*.78;
    ctx.save();ctx.translate(x,y);ctx.rotate(p.a+t);ctx.fillStyle=p.tone>.72?"rgba(198,174,255,.9)":"rgba(116,151,210,.7)";ctx.shadowColor="#a78bff";ctx.shadowBlur=12;
    ctx.fillRect(-p.size*1.7,-p.size*.55,p.size*3.4,p.size*1.1);ctx.restore();
-   if(p.r<10||p.r>Math.max(w,h)*.9){p.a=rand(0,Math.PI*2);p.r=rand(Math.max(w,h)*.42,Math.max(w,h)*.72);}
+   if(p.r<10){p.a=rand(0,Math.PI*2);p.r=rand(Math.max(w,h)*.48,Math.max(w,h)*.82);}
   }
   // Luminous fracture rim with jagged edges and a deep, lightless center.
   ctx.save();ctx.translate(cx,cy);ctx.rotate(Math.sin(t*.31)*.035);
@@ -414,9 +414,7 @@ function renderVoidRiftGift(gift,opts,overlay){
   // Fine fracture filaments flicker around the perimeter.
   ctx.globalCompositeOperation="lighter";for(let i=0;i<22;i++){const a=i/22*Math.PI*2+Math.sin(t+i)*.025;const x=Math.cos(a)*rx*.92,y=Math.sin(a)*ry*.92;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+Math.cos(a+.45)*rand(12,38),y+Math.sin(a+.45)*rand(12,38));ctx.strokeStyle="rgba(185,157,255,.48)";ctx.lineWidth=1.2;ctx.stroke();}
   ctx.restore();
-  // Collapse then a wide, fast shockwave.
-  if(t>4.5){ctx.save();ctx.globalCompositeOperation="lighter";ctx.beginPath();ctx.ellipse(cx,cy,rx+burst*w*.72,ry+burst*h*.52,0,0,Math.PI*2);ctx.strokeStyle="rgba(198,179,255,"+(1-burst)*.85+")";ctx.lineWidth=12*(1-burst)+1;ctx.shadowColor="#a78bff";ctx.shadowBlur=34;ctx.stroke();ctx.restore();}
-  if(t>5.2&&t<6.3){ctx.fillStyle="rgba(194,174,255,"+Math.max(0,.18*(1-burst))+")";ctx.fillRect(0,0,w,h);}
+  // No outward shockwave: the rift keeps pulling loose matter inward.
   raf=requestAnimationFrame(frame);
  }
  raf=requestAnimationFrame(frame);
