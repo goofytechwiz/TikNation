@@ -1,44 +1,52 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090a0d"><title>THE END IS NEAR — TikNation Gift Preview</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#08090b"><title>THE END IS NEAR — TikNation Gift Preview</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08090c;color:#fff;font-family:Arial,sans-serif}
-#scene{position:fixed;inset:0;background:#090a0d;overflow:hidden}
-#backdrop{position:absolute;inset:-3%;background-image:linear-gradient(180deg,#05070b66 0%,#08090b10 36%,#09090dcc 100%),url("https://cdn.pixabay.com/photo/2017/09/06/13/56/armageddon-2721568_1280.jpg");background-size:cover;background-position:center 42%;transform:scale(1.03);transition:transform 7s ease,filter 2s}
-#haze{position:absolute;inset:0;background:linear-gradient(180deg,#0b1019aa 0%,transparent 34%,#090a0dcc 100%),radial-gradient(ellipse at 50% 45%,transparent 10%,#05060988 100%);mix-blend-mode:multiply}
-#distantGlow{position:absolute;inset:0;background:radial-gradient(ellipse at 51% 52%,#ff7a351c 0 10%,transparent 43%);opacity:.6}
-#shock{position:absolute;width:8vmin;height:8vmin;left:50%;top:55%;transform:translate(-50%,-50%) scale(.1);border:2px solid #ffd6a1;border-radius:50%;opacity:0;box-shadow:0 0 35px #ff8c46, inset 0 0 25px #ff8c46}
-#flash{position:absolute;inset:0;background:#fff1d9;opacity:0;pointer-events:none}
-#ash{position:absolute;inset:-20%;pointer-events:none;background-image:radial-gradient(circle,#f7c18b 0 1px,transparent 2px),radial-gradient(circle,#d6d0c7 0 1px,transparent 2px),radial-gradient(circle,#ff8a4a 0 1px,transparent 2px);background-size:71px 93px,113px 127px,173px 151px;background-position:0 0,31px 22px,80px 50px;opacity:.42;animation:fall 12s linear infinite}
-@keyframes fall{to{background-position:0 420px,31px 520px,80px 360px}}
-#vignette{position:absolute;inset:0;box-shadow:inset 0 0 160px 35px #000}
-#scene.impact #backdrop{transform:scale(1.13);filter:brightness(1.4) sepia(.25)}
-#scene.impact #flash{animation:flash .7s ease-out}
-#scene.impact #shock{animation:shock 1.3s ease-out}
-#scene.aftermath #backdrop{filter:brightness(.58) saturate(.7)}
-#scene.aftermath #distantGlow{opacity:1}
-@keyframes flash{0%{opacity:.95}18%{opacity:.55}100%{opacity:0}}
-@keyframes shock{0%{transform:translate(-50%,-50%) scale(.15);opacity:1}100%{transform:translate(-50%,-50%) scale(13);opacity:0}}
-header{position:fixed;z-index:5;top:0;left:0;right:0;padding:16px 19px;display:flex;justify-content:space-between;align-items:center;font-size:9px;font-weight:900;letter-spacing:.2em;color:#e8e1d8;text-shadow:0 2px 10px #000}
-.tag{padding:8px 12px;border:1px solid #ffffff55;background:#090b10aa;border-radius:2px}
-.panel{position:fixed;z-index:5;left:50%;bottom:7%;transform:translateX(-50%);width:min(94%,650px);text-align:center;text-shadow:0 2px 20px #000}
-.kicker{font-size:9px;font-weight:900;letter-spacing:.4em;color:#ffb27b}
-h1{font-size:clamp(43px,10vw,90px);letter-spacing:-.06em;line-height:.86;margin:12px 0;font-weight:1000}
-.sub{font-size:9px;letter-spacing:.22em;font-weight:800;color:#e5ddd5}
-.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:19px}
-button{border:1px solid #d99a6c;border-radius:2px;padding:14px 21px;background:linear-gradient(135deg,#793c2c,#251b1a);color:#fff;font-size:10px;font-weight:900;letter-spacing:.14em;cursor:pointer;box-shadow:0 8px 28px #000b}
-button.alt{background:#101218;border-color:#ffffff55}button:disabled{opacity:.5}
-small{display:block;margin-top:10px;font-size:9px;letter-spacing:.08em;color:#c8bdb3}
-#event{position:fixed;z-index:4;top:43%;left:50%;transform:translate(-50%,-50%);width:100%;text-align:center;font-size:clamp(23px,6vw,60px);font-weight:1000;letter-spacing:.12em;color:#fff0df;text-shadow:0 0 24px #ff8c52;opacity:0;transition:opacity .7s}
-#scene.aftermath #event{opacity:1}
-@media(max-width:600px){#backdrop{background-position:49% center}header{padding:12px;font-size:8px}.panel{bottom:7%}.kicker{font-size:8px}}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08090b;color:#f5eee8;font-family:Arial,sans-serif}
+#stage{position:fixed;inset:0;overflow:hidden;background:#090b0e}
+#city{position:absolute;inset:-4%;background-image:linear-gradient(180deg,#05070a55 0%,transparent 25%,#07090dcc 100%),url("https://cdn.pixabay.com/photo/2017/06/30/19/52/apocalypse-2459465_1280.jpg");background-position:center center;background-size:cover;transform:scale(1.04);filter:contrast(1.08) saturate(.78);transition:transform 7s ease,filter 2s}
+#smoke{position:absolute;inset:-20%;background:radial-gradient(ellipse at 15% 42%,#c4c5c222 0 9%,transparent 29%),radial-gradient(ellipse at 65% 25%,#c5c5c51e 0 12%,transparent 34%),radial-gradient(ellipse at 88% 56%,#777b8428 0 10%,transparent 30%);filter:blur(22px);animation:smoke 17s ease-in-out infinite alternate;pointer-events:none}
+@keyframes smoke{to{transform:translate(-4%,3%) scale(1.1)}}
+#embers{position:absolute;inset:-15%;pointer-events:none;background-image:radial-gradient(circle,#ffc38b 0 1px,transparent 2px),radial-gradient(circle,#e56a3c 0 1px,transparent 2px),radial-gradient(circle,#e3d9c9 0 1px,transparent 2px);background-size:89px 103px,137px 167px,211px 187px;background-position:0 0,40px 60px,90px 30px;opacity:.42;animation:fall 11s linear infinite}
+@keyframes fall{to{background-position:0 430px,40px 600px,90px 350px}}
+#redwash{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 70%,#ff6a2c55,transparent 60%);opacity:0;pointer-events:none}
+#lightning{position:absolute;inset:0;background:#e8efff;opacity:0;pointer-events:none}
+#vignette{position:absolute;inset:0;box-shadow:inset 0 0 150px 28px #000b;pointer-events:none}
+#stage.shaking #city{animation:quake .14s linear infinite}
+@keyframes quake{0%{transform:scale(1.12) translate(0,0)}25%{transform:scale(1.12) translate(5px,-3px)}50%{transform:scale(1.12) translate(-4px,4px)}75%{transform:scale(1.12) translate(3px,2px)}100%{transform:scale(1.12) translate(-2px,-3px)}}
+#stage.flash #lightning{animation:flash .75s ease-out}
+#stage.flash #redwash{animation:glow 2.2s ease-out}
+@keyframes flash{0%{opacity:.95}12%{opacity:.2}24%{opacity:.75}100%{opacity:0}}
+@keyframes glow{0%{opacity:0}20%{opacity:1}100%{opacity:.18}}
+#stage.after #city{transform:scale(1.18);filter:brightness(.58) contrast(1.2) saturate(.55)}
+#stage.after #redwash{opacity:.5}
+#blackout{position:absolute;inset:0;background:#020305;opacity:0;pointer-events:none;transition:opacity .7s}
+#stage.blackout #blackout{opacity:1}
+header{position:fixed;z-index:8;top:0;left:0;right:0;padding:15px 18px;display:flex;justify-content:space-between;align-items:center;font-size:9px;font-weight:900;letter-spacing:.2em;color:#eee5dc;text-shadow:0 2px 12px #000}
+.pill{border:1px solid #ffffff55;background:#080a0dbb;padding:8px 11px;border-radius:2px}
+#count{position:fixed;z-index:7;left:50%;top:38%;transform:translate(-50%,-50%);font-size:clamp(72px,20vw,170px);font-weight:1000;letter-spacing:-.08em;color:#fff;text-shadow:0 0 35px #f78d56;opacity:0}
+#count.show{opacity:1}
+#message{position:fixed;z-index:7;left:50%;top:40%;transform:translate(-50%,-50%);width:100%;padding:0 10px;text-align:center;font-size:clamp(25px,7vw,70px);font-weight:1000;letter-spacing:.06em;line-height:.95;color:#fff1e5;text-shadow:0 3px 30px #000,0 0 24px #e65d36;opacity:0;transition:opacity .7s}
+#stage.after #message{opacity:1}
+.panel{position:fixed;z-index:8;left:50%;bottom:6%;transform:translateX(-50%);width:min(94%,650px);text-align:center;text-shadow:0 2px 18px #000}
+.kicker{font-size:9px;font-weight:900;letter-spacing:.4em;color:#f3a579}
+h1{font-size:clamp(42px,10vw,88px);line-height:.86;letter-spacing:-.055em;margin:11px 0;font-weight:1000}
+.sub{font-size:9px;letter-spacing:.2em;font-weight:900;color:#e8ddd4}
+.actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:17px}
+button{border:1px solid #df966c;border-radius:2px;padding:14px 20px;background:linear-gradient(135deg,#7d3929,#281719);color:#fff;font-size:10px;font-weight:900;letter-spacing:.13em;cursor:pointer;box-shadow:0 8px 30px #000b}
+button.alt{background:#101319;border-color:#ffffff66}button:disabled{opacity:.5}
+small{display:block;margin-top:9px;font-size:9px;letter-spacing:.07em;color:#d2c4b8}
+@media(max-width:600px){#city{background-position:51% center}header{padding:12px;font-size:8px}.panel{bottom:6%}.kicker{font-size:8px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style></head><body>
-<div id="scene"><div id="backdrop"></div><div id="haze"></div><div id="distantGlow"></div><div id="shock"></div><div id="ash"></div><div id="flash"></div><div id="vignette"></div><div id="event">THERE IS NO TOMORROW</div></div>
-<header><span>TIKNATION / GIFT PREVIEW</span><span class="tag" id="status">SILENCE BEFORE</span></header>
-<section class="panel"><div class="kicker">THE SKY HAS TURNED AGAINST US</div><h1>THE END<br>IS NEAR</h1><div class="sub">A FINAL-DAY CINEMATIC EVENT</div><div class="actions"><button id="start">TRIGGER THE APOCALYPSE</button><button class="alt" id="test">TEST THE IMPACT</button></div><small>Tap to begin · Audio starts only after interaction · Preview only</small></section>
+<div id="stage"><div id="city"></div><div id="smoke"></div><div id="embers"></div><div id="redwash"></div><div id="lightning"></div><div id="vignette"></div><div id="blackout"></div></div>
+<header><span>TIKNATION / GIFT PREVIEW</span><span class="pill" id="status">EVACUATION ALERT</span></header>
+<div id="count"></div><div id="message">THERE IS NO<br>SAFE PLACE</div>
+<section class="panel"><div class="kicker">THE FINAL WARNING</div><h1>THE END<br>IS NEAR</h1><div class="sub">WHEN THE LAST DAY ARRIVES</div><div class="actions"><button id="start">START THE FINAL HOUR</button><button class="alt" id="sound">TEST THE SIREN</button></div><small>Tap to begin · Sound only starts after tapping · Preview only</small></section>
 <script>
-(()=>{const scene=document.getElementById('scene'),status=document.getElementById('status'),start=document.getElementById('start');let ac=null,busy=false;
-function boom(){try{if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();const t=ac.currentTime;const len=2.8,buf=ac.createBuffer(1,ac.sampleRate*len,ac.sampleRate),data=buf.getChannelData(0);for(let i=0;i<data.length;i++){const x=i/data.length;data[i]=(Math.random()*2-1)*Math.pow(1-x,2.8)}const noise=ac.createBufferSource(),filter=ac.createBiquadFilter(),gain=ac.createGain();noise.buffer=buf;filter.type='lowpass';filter.frequency.setValueAtTime(240,t);filter.frequency.exponentialRampToValueAtTime(38,t+2.5);gain.gain.setValueAtTime(.001,t);gain.gain.exponentialRampToValueAtTime(.85,t+.035);gain.gain.exponentialRampToValueAtTime(.001,t+2.7);noise.connect(filter).connect(gain).connect(ac.destination);noise.start(t);noise.stop(t+2.8);const bass=ac.createOscillator(),bg=ac.createGain();bass.type='sine';bass.frequency.setValueAtTime(52,t);bass.frequency.exponentialRampToValueAtTime(27,t+2.4);bg.gain.setValueAtTime(.001,t);bg.gain.exponentialRampToValueAtTime(.7,t+.06);bg.gain.exponentialRampToValueAtTime(.001,t+2.5);bass.connect(bg).connect(ac.destination);bass.start(t);bass.stop(t+2.6);const crack=ac.createOscillator(),cg=ac.createGain();crack.type='sawtooth';crack.frequency.setValueAtTime(900,t);crack.frequency.exponentialRampToValueAtTime(80,t+.22);cg.gain.setValueAtTime(.001,t);cg.gain.exponentialRampToValueAtTime(.16,t+.012);cg.gain.exponentialRampToValueAtTime(.001,t+.28);crack.connect(cg).connect(ac.destination);crack.start(t);crack.stop(t+.3)}catch(e){status.textContent='AUDIO UNAVAILABLE'}}
-function play(){if(busy)return;busy=true;start.disabled=true;scene.classList.remove('impact','aftermath');status.textContent='INCOMING';setTimeout(()=>{scene.classList.add('impact');boom();status.textContent='IMPACT'},650);setTimeout(()=>{scene.classList.add('aftermath');status.textContent='AFTERMATH'},2600);setTimeout(()=>{scene.classList.remove('impact','aftermath');status.textContent='SILENCE BEFORE';start.disabled=false;busy=false},7200)}
-start.addEventListener('click',play);document.getElementById('test').addEventListener('click',()=>{boom();status.textContent='IMPACT AUDIO TEST'})})();
+(()=>{const stage=document.getElementById('stage'),status=document.getElementById('status'),start=document.getElementById('start'),count=document.getElementById('count');let ctx=null,busy=false;
+function audio(){if(!ctx)ctx=new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();return ctx}
+function rumble(){try{const c=audio(),t=c.currentTime,dur=4;const b=c.createBuffer(1,c.sampleRate*dur,c.sampleRate),a=b.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=(Math.random()*2-1)*Math.pow(1-i/a.length,1.5);const n=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();n.buffer=b;f.type='lowpass';f.frequency.setValueAtTime(130,t);f.frequency.exponentialRampToValueAtTime(32,t+3.8);g.gain.setValueAtTime(.001,t);g.gain.exponentialRampToValueAtTime(.78,t+.15);g.gain.exponentialRampToValueAtTime(.001,t+3.9);n.connect(f).connect(g).connect(c.destination);n.start(t);n.stop(t+4);const o=c.createOscillator(),og=c.createGain();o.type='sawtooth';o.frequency.setValueAtTime(430,t);o.frequency.linearRampToValueAtTime(620,t+1.2);o.frequency.linearRampToValueAtTime(390,t+2.7);og.gain.setValueAtTime(.001,t);og.gain.linearRampToValueAtTime(.12,t+.2);og.gain.linearRampToValueAtTime(.001,t+3.1);o.connect(og).connect(c.destination);o.start(t);o.stop(t+3.2)}catch(e){status.textContent='AUDIO UNAVAILABLE'}}
+function run(){if(busy)return;busy=true;start.disabled=true;audio();stage.classList.remove('shaking','flash','after','blackout');let v=3;count.textContent=v;count.classList.add('show');status.textContent='FINAL WARNING';const tick=()=>{if(v>1){v--;count.textContent=v;setTimeout(tick,850)}else{count.classList.remove('show');status.textContent='IMPACT IMMINENT';setTimeout(()=>{stage.classList.add('shaking','flash');rumble();status.textContent='CITYWIDE IMPACT'},250)}};
+tick();setTimeout(()=>{stage.classList.remove('shaking');stage.classList.add('after');status.textContent='COMMUNICATIONS LOST'},3900);setTimeout(()=>{stage.classList.add('blackout');status.textContent='SIGNAL LOST'},5900);setTimeout(()=>{stage.classList.remove('blackout','flash','after');status.textContent='EVACUATION ALERT';start.disabled=false;busy=false},7600)}
+start.addEventListener('click',run);document.getElementById('sound').addEventListener('click',()=>{rumble();status.textContent='SIREN / IMPACT TEST'})})();
 </script></body></html>
