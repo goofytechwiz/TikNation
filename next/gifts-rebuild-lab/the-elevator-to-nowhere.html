@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Elevator to Nowhere — TikNation Gift Lab</title>
+<style>
+:root{color-scheme:dark;--red:#a51b18;--steel:#687078;--gold:#b99b69}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050608;color:#eee;font-family:Arial,Helvetica,sans-serif}
+body{display:grid;place-items:center;padding:18px;overflow-x:hidden}
+.lab{width:min(980px,100%)}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:0 0 12px;color:#aab0b5;font-size:11px;letter-spacing:.2em;text-transform:uppercase}.tag{border:1px solid #474b50;padding:7px 10px}
+.stage{height:min(68vh,590px);min-height:390px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 35%,#3b4146 0,#16191c 35%,#050607 78%);border:1px solid #33383d;perspective:1000px;isolation:isolate}
+.ceiling{position:absolute;inset:0 0 auto;height:18%;background:linear-gradient(#090b0d,#292d31 60%,#0b0d0f);clip-path:polygon(0 0,100% 0,83% 100%,17% 100%);border-bottom:2px solid #555}
+.floor{position:absolute;bottom:-2%;left:8%;width:84%;height:32%;background:repeating-linear-gradient(90deg,#25282a 0 2px,#34383b 3px 4px),linear-gradient(#1c2023,#08090a);transform:perspective(260px) rotateX(58deg);transform-origin:bottom;box-shadow:0 -20px 35px #000}
+.back{position:absolute;inset:13% 24% 19%;background:linear-gradient(90deg,#090b0c,#33383c 12%,#15191c 50%,#3a3f43 88%,#090b0c);border:5px solid #08090a;box-shadow:inset 0 0 40px #000,0 0 30px #000}
+.panel{position:absolute;right:12%;top:27%;width:8%;height:36%;background:linear-gradient(90deg,#090a0b,#3e4449,#0b0c0d);border:2px solid #111;box-shadow:0 0 12px #000}
+.panel:before{content:"";position:absolute;left:25%;top:12%;width:50%;height:20%;background:#160706;box-shadow:0 0 9px #d32b1e,inset 0 0 8px #f33}
+.panel:after{content:"";position:absolute;left:33%;top:47%;width:34%;height:34%;background:repeating-linear-gradient(#aaa 0 3px,#34383b 4px 9px);border-radius:3px}
+.doors{position:absolute;inset:13% 24% 19%;z-index:4;display:flex;overflow:hidden;transform:translateZ(20px);filter:drop-shadow(0 0 10px #000)}
+.door{width:50%;height:100%;background:repeating-linear-gradient(90deg,transparent 0 25px,#ffffff08 26px,#0004 28px),linear-gradient(90deg,#171b1e,#555c62 18%,#24292d 53%,#4a5055 83%,#171a1d);border:2px solid #08090a;box-shadow:inset 0 0 25px #000;transition:transform 2.2s cubic-bezier(.2,.75,.1,1)}
+.door.left{border-right:1px solid #08090a}.door.right{border-left:1px solid #08090a}
+.stage.open .door.left{transform:translateX(-98%)}.stage.open .door.right{transform:translateX(98%)}
+.seam{position:absolute;z-index:5;left:50%;top:13%;height:81%;width:2px;background:#08090a;box-shadow:0 0 9px #000}
+.darkness{position:absolute;inset:13% 24% 19%;z-index:2;background:radial-gradient(ellipse at 50% 80%,#211b18,#030405 60%);opacity:0;transition:opacity 2s}
+.stage.open .darkness{opacity:1}
+.distant{position:absolute;z-index:3;left:50%;top:27%;width:24%;height:65%;transform:translateX(-50%);opacity:0;transition:opacity 1.5s 1.1s;filter:drop-shadow(0 0 18px #000)}
+.stage.open .distant{opacity:1}
+.monster{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 16%,#151617 0 13%,transparent 14%),linear-gradient(90deg,transparent 15%,#08090a 16% 32%,transparent 33% 66%,#070809 67% 84%,transparent 85%),linear-gradient(#101214 0 24%,transparent 25%),linear-gradient(90deg,transparent 0 40%,#050607 41% 59%,transparent 60%);clip-path:polygon(38% 0,62% 0,69% 17%,82% 28%,78% 46%,100% 100%,0 100%,22% 46%,18% 28%,31% 17%);transform:scaleY(1.2)}
+.eyes{position:absolute;top:17%;left:42%;width:16%;height:3px;background:#b5261b;box-shadow:0 0 12px 4px #a20f0b;opacity:0;transition:opacity .2s}
+.stage.reveal .eyes{opacity:1}
+.fog{position:absolute;inset:40% -10% 0;z-index:6;pointer-events:none;background:radial-gradient(ellipse at 50% 80%,#b9c0c01a,transparent 65%);filter:blur(18px);animation:fog 8s ease-in-out infinite alternate}
+.scan{position:absolute;inset:0;z-index:8;pointer-events:none;background:repeating-linear-gradient(0deg,#fff0 0 3px,#fff1 4px);opacity:.18}
+.vignette{position:absolute;inset:0;z-index:9;pointer-events:none;box-shadow:inset 0 0 100px 35px #000}
+.flash{position:absolute;inset:0;background:#d7dce0;z-index:10;opacity:0;pointer-events:none}
+.stage.flash .flash{animation:flash .28s}
+.status{position:absolute;z-index:12;left:18px;top:16px;font:11px monospace;letter-spacing:.18em;color:#e1d6c7;text-shadow:0 1px 5px #000}.floorread{position:absolute;z-index:12;right:18px;top:16px;font:24px monospace;color:#e64b3c;text-shadow:0 0 12px #d22}
+.caption{position:absolute;z-index:12;bottom:18px;left:0;right:0;text-align:center;font-size:clamp(14px,2.5vw,21px);font-weight:700;letter-spacing:.22em;text-shadow:0 2px 12px #000;opacity:0;transition:opacity .3s}.caption.show{opacity:1}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:13px}.controls button{background:#171a1d;border:1px solid #555b60;color:#f1f1f1;padding:13px 18px;font-weight:700;letter-spacing:.12em;cursor:pointer}.controls button.primary{background:#8f1714;border-color:#c24b42}.controls button:disabled{opacity:.45;cursor:wait}
+.note{font-size:12px;color:#8f969c;line-height:1.5;margin-top:12px}.meter{height:2px;background:#25292d;margin-top:12px}.meter span{display:block;height:100%;width:0;background:#b22b22;transition:width .3s}
+@keyframes fog{to{transform:translateX(8%) translateY(-4%);opacity:.55}}@keyframes flash{0%,100%{opacity:0}20%{opacity:.75}}@keyframes shake{0%,100%{transform:translate(0)}20%{transform:translate(4px,-2px)}40%{transform:translate(-5px,3px)}60%{transform:translate(3px,2px)}80%{transform:translate(-2px,-3px)}}
+.stage.shake{animation:shake .28s linear 3}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body><main class="lab">
+<div class="top"><span>TikNation · Gift Rebuild Lab</span><span class="tag">Cinematic horror concept</span></div>
+<section class="stage" id="stage" aria-label="A cinematic elevator horror sequence">
+<div class="ceiling"></div><div class="back"></div><div class="panel"></div><div class="floor"></div>
+<div class="darkness"></div><div class="distant"><div class="monster"></div><div class="eyes"></div></div>
+<div class="doors" id="doors"><div class="door left"></div><div class="door right"></div></div><div class="seam"></div>
+<div class="fog"></div><div class="scan"></div><div class="vignette"></div><div class="flash"></div>
+<div class="status" id="status">ELEVATOR 09 · SERVICE MODE</div><div class="floorread" id="floorread">G</div>
+<div class="caption" id="caption">PLEASE STAND CLEAR</div>
+</section>
+<div class="meter"><span id="progress"></span></div>
+<div class="controls"><button class="primary" id="play">▶ PLAY EXPERIENCE</button><button id="sound">SOUND: ON</button><button id="reset">RESET</button></div>
+<p class="note">Preview only — not yet connected to the live TikNation gift catalog. Tap Play to enable audio. Browser-generated prototype sound; no recorded voice or commercial sound library is used.</p>
+</main>
+<script>
+(()=>{const $=id=>document.getElementById(id),stage=$('stage'),caption=$('caption'),status=$('status'),floorread=$('floorread'),progress=$('progress'),play=$('play'),sound=$('sound');let ctx=null,master=null,muted=false,busy=false,timers=[],oscillators=[];
+function wait(ms){return new Promise(r=>{const t=setTimeout(r,ms);timers.push(t)})}
+function audio(){if(!ctx){ctx=new(window.AudioContext||window.webkitAudioContext)();master=ctx.createGain();master.gain.value=muted?0:.72;master.connect(ctx.destination)}if(ctx.state==='suspended')ctx.resume();return ctx}
+function tone(freq,dur,type='sine',gain=.08,slide=0){const c=audio(),o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(freq,c.currentTime);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(20,freq+slide),c.currentTime+dur);g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(gain,c.currentTime+.04);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+dur);o.connect(g);g.connect(master);o.start();o.stop(c.currentTime+dur+.03);oscillators.push(o)}
+function noise(dur,gain=.08,filter=500){const c=audio(),n=Math.floor(c.sampleRate*dur),b=c.createBuffer(1,n,c.sampleRate),a=b.getChannelData(0);for(let i=0;i<n;i++)a[i]=(Math.random()*2-1)*(.7+Math.random()*.3);const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=b;f.type='lowpass';f.frequency.value=filter;g.gain.setValueAtTime(gain,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+dur);s.connect(f);f.connect(g);g.connect(master);s.start()}
+function rumble(dur=3){tone(48,dur,'sawtooth',.12,-8);tone(61,dur,'triangle',.07,-18);noise(dur,.035,180)}
+function bell(){tone(880,.55,'sine',.12,-150);tone(1320,.35,'sine',.035,-300)}
+function alarm(){for(let i=0;i<4;i++){setTimeout(()=>{tone(740,.32,'square',.055,-90);tone(520,.32,'square',.045,80)},i*470)}}
+function captionText(t){caption.textContent=t;caption.classList.add('show')}function hideCaption(){caption.classList.remove('show')}
+function reset(){timers.forEach(clearTimeout);timers=[];stage.className='stage';caption.className='caption';status.textContent='ELEVATOR 09 · SERVICE MODE';floorread.textContent='G';progress.style.width='0%';play.disabled=false;busy=false}
+async function run(){if(busy)return;busy=true;play.disabled=true;reset();busy=true;play.disabled=true;try{audio();status.textContent='PASSENGER DETECTED';captionText('PLEASE ENTER');bell();await wait(1500);stage.classList.add('open');captionText('DESTINATION: —');await wait(2300);stage.classList.remove('open');hideCaption();tone(95,1.1,'metal',.1,-45);await wait(1300);status.textContent='DESCENDING';captionText('GOING DOWN');rumble(5);for(let i=0;i<5;i++){await wait(800);floorread.textContent='-'+(i+1);progress.style.width=((i+1)*13)+'%';noise(.18,.04,1400);if(i===2){stage.classList.add('shake');alarm()} }await wait(500);stage.classList.remove('shake');tone(32,1.5,'sawtooth',.2,-10);noise(.8,.16,230);stage.classList.add('flash');await wait(300);stage.classList.remove('flash');status.textContent='BELOW BASEMENT LEVEL';floorread.textContent='?';captionText('NO SERVICE BEYOND THIS POINT');await wait(2400);captionText('DO NOT EXIT');stage.classList.add('open');await wait(2600);stage.classList.add('reveal');tone(38,2,'sawtooth',.18,-15);noise(1.2,.12,900);await wait(1600);captionText('RUN.');stage.classList.add('shake');alarm();await wait(900);stage.classList.add('flash');noise(.5,.2,2400);await wait(450);stage.classList.remove('flash');stage.classList.remove('shake');stage.classList.remove('open');stage.classList.remove('reveal');status.textContent='SIGNAL LOST';floorread.textContent='—';captionText('CONNECTION TERMINATED');progress.style.width='100%';await wait(2200);play.disabled=false;busy=false}catch(e){play.disabled=false;busy=false}}
+play.addEventListener('click',run);$('reset').addEventListener('click',()=>{reset();if(ctx){master.gain.setTargetAtTime(muted?0:.72,ctx.currentTime,.03)}});sound.addEventListener('click',()=>{muted=!muted;sound.textContent='SOUND: '+(muted?'OFF':'ON');if(ctx)master.gain.setTargetAtTime(muted?0:.72,ctx.currentTime,.03)});reset()})();
+</script></body></html>
