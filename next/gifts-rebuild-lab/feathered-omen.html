@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 19</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 20</title>
 <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js"}}</script>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02070d;color:#edf4f5;font-family:Arial,sans-serif}
@@ -7,60 +7,35 @@
 #scene{position:absolute;inset:0;width:100%;height:100%;z-index:1;touch-action:pan-y}
 .brand{position:absolute;top:6%;width:100%;text-align:center;z-index:3;letter-spacing:.32em;font-size:10px;color:#d0dcddaa;pointer-events:none}
 .brand b{display:block;margin-top:12px;font-size:clamp(25px,6vw,55px);letter-spacing:.14em;color:#f1f4f2;text-shadow:0 0 28px #d6e4e455}
-.status{position:absolute;bottom:calc(max(28px,env(safe-area-inset-bottom)) + 70px);width:100%;text-align:center;z-index:3;color:#c5d0d0b0;font-size:10px;letter-spacing:.18em;pointer-events:none}
-.controls{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));width:100%;display:flex;justify-content:center;gap:12px;z-index:4;padding:0 12px}
-button{min-width:145px;padding:15px 18px;border:1px solid #b6c7c77a;background:#101a20;color:#eef3f2;font-weight:bold;letter-spacing:.14em;font-size:10px;border-radius:2px;cursor:pointer}
+.status{position:absolute;bottom:calc(max(28px,env(safe-area-inset-bottom)) + 75px);width:100%;text-align:center;z-index:5;color:#c5d0d0;font-size:11px;letter-spacing:.14em;pointer-events:none}
+.controls{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));width:100%;display:flex;justify-content:center;gap:12px;z-index:10;padding:0 12px}
+button{position:relative;z-index:11;min-width:145px;min-height:52px;padding:15px 18px;border:1px solid #b6c7c7;background:#101a20;color:#eef3f2;font-weight:bold;letter-spacing:.14em;font-size:10px;border-radius:3px;cursor:pointer;touch-action:manipulation;pointer-events:auto}
 button.primary{background:#d9e4e2;color:#101619;border-color:#d9e4e2}
 #flash{position:absolute;inset:0;z-index:2;background:#e4f1f5;opacity:0;pointer-events:none}
 #flash.bolt{animation:bolt .45s ease-out}
 @keyframes bolt{0%,100%{opacity:0}12%{opacity:.5}30%{opacity:.04}52%{opacity:.28}70%{opacity:0}}
-.feather{position:absolute;z-index:2;width:5px;height:34px;border-radius:100% 0 100% 0;background:linear-gradient(90deg,#070b13,#718ba8,#111a29);opacity:0;pointer-events:none}
+.feather{position:absolute;z-index:2;width:5px;height:34px;border-radius:100% 0 100% 0;background:linear-gradient(90deg,#070b13,#a9c6df,#111a29);opacity:0;pointer-events:none}
 .feather.fly{animation:featherFly 2.4s ease-out both}
 @keyframes featherFly{0%{opacity:0;transform:translate(0,0) rotate(0)}15%{opacity:.9}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--spin))}}
-@media(prefers-reduced-motion:reduce){.feather.fly,#flash.bolt{animation:none}}
-</style></head><body><main id="stage"><canvas id="scene"></canvas>
-<div class="brand">TIKNATION · LEGENDARY GIFT<b>THE FEATHERED OMEN</b></div><div id="flash"></div>
-<div class="status" id="status">STARTING 3D RAVEN</div>
-<div class="controls"><button class="primary" id="trigger">SUMMON THE OMEN</button><button id="sound">SOUND: OFF</button></div></main>
+</style></head><body>
+<main id="stage"><canvas id="scene"></canvas><div class="brand">TIKNATION · LEGENDARY GIFT<b>THE FEATHERED OMEN</b></div><div id="flash"></div>
+<div class="status" id="status">RAVEN PREVIEW · CONTROLS READY</div>
+<div class="controls"><button class="primary" type="button" onclick="window.summonOmen()">SUMMON THE OMEN</button><button id="sound" type="button" onclick="window.toggleOmenSound()">SOUND: OFF</button></div></main>
 <script>
-(()=>{
-  const stage=document.getElementById('stage');
-  const status=document.getElementById('status');
-  const trigger=document.getElementById('trigger');
-  const sound=document.getElementById('sound');
-  const flash=document.getElementById('flash');
-  let audioOn=false, audioCtx=null;
-  function rumble(){
-    if(!audioOn)return;
-    try{
-      audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
-      if(audioCtx.state==='suspended') audioCtx.resume();
-      const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();
-      o.type='sawtooth';o.frequency.setValueAtTime(52,t);o.frequency.exponentialRampToValueAtTime(26,t+1.8);
-      f.type='lowpass';f.frequency.value=120;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.1,t+.12);g.gain.exponentialRampToValueAtTime(.0001,t+2);
-      o.connect(f).connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+2.1);
-    }catch(e){status.textContent='AUDIO UNAVAILABLE';}
-  }
-  function burst(){
-    for(let i=0;i<24;i++){
-      const e=document.createElement('i');e.className='feather fly';
-      e.style.left=(innerWidth*.5+(Math.random()-.5)*90)+'px';
-      e.style.top=(innerHeight*.5+(Math.random()-.5)*70)+'px';
-      e.style.setProperty('--dx',((Math.random()-.5)*innerWidth*.8)+'px');
-      e.style.setProperty('--dy',((Math.random()-.5)*innerHeight*.7)+'px');
-      e.style.setProperty('--spin',(Math.random()*800-400)+'deg');
-      stage.appendChild(e);setTimeout(()=>e.remove(),2800);
-    }
-  }
-  trigger.addEventListener('click',()=>{
-    window.__ravenSummonAt=performance.now()/1000;
-    burst();flash.classList.remove('bolt');void flash.offsetWidth;flash.classList.add('bolt');
-    status.textContent='THE RAVEN DESCENDS';rumble();
-  });
-  sound.addEventListener('click',()=>{
-    audioOn=!audioOn;sound.textContent='SOUND: '+(audioOn?'ON':'OFF');
-    if(audioOn)rumble();
-  });
+(function(){
+ let soundOn=false,ctx=null;
+ const stage=document.getElementById('stage'),status=document.getElementById('status'),flash=document.getElementById('flash'),sound=document.getElementById('sound');
+ function play(){
+  if(!soundOn)return;
+  try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();const t=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(58,t);o.frequency.exponentialRampToValueAtTime(30,t+1.4);f.type='lowpass';f.frequency.value=150;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.08,t+.08);g.gain.exponentialRampToValueAtTime(.0001,t+1.6);o.connect(f).connect(g).connect(ctx.destination);o.start(t);o.stop(t+1.7);}catch(e){status.textContent='SOUND NOT AVAILABLE';}
+ }
+ window.summonOmen=function(){
+  window.__ravenSummonAt=performance.now()/1000;
+  flash.classList.remove('bolt');void flash.offsetWidth;flash.classList.add('bolt');
+  for(let i=0;i<18;i++){const p=document.createElement('i');p.className='feather fly';p.style.left=(innerWidth*.5+(Math.random()-.5)*80)+'px';p.style.top=(innerHeight*.5+(Math.random()-.5)*50)+'px';p.style.setProperty('--dx',((Math.random()-.5)*innerWidth*.7)+'px');p.style.setProperty('--dy',((Math.random()-.5)*innerHeight*.65)+'px');p.style.setProperty('--spin',(Math.random()*720-360)+'deg');stage.appendChild(p);setTimeout(()=>p.remove(),2500);}
+  status.textContent='THE OMEN HAS BEEN SUMMONED';play();
+ };
+ window.toggleOmenSound=function(){soundOn=!soundOn;sound.textContent='SOUND: '+(soundOn?'ON':'OFF');status.textContent=soundOn?'SOUND ENABLED':'SOUND MUTED';if(soundOn)play();};
 })();
 </script>
 <script type="module">
@@ -110,4 +85,5 @@ try {
 } catch(error) {
   status.textContent='3D SETUP ERROR · '+String(error.message||error).slice(0,70);
 }
-</script></body></html>
+</script>
+</body></html>
