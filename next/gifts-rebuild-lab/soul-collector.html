@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE SOUL COLLECTOR — TikNation Gift Lab</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;background:#070a10;color:#e9f1ff;font-family:Georgia,serif}body{overflow:hidden;background:radial-gradient(ellipse at 50% 44%,#182a3a 0,#0b111c 42%,#05070c 82%)}
+.scene{height:100svh;min-height:520px;position:relative;display:grid;place-items:center;overflow:hidden;isolation:isolate}
+h1{position:absolute;top:4vh;margin:0;letter-spacing:.24em;font-size:clamp(18px,3vw,29px);font-weight:normal;text-shadow:0 0 22px #6ecfff88}.tag{position:absolute;top:calc(4vh + 42px);font:10px Arial;letter-spacing:.32em;color:#8fa8bd}
+.mist{position:absolute;inset:25% -20% 5%;background:radial-gradient(ellipse,#62a9ca17,transparent 65%);filter:blur(16px);animation:mist 7s ease-in-out infinite}
+.stage{position:relative;width:min(94vw,700px);height:min(68vh,570px);display:grid;place-items:center}
+.entity{position:relative;width:300px;height:440px;filter:drop-shadow(0 12px 28px #000);animation:float 4s ease-in-out infinite}
+.helm{position:absolute;top:4px;left:50%;transform:translateX(-50%);width:124px;height:142px;background:linear-gradient(115deg,#070b12,#293b4a 45%,#090e17 78%);clip-path:polygon(50% 0,84% 15%,100% 50%,80% 90%,50% 100%,20% 90%,0 50%,16% 15%);border:1px solid #59798d;filter:drop-shadow(0 0 12px #6bc5eb33)}
+.face{position:absolute;top:58px;left:50%;transform:translateX(-50%);width:65px;height:62px;background:#03060b;clip-path:polygon(15% 0,85% 0,100% 55%,50% 100%,0 55%)}
+.eye{position:absolute;top:83px;width:12px;height:5px;border-radius:50%;background:#a9f4ff;box-shadow:0 0 9px 4px #50d8ff}.eye.l{left:112px}.eye.r{right:112px}
+.cowl{position:absolute;top:115px;left:50%;transform:translateX(-50%);width:210px;height:290px;background:linear-gradient(90deg,#080c13,#243544 48%,#080c13);clip-path:polygon(27% 0,73% 0,100% 100%,0 100%);border-top:1px solid #63869a}
+.shoulder{position:absolute;top:127px;width:116px;height:95px;background:linear-gradient(145deg,#080c13,#304353,#090e17);border:1px solid #405c70;border-radius:48% 45% 20% 20%}.shoulder.l{left:5px;transform:rotate(14deg)}.shoulder.r{right:5px;transform:rotate(-14deg)}
+.arm{position:absolute;top:175px;width:39px;height:190px;background:linear-gradient(90deg,#080c13,#405567 48%,#080c13);border-radius:24px;transform-origin:top}
+.arm.l{left:28px;transform:rotate(34deg)}.arm.r{right:28px;transform:rotate(-34deg)}
+.hand{position:absolute;top:323px;width:60px;height:75px;background:linear-gradient(90deg,#080c13,#4a6171,#080c13);clip-path:polygon(22% 0,78% 0,100% 65%,82% 100%,67% 63%,50% 100%,36% 63%,18% 100%,0 65%)}.hand.l{left:9px;transform:rotate(18deg)}.hand.r{right:9px;transform:rotate(-18deg)}
+.core{position:absolute;top:196px;left:50%;transform:translateX(-50%);width:61px;height:72px;border-radius:50%;background:radial-gradient(ellipse,#f1ffff 0,#8be9ff 13%,#228bbd 35%,#071521 72%);box-shadow:0 0 18px 7px #65dfff88,0 0 60px 20px #278ec955;animation:heartbeat 2.1s ease-in-out infinite}
+.core:after{content:"";position:absolute;inset:-12px;border:1px solid #a3f1ff77;border-radius:50%;animation:coreRing 2.1s ease-out infinite}
+.soul{position:absolute;width:20px;height:28px;border-radius:50% 50% 45% 45%;background:radial-gradient(ellipse,#fff 0,#a8f2ff 22%,#45bde8 50%,#3b9fdd00 75%);filter:drop-shadow(0 0 12px #65dcff);animation:soulmove 3.5s ease-in-out infinite}
+.s1{left:8%;top:38%;--dx:160px;--dy:-80px}.s2{right:8%;top:27%;--dx:-145px;--dy:20px;animation-delay:.8s}.s3{left:17%;top:15%;--dx:100px;--dy:110px;animation-delay:1.6s}.s4{right:17%;top:60%;--dx:-110px;--dy:-120px;animation-delay:2.3s}
+.ring{position:absolute;top:49%;left:50%;width:250px;height:250px;transform:translate(-50%,-50%);border:1px solid #65cfff30;border-radius:50%;box-shadow:0 0 45px #58baff13,inset 0 0 30px #58baff0e;animation:spin 32s linear infinite}
+.ground{position:absolute;bottom:14%;width:380px;height:50px;border-radius:50%;background:radial-gradient(ellipse,#61caff24,transparent 70%);filter:blur(12px)}
+.controls{position:absolute;bottom:7vh;display:flex;gap:12px;z-index:3}button{background:#101a26;border:1px solid #6795aa;color:#eaf8ff;padding:13px 21px;letter-spacing:.14em;font-size:11px;cursor:pointer;border-radius:2px}button:hover{background:#1e3547;box-shadow:0 0 20px #63cfff33}.note{position:absolute;bottom:3vh;font:10px Arial;letter-spacing:.2em;color:#8199ad}
+.scene.collect .entity{animation:surge .9s ease}.scene.collect .core{box-shadow:0 0 30px 14px #7ceaff,0 0 100px 40px #278ec9}.scene.collect .soul{animation-duration:1.2s}
+@keyframes float{50%{transform:translateY(-10px)}}@keyframes heartbeat{0%,100%{transform:translateX(-50%) scale(.94)}50%{transform:translateX(-50%) scale(1.12)}}@keyframes coreRing{0%{transform:scale(.7);opacity:.8}100%{transform:scale(1.8);opacity:0}}@keyframes soulmove{0%,10%{opacity:0;transform:translate(0,0) scale(.6)}30%{opacity:1}85%{opacity:1;transform:translate(var(--dx),var(--dy)) scale(.6)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.1)}}@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}@keyframes mist{50%{opacity:.45;transform:scale(1.1)}}@keyframes surge{0%{transform:scale(.95)}50%{transform:scale(1.07)}100%{transform:scale(1)}}
+@media(max-width:520px){.entity{transform:scale(.82)}.stage{height:62vh}.controls{bottom:8vh}button{padding:12px 14px;font-size:10px}.ring{width:210px;height:210px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style></head>
+<body><main class="scene" id="scene">
+<h1>THE SOUL COLLECTOR</h1><div class="tag">THE LAST GATHERER · TIKNATION GIFT LAB</div><div class="mist"></div>
+<div class="stage"><div class="ring"></div><div class="entity">
+<div class="helm"></div><div class="face"></div><i class="eye l"></i><i class="eye r"></i>
+<div class="shoulder l"></div><div class="shoulder r"></div><div class="cowl"></div><div class="arm l"></div><div class="arm r"></div><div class="hand l"></div><div class="hand r"></div><div class="core"></div>
+</div>
+<i class="soul s1"></i><i class="soul s2"></i><i class="soul s3"></i><i class="soul s4"></i></div>
+<div class="ground"></div><div class="controls"><button id="collect">COLLECT THE SOULS</button><button id="sound">SOUND: OFF</button></div>
+<div class="note">SOULS GATHER · THE CORE ABSORBS · THE COLLECTOR AWAKENS</div>
+</main><script>
+const scene=document.getElementById('scene'),collect=document.getElementById('collect'),sound=document.getElementById('sound');let audioOn=false,ctx;
+collect.addEventListener('click',()=>{scene.classList.remove('collect');void scene.offsetWidth;scene.classList.add('collect');if(audioOn){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.setValueAtTime(420,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(65,ctx.currentTime+1.35);g.gain.setValueAtTime(.16,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+1.4);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+1.4)}catch(e){}}setTimeout(()=>scene.classList.remove('collect'),1600)});
+sound.addEventListener('click',()=>{audioOn=!audioOn;sound.textContent='SOUND: '+(audioOn?'ON':'OFF')});
+</script></body></html>
