@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE BLACK VEIL — TikNation Gift Preview</title>
+<style>
+:root{color-scheme:dark;--cyan:#8cf7ff;--blue:#3a8cff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 42%,#142a40 0,#080d19 48%,#03050b 100%);color:#eafaff;font-family:system-ui,sans-serif;display:grid;place-items:center;overflow:hidden}
+main{width:min(100%,900px);padding:22px;text-align:center}.eyebrow{letter-spacing:.34em;font-size:11px;color:#8ba9c2}.title{font-size:clamp(30px,6vw,58px);letter-spacing:.13em;margin:8px 0 0;text-shadow:0 0 25px #6deaff80}.sub{color:#9bb2c9;font-size:13px;letter-spacing:.12em}
+.stage{height:min(64vh,520px);min-height:350px;position:relative;margin:8px auto 14px;overflow:hidden;isolation:isolate}
+.halo{position:absolute;width:310px;height:390px;left:50%;top:48%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse,#49cfff22 0,#2b5f9c12 48%,transparent 70%);filter:blur(16px)}
+.rift{position:absolute;left:50%;top:49%;width:190px;height:320px;transform:translate(-50%,-50%) scaleX(.05);opacity:0;border-radius:48% 52% 44% 56%;background:linear-gradient(90deg,#02040b 0%,#07101d 35%,#152d46 48%,#030711 70%,#000 100%);box-shadow:0 0 18px #a4f8ff,0 0 65px #238cff, inset 0 0 32px #8beeff66;clip-path:polygon(48% 0,62% 7%,55% 18%,70% 27%,59% 40%,72% 53%,58% 65%,67% 79%,52% 100%,39% 91%,44% 78%,29% 67%,42% 52%,28% 39%,42% 25%,34% 13%)}
+.rift:before{content:"";position:absolute;inset:8px;background:radial-gradient(ellipse at 50% 50%,#000 0 48%,#102b45 70%,transparent 72%);filter:blur(5px)}
+.rim{position:absolute;left:50%;top:49%;width:220px;height:350px;transform:translate(-50%,-50%) scaleX(.05);opacity:0;border:2px solid #a5f8ff;border-radius:50%;filter:blur(5px);box-shadow:0 0 18px #72eaff,0 0 45px #237dff}
+.cloth{position:absolute;top:0;height:100%;width:50%;background:linear-gradient(100deg,#02030a,#101725 52%,#26384c 70%,#050912);filter:drop-shadow(0 0 12px #000);opacity:0}
+.cloth.left{left:0;clip-path:polygon(0 0,100% 0,83% 18%,96% 30%,78% 44%,91% 58%,74% 75%,88% 90%,100% 100%,0 100%)}
+.cloth.right{right:0;transform:scaleX(-1);clip-path:polygon(0 0,100% 0,83% 18%,96% 30%,78% 44%,91% 58%,74% 75%,88% 90%,100% 100%,0 100%)}
+.hand{position:absolute;width:170px;height:210px;left:50%;top:50%;transform:translate(-50%,-35%) scale(.2);opacity:0;filter:drop-shadow(0 0 13px #a5f7ff)}
+.hand svg{width:100%;height:100%}.spark{position:absolute;left:50%;top:50%;width:7px;height:7px;border-radius:50%;background:#d9ffff;box-shadow:0 0 12px 5px #64dfff;opacity:0}
+.floor{position:absolute;bottom:7%;left:50%;transform:translateX(-50%);width:65%;height:35px;background:radial-gradient(ellipse,#3e9cff30,transparent 70%);filter:blur(8px)}
+.stage.play .rift,.stage.play .rim{animation:open 1.25s cubic-bezier(.2,.8,.2,1) forwards}
+.stage.play .cloth{animation:unfurl 1.2s ease-out forwards}
+.stage.play .hand{animation:reach 2.5s 1s ease-in-out forwards}
+.stage.play .halo{animation:pulse 3s ease-in-out infinite}
+.stage.play .spark{animation:flare 1.5s 1.1s ease-out forwards}
+.stage.close .rift,.stage.close .rim{animation:shut .65s ease-in forwards}
+@keyframes open{0%{opacity:0;transform:translate(-50%,-50%) scaleX(.02)}55%{opacity:1;transform:translate(-50%,-50%) scaleX(1.12)}100%{opacity:1;transform:translate(-50%,-50%) scaleX(1)}}
+@keyframes unfurl{0%{opacity:0;transform:translateX(0) scaleX(.2)}100%{opacity:1;transform:translateX(0) scaleX(1)}}
+@keyframes reach{0%{opacity:0;transform:translate(-50%,-35%) scale(.2)}25%{opacity:1;transform:translate(-50%,-48%) scale(1)}65%{opacity:1;transform:translate(-50%,-58%) scale(1.08)}100%{opacity:0;transform:translate(-50%,-105%) scale(.7)}}
+@keyframes flare{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}30%{opacity:1;transform:translate(-50%,-50%) scale(2.8)}100%{opacity:0;transform:translate(-50%,-50%) scale(5)}}
+@keyframes pulse{50%{opacity:.65;filter:blur(22px)}}
+@keyframes shut{to{opacity:0;transform:translate(-50%,-50%) scaleX(.01)}}
+.controls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}button{border:1px solid #73dfffa8;background:#0b1c2d;color:#eafaff;padding:13px 22px;border-radius:3px;letter-spacing:.16em;font-weight:700;cursor:pointer}button:hover{background:#163b58;box-shadow:0 0 22px #3bafff66}button:focus-visible{outline:2px solid white;outline-offset:3px}.note{font-size:11px;color:#7893ab;margin-top:13px}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body><main><div class="eyebrow">TIKNATION • GIFT REVEAL</div><h1 class="title">THE BLACK VEIL</h1><div class="sub">SOMETHING IS REACHING THROUGH</div>
+<div class="stage" id="stage" aria-label="Animated supernatural rift preview"><div class="halo"></div><div class="floor"></div><div class="cloth left"></div><div class="cloth right"></div><div class="rim"></div><div class="rift"></div>
+<div class="hand"><svg viewBox="0 0 180 220" aria-hidden="true"><defs><linearGradient id="skin" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f4ffff"/><stop offset=".5" stop-color="#8dbacb"/><stop offset="1" stop-color="#385a70"/></linearGradient></defs><path d="M66 205 Q52 184 58 158 L50 99 Q47 80 58 78 Q69 77 72 97 L78 132 L75 48 Q75 26 87 27 Q99 27 99 49 L101 125 L108 37 Q110 17 122 20 Q134 23 130 44 L122 129 L139 59 Q144 41 155 48 Q165 55 157 75 L143 139 Q160 117 169 130 Q178 142 163 158 L131 197 Q111 218 87 216Z" fill="url(#skin)" stroke="#d5ffff" stroke-width="2"/><path d="M72 145L88 157M100 139L116 151M124 143L139 154" fill="none" stroke="#34566b" stroke-width="4" opacity=".7"/></svg></div><div class="spark"></div></div>
+<div class="controls"><button id="replay">TEAR OPEN THE VEIL</button><button id="sound" aria-pressed="false">SOUND: OFF</button></div><div class="note">Standalone visual preview • Sound is a simple synthesized effect</div></main>
+<script>
+const stage=document.getElementById('stage'),replay=document.getElementById('replay'),sound=document.getElementById('sound');let audio=false,ctx;
+function play(){stage.classList.remove('play','close');void stage.offsetWidth;stage.classList.add('play');if(audio){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.type='sawtooth';o.frequency.setValueAtTime(95,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(28,ctx.currentTime+1.8);g.gain.setValueAtTime(.0001,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.12,ctx.currentTime+.12);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+2);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+2)}catch(e){}}setTimeout(()=>{stage.classList.add('close')},3600);setTimeout(()=>{stage.classList.remove('play','close')},4300)}
+replay.addEventListener('click',play);sound.addEventListener('click',()=>{audio=!audio;sound.textContent='SOUND: '+(audio?'ON':'OFF');sound.setAttribute('aria-pressed',String(audio))});play();
+</script></body></html>
