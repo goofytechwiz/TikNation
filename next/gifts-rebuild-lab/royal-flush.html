@@ -1,78 +1,54 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#100b08">
-<title>The Royal Flush · TikNation Next Gift Preview</title>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080705">
+<title>The Royal Flush · TikNation Next</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#090806;color:#fff4d7;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-body{min-height:100vh;background:radial-gradient(ellipse at 50% -15%,#49351b 0,#1b140c 42%,#080706 100%)}
-header{height:58px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e8c77a26;color:#ddc58e;font-size:10px;font-weight:850;letter-spacing:.2em}
-a{color:#f6dfa8;text-decoration:none}
-main{width:min(94%,900px);margin:34px auto 50px}
-.eyebrow{font-size:10px;font-weight:850;letter-spacing:.28em;color:#e7c36d}
-h1{font:500 clamp(42px,9vw,78px)/.96 Georgia,serif;letter-spacing:-.04em;margin:12px 0 15px;color:#fff0c8;text-shadow:0 0 30px #f2c76a55}
-.intro{max-width:650px;color:#d4c5a5;font-size:14px;line-height:1.75}
-.stage{position:relative;margin-top:25px;height:min(65vh,530px);min-height:330px;overflow:hidden;border:1px solid #d9b76a55;border-radius:20px;background:#100c08;box-shadow:0 26px 80px #000b}
-canvas{display:block;width:100%;height:100%}
-.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:28px;text-align:center;pointer-events:none;background:linear-gradient(180deg,transparent 54%,#080604d9)}
-.phase{font-size:11px;font-weight:900;letter-spacing:.25em;color:#ffe9b0;text-shadow:0 0 16px #ffcf6c}
-.subphase{margin-top:8px;font-size:10px;letter-spacing:.16em;color:#d5bd8b}
-.actions{display:flex;flex-wrap:wrap;gap:11px;margin-top:17px}
-button{min-height:48px;padding:0 22px;border:1px solid #e8c77a70;border-radius:999px;background:#302211;color:#fff0ca;font-size:10px;font-weight:900;letter-spacing:.13em;cursor:pointer}
-button.primary{background:linear-gradient(110deg,#fff0b9,#c78d2d);border:0;color:#1a1005;box-shadow:0 8px 28px #d99c3545}
-button:focus-visible{outline:3px solid white;outline-offset:3px}
-.status{min-height:22px;margin-top:14px;color:#e8c77a;font-size:10px;font-weight:800;letter-spacing:.13em}
-.note{margin-top:22px;padding-top:16px;border-top:1px solid #ffffff1c;color:#a99a7d;font-size:10px;line-height:1.7}
-@media(max-width:560px){header{font-size:9px}.stage{height:62vh;min-height:350px}.actions button{flex:1 1 100%}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
-</style>
-</head>
-<body>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#080705;color:#fff2cf;font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{background:radial-gradient(ellipse at 50% -10%,#59401d,#1b140b 43%,#070605 100%)}header{height:58px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e9c77a2b;color:#e1c98e;font-size:10px;font-weight:850;letter-spacing:.2em}a{color:#ffe6aa;text-decoration:none}main{width:min(94%,960px);margin:32px auto 50px}.eyebrow{font-size:10px;font-weight:850;letter-spacing:.28em;color:#e7c36d}h1{font:500 clamp(42px,9vw,78px)/.96 Georgia,serif;letter-spacing:-.04em;margin:12px 0 15px;color:#fff0c8;text-shadow:0 0 30px #f2c76a55}.intro{max-width:690px;color:#d4c5a5;font-size:14px;line-height:1.75}.stage{position:relative;margin-top:25px;height:min(68vh,570px);min-height:350px;overflow:hidden;border:1px solid #d9b76a66;border-radius:20px;background:#0b0906;box-shadow:0 26px 80px #000c}canvas{display:block;width:100%;height:100%}.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:27px;text-align:center;pointer-events:none;background:linear-gradient(180deg,transparent 50%,#080604e8)}.phase{font-size:11px;font-weight:900;letter-spacing:.25em;color:#ffe9b0;text-shadow:0 0 16px #ffcf6c}.subphase{margin-top:8px;font-size:10px;letter-spacing:.16em;color:#d5bd8b}.actions{display:flex;flex-wrap:wrap;gap:11px;margin-top:17px}button{min-height:48px;padding:0 22px;border:1px solid #e8c77a70;border-radius:999px;background:#302211;color:#fff0ca;font-size:10px;font-weight:900;letter-spacing:.13em;cursor:pointer}button.primary{background:linear-gradient(110deg,#fff0b9,#c78d2d);border:0;color:#1a1005;box-shadow:0 8px 28px #d99c3545}button:focus-visible{outline:3px solid white;outline-offset:3px}.status{min-height:22px;margin-top:14px;color:#e8c77a;font-size:10px;font-weight:800;letter-spacing:.13em}.note{margin-top:22px;padding-top:16px;border-top:1px solid #ffffff1c;color:#a99a7d;font-size:10px;line-height:1.7}@media(max-width:560px){header{font-size:9px}.stage{height:62vh;min-height:360px}.actions button{flex:1 1 100%}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style></head><body>
 <header><b>TIKNATION NEXT · EPIC GIFT PREVIEW</b><a href="../live-worlds/">← LIVE WORLDS</a></header>
-<main>
-<div class="eyebrow">NEW LUXURY GIFT · ISOLATED PREVIEW</div>
-<h1>THE ROYAL FLUSH</h1>
-<p class="intro">A storm of premium playing cards bursts into view, each card catching the light as it spins through the air. The deck locks together into an ornate golden crown, then the crown breaks apart into a shower of spinning gold coins.</p>
-<section class="stage" aria-label="Animated golden playing cards forming a crown">
-<canvas id="scene" aria-label="Spinning playing cards, ornate crown and falling gold coins"></canvas>
-<div class="overlay"><div class="phase" id="phase">FORTUNE FAVORS THE BOLD</div><div class="subphase" id="subphase">TAP DEAL TO REVEAL THE ROYAL FLUSH</div></div>
-</section>
-<div class="actions"><button class="primary" id="play">♛ DEAL THE ROYAL FLUSH</button><button id="sound">SOUND: OFF</button></div>
-<div class="status" id="status" role="status" aria-live="polite">READY · SOUND IS OFF UNTIL ENABLED</div>
-<p class="note">TIKNATION NEXT · ISOLATED PREVIEW. This animation does not send a gift, spend coins, or change the live gift catalog. Sound is optional and starts only after you enable it and trigger the effect.</p>
-</main>
+<main><div class="eyebrow">FULL REBUILD · LUXURY CASINO SPECTACLE</div><h1>THE ROYAL FLUSH</h1>
+<p class="intro">A precision-dealt royal poker hand sweeps toward the viewer in layered perspective. Five oversized, double-faced casino cards snap into a perfect fan; a sculpted gold crown rises behind them, its gemstones catching the spotlights. The crown then fractures into a cascading shower of heavy, embossed gold coins.</p>
+<section class="stage" aria-label="Royal Flush cinematic animation"><canvas id="scene" aria-label="Five premium playing cards, a jeweled gold crown and a rain of gold coins"></canvas><div class="overlay"><div class="phase" id="phase">THE TABLE IS YOURS</div><div class="subphase" id="subphase">TAP DEAL THE HAND TO BEGIN</div></div></section>
+<div class="actions"><button class="primary" id="play">♛ DEAL THE ROYAL FLUSH</button><button id="sound">SOUND: OFF</button></div><div class="status" id="status" role="status" aria-live="polite">READY · SOUND IS OFF UNTIL ENABLED</div>
+<p class="note">TIKNATION NEXT · ISOLATED PREVIEW. This rebuild is a standalone visual test: it does not send a gift, spend coins, or change the live gift catalog. Sound is optional and begins only after you enable it.</p></main>
 <script>
 (()=>{
-const canvas=document.getElementById('scene'),ctx=canvas.getContext('2d'),phase=document.getElementById('phase'),subphase=document.getElementById('subphase'),status=document.getElementById('status'),play=document.getElementById('play'),sound=document.getElementById('sound');
-let w=0,h=0,dpr=1,active=false,start=0,last=0,raf=0,soundOn=false,audio=null,nodes=[],cards=[],coins=[],sparkles=[];
-const rand=(a,b)=>a+Math.random()*(b-a),clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),ease=t=>1-Math.pow(1-t,3);
-function resize(){const r=canvas.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);w=Math.max(1,r.width);h=Math.max(1,r.height);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);seed()}
-function seed(){cards=Array.from({length:18},(_,i)=>({x:rand(-w*.2,w*1.2),y:rand(-h,h),vx:rand(-90,90),vy:rand(-160,160),rot:rand(-3,3),spin:rand(-2.5,2.5),scale:rand(.72,1.05),suit:['♠','♥','♦','♣'][i%4],rank:['A','K','Q','J','10'][i%5],delay:rand(0,1.5)}));coins=Array.from({length:95},()=>({x:rand(0,w),y:rand(0,h),vx:rand(-40,40),vy:rand(30,120),rot:rand(0,6),spin:rand(-8,8),r:rand(3,9),phase:rand(0,6)}));sparkles=Array.from({length:65},()=>({x:rand(0,w),y:rand(0,h),r:rand(.5,2),p:rand(0,6)}))}
-function background(t){const g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,'#24190d');g.addColorStop(.55,'#120e09');g.addColorStop(1,'#080706');ctx.fillStyle=g;ctx.fillRect(0,0,w,h);const glow=ctx.createRadialGradient(w*.5,h*.48,0,w*.5,h*.48,w*.62);glow.addColorStop(0,'rgba(220,158,55,.22)');glow.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
-for(const s of sparkles){const a=.12+.3*(.5+.5*Math.sin(t*.0015+s.p));ctx.fillStyle='rgba(255,220,142,'+a+')';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill()}}
-function rounded(x,y,ww,hh,r){ctx.beginPath();ctx.roundRect(x,y,ww,hh,r)}
-function drawCard(x,y,scale,rot,rank,suit,alpha=1){ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.scale(scale,scale);ctx.globalAlpha=alpha;ctx.shadowColor='#000';ctx.shadowBlur=18;ctx.shadowOffsetY=8;rounded(-31,-45,62,90,6);const g=ctx.createLinearGradient(-30,-44,30,44);g.addColorStop(0,'#fffdf4');g.addColorStop(.5,'#eee5d2');g.addColorStop(1,'#cbbd9e');ctx.fillStyle=g;ctx.fill();ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.strokeStyle='#a58a5a';ctx.lineWidth=1.2;rounded(-31,-45,62,90,6);ctx.stroke();ctx.fillStyle=(suit==='♥'||suit==='♦')?'#a52b24':'#20252a';ctx.font='bold 15px Georgia';ctx.textAlign='left';ctx.fillText(rank,-24,-27);ctx.font='14px Georgia';ctx.fillText(suit,-23,-12);ctx.save();ctx.rotate(Math.PI);ctx.textAlign='left';ctx.font='bold 15px Georgia';ctx.fillText(rank,-24,-27);ctx.font='14px Georgia';ctx.fillText(suit,-23,-12);ctx.restore();ctx.fillStyle=(suit==='♥'||suit==='♦')?'#a52b24':'#20252a';ctx.font='34px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(suit,0,2);ctx.restore()}
-function drawCrown(x,y,scale,t){ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);ctx.shadowColor='#f7bd4e';ctx.shadowBlur=25;const gold=ctx.createLinearGradient(0,-100,0,35);gold.addColorStop(0,'#fff4b0');gold.addColorStop(.28,'#e8b84f');gold.addColorStop(.6,'#9e641b');gold.addColorStop(1,'#f6d879');ctx.fillStyle=gold;ctx.strokeStyle='#ffeb9b';ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(-83,16);ctx.lineTo(-95,-64);ctx.lineTo(-42,-24);ctx.lineTo(0,-92);ctx.lineTo(42,-24);ctx.lineTo(95,-64);ctx.lineTo(83,16);ctx.closePath();ctx.fill();ctx.stroke();ctx.shadowBlur=8;ctx.fillStyle='#8c2024';ctx.beginPath();ctx.ellipse(0,1,15,20,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#ffe9a0';ctx.stroke();ctx.fillStyle=gold;ctx.fillRect(-85,17,170,18);ctx.fillStyle='#fff1b2';for(let i=0;i<7;i++){ctx.beginPath();ctx.arc(-65+i*21,25,3.5,0,Math.PI*2);ctx.fill()}ctx.restore()}
-function drawCoin(c){ctx.save();ctx.translate(c.x,c.y);ctx.rotate(c.rot);const width=Math.max(.12,Math.abs(Math.cos(c.rot*.7)));ctx.scale(width,1);const g=ctx.createLinearGradient(-c.r,0,c.r,0);g.addColorStop(0,'#805019');g.addColorStop(.25,'#ffdf7b');g.addColorStop(.55,'#b8781d');g.addColorStop(.8,'#fff0a0');g.addColorStop(1,'#8d5514');ctx.fillStyle=g;ctx.strokeStyle='#ffdf87';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(0,0,c.r,c.r*.78,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#704516';ctx.font='bold '+(c.r*1.1)+'px Georgia';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('$',0,0);ctx.restore()}
-function frame(now){const dt=Math.min(.04,(now-last)/1000||0);last=now;const t=active?(now-start)/1000:0;background(now);
+const c=document.getElementById('scene'),g=c.getContext('2d'),phase=document.getElementById('phase'),sub=document.getElementById('subphase'),status=document.getElementById('status'),play=document.getElementById('play'),sound=document.getElementById('sound');
+let W=1,H=1,D=1,started=0,last=0,active=false,raf=0,soundOn=false,audio=null,nodes=[],dust=[],coins=[],cards=[];
+const rnd=(a,b)=>a+Math.random()*(b-a),clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),ease=x=>{x=clamp(x,0,1);return x*x*(3-2*x)};
+function resize(){const r=c.getBoundingClientRect();D=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;c.width=Math.round(W*D);c.height=Math.round(H*D);g.setTransform(D,0,0,D,0,0);seed()}
+function seed(){dust=Array.from({length:100},()=>({x:rnd(0,W),y:rnd(0,H),r:rnd(.4,2),a:rnd(.12,.7),v:rnd(5,26)}));coins=Array.from({length:115},()=>({x:rnd(0,W),y:rnd(-H,H),vx:rnd(-75,75),vy:rnd(65,190),rot:rnd(0,6),spin:rnd(-9,9),r:rnd(5,12),phase:rnd(0,6)}));cards=['10','J','Q','K','A'].map((rank,i)=>({rank,suit:'♠',x:rnd(-W,W*2),y:rnd(-H,H*1.4),rot:rnd(-1,1),delay:i*.11}))}
+function bg(t){const b=g.createLinearGradient(0,0,0,H);b.addColorStop(0,'#34220e');b.addColorStop(.46,'#171006');b.addColorStop(1,'#070605');g.fillStyle=b;g.fillRect(0,0,W,H);let glow=g.createRadialGradient(W*.5,H*.46,0,W*.5,H*.46,W*.65);glow.addColorStop(0,'rgba(236,174,69,.23)');glow.addColorStop(.5,'rgba(135,83,25,.07)');glow.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=glow;g.fillRect(0,0,W,H);
+g.save();g.globalCompositeOperation='screen';for(const p of dust){p.y-=p.v*.012;if(p.y<0)p.y=H;g.fillStyle='rgba(255,220,145,'+p.a*(.5+.5*Math.sin(t*.001+p.x))+')';g.beginPath();g.arc(p.x,p.y,p.r,0,Math.PI*2);g.fill()}g.restore();
+g.save();g.strokeStyle='rgba(232,190,104,.10)';g.lineWidth=1;for(let i=0;i<3;i++){g.beginPath();g.ellipse(W*.5,H*.85,100+i*70,16+i*8,0,0,Math.PI*2);g.stroke()}g.restore()}
+function rounded(x,y,w,h,r){g.beginPath();g.roundRect(x,y,w,h,r)}
+function card(x,y,scale,angle,rank,alpha=1,flip=0){g.save();g.translate(x,y);g.rotate(angle);g.scale(scale,scale);g.globalAlpha=alpha;let sx=Math.max(.08,Math.abs(Math.cos(flip)));g.scale(sx,1);
+g.shadowColor='#000';g.shadowBlur=25;g.shadowOffsetY=16;rounded(-42,-65,84,130,7);let paper=g.createLinearGradient(-40,-60,40,70);paper.addColorStop(0,'#fffdf3');paper.addColorStop(.48,'#f0e8d7');paper.addColorStop(1,'#c8bda6');g.fillStyle=paper;g.fill();g.shadowBlur=0;g.shadowOffsetY=0;g.strokeStyle='#b99b5d';g.lineWidth=1.4;rounded(-42,-65,84,130,7);g.stroke();
+g.strokeStyle='rgba(161,128,72,.35)';g.lineWidth=.7;rounded(-37,-60,74,120,4);g.stroke();g.fillStyle='#1b1711';g.font='bold 21px Georgia';g.textAlign='left';g.textBaseline='alphabetic';g.fillText(rank,-32,-38);g.font='17px Georgia';g.fillText('♠',-30,-18);g.save();g.translate(0,8);g.fillStyle='#1b1711';g.font='58px Georgia';g.textAlign='center';g.textBaseline='middle';g.fillText('♠',0,0);g.restore();g.save();g.rotate(Math.PI);g.fillStyle='#1b1711';g.font='bold 21px Georgia';g.textAlign='left';g.fillText(rank,-32,-38);g.font='17px Georgia';g.fillText('♠',-30,-18);g.restore();
+g.strokeStyle='rgba(174,137,76,.5)';g.lineWidth=1;g.beginPath();g.moveTo(-23,45);g.lineTo(23,45);g.stroke();g.restore()}
+function crown(x,y,s,t){g.save();g.translate(x,y);g.scale(s,s);g.shadowColor='#ffcb5c';g.shadowBlur=30;
+let gold=g.createLinearGradient(-95,-80,90,45);gold.addColorStop(0,'#fff5c1');gold.addColorStop(.17,'#b97820');gold.addColorStop(.34,'#ffe18a');gold.addColorStop(.58,'#8b5013');gold.addColorStop(.8,'#f8d36f');gold.addColorStop(1,'#75400e');
+g.fillStyle=gold;g.strokeStyle='#ffe9a4';g.lineWidth=2.4;g.beginPath();g.moveTo(-92,30);g.lineTo(-103,-55);g.lineTo(-49,-18);g.lineTo(-23,-85);g.lineTo(0,-32);g.lineTo(25,-88);g.lineTo(49,-18);g.lineTo(103,-55);g.lineTo(92,30);g.quadraticCurveTo(0,54,-92,30);g.closePath();g.fill();g.stroke();
+g.shadowBlur=8;g.fillStyle=gold;g.beginPath();g.ellipse(0,30,93,17,0,0,Math.PI*2);g.fill();g.stroke();
+for(let i=0;i<5;i++){let x=-68+i*34;g.fillStyle=i===2?'#8d1d26':'#176a70';g.beginPath();g.moveTo(x,3);g.lineTo(x-8,-9);g.lineTo(x,-25);g.lineTo(x+8,-9);g.closePath();g.fill();g.strokeStyle='#fff0ae';g.stroke()}
+for(let i=0;i<7;i++){let x=-75+i*25;g.fillStyle='#fff0b2';g.beginPath();g.arc(x,33,2.5,0,Math.PI*2);g.fill()}
+g.restore()}
+function coin(p){g.save();g.translate(p.x,p.y);g.rotate(p.rot);const sx=Math.max(.1,Math.abs(Math.cos(p.rot*.8)));g.scale(sx,1);let m=g.createLinearGradient(-p.r,0,p.r,0);m.addColorStop(0,'#75440e');m.addColorStop(.18,'#ffe28a');m.addColorStop(.43,'#b87519');m.addColorStop(.68,'#fff0a5');m.addColorStop(1,'#74400b');g.fillStyle=m;g.strokeStyle='#ffe6a0';g.lineWidth=1.4;g.beginPath();g.ellipse(0,0,p.r,p.r*.83,0,0,Math.PI*2);g.fill();g.stroke();g.strokeStyle='rgba(93,53,8,.8)';g.lineWidth=.8;g.beginPath();g.ellipse(0,0,p.r*.7,p.r*.57,0,0,Math.PI*2);g.stroke();g.fillStyle='#70420e';g.font='bold '+p.r*1.1+'px Georgia';g.textAlign='center';g.textBaseline='middle';g.fillText('K',0,0);g.restore()}
+function burst(t){const a=clamp((t-5.1)/.8,0,1);g.save();g.globalCompositeOperation='screen';let r=a*Math.max(W,H)*.85;let rg=g.createRadialGradient(W*.5,H*.48,Math.max(1,r*.7),W*.5,H*.48,r+1);rg.addColorStop(0,'rgba(255,238,178,0)');rg.addColorStop(.9,'rgba(255,211,112,.28)');rg.addColorStop(1,'rgba(255,255,224,0)');g.fillStyle=rg;g.fillRect(0,0,W,H);g.restore()}
+function frame(now){const dt=Math.min(.04,(now-last)/1000||0);last=now;const t=active?(now-started)/1000:0;bg(now);
 if(active){
-const deal=clamp(t/1.9,0,1),form=clamp((t-2.1)/1.2,0,1),burst=clamp((t-5.2)/.8,0,1);
-if(t<2.2){cards.forEach((c,i)=>{const p=clamp((t-c.delay*.5)/1.4,0,1);const x=c.x+(w*.5-c.x)*ease(p),y=c.y+(h*.46-c.y)*ease(p);drawCard(x,y,c.scale,c.rot+t*c.spin,c.rank,c.suit,Math.min(1,p*1.6))})}
-else if(t<5.4){cards.forEach((c,i)=>{const a=i/ cards.length*Math.PI*2;const x=w*.5+Math.cos(a)*70*(1-form),y=h*.47+Math.sin(a)*22*(1-form);drawCard(x,y,c.scale*.68,c.rot+t*.25,c.rank,c.suit,1-form*.8)});drawCrown(w*.5,h*.49,Math.min(1.22,.15+form*1.08),t)}
-else{drawCrown(w*.5,h*.46,Math.max(.05,1.15-burst*1.15),t);coins.forEach(c=>{c.x+=c.vx*dt;c.y+=c.vy*dt;c.rot+=c.spin*dt;if(c.y>h+20){c.y=-15;c.x=rand(0,w)}if(c.x<-20)c.x=w+20;if(c.x>w+20)c.x=-20;drawCoin(c)});ctx.fillStyle='rgba(255,205,94,'+(Math.max(0,1-Math.abs(t-5.5)*2)*.3)+')';ctx.fillRect(0,0,w,h)}
-if(t>8.8){active=false;phase.textContent='THE HOUSE ALWAYS WINS';subphase.textContent='THE ROYAL FLUSH HAS BEEN DEALT';status.textContent='ROYAL FLUSH COMPLETE · TAP TO REPLAY'}
-}else{cards.slice(0,5).forEach((c,i)=>drawCard(w*.5+(i-2)*47,h*.48+Math.sin(now*.0007+i)*5,.75,(i-2)*.12,c.rank,c.suit,.9))}
+if(t<2.5){cards.forEach((p,i)=>{let q=ease((t-p.delay)/1.35);let x=p.x+(W*.5+(i-2)*48-p.x)*q,y=p.y+(H*.48-p.y)*q;card(x,y,.82,p.rot+(1-q)*2.8,p.rank,q, t*1.3+i*.35)})}
+else if(t<5.25){let q=ease((t-2.5)/1.05);crown(W*.5,H*.45,Math.min(1.08,.15+q*.93),t);cards.forEach((p,i)=>{let a=i/5*Math.PI*2;let x=W*.5+Math.cos(a)*160*(1-q),y=H*.47+Math.sin(a)*54*(1-q);card(x,y,.78*(1-q*.2),p.rot+t*.18,p.rank,1-q*.9,0)})}
+else{let q=clamp((t-5.25)/.55,0,1);if(q<1)crown(W*.5,H*.44,1.08*(1-q),t);coins.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.rot+=p.spin*dt;if(p.y>H+25){p.y=-20;p.x=rnd(0,W)}if(p.x<-25)p.x=W+25;if(p.x>W+25)p.x=-25;coin(p)});burst(t)}
+if(t>8.9){active=false;phase.textContent='THE ROYAL FLUSH';sub.textContent='THE TABLE IS YOURS';status.textContent='FINISHED · TAP DEAL TO PLAY AGAIN'}
+}else{crown(W*.5,H*.43,.76,now);['10','J','Q','K','A'].forEach((r,i)=>card(W*.5+(i-2)*52,H*.66,.48,(i-2)*.045,r,.96,0))}
 raf=requestAnimationFrame(frame)}
-function stopSound(){nodes.forEach(n=>{try{n.stop?.()}catch(e){}});nodes=[];if(audio&&audio.state!=='closed')audio.close().catch(()=>{});audio=null}
-async function playSound(){if(!soundOn)return;stopSound();const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=new AC();await audio.resume();const c=audio,now=c.currentTime;
-const notes=[523.25,659.25,783.99,1046.5];notes.forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain(),filter=c.createBiquadFilter();o.type='triangle';o.frequency.value=f;filter.type='lowpass';filter.frequency.value=1800;g.gain.setValueAtTime(.001,now+i*.16);g.gain.linearRampToValueAtTime(.12,now+i*.16+.035);g.gain.exponentialRampToValueAtTime(.001,now+i*.16+1.1);o.connect(filter);filter.connect(g);g.connect(c.destination);o.start(now+i*.16);o.stop(now+i*.16+1.2);nodes.push(o)});
-const n=c.createOscillator(),ng=c.createGain();n.type='sine';n.frequency.setValueAtTime(90,now+5.2);n.frequency.exponentialRampToValueAtTime(42,now+6.2);ng.gain.setValueAtTime(.001,now+5.2);ng.gain.linearRampToValueAtTime(.18,now+5.35);ng.gain.exponentialRampToValueAtTime(.001,now+7);n.connect(ng);ng.connect(c.destination);n.start(now+5.2);n.stop(now+7.1);nodes.push(n)}
-function unleash(){active=true;start=performance.now();last=start;phase.textContent='THE ROYAL FLUSH';subphase.textContent='THE CARDS ARE IN THE AIR';status.textContent='DEALING THE DECK · FORGING THE CROWN · GOLD RUSH';playSound().catch(()=>{status.textContent='VISUAL PLAYING · AUDIO COULD NOT START'})}
-play.addEventListener('click',unleash);sound.addEventListener('click',()=>{soundOn=!soundOn;sound.textContent='SOUND: '+(soundOn?'ON':'OFF');status.textContent=soundOn?'SOUND ENABLED · TAP DEAL TO HEAR IT':'SOUND DISABLED'});
-window.addEventListener('resize',resize);document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);stopSound()}else{last=performance.now();raf=requestAnimationFrame(frame)}});
-resize();last=performance.now();raf=requestAnimationFrame(frame);
+function stopAudio(){nodes.forEach(n=>{try{n.stop?.()}catch(e){}});nodes=[];if(audio&&audio.state!=='closed')audio.close().catch(()=>{});audio=null}
+async function playSound(){if(!soundOn)return;stopAudio();const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=new AC();await audio.resume();const a=audio,now=a.currentTime;
+const notes=[392,523.25,659.25,783.99,1046.5];notes.forEach((f,i)=>{let o=a.createOscillator(),v=a.createGain();o.type='triangle';o.frequency.value=f;v.gain.setValueAtTime(.001,now+i*.14);v.gain.linearRampToValueAtTime(.095,now+i*.14+.04);v.gain.exponentialRampToValueAtTime(.001,now+i*.14+1.1);o.connect(v);v.connect(a.destination);o.start(now+i*.14);o.stop(now+i*.14+1.2);nodes.push(o)});
+let n=a.createOscillator(),v=a.createGain();n.type='sine';n.frequency.setValueAtTime(105,now+5.2);n.frequency.exponentialRampToValueAtTime(36,now+6.3);v.gain.setValueAtTime(.001,now+5.2);v.gain.linearRampToValueAtTime(.2,now+5.35);v.gain.exponentialRampToValueAtTime(.001,now+7);n.connect(v);v.connect(a.destination);n.start(now+5.2);n.stop(now+7.1);nodes.push(n)}
+function unleash(){active=true;started=performance.now();last=started;phase.textContent='THE ROYAL FLUSH';sub.textContent='FIVE CARDS. ONE CROWN.';status.textContent='DEALING THE HAND · CROWN REVEAL · GOLD COIN SHOWER';playSound().catch(()=>{status.textContent='ANIMATION PLAYING · AUDIO UNAVAILABLE'})}
+play.addEventListener('click',unleash);sound.addEventListener('click',()=>{soundOn=!soundOn;sound.textContent='SOUND: '+(soundOn?'ON':'OFF');status.textContent=soundOn?'SOUND ENABLED · TAP DEAL TO PLAY':'SOUND DISABLED'});
+window.addEventListener('resize',resize);document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);stopAudio()}else{last=performance.now();raf=requestAnimationFrame(frame)}});resize();last=performance.now();raf=requestAnimationFrame(frame);
 })();
-</script>
-</body>
-</html>
+</script></body></html>
