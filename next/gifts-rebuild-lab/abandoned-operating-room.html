@@ -5,9 +5,20 @@
 <meta name="theme-color" content="#090b0d"><title>The Abandoned Operating Room · TikNation Preview</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080a0c;color:#eee;font-family:Arial,sans-serif}
-.scene{position:relative;width:100%;height:100%;min-height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 33%,#687071 0,#343d40 26%,#171d20 63%,#080a0c 100%)}
+.scene{position:relative;width:100%;height:100%;min-height:100svh;overflow:hidden;perspective:1000px;background:radial-gradient(ellipse at 50% 31%,#87908c 0,#4b5554 19%,#20292b 49%,#080a0c 100%)}
 .backwall{position:absolute;inset:0 0 23%;background:linear-gradient(90deg,#12191c 0 8%,transparent 8% 92%,#12191c 92%),repeating-linear-gradient(90deg,#283236 0 2px,#394448 3px 5px,#20282b 6px 95px);box-shadow:inset 0 -40px 90px #050708}
-.tiles{position:absolute;inset:0 0 22%;opacity:.22;background:linear-gradient(90deg,transparent 49.7%,#aab4b1 50%,transparent 50.3%),linear-gradient(0deg,transparent 49.7%,#aab4b1 50%,transparent 50.3%);background-size:150px 110px}
+.tiles{position:absolute;inset:0 0 22%;opacity:.27;background:linear-gradient(90deg,transparent 49.7%,#d1d7cf 50%,transparent 50.3%),linear-gradient(0deg,transparent 49.7%,#d1d7cf 50%,transparent 50.3%);background-size:150px 110px}
+.cabinet{position:absolute;z-index:3;left:0;top:28%;width:16%;height:37%;background:linear-gradient(90deg,#101719,#667171 12%,#303b3d 20%,#1a2325 100%);border:5px solid #111719;box-shadow:8px 12px 22px #0009}
+.cabinet:before{content:"";position:absolute;inset:8% 12%;background:repeating-linear-gradient(0deg,transparent 0 24%,#0d1315 24.5% 26%,transparent 26.5% 49%);border:1px solid #84908a55}
+.cabinet:after{content:"";position:absolute;right:12%;top:18%;height:7px;width:7px;border-radius:50%;background:#a6b1a7;box-shadow:0 60px #a6b1a7,0 120px #a6b1a7}
+.sink{position:absolute;z-index:4;right:3%;top:48%;width:19%;height:7%;border-radius:4px 4px 18px 18px;background:linear-gradient(#d0d5cb,#596365 45%,#1a2325);box-shadow:0 9px 18px #000}
+.sink:before{content:"";position:absolute;left:38%;top:-35px;width:8px;height:38px;border:4px solid #8d9992;border-bottom:0;border-radius:12px 12px 0 0}
+.stool{position:absolute;z-index:4;left:22%;bottom:17%;width:80px;height:95px;animation:stoolRoll 11s ease-in-out infinite}
+.stool:before{content:"";position:absolute;left:0;top:0;width:80px;height:20px;border-radius:50%;background:linear-gradient(#c2c9c0,#4d5958);border:3px solid #1c2527;box-shadow:0 5px 12px #000}
+.stool:after{content:"";position:absolute;left:37px;top:18px;width:7px;height:62px;background:linear-gradient(90deg,#20282a,#a3aca4,#20282a);box-shadow:-22px 69px 0 -2px #8a9690,22px 69px 0 -2px #8a9690}
+.cable{position:absolute;z-index:4;top:0;left:74%;width:2px;height:44%;background:#111719;transform-origin:top;animation:cableSway 4.5s ease-in-out infinite}
+.cable:after{content:"";position:absolute;bottom:0;left:-5px;width:12px;height:28px;border-radius:3px;background:linear-gradient(90deg,#141b1d,#7e8983,#111719)}
+.floorReflection{position:absolute;z-index:2;bottom:1%;left:30%;width:45%;height:18%;background:radial-gradient(ellipse,#b6c1b333,transparent 70%);filter:blur(12px);pointer-events:none}
 .window{position:absolute;right:9%;top:12%;width:20%;height:33%;border:9px solid #11191c;background:linear-gradient(110deg,#172327,#8a9b9b 48%,#1b272b);box-shadow:0 0 20px #a8b8b455,inset 0 0 30px #000}
 .window:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 48%,#11191c 49% 51%,transparent 52%),linear-gradient(0deg,transparent 48%,#11191c 49% 51%,transparent 52%)}
 .glass{position:absolute;left:10%;top:18%;width:20%;height:36%;border:8px solid #111719;background:linear-gradient(120deg,#71818422,#172326aa);overflow:hidden;box-shadow:inset 0 0 25px #000}
@@ -18,9 +29,11 @@
 .lampHead:after{content:"";position:absolute;left:25px;right:25px;bottom:-13px;height:16px;border-radius:50%;background:#f4f1d6;filter:blur(8px)}
 .ceilingGlow{position:absolute;z-index:2;top:0;left:25%;width:50%;height:72%;background:linear-gradient(#e7efd522,transparent);clip-path:polygon(43% 0,57% 0,100% 100%,0 100%);animation:beamPulse 5s infinite}
 .floor{position:absolute;bottom:0;left:0;right:0;height:24%;background:repeating-linear-gradient(90deg,#182023 0 2px,#343e40 3px 120px),repeating-linear-gradient(0deg,#111719 0 2px,#303a3d 3px 90px);transform:perspective(260px) rotateX(9deg);transform-origin:bottom;border-top:7px solid #687274}
-.table{position:absolute;z-index:5;left:50%;top:52%;width:min(62vw,490px);height:25%;transform:translateX(-50%);animation:tableGlide 7s ease-in-out infinite}
+.table{position:absolute;z-index:5;left:50%;top:51%;width:min(62vw,490px);height:27%;transform:translateX(-50%) rotateX(7deg);transform-style:preserve-3d;animation:tableGlide 7s ease-in-out infinite;filter:drop-shadow(0 20px 16px #0009)}
 .tableTop{position:absolute;top:0;left:0;right:0;height:27%;border-radius:8px;background:linear-gradient(180deg,#d1d4ca,#727c7b 55%,#323c3e);border:5px solid #20282a;box-shadow:0 12px 22px #0009}
-.tablePad{position:absolute;inset:7px 9px 8px;background:linear-gradient(90deg,#8d9994,#d2d5ca 45%,#89938e);border-radius:4px}
+.tablePad{position:absolute;inset:7px 9px 8px;background:repeating-linear-gradient(90deg,transparent 0 48px,#66716d22 49px 50px),linear-gradient(90deg,#87928c,#e0e1d5 45%,#929c95);border-radius:4px;box-shadow:inset 0 2px 8px #fff8,inset 0 -7px 12px #26302d55}
+.tableRail{position:absolute;left:-12px;right:-12px;top:25%;height:10px;background:linear-gradient(#d2d9d0,#4b5654);border:1px solid #20292a;border-radius:3px;box-shadow:0 3px 5px #000}
+.headRest{position:absolute;top:-12px;left:38%;width:24%;height:36px;border-radius:50% 50% 6px 6px;background:linear-gradient(#c6cec4,#5a6562);border:3px solid #263031;box-shadow:0 5px 10px #0008}
 .tableLeg{position:absolute;top:23%;height:72%;width:12px;background:linear-gradient(90deg,#20292c,#a4aeaa,#293235);border-radius:3px}
 .tableLeg.l{left:12%}.tableLeg.r{right:12%}
 .base{position:absolute;left:35%;right:35%;bottom:0;height:17%;background:linear-gradient(#aeb8b1,#30393b);border-radius:5px;box-shadow:0 0 12px #000}
@@ -30,13 +43,14 @@
 .monitor{position:absolute;z-index:4;left:7%;top:16%;width:110px;height:90px;border:9px solid #101719;border-radius:7px;background:#071014;box-shadow:0 0 15px #8ac1b322}
 .monitor:before{content:"";position:absolute;inset:12px 7px;background:linear-gradient(transparent 47%,#66c6b4 49% 51%,transparent 53%);background-size:100% 100%;animation:ecg 1.5s linear infinite}
 .monitor:after{content:"";position:absolute;left:47%;bottom:-25px;width:8px;height:25px;background:#667173}
+.monitorLabel{position:absolute;bottom:5px;left:0;right:0;text-align:center;color:#7ea99d;font:6px monospace;letter-spacing:1px}
 .hud{position:absolute;z-index:20;inset:0;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:17px 12px calc(14px + env(safe-area-inset-bottom));text-align:center}
 .eyebrow{font-size:10px;letter-spacing:.28em;color:#d5dfd9;text-shadow:0 2px 8px #000}
 .controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;pointer-events:auto}
 button{border:1px solid #aebbb4;background:linear-gradient(#3b494a,#121a1d);color:#edf2e9;padding:14px 18px;min-width:138px;font-size:11px;font-weight:bold;letter-spacing:.12em;touch-action:manipulation}
 .hint,.status{font-size:10px;letter-spacing:.12em;color:#e0e8df;text-shadow:0 2px 8px #000;margin-top:9px}
 .triggered .table{animation:tableLurch .55s ease-in-out 7}.triggered .lampArm{animation:lampViolent .45s ease-in-out 8}.triggered .shadowFigure{animation:shadowRush 3s ease-in-out 1}
-.triggered .tool{animation-duration:.08s}
+.triggered .tool{animation-duration:.08s}.triggered .stool{animation:stoolJolt .45s ease-in-out 5}.triggered .cable{animation:cableSway .3s ease-in-out 8}
 @keyframes lampSwing{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(4deg)}}
 @keyframes lightFlicker{0%,84%,88%,92%,100%{opacity:1}86%,90%{opacity:.22}}
 @keyframes beamPulse{0%,100%{opacity:.7}86%,90%{opacity:.15}}
@@ -47,20 +61,25 @@ button{border:1px solid #aebbb4;background:linear-gradient(#3b494a,#121a1d);colo
 @keyframes tableLurch{0%,100%{translate:0 0;rotate:0}30%{translate:-22px 12px;rotate:-1.5deg}65%{translate:24px -7px;rotate:1.2deg}}
 @keyframes lampViolent{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(17deg)}}
 @keyframes shadowRush{0%{transform:translateX(0) scale(.7);opacity:.2}55%{transform:translateX(-60%) scale(1.5);opacity:.95}100%{transform:translateX(-25%) scale(1.1);opacity:.65}}
+@keyframes stoolRoll{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(8px,0) rotate(2deg)}}
+@keyframes stoolJolt{0%,100%{transform:translateX(0)}35%{transform:translateX(-32px) rotate(-8deg)}70%{transform:translateX(22px) rotate(5deg)}}
+@keyframes cableSway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(3deg)}}
 @media(max-width:520px){.table{width:74vw;top:55%;height:23%}.instrumentTray{width:105px;left:3%;top:57%}.monitor{left:3%;top:19%;transform:scale(.8);transform-origin:top left}.window{right:4%;width:24%}.glass{left:5%;width:23%}}
 @media(prefers-reduced-motion:reduce){.table,.lampArm,.lampHead,.tool,.shadowFigure,.monitor:before{animation-duration:12s}}
 </style></head>
 <body>
 <main class="scene" id="scene">
-<div class="backwall"></div><div class="tiles"></div><div class="window"></div><div class="glass"><div class="shadowFigure"></div></div><div class="ceilingGlow"></div>
-<div class="lampArm"><div class="lampHead"></div></div><div class="monitor"></div><div class="instrumentTray"><i class="tool"></i><i class="tool"></i><i class="tool"></i><i class="tool"></i></div>
-<div class="floor"></div><div class="table"><div class="tableTop"><div class="tablePad"></div></div><div class="tableLeg l"></div><div class="tableLeg r"></div><div class="base"></div></div>
+<div class="backwall"></div><div class="tiles"></div><div class="cabinet"></div><div class="window"></div><div class="glass"><div class="shadowFigure"></div></div><div class="ceilingGlow"></div><div class="cable"></div><div class="sink"></div><div class="stool"></div>
+<div class="lampArm"><div class="lampHead"></div></div><div class="monitor"><div class="monitorLabel">PATIENT MONITOR · SIGNAL LOST</div></div><div class="instrumentTray"><i class="tool"></i><i class="tool"></i><i class="tool"></i><i class="tool"></i></div>
+<div class="floor"></div><div class="floorReflection"></div><div class="table"><div class="tableTop"><div class="tablePad"></div><div class="headRest"></div><div class="tableRail"></div></div><div class="tableLeg l"></div><div class="tableLeg r"></div><div class="base"></div></div>
 <div class="hud"><div class="eyebrow">TIKNATION · GIFT REBUILD LAB</div><div><div class="hint">THE ROOM IS EMPTY · SOMETHING IS MOVING</div><div class="controls"><button id="trigger">TRIGGER GIFT</button><button id="sound">SOUND: OFF</button></div><div class="status" id="status">OPERATING ROOM · NIGHT SHIFT</div></div></div>
 </main>
 <script>
 (()=>{const scene=document.getElementById('scene'),status=document.getElementById('status'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound');let audio=null,on=false,busy=false;
 function noise(freq,delay,duration,volume,wave='sawtooth'){if(!on||!audio)return;const osc=audio.createOscillator(),gain=audio.createGain(),filter=audio.createBiquadFilter();osc.type=wave;osc.frequency.setValueAtTime(freq,audio.currentTime+delay);osc.frequency.exponentialRampToValueAtTime(Math.max(28,freq*.45),audio.currentTime+delay+duration);filter.type='lowpass';filter.frequency.value=wave==='triangle'?900:330;gain.gain.setValueAtTime(.0001,audio.currentTime+delay);gain.gain.exponentialRampToValueAtTime(volume,audio.currentTime+delay+.06);gain.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+duration);osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);osc.start(audio.currentTime+delay);osc.stop(audio.currentTime+delay+duration+.03)}
 sound.addEventListener('click',async()=>{on=!on;if(on){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){on=false;status.textContent='AUDIO NOT SUPPORTED'}else{audio=audio||new AC();if(audio.state==='suspended')await audio.resume();noise(58,0,.5,.025,'triangle')}}sound.textContent='SOUND: '+(on?'ON':'OFF')});
-trigger.addEventListener('click',()=>{if(busy)return;busy=true;scene.classList.add('triggered');status.textContent='THE TABLE IS MOVING BY ITSELF…';noise(48,0,2.4,.09,'triangle');noise(165,.25,1.1,.05);noise(92,1.2,1.8,.07);noise(240,2.1,.6,.035,'triangle');noise(62,3,1.5,.08);setTimeout(()=>status.textContent='SOMETHING IS BEHIND THE GLASS',1900);setTimeout(()=>{scene.classList.remove('triggered');status.textContent='THE ROOM HAS GONE QUIET… FOR NOW';busy=false},4800)});
+function clang(delay,volume){if(!on||!audio)return;const o=audio.createOscillator(),g=audio.createGain(),f=audio.createBiquadFilter();o.type='triangle';o.frequency.setValueAtTime(1180,audio.currentTime+delay);o.frequency.exponentialRampToValueAtTime(260,audio.currentTime+delay+.55);f.type='bandpass';f.frequency.value=1250;f.Q.value=2.4;g.gain.setValueAtTime(.0001,audio.currentTime+delay);g.gain.exponentialRampToValueAtTime(volume,audio.currentTime+delay+.012);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+.7);o.connect(f);f.connect(g);g.connect(audio.destination);o.start(audio.currentTime+delay);o.stop(audio.currentTime+delay+.72)}
+function rumble(delay,duration,volume){if(!on||!audio)return;const n=audio.createBufferSource(),g=audio.createGain(),f=audio.createBiquadFilter(),len=Math.ceil(audio.sampleRate*duration),buf=audio.createBuffer(1,len,audio.sampleRate),data=buf.getChannelData(0);for(let i=0;i<len;i++)data[i]=(Math.random()*2-1)*.7;n.buffer=buf;f.type='lowpass';f.frequency.value=115;g.gain.setValueAtTime(.0001,audio.currentTime+delay);g.gain.linearRampToValueAtTime(volume,audio.currentTime+delay+.3);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+duration);n.connect(f);f.connect(g);g.connect(audio.destination);n.start(audio.currentTime+delay)}
+trigger.addEventListener('click',()=>{if(busy)return;busy=true;scene.classList.add('triggered');status.textContent='THE TABLE IS MOVING BY ITSELF…';rumble(0,4.4,.11);noise(48,0,2.4,.065,'triangle');noise(92,1.2,1.8,.05);clang(.55,.055);clang(2.15,.045);noise(62,3,1.5,.06);setTimeout(()=>status.textContent='SOMETHING IS BEHIND THE GLASS',1900);setTimeout(()=>{scene.classList.remove('triggered');status.textContent='THE ROOM HAS GONE QUIET… FOR NOW';busy=false},4800)});
 })();
 </script></body></html>
