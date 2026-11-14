@@ -1,149 +1,95 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>THE HANGING HOUSE · TikNation Gift Rebuild Lab</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover"><title>THE HANGING HOUSE · TikNation Gift Rebuild Lab</title>
 <style>
-:root{color-scheme:dark;--amber:#d89b50;--red:#9d2925}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050607;color:#eee;font-family:Arial,Helvetica,sans-serif}
-body{background:radial-gradient(ellipse at 50% 45%,#20201e 0,#090a0b 55%,#020303 100%)}
-#stage{position:absolute;inset:0;perspective:900px;overflow:hidden;background:linear-gradient(#101214 0%,#080909 70%,#020303 100%)}
-#room{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(0deg) rotateZ(0deg) scale(1);transition:transform 1s ease}
-#ceiling{position:absolute;width:130vw;height:120vh;left:-15vw;top:-48vh;transform:rotateX(72deg) translateZ(220px);transform-origin:center bottom;background:repeating-linear-gradient(90deg,#282725 0 2px,#171716 2px 100px),linear-gradient(#37342e,#121212);border:14px solid #080808;box-shadow:inset 0 0 90px #000,0 20px 60px #000}
-#backwall{position:absolute;left:12%;top:10%;width:76%;height:70%;transform:translateZ(-300px);background:linear-gradient(90deg,#171717,#37332c 48%,#191817);border:10px solid #090909;box-shadow:inset 0 0 100px #000}
-#wallpaper{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 95px,#0b0b0b 97px 100px),repeating-linear-gradient(0deg,transparent 0 115px,#0b0b0b 117px 120px);opacity:.7}
-#window{position:absolute;left:36%;top:15%;width:28%;height:58%;border:13px solid #080909;background:linear-gradient(140deg,#07090a,#111515 55%,#030404);box-shadow:0 0 35px #000,inset 0 0 35px #000}
-#window:before,#window:after{content:"";position:absolute;background:#090a0a}
-#window:before{width:8px;height:100%;left:50%}#window:after{height:8px;width:100%;top:50%}
-#moon{position:absolute;right:12%;top:14%;width:54px;height:54px;border-radius:50%;background:#b6a58a;box-shadow:0 0 35px #b9a27a;opacity:.45}
-#floor{position:absolute;left:-15%;top:58%;width:130%;height:90%;transform:rotateX(78deg) translateZ(-80px);transform-origin:top;background:repeating-linear-gradient(90deg,#161514 0 95px,#24211d 96px 100px),repeating-linear-gradient(0deg,transparent 0 95px,#080808 97px 100px);box-shadow:inset 0 0 130px #000}
-#chandelier{position:absolute;left:50%;top:2%;width:5px;height:24%;background:#171717;transform:translateX(-50%)}
-#chandelier:after{content:"";position:absolute;left:-58px;bottom:-14px;width:120px;height:22px;border-radius:50%;background:radial-gradient(ellipse,#d5a65e 0,#80603c 18%,#1b1711 55%,transparent 72%);filter:drop-shadow(0 0 18px #b27a37)}
-.furniture{position:absolute;transform-style:preserve-3d;filter:drop-shadow(0 16px 13px #000)}
-#sofa{width:280px;height:100px;left:13%;top:55%;background:linear-gradient(#3b2922,#201713);border:8px solid #120e0c;border-radius:15px;transform:rotateX(10deg) rotateY(-8deg) translateZ(60px)}
-#sofa:before{content:"";position:absolute;left:12px;right:12px;top:-50px;height:54px;background:linear-gradient(100deg,#4b342b,#211815);border:7px solid #120e0c;border-radius:14px}
-#table{width:230px;height:18px;left:55%;top:61%;background:linear-gradient(#6b5942,#211a13);transform:rotateY(-18deg) translateZ(90px);box-shadow:0 14px 0 -5px #15110d}
-#table:before,#table:after{content:"";position:absolute;top:12px;width:12px;height:100px;background:#18130f}#table:before{left:22px}#table:after{right:22px}
-#chair{width:90px;height:80px;left:73%;top:48%;background:linear-gradient(90deg,#201711,#493322);border:7px solid #120e0a;transform:rotateY(25deg) translateZ(130px)}
-#chair:before{content:"";position:absolute;left:-6px;top:-68px;width:88px;height:70px;background:linear-gradient(90deg,#241911,#503a2a);border:7px solid #120e0a}
-.chain{position:absolute;top:-10%;height:70%;width:4px;background:repeating-linear-gradient(0deg,#6b6254 0 5px,#171615 5px 9px);transform-origin:top;filter:drop-shadow(0 0 3px #000)}
-#chain1{left:29%}#chain2{left:68%}
-.swing{animation:swing 1.1s ease-in-out infinite alternate}
-@keyframes swing{from{transform:rotate(17deg)}to{transform:rotate(-18deg)}}
-#debris{position:absolute;inset:0;pointer-events:none}
-.shard{position:absolute;width:30px;height:55px;background:linear-gradient(120deg,#8e8a7d,#272522 45%,#aaa08a);clip-path:polygon(50% 0,100% 80%,22% 100%,0 35%);opacity:0;filter:drop-shadow(0 0 6px #000)}
-#shadow{position:absolute;width:90px;height:220px;left:46%;top:23%;opacity:0;background:radial-gradient(ellipse at 50% 20%,#000 0 22%,transparent 24%),linear-gradient(90deg,transparent,#020202 25% 75%,transparent);filter:blur(7px);transform:scale(1.5)}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#030405;color:#eee;font-family:Arial,Helvetica,sans-serif}
+#scene{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#34302a,#08090a 72%)}canvas{display:block;width:100%;height:100%}
+#vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 38%,#000b 100%)}
 #flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
-#dust{position:absolute;inset:0;opacity:.15;background-image:radial-gradient(#d1c5a9 1px,transparent 1.5px);background-size:37px 43px;mix-blend-mode:screen}
-#vignette{position:absolute;inset:0;background:radial-gradient(ellipse,transparent 25%,#000 100%);pointer-events:none}
-#hud{position:absolute;z-index:10;left:0;right:0;bottom:0;padding:22px 18px max(20px,env(safe-area-inset-bottom));background:linear-gradient(transparent,rgba(0,0,0,.94) 35%)}
-.eyebrow{font-size:10px;letter-spacing:.32em;color:#c49b69;text-transform:uppercase}
-h1{font-size:clamp(24px,5vw,42px);letter-spacing:.13em;margin:7px 0 5px;font-weight:800}
-#desc{font-size:13px;color:#bdb7ae;max-width:580px;line-height:1.45;margin-bottom:14px}
-#trigger{border:1px solid #9c7144;background:linear-gradient(#4b3020,#211710);color:#fff;padding:14px 24px;font-weight:800;letter-spacing:.18em;font-size:12px;border-radius:2px;min-width:210px;box-shadow:0 0 24px #6e3c1d55}
-#trigger:disabled{opacity:.5}
-#status{display:inline-block;margin-left:12px;font-size:10px;letter-spacing:.15em;color:#c9a579}
-#label{position:absolute;z-index:9;top:18px;left:18px;font-size:9px;letter-spacing:.22em;color:#b8a58c;background:#07070799;padding:8px 10px;border:1px solid #52412e}
-body.event #room{animation:roomDrop 5s cubic-bezier(.2,.7,.2,1) both}
-body.event #stage{animation:violent 5s linear both}
-body.event #shadow{animation:shadowReveal 4.6s 1.8s both}
-body.event #chandelier{animation:lampFlicker 5s both}
-body.event #flash{animation:flashBurst 5s both}
-body.event #chain1{animation:swing .34s infinite alternate}
-body.event #chain2{animation:swing .28s infinite alternate-reverse}\nbody.event #wallpaper{animation:lampFlicker 5s both}
-body.event #sofa{animation:sofaFall 4.4s .7s both}
-body.event #table{animation:tableFlip 4.1s 1s both}
-body.event #chair{animation:chairFly 3.2s 1.3s both}
-body.event .shard{animation:shardFly 2.2s 2s both}
-@keyframes roomDrop{0%{transform:rotateZ(0) rotateX(0) scale(1)}20%{transform:rotateZ(8deg) rotateX(8deg) scale(1.03)}55%{transform:rotateZ(178deg) rotateX(15deg) scale(1.08)}100%{transform:rotateZ(180deg) rotateX(0) scale(1.12)}}
-@keyframes violent{0%,100%{transform:translate(0,0)}10%,30%,55%,75%{transform:translate(-9px,5px)}20%,45%,65%,85%{transform:translate(8px,-5px)}}
-@keyframes shadowReveal{0%{opacity:0;transform:scale(.4)}35%{opacity:.85;transform:scale(1.6)}70%{opacity:1;transform:scale(2.4) translateY(18px)}100%{opacity:0;transform:scale(3.5) translateY(60px)}}
-@keyframes lampFlicker{0%,8%,14%,22%,27%,39%,44%,100%{opacity:1}10%,12%,24%,25%,41%,42%,70%{opacity:.08}}
-@keyframes flashBurst{0%,8%,15%,23%,33%,44%,100%{opacity:0}9%,11%,24%,25%{opacity:.9}34%{opacity:.25}45%{opacity:1}47%{opacity:0}}
-@keyframes sofaFall{0%,20%{transform:rotateX(10deg) rotateY(-8deg) translateZ(60px)}55%{transform:rotate(65deg) translate(40px,-90px) translateZ(140px)}100%{transform:rotate(145deg) translate(170px,-220px) translateZ(200px);opacity:.1}}
-@keyframes tableFlip{0%,20%{transform:rotateY(-18deg) translateZ(90px)}60%{transform:rotate(65deg) translate(70px,-100px) translateZ(170px)}100%{transform:rotate(170deg) translate(160px,-260px) translateZ(230px);opacity:0}}
-@keyframes chairFly{0%,20%{transform:rotateY(25deg) translateZ(130px)}100%{transform:translate(240px,-360px) rotate(440deg) translateZ(250px);opacity:0}}
-@keyframes shardFly{0%{opacity:0;transform:translate(0,0) rotate(0)}15%{opacity:.95}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(700deg)}}
-@media(max-width:600px){#backwall{left:3%;width:94%;top:12%;height:63%}#sofa{width:180px;left:3%;top:56%}#table{width:150px;left:48%;top:62%}#chair{left:73%;top:48%;transform:scale(.7)}#window{left:33%;width:34%}#hud{padding-left:14px;padding-right:14px}#desc{max-width:340px}}
-@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition:none!important}}
-
-/* Cinematic material pass: architectural depth, aged finishes and grounded motion */
-#stage{perspective:1200px;background:radial-gradient(ellipse at 48% 38%,#3a3429 0,#171714 42%,#050607 82%)}
-#backwall{background:
- repeating-linear-gradient(90deg,transparent 0 112px,rgba(0,0,0,.45) 113px 117px),
- linear-gradient(90deg,#171512,#4a3d2c 18%,#2a241c 50%,#493a29 82%,#171512);
- border:16px ridge #211b14;box-shadow:inset 0 0 80px #000,0 20px 55px #000}
-#wallpaper{background:
- repeating-linear-gradient(90deg,transparent 0 72px,rgba(7,6,5,.7) 73px 76px),
- repeating-linear-gradient(0deg,transparent 0 102px,rgba(7,6,5,.55) 103px 106px),
- radial-gradient(ellipse at 50% 40%,rgba(160,125,76,.18),transparent 65%);
- opacity:.9}
-#backwall:before{content:"";position:absolute;inset:12px;border:2px solid #786044;box-shadow:inset 0 0 0 5px #201910,inset 0 0 30px #000}
-#window{border:16px ridge #29251e;background:linear-gradient(180deg,#070b11,#18212a 55%,#080b0e);box-shadow:0 0 25px #000,inset 0 0 40px #000,0 0 60px #9a835333}
-#window:before{width:12px;background:linear-gradient(90deg,#15120f,#594a35,#17130f);left:49%}
-#window:after{height:12px;background:linear-gradient(#17130f,#574731,#17130f);top:49%}
-#moon{background:radial-gradient(circle at 35% 35%,#e5dfc8,#a69c84 48%,#555044 72%,transparent 74%);box-shadow:0 0 60px 18px #a99a7833;opacity:.75}
-#floor{background:
- repeating-linear-gradient(90deg,transparent 0 118px,rgba(0,0,0,.75) 119px 123px),
- repeating-linear-gradient(0deg,#29231b 0 58px,#17130f 59px 62px,#33291e 63px 118px);
- border-top:12px solid #120e0a;box-shadow:inset 0 0 100px #000}
-#ceiling{background:
- repeating-linear-gradient(90deg,transparent 0 115px,rgba(0,0,0,.8) 116px 122px),
- repeating-linear-gradient(0deg,#29251f 0 78px,#171411 79px 84px),
- linear-gradient(135deg,#514331,#181512);
- border:18px ridge #201910}
-#chandelier{height:30%;width:6px;background:linear-gradient(90deg,#080706,#9b835a,#100d09);filter:drop-shadow(0 0 5px #000)}
-#chandelier:after{left:-74px;width:154px;height:34px;background:radial-gradient(ellipse,#fff0bd 0,#d8a75c 12%,#72502c 27%,#17120d 55%,transparent 72%);filter:drop-shadow(0 0 24px #e0a14c)}
-#sofa{height:104px;border:12px solid #21130f;border-radius:22px 22px 9px 9px;background:
- repeating-linear-gradient(90deg,rgba(0,0,0,.14) 0 3px,transparent 4px 10px),
- linear-gradient(110deg,#5b3b2e,#241713 72%);box-shadow:inset 0 12px 20px #9c6c4933,0 22px 22px #000}
-#sofa:before{top:-57px;height:61px;border:12px ridge #291911;border-radius:25px 25px 5px 5px;background:
- repeating-linear-gradient(90deg,rgba(0,0,0,.22) 0 3px,transparent 4px 11px),
- linear-gradient(100deg,#704a39,#302019 70%);box-shadow:inset 0 8px 18px #b17a4b22}
-#sofa:after{content:"";position:absolute;left:12%;top:5px;width:31%;height:55px;border-radius:12px;background:linear-gradient(130deg,#76503d,#39251c);box-shadow:115px 0 0 -2px #4c3025,inset 0 0 15px #100907}
-#table{height:22px;border:3px solid #17110b;border-radius:8px;background:linear-gradient(#ad8a57,#49331e 45%,#21170f);box-shadow:0 15px 0 -5px #15110d,0 0 18px #000}
-#chair{border:9px ridge #281a11;border-radius:12px;background:linear-gradient(90deg,#21150f,#65452d 48%,#20140e);box-shadow:inset 0 0 15px #000}
-#chair:before{border:9px ridge #281a11;border-radius:12px 12px 5px 5px;background:linear-gradient(90deg,#21150f,#684a30 48%,#20140e)}
-.chain{width:6px;background:repeating-linear-gradient(0deg,#c0ad8a 0 3px,#28231c 3px 7px);filter:drop-shadow(2px 3px 3px #000)}
-#chain1:after,#chain2:after{content:"";position:absolute;bottom:-16px;left:-8px;width:22px;height:22px;border:5px solid #6c604c;border-radius:50%;background:#17130e}
-#dust{opacity:.28;background-image:radial-gradient(#c9b99b 1px,transparent 1.5px),radial-gradient(#8c806c 1px,transparent 1.5px);background-size:41px 47px,73px 67px}
-#shadow{background:radial-gradient(ellipse at 50% 12%,#000 0 17%,transparent 19%),linear-gradient(90deg,transparent,#030303 28% 72%,transparent);filter:blur(3px) drop-shadow(0 0 15px #000)}
-/* The house lurches, but the camera never flips like a flat card */
-body.event #room{animation:houseLurch 5.3s cubic-bezier(.18,.72,.22,1) both}
-body.event #sofa{animation:sofaSwing 4.8s .55s both}
-body.event #table{animation:tableSkid 4.2s 1.15s both}
-body.event #chair{animation:chairSwing 4.5s 1.4s both}
-body.event #chandelier{animation:chandelierSwing 4.7s both}
-@keyframes houseLurch{0%,100%{transform:rotateZ(0) rotateX(0) scale(1)}12%{transform:rotateZ(-2deg) rotateX(1deg) scale(1.015)}30%{transform:rotateZ(5deg) rotateX(-3deg) scale(1.035)}52%{transform:rotateZ(11deg) rotateX(4deg) scale(1.06)}73%{transform:rotateZ(-7deg) rotateX(-2deg) scale(1.04)}100%{transform:rotateZ(0) rotateX(0) scale(1)}}
-@keyframes sofaSwing{0%,15%{transform:rotateX(10deg) rotateY(-8deg) translateZ(60px)}40%{transform:rotate(13deg) translate(35px,-40px) translateZ(80px)}68%{transform:rotate(-9deg) translate(-20px,18px) translateZ(65px)}100%{transform:rotate(3deg) translate(10px,8px) translateZ(60px)}}
-@keyframes tableSkid{0%,15%{transform:rotateY(-18deg) translateZ(90px)}45%{transform:rotateY(-34deg) translate(90px,-22px) translateZ(115px)}70%{transform:rotateY(18deg) translate(-30px,16px) translateZ(100px)}100%{transform:rotateY(-8deg) translate(18px,8px) translateZ(90px)}}
-@keyframes chairSwing{0%,15%{transform:rotateY(25deg) translateZ(130px)}45%{transform:rotate(38deg) translate(45px,-55px) translateZ(150px)}75%{transform:rotate(-24deg) translate(-18px,30px) translateZ(130px)}100%{transform:rotate(7deg) translate(8px,5px) translateZ(130px)}}
-@keyframes chandelierSwing{0%,100%{transform:translateX(-50%) rotate(0)}25%{transform:translateX(-50%) rotate(18deg)}50%{transform:translateX(-50%) rotate(-23deg)}75%{transform:translateX(-50%) rotate(12deg)}}
-\n</style></head>
-<body>
-<div id="stage"><div id="room">
-<div id="ceiling"></div><div id="backwall"><div id="wallpaper"></div><div id="window"><div id="moon"></div></div></div><div id="floor"></div>
-<div id="chandelier"></div><div class="chain" id="chain1"></div><div class="chain" id="chain2"></div>
-<div class="furniture" id="sofa"></div><div class="furniture" id="table"></div><div class="furniture" id="chair"></div>
-<div id="shadow"></div></div><div id="debris"></div><div id="dust"></div><div id="flash"></div><div id="vignette"></div></div>
-<div id="label">TIKNATION · GIFT REBUILD LAB · PREVIEW</div>
-<section id="hud"><div class="eyebrow">A house with no gravity</div><h1>THE HANGING HOUSE</h1><div id="desc">The room turns. The chains snap tight. Something is moving above you.</div><button id="trigger">TRIGGER THE INCIDENT</button><span id="status">STANDBY</span></section>
-<script>
-
-// Add moulded wall panels, aged portraits and practical wall sconces for real room scale.
-const wall=document.getElementById('backwall');
-for(let i=0;i<4;i++){const p=document.createElement('div');p.style.cssText='position:absolute;top:8%;bottom:8%;left:'+(5+i*24)+'%;width:17%;border:9px ridge #21180f;box-shadow:inset 0 0 0 3px #705638,inset 0 0 30px #000;background:linear-gradient(135deg,#34291d,#100e0b 65%,#493625);';wall.appendChild(p);
- const art=document.createElement('div');art.style.cssText='position:absolute;inset:13% 14%;border:5px ridge #806542;background:radial-gradient(ellipse at 50% 30%,#66533d 0 12%,#171411 35%,#050505 70%);box-shadow:0 0 15px #000';p.appendChild(art);
+#label{position:absolute;top:15px;left:15px;z-index:3;padding:8px 10px;background:#050505b8;border:1px solid #766047;color:#c7ae89;font-size:9px;letter-spacing:.22em}
+#hud{position:absolute;z-index:4;bottom:0;left:0;right:0;padding:35px 18px max(20px,env(safe-area-inset-bottom));background:linear-gradient(transparent,#030405f2 42%)}
+.eyebrow{font-size:10px;letter-spacing:.32em;color:#c9a16b}h1{font-size:clamp(25px,5vw,43px);letter-spacing:.14em;margin:7px 0 5px}
+#desc{font-size:13px;line-height:1.45;color:#c2bbb0;max-width:560px;margin:0 0 14px}
+button{min-width:215px;padding:14px 22px;border:1px solid #a17b4e;background:linear-gradient(#553923,#21160f);color:#fff;font-weight:800;letter-spacing:.17em;font-size:11px;border-radius:2px}
+button:disabled{opacity:.5}#status{margin-left:12px;color:#c9a579;font-size:10px;letter-spacing:.15em}
+body.event #flash{animation:flash 5.8s both}
+@keyframes flash{0%,9%,17%,29%,44%,100%{opacity:0}10%,11%{opacity:.75}18%,19%{opacity:.18}30%{opacity:.95}31%{opacity:0}45%{opacity:.5}46%{opacity:0}}
+@media(max-width:600px){#hud{padding-left:14px;padding-right:14px}#desc{max-width:340px}}
+@media(prefers-reduced-motion:reduce){#flash{display:none}}
+</style></head><body>
+<div id="scene"></div><div id="vignette"></div><div id="flash"></div>
+<div id="label">TIKNATION · GIFT REBUILD LAB · 3D PREVIEW</div>
+<section id="hud"><div class="eyebrow">A house with no gravity</div><h1>THE HANGING HOUSE</h1><p id="desc">An old mansion groans under impossible pressure. Something is pulling the room out of place.</p><button id="trigger">TRIGGER THE INCIDENT</button><span id="status">STANDBY</span></section>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+const host=document.getElementById('scene'),status=document.getElementById('status'),button=document.getElementById('trigger');
+let renderer,scene,camera,room,clock,active=false,start=0,audioCtx,master;
+try{
+renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;host.appendChild(renderer.domElement);
+scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x090a0b,.035);camera=new THREE.PerspectiveCamera(48,innerWidth/innerHeight,.1,100);camera.position.set(0,4.0,16.5);camera.lookAt(0,3.2,-1);
+clock=new THREE.Clock();room=new THREE.Group();scene.add(room);
+const mats={wall:new THREE.MeshStandardMaterial({color:0x554431,roughness:.96}),dark:new THREE.MeshStandardMaterial({color:0x17130f,roughness:.9}),wood:new THREE.MeshStandardMaterial({color:0x51351f,roughness:.72}),gold:new THREE.MeshStandardMaterial({color:0x98764a,metalness:.68,roughness:.35}),glass:new THREE.MeshPhysicalMaterial({color:0x19222a,metalness:.35,roughness:.12,transparent:true,opacity:.55}),fabric:new THREE.MeshStandardMaterial({color:0x432b24,roughness:1}),black:new THREE.MeshStandardMaterial({color:0x050505,roughness:1})};
+function matTexture(base,kind='wood'){const c=document.createElement('canvas');c.width=512;c.height=512;const x=c.getContext('2d');x.fillStyle=base;x.fillRect(0,0,512,512);for(let i=0;i<9000;i++){const a=Math.random()*.13;x.fillStyle=Math.random()>.5?'rgba(230,210,170,'+a+')':'rgba(0,0,0,'+a+')';if(kind==='wood')x.fillRect(Math.random()*512,Math.random()*512,Math.random()*65+2,Math.random()*2+1);else{x.beginPath();x.arc(Math.random()*512,Math.random()*512,Math.random()*2+.2,0,Math.PI*2);x.fill()}}const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(2,2);t.colorSpace=THREE.SRGBColorSpace;return t}
+const woodTex=matTexture('#49301d'),fabricTex=matTexture('#39231e','fabric');const woodMat=new THREE.MeshStandardMaterial({map:woodTex,roughness:.78}),fabricMat=new THREE.MeshStandardMaterial({map:fabricTex,roughness:1});
+function box(parent,name,pos,size,material,bevel=0){const g=new THREE.BoxGeometry(...size);const m=new THREE.Mesh(g,material);m.name=name;m.position.set(...pos);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
+function cyl(parent,pos,r1,r2,h,material,segments=12){const m=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,segments),material);m.position.set(...pos);m.castShadow=true;parent.add(m);return m}
+function sphere(parent,pos,scale,material){const m=new THREE.Mesh(new THREE.SphereGeometry(1,20,14),material);m.position.set(...pos);m.scale.set(...scale);m.castShadow=true;parent.add(m);return m}
+scene.add(new THREE.HemisphereLight(0x9b9ba2,0x17100a,1.15));
+const warm=new THREE.PointLight(0xffc47a,100,26,2);warm.position.set(0,6.8,1);scene.add(warm);
+const moonLight=new THREE.PointLight(0x7892aa,34,20,2);moonLight.position.set(0,4,-5.3);scene.add(moonLight);
+const fill=new THREE.DirectionalLight(0xb8a58b,1.1);fill.position.set(-5,8,7);scene.add(fill);
+// Architecture: floor, ceiling, three walls, skirting and carved wall panels.
+box(room,'floor',[0,-.18,-1],[14,.35,13],woodMat);box(room,'ceiling',[0,8,-1],[14,.3,13],mats.dark);
+box(room,'back wall',[0,4,-7.5],[14,8,.35],mats.wall);box(room,'left wall',[-7,4,-1],[.35,8,13],mats.wall);box(room,'right wall',[7,4,-1],[.35,8,13],mats.wall);
+for(let z of [-7,5])box(room,'crown moulding',[0,7.65,z],[14,.28,.3],mats.gold);
+for(let x of [-6.7,6.7])box(room,'side moulding',[x,4,-1],[.28,8,13],mats.gold);
+for(let x=-5.8;x<=5.9;x+=2.9){box(room,'panel frame',[x,4,-7.25],[2.35,5.9,.16],mats.dark);box(room,'panel inset',[x,4,-7.14],[2.05,5.55,.09],woodMat);box(room,'panel inner',[x,4,-7.07],[1.83,5.25,.04],mats.wall)}
+// Tall mullioned window, cold moonlight and moving silhouette beyond the glass.
+box(room,'window recess',[0,4.2,-7.22],[3.5,5.2,.18],mats.dark);box(room,'window glass',[0,4.2,-7.08],[3.15,4.85,.05],mats.glass);
+for(let x of [-1.62,0,1.62])box(room,'window mullion',[x,4.2,-6.98],[.11,4.95,.13],mats.gold);
+for(let y of [1.8,4.2,6.6])box(room,'window crossbar',[0,y,-6.97],[3.3,.12,.13],mats.gold);
+const moon=sphere(room,[2.6,6.1,-6.85],[.42,.42,.08],new THREE.MeshBasicMaterial({color:0xc9c2a6}));moon.material.transparent=true;moon.material.opacity=.55;
+// Sofa with separate upholstered cushions, rolled arms, carved feet and back.
+const sofa=new THREE.Group();sofa.position.set(-4,.1,-1.4);room.add(sofa);
+box(sofa,'sofa plinth',[0,.62,0],[3.35,.55,1.25],woodMat);box(sofa,'sofa seat',[0,1.02,.02],[2.9,.42,1.08],fabricMat);
+box(sofa,'sofa back',[0,1.8,-.45],[3.05,1.35,.34],fabricMat);
+for(let x of [-1.48,1.48]){box(sofa,'sofa arm',[x,1.38,.04],[.48,.9,1.15],woodMat);sphere(sofa,[x,1.82,.04],[.28,.2,.58],fabricMat);cyl(sofa,[x,.32,.42],.1,.14,.62,woodMat)}
+for(let x of [-.92,0,.92]){box(sofa,'seat cushion',[x,1.29,.12],[.84,.18,.82],fabricMat);sphere(sofa,[x,1.91,-.23],[.39,.48,.15],fabricMat)}
+// Coffee table with thick top and four turned legs.
+const table=new THREE.Group();table.position.set(.1,0,-.2);room.add(table);
+box(table,'table top',[0,1.15,0],[2.5,.18,1.35],woodMat);
+for(let x of [-1.05,1.05])for(let z of [-.48,.48]){cyl(table,[x,.58,z],.09,.14,1.05,woodMat);sphere(table,[x,.98,z],[.13,.09,.13],mats.gold)}
+// High-backed chair.
+const chair=new THREE.Group();chair.position.set(4,.1,-1.4);room.add(chair);
+box(chair,'chair seat',[0,1,0],[1.2,.22,1.05],woodMat);box(chair,'chair cushion',[0,1.16,.05],[1.05,.16,.9],fabricMat);box(chair,'chair back',[0,2,-.42],[1.2,1.8,.2],woodMat);box(chair,'chair back upholstery',[0,2,-.29],[.92,1.5,.08],fabricMat);
+for(let x of [-.48,.48])for(let z of [-.42,.42])cyl(chair,[x,.48,z],.055,.09,.95,woodMat);
+for(let x of [-.4,0,.4])sphere(chair,[x,2.25,-.22],[.08,.12,.06],mats.gold);
+// Chandelier: chain, iron ring, curved arms, candles and flames.
+const lamp=new THREE.Group();lamp.position.set(0,7.65,-.2);room.add(lamp);
+for(let i=0;i<15;i++){const link=cyl(lamp,[0,-i*.17,0],.035,.035,.12,mats.gold,8);link.rotation.x=Math.PI/2}
+cyl(lamp,[0,-2.55,0],.08,.08,.18,mats.gold);
+const ring=new THREE.Mesh(new THREE.TorusGeometry(.95,.07,10,48),mats.gold);ring.position.y=-2.65;ring.rotation.x=Math.PI/2;lamp.add(ring);
+for(let i=0;i<6;i++){const a=i*Math.PI/3,x=Math.cos(a)*.88,z=Math.sin(a)*.88;const arm=cyl(lamp,[x*.52,-2.63,z*.52],.035,.045,1.0,mats.gold);arm.rotation.z=Math.cos(a)*.9;arm.rotation.x=Math.sin(a)*.9;cyl(lamp,[x,-2.38,z],.07,.07,.34,mats.gold);const flame=sphere(lamp,[x,-2.12,z],[.075,.17,.075],new THREE.MeshBasicMaterial({color:0xffbd65}));flame.userData.flame=true}
+const chandelierLight=new THREE.PointLight(0xffb765,48,13,2);chandelierLight.position.set(0,-2.15,0);lamp.add(chandelierLight);
+// Hanging chains at the ceiling edges with weighted iron hooks.
+const chains=[];for(let x of [-4.7,4.7]){const chain=new THREE.Group();chain.position.set(x,7.8,-1);room.add(chain);for(let i=0;i<25;i++){const link=new THREE.Mesh(new THREE.TorusGeometry(.055,.018,6,10),mats.gold);link.position.y=-i*.18;link.rotation.x=Math.PI/2+(i%2)*.45;chain.add(link)}const hook=cyl(chain,[0,-4.55,0],.11,.08,.24,mats.gold);chains.push(chain)}
+// Wall portraits: carved frames and shadowy painted figures.
+for(let x of [-5.4,5.4]){box(room,'portrait frame',[x,4.7,-7.0],[1.15,1.75,.18],mats.gold);box(room,'portrait canvas',[x,4.7,-6.88],[.92,1.5,.05],mats.black);sphere(room,[x,5.05,-6.82],[.19,.25,.06],new THREE.MeshStandardMaterial({color:0x65513a,roughness:1}));box(room,'portrait torso',[x,4.48,-6.81],[.48,.58,.07],mats.dark)}
+// Dust motes suspended in the light.
+const dustGeo=new THREE.BufferGeometry(),dustN=420,dustPos=new Float32Array(dustN*3);for(let i=0;i<dustN;i++){dustPos[i*3]=(Math.random()-.5)*13;dustPos[i*3+1]=Math.random()*7;dustPos[i*3+2]=(Math.random()-.5)*11-1}dustGeo.setAttribute('position',new THREE.BufferAttribute(dustPos,3));const dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:0xc9b58e,size:.035,transparent:true,opacity:.45}));room.add(dust);
+// A dark figure passes behind the window during the event.
+const figure=new THREE.Group();figure.position.set(-5,3.8,-6.78);room.add(figure);sphere(figure,[0,1.1,0],[.35,.48,.08],mats.black);box(figure,'figure body',[0,.15,0],[.8,1.8,.16],mats.black);figure.visible=false;
+// Flying plaster, glass and splinter debris, with actual 3D bodies.
+const debris=[];const shardMat=new THREE.MeshStandardMaterial({color:0xaaa08d,metalness:.25,roughness:.42});for(let i=0;i<45;i++){const g=new THREE.Mesh(new THREE.TetrahedronGeometry(.08+Math.random()*.16),i%3?shardMat:mats.wood);g.visible=false;room.add(g);debris.push(g)}
+const moving=[sofa,table,chair];const base=moving.map(o=>({p:o.position.clone(),r:o.rotation.clone()}));
+}catch(e){host.innerHTML='<div style="padding:40px;color:#fff">3D preview could not initialize in this browser. Please check the connection and reload.</div>';console.error(e)}
+function startAudio(){try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();master=audioCtx.createGain();master.gain.value=.72;master.connect(audioCtx.destination);audioCtx.resume();const noise=(freq,dur,vol)=>{const n=audioCtx.sampleRate*dur,b=audioCtx.createBuffer(1,n,audioCtx.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,.7);const s=audioCtx.createBufferSource(),f=audioCtx.createBiquadFilter(),g=audioCtx.createGain();s.buffer=b;f.type='lowpass';f.frequency.value=freq;g.gain.value=vol;s.connect(f);f.connect(g);g.connect(master);s.start()};const boom=(f,d,v)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sawtooth';o.frequency.setValueAtTime(f,audioCtx.currentTime);o.frequency.exponentialRampToValueAtTime(28,audioCtx.currentTime+d);g.gain.setValueAtTime(v,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);o.connect(g);g.connect(master);o.start();o.stop(audioCtx.currentTime+d)};boom(58,4,.2);noise(360,4,.18);setTimeout(()=>{boom(95,1.3,.15);noise(1500,1.2,.15)},850);setTimeout(()=>{boom(43,3,.24);noise(220,3,.22)},2500);setTimeout(()=>{boom(32,2.5,.2);noise(500,2,.2)},3900)}catch(e){}}
+if(renderer){function reset(){active=false;document.body.classList.remove('event');button.disabled=false;status.textContent='STANDBY';room.rotation.set(0,0,0);moving.forEach((o,i)=>{o.position.copy(base[i].p);o.rotation.copy(base[i].r)});lamp.rotation.set(0,0,0);chains.forEach(c=>c.rotation.z=0);figure.visible=false;debris.forEach(d=>d.visible=false);warm.intensity=100;chandelierLight.intensity=48}
+button.addEventListener('click',()=>{if(active)return;active=true;start=clock.elapsedTime;button.disabled=true;status.textContent='STRUCTURAL FAILURE';document.body.classList.add('event');figure.visible=true;figure.position.x=-5;startAudio()});
+function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime();if(active){const e=t-start;const envelope=Math.min(1,e/1.1);room.rotation.z=(Math.sin(e*3.4)*.035+Math.sin(e*1.15)*.11)*envelope;room.rotation.x=Math.sin(e*2.3)*.025*envelope;room.position.y=Math.sin(e*5.5)*.07*envelope;lamp.rotation.z=Math.sin(e*4.2)*.24*envelope;lamp.rotation.x=Math.cos(e*3.1)*.13*envelope;chains.forEach((c,i)=>c.rotation.z=Math.sin(e*5+i*2)*.28*envelope);sofa.rotation.z=Math.sin(e*3.8)*.17*envelope;sofa.position.y=base[0].p.y+Math.max(0,Math.sin(e*3.8))*.32*envelope;table.position.x=base[1].p.x+Math.sin(e*4.7)*.55*envelope;table.rotation.z=Math.sin(e*4.7)*.09*envelope;chair.rotation.z=Math.sin(e*4.1+1)*.3*envelope;figure.position.x=-5+Math.min(10,e*3.1);figure.position.y=3.8+Math.sin(e*5)*.12;warm.intensity=(Math.random()>.78?18:95)*(e>4.5?.1:1);chandelierLight.intensity=Math.random()>.72?4:48;
+if(e>1.3){debris.forEach((d,i)=>{if(!d.visible){d.visible=true;d.position.set((Math.random()-.5)*8,2+Math.random()*4,-1+Math.random()*2);d.userData.v=new THREE.Vector3((Math.random()-.5)*.18,.12+Math.random()*.2,(Math.random()-.5)*.12);d.userData.spin=new THREE.Vector3(Math.random()*.2,Math.random()*.2,Math.random()*.2)}d.position.add(d.userData.v);d.rotation.x+=d.userData.spin.x;d.rotation.y+=d.userData.spin.y;d.rotation.z+=d.userData.spin.z})}
+if(e>5.9){status.textContent='SIGNAL LOST';setTimeout(reset,1800);active=false}}
+dust.rotation.y=t*.012;renderer.render(scene,camera)}
+animate();
+window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.7))});
 }
-for(let i=0;i<2;i++){const s=document.createElement('div');s.style.cssText='position:absolute;top:34%;left:'+(i?78:18)+'%;width:18px;height:58px;background:linear-gradient(90deg,#17110b,#9a7444,#1a120b);border-radius:8px;box-shadow:0 0 35px 12px #bd8d4b55';wall.appendChild(s)}
-const debris=document.getElementById('debris');
-for(let i=0;i<18;i++){const s=document.createElement('i');s.className='shard';s.style.left=(8+Math.random()*84)+'%';s.style.top=(15+Math.random()*65)+'%';s.style.setProperty('--dx',((Math.random()-.5)*innerWidth*1.2)+'px');s.style.setProperty('--dy',((-120-Math.random()*innerHeight*.8))+'px');s.style.animationDelay=(1.7+Math.random()*.8)+'s';debris.appendChild(s)}
-let audioCtx,master;
-function tone(freq,dur,type='sawtooth',gain=.05,slide=0){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(25,freq+slide),audioCtx.currentTime+dur);g.gain.setValueAtTime(.0001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(gain,audioCtx.currentTime+.04);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);o.connect(g);g.connect(master);o.start();o.stop(audioCtx.currentTime+dur+.03)}
-function noise(dur,gain,filterFreq){if(!audioCtx)return;const n=audioCtx.sampleRate*dur,b=audioCtx.createBuffer(1,n,audioCtx.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/n,1.8);const src=audioCtx.createBufferSource(),f=audioCtx.createBiquadFilter(),g=audioCtx.createGain();src.buffer=b;f.type='lowpass';f.frequency.value=filterFreq;g.gain.value=gain;src.connect(f);f.connect(g);g.connect(master);src.start()}
-function playSound(){try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();master=audioCtx.createGain();master.gain.value=.75;master.connect(audioCtx.destination);audioCtx.resume();
-tone(48,4.8,'sawtooth',.22,-18);noise(4.8,.18,280);setTimeout(()=>{tone(92,1.1,'square',.12,-60);noise(1.2,.25,1200)},700);setTimeout(()=>{tone(680,.16,'sine',.035,-500);tone(54,3.5,'sawtooth',.2,-28);noise(3.4,.24,750)},1450);setTimeout(()=>{tone(38,3,'sawtooth',.3,-12);noise(2.8,.3,180)},3100);setTimeout(()=>{tone(30,2,'triangle',.2,-8)},4200)
-}catch(e){}}
-const btn=document.getElementById('trigger'),status=document.getElementById('status');
-btn.addEventListener('click',()=>{if(document.body.classList.contains('event'))return;document.body.classList.add('event');btn.disabled=true;status.textContent='STRUCTURAL FAILURE';playSound();setTimeout(()=>{status.textContent='SIGNAL LOST';},4100);setTimeout(()=>{document.body.classList.remove('event');btn.disabled=false;status.textContent='STANDBY';},7200)});
 </script></body></html>
