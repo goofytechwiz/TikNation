@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 13</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 14</title>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02070d;color:#edf4f5;font-family:Arial,sans-serif}
 #stage{position:relative;width:100%;height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 54%,#294052 0,#101c27 52%,#02070d 100%)}
+#scene{position:absolute;inset:0;width:100%;height:100%;z-index:1;touch-action:pan-y}
 .brand{position:absolute;top:6%;width:100%;text-align:center;z-index:3;letter-spacing:.32em;font-size:10px;color:#d0dcddaa;pointer-events:none}
 .brand b{display:block;margin-top:12px;font-size:clamp(25px,6vw,55px);letter-spacing:.14em;color:#f1f4f2;text-shadow:0 0 28px #d6e4e455}
-.viewer{position:absolute;inset:18% 2% 17%;z-index:1;border:0;width:96%;height:65%;background:transparent}
-.viewer iframe{width:100%;height:100%;border:0;background:transparent}
 .status{position:absolute;bottom:calc(max(28px,env(safe-area-inset-bottom)) + 70px);width:100%;text-align:center;z-index:3;color:#c5d0d0b0;font-size:10px;letter-spacing:.18em;pointer-events:none}
 .controls{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));width:100%;display:flex;justify-content:center;gap:12px;z-index:4;padding:0 12px}
 button{min-width:145px;padding:15px 18px;border:1px solid #b6c7c77a;background:#101a20;color:#eef3f2;font-weight:bold;letter-spacing:.14em;font-size:10px;border-radius:2px;cursor:pointer}
@@ -18,16 +18,35 @@ button.primary{background:#d9e4e2;color:#101619;border-color:#d9e4e2}
 .feather.fly{animation:featherFly 2.4s ease-out both}
 @keyframes featherFly{0%{opacity:0;transform:translate(0,0) rotate(0)}15%{opacity:.9}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--spin))}}
 @media(prefers-reduced-motion:reduce){.feather.fly,#flash.bolt{animation:none}}
-</style></head><body><main id="stage">
-<div class="brand">TIKNATION · LEGENDARY GIFT<b>THE FEATHERED OMEN</b></div>
-<div class="viewer"><iframe title="Interactive 3D crow model" src="https://polyfork.dev/embed/crow-base" allow="fullscreen; xr-spatial-tracking" loading="eager"></iframe></div>
-<div id="flash"></div><div class="status" id="status">3D CROW MODEL · INTERACTIVE VIEW</div>
+</style></head><body><main id="stage"><canvas id="scene"></canvas>
+<div class="brand">TIKNATION · LEGENDARY GIFT<b>THE FEATHERED OMEN</b></div><div id="flash"></div>
+<div class="status" id="status">LOADING THE RAVEN</div>
 <div class="controls"><button class="primary" id="trigger">SUMMON THE OMEN</button><button id="sound">SOUND: OFF</button></div></main>
-<script>
-(()=>{const stage=document.getElementById('stage'),status=document.getElementById('status'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound'),flash=document.getElementById('flash');let audioOn=false,audioCtx=null;
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+(()=>{
+const canvas=document.getElementById('scene'),stage=document.getElementById('stage'),status=document.getElementById('status'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound'),flash=document.getElementById('flash');
+let renderer;try{renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});}catch(e){status.textContent='3D GRAPHICS NOT AVAILABLE';return;}
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,.1,100);camera.position.set(0,.42,1.55);
+scene.add(new THREE.HemisphereLight(0xc9e5ff,0x080b18,2.1));const key=new THREE.DirectionalLight(0xe4f5ff,2.8);key.position.set(-3,5,5);scene.add(key);const rim=new THREE.PointLight(0x286dff,9,7);rim.position.set(2,1.4,-1.5);scene.add(rim);const violet=new THREE.PointLight(0x743cff,5,6);violet.position.set(-2,-.5,1);scene.add(violet);
+let bird=null,wL=null,wR=null,tail=null,head=null,neck=null,jaw=null,baseL=0,baseR=0,loaded=false,audioOn=false,audioCtx=null,summonAt=0;
+new GLTFLoader().load('https://polyfork.dev/cdn/crow-base.glb',g=>{
+ bird=g.scene;bird.position.set(0,-.22,0);bird.scale.setScalar(2.45);bird.rotation.y=-.12;scene.add(bird);
+ wL=bird.getObjectByName('LeftWing');wR=bird.getObjectByName('RightWing');tail=bird.getObjectByName('Tail');head=bird.getObjectByName('Head');neck=bird.getObjectByName('Neck');jaw=bird.getObjectByName('Jaw');
+ if(wL&&wR){baseL=wL.rotation.z;baseR=wR.rotation.z;loaded=true;status.textContent='RAVEN READY · WINGS FLAPPING';}
+ else status.textContent='RAVEN LOADED · WING JOINTS NOT FOUND';
+},undefined,()=>{status.textContent='RAVEN MODEL FAILED TO LOAD';});
+function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}addEventListener('resize',resize);resize();
+const rain=Array.from({length:90},()=>({x:Math.random(),y:Math.random(),v:.3+Math.random()*.6}));
+const storm=document.createElement('canvas');storm.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none';stage.insertBefore(storm,canvas);const sx=storm.getContext('2d');
+function stormFrame(){const w=stage.clientWidth,h=stage.clientHeight,d=Math.min(devicePixelRatio||1,2);if(storm.width!==Math.floor(w*d)||storm.height!==Math.floor(h*d)){storm.width=w*d;storm.height=h*d;}sx.setTransform(d,0,0,d,0,0);sx.clearRect(0,0,w,h);sx.strokeStyle='#b8d0dd3b';sx.lineWidth=1;for(const r of rain){sx.beginPath();sx.moveTo(r.x*w,r.y*h);sx.lineTo(r.x*w-2,r.y*h+13);sx.stroke();r.y+=r.v*.006;if(r.y>1)r.y=0;}}
+function animate(){requestAnimationFrame(animate);const t=performance.now()/1000;stormFrame();if(bird&&loaded){const beat=Math.sin(t*8.5);const flap=beat*.92;wL.rotation.z=baseL+flap;wR.rotation.z=baseR-flap;if(tail)tail.rotation.x=Math.sin(t*3.5)*.10;if(head)head.rotation.y=Math.sin(t*1.25)*.10;if(neck)neck.rotation.x=Math.sin(t*1.7)*.025;if(jaw)jaw.rotation.x=Math.max(0,Math.sin(t*2.1))*.035;bird.position.y=-.22+Math.abs(beat)*.035;if(summonAt&&t-summonAt<1.8){const p=Math.min(1,(t-summonAt)/1.8);bird.scale.setScalar(2.45*(.86+.14*p));}}renderer.render(scene,camera);}
+animate();
 function burst(){for(let i=0;i<28;i++){const e=document.createElement('i');e.className='feather fly';e.style.left=(innerWidth*.5+(Math.random()-.5)*90)+'px';e.style.top=(innerHeight*.5+(Math.random()-.5)*70)+'px';e.style.setProperty('--dx',((Math.random()-.5)*innerWidth*.8)+'px');e.style.setProperty('--dy',((Math.random()-.5)*innerHeight*.7)+'px');e.style.setProperty('--spin',(Math.random()*800-400)+'deg');stage.appendChild(e);setTimeout(()=>e.remove(),2800);}}
 function rumble(){if(!audioOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(52,t);o.frequency.exponentialRampToValueAtTime(26,t+1.8);f.type='lowpass';f.frequency.value=120;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.1,t+.12);g.gain.exponentialRampToValueAtTime(.0001,t+2);o.connect(f).connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+2.1);}catch(e){}}
-trigger.addEventListener('click',()=>{burst();flash.classList.remove('bolt');void flash.offsetWidth;flash.classList.add('bolt');status.textContent='THE OMEN HAS BEEN SUMMONED';rumble();});
+trigger.addEventListener('click',()=>{summonAt=performance.now()/1000;burst();flash.classList.remove('bolt');void flash.offsetWidth;flash.classList.add('bolt');status.textContent=loaded?'THE RAVEN DESCENDS · WINGS BEATING':'SUMMONING THE RAVEN';rumble();});
 sound.addEventListener('click',()=>{audioOn=!audioOn;sound.textContent='SOUND: '+(audioOn?'ON':'OFF');if(audioOn)rumble();});
 })();
 </script></body></html>
