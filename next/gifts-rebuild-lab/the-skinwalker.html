@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>THE SKINWALKER · TikNation Gift Lab</title>
+<style>
+:root{color-scheme:dark;--amber:#e6a94d;--fog:#aeb7ad}
+*{box-sizing:border-box}body{margin:0;background:#080b0b;color:#eee;font:15px/1.4 system-ui,sans-serif;min-height:100svh;display:grid;place-items:center;padding:16px}
+.lab{width:min(920px,100%)}.eyebrow{letter-spacing:.22em;color:#b78c51;font-size:11px}.head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}h1{font-size:clamp(25px,6vw,44px);letter-spacing:.08em;margin:5px 0}.sub{color:#aeb7ad;font-size:13px}
+.scene{height:min(65vh,560px);min-height:380px;position:relative;overflow:hidden;border:1px solid #343b35;border-radius:14px;background:radial-gradient(ellipse at 50% 65%,#29332b 0,#111915 35%,#070a09 76%);isolation:isolate}
+.moon{position:absolute;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#c7c2a4,#6c705f 65%,#353c32);box-shadow:0 0 65px #b7b68b55;top:12%;left:70%;opacity:.65}
+.trees{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,#080b09 90%);opacity:.95}
+.tree{position:absolute;bottom:8%;width:0;height:0;border-left:55px solid transparent;border-right:55px solid transparent;border-bottom:260px solid #080d0b;filter:drop-shadow(0 0 9px #111)}.tree:after{content:"";position:absolute;top:210px;left:-5px;width:10px;height:100px;background:#080d0b}.t1{left:4%}.t2{left:18%;transform:scale(.8)}.t3{right:4%;transform:scale(1.2)}.t4{right:21%;transform:scale(.75)}
+.fog{position:absolute;inset:auto -20% 5%;height:34%;background:radial-gradient(ellipse,#b4b9a322,transparent 68%);filter:blur(20px);animation:fog 8s ease-in-out infinite alternate}
+.creature{position:absolute;left:50%;bottom:8%;width:190px;height:355px;transform:translateX(-50%) scale(.76);transform-origin:bottom;opacity:0;filter:drop-shadow(0 0 15px #000);transition:opacity 1s}
+.body{position:absolute;left:56px;top:125px;width:80px;height:180px;background:linear-gradient(90deg,#272c27,#77766a 42%,#333a31 75%,#171d19);clip-path:polygon(20% 0,80% 0,100% 85%,78% 100%,62% 55%,50% 100%,30% 100%,20% 58%,0 100%,0 23%);border-radius:40%}
+.head{position:absolute;top:38px;left:65px;width:62px;height:95px;background:linear-gradient(90deg,#333b34,#aaa18a 45%,#30392f);clip-path:polygon(22% 0,78% 0,100% 35%,72% 100%,43% 88%,8% 100%,0 30%);transform:rotate(4deg)}
+.eye{position:absolute;top:77px;width:9px;height:5px;background:#ffbd51;box-shadow:0 0 15px 5px #d78a25;border-radius:50%;z-index:2}.e1{left:80px}.e2{left:106px}
+.arm{position:absolute;top:145px;width:28px;height:205px;background:linear-gradient(90deg,#171d19,#77766b,#252c25);border-radius:40%;transform-origin:top}.a1{left:49px;transform:rotate(15deg)}.a2{right:45px;transform:rotate(-18deg)}
+.leg{position:absolute;top:278px;width:28px;height:90px;background:#343b33;border-radius:35%}.l1{left:75px;transform:rotate(8deg)}.l2{left:112px;transform:rotate(-9deg)}
+.creature:after{content:"";position:absolute;top:113px;left:87px;width:18px;height:35px;background:#090b09;clip-path:polygon(0 0,100% 0,65% 100%,30% 100%);opacity:.9}
+.scene.active .creature{opacity:1;animation:appear 2.5s ease-out forwards}
+.scene.active .creature .head{animation:tilt 3s 2.8s ease-in-out 2}
+.scene.lunge .creature{animation:lunge .65s cubic-bezier(.2,.8,.2,1) forwards}
+.scene.lunge{animation:shake .12s 5}
+.scene:after{content:"";position:absolute;inset:0;background:#d5d7c2;opacity:0;pointer-events:none}.scene.flash:after{animation:flash .45s}
+.caption{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:#d6d2bb;letter-spacing:.2em;font-size:11px;text-shadow:0 2px 8px #000}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button{border:1px solid #79603c;border-radius:8px;padding:13px 18px;background:#201b14;color:#f3d7a4;font-weight:700;letter-spacing:.08em}button.primary{background:#8c5422;color:white;border-color:#d49a53;flex:1}button:active{transform:scale(.98)}.note{font-size:12px;color:#8f9990;margin-top:10px}
+@keyframes fog{to{transform:translateX(9%) scale(1.15);opacity:.5}}@keyframes appear{0%{opacity:0;transform:translate(-50%,12%) scale(.55)}70%{opacity:1;transform:translate(-50%,0) scale(.82)}100%{opacity:1;transform:translate(-50%,0) scale(.76)}}@keyframes tilt{0%,100%{transform:rotate(4deg)}50%{transform:rotate(28deg) translateY(5px)}}@keyframes lunge{to{transform:translate(-50%,5%) scale(1.65)}}@keyframes shake{25%{transform:translateX(5px)}50%{transform:translateX(-5px)}75%{transform:translateX(4px)}}@keyframes flash{0%,100%{opacity:0}20%{opacity:.6}}
+@media(max-width:520px){.scene{min-height:420px}.creature{transform:translateX(-50%) scale(.68)}.scene.active .creature{animation:appear 2.5s ease-out forwards}.scene.lunge .creature{animation:lunge .65s forwards}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
+</style></head>
+<body><main class="lab"><div class="head"><div><div class="eyebrow">TIKNATION · GIFT REBUILD LAB</div><h1>THE SKINWALKER</h1><div class="sub">Something in the treeline has learned your shape.</div></div><div class="eyebrow">HORROR · PREVIEW</div></div>
+<section class="scene" id="scene" aria-label="Animated creature encounter"><div class="moon"></div><div class="trees"><i class="tree t1"></i><i class="tree t2"></i><i class="tree t3"></i><i class="tree t4"></i></div><div class="fog"></div><div class="creature"><div class="head"></div><i class="eye e1"></i><i class="eye e2"></i><div class="body"></div><div class="arm a1"></div><div class="arm a2"></div><div class="leg l1"></div><div class="leg l2"></div></div><div class="caption" id="caption">THE WOODS ARE WATCHING</div></section>
+<div class="controls"><button class="primary" id="trigger">SUMMON THE SKINWALKER</button><button id="sound">SOUND: OFF</button><button id="reset">RESET</button></div><p class="note">Preview only — not connected to the live TikNation gift catalog. Tap SOUND to enable generated audio. Best viewed in landscape.</p></main>
+<script>
+const scene=document.getElementById('scene'),caption=document.getElementById('caption'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound');let audio=false,ctx=null,timers=[];
+function clear(){timers.forEach(clearTimeout);timers=[]}
+function tone(freq,duration,volume,type='sine',delay=0){if(!audio)return;try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,ctx.currentTime+delay);o.frequency.exponentialRampToValueAtTime(Math.max(25,freq*.42),ctx.currentTime+delay+duration);g.gain.setValueAtTime(.0001,ctx.currentTime+delay);g.gain.exponentialRampToValueAtTime(volume,ctx.currentTime+delay+.08);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+delay+duration);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+delay);o.stop(ctx.currentTime+delay+duration+.03)}catch(e){}}
+function reset(){clear();scene.classList.remove('active','lunge','flash');caption.textContent='THE WOODS ARE WATCHING';trigger.disabled=false;trigger.textContent='SUMMON THE SKINWALKER'}
+trigger.onclick=()=>{reset();void scene.offsetWidth;scene.classList.add('active');trigger.disabled=true;caption.textContent='A SHAPE MOVES BETWEEN THE TREES';tone(58,4,.18,'sawtooth');timers.push(setTimeout(()=>{caption.textContent='IT IS LOOKING RIGHT AT YOU';tone(112,1.2,.12,'triangle')},2600));timers.push(setTimeout(()=>{scene.classList.add('flash');caption.textContent='THAT IS NOT A HUMAN FACE';tone(46,2,.24,'sawtooth')},5200));timers.push(setTimeout(()=>{scene.classList.add('lunge');caption.textContent='RUN.';tone(38,1.3,.3,'sawtooth')},6900));timers.push(setTimeout(()=>{trigger.disabled=false;trigger.textContent='SUMMON AGAIN'},8200))};
+sound.onclick=()=>{audio=!audio;sound.textContent='SOUND: '+(audio?'ON':'OFF');if(audio){ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();tone(90,.25,.08)}};
+document.getElementById('reset').onclick=reset;
+</script></body></html>
