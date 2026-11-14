@@ -2,8 +2,28 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080c10"><title>The Abandoned Operating Room · TikNation Gift Lab</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080c10;color:#edf1eb;font-family:Arial,sans-serif}#view{position:absolute;inset:0;width:100%;height:100%;display:block}.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 42%,transparent 35%,#020609aa 100%)}.hud{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:calc(15px + env(safe-area-inset-top)) 12px calc(15px + env(safe-area-inset-bottom));pointer-events:none;text-align:center}.eyebrow{font-size:10px;letter-spacing:.25em;text-shadow:0 2px 8px #000}.bottom{pointer-events:auto}.hint,.status{font-size:10px;letter-spacing:.13em;text-shadow:0 2px 9px #000;margin:10px auto;max-width:90vw}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}button{border:1px solid #aab8b3;background:linear-gradient(#344348,#10191d);color:#f1f4ed;padding:14px 18px;min-width:138px;font-size:11px;font-weight:bold;letter-spacing:.12em;touch-action:manipulation}button:active{transform:scale(.97)}#status{min-height:13px;color:#c6d2c9}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+
+#horrorFx{position:fixed;inset:0;z-index:8;pointer-events:none;overflow:hidden}
+#flash{position:absolute;inset:0;background:#e9f4e8;opacity:0}
+#horrorFx .debris{position:absolute;opacity:0;filter:drop-shadow(0 7px 8px #000d)}
+#horrorFx .tray{width:150px;height:24px;left:-180px;top:45%;border:5px solid #c8d2cb;border-radius:5px;background:linear-gradient(#eef3e9,#566361 45%,#1b2528);box-shadow:inset 0 0 8px #fff}
+#horrorFx .scalpel{width:115px;height:8px;left:-140px;top:62%;border-radius:6px;background:linear-gradient(#f7fff4,#7d8982 45%,#e8eee6);transform-origin:center}
+#horrorFx .clipboard{width:75px;height:100px;left:-100px;top:30%;border:7px solid #aeb9b1;border-radius:4px;background:linear-gradient(135deg,#53615f,#172326)}
+#horrorFx .glass{position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,#dce9e455 50%,transparent 65%);opacity:0}
+body.scare #flash{animation:hardFlash 4.5s steps(1,end) both}
+body.scare #horrorFx .glass{animation:glassSweep 4.5s ease-out both}
+body.scare #horrorFx .tray{animation:trayFly 2.4s cubic-bezier(.12,.75,.2,1) .5s both}
+body.scare #horrorFx .scalpel{animation:scalpelFly 2s cubic-bezier(.15,.7,.2,1) 1.05s both}
+body.scare #horrorFx .clipboard{animation:clipboardFly 2.2s cubic-bezier(.12,.75,.2,1) 1.65s both}
+body.scare #view{animation:violentShake .12s linear 0s 28}
+@keyframes hardFlash{0%,8%,18%,31%,48%,67%,100%{opacity:0}3%,5%,13%,15%,25%,27%,39%,41%,55%,58%,76%{opacity:.9}4%,14%,26%,40%,56%,77%{opacity:0}}
+@keyframes glassSweep{0%,18%,100%{opacity:0}22%,32%{opacity:1}45%{opacity:0}}
+@keyframes trayFly{0%{opacity:0;transform:translate(0,0) rotate(0)}8%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translate(125vw,-22vh) rotate(620deg)}}
+@keyframes scalpelFly{0%{opacity:0;transform:translate(0,0) rotate(0)}10%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translate(120vw,-48vh) rotate(980deg)}}
+@keyframes clipboardFly{0%{opacity:0;transform:translate(0,0) rotate(0)}10%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translate(125vw,45vh) rotate(540deg)}}
+@keyframes violentShake{0%,100%{transform:translate(0,0)}20%{transform:translate(-9px,5px)}40%{transform:translate(8px,-6px)}60%{transform:translate(-6px,-3px)}80%{transform:translate(7px,5px)}}
 </style></head><body>
-<canvas id="view" aria-label="Interactive three-dimensional abandoned operating room"></canvas><div class="vignette"></div>
+<canvas id="view" aria-label="Interactive three-dimensional abandoned operating room"></canvas><div class="vignette"></div><div id="horrorFx"><div id="flash"></div><div class="glass"></div><div class="debris tray"></div><div class="debris scalpel"></div><div class="debris clipboard"></div></div>
 <div class="hud"><div class="eyebrow">TIKNATION · GIFT REBUILD LAB</div><div class="bottom"><div class="hint">ABANDONED OPERATING ROOM · NIGHT SHIFT</div><div class="controls"><button id="trigger">TRIGGER GIFT</button><button id="sound">SOUND: OFF</button></div><div class="status" id="status">THE ROOM IS EMPTY · OR IS IT?</div></div></div>
 <script>
 (()=> {
@@ -76,13 +96,13 @@ let blackout=active&&((elapsed>.62&&elapsed<.78)||(elapsed>1.42&&elapsed<1.56)||
 gl.clearColor(blackout?.002:.025,blackout?.004:.04,blackout?.006:.045,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
 gl.uniform3f(loc.light,0,4,-1.8);gl.uniform1f(loc.flicker,blackout?.005:flick);gl.uniform1f(loc.fog,1);
 for(let o of objects){let m=model(o,now,elapsed);if(active&&elapsed<4&&o.pos[2]>-2&&o.pos[2]<1&&o.pos[1]>1.5&&o.pos[1]<2.2&&o.pos[0]>-2&&o.pos[0]<2){m[12]+=Math.sin(elapsed*18)*.15}let mvp=matMul(proj,matMul(view,m));gl.uniformMatrix4fv(loc.model,false,m);gl.uniformMatrix4fv(loc.mvp,false,mvp);let b=o.type;for(let k of ['p','n','c']){gl.bindBuffer(gl.ARRAY_BUFFER,b[k]);gl.enableVertexAttribArray(loc[k]);gl.vertexAttribPointer(loc[k],3,gl.FLOAT,false,0,0)}gl.drawArrays(gl.TRIANGLES,0,b.count)}
-if(active&&elapsed>5){active=false;status.textContent='THE ROOM HAS GONE QUIET… FOR NOW'}
+if(active&&elapsed>5){active=false;document.body.classList.remove('scare');status.textContent='THE ROOM HAS GONE QUIET… FOR NOW'}
 requestAnimationFrame(draw)}
 requestAnimationFrame(draw);
 function resize(){canvas.width=0}window.addEventListener('resize',resize);
 function tone(freq,delay,duration,vol,wave='sawtooth'){if(!soundOn||!audio)return;let o=audio.createOscillator(),g=audio.createGain(),f=audio.createBiquadFilter();o.type=wave;o.frequency.setValueAtTime(freq,audio.currentTime+delay);o.frequency.exponentialRampToValueAtTime(Math.max(30,freq*.42),audio.currentTime+delay+duration);f.type='lowpass';f.frequency.value=wave==='triangle'?240:520;g.gain.setValueAtTime(.0001,audio.currentTime+delay);g.gain.exponentialRampToValueAtTime(vol,audio.currentTime+delay+.08);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+duration);o.connect(f);f.connect(g);g.connect(audio.destination);o.start(audio.currentTime+delay);o.stop(audio.currentTime+delay+duration+.03)}
 function impact(delay,vol){if(!soundOn||!audio)return;let n=audio.createBufferSource(),g=audio.createGain(),f=audio.createBiquadFilter(),len=audio.sampleRate*.8,b=audio.createBuffer(1,len,audio.sampleRate),d=b.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*.8;n.buffer=b;f.type='bandpass';f.frequency.value=380;f.Q.value=.7;g.gain.setValueAtTime(.0001,audio.currentTime+delay);g.gain.linearRampToValueAtTime(vol,audio.currentTime+delay+.025);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+.8);n.connect(f);f.connect(g);g.connect(audio.destination);n.start(audio.currentTime+delay)}
 soundBtn.addEventListener('click',async()=>{soundOn=!soundOn;if(soundOn){let AC=window.AudioContext||window.webkitAudioContext;if(!AC){soundOn=false;status.textContent='AUDIO NOT AVAILABLE'}else{audio=audio||new AC();if(audio.state==='suspended')await audio.resume();tone(54,0,.5,.025,'triangle')}}soundBtn.textContent='SOUND: '+(soundOn?'ON':'OFF')});
-trigger.addEventListener('click',()=>{if(active)return;active=true;started=performance.now();status.textContent='THE OPERATING TABLE JUST MOVED';tone(42,0,4.2,.11,'triangle');tone(76,.5,2.8,.06);tone(118,2,1.7,.05);impact(.45,.09);impact(.9,.065);impact(1.45,.09);impact(2.05,.075);impact(2.7,.1);impact(3.25,.065);tone(31,2.4,1.8,.12,'sawtooth');setTimeout(()=>{if(active)status.textContent='THE LIGHTS ARE FAILING — SOMETHING IS THROWING THE EQUIPMENT'},1200);setTimeout(()=>{if(active)status.textContent='A FIGURE IS STANDING BEHIND THE GLASS'},2900)});
+trigger.addEventListener('click',()=>{if(active)return;active=true;started=performance.now();document.body.classList.remove('scare');void document.body.offsetWidth;document.body.classList.add('scare');status.textContent='THE OPERATING TABLE JUST MOVED';tone(42,0,4.2,.11,'triangle');tone(76,.5,2.8,.06);tone(118,2,1.7,.05);impact(.45,.09);impact(.9,.065);impact(1.45,.09);impact(2.05,.075);impact(2.7,.1);impact(3.25,.065);tone(31,2.4,1.8,.12,'sawtooth');setTimeout(()=>{if(active)status.textContent='THE LIGHTS ARE FAILING — SOMETHING IS THROWING THE EQUIPMENT'},1200);setTimeout(()=>{if(active)status.textContent='A FIGURE IS STANDING BEHIND THE GLASS'},2900)});
 })();
 </script></body></html>
