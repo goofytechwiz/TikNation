@@ -50,7 +50,7 @@ body.event #shadow{animation:shadowReveal 4.6s 1.8s both}
 body.event #chandelier{animation:lampFlicker 5s both}
 body.event #flash{animation:flashBurst 5s both}
 body.event #chain1{animation:swing .34s infinite alternate}
-body.event #chain2{animation:swing .28s infinite alternate-reverse}
+body.event #chain2{animation:swing .28s infinite alternate-reverse}\nbody.event #wallpaper{animation:lampFlicker 5s both}
 body.event #sofa{animation:sofaFall 4.4s .7s both}
 body.event #table{animation:tableFlip 4.1s 1s both}
 body.event #chair{animation:chairFly 3.2s 1.3s both}
@@ -66,7 +66,60 @@ body.event .shard{animation:shardFly 2.2s 2s both}
 @keyframes shardFly{0%{opacity:0;transform:translate(0,0) rotate(0)}15%{opacity:.95}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(700deg)}}
 @media(max-width:600px){#backwall{left:3%;width:94%;top:12%;height:63%}#sofa{width:180px;left:3%;top:56%}#table{width:150px;left:48%;top:62%}#chair{left:73%;top:48%;transform:scale(.7)}#window{left:33%;width:34%}#hud{padding-left:14px;padding-right:14px}#desc{max-width:340px}}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition:none!important}}
-</style></head>
+
+/* Cinematic material pass: architectural depth, aged finishes and grounded motion */
+#stage{perspective:1200px;background:radial-gradient(ellipse at 48% 38%,#3a3429 0,#171714 42%,#050607 82%)}
+#backwall{background:
+ repeating-linear-gradient(90deg,transparent 0 112px,rgba(0,0,0,.45) 113px 117px),
+ linear-gradient(90deg,#171512,#4a3d2c 18%,#2a241c 50%,#493a29 82%,#171512);
+ border:16px ridge #211b14;box-shadow:inset 0 0 80px #000,0 20px 55px #000}
+#wallpaper{background:
+ repeating-linear-gradient(90deg,transparent 0 72px,rgba(7,6,5,.7) 73px 76px),
+ repeating-linear-gradient(0deg,transparent 0 102px,rgba(7,6,5,.55) 103px 106px),
+ radial-gradient(ellipse at 50% 40%,rgba(160,125,76,.18),transparent 65%);
+ opacity:.9}
+#backwall:before{content:"";position:absolute;inset:12px;border:2px solid #786044;box-shadow:inset 0 0 0 5px #201910,inset 0 0 30px #000}
+#window{border:16px ridge #29251e;background:linear-gradient(180deg,#070b11,#18212a 55%,#080b0e);box-shadow:0 0 25px #000,inset 0 0 40px #000,0 0 60px #9a835333}
+#window:before{width:12px;background:linear-gradient(90deg,#15120f,#594a35,#17130f);left:49%}
+#window:after{height:12px;background:linear-gradient(#17130f,#574731,#17130f);top:49%}
+#moon{background:radial-gradient(circle at 35% 35%,#e5dfc8,#a69c84 48%,#555044 72%,transparent 74%);box-shadow:0 0 60px 18px #a99a7833;opacity:.75}
+#floor{background:
+ repeating-linear-gradient(90deg,transparent 0 118px,rgba(0,0,0,.75) 119px 123px),
+ repeating-linear-gradient(0deg,#29231b 0 58px,#17130f 59px 62px,#33291e 63px 118px);
+ border-top:12px solid #120e0a;box-shadow:inset 0 0 100px #000}
+#ceiling{background:
+ repeating-linear-gradient(90deg,transparent 0 115px,rgba(0,0,0,.8) 116px 122px),
+ repeating-linear-gradient(0deg,#29251f 0 78px,#171411 79px 84px),
+ linear-gradient(135deg,#514331,#181512);
+ border:18px ridge #201910}
+#chandelier{height:30%;width:6px;background:linear-gradient(90deg,#080706,#9b835a,#100d09);filter:drop-shadow(0 0 5px #000)}
+#chandelier:after{left:-74px;width:154px;height:34px;background:radial-gradient(ellipse,#fff0bd 0,#d8a75c 12%,#72502c 27%,#17120d 55%,transparent 72%);filter:drop-shadow(0 0 24px #e0a14c)}
+#sofa{height:104px;border:12px solid #21130f;border-radius:22px 22px 9px 9px;background:
+ repeating-linear-gradient(90deg,rgba(0,0,0,.14) 0 3px,transparent 4px 10px),
+ linear-gradient(110deg,#5b3b2e,#241713 72%);box-shadow:inset 0 12px 20px #9c6c4933,0 22px 22px #000}
+#sofa:before{top:-57px;height:61px;border:12px ridge #291911;border-radius:25px 25px 5px 5px;background:
+ repeating-linear-gradient(90deg,rgba(0,0,0,.22) 0 3px,transparent 4px 11px),
+ linear-gradient(100deg,#704a39,#302019 70%);box-shadow:inset 0 8px 18px #b17a4b22}
+#sofa:after{content:"";position:absolute;left:12%;top:5px;width:31%;height:55px;border-radius:12px;background:linear-gradient(130deg,#76503d,#39251c);box-shadow:115px 0 0 -2px #4c3025,inset 0 0 15px #100907}
+#table{height:22px;border:3px solid #17110b;border-radius:8px;background:linear-gradient(#ad8a57,#49331e 45%,#21170f);box-shadow:0 15px 0 -5px #15110d,0 0 18px #000}
+#chair{border:9px ridge #281a11;border-radius:12px;background:linear-gradient(90deg,#21150f,#65452d 48%,#20140e);box-shadow:inset 0 0 15px #000}
+#chair:before{border:9px ridge #281a11;border-radius:12px 12px 5px 5px;background:linear-gradient(90deg,#21150f,#684a30 48%,#20140e)}
+.chain{width:6px;background:repeating-linear-gradient(0deg,#c0ad8a 0 3px,#28231c 3px 7px);filter:drop-shadow(2px 3px 3px #000)}
+#chain1:after,#chain2:after{content:"";position:absolute;bottom:-16px;left:-8px;width:22px;height:22px;border:5px solid #6c604c;border-radius:50%;background:#17130e}
+#dust{opacity:.28;background-image:radial-gradient(#c9b99b 1px,transparent 1.5px),radial-gradient(#8c806c 1px,transparent 1.5px);background-size:41px 47px,73px 67px}
+#shadow{background:radial-gradient(ellipse at 50% 12%,#000 0 17%,transparent 19%),linear-gradient(90deg,transparent,#030303 28% 72%,transparent);filter:blur(3px) drop-shadow(0 0 15px #000)}
+/* The house lurches, but the camera never flips like a flat card */
+body.event #room{animation:houseLurch 5.3s cubic-bezier(.18,.72,.22,1) both}
+body.event #sofa{animation:sofaSwing 4.8s .55s both}
+body.event #table{animation:tableSkid 4.2s 1.15s both}
+body.event #chair{animation:chairSwing 4.5s 1.4s both}
+body.event #chandelier{animation:chandelierSwing 4.7s both}
+@keyframes houseLurch{0%,100%{transform:rotateZ(0) rotateX(0) scale(1)}12%{transform:rotateZ(-2deg) rotateX(1deg) scale(1.015)}30%{transform:rotateZ(5deg) rotateX(-3deg) scale(1.035)}52%{transform:rotateZ(11deg) rotateX(4deg) scale(1.06)}73%{transform:rotateZ(-7deg) rotateX(-2deg) scale(1.04)}100%{transform:rotateZ(0) rotateX(0) scale(1)}}
+@keyframes sofaSwing{0%,15%{transform:rotateX(10deg) rotateY(-8deg) translateZ(60px)}40%{transform:rotate(13deg) translate(35px,-40px) translateZ(80px)}68%{transform:rotate(-9deg) translate(-20px,18px) translateZ(65px)}100%{transform:rotate(3deg) translate(10px,8px) translateZ(60px)}}
+@keyframes tableSkid{0%,15%{transform:rotateY(-18deg) translateZ(90px)}45%{transform:rotateY(-34deg) translate(90px,-22px) translateZ(115px)}70%{transform:rotateY(18deg) translate(-30px,16px) translateZ(100px)}100%{transform:rotateY(-8deg) translate(18px,8px) translateZ(90px)}}
+@keyframes chairSwing{0%,15%{transform:rotateY(25deg) translateZ(130px)}45%{transform:rotate(38deg) translate(45px,-55px) translateZ(150px)}75%{transform:rotate(-24deg) translate(-18px,30px) translateZ(130px)}100%{transform:rotate(7deg) translate(8px,5px) translateZ(130px)}}
+@keyframes chandelierSwing{0%,100%{transform:translateX(-50%) rotate(0)}25%{transform:translateX(-50%) rotate(18deg)}50%{transform:translateX(-50%) rotate(-23deg)}75%{transform:translateX(-50%) rotate(12deg)}}
+\n</style></head>
 <body>
 <div id="stage"><div id="room">
 <div id="ceiling"></div><div id="backwall"><div id="wallpaper"></div><div id="window"><div id="moon"></div></div></div><div id="floor"></div>
@@ -76,6 +129,13 @@ body.event .shard{animation:shardFly 2.2s 2s both}
 <div id="label">TIKNATION · GIFT REBUILD LAB · PREVIEW</div>
 <section id="hud"><div class="eyebrow">A house with no gravity</div><h1>THE HANGING HOUSE</h1><div id="desc">The room turns. The chains snap tight. Something is moving above you.</div><button id="trigger">TRIGGER THE INCIDENT</button><span id="status">STANDBY</span></section>
 <script>
+
+// Add moulded wall panels, aged portraits and practical wall sconces for real room scale.
+const wall=document.getElementById('backwall');
+for(let i=0;i<4;i++){const p=document.createElement('div');p.style.cssText='position:absolute;top:8%;bottom:8%;left:'+(5+i*24)+'%;width:17%;border:9px ridge #21180f;box-shadow:inset 0 0 0 3px #705638,inset 0 0 30px #000;background:linear-gradient(135deg,#34291d,#100e0b 65%,#493625);';wall.appendChild(p);
+ const art=document.createElement('div');art.style.cssText='position:absolute;inset:13% 14%;border:5px ridge #806542;background:radial-gradient(ellipse at 50% 30%,#66533d 0 12%,#171411 35%,#050505 70%);box-shadow:0 0 15px #000';p.appendChild(art);
+}
+for(let i=0;i<2;i++){const s=document.createElement('div');s.style.cssText='position:absolute;top:34%;left:'+(i?78:18)+'%;width:18px;height:58px;background:linear-gradient(90deg,#17110b,#9a7444,#1a120b);border-radius:8px;box-shadow:0 0 35px 12px #bd8d4b55';wall.appendChild(s)}
 const debris=document.getElementById('debris');
 for(let i=0;i<18;i++){const s=document.createElement('i');s.className='shard';s.style.left=(8+Math.random()*84)+'%';s.style.top=(15+Math.random()*65)+'%';s.style.setProperty('--dx',((Math.random()-.5)*innerWidth*1.2)+'px');s.style.setProperty('--dy',((-120-Math.random()*innerHeight*.8))+'px');s.style.animationDelay=(1.7+Math.random()*.8)+'s';debris.appendChild(s)}
 let audioCtx,master;
