@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>THE WEEPING ANGEL · TikNation Gift Lab</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#08090c;color:#eee;font-family:system-ui,-apple-system,Segoe UI,sans-serif}canvas{position:absolute;inset:0;width:100%;height:100%;display:block}.hud{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(14px,3vw,28px);pointer-events:none}.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;text-shadow:0 2px 10px #000}.eyebrow{font-size:10px;letter-spacing:.25em;color:#b9a88e}.title{font-size:clamp(20px,4vw,32px);letter-spacing:.16em;font-weight:800;margin-top:5px}.status{font-size:11px;letter-spacing:.12em;color:#cbbca4;text-align:right}.bottom{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;pointer-events:auto}.bottom button{border:1px solid #8d806d;background:#171719eF;color:#f2e8d8;padding:13px 20px;letter-spacing:.12em;font-weight:750;border-radius:3px;cursor:pointer}.bottom button.primary{background:#d6c5a5;color:#17130e;border-color:#e5d4b5}.hint{text-align:center;font-size:11px;letter-spacing:.08em;color:#b7a991;text-shadow:0 2px 8px #000;margin-bottom:12px}.veil{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .08s}.tag{font-size:10px;color:#a99b85;letter-spacing:.12em}
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas><div class="veil" id="veil"></div>
+<div class="hud"><div class="top"><div><div class="eyebrow">TIKNATION · HORROR GIFT LAB</div><div class="title">THE WEEPING ANGEL</div></div><div class="status" id="status">THE CHAPEL IS SILENT<br><span class="tag">PREVIEW · AUDIO OFF</span></div></div><div><div class="hint" id="hint">A stone figure waits beneath the broken stained glass.</div><div class="bottom"><button class="primary" id="trigger">UNLEASH THE ANGEL</button><button id="reset">RESET SCENE</button><button id="sound">SOUND: OFF</button></div></div></div>
+<script>
+(()=>{const c=document.getElementById('scene'),x=c.getContext('2d'),veil=document.getElementById('veil'),status=document.getElementById('status'),hint=document.getElementById('hint');let w,h,dpr,phase=0,start=0,last=0,raf=0,audio=false,ctx=null,master=null,shake=0,particles=[],flicker=0;
+function resize(){dpr=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;x.setTransform(dpr,0,0,dpr,0,0)}addEventListener('resize',resize);resize();
+function noise(){if(!ctx)return;const len=ctx.sampleRate*1.4,b=ctx.createBuffer(1,len,ctx.sampleRate),a=b.getChannelData(0);for(let i=0;i<len;i++)a[i]=(Math.random()*2-1)*Math.pow(1-i/len,2);let s=ctx.createBufferSource();s.buffer=b;let f=ctx.createBiquadFilter();f.type='lowpass';f.frequency.value=150;let g=ctx.createGain();g.gain.setValueAtTime(.0001,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.32,ctx.currentTime+.25);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+1.4);s.connect(f).connect(g).connect(master);s.start()}
+function tone(freq,dur,vol,type='sine',end=freq*.5){if(!ctx)return;let o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(20,end),ctx.currentTime+dur);g.gain.setValueAtTime(.0001,ctx.currentTime);g.gain.exponentialRampToValueAtTime(vol,ctx.currentTime+.04);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+dur);o.connect(g).connect(master);o.start();o.stop(ctx.currentTime+dur+.03)}
+function enable(){if(!ctx){ctx=new (window.AudioContext||window.webkitAudioContext)();master=ctx.createGain();master.gain.value=.7;master.connect(ctx.destination)}if(ctx.state==='suspended')ctx.resume();audio=true;document.getElementById('sound').textContent='SOUND: ON'}
+function burst(){for(let i=0;i<90;i++){let a=Math.random()*Math.PI*2,s=1+Math.random()*7;particles.push({x:w*.5+(Math.random()-.5)*90,y:h*.52+(Math.random()-.5)*150,vx:Math.cos(a)*s,vy:Math.sin(a)*s-2,r:1+Math.random()*4,life:1,rot:Math.random()*6})}}
+function trigger(){if(phase!==0)return;phase=1;start=performance.now();if(audio){noise();tone(68,3,.23,'sawtooth',32);setTimeout(()=>{if(audio){tone(190,1.2,.2,'triangle',55);noise()}},2200);setTimeout(()=>{if(audio){tone(900,.18,.17,'square',140);noise()}},4700)}status.innerHTML='SOMETHING HAS MOVED<br><span class="tag">DO NOT LOOK AWAY</span>';hint.textContent='The lights fail. The angel is no longer where it stood.'}
+document.getElementById('trigger').onclick=()=>{if(!audio)enable();trigger()};document.getElementById('reset').onclick=()=>{phase=0;particles=[];shake=0;veil.style.opacity=0;status.innerHTML='THE CHAPEL IS SILENT<br><span class="tag">PREVIEW · '+(audio?'AUDIO ON':'AUDIO OFF')+'</span>';hint.textContent='A stone figure waits beneath the broken stained glass.'};document.getElementById('sound').onclick=()=>{if(!audio){enable();status.innerHTML='THE CHAPEL IS SILENT<br><span class="tag">PREVIEW · AUDIO ON</span>'}else{audio=false;if(master)master.gain.setTargetAtTime(0,ctx.currentTime,.05);document.getElementById('sound').textContent='SOUND: OFF';status.innerHTML='THE CHAPEL IS SILENT<br><span class="tag">PREVIEW · AUDIO OFF</span>'}};
+function path(points,fill,stroke,lw=1){x.beginPath();points.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.closePath();if(fill){x.fillStyle=fill;x.fill()}if(stroke){x.strokeStyle=stroke;x.lineWidth=lw;x.stroke()}}
+function draw(t){let elapsed=phase?(t-start)/1000:0,move=phase?Math.min(1,elapsed/6):0,unfold=phase?Math.max(0,Math.min(1,(elapsed-2.8)/2.5)):0,turn=phase?Math.max(0,Math.min(1,(elapsed-1.6)/2.2)):0;let flick=phase&&elapsed>1?((Math.sin(t*.035)>0.78)?Math.random()*.7:0):0;veil.style.opacity=flick*.8;
+x.save();if(shake>0){x.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);shake*=.88}
+let bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#080b13');bg.addColorStop(.6,'#191a1d');bg.addColorStop(1,'#050507');x.fillStyle=bg;x.fillRect(0,0,w,h);
+let cx=w/2,scale=Math.min(w/780,h/680),floor=h*.86;
+ // chapel architecture
+x.fillStyle='#111318';x.fillRect(0,0,w,h);x.fillStyle='#202127';x.fillRect(w*.12,0,w*.76,floor);
+for(let side of [0,1]){let px=side?w*.82:w*.18;x.fillStyle='#090a0d';x.fillRect(px-w*.035,0,w*.07,floor);x.fillStyle='#343238';x.fillRect(px-w*.006,0,w*.012,floor);for(let j=0;j<4;j++){x.fillStyle='#090a0d';x.fillRect(px-w*.04,floor*(.2+j*.2),w*.08,7)}}
+ // pointed stained glass
+let gw=Math.min(w*.32,220),gh=Math.min(h*.37,240),gy=h*.08;x.save();x.translate(cx,gy);x.beginPath();x.moveTo(-gw/2,gh);x.lineTo(-gw/2,gh*.35);x.quadraticCurveTo(-gw*.42,-gh*.08,0,0);x.quadraticCurveTo(gw*.42,-gh*.08,gw/2,gh*.35);x.lineTo(gw/2,gh);x.closePath();x.clip();let glass=x.createLinearGradient(-gw/2,0,gw/2,gh);glass.addColorStop(0,'#182e3a');glass.addColorStop(.5,'#604b4b');glass.addColorStop(1,'#182e39');x.fillStyle=glass;x.fillRect(-gw/2,0,gw,gh);for(let i=-2;i<=2;i++){x.strokeStyle='#9d8c72';x.lineWidth=3;x.beginPath();x.moveTo(i*gw/5,0);x.lineTo(i*gw/5,gh);x.stroke()}x.strokeStyle='#a28b69';x.lineWidth=4;x.strokeRect(-gw/2,0,gw,gh);x.restore();
+ // moon shaft and dust
+let beam=x.createRadialGradient(cx,gy+gh*.7,5,cx,gy+gh*.7,w*.55);beam.addColorStop(0,'#b5c5ce22');beam.addColorStop(1,'#b5c5ce00');x.fillStyle=beam;x.fillRect(0,0,w,h);
+x.fillStyle='#37363a';x.fillRect(0,floor,w,h-floor);for(let i=0;i<16;i++){let px=(i/15)*w;x.strokeStyle='#6c655a22';x.lineWidth=1;x.beginPath();x.moveTo(cx,floor);x.lineTo(px,h);x.stroke()}
+ // altar
+x.fillStyle='#29282a';x.fillRect(cx-w*.18,floor-h*.09,w*.36,h*.09);x.fillStyle='#625c54';x.fillRect(cx-w*.19,floor-h*.095,w*.38,7);
+ // angel scale
+let s=scale*(.92+move*.08),base=floor,headY=base-300*s,bodyY=base-255*s;
+x.save();x.translate(cx,0);x.scale(s,s);
+ // wings folded then spread
+let wing=unfold;
+for(let side of [-1,1]){x.save();x.translate(side*28,bodyY);x.rotate(side*(.13+wing*.48));let flap=wing*28;path([[0,0],[side*(40+flap),-65],[side*(78+flap*1.5),-145],[side*(58+flap),-112],[side*(108+flap*1.6),-190],[side*(88+flap),-125],[side*(130+flap*1.8),-165],[side*(104+flap),-80],[side*(70+flap),-15]],'#77736c','#b4aa99',3);for(let j=0;j<8;j++){x.strokeStyle='#c4b9a5';x.lineWidth=2;x.beginPath();x.moveTo(side*(8+j*10),-20-j*10);x.lineTo(side*(55+j*13+flap),-75-j*14);x.stroke()}x.restore()}
+ // robe/body
+path([[-38,bodyY],[-57,base],[-33,base+8],[34,base+8],[57,base], [38,bodyY]],'#77736b','#c1b6a4',3);
+let robe=x.createLinearGradient(-45,0,45,0);robe.addColorStop(0,'#3f4040');robe.addColorStop(.5,'#999184');robe.addColorStop(1,'#454342');path([[-37,bodyY],[-28,bodyY-25],[28,bodyY-25],[38,bodyY],[48,base],[0,base+7],[-48,base]],robe,'#c1b5a2',2);
+for(let j=0;j<5;j++){x.strokeStyle='#d0c5b2';x.globalAlpha=.28;x.lineWidth=2;x.beginPath();x.moveTo(-25+j*12,bodyY+5);x.lineTo(-32+j*16,base);x.stroke()}x.globalAlpha=1;
+ // neck, head
+x.fillStyle='#aaa092';x.fillRect(-10,headY+28,20,22);x.beginPath();x.ellipse(0,headY+8,24,30,0,0,Math.PI*2);x.fill();x.strokeStyle='#ded1bd';x.lineWidth=2;x.stroke();
+ // hair/hood and face turn
+x.fillStyle='#4a4846';x.beginPath();x.arc(0,headY+2,27,Math.PI,Math.PI*2);x.fill();x.beginPath();x.moveTo(-25,headY+3);x.lineTo(-18,headY-22);x.lineTo(0,headY-31);x.lineTo(22,headY-18);x.lineTo(26,headY+4);x.lineTo(10,headY-4);x.lineTo(-4,headY+2);x.closePath();x.fill();
+let faceShift=turn*13;x.fillStyle='#1a191a';x.beginPath();x.ellipse(-8+faceShift,headY+8,3,2,0,0,Math.PI*2);x.ellipse(8+faceShift,headY+8,3,2,0,0,Math.PI*2);x.fill();x.strokeStyle='#514a42';x.beginPath();x.moveTo(-7+faceShift,headY+21);x.quadraticCurveTo(0,headY+25,7+faceShift,headY+20);x.stroke();
+ // cracks on stone
+x.strokeStyle='#282725';x.lineWidth=2;x.beginPath();x.moveTo(-17,headY+2);x.lineTo(-8,headY+13);x.lineTo(-15,headY+22);x.moveTo(18,bodyY+12);x.lineTo(6,bodyY+35);x.lineTo(12,bodyY+51);x.moveTo(-25,base-55);x.lineTo(-4,base-40);x.stroke();
+x.restore();x.restore();
+ // drifting stone dust
+for(let i=0;i<24;i++){let px=(i*97+t*.009)%w,py=(i*53+t*.018)%h;x.fillStyle='#c8bda0';x.globalAlpha=.13;x.fillRect(px,py,2,2)}x.globalAlpha=1;
+ // debris after wing slam
+if(phase&&elapsed>5.3){if(elapsed<5.55){shake=14;burst();if(audio){noise();tone(48,1.8,.3,'sawtooth',24)}}}
+if(phase&&elapsed>6.2){for(let p of particles){p.x+=p.vx;p.y+=p.vy;p.vy+=.13;p.life-=.009;x.save();x.translate(p.x,p.y);x.rotate(p.rot+=.1);x.globalAlpha=Math.max(0,p.life);x.fillStyle='#c2b7a2';x.fillRect(-p.r,-p.r*.5,p.r*2,p.r);x.restore()}particles=particles.filter(p=>p.life>0);status.innerHTML='THE ANGEL HAS AWAKENED<br><span class="tag">THE CHAPEL IS NO LONGER SAFE</span>';hint.textContent='Stone wings erupt open. Dust and fragments rain across the chapel.'}
+if(phase&&elapsed>9){phase=0;particles=[];hint.textContent='The angel has returned to stillness. But it is facing you.';status.innerHTML='THE CHAPEL IS SILENT<br><span class="tag">RESET TO PLAY AGAIN</span>'}
+if(phase&&elapsed>0&&elapsed<2.5){hint.textContent='The lights flicker. The statue has changed its position.'}
+if(phase&&elapsed>2.5&&elapsed<5.3){hint.textContent='Stone grinds. Its wings are slowly unfolding.'}
+x.restore();raf=requestAnimationFrame(draw)}
+raf=requestAnimationFrame(draw);
+})();
+</script></body></html>
