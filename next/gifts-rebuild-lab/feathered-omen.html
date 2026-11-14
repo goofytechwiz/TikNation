@@ -1,78 +1,40 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 6</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 7</title>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#03070b;color:#edf1ef;font-family:Arial,sans-serif}
-#stage{position:relative;width:100%;height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 55%,#27343c 0,#0c151b 44%,#020507 100%)}
-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.brand{position:absolute;top:6%;width:100%;text-align:center;z-index:2;letter-spacing:.32em;font-size:10px;color:#c2d0d09c;pointer-events:none}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020609;color:#edf1ef;font-family:Arial,sans-serif}
+#stage{position:relative;width:100%;height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 56%,#34434b 0,#111d24 42%,#020507 100%)}
+#storm{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.brand{position:absolute;top:6%;width:100%;text-align:center;z-index:4;letter-spacing:.32em;font-size:10px;color:#d0dcddaa;pointer-events:none}
 .brand b{display:block;margin-top:12px;font-size:clamp(25px,6vw,55px);letter-spacing:.14em;color:#f1f4f2;text-shadow:0 0 28px #d6e4e455}
-.status{position:absolute;bottom:calc(max(28px,env(safe-area-inset-bottom)) + 70px);width:100%;text-align:center;z-index:2;color:#c5d0d09c;font-size:10px;letter-spacing:.18em;pointer-events:none}
-.controls{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));width:100%;display:flex;justify-content:center;gap:12px;z-index:3;padding:0 12px}
+.bird-wrap{position:absolute;inset:17% 0 17%;z-index:2;display:grid;place-items:center;opacity:1;transform:translateY(0) scale(1);transition:opacity .7s}
+model-viewer{width:min(94vw,760px);height:100%;background:transparent;--poster-color:transparent;--progress-bar-color:#aabcc3;filter:drop-shadow(0 24px 26px #000b)}
+.bird-wrap.summon{animation:arrival 2.5s cubic-bezier(.16,.75,.25,1) both}
+@keyframes arrival{0%{opacity:0;transform:translateY(42vh) scale(.24) rotate(-9deg)}65%{opacity:1;transform:translateY(-2vh) scale(1.08) rotate(2deg)}100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
+.status{position:absolute;bottom:calc(max(28px,env(safe-area-inset-bottom)) + 70px);width:100%;text-align:center;z-index:4;color:#c5d0d09c;font-size:10px;letter-spacing:.18em;pointer-events:none}
+.controls{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));width:100%;display:flex;justify-content:center;gap:12px;z-index:5;padding:0 12px}
 button{min-width:145px;padding:15px 18px;border:1px solid #b6c7c77a;background:#101a20;color:#eef3f2;font-weight:bold;letter-spacing:.14em;font-size:10px;border-radius:2px;cursor:pointer}
 button.primary{background:#d9e4e2;color:#101619;border-color:#d9e4e2}
-</style></head><body><main id="stage"><canvas id="scene"></canvas>
+.feather{position:absolute;z-index:3;width:5px;height:38px;border-radius:100% 0 100% 0;background:linear-gradient(90deg,#080d11,#829096,#111a20);opacity:0;pointer-events:none}
+.feather.fly{animation:featherFly 2.4s ease-out both}
+@keyframes featherFly{0%{opacity:0;transform:translate(0,0) rotate(0)}15%{opacity:.9}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--spin))}}
+#flash{position:absolute;inset:0;z-index:3;background:#e4f1f5;opacity:0;pointer-events:none}
+#flash.bolt{animation:bolt .45s ease-out}
+@keyframes bolt{0%,100%{opacity:0}12%{opacity:.58}30%{opacity:.05}52%{opacity:.35}70%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.bird-wrap.summon,.feather.fly,#flash.bolt{animation:none}.bird-wrap{opacity:1}}
+</style></head><body><main id="stage"><canvas id="storm"></canvas>
 <div class="brand">TIKNATION · LEGENDARY GIFT<b>THE FEATHERED OMEN</b></div>
-<div class="status" id="status">THE STORM IS GATHERING</div>
+<div class="bird-wrap" id="birdWrap"><model-viewer id="raven" src="https://cdn.3dassets.dev/assets/28082/v1/model.glb" alt="Detailed 3D model of a common raven with glossy black feather ranks, heavy chisel-shaped bill, shaggy throat feathers and wedge-shaped tail" camera-controls auto-rotate auto-rotate-delay="0" rotation-per-second="18deg" camera-orbit="0deg 76deg 2.3m" field-of-view="28deg" camera-target="0m 0.27m 0m" exposure="1.35" shadow-intensity="1" environment-image="neutral" interaction-prompt="none"></model-viewer></div>
+<div id="flash"></div><div class="status" id="status">THE STORM IS GATHERING</div>
 <div class="controls"><button class="primary" id="trigger">SUMMON THE OMEN</button><button id="sound">SOUND: OFF</button></div></main>
 <script>
-(()=>{
-const canvas=document.getElementById('scene'),ctx=canvas.getContext('2d'),status=document.getElementById('status'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound');
-let W=0,H=0,dpr=1,active=false,start=0,feathers=[],rain=[],lightning=0,audioOn=false,audioCtx=null,last=0;
-const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-function resize(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);rain=Array.from({length:Math.max(80,Math.floor(W*H/4200))},()=>({x:Math.random()*W,y:Math.random()*H,v:4+Math.random()*8,l:8+Math.random()*16}));}
-addEventListener('resize',resize);resize();
-const lerp=(a,b,t)=>a+(b-a)*t;
-function path(points,fill,stroke=null,width=1){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.stroke();}}
-function feather(x,y,len,w,angle,color,alpha=1){ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.globalAlpha=alpha;const g=ctx.createLinearGradient(-w/2,0,w/2,len);g.addColorStop(0,'#080e13');g.addColorStop(.45,color);g.addColorStop(1,'#070b0f');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(-w*.65,len*.25,-w*.55,len*.78,0,len);ctx.bezierCurveTo(w*.55,len*.78,w*.65,len*.25,0,0);ctx.fill();ctx.strokeStyle='#a5b3b5';ctx.globalAlpha*=.2;ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(0,3);ctx.lineTo(0,len*.92);ctx.stroke();ctx.restore();}
-function wing(side,flap){ctx.save();ctx.scale(side,1);ctx.translate(-8,-5);ctx.rotate(flap);
-const g=ctx.createLinearGradient(0,-100,0,110);g.addColorStop(0,'#66747a');g.addColorStop(.18,'#303e45');g.addColorStop(.62,'#121d23');g.addColorStop(1,'#05090d');
-ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(-24,4);ctx.bezierCurveTo(-65,-35,-128,-82,-206,-112);ctx.bezierCurveTo(-183,-82,-169,-60,-150,-37);ctx.bezierCurveTo(-184,-54,-217,-68,-247,-72);ctx.bezierCurveTo(-218,-38,-188,-13,-154,8);ctx.bezierCurveTo(-191,0,-219,-1,-244,5);ctx.bezierCurveTo(-205,38,-151,53,-99,48);ctx.bezierCurveTo(-65,42,-39,26,-24,4);ctx.closePath();ctx.fill();
-for(let i=0;i<11;i++){const t=i/10;const x=-42-t*177,y=5-t*74;feather(x,y,76+t*48,18,-1.18,'#26343b',.98);}
-for(let i=0;i<8;i++){const t=i/7;feather(-34-t*112,12+t*3,66,20,-1.28,'#17242b',.96);}
-ctx.restore();}
-function raven(cx,cy,scale,flap,headTurn=0){ctx.save();ctx.translate(cx,cy);ctx.scale(scale,scale);
-// Side-on silhouette: tail to the left, head and hooked bill to the right.
-ctx.shadowColor='#000';ctx.shadowBlur=26;ctx.shadowOffsetY=13;
-wing(-1,flap);wing(1,-flap);
-// Tail, kept long and narrow rather than a fan
-const tail=ctx.createLinearGradient(-175,20,-40,35);tail.addColorStop(0,'#05090d');tail.addColorStop(.55,'#1b282e');tail.addColorStop(1,'#34434a');
-ctx.fillStyle=tail;ctx.beginPath();ctx.moveTo(-36,22);ctx.quadraticCurveTo(-105,15,-190,48);ctx.quadraticCurveTo(-126,52,-53,63);ctx.quadraticCurveTo(-33,55,-24,39);ctx.closePath();ctx.fill();
-for(let i=0;i<7;i++){const y=29+i*4;ctx.strokeStyle=i%2?'#4b5a60':'#172329';ctx.globalAlpha=.55;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-45,y);ctx.quadraticCurveTo(-111,y+3,-180,y+16);ctx.stroke();}ctx.globalAlpha=1;
-// Main body, forward-leaning and full-chested
-const body=ctx.createLinearGradient(-55,-30,55,80);body.addColorStop(0,'#59676d');body.addColorStop(.18,'#2c3a41');body.addColorStop(.55,'#111c22');body.addColorStop(1,'#05090d');
-ctx.fillStyle=body;ctx.beginPath();ctx.moveTo(-60,5);ctx.bezierCurveTo(-48,-43,8,-59,54,-27);ctx.bezierCurveTo(86,-3,77,49,34,73);ctx.bezierCurveTo(-10,91,-67,57,-72,28);ctx.quadraticCurveTo(-77,14,-60,5);ctx.fill();
-// Shoulder and overlapping covert feathers
-for(let row=0;row<3;row++){for(let i=0;i<8;i++){const x=-48+i*13,y=-17+row*15+Math.sin(i*.6)*5;feather(x,y,42,13,-.72,'#26343b',.86);}}
-ctx.save();ctx.translate(headTurn,0);
-// Neck curves upward from breast; head is distinct from torso
-ctx.fillStyle='#111b21';ctx.beginPath();ctx.moveTo(24,30);ctx.bezierCurveTo(40,5,31,-31,42,-56);ctx.bezierCurveTo(50,-81,79,-91,99,-72);ctx.bezierCurveTo(115,-56,105,-29,89,-15);ctx.bezierCurveTo(78,-1,78,17,72,31);ctx.quadraticCurveTo(51,45,24,30);ctx.fill();
-const head=ctx.createLinearGradient(54,-94,105,-35);head.addColorStop(0,'#69777b');head.addColorStop(.22,'#34434a');head.addColorStop(.65,'#17242a');head.addColorStop(1,'#070c10');ctx.fillStyle=head;ctx.beginPath();ctx.ellipse(79,-65,31,29,-.12,0,Math.PI*2);ctx.fill();
-// Large, unmistakably raven-like black bill with a downward hook
-ctx.fillStyle='#05090c';ctx.beginPath();ctx.moveTo(102,-70);ctx.bezierCurveTo(128,-78,161,-66,181,-51);ctx.bezierCurveTo(169,-50,160,-48,154,-41);ctx.bezierCurveTo(148,-34,140,-37,135,-45);ctx.bezierCurveTo(124,-53,111,-55,102,-55);ctx.closePath();ctx.fill();
-ctx.strokeStyle='#829096';ctx.globalAlpha=.45;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(111,-67);ctx.quadraticCurveTo(151,-62,174,-52);ctx.stroke();ctx.globalAlpha=1;
-// Nostrils and eye
-ctx.fillStyle='#030506';ctx.beginPath();ctx.ellipse(117,-64,3,1.8,0,0,Math.PI*2);ctx.fill();
-ctx.fillStyle='#030506';ctx.beginPath();ctx.arc(91,-75,5.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#d3b27a';ctx.beginPath();ctx.arc(92,-75,1.8,0,Math.PI*2);ctx.fill();ctx.fillStyle='#020304';ctx.beginPath();ctx.arc(92.5,-75,1,0,Math.PI*2);ctx.fill();
-ctx.restore();
-// Two thin dark legs and gripping toes
-ctx.shadowBlur=0;ctx.strokeStyle='#161d20';ctx.lineCap='round';ctx.lineWidth=5;
-for(const x of [4,36]){ctx.beginPath();ctx.moveTo(x,65);ctx.lineTo(x+2,100);ctx.stroke();ctx.lineWidth=3.5;ctx.beginPath();ctx.moveTo(x+2,100);ctx.lineTo(x-11,108);ctx.moveTo(x+2,100);ctx.lineTo(x+14,108);ctx.moveTo(x+2,100);ctx.lineTo(x+1,112);ctx.stroke();ctx.lineWidth=5;}
-ctx.restore();}
-function drawStorm(t){const bg=ctx.createRadialGradient(W*.5,H*.52,10,W*.5,H*.52,Math.max(W,H)*.75);bg.addColorStop(0,'#34424a');bg.addColorStop(.34,'#16232b');bg.addColorStop(1,'#020508');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-for(let i=0;i<5;i++){const x=W*(.5+Math.sin(t*.12+i*1.7)*.36),y=H*(.36+i*.1);const g=ctx.createRadialGradient(x,y,4,x,y,W*.35);g.addColorStop(0,'#9eafb31b');g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
-ctx.save();ctx.translate(W/2,H*.54);ctx.rotate(t*.035);ctx.strokeStyle='#b8cbd014';for(let i=0;i<4;i++){ctx.beginPath();ctx.ellipse(0,0,W*(.18+i*.07),H*(.1+i*.04),0,0,Math.PI*1.8);ctx.lineWidth=1;ctx.stroke();}ctx.restore();
-ctx.strokeStyle='#b8cbd04a';ctx.lineWidth=1;for(const r of rain){ctx.beginPath();ctx.moveTo(r.x,r.y);ctx.lineTo(r.x-2,r.y+r.l);ctx.stroke();r.y+=r.v;r.x-=.8;if(r.y>H){r.y=-20;r.x=Math.random()*W;}}
-if(lightning>0){ctx.fillStyle='rgba(219,235,241,'+(lightning*.32)+')';ctx.fillRect(0,0,W,H);lightning=Math.max(0,lightning-.08);}
-}
-function animate(now){requestAnimationFrame(animate);const t=now/1000;if(!last)last=now;const dt=Math.min(.04,(now-last)/1000);last=now;drawStorm(t);
-if(active){const p=Math.min(1,(t-start)/2.3),ease=1-Math.pow(1-p,3),scale=lerp(.05,Math.min(W/760,H/470)*1.08,ease),cy=lerp(H*1.22,H*.52,ease);raven(W/2,cy,scale,Math.sin(t*5.5)*.26,Math.sin(t*.8)*4);if(p>.78&&Math.random()<.16)lightning=.9;}
-else if(!reduced){raven(W/2,H*.53,Math.min(W/760,H/470)*.9,Math.sin(t*2.2)*.07,Math.sin(t*.35)*2);}
-for(let i=feathers.length-1;i>=0;i--){const f=feathers[i];f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=70*dt;f.rot+=f.spin*dt;f.life-=dt;ctx.save();ctx.translate(f.x,f.y);ctx.rotate(f.rot);ctx.globalAlpha=Math.max(0,Math.min(1,f.life));feather(0,0,f.len,f.w,0,'#43515a',1);ctx.restore();if(f.life<=0)feathers.splice(i,1);}
-}
-function burst(){for(let i=0;i<65;i++){const a=Math.random()*Math.PI*2,s=120+Math.random()*440;feathers.push({x:W/2+(Math.random()-.5)*80,y:H*.53+(Math.random()-.5)*55,vx:Math.cos(a)*s,vy:Math.sin(a)*s-90,spin:(Math.random()-.5)*9,rot:Math.random()*6,len:24+Math.random()*32,w:8+Math.random()*9,life:2.4+Math.random()*1.8});}}
+(()=>{const canvas=document.getElementById('storm'),ctx=canvas.getContext('2d'),status=document.getElementById('status'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound'),wrap=document.getElementById('birdWrap'),raven=document.getElementById('raven'),flash=document.getElementById('flash');let W=0,H=0,rain=[],audioOn=false,audioCtx=null,last=0,stormTime=0;
+function resize(){const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=W*d;canvas.height=H*d;ctx.setTransform(d,0,0,d,0,0);rain=Array.from({length:Math.max(80,Math.floor(W*H/4200))},()=>({x:Math.random()*W,y:Math.random()*H,v:4+Math.random()*8,l:8+Math.random()*16}));}addEventListener('resize',resize);resize();
+function frame(now){requestAnimationFrame(frame);const t=now/1000,dt=Math.min(.04,(now-last)/1000||.016);last=now;const bg=ctx.createRadialGradient(W*.5,H*.52,10,W*.5,H*.52,Math.max(W,H)*.75);bg.addColorStop(0,'#34434b');bg.addColorStop(.38,'#15232b');bg.addColorStop(1,'#020508');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);ctx.save();ctx.translate(W/2,H*.54);ctx.rotate(t*.035);ctx.strokeStyle='#b8cbd014';for(let i=0;i<4;i++){ctx.beginPath();ctx.ellipse(0,0,W*(.18+i*.07),H*(.1+i*.04),0,0,Math.PI*1.8);ctx.lineWidth=1;ctx.stroke();}ctx.restore();ctx.strokeStyle='#b8cbd04a';ctx.lineWidth=1;for(const r of rain){ctx.beginPath();ctx.moveTo(r.x,r.y);ctx.lineTo(r.x-2,r.y+r.l);ctx.stroke();r.y+=r.v;r.x-=.8;if(r.y>H){r.y=-20;r.x=Math.random()*W;}}}
+function featherBurst(){for(let i=0;i<42;i++){const el=document.createElement('i');el.className='feather fly';el.style.left=(W*.5+(Math.random()-.5)*90)+'px';el.style.top=(H*.52+(Math.random()-.5)*70)+'px';el.style.setProperty('--dx',((Math.random()-.5)*W*.9)+'px');el.style.setProperty('--dy',((Math.random()-.5)*H*.85)+'px');el.style.setProperty('--spin',(Math.random()*900-450)+'deg');el.style.animationDelay=(Math.random()*.45)+'s';document.getElementById('stage').appendChild(el);setTimeout(()=>el.remove(),3200);}}
 function rumble(){if(!audioOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(48,t);o.frequency.exponentialRampToValueAtTime(24,t+2);f.type='lowpass';f.frequency.value=110;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.12,t+.12);g.gain.exponentialRampToValueAtTime(.0001,t+2.3);o.connect(f).connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+2.4);}catch(e){}}
-trigger.addEventListener('click',()=>{active=true;start=performance.now()/1000;burst();lightning=1;status.textContent='THE RAVEN DESCENDS';trigger.disabled=true;rumble();setTimeout(()=>{status.textContent='WINGS OF THE TEMPEST';lightning=1;},2300);setTimeout(()=>{active=false;trigger.disabled=false;status.textContent='THE OMEN IS WATCHING';},6200);});
+trigger.addEventListener('click',()=>{wrap.classList.remove('summon');void wrap.offsetWidth;wrap.classList.add('summon');featherBurst();flash.classList.remove('bolt');void flash.offsetWidth;flash.classList.add('bolt');status.textContent='THE RAVEN DESCENDS';rumble();raven.cameraOrbit='0deg 76deg 2.0m';setTimeout(()=>{status.textContent='THE OMEN IS WATCHING';raven.cameraOrbit='0deg 76deg 2.3m';},2600);});
 sound.addEventListener('click',()=>{audioOn=!audioOn;sound.textContent='SOUND: '+(audioOn?'ON':'OFF');if(audioOn)rumble();});
-requestAnimationFrame(animate);
-})();
-</script></body></html>
+raven.addEventListener('error',()=>{status.textContent='3D MODEL FAILED TO LOAD — CHECK CONNECTION';});raven.addEventListener('load',()=>{status.textContent='THE RAVEN IS WATCHING';});
+requestAnimationFrame(frame);
+})();</script></body></html>
