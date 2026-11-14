@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090b08">
+<title>THE HARVESTER — TikNation Gift Lab</title>
+<style>
+:root{color-scheme:dark;--acid:#b6e66b;--mist:#b8c69a;--red:#8f332b}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#070907;color:#edf0df;font-family:Inter,system-ui,Segoe UI,sans-serif}
+body{overflow-x:hidden}
+.stage{position:relative;min-height:100svh;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 50% 78%,#29331d 0,#141b12 28%,#090d09 62%,#050705 100%)}
+.stars{position:absolute;inset:0;opacity:.32;background-image:radial-gradient(#c9d7a5 1px,transparent 1px);background-size:43px 43px;mask-image:linear-gradient(transparent,#000 25%,#000)}
+.moon{position:absolute;width:min(34vw,240px);aspect-ratio:1;border-radius:50%;right:12%;top:8%;background:radial-gradient(circle at 35% 35%,#d6dfb3,#7c8a65 58%,#313d2a 75%);box-shadow:0 0 70px #a5bd7b33,0 0 160px #a5bd7b17;opacity:.72}
+.horizon{position:absolute;left:-10%;right:-10%;bottom:0;height:38%;background:linear-gradient(transparent,#0b100a 20%,#070907 85%);clip-path:polygon(0 32%,12% 22%,25% 37%,41% 15%,58% 30%,72% 12%,88% 28%,100% 18%,100% 100%,0 100%)}
+.title{position:relative;z-index:5;text-align:center;padding:26px 16px 0;letter-spacing:.24em;font-size:clamp(11px,2vw,14px);color:#c6d5a4}
+.title strong{display:block;margin-top:9px;font-size:clamp(29px,7vw,58px);letter-spacing:.12em;color:#f0f1df;text-shadow:0 0 24px #b4d67a55}
+.subtitle{margin-top:9px;color:#9da78d;font-size:11px;letter-spacing:.16em}
+.creature{position:absolute;z-index:3;left:50%;bottom:13%;width:min(78vw,510px);height:min(67vh,570px);transform:translateX(-50%);opacity:0;filter:drop-shadow(0 10px 35px #000)}
+.creature .torso{position:absolute;left:31%;top:27%;width:39%;height:54%;border-radius:46% 46% 32% 32%;background:linear-gradient(90deg,#1c2119,#58604a 28%,#30382a 53%,#11170f 82%);clip-path:polygon(20% 0,80% 0,100% 25%,83% 100%,17% 100%,0 25%);box-shadow:inset 0 0 25px #d5e4a222}
+.rib{position:absolute;left:34%;top:37%;width:32%;height:38%;border:7px solid #a6ad8d;border-left-color:#667257;border-right-color:#687457;border-bottom-color:transparent;border-radius:48%;transform:rotate(-4deg);filter:drop-shadow(0 0 7px #9db86b55)}
+.rib:before,.rib:after{content:"";position:absolute;left:8%;right:8%;height:9px;border-radius:50%;background:#9aa587;box-shadow:0 0 7px #d6e6b055}
+.rib:before{top:26%}.rib:after{top:53%}
+.core{position:absolute;left:44%;top:53%;width:12%;aspect-ratio:1;border-radius:50%;background:#b7e66b;box-shadow:0 0 15px 8px #9bdc56,0 0 65px 24px #8cc84a77;opacity:0}
+.head{position:absolute;left:37%;top:7%;width:27%;height:26%;background:linear-gradient(110deg,#343d2d,#879075 38%,#242c20 78%);clip-path:polygon(18% 0,83% 0,100% 45%,73% 100%,28% 92%,0 43%);filter:drop-shadow(0 0 10px #000)}
+.skull{position:absolute;left:41%;top:10%;width:19%;height:16%;background:#c0c3a2;clip-path:polygon(18% 0,82% 0,100% 60%,68% 100%,30% 100%,0 60%);opacity:.78}
+.eye{position:absolute;top:19%;width:5%;height:2.3%;background:#d6f18a;box-shadow:0 0 12px 5px #b9ef68;opacity:0}
+.eye.left{left:44%}.eye.right{left:53%}
+.arm{position:absolute;top:28%;width:19%;height:58%;background:linear-gradient(90deg,#11170f,#566047 42%,#1b2317);border-radius:45%;transform-origin:50% 5%;box-shadow:inset 0 0 18px #c7d6a322}
+.arm.left{left:12%;transform:rotate(24deg)}.arm.right{right:12%;transform:rotate(-24deg)}
+.hand{position:absolute;bottom:0;left:12%;width:78%;height:28%;border-radius:35%;background:linear-gradient(90deg,#1a2116,#667052,#1a2116);clip-path:polygon(0 0,100% 0,88% 100%,72% 62%,60% 100%,48% 55%,35% 100%,24% 55%,12% 100%)}
+.claw{position:absolute;bottom:-3%;width:10%;height:25%;background:linear-gradient(#b5bd9a,#444d38);clip-path:polygon(0 0,100% 0,48% 100%);filter:drop-shadow(0 0 5px #000)}
+.crack{position:absolute;z-index:2;left:50%;bottom:9%;width:min(90vw,650px);height:90px;transform:translateX(-50%);opacity:0;background:radial-gradient(ellipse,#b5e36b66 0,transparent 67%)}
+.crack:before{content:"";position:absolute;inset:35% 0;background:linear-gradient(90deg,transparent,#b6df6b,#e5f5a0,#9aca52,transparent);clip-path:polygon(0 48%,18% 34%,26% 60%,39% 20%,53% 62%,67% 30%,81% 56%,100% 44%,100% 59%,81% 70%,67% 47%,53% 81%,39% 42%,26% 80%,18% 53%,0 64%)}
+.fog{position:absolute;z-index:4;left:-20%;right:-20%;bottom:0;height:36%;opacity:.4;background:radial-gradient(ellipse at 20% 70%,#c0d2a033,transparent 48%),radial-gradient(ellipse at 75% 55%,#aabf8b30,transparent 45%);filter:blur(18px);animation:fog 9s ease-in-out infinite alternate}
+.particles{position:absolute;z-index:4;inset:0;pointer-events:none}
+.particle{position:absolute;width:4px;height:4px;border-radius:50%;background:#c7ec83;box-shadow:0 0 9px #b6ed69;animation:rise var(--d,4s) linear infinite;opacity:0}
+@keyframes fog{to{transform:translateX(8%) scale(1.08);opacity:.7}}
+@keyframes rise{0%{transform:translateY(40px) scale(.4);opacity:0}20%{opacity:.8}100%{transform:translateY(-170px) scale(1.2);opacity:0}}
+@keyframes emerge{0%{opacity:0;transform:translate(-50%,25%) scale(.82)}65%{opacity:1;transform:translate(-50%,-3%) scale(1.03)}100%{opacity:1;transform:translate(-50%,0) scale(1)}}
+@keyframes slamL{0%,100%{transform:rotate(24deg)}45%{transform:rotate(48deg)}65%{transform:rotate(9deg)}}
+@keyframes slamR{0%,100%{transform:rotate(-24deg)}45%{transform:rotate(-48deg)}65%{transform:rotate(-9deg)}}
+@keyframes pulse{0%,100%{opacity:.45;filter:brightness(.8)}50%{opacity:1;filter:brightness(1.8)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(4px)}}
+.stage.awake .creature{opacity:1;animation:emerge 2.4s cubic-bezier(.2,.8,.2,1) both}
+.stage.awake .eye,.stage.awake .core{opacity:1;animation:pulse 2s ease-in-out infinite}
+.stage.awake .crack{opacity:1;animation:pulse 1.4s infinite}
+.stage.awake .arm.left{animation:slamL 3.8s 2.2s ease-in-out infinite}
+.stage.awake .arm.right{animation:slamR 3.8s 2.2s ease-in-out infinite}
+.stage.awake .title strong{text-shadow:0 0 28px #c2ef79,0 0 60px #8bb94e}
+.stage.impact{animation:shake .45s}
+.controls{position:absolute;z-index:8;left:0;right:0;bottom:22px;display:flex;justify-content:center;gap:10px;padding:0 14px;flex-wrap:wrap}
+button{border:1px solid #91a66a;background:#141d11;color:#e8f0d5;border-radius:4px;padding:14px 19px;font-weight:750;letter-spacing:.13em;font-size:11px;cursor:pointer;min-height:48px}
+button.primary{background:#a6d45f;color:#10170a;border-color:#d1f28c;box-shadow:0 0 24px #9acb5540}
+button:active{transform:scale(.97)}
+.status{position:absolute;z-index:8;bottom:86px;left:0;right:0;text-align:center;color:#aab695;font-size:10px;letter-spacing:.16em;padding:0 12px}
+@media(max-width:600px){.moon{right:4%;top:13%;width:34vw}.creature{width:96vw;height:58vh;bottom:17%}.controls{bottom:16px}.status{bottom:80px}.arm{height:53%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="stage" id="stage">
+<div class="stars"></div><div class="moon"></div><div class="horizon"></div>
+<header class="title">TIKNATION · GIFT REBUILD LAB<strong>THE HARVESTER</strong><div class="subtitle">SOMETHING BENEATH THE EARTH HAS HEARD YOU</div></header>
+<div class="crack"></div>
+<div class="creature" aria-hidden="true">
+<div class="torso"></div><div class="rib"></div><div class="core"></div>
+<div class="head"></div><div class="skull"></div><div class="eye left"></div><div class="eye right"></div>
+<div class="arm left"><div class="hand"></div><i class="claw" style="left:20%"></i><i class="claw" style="left:40%"></i><i class="claw" style="left:60%"></i></div>
+<div class="arm right"><div class="hand"></div><i class="claw" style="left:20%"></i><i class="claw" style="left:40%"></i><i class="claw" style="left:60%"></i></div>
+</div>
+<div class="fog"></div><div class="particles" id="particles"></div>
+<div class="status" id="status">DORMANT · WAITING FOR A GIFT</div>
+<div class="controls"><button class="primary" id="trigger">▶ SUMMON THE HARVESTER</button><button id="sound">SOUND: OFF</button><button id="reset">RESET SCENE</button></div>
+</main>
+<script>
+(()=> {
+const stage=document.getElementById('stage'),status=document.getElementById('status'),trigger=document.getElementById('trigger'),soundBtn=document.getElementById('sound'),reset=document.getElementById('reset'),particles=document.getElementById('particles');
+let audio=false,ctx=null,active=false;
+for(let i=0;i<42;i++){const p=document.createElement('i');p.className='particle';p.style.left=(Math.random()*100)+'%';p.style.top=(35+Math.random()*65)+'%';p.style.setProperty('--d',(3+Math.random()*6)+'s');p.style.animationDelay=(-Math.random()*8)+'s';particles.appendChild(p)}
+function noiseBurst(duration,volume,filterFreq){if(!audio)return;ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();const n=Math.floor(ctx.sampleRate*duration),buffer=ctx.createBuffer(1,n,ctx.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<n;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/n,2);const src=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();src.buffer=buffer;filter.type='lowpass';filter.frequency.value=filterFreq;gain.gain.setValueAtTime(volume,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration);src.connect(filter).connect(gain).connect(ctx.destination);src.start()}
+function tone(freq,duration,type,volume){if(!audio)return;ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(25,freq*.42),ctx.currentTime+duration);g.gain.setValueAtTime(volume,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration);o.connect(g).connect(ctx.destination);o.start();o.stop(ctx.currentTime+duration)}
+function summon(){active=true;stage.classList.remove('awake','impact');void stage.offsetWidth;stage.classList.add('awake');status.textContent='THE GROUND IS OPENING · IT IS CLIMBING';trigger.textContent='↻ SUMMON AGAIN';document.querySelectorAll('.particle').forEach(p=>p.style.opacity='1');if(audio){if(ctx&&ctx.state==='suspended')ctx.resume();noiseBurst(2.2,.75,180);tone(58,3.2,'sawtooth',.22);setTimeout(()=>{noiseBurst(1.1,.9,800);tone(42,2.4,'triangle',.35)},1900);setTimeout(()=>{noiseBurst(1.8,.55,320);tone(72,2,'sawtooth',.18)},3200)}setTimeout(()=>{stage.classList.add('impact');status.textContent='ITS HEART HAS IGNITED · DO NOT LOOK AWAY'},2200);setTimeout(()=>{status.textContent='THE HARVESTER IS HERE · IT SEES YOU'},4200)}
+function resetScene(){active=false;stage.classList.remove('awake','impact');status.textContent='DORMANT · WAITING FOR A GIFT';trigger.textContent='▶ SUMMON THE HARVESTER';document.querySelectorAll('.particle').forEach(p=>p.style.opacity='')}
+trigger.addEventListener('click',summon);reset.addEventListener('click',resetScene);
+soundBtn.addEventListener('click',()=>{audio=!audio;soundBtn.textContent='SOUND: '+(audio?'ON':'OFF');if(audio){ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();if(active){noiseBurst(.8,.35,220);tone(65,1.4,'sawtooth',.12)}}});
+})();
+</script>
+</body>
+</html>
