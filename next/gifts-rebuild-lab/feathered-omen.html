@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 5</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 6</title>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#03070b;color:#edf1ef;font-family:Arial,sans-serif}
 #stage{position:relative;width:100%;height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 55%,#27343c 0,#0c151b 44%,#020507 100%)}
@@ -24,30 +24,39 @@ addEventListener('resize',resize);resize();
 const lerp=(a,b,t)=>a+(b-a)*t;
 function path(points,fill,stroke=null,width=1){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.stroke();}}
 function feather(x,y,len,w,angle,color,alpha=1){ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.globalAlpha=alpha;const g=ctx.createLinearGradient(-w/2,0,w/2,len);g.addColorStop(0,'#080e13');g.addColorStop(.45,color);g.addColorStop(1,'#070b0f');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(-w*.65,len*.25,-w*.55,len*.78,0,len);ctx.bezierCurveTo(w*.55,len*.78,w*.65,len*.25,0,0);ctx.fill();ctx.strokeStyle='#a5b3b5';ctx.globalAlpha*=.2;ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(0,3);ctx.lineTo(0,len*.92);ctx.stroke();ctx.restore();}
-function wing(side,flap){ctx.save();ctx.scale(side,1);ctx.rotate(flap);const grad=ctx.createLinearGradient(0,-30,0,150);grad.addColorStop(0,'#44535b');grad.addColorStop(.35,'#1d2a31');grad.addColorStop(1,'#060b0f');path([[0,0],[45,-22],[115,-65],[205,-104],[310,-142],[282,-98],[350,-115],[302,-54],[365,-58],[300,-8],[345,8],[250,24],[160,34],[70,25]],grad,'#82919855',1);
-for(let i=0;i<15;i++){const t=i/14;feather(42+t*255,-12-t*100,95+t*65,22,-.18-t*.23,'#3c4b53',.95);}
-for(let i=0;i<13;i++){const t=i/12;feather(30+t*205,8+t*1,78,20,-.35-t*.08,'#25343b',.9);}
+function wing(side,flap){ctx.save();ctx.scale(side,1);ctx.translate(-8,-5);ctx.rotate(flap);
+const g=ctx.createLinearGradient(0,-100,0,110);g.addColorStop(0,'#66747a');g.addColorStop(.18,'#303e45');g.addColorStop(.62,'#121d23');g.addColorStop(1,'#05090d');
+ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(-24,4);ctx.bezierCurveTo(-65,-35,-128,-82,-206,-112);ctx.bezierCurveTo(-183,-82,-169,-60,-150,-37);ctx.bezierCurveTo(-184,-54,-217,-68,-247,-72);ctx.bezierCurveTo(-218,-38,-188,-13,-154,8);ctx.bezierCurveTo(-191,0,-219,-1,-244,5);ctx.bezierCurveTo(-205,38,-151,53,-99,48);ctx.bezierCurveTo(-65,42,-39,26,-24,4);ctx.closePath();ctx.fill();
+for(let i=0;i<11;i++){const t=i/10;const x=-42-t*177,y=5-t*74;feather(x,y,76+t*48,18,-1.18,'#26343b',.98);}
+for(let i=0;i<8;i++){const t=i/7;feather(-34-t*112,12+t*3,66,20,-1.28,'#17242b',.96);}
 ctx.restore();}
 function raven(cx,cy,scale,flap,headTurn=0){ctx.save();ctx.translate(cx,cy);ctx.scale(scale,scale);
-ctx.shadowColor='#000';ctx.shadowBlur=28;ctx.shadowOffsetY=14;
+// Side-on silhouette: tail to the left, head and hooked bill to the right.
+ctx.shadowColor='#000';ctx.shadowBlur=26;ctx.shadowOffsetY=13;
 wing(-1,flap);wing(1,-flap);
-// A raven's compact, forward-leaning body and long tapered tail
-const body=ctx.createRadialGradient(-24,-4,8,0,20,105);body.addColorStop(0,'#53636a');body.addColorStop(.22,'#26343b');body.addColorStop(.72,'#101a20');body.addColorStop(1,'#04080b');
-ctx.fillStyle=body;ctx.beginPath();ctx.ellipse(-3,24,48,72,-.34,0,Math.PI*2);ctx.fill();
-// Tail feathers extend behind the body as a narrow, squared fan
-for(let i=0;i<9;i++){const x=-39+i*8.5;feather(x,64,112-Math.abs(i-4)*5,13,-.22,'#18252c',.98);}
+// Tail, kept long and narrow rather than a fan
+const tail=ctx.createLinearGradient(-175,20,-40,35);tail.addColorStop(0,'#05090d');tail.addColorStop(.55,'#1b282e');tail.addColorStop(1,'#34434a');
+ctx.fillStyle=tail;ctx.beginPath();ctx.moveTo(-36,22);ctx.quadraticCurveTo(-105,15,-190,48);ctx.quadraticCurveTo(-126,52,-53,63);ctx.quadraticCurveTo(-33,55,-24,39);ctx.closePath();ctx.fill();
+for(let i=0;i<7;i++){const y=29+i*4;ctx.strokeStyle=i%2?'#4b5a60':'#172329';ctx.globalAlpha=.55;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-45,y);ctx.quadraticCurveTo(-111,y+3,-180,y+16);ctx.stroke();}ctx.globalAlpha=1;
+// Main body, forward-leaning and full-chested
+const body=ctx.createLinearGradient(-55,-30,55,80);body.addColorStop(0,'#59676d');body.addColorStop(.18,'#2c3a41');body.addColorStop(.55,'#111c22');body.addColorStop(1,'#05090d');
+ctx.fillStyle=body;ctx.beginPath();ctx.moveTo(-60,5);ctx.bezierCurveTo(-48,-43,8,-59,54,-27);ctx.bezierCurveTo(86,-3,77,49,34,73);ctx.bezierCurveTo(-10,91,-67,57,-72,28);ctx.quadraticCurveTo(-77,14,-60,5);ctx.fill();
+// Shoulder and overlapping covert feathers
+for(let row=0;row<3;row++){for(let i=0;i<8;i++){const x=-48+i*13,y=-17+row*15+Math.sin(i*.6)*5;feather(x,y,42,13,-.72,'#26343b',.86);}}
 ctx.save();ctx.translate(headTurn,0);
-// Neck rises smoothly from the breast into the head
-ctx.fillStyle='#101a20';ctx.beginPath();ctx.moveTo(-31,15);ctx.bezierCurveTo(-43,-20,-32,-65,-13,-82);ctx.bezierCurveTo(2,-96,30,-85,34,-62);ctx.bezierCurveTo(41,-39,28,-19,22,-5);ctx.bezierCurveTo(12,7,-9,12,-31,15);ctx.fill();
-const sheen=ctx.createLinearGradient(-30,-95,30,-25);sheen.addColorStop(0,'#78868a');sheen.addColorStop(.18,'#34434a');sheen.addColorStop(.55,'#17242a');sheen.addColorStop(1,'#070c10');ctx.fillStyle=sheen;ctx.beginPath();ctx.ellipse(-2,-72,31,35,-.12,0,Math.PI*2);ctx.fill();
-// Raven bill: dark, heavy, tapered and gently hooked — never yellow
-ctx.fillStyle='#080d11';ctx.beginPath();ctx.moveTo(21,-74);ctx.bezierCurveTo(43,-77,69,-68,91,-54);ctx.bezierCurveTo(78,-54,64,-51,49,-46);ctx.bezierCurveTo(39,-43,29,-48,21,-55);ctx.closePath();ctx.fill();
-ctx.strokeStyle='#59666a';ctx.globalAlpha=.55;ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(27,-69);ctx.quadraticCurveTo(59,-66,82,-56);ctx.stroke();ctx.globalAlpha=1;
-// Small dark eye with a subtle amber catchlight
-ctx.fillStyle='#020506';ctx.beginPath();ctx.ellipse(13,-81,8,6,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#c7a56e';ctx.beginPath();ctx.arc(15,-81,2.2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#020304';ctx.beginPath();ctx.arc(15.5,-81,1.1,0,Math.PI*2);ctx.fill();
+// Neck curves upward from breast; head is distinct from torso
+ctx.fillStyle='#111b21';ctx.beginPath();ctx.moveTo(24,30);ctx.bezierCurveTo(40,5,31,-31,42,-56);ctx.bezierCurveTo(50,-81,79,-91,99,-72);ctx.bezierCurveTo(115,-56,105,-29,89,-15);ctx.bezierCurveTo(78,-1,78,17,72,31);ctx.quadraticCurveTo(51,45,24,30);ctx.fill();
+const head=ctx.createLinearGradient(54,-94,105,-35);head.addColorStop(0,'#69777b');head.addColorStop(.22,'#34434a');head.addColorStop(.65,'#17242a');head.addColorStop(1,'#070c10');ctx.fillStyle=head;ctx.beginPath();ctx.ellipse(79,-65,31,29,-.12,0,Math.PI*2);ctx.fill();
+// Large, unmistakably raven-like black bill with a downward hook
+ctx.fillStyle='#05090c';ctx.beginPath();ctx.moveTo(102,-70);ctx.bezierCurveTo(128,-78,161,-66,181,-51);ctx.bezierCurveTo(169,-50,160,-48,154,-41);ctx.bezierCurveTo(148,-34,140,-37,135,-45);ctx.bezierCurveTo(124,-53,111,-55,102,-55);ctx.closePath();ctx.fill();
+ctx.strokeStyle='#829096';ctx.globalAlpha=.45;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(111,-67);ctx.quadraticCurveTo(151,-62,174,-52);ctx.stroke();ctx.globalAlpha=1;
+// Nostrils and eye
+ctx.fillStyle='#030506';ctx.beginPath();ctx.ellipse(117,-64,3,1.8,0,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#030506';ctx.beginPath();ctx.arc(91,-75,5.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#d3b27a';ctx.beginPath();ctx.arc(92,-75,1.8,0,Math.PI*2);ctx.fill();ctx.fillStyle='#020304';ctx.beginPath();ctx.arc(92.5,-75,1,0,Math.PI*2);ctx.fill();
 ctx.restore();
-ctx.shadowBlur=0;ctx.strokeStyle='#171f23';ctx.lineCap='round';ctx.lineWidth=5;
-for(let s of [-1,1]){ctx.beginPath();ctx.moveTo(s*17,77);ctx.lineTo(s*19,105);ctx.stroke();ctx.lineWidth=3.5;ctx.beginPath();ctx.moveTo(s*19,105);ctx.lineTo(s*34,111);ctx.moveTo(s*19,105);ctx.lineTo(s*10,114);ctx.moveTo(s*19,105);ctx.lineTo(s*21,116);ctx.stroke();ctx.lineWidth=5;}
+// Two thin dark legs and gripping toes
+ctx.shadowBlur=0;ctx.strokeStyle='#161d20';ctx.lineCap='round';ctx.lineWidth=5;
+for(const x of [4,36]){ctx.beginPath();ctx.moveTo(x,65);ctx.lineTo(x+2,100);ctx.stroke();ctx.lineWidth=3.5;ctx.beginPath();ctx.moveTo(x+2,100);ctx.lineTo(x-11,108);ctx.moveTo(x+2,100);ctx.lineTo(x+14,108);ctx.moveTo(x+2,100);ctx.lineTo(x+1,112);ctx.stroke();ctx.lineWidth=5;}
 ctx.restore();}
 function drawStorm(t){const bg=ctx.createRadialGradient(W*.5,H*.52,10,W*.5,H*.52,Math.max(W,H)*.75);bg.addColorStop(0,'#34424a');bg.addColorStop(.34,'#16232b');bg.addColorStop(1,'#020508');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
 for(let i=0;i<5;i++){const x=W*(.5+Math.sin(t*.12+i*1.7)*.36),y=H*(.36+i*.1);const g=ctx.createRadialGradient(x,y,4,x,y,W*.35);g.addColorStop(0,'#9eafb31b');g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
