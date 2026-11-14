@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE DEATH ANGEL — TikNation Gift Lab</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#08090d;color:#eee;font-family:Georgia,serif}
+body{overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#29303b 0,#11151e 40%,#07080c 78%)}
+.scene{height:100svh;min-height:520px;position:relative;display:grid;place-items:center;overflow:hidden;isolation:isolate}
+.scene:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,#d5e2ff16,transparent 43%);z-index:-2}
+h1{position:absolute;top:4vh;left:0;width:100%;margin:0;text-align:center;letter-spacing:.24em;font-size:clamp(18px,3vw,29px);font-weight:normal;text-shadow:0 0 20px #a9c6ff88}
+.kicker{position:absolute;top:calc(4vh + 40px);font:10px Arial,sans-serif;letter-spacing:.32em;color:#9da9bd}
+.sky{position:absolute;width:min(75vw,560px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#dce7ff20 0,#9db7df0b 40%,transparent 70%);filter:blur(2px);top:13%}
+.figure{position:relative;width:min(88vw,650px);height:min(68vh,550px);display:grid;place-items:center;filter:drop-shadow(0 15px 24px #000)}
+.halo{position:absolute;top:11%;width:190px;height:190px;border:1px solid #d5e2ff45;border-radius:50%;box-shadow:0 0 60px #a9caff25,inset 0 0 40px #a9caff12;animation:halo 5s ease-in-out infinite}
+.halo:after{content:"";position:absolute;inset:12px;border:1px dashed #d9e5ff44;border-radius:50%;animation:spin 35s linear infinite}
+.wing{position:absolute;top:27%;width:44%;height:42%;transform-origin:90% 78%;filter:drop-shadow(0 0 10px #b5c8ed44);transition:transform 1.3s cubic-bezier(.2,.8,.2,1)}
+.wing.left{left:4%;transform:rotate(14deg) scale(.7,.55)}
+.wing.right{right:4%;transform-origin:10% 78%;transform:scaleX(-1) rotate(14deg) scale(.7,.55)}
+.feather{fill:url(#feather);stroke:#aabbd8;stroke-opacity:.55;stroke-width:1.2}
+.body{position:absolute;top:20%;left:50%;width:180px;height:360px;transform:translateX(-50%)}
+.hood{position:absolute;left:50%;top:0;transform:translateX(-50%);width:94px;height:115px;background:linear-gradient(110deg,#090b12,#313b4c 48%,#080a10);clip-path:polygon(50% 0,91% 27%,100% 75%,75% 100%,25% 100%,0 75%,9% 27%);border:1px solid #64718b}
+.face{position:absolute;top:58px;left:50%;transform:translateX(-50%);width:49px;height:39px;background:#030407;clip-path:polygon(10% 0,90% 0,75% 100%,25% 100%)}
+.eye{position:absolute;top:75px;width:10px;height:4px;background:#d9e8ff;box-shadow:0 0 10px 4px #b8d5ff;animation:eyes 2s ease-in-out infinite}
+.eye.one{left:65px}.eye.two{right:65px}
+.torso{position:absolute;top:100px;left:50%;transform:translateX(-50%);width:142px;height:250px;background:linear-gradient(90deg,#080a10,#283246 48%,#090b12);clip-path:polygon(28% 0,72% 0,100% 100%,0 100%);border-top:1px solid #7b8aa6}
+.chest{position:absolute;top:128px;left:50%;transform:translateX(-50%);width:34px;height:55px;border:1px solid #a9c8f2;border-radius:50%;box-shadow:0 0 20px #a8caff55;background:#c9e1ff12}
+.arm{position:absolute;top:127px;width:19px;height:112px;background:linear-gradient(90deg,#090b12,#45516a,#0b0d13);border-radius:12px}
+.arm.l{left:20px;transform:rotate(22deg)}.arm.r{right:20px;transform:rotate(-22deg)}
+.cloak{position:absolute;top:290px;left:50%;transform:translateX(-50%);width:185px;height:65px;background:linear-gradient(90deg,#080a0e,#303a4d,#080a0e);clip-path:polygon(25% 0,75% 0,100% 100%,0 100%)}
+.ground{position:absolute;bottom:16%;width:min(85vw,600px);height:70px;border-radius:50%;background:radial-gradient(ellipse,#9abfff33,transparent 68%);filter:blur(12px)}
+.rift{position:absolute;bottom:14%;width:230px;height:3px;background:#c6dcff;box-shadow:0 0 20px 8px #8bb7ff77;border-radius:50%;opacity:.5}
+.wave{position:absolute;bottom:13%;width:30px;height:30px;border:2px solid #b9d4ff;border-radius:50%;opacity:0}
+.controls{position:absolute;bottom:7vh;display:flex;gap:12px;z-index:5}
+button{background:#101722;border:1px solid #879bbd;color:#eaf1ff;padding:13px 21px;letter-spacing:.14em;font-size:11px;cursor:pointer;border-radius:2px}
+button:hover{background:#24334a;box-shadow:0 0 18px #a9caff33}
+.note{position:absolute;bottom:3vh;font:10px Arial,sans-serif;letter-spacing:.2em;color:#8491a7}
+.scene.descend .figure{animation:descend 1.2s ease-out}
+.scene.descend .wing.left{transform:rotate(-16deg) scale(1,1)}
+.scene.descend .wing.right{transform:scaleX(-1) rotate(-16deg) scale(1,1)}
+.scene.descend .wave{animation:shock 1.4s ease-out}
+.scene.descend .rift{animation:rift 1.4s ease-out}
+.scene.descend .halo{box-shadow:0 0 100px #b9d7ff77,inset 0 0 60px #d7e6ff33}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes halo{50%{transform:scale(1.08);opacity:.6}}@keyframes eyes{50%{opacity:.3;box-shadow:0 0 4px 2px #b8d5ff}}@keyframes descend{0%{transform:translateY(-100px);opacity:.2}70%{transform:translateY(12px)}100%{transform:translateY(0);opacity:1}}@keyframes shock{0%{opacity:1;transform:scale(.3)}100%{opacity:0;transform:scale(22)}}@keyframes rift{0%{opacity:1;transform:scaleX(.2)}100%{opacity:0;transform:scaleX(3)}}
+@media(max-width:520px){.figure{height:60vh;transform:scale(.83)}.controls{bottom:8vh}button{padding:12px 14px;font-size:10px}.wing{width:48%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main class="scene" id="scene">
+<h1>THE DEATH ANGEL</h1><div class="kicker">THE FALLEN ONE · TIKNATION GIFT LAB</div><div class="sky"></div>
+<div class="figure">
+<div class="halo"></div>
+<svg class="wing left" viewBox="0 0 300 260" aria-label="Left dark feathered wing">
+<defs><linearGradient id="feather" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#697b99"/><stop offset=".45" stop-color="#202a3b"/><stop offset="1" stop-color="#080b12"/></linearGradient></defs>
+<path class="feather" d="M265 220 Q140 30 12 8 Q54 80 88 130 Q34 111 3 88 Q32 176 145 222 Q86 206 54 195 Q112 260 265 240Z"/>
+<path class="feather" d="M258 218 Q180 65 74 28 Q122 116 158 157 Q107 127 48 120 Q112 206 258 235Z"/>
+<path class="feather" d="M250 220 Q204 102 140 61 Q165 143 190 180 Q144 153 99 151 Q163 221 250 239Z"/>
+<path class="feather" d="M242 225 Q210 153 190 117 Q205 183 218 204 Q192 185 160 181 Q202 231 242 242Z"/>
+</svg>
+<svg class="wing right" viewBox="0 0 300 260" aria-label="Right dark feathered wing">
+<path class="feather" d="M265 220 Q140 30 12 8 Q54 80 88 130 Q34 111 3 88 Q32 176 145 222 Q86 206 54 195 Q112 260 265 240Z"/>
+<path class="feather" d="M258 218 Q180 65 74 28 Q122 116 158 157 Q107 127 48 120 Q112 206 258 235Z"/>
+<path class="feather" d="M250 220 Q204 102 140 61 Q165 143 190 180 Q144 153 99 151 Q163 221 250 239Z"/>
+<path class="feather" d="M242 225 Q210 153 190 117 Q205 183 218 204 Q192 185 160 181 Q202 231 242 242Z"/>
+</svg>
+<div class="body"><div class="hood"></div><div class="face"></div><i class="eye one"></i><i class="eye two"></i><div class="torso"></div><div class="chest"></div><div class="arm l"></div><div class="arm r"></div><div class="cloak"></div></div>
+</div>
+<div class="ground"></div><div class="rift"></div><div class="wave"></div>
+<div class="controls"><button id="summon">SUMMON THE ANGEL</button><button id="sound">SOUND: OFF</button></div>
+<div class="note">WINGS UNFOLD · THE FALLEN ANGEL DESCENDS · SHOCKWAVE</div>
+</main>
+<script>
+const scene=document.getElementById('scene'),summon=document.getElementById('summon'),sound=document.getElementById('sound');let audioOn=false,ctx;
+summon.addEventListener('click',()=>{scene.classList.remove('descend');void scene.offsetWidth;scene.classList.add('descend');if(audioOn){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator(),g=ctx.createGain();o.type='sawtooth';o.frequency.setValueAtTime(95,ctx.currentTime);o.frequency.exponentialRampToValueAtTime(28,ctx.currentTime+1.1);g.gain.setValueAtTime(.17,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+1.15);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+1.15)}catch(e){}}setTimeout(()=>scene.classList.remove('descend'),1800)});
+sound.addEventListener('click',()=>{audioOn=!audioOn;sound.textContent='SOUND: '+(audioOn?'ON':'OFF')});
+</script>
+</body></html>
