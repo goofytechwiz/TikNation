@@ -1,85 +1,74 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#090b0d"><title>The Abandoned Operating Room · TikNation Preview</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080c10"><title>The Abandoned Operating Room · TikNation Gift Lab</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080a0c;color:#eee;font-family:Arial,sans-serif}
-.scene{position:relative;width:100%;height:100%;min-height:100svh;overflow:hidden;perspective:1000px;background:radial-gradient(ellipse at 50% 31%,#87908c 0,#4b5554 19%,#20292b 49%,#080a0c 100%)}
-.backwall{position:absolute;inset:0 0 23%;background:linear-gradient(90deg,#12191c 0 8%,transparent 8% 92%,#12191c 92%),repeating-linear-gradient(90deg,#283236 0 2px,#394448 3px 5px,#20282b 6px 95px);box-shadow:inset 0 -40px 90px #050708}
-.tiles{position:absolute;inset:0 0 22%;opacity:.27;background:linear-gradient(90deg,transparent 49.7%,#d1d7cf 50%,transparent 50.3%),linear-gradient(0deg,transparent 49.7%,#d1d7cf 50%,transparent 50.3%);background-size:150px 110px}
-.cabinet{position:absolute;z-index:3;left:0;top:28%;width:16%;height:37%;background:linear-gradient(90deg,#101719,#667171 12%,#303b3d 20%,#1a2325 100%);border:5px solid #111719;box-shadow:8px 12px 22px #0009}
-.cabinet:before{content:"";position:absolute;inset:8% 12%;background:repeating-linear-gradient(0deg,transparent 0 24%,#0d1315 24.5% 26%,transparent 26.5% 49%);border:1px solid #84908a55}
-.cabinet:after{content:"";position:absolute;right:12%;top:18%;height:7px;width:7px;border-radius:50%;background:#a6b1a7;box-shadow:0 60px #a6b1a7,0 120px #a6b1a7}
-.sink{position:absolute;z-index:4;right:3%;top:48%;width:19%;height:7%;border-radius:4px 4px 18px 18px;background:linear-gradient(#d0d5cb,#596365 45%,#1a2325);box-shadow:0 9px 18px #000}
-.sink:before{content:"";position:absolute;left:38%;top:-35px;width:8px;height:38px;border:4px solid #8d9992;border-bottom:0;border-radius:12px 12px 0 0}
-.stool{position:absolute;z-index:4;left:22%;bottom:17%;width:80px;height:95px;animation:stoolRoll 11s ease-in-out infinite}
-.stool:before{content:"";position:absolute;left:0;top:0;width:80px;height:20px;border-radius:50%;background:linear-gradient(#c2c9c0,#4d5958);border:3px solid #1c2527;box-shadow:0 5px 12px #000}
-.stool:after{content:"";position:absolute;left:37px;top:18px;width:7px;height:62px;background:linear-gradient(90deg,#20282a,#a3aca4,#20282a);box-shadow:-22px 69px 0 -2px #8a9690,22px 69px 0 -2px #8a9690}
-.cable{position:absolute;z-index:4;top:0;left:74%;width:2px;height:44%;background:#111719;transform-origin:top;animation:cableSway 4.5s ease-in-out infinite}
-.cable:after{content:"";position:absolute;bottom:0;left:-5px;width:12px;height:28px;border-radius:3px;background:linear-gradient(90deg,#141b1d,#7e8983,#111719)}
-.floorReflection{position:absolute;z-index:2;bottom:1%;left:30%;width:45%;height:18%;background:radial-gradient(ellipse,#b6c1b333,transparent 70%);filter:blur(12px);pointer-events:none}
-.window{position:absolute;right:9%;top:12%;width:20%;height:33%;border:9px solid #11191c;background:linear-gradient(110deg,#172327,#8a9b9b 48%,#1b272b);box-shadow:0 0 20px #a8b8b455,inset 0 0 30px #000}
-.window:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 48%,#11191c 49% 51%,transparent 52%),linear-gradient(0deg,transparent 48%,#11191c 49% 51%,transparent 52%)}
-.glass{position:absolute;left:10%;top:18%;width:20%;height:36%;border:8px solid #111719;background:linear-gradient(120deg,#71818422,#172326aa);overflow:hidden;box-shadow:inset 0 0 25px #000}
-.shadowFigure{position:absolute;bottom:-5%;left:45%;width:36%;height:75%;border-radius:48% 48% 10% 10%;background:radial-gradient(ellipse at 50% 18%,#050708 0 16%,transparent 17%),linear-gradient(90deg,transparent,#07090a 30% 70%,transparent);filter:blur(5px);opacity:.55;animation:shadowPass 8s ease-in-out infinite}
-.shadowFigure:before{content:"";position:absolute;top:0;left:25%;width:50%;height:23%;border-radius:50%;background:#050708}
-.lampArm{position:absolute;z-index:4;top:4%;left:47%;width:6px;height:20%;background:linear-gradient(90deg,#14191b,#aab0a9,#202629);transform-origin:top;animation:lampSwing 5s ease-in-out infinite}
-.lampHead{position:absolute;left:-65px;bottom:-26px;width:136px;height:48px;border-radius:50%;background:radial-gradient(ellipse at 50% 28%,#f8f3d8 0 12%,#aeb8af 22%,#354044 66%,#101719 72%);box-shadow:0 5px 24px #e8f2dc88;animation:lightFlicker 5s linear infinite}
-.lampHead:after{content:"";position:absolute;left:25px;right:25px;bottom:-13px;height:16px;border-radius:50%;background:#f4f1d6;filter:blur(8px)}
-.ceilingGlow{position:absolute;z-index:2;top:0;left:25%;width:50%;height:72%;background:linear-gradient(#e7efd522,transparent);clip-path:polygon(43% 0,57% 0,100% 100%,0 100%);animation:beamPulse 5s infinite}
-.floor{position:absolute;bottom:0;left:0;right:0;height:24%;background:repeating-linear-gradient(90deg,#182023 0 2px,#343e40 3px 120px),repeating-linear-gradient(0deg,#111719 0 2px,#303a3d 3px 90px);transform:perspective(260px) rotateX(9deg);transform-origin:bottom;border-top:7px solid #687274}
-.table{position:absolute;z-index:5;left:50%;top:51%;width:min(62vw,490px);height:27%;transform:translateX(-50%) rotateX(7deg);transform-style:preserve-3d;animation:tableGlide 7s ease-in-out infinite;filter:drop-shadow(0 20px 16px #0009)}
-.tableTop{position:absolute;top:0;left:0;right:0;height:27%;border-radius:8px;background:linear-gradient(180deg,#d1d4ca,#727c7b 55%,#323c3e);border:5px solid #20282a;box-shadow:0 12px 22px #0009}
-.tablePad{position:absolute;inset:7px 9px 8px;background:repeating-linear-gradient(90deg,transparent 0 48px,#66716d22 49px 50px),linear-gradient(90deg,#87928c,#e0e1d5 45%,#929c95);border-radius:4px;box-shadow:inset 0 2px 8px #fff8,inset 0 -7px 12px #26302d55}
-.tableRail{position:absolute;left:-12px;right:-12px;top:25%;height:10px;background:linear-gradient(#d2d9d0,#4b5654);border:1px solid #20292a;border-radius:3px;box-shadow:0 3px 5px #000}
-.headRest{position:absolute;top:-12px;left:38%;width:24%;height:36px;border-radius:50% 50% 6px 6px;background:linear-gradient(#c6cec4,#5a6562);border:3px solid #263031;box-shadow:0 5px 10px #0008}
-.tableLeg{position:absolute;top:23%;height:72%;width:12px;background:linear-gradient(90deg,#20292c,#a4aeaa,#293235);border-radius:3px}
-.tableLeg.l{left:12%}.tableLeg.r{right:12%}
-.base{position:absolute;left:35%;right:35%;bottom:0;height:17%;background:linear-gradient(#aeb8b1,#30393b);border-radius:5px;box-shadow:0 0 12px #000}
-.instrumentTray{position:absolute;z-index:6;left:7%;top:55%;width:150px;height:14px;border:5px solid #657174;background:linear-gradient(#c6ceca,#485456);box-shadow:0 8px 15px #000}
-.tool{position:absolute;top:-13px;width:5px;height:27px;border-radius:4px;background:linear-gradient(90deg,#78888a,#e0e4dc,#4b5557);transform-origin:bottom;animation:toolRattle .21s ease-in-out infinite alternate}
-.tool:nth-child(1){left:22px}.tool:nth-child(2){left:58px;animation-delay:.06s}.tool:nth-child(3){left:98px;animation-delay:.1s}.tool:nth-child(4){left:125px;animation-delay:.03s}
-.monitor{position:absolute;z-index:4;left:7%;top:16%;width:110px;height:90px;border:9px solid #101719;border-radius:7px;background:#071014;box-shadow:0 0 15px #8ac1b322}
-.monitor:before{content:"";position:absolute;inset:12px 7px;background:linear-gradient(transparent 47%,#66c6b4 49% 51%,transparent 53%);background-size:100% 100%;animation:ecg 1.5s linear infinite}
-.monitor:after{content:"";position:absolute;left:47%;bottom:-25px;width:8px;height:25px;background:#667173}
-.monitorLabel{position:absolute;bottom:5px;left:0;right:0;text-align:center;color:#7ea99d;font:6px monospace;letter-spacing:1px}
-.hud{position:absolute;z-index:20;inset:0;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:17px 12px calc(14px + env(safe-area-inset-bottom));text-align:center}
-.eyebrow{font-size:10px;letter-spacing:.28em;color:#d5dfd9;text-shadow:0 2px 8px #000}
-.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;pointer-events:auto}
-button{border:1px solid #aebbb4;background:linear-gradient(#3b494a,#121a1d);color:#edf2e9;padding:14px 18px;min-width:138px;font-size:11px;font-weight:bold;letter-spacing:.12em;touch-action:manipulation}
-.hint,.status{font-size:10px;letter-spacing:.12em;color:#e0e8df;text-shadow:0 2px 8px #000;margin-top:9px}
-.triggered .table{animation:tableLurch .55s ease-in-out 7}.triggered .lampArm{animation:lampViolent .45s ease-in-out 8}.triggered .shadowFigure{animation:shadowRush 3s ease-in-out 1}
-.triggered .tool{animation-duration:.08s}.triggered .stool{animation:stoolJolt .45s ease-in-out 5}.triggered .cable{animation:cableSway .3s ease-in-out 8}
-@keyframes lampSwing{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(4deg)}}
-@keyframes lightFlicker{0%,84%,88%,92%,100%{opacity:1}86%,90%{opacity:.22}}
-@keyframes beamPulse{0%,100%{opacity:.7}86%,90%{opacity:.15}}
-@keyframes tableGlide{0%,100%{translate:0 0}48%{translate:0 -8px}55%{translate:0 -8px}}
-@keyframes toolRattle{from{rotate:-8deg}to{rotate:9deg}}
-@keyframes shadowPass{0%,100%{transform:translateX(-12%) scale(.95);opacity:.25}50%{transform:translateX(15%) scale(1.12);opacity:.8}}
-@keyframes ecg{0%{transform:translateX(-110%)}100%{transform:translateX(110%)}}
-@keyframes tableLurch{0%,100%{translate:0 0;rotate:0}30%{translate:-22px 12px;rotate:-1.5deg}65%{translate:24px -7px;rotate:1.2deg}}
-@keyframes lampViolent{0%,100%{transform:rotate(-14deg)}50%{transform:rotate(17deg)}}
-@keyframes shadowRush{0%{transform:translateX(0) scale(.7);opacity:.2}55%{transform:translateX(-60%) scale(1.5);opacity:.95}100%{transform:translateX(-25%) scale(1.1);opacity:.65}}
-@keyframes stoolRoll{0%,100%{transform:translate(0,0) rotate(0)}50%{transform:translate(8px,0) rotate(2deg)}}
-@keyframes stoolJolt{0%,100%{transform:translateX(0)}35%{transform:translateX(-32px) rotate(-8deg)}70%{transform:translateX(22px) rotate(5deg)}}
-@keyframes cableSway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(3deg)}}
-@media(max-width:520px){.table{width:74vw;top:55%;height:23%}.instrumentTray{width:105px;left:3%;top:57%}.monitor{left:3%;top:19%;transform:scale(.8);transform-origin:top left}.window{right:4%;width:24%}.glass{left:5%;width:23%}}
-@media(prefers-reduced-motion:reduce){.table,.lampArm,.lampHead,.tool,.shadowFigure,.monitor:before{animation-duration:12s}}
-</style></head>
-<body>
-<main class="scene" id="scene">
-<div class="backwall"></div><div class="tiles"></div><div class="cabinet"></div><div class="window"></div><div class="glass"><div class="shadowFigure"></div></div><div class="ceilingGlow"></div><div class="cable"></div><div class="sink"></div><div class="stool"></div>
-<div class="lampArm"><div class="lampHead"></div></div><div class="monitor"><div class="monitorLabel">PATIENT MONITOR · SIGNAL LOST</div></div><div class="instrumentTray"><i class="tool"></i><i class="tool"></i><i class="tool"></i><i class="tool"></i></div>
-<div class="floor"></div><div class="floorReflection"></div><div class="table"><div class="tableTop"><div class="tablePad"></div><div class="headRest"></div><div class="tableRail"></div></div><div class="tableLeg l"></div><div class="tableLeg r"></div><div class="base"></div></div>
-<div class="hud"><div class="eyebrow">TIKNATION · GIFT REBUILD LAB</div><div><div class="hint">THE ROOM IS EMPTY · SOMETHING IS MOVING</div><div class="controls"><button id="trigger">TRIGGER GIFT</button><button id="sound">SOUND: OFF</button></div><div class="status" id="status">OPERATING ROOM · NIGHT SHIFT</div></div></div>
-</main>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080c10;color:#edf1eb;font-family:Arial,sans-serif}#view{position:absolute;inset:0;width:100%;height:100%;display:block}.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 42%,transparent 35%,#020609aa 100%)}.hud{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;align-items:center;padding:calc(15px + env(safe-area-inset-top)) 12px calc(15px + env(safe-area-inset-bottom));pointer-events:none;text-align:center}.eyebrow{font-size:10px;letter-spacing:.25em;text-shadow:0 2px 8px #000}.bottom{pointer-events:auto}.hint,.status{font-size:10px;letter-spacing:.13em;text-shadow:0 2px 9px #000;margin:10px auto;max-width:90vw}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}button{border:1px solid #aab8b3;background:linear-gradient(#344348,#10191d);color:#f1f4ed;padding:14px 18px;min-width:138px;font-size:11px;font-weight:bold;letter-spacing:.12em;touch-action:manipulation}button:active{transform:scale(.97)}#status{min-height:13px;color:#c6d2c9}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style></head><body>
+<canvas id="view" aria-label="Interactive three-dimensional abandoned operating room"></canvas><div class="vignette"></div>
+<div class="hud"><div class="eyebrow">TIKNATION · GIFT REBUILD LAB</div><div class="bottom"><div class="hint">ABANDONED OPERATING ROOM · NIGHT SHIFT</div><div class="controls"><button id="trigger">TRIGGER GIFT</button><button id="sound">SOUND: OFF</button></div><div class="status" id="status">THE ROOM IS EMPTY · OR IS IT?</div></div></div>
 <script>
-(()=>{const scene=document.getElementById('scene'),status=document.getElementById('status'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound');let audio=null,on=false,busy=false;
-function noise(freq,delay,duration,volume,wave='sawtooth'){if(!on||!audio)return;const osc=audio.createOscillator(),gain=audio.createGain(),filter=audio.createBiquadFilter();osc.type=wave;osc.frequency.setValueAtTime(freq,audio.currentTime+delay);osc.frequency.exponentialRampToValueAtTime(Math.max(28,freq*.45),audio.currentTime+delay+duration);filter.type='lowpass';filter.frequency.value=wave==='triangle'?900:330;gain.gain.setValueAtTime(.0001,audio.currentTime+delay);gain.gain.exponentialRampToValueAtTime(volume,audio.currentTime+delay+.06);gain.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+duration);osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);osc.start(audio.currentTime+delay);osc.stop(audio.currentTime+delay+duration+.03)}
-sound.addEventListener('click',async()=>{on=!on;if(on){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){on=false;status.textContent='AUDIO NOT SUPPORTED'}else{audio=audio||new AC();if(audio.state==='suspended')await audio.resume();noise(58,0,.5,.025,'triangle')}}sound.textContent='SOUND: '+(on?'ON':'OFF')});
-function clang(delay,volume){if(!on||!audio)return;const o=audio.createOscillator(),g=audio.createGain(),f=audio.createBiquadFilter();o.type='triangle';o.frequency.setValueAtTime(1180,audio.currentTime+delay);o.frequency.exponentialRampToValueAtTime(260,audio.currentTime+delay+.55);f.type='bandpass';f.frequency.value=1250;f.Q.value=2.4;g.gain.setValueAtTime(.0001,audio.currentTime+delay);g.gain.exponentialRampToValueAtTime(volume,audio.currentTime+delay+.012);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+.7);o.connect(f);f.connect(g);g.connect(audio.destination);o.start(audio.currentTime+delay);o.stop(audio.currentTime+delay+.72)}
-function rumble(delay,duration,volume){if(!on||!audio)return;const n=audio.createBufferSource(),g=audio.createGain(),f=audio.createBiquadFilter(),len=Math.ceil(audio.sampleRate*duration),buf=audio.createBuffer(1,len,audio.sampleRate),data=buf.getChannelData(0);for(let i=0;i<len;i++)data[i]=(Math.random()*2-1)*.7;n.buffer=buf;f.type='lowpass';f.frequency.value=115;g.gain.setValueAtTime(.0001,audio.currentTime+delay);g.gain.linearRampToValueAtTime(volume,audio.currentTime+delay+.3);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+duration);n.connect(f);f.connect(g);g.connect(audio.destination);n.start(audio.currentTime+delay)}
-trigger.addEventListener('click',()=>{if(busy)return;busy=true;scene.classList.add('triggered');status.textContent='THE TABLE IS MOVING BY ITSELF…';rumble(0,4.4,.11);noise(48,0,2.4,.065,'triangle');noise(92,1.2,1.8,.05);clang(.55,.055);clang(2.15,.045);noise(62,3,1.5,.06);setTimeout(()=>status.textContent='SOMETHING IS BEHIND THE GLASS',1900);setTimeout(()=>{scene.classList.remove('triggered');status.textContent='THE ROOM HAS GONE QUIET… FOR NOW';busy=false},4800)});
+(()=> {
+const canvas=document.getElementById('view'),gl=canvas.getContext('webgl',{antialias:true,alpha:false});
+const status=document.getElementById('status'),trigger=document.getElementById('trigger'),soundBtn=document.getElementById('sound');
+if(!gl){status.textContent='3D GRAPHICS NOT SUPPORTED IN THIS BROWSER';return}
+const vs='attribute vec3 p;attribute vec3 n;attribute vec3 c;uniform mat4 mvp;uniform mat4 model;varying vec3 N;varying vec3 C;varying vec3 W;void main(){vec4 w=model*vec4(p,1.);W=w.xyz;N=mat3(model)*n;C=c;gl_Position=mvp*vec4(p,1.);}';
+const fs='precision mediump float;varying vec3 N;varying vec3 C;varying vec3 W;uniform vec3 lightPos;uniform float flicker;uniform float fog;void main(){vec3 nn=normalize(N);vec3 L=normalize(lightPos-W);float d=max(dot(nn,L),0.);float rim=pow(1.-max(dot(nn,normalize(vec3(0.,0.,1.))),0.),2.);float shade=.24+d*.85*flicker+rim*.12;vec3 col=C*shade;float f=clamp((length(W-vec3(0.,1.5,6.))-5.)/14.,0.,.78)*fog;col=mix(col,vec3(.035,.065,.07),f);gl_FragColor=vec4(col,1.);}';
+function shader(type,src){let s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s}
+let prog=gl.createProgram();gl.attachShader(prog,shader(gl.VERTEX_SHADER,vs));gl.attachShader(prog,shader(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);gl.useProgram(prog);
+const loc={p:gl.getAttribLocation(prog,'p'),n:gl.getAttribLocation(prog,'n'),c:gl.getAttribLocation(prog,'c'),mvp:gl.getUniformLocation(prog,'mvp'),model:gl.getUniformLocation(prog,'model'),light:gl.getUniformLocation(prog,'lightPos'),flicker:gl.getUniformLocation(prog,'flicker'),fog:gl.getUniformLocation(prog,'fog')};
+function matMul(a,b){let o=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++)o[c*4+r]=a[r]*b[c*4]+a[4+r]*b[c*4+1]+a[8+r]*b[c*4+2]+a[12+r]*b[c*4+3];return o}
+function perspective(f,a,n,z){let t=1/Math.tan(f/2),o=new Float32Array(16);o[0]=t/a;o[5]=t;o[10]=(z+n)/(n-z);o[11]=-1;o[14]=2*z*n/(n-z);return o}
+function look(eye,at){let z=norm(sub(eye,at)),x=norm(cross([0,1,0],z)),y=cross(z,x);return new Float32Array([x[0],y[0],z[0],0,x[1],y[1],z[1],0,x[2],y[2],z[2],0,-dot(x,eye),-dot(y,eye),-dot(z,eye),1])}
+const sub=(a,b)=>a.map((v,i)=>v-b[i]),dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],norm=a=>{let l=Math.hypot(...a)||1;return a.map(v=>v/l)};
+function mesh(verts,cols,indices){let positions=[],normals=[],colors=[];for(let i=0;i<indices.length;i+=3){let a=verts[indices[i]],b=verts[indices[i+1]],c=verts[indices[i+2]],nn=norm(cross(sub(b,a),sub(c,a)));for(let j=0;j<3;j++){let k=indices[i+j];positions.push(...verts[k]);normals.push(...nn);colors.push(...cols[k])}}let o={};for(let [key,data] of [['p',positions],['n',normals],['c',colors]]){o[key]=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,o[key]);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.STATIC_DRAW)}o.count=positions.length/3;return o}
+function cube(){let v=[[-.5,-.5,-.5],[.5,-.5,-.5],[.5,.5,-.5],[-.5,.5,-.5],[-.5,-.5,.5],[.5,-.5,.5],[.5,.5,.5],[-.5,.5,.5]],faces=[[0,2,1,0,3,2],[4,5,6,4,6,7],[0,1,5,0,5,4],[3,7,6,3,6,2],[0,4,7,0,7,3],[1,2,6,1,6,5]],ids=faces.flat(),cols=v.map((p,i)=>[.7,.75,.7]);return mesh(v,cols,ids)}
+function cylinder(seg=18){let v=[],idx=[];for(let y of [-.5,.5])for(let i=0;i<seg;i++){let a=i/seg*Math.PI*2;v.push([Math.cos(a)*.5,y,Math.sin(a)*.5])}for(let i=0;i<seg;i++){let j=(i+1)%seg;idx.push(i,j,seg+j,i,seg+j,seg+i)}let centerB=v.push([0,-.5,0])-1,centerT=v.push([0,.5,0])-1;for(let i=0;i<seg;i++){let j=(i+1)%seg;idx.push(centerB,j,i,centerT,seg+i,seg+j)}return mesh(v,v.map(()=>[1,1,1]),idx)}
+function sphere(rows=12,seg=18){let v=[],idx=[];for(let y=0;y<=rows;y++){let ph=y/rows*Math.PI;for(let x=0;x<=seg;x++){let th=x/seg*Math.PI*2;v.push([Math.sin(ph)*Math.cos(th)*.5,Math.cos(ph)*.5,Math.sin(ph)*Math.sin(th)*.5])}}for(let y=0;y<rows;y++)for(let x=0;x<seg;x++){let a=y*(seg+1)+x,b=a+seg+1;idx.push(a,b,a+1,a+1,b,b+1)}return mesh(v,v.map(()=>[1,1,1]),idx)}
+const C=cube(),Y=cylinder(),S=sphere();
+const objects=[];
+function add(type,pos,scale,color,rot=0){objects.push({type,pos,scale,color,rot})}
+function box(x,y,z,sx,sy,sz,col){add(C,[x,y,z],[sx,sy,sz],col)}
+function cyl(x,y,z,sx,sy,sz,col){add(Y,[x,y,z],[sx,sy,sz],col)}
+function ball(x,y,z,sx,sy,sz,col){add(S,[x,y,z],[sx,sy,sz],col)}
+// Room shell, tiled floor, ceiling and wall panels
+box(0,-.16,-2,13,.3,17,[.19,.24,.24]);box(0,5,-2,13,.25,17,[.16,.2,.2]);
+box(-6.35,2.4,-2,.25,5,17,[.12,.17,.18]);box(6.35,2.4,-2,.25,5,17,[.12,.17,.18]);box(0,2.4,-10,13,5,.25,[.22,.28,.28]);
+for(let x=-5.5;x<=5.5;x+=1.1){box(x,2.45,-9.82,.025,4.7,.025,[.32,.39,.38]);}
+for(let z=-9;z<=4;z+=1.2)for(let x=-5.5;x<=5.5;x+=1.2)box(x,-.005,z,1.12,.018,1.12,[.22,.27,.27]);
+// Door and observation window
+box(-3.9,1.5,-9.65,1.8,3,.16,[.12,.17,.18]);box(-3.9,1.5,-9.53,1.55,2.7,.035,[.24,.3,.29]);box(2.7,2.8,-9.65,2.5,1.6,.12,[.08,.13,.15]);box(2.7,2.8,-9.55,2.25,1.35,.025,[.18,.27,.29]);box(2.7,2.8,-9.5,.045,1.35,.025,[.48,.56,.52]);box(2.7,2.8,-9.49,2.25,.04,.025,[.48,.56,.52]);
+// Cabinets and drawers
+box(-5.2,1.15,-4.5,1.35,2.3,1.1,[.31,.38,.37]);for(let y=.5;y<2.1;y+=.48){box(-5.2,y,-3.92,1.15,.035,.025,[.58,.64,.59]);box(-5.2,y+.17,-3.89,.14,.035,.04,[.72,.77,.7]);}
+box(5.2,1.3,-5.1,1.3,2.6,1.2,[.28,.34,.34]);for(let y=.5;y<2.5;y+=.5){box(5.2,y,-4.47,1.12,.04,.035,[.55,.62,.58]);}
+// Operating table: steel base, hydraulic column, mattress, rails, head cushion
+box(0,1.2,-.1,2.9,.22,1.2,[.5,.58,.55]);cyl(0,.65,-.1,.42,1.05,.42,[.43,.5,.49]);box(0,1.72,-.1,3.7,.25,1.45,[.57,.63,.58]);box(0,1.88,-.1,3.4,.12,1.23,[.78,.81,.74]);box(0,1.99,-.65,1.0,.12,.38,[.7,.75,.69]);for(let x of [-1.55,1.55]){cyl(x,1.65,-.1,.07,.65,.07,[.65,.72,.68]);box(x,1.98,-.1,.09,.06,1.25,[.65,.72,.68]);}
+// Surgical lamp suspension and lamp head
+cyl(0,4.3,-1.8,.11,1.4,.11,[.45,.52,.5]);cyl(0,3.65,-1.8,.09,.95,.09,[.55,.61,.57]);ball(0,3.15,-1.8,1.25,.28,1.05,[.57,.64,.59]);ball(0,3.0,-1.8,.9,.08,.75,[.86,.88,.78]);for(let i=0;i<8;i++){let a=i*Math.PI/4;ball(Math.cos(a)*.36,2.95,-1.8+Math.sin(a)*.3,.11,.035,.11,[.95,.96,.83]);}
+// Monitor trolley and glowing monitor screen
+box(-4,1.3,-1.2,1.0,.12,.8,[.45,.52,.5]);cyl(-4,.7,-1.2,.09,1.2,.09,[.52,.59,.55]);box(-4,2.15,-1.2,1.25,.95,.22,[.07,.11,.12]);box(-4,2.15,-1.06,1.08,.76,.025,[.025,.16,.16]);box(-4,2.15,-1.035,.78,.035,.015,[.12,.8,.64]);
+// Instrument trolley and steel instruments
+box(4,1.05,-.4,1.5,.12,.85,[.48,.55,.53]);for(let x of [3.4,4.6])cyl(x,.55,-.4,.045,1,.045,[.55,.62,.58]);for(let x of [3.55,3.9,4.25,4.55])box(x,1.18,-.4,.035,.06,.55,[.75,.79,.73]);
+// Sink and faucet
+box(5.3,2.1,-7.3,1.2,.16,.9,[.63,.69,.65]);box(5.3,2.02,-7.3,.72,.04,.5,[.11,.18,.19]);cyl(5.3,2.38,-7.55,.06,.55,.06,[.64,.71,.67]);cyl(5.3,2.63,-7.35,.35,.06,.06,[.64,.71,.67]);
+// IV stand, hanging bag and wheels
+cyl(2.9,1.9,1.1,.045,3.5,.045,[.64,.7,.65]);cyl(2.9,3.62,1.1,.55,.045,.045,[.64,.7,.65]);ball(2.9,3.05,1.1,.42,.6,.18,[.53,.65,.62]);
+// Rolling stool
+cyl(-3,.5,1.5,.42,.14,.42,[.28,.34,.33]);cyl(-3,.22,1.5,.08,.48,.08,[.55,.61,.57]);for(let i=0;i<5;i++){let a=i*Math.PI*2/5;cyl(-3+Math.cos(a)*.38,.06,1.5+Math.sin(a)*.38,.06,.13,.06,[.45,.52,.5]);}
+// Shadow presence behind the glass, initially still
+ball(2.7,1.75,-8.95,.35,.62,.2,[.012,.02,.02]);ball(2.7,2.45,-8.95,.25,.3,.2,[.008,.014,.015]);box(2.7,1.1,-8.95,.95,.75,.25,[.012,.02,.02]);
+gl.enable(gl.DEPTH_TEST);gl.enable(gl.CULL_FACE);gl.clearColor(.025,.04,.045,1);
+let soundOn=false,audio=null,started=0,active=false;
+function model(o,t){let [x,y,z]=o.pos,[sx,sy,sz]=o.scale;let a=o.rot||0,co=Math.cos(a),si=Math.sin(a);return new Float32Array([co*sx,0,-si*sx,0,0,sy,0,0,si*sz,0,co*sz,0,x,y,z,1])}
+function draw(now){let w=canvas.clientWidth,h=canvas.clientHeight,dpr=Math.min(devicePixelRatio||1,1.7);if(canvas.width!==Math.floor(w*dpr)||canvas.height!==Math.floor(h*dpr)){canvas.width=Math.floor(w*dpr);canvas.height=Math.floor(h*dpr)}gl.viewport(0,0,canvas.width,canvas.height);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+let elapsed=active?(now-started)/1000:0,shake=active&&elapsed<4?Math.sin(now*.045)*.09:0,eye=[shake,2.65,7.8],view=look(eye,[0,1.7,-2.7]),proj=perspective(Math.PI/3,canvas.width/canvas.height,.1,45),flick=active&&elapsed<3?(.35+Math.abs(Math.sin(now*.027))*.65):(.92+.08*Math.sin(now*.002));
+gl.uniform3f(loc.light,0,4,-1.8);gl.uniform1f(loc.flicker,flick);gl.uniform1f(loc.fog,1);
+for(let o of objects){let m=model(o,now);if(active&&elapsed<4&&o.pos[2]>-2&&o.pos[2]<1&&o.pos[1]>1.5&&o.pos[1]<2.2&&o.pos[0]>-2&&o.pos[0]<2){m[12]+=Math.sin(elapsed*18)*.15}let mvp=matMul(proj,matMul(view,m));gl.uniformMatrix4fv(loc.model,false,m);gl.uniformMatrix4fv(loc.mvp,false,mvp);let b=o.type;for(let k of ['p','n','c']){gl.bindBuffer(gl.ARRAY_BUFFER,b[k]);gl.enableVertexAttribArray(loc[k]);gl.vertexAttribPointer(loc[k],3,gl.FLOAT,false,0,0)}gl.drawArrays(gl.TRIANGLES,0,b.count)}
+if(active&&elapsed>5){active=false;status.textContent='THE ROOM HAS GONE QUIET… FOR NOW'}
+requestAnimationFrame(draw)}
+requestAnimationFrame(draw);
+function resize(){canvas.width=0}window.addEventListener('resize',resize);
+function tone(freq,delay,duration,vol,wave='sawtooth'){if(!soundOn||!audio)return;let o=audio.createOscillator(),g=audio.createGain(),f=audio.createBiquadFilter();o.type=wave;o.frequency.setValueAtTime(freq,audio.currentTime+delay);o.frequency.exponentialRampToValueAtTime(Math.max(30,freq*.42),audio.currentTime+delay+duration);f.type='lowpass';f.frequency.value=wave==='triangle'?240:520;g.gain.setValueAtTime(.0001,audio.currentTime+delay);g.gain.exponentialRampToValueAtTime(vol,audio.currentTime+delay+.08);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+duration);o.connect(f);f.connect(g);g.connect(audio.destination);o.start(audio.currentTime+delay);o.stop(audio.currentTime+delay+duration+.03)}
+function impact(delay,vol){if(!soundOn||!audio)return;let n=audio.createBufferSource(),g=audio.createGain(),f=audio.createBiquadFilter(),len=audio.sampleRate*.8,b=audio.createBuffer(1,len,audio.sampleRate),d=b.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*.8;n.buffer=b;f.type='bandpass';f.frequency.value=380;f.Q.value=.7;g.gain.setValueAtTime(.0001,audio.currentTime+delay);g.gain.linearRampToValueAtTime(vol,audio.currentTime+delay+.025);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+.8);n.connect(f);f.connect(g);g.connect(audio.destination);n.start(audio.currentTime+delay)}
+soundBtn.addEventListener('click',async()=>{soundOn=!soundOn;if(soundOn){let AC=window.AudioContext||window.webkitAudioContext;if(!AC){soundOn=false;status.textContent='AUDIO NOT AVAILABLE'}else{audio=audio||new AC();if(audio.state==='suspended')await audio.resume();tone(54,0,.5,.025,'triangle')}}soundBtn.textContent='SOUND: '+(soundOn?'ON':'OFF')});
+trigger.addEventListener('click',()=>{if(active)return;active=true;started=performance.now();status.textContent='THE OPERATING TABLE JUST MOVED';tone(42,0,3.5,.09,'triangle');tone(76,.5,2.4,.05);tone(118,2,1.4,.045);impact(.6,.08);impact(2.1,.06);setTimeout(()=>{if(active)status.textContent='A FIGURE IS STANDING BEHIND THE GLASS'},1700)});
 })();
 </script></body></html>
