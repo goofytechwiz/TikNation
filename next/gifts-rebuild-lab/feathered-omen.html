@@ -1,55 +1,96 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 2</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 3</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#030609;color:#e8eeee;font-family:Arial,sans-serif}
-#stage{position:relative;width:100%;height:100svh;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 50% 62%,#26343d 0,#101a21 32%,#05090d 72%)}
-.sky{position:absolute;inset:-30%;background:repeating-radial-gradient(ellipse at 48% 55%,transparent 0 70px,#a9bdc20b 72px 74px,transparent 77px 140px);animation:skyturn 22s linear infinite}
-.cloud{position:absolute;inset:-20%;opacity:.55;background:radial-gradient(ellipse at 20% 45%,#75858b22,transparent 35%),radial-gradient(ellipse at 80% 30%,#89969b20,transparent 32%),radial-gradient(ellipse at 50% 85%,#aab8bd26,transparent 35%);filter:blur(24px);animation:cloud 8s ease-in-out infinite alternate}
-.lightning{position:absolute;inset:0;background:#dce9ed;opacity:0;mix-blend-mode:screen;z-index:5;pointer-events:none}
-.cyclone{position:absolute;left:50%;top:54%;width:min(90vw,780px);aspect-ratio:1;transform:translate(-50%,-50%);border:1px solid #b9cbd01a;border-radius:50%;box-shadow:0 0 90px #a4c5d31b,inset 0 0 90px #a4c5d30b}
-.cyclone:before,.cyclone:after{content:"";position:absolute;inset:9%;border:1px solid #b9cbd018;border-radius:50%;transform:rotateX(68deg) scaleY(.6)}.cyclone:after{inset:22%;border-color:#d2dfe21c}
-.raven{position:absolute;width:min(94vw,850px);height:min(65vh,570px);left:50%;top:51%;transform:translate(-50%,-50%) scale(.1) translateY(100vh);opacity:0;z-index:4;filter:drop-shadow(0 25px 30px #000)}
-.raven svg{width:100%;height:100%;overflow:visible}
-.wl,.wr{transform-box:fill-box;transform-origin:50% 90%}.wl{transform:rotate(-24deg) scaleY(.72)}.wr{transform:rotate(24deg) scaleY(.72)}
-#stage.run .raven{animation:flyin 2.6s cubic-bezier(.13,.76,.22,1) forwards}
-#stage.run .wl{animation:spreadL 1s 2.55s cubic-bezier(.2,.8,.2,1) forwards}
-#stage.run .wr{animation:spreadR 1s 2.55s cubic-bezier(.2,.8,.2,1) forwards}
-#stage.run .cyclone{animation:cyclone 6s linear infinite}
-#stage.run .cloud{animation:cloudrush 5s ease-out forwards}
-.feathers{position:absolute;inset:0;z-index:6;pointer-events:none}
-.feather{position:absolute;width:8px;height:30px;border-radius:100% 0 100% 0;background:linear-gradient(90deg,#080d11,#87949a 50%,#121a20);box-shadow:0 0 8px #b4c5c52b;opacity:0}
-#stage.run .feather{animation:featherfly var(--dur) var(--delay) cubic-bezier(.12,.55,.35,1) forwards}
-.brand{position:absolute;top:7%;width:100%;text-align:center;z-index:8;letter-spacing:.32em;font-size:10px;color:#b8c9c99c}
-.brand b{display:block;margin-top:13px;font-size:clamp(25px,6vw,56px);letter-spacing:.14em;color:#f1f4f2;text-shadow:0 0 28px #d6e4e455}
-.status{position:absolute;bottom:calc(max(28px,env(safe-area-inset-bottom)) + 72px);width:100%;text-align:center;z-index:8;color:#c5d0d09c;font-size:10px;letter-spacing:.18em}
-.controls{position:absolute;bottom:max(24px,env(safe-area-inset-bottom));width:100%;display:flex;justify-content:center;gap:12px;z-index:9;padding:0 12px}
-button{min-width:145px;padding:15px 18px;border:1px solid #b6c7c77a;background:#101a20;color:#eef3f2;font-weight:bold;letter-spacing:.14em;font-size:10px;border-radius:2px}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05090d;color:#e8eeee;font-family:Arial,sans-serif}
+#stage{position:relative;width:100%;height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 53%,#25313a 0,#0b1218 45%,#020507 100%)}
+#view{position:absolute;inset:0;width:100%;height:100%;display:block}
+.haze{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#02070c8c 0%,transparent 32%,transparent 65%,#020609b8 100%);z-index:2}
+.brand{position:absolute;top:6.5%;width:100%;text-align:center;z-index:4;letter-spacing:.32em;font-size:10px;color:#c2d0d09c;pointer-events:none}
+.brand b{display:block;margin-top:12px;font-size:clamp(25px,6vw,55px);letter-spacing:.14em;color:#f1f4f2;text-shadow:0 0 28px #d6e4e455}
+.status{position:absolute;bottom:calc(max(28px,env(safe-area-inset-bottom)) + 70px);width:100%;text-align:center;z-index:4;color:#c5d0d09c;font-size:10px;letter-spacing:.18em;pointer-events:none}
+.controls{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));width:100%;display:flex;justify-content:center;gap:12px;z-index:5;padding:0 12px}
+button{min-width:145px;padding:15px 18px;border:1px solid #b6c7c77a;background:#101a20;color:#eef3f2;font-weight:bold;letter-spacing:.14em;font-size:10px;border-radius:2px;cursor:pointer}
 button.primary{background:#d9e4e2;color:#101619;border-color:#d9e4e2}button:disabled{opacity:.5}
-@keyframes skyturn{to{transform:rotate(360deg)}}@keyframes cloud{to{transform:translate(3%,-4%) scale(1.15)}}@keyframes cloudrush{to{transform:translate(-12%,8%) scale(1.4);opacity:.8}}
-@keyframes flyin{0%{opacity:0;transform:translate(-50%,-30%) scale(.12) translateY(80vh)}50%{opacity:1;transform:translate(-50%,-54%) scale(1.16)}72%{transform:translate(-50%,-48%) scale(.95)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-@keyframes spreadL{to{transform:rotate(-5deg) scaleY(1.18)}}@keyframes spreadR{to{transform:rotate(5deg) scaleY(1.18)}}
-@keyframes cyclone{to{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes featherfly{0%{opacity:0;transform:translate(0,0) rotate(0) scale(.4)}12%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(1.2)}}
-#stage.flash .lightning{animation:bolt .48s ease-out} @keyframes bolt{0%,100%{opacity:0}12%{opacity:.7}28%{opacity:.08}44%{opacity:.45}60%{opacity:0}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
-</style></head><body><main id="stage"><div class="sky"></div><div class="cloud"></div><div class="cyclone"></div>
+#error{display:none;position:absolute;inset:45% 10% auto;text-align:center;color:#e8eeee;z-index:6;font-size:12px;line-height:1.6}
+@media(prefers-reduced-motion:reduce){.haze{opacity:.8}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+</head><body><main id="stage"><canvas id="view"></canvas><div class="haze"></div>
 <div class="brand">TIKNATION · LEGENDARY GIFT<b>THE FEATHERED OMEN</b></div>
-<div class="raven"><svg viewBox="0 0 900 560" aria-hidden="true">
-<defs><linearGradient id="black" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#68777d"/><stop offset=".25" stop-color="#25323a"/><stop offset=".62" stop-color="#080d12"/><stop offset="1" stop-color="#34434a"/></linearGradient><linearGradient id="feather" x2="0" y2="1"><stop stop-color="#718087"/><stop offset=".55" stop-color="#182229"/><stop offset="1" stop-color="#05090d"/></linearGradient></defs>
-<g class="wl" fill="url(#black)" stroke="#829198" stroke-opacity=".22" stroke-width="2"><path d="M449 265Q292 142 22 35Q92 132 144 190Q75 164 9 150Q89 255 220 306Q140 301 62 277Q183 383 357 361L455 320Z"/><path d="M385 277Q238 154 58 69Q185 219 340 326Z" fill="url(#feather)"/><path d="M365 317Q202 257 100 216Q225 335 367 349Z"/><path d="M326 342Q208 319 148 293Q245 375 357 368Z"/></g>
-<g class="wr" fill="url(#black)" stroke="#829198" stroke-opacity=".22" stroke-width="2"><path d="M451 265Q608 142 878 35Q808 132 756 190Q825 164 891 150Q811 255 680 306Q760 301 838 277Q717 383 543 361L445 320Z"/><path d="M515 277Q662 154 842 69Q715 219 560 326Z" fill="url(#feather)"/><path d="M535 317Q698 257 800 216Q675 335 533 349Z"/><path d="M574 342Q692 319 752 293Q655 375 543 368Z"/></g>
-<path d="M374 262Q383 191 450 170Q518 190 531 267Q523 355 456 397Q387 355 374 262Z" fill="url(#black)"/>
-<path d="M406 224Q410 133 463 111Q521 141 511 231Q486 260 455 260Q424 257 406 224Z" fill="#111b21"/>
-<path d="M489 161L592 190L498 210Z" fill="#b79a6a"/><path d="M589 190L498 202L548 219Z" fill="#4b4234"/>
-<path d="M425 174Q451 154 476 174Q454 193 425 174Z" fill="#030608"/><circle cx="457" cy="174" r="6" fill="#e8c989"/>
-<path d="M420 355Q455 398 497 351Q480 436 453 486Q433 422 420 355Z" fill="#080d11"/>
-<g fill="#65757c" opacity=".34"><path d="M401 280l-77 47 82-22M511 280l77 47-82-22M390 311l-73 40 78-14M522 311l73 40-78-14"/></g>
-</svg></div><div class="feathers" id="feathers"></div><div class="lightning"></div>
-<div class="status" id="status">THE SKY HAS GONE SILENT</div><div class="controls"><button class="primary" id="trigger">SUMMON THE OMEN</button><button id="sound">SOUND: OFF</button></div></main>
-<script>
-const stage=document.getElementById('stage'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound'),status=document.getElementById('status'),field=document.getElementById('feathers');let enabled=false,busy=false,ctx;
-function burst(){field.innerHTML='';for(let i=0;i<55;i++){let e=document.createElement('i');e.className='feather';let a=Math.random()*Math.PI*2,d=160+Math.random()*560;e.style.left=(42+Math.random()*16)+'%';e.style.top=(42+Math.random()*15)+'%';e.style.setProperty('--dx',Math.cos(a)*d+'px');e.style.setProperty('--dy',Math.sin(a)*d+120+'px');e.style.setProperty('--rot',(Math.random()*900-450)+'deg');e.style.setProperty('--delay',Math.random()*.8+'s');e.style.setProperty('--dur',(2.4+Math.random()*1.6)+'s');field.appendChild(e)}}
-function soundHit(){if(!enabled)return;try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();ctx.resume();let t=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type='triangle';o.frequency.setValueAtTime(62,t);o.frequency.exponentialRampToValueAtTime(28,t+2);f.type='lowpass';f.frequency.value=140;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.2,t+.12);g.gain.exponentialRampToValueAtTime(.0001,t+2.5);o.connect(f).connect(g).connect(ctx.destination);o.start(t);o.stop(t+2.6)}catch(e){status.textContent='AUDIO IS NOT AVAILABLE'} }
-trigger.onclick=()=>{if(busy)return;busy=true;trigger.disabled=true;stage.classList.remove('run','flash');void stage.offsetWidth;burst();stage.classList.add('run');status.textContent='WINGS OF THE STORM';soundHit();setTimeout(()=>stage.classList.add('flash'),2600);setTimeout(()=>{busy=false;trigger.disabled=false;status.textContent='THE OMEN IS WATCHING';},6200)};
-sound.onclick=()=>{enabled=!enabled;sound.textContent='SOUND: '+(enabled?'ON':'OFF');if(enabled)soundHit()};
+<div class="status" id="status">A LIVING SHADOW IN THE TEMPEST</div>
+<div class="controls"><button class="primary" id="trigger">SUMMON THE OMEN</button><button id="sound">SOUND: OFF</button></div><div id="error">The 3D scene could not load. Check your connection and reload.</div></main>
+<script type="module">
+import * as THREE from 'three';
+const canvas=document.querySelector('#view'),stage=document.querySelector('#stage'),status=document.querySelector('#status'),trigger=document.querySelector('#trigger'),soundButton=document.querySelector('#sound'),error=document.querySelector('#error');
+let scene,camera,renderer,bird,leftWing,rightWing,feathers=[],rain=[],flashLight,clock=new THREE.Clock(),started=false,burstAt=-1,audioOn=false,audioCtx=null;
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function mat(color,rough=.68,metal=.12){return new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal,side:THREE.DoubleSide})}
+function featherGeo(length,width,curve=0){
+ const shape=new THREE.Shape();shape.moveTo(0,0);shape.bezierCurveTo(-width*.35,length*.22,-width*.52,length*.72,curve,length);shape.bezierCurveTo(width*.52,length*.72,width*.35,length*.22,0,0);
+ const g=new THREE.ShapeGeometry(shape,8);const p=g.attributes.position;for(let i=0;i<p.count;i++){const y=p.getY(i),x=p.getX(i);p.setZ(i,.045*Math.sin(y/length*Math.PI)+.018*(1-Math.abs(x)/width));}g.computeVertexNormals();return g;
+}
+function makeFeather(parent,len,w,color,x,y,z,rot,scale=1){
+ const group=new THREE.Group();group.position.set(x,y,z);group.rotation.z=rot;group.scale.setScalar(scale);
+ const mesh=new THREE.Mesh(featherGeo(len,w,(Math.random()-.5)*w*.16),mat(color,.58,.18));mesh.castShadow=true;mesh.receiveShadow=true;group.add(mesh);
+ const shaft=new THREE.Mesh(new THREE.CylinderGeometry(.004,.012,len*.92,5),mat('#a6afb0',.75,.1));shaft.position.set(0,len*.46,.06);shaft.rotation.x=Math.PI/2;shaft.scale.set(.42,1,.42);group.add(shaft);parent.add(group);return group;
+}
+function makeWing(side){
+ const pivot=new THREE.Group();pivot.position.set(side*.34,.15,0);bird.add(pivot);
+ const bone=new THREE.Mesh(new THREE.BufferGeometry(),mat('#10181e')); // structural base is assembled below
+ const upper=new THREE.Mesh(new THREE.CapsuleGeometry(.13,.83,5,10),mat('#10171d'));upper.rotation.z=side*-.82;upper.position.set(side*.55,.18,0);upper.scale.set(.8,1,.55);pivot.add(upper);
+ const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.095,.83,5,10),mat('#0c1318'));arm.rotation.z=side*-.45;arm.position.set(side*1.15,.05,0);arm.scale.set(.75,1,.55);pivot.add(arm);
+ const primaries=new THREE.Group();primaries.position.set(side*1.48,.04,-.015);pivot.add(primaries);
+ for(let i=0;i<13;i++){const t=i/12;makeFeather(primaries,1.0+t*.48,.18,'#111a21',side*(.12+t*.72),-.05-t*.25,-.015,side*(.22+t*.42),.9);}
+ const secondaries=new THREE.Group();secondaries.position.set(side*.48,.1,.055);pivot.add(secondaries);
+ for(let i=0;i<15;i++){const t=i/14;makeFeather(secondaries,.9,.17,i%3===0?'#25323a':'#19242c',side*t*.95,-.1-t*.18,.01,side*(.36+t*.18),.9);}
+ for(let i=0;i<8;i++){const t=i/7;makeFeather(pivot,.55,.13,'#303c43',side*(.12+t*.15),.22+t*.055,.075,side*.8,.8);}
+ return pivot;
+}
+function createBird(){
+ bird=new THREE.Group();scene.add(bird);bird.position.set(0,.2,0);
+ const bodyMat=mat('#111a20',.45,.22),dark=mat('#080e13',.5,.18),sheen=mat('#293841',.42,.26);
+ const body=new THREE.Mesh(new THREE.SphereGeometry(.56,32,24),bodyMat);body.scale.set(.8,1.32,1.65);body.rotation.x=.08;body.castShadow=true;bird.add(body);
+ const chest=new THREE.Mesh(new THREE.SphereGeometry(.43,28,20),sheen);chest.position.set(0,-.17,.48);chest.scale.set(.83,1.15,.85);bird.add(chest);
+ const neck=new THREE.Mesh(new THREE.CapsuleGeometry(.22,.52,8,16),dark);neck.position.set(0,.4,.58);neck.rotation.x=-.28;bird.add(neck);
+ const head=new THREE.Mesh(new THREE.SphereGeometry(.32,32,24),bodyMat);head.position.set(0,.77,.7);head.scale.set(1,.92,1.15);head.castShadow=true;bird.add(head);
+ const beakGeo=new THREE.ConeGeometry(.17,.76,5);const beak=new THREE.Mesh(beakGeo,mat('#242a2b',.34,.32));beak.rotation.x=-Math.PI/2;beak.rotation.z=Math.PI;beak.position.set(0,.65,1.12);beak.scale.set(.78,.8,.72);bird.add(beak);
+ const hook=new THREE.Mesh(new THREE.ConeGeometry(.075,.25,5),mat('#101416'));hook.position.set(0,.48,1.39);hook.rotation.x=Math.PI/2;bird.add(hook);
+ for(const s of [-1,1]){
+  const eyeSocket=new THREE.Mesh(new THREE.SphereGeometry(.09,16,12),dark);eyeSocket.position.set(s*.235,.82,.92);bird.add(eyeSocket);
+  const eye=new THREE.Mesh(new THREE.SphereGeometry(.045,16,12),new THREE.MeshStandardMaterial({color:'#e1b96f',emissive:'#9c6725',emissiveIntensity:1.3,roughness:.25}));eye.position.set(s*.265,.835,.99);bird.add(eye);
+  const pupil=new THREE.Mesh(new THREE.SphereGeometry(.018,12,8),mat('#030506',.1));pupil.position.set(s*.27,.835,1.025);bird.add(pupil);
+  const leg=new THREE.Mesh(new THREE.CylinderGeometry(.035,.027,.48,8),mat('#30373a'));leg.position.set(s*.2,-.62,.25);bird.add(leg);
+  const foot=new THREE.Group();foot.position.set(s*.2,-.85,.35);bird.add(foot);
+  for(let j=-1;j<=1;j++){const toe=new THREE.Mesh(new THREE.CylinderGeometry(.018,.026,.22,7),mat('#343b3c'));toe.position.set(j*.065,-.05,.04);toe.rotation.x=Math.PI/2;toe.rotation.z=j*.28;foot.add(toe);const claw=new THREE.Mesh(new THREE.ConeGeometry(.018,.1,6),mat('#a08a62'));claw.position.set(j*.065,-.06,.15);claw.rotation.x=Math.PI/2;foot.add(claw);}
+ }
+ // overlapping contour plumage across shoulders and back
+ for(let row=0;row<5;row++)for(let i=0;i<9;i++){const s=i<4?-1:1,idx=i<4?i:8-i;makeFeather(bird,.62-row*.045,.15,row%2?'#1a252c':'#26343b',s*(.18+idx*.075),.34-row*.14,-.25+row*.12,s*.45,.82);}
+ leftWing=makeWing(-1);rightWing=makeWing(1);
+ for(let i=0;i<8;i++)makeFeather(bird,.52,.12,'#10171d',(Math.random()-.5)*.42,-.45,-.72-i*.045,(Math.random()-.5)*.3,.9);
+}
+function init(){
+ scene=new THREE.Scene();scene.fog=new THREE.FogExp2('#0a131b',.035);
+ camera=new THREE.PerspectiveCamera(37,innerWidth/innerHeight,.1,100);camera.position.set(0,2.1,10.6);camera.lookAt(0,.05,0);
+ renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.18;
+ scene.add(new THREE.HemisphereLight('#a8bac8','#080b10',2.0));
+ const key=new THREE.DirectionalLight('#d5e0e5',3.1);key.position.set(-4,7,5);key.castShadow=true;key.shadow.mapSize.set(1024,1024);scene.add(key);
+ const rim=new THREE.DirectionalLight('#52748a',3.4);rim.position.set(5,2,-5);scene.add(rim);
+ flashLight=new THREE.PointLight('#d8e7f0',0,18);flashLight.position.set(0,5,-2);scene.add(flashLight);
+ const floor=new THREE.Mesh(new THREE.PlaneGeometry(200,200),new THREE.MeshStandardMaterial({color:'#080e13',roughness:1}));floor.rotation.x=-Math.PI/2;floor.position.y=-3.5;floor.receiveShadow=true;scene.add(floor);
+ // rain streaks in layered depth
+ const rainGeo=new THREE.BufferGeometry(),positions=new Float32Array(1800*3);for(let i=0;i<1800;i++){positions[i*3]=(Math.random()-.5)*24;positions[i*3+1]=Math.random()*13-2;positions[i*3+2]=(Math.random()-.5)*18;}rainGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));const rainMat=new THREE.PointsMaterial({color:'#aabdc7',size:.025,transparent:true,opacity:.35});const rainField=new THREE.Points(rainGeo,rainMat);scene.add(rainField);rain.push({geo:rainGeo,field:rainField});
+ createBird();bird.scale.setScalar(.001);bird.position.y=-2.5;
+ window.addEventListener('resize',resize);animate();
+}
+function resize(){if(!camera||!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);}
+function burst(){for(let i=0;i<95;i++){const geo=featherGeo(.18+Math.random()*.34,.055);const m=new THREE.Mesh(geo,mat(i%3?'#111c23':'#3b4a52',.58,.16));m.position.set((Math.random()-.5)*1.8,Math.random()*.7,(Math.random()-.5)*.8);scene.add(m);const a=Math.random()*Math.PI*2,d=2+Math.random()*7;feathers.push({m,v:new THREE.Vector3(Math.cos(a)*d,Math.random()*4+1,Math.sin(a)*d),r:new THREE.Vector3(Math.random()*8,Math.random()*8,Math.random()*8),life:3+Math.random()*2});}}
+function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime(),dt=Math.min(clock.getDelta(),.04);if(bird){if(started){const progress=Math.min(1,(t-startTime)/2.5);bird.scale.setScalar(.001+progress*.92);bird.position.y=-2.5+progress*2.65;bird.position.z=Math.sin(t*1.1)*.08;const flap=Math.sin(t*5.2);leftWing.rotation.z=-.08+flap*.34;rightWing.rotation.z=.08-flap*.34;leftWing.rotation.x=flap*.12;rightWing.rotation.x=-flap*.12;bird.rotation.y=Math.sin(t*.55)*.1;bird.rotation.x=Math.sin(t*.9)*.025;}}
+ for(const p of rain){const a=p.geo.attributes.position;for(let i=0;i<a.count;i++){let y=a.getY(i)-dt*8;if(y< -3)y=10;a.setY(i,y);}a.needsUpdate=true;p.field.position.x=Math.sin(t*.18)*.4;}
+ for(let i=feathers.length-1;i>=0;i--){const f=feathers[i];f.m.position.addScaledVector(f.v,dt);f.v.y-=dt*1.7;f.m.rotation.x+=f.r.x*dt;f.m.rotation.y+=f.r.y*dt;f.life-=dt;if(f.life<=0){scene.remove(f.m);f.m.geometry.dispose();feathers.splice(i,1);}}
+ flashLight.intensity=Math.max(0,flashLight.intensity-dt*32);if(renderer)renderer.render(scene,camera);}
+let startTime=0;
+function playRumble(){if(!audioOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();const now=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(54,now);o.frequency.exponentialRampToValueAtTime(25,now+2.4);f.type='lowpass';f.frequency.value=95;g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.14,now+.18);g.gain.exponentialRampToValueAtTime(.0001,now+2.5);o.connect(f).connect(g).connect(audioCtx.destination);o.start(now);o.stop(now+2.6)}catch(e){}}
+trigger.addEventListener('click',()=>{if(started)return;started=true;startTime=clock.getElapsedTime();trigger.disabled=true;status.textContent='THE RAVEN DESCENDS';burst();flashLight.intensity=12;playRumble();setTimeout(()=>{flashLight.intensity=18;status.textContent='WINGS OF THE TEMPEST';},2600);setTimeout(()=>{trigger.disabled=false;started=false;status.textContent='THE OMEN IS WATCHING';},7200)});
+soundButton.addEventListener('click',()=>{audioOn=!audioOn;soundButton.textContent='SOUND: '+(audioOn?'ON':'OFF');if(audioOn)playRumble();});
+try{init()}catch(e){error.style.display='block';console.error(e)}
 </script></body></html>
