@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 16</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 17</title>
 <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js"}}</script>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02070d;color:#edf4f5;font-family:Arial,sans-serif}
@@ -20,28 +20,82 @@ button.primary{background:#d9e4e2;color:#101619;border-color:#d9e4e2}
 @media(prefers-reduced-motion:reduce){.feather.fly,#flash.bolt{animation:none}}
 </style></head><body><main id="stage"><canvas id="scene"></canvas>
 <div class="brand">TIKNATION · LEGENDARY GIFT<b>THE FEATHERED OMEN</b></div><div id="flash"></div>
-<div class="status" id="status">LOADING THE RAVEN</div>
+<div class="status" id="status">STARTING 3D RAVEN</div>
 <div class="controls"><button class="primary" id="trigger">SUMMON THE OMEN</button><button id="sound">SOUND: OFF</button></div></main>
 <script type="module">
 import * as THREE from 'three';
 import { createAsset } from 'https://polyfork.dev/cdn/crow-base.mjs';
-(()=>{
-const canvas=document.getElementById('scene'),stage=document.getElementById('stage'),status=document.getElementById('status'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound'),flash=document.getElementById('flash');
-let renderer;try{renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});}catch(e){status.textContent='3D GRAPHICS NOT AVAILABLE';return;}
-renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.2;
-const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,.1,100);camera.position.set(0,.58,2.1);
-scene.add(new THREE.HemisphereLight(0xc9e5ff,0x080b18,2.2));const key=new THREE.DirectionalLight(0xe4f5ff,2.8);key.position.set(-3,5,5);scene.add(key);const rim=new THREE.PointLight(0x286dff,10,7);rim.position.set(2,1.4,-1.5);scene.add(rim);const violet=new THREE.PointLight(0x743cff,6,6);violet.position.set(-2,-.5,1);scene.add(violet);
-let bird=null,tick=null,loaded=false,audioOn=false,audioCtx=null,summonAt=0;
-try{bird=createAsset();bird.position.set(0,-.12,0);bird.scale.setScalar(2.25);bird.rotation.y=-.12;scene.add(bird);tick=bird.userData.tick.bind(bird.userData);loaded=true;status.textContent='RAVEN READY · FLIGHT CYCLE ACTIVE';}catch(e){status.textContent='RAVEN MODEL FAILED TO INITIALIZE';}
-function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}addEventListener('resize',resize);resize();
-const rain=Array.from({length:90},()=>({x:Math.random(),y:Math.random(),v:.3+Math.random()*.6}));
-const storm=document.createElement('canvas');storm.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none';stage.insertBefore(storm,canvas);const sx=storm.getContext('2d');
-function stormFrame(){const w=stage.clientWidth,h=stage.clientHeight,d=Math.min(devicePixelRatio||1,2);if(storm.width!==Math.floor(w*d)||storm.height!==Math.floor(h*d)){storm.width=w*d;storm.height=h*d;}sx.setTransform(d,0,0,d,0,0);sx.clearRect(0,0,w,h);sx.strokeStyle='#b8d0dd3b';sx.lineWidth=1;for(const r of rain){sx.beginPath();sx.moveTo(r.x*w,r.y*h);sx.lineTo(r.x*w-2,r.y*h+13);sx.stroke();r.y+=r.v*.006;if(r.y>1)r.y=0;}}
-function animate(now){requestAnimationFrame(animate);const t=now/1000;stormFrame();if(bird&&loaded){tick(t);bird.position.y=-.12+Math.sin(t*2)*.035;if(summonAt&&t-summonAt<1.5){const p=Math.min(1,(t-summonAt)/1.5);bird.position.y+=Math.sin(p*Math.PI)*.16;}}renderer.render(scene,camera);}
-requestAnimationFrame(animate);
-function burst(){for(let i=0;i<28;i++){const e=document.createElement('i');e.className='feather fly';e.style.left=(innerWidth*.5+(Math.random()-.5)*90)+'px';e.style.top=(innerHeight*.5+(Math.random()-.5)*70)+'px';e.style.setProperty('--dx',((Math.random()-.5)*innerWidth*.8)+'px');e.style.setProperty('--dy',((Math.random()-.5)*innerHeight*.7)+'px');e.style.setProperty('--spin',(Math.random()*800-400)+'deg');stage.appendChild(e);setTimeout(()=>e.remove(),2800);}}
-function rumble(){if(!audioOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(52,t);o.frequency.exponentialRampToValueAtTime(26,t+1.8);f.type='lowpass';f.frequency.value=120;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.1,t+.12);g.gain.exponentialRampToValueAtTime(.0001,t+2);o.connect(f).connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+2.1);}catch(e){}}
-trigger.addEventListener('click',()=>{summonAt=performance.now()/1000;burst();flash.classList.remove('bolt');void flash.offsetWidth;flash.classList.add('bolt');status.textContent='THE RAVEN DESCENDS · WINGS BEATING';rumble();});
+
+const canvas=document.getElementById('scene');
+const stage=document.getElementById('stage');
+const status=document.getElementById('status');
+const trigger=document.getElementById('trigger');
+const sound=document.getElementById('sound');
+const flash=document.getElementById('flash');
+let renderer, bird=null, audioOn=false, audioCtx=null, summonAt=0;
+try {
+  renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  renderer.outputColorSpace=THREE.SRGBColorSpace;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=1.25;
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(45,1,.01,100);
+  camera.position.set(1.25,.85,1.55);
+  camera.lookAt(0,.12,0);
+  scene.add(new THREE.HemisphereLight(0xffffff,0x182238,1.8));
+  const key=new THREE.DirectionalLight(0xe7f1ff,2.2);key.position.set(3,5,4);scene.add(key);
+  const rim=new THREE.DirectionalLight(0x477dff,1.6);rim.position.set(-4,2,-3);scene.add(rim);
+  bird=createAsset();
+  bird.position.set(0,-.02,0);
+  bird.rotation.y=-.45;
+  bird.scale.setScalar(2.7);
+  scene.add(bird);
+  function resize(){
+    const w=stage.clientWidth,h=stage.clientHeight;
+    renderer.setSize(w,h,false);
+    camera.aspect=w/h;camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize',resize);resize();
+  const clock=new THREE.Clock();
+  function render(){
+    requestAnimationFrame(render);
+    const elapsed=clock.getElapsedTime();
+    try { bird.userData.tick?.(elapsed); } catch(animationError) { status.textContent='RAVEN VISIBLE · ANIMATION ERROR'; }
+    bird.position.y=-.02+Math.sin(elapsed*2)*.018;
+    if(summonAt){const p=elapsed-summonAt;if(p<1.2)bird.position.y+=Math.sin(Math.max(0,p)/1.2*Math.PI)*.14;}
+    renderer.render(scene,camera);
+  }
+  status.textContent='RAVEN LOADED · ANIMATION RUNNING';
+  render();
+} catch(error) {
+  status.textContent='3D SETUP ERROR · '+String(error.message||error).slice(0,70);
+}
+function burst(){
+  for(let i=0;i<24;i++){
+    const e=document.createElement('i');e.className='feather fly';
+    e.style.left=(innerWidth*.5+(Math.random()-.5)*90)+'px';
+    e.style.top=(innerHeight*.5+(Math.random()-.5)*70)+'px';
+    e.style.setProperty('--dx',((Math.random()-.5)*innerWidth*.8)+'px');
+    e.style.setProperty('--dy',((Math.random()-.5)*innerHeight*.7)+'px');
+    e.style.setProperty('--spin',(Math.random()*800-400)+'deg');
+    stage.appendChild(e);setTimeout(()=>e.remove(),2800);
+  }
+}
+function rumble(){
+  if(!audioOn)return;
+  try{
+    audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
+    audioCtx.resume();const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();
+    o.type='sawtooth';o.frequency.setValueAtTime(52,t);o.frequency.exponentialRampToValueAtTime(26,t+1.8);
+    f.type='lowpass';f.frequency.value=120;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.1,t+.12);g.gain.exponentialRampToValueAtTime(.0001,t+2);
+    o.connect(f).connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+2.1);
+  }catch(e){}
+}
+trigger.addEventListener('click',()=>{
+  if(renderer)summonAt=performance.now()/1000;
+  burst();flash.classList.remove('bolt');void flash.offsetWidth;flash.classList.add('bolt');
+  status.textContent='THE RAVEN DESCENDS';rumble();
+});
 sound.addEventListener('click',()=>{audioOn=!audioOn;sound.textContent='SOUND: '+(audioOn?'ON':'OFF');if(audioOn)rumble();});
-})();
 </script></body></html>
