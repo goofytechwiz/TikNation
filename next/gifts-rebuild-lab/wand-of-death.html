@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE WAND OF DEATH — TikNation Gift Lab</title>
+<style>
+:root{color-scheme:dark;--toxic:#a9ff70;--mist:#b8d4a1}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050807;color:#eef4e9;font-family:Arial,Helvetica,sans-serif}
+body{min-height:100vh;overflow-x:hidden;background:radial-gradient(ellipse at 50% 48%,#1b3020 0,#0b120e 38%,#030605 78%)}
+.stage{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:26px 16px 24px;isolation:isolate}
+.stage:before{content:"";position:absolute;inset:-30%;z-index:-2;background:repeating-radial-gradient(ellipse at center,transparent 0 60px,#8bff4c09 62px 64px,transparent 66px 115px);animation:breath 8s ease-in-out infinite}
+.title{text-align:center;z-index:4;letter-spacing:.28em;font-size:clamp(22px,4vw,40px);font-weight:900;text-shadow:0 0 22px #a4ff6c66}
+.sub{margin-top:9px;color:#a4b69d;font-size:11px;letter-spacing:.28em;text-align:center}
+.scene{position:relative;width:min(760px,96vw);height:min(570px,65vh);min-height:390px;margin:8px auto 0}
+.eclipse{position:absolute;width:240px;height:240px;left:50%;top:48%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#c8ff9a0c 0 35%,#aaff6b13 48%,transparent 70%);box-shadow:0 0 95px 35px #8bff4c0d;animation:pulse 3.4s ease-in-out infinite}
+.ground{position:absolute;left:5%;right:5%;bottom:8%;height:24%;border-radius:50%;background:radial-gradient(ellipse,#9bff3d20 0, #1d2d1d55 30%,transparent 72%);filter:blur(7px)}
+.crack{position:absolute;left:50%;bottom:15%;width:310px;height:120px;transform:translateX(-50%);opacity:.55;background:linear-gradient(110deg,transparent 0 48%,#b4ff5c 49%,transparent 50%),linear-gradient(70deg,transparent 0 48%,#a4ff50 49%,transparent 50%);clip-path:polygon(48% 0,51% 0,47% 42%,68% 27%,52% 55%,72% 85%,50% 66%,28% 100%,45% 55%,20% 35%,46% 43%)}
+.wand-wrap{position:absolute;z-index:3;left:50%;top:49%;width:340px;height:440px;transform:translate(-50%,-50%) rotate(-18deg);transform-origin:50% 58%;animation:wandIdle 4s ease-in-out infinite}
+.wand{position:absolute;left:50%;top:13%;width:24px;height:75%;transform:translateX(-50%);border-radius:55% 55% 12px 12px;background:linear-gradient(90deg,#160d09 0,#50311d 16%,#a17445 29%,#27150d 48%,#6b4328 67%,#170d09 100%);box-shadow:inset 2px 0 4px #d4a56b88,inset -4px 0 7px #000,0 0 16px #9bff4c33}
+.wand:before{content:"";position:absolute;inset:8% 4px 12%;border-left:2px solid #c5a66b;border-right:1px solid #b3ff6a88;opacity:.65}
+.grip{position:absolute;left:50%;top:60%;width:35px;height:22%;transform:translateX(-50%);border-radius:5px;background:repeating-linear-gradient(0deg,#15100c 0 5px,#8c6336 6px 8px,#29180f 9px 12px);border:1px solid #a27b4a;box-shadow:0 0 12px #aaff6c33}
+.ring{position:absolute;left:50%;top:14%;width:47px;height:13px;transform:translateX(-50%);border:3px solid #9fbb83;border-radius:50%;box-shadow:0 0 12px #b7ff7b}
+.crown{position:absolute;left:50%;top:0;width:84px;height:105px;transform:translateX(-50%);filter:drop-shadow(0 0 12px #a5ff62)}
+.crown svg{width:100%;height:100%;overflow:visible}
+.core{position:absolute;left:50%;top:12px;width:32px;height:32px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#f4ffd9,#aaff68 28%,#3c8d25 60%,#0a1a0b 78%);box-shadow:0 0 12px 7px #aaff6caa,0 0 42px 20px #83ff4c55;animation:coreBeat 1.7s ease-in-out infinite}
+.arc{position:absolute;z-index:2;left:50%;top:24%;width:250px;height:230px;transform:translate(-50%,-50%);border:2px solid transparent;border-radius:50%;border-top-color:#c5ff8b;filter:drop-shadow(0 0 8px #aaff66);opacity:0;pointer-events:none}
+.arc.a{animation:arc 1.2s ease-out infinite}.arc.b{width:320px;height:270px;animation:arc 1.6s .25s ease-out infinite}
+.bolt{position:absolute;z-index:4;width:150px;height:190px;top:15%;left:50%;transform:translateX(-50%);opacity:0;filter:drop-shadow(0 0 8px #baff72);pointer-events:none}
+.bolt path{fill:none;stroke:#d7ffae;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.cast .wand-wrap{animation:castWand .8s ease-out 1}
+.cast .arc,.cast .bolt{opacity:1}
+.cast .crack{animation:crackFlash .9s ease-out}
+.particle{position:absolute;width:4px;height:4px;border-radius:50%;background:#c9ff93;box-shadow:0 0 12px 3px #9bff60;animation:rise 3s linear infinite;opacity:.7}
+.p1{left:18%;bottom:13%;animation-delay:-.3s}.p2{left:28%;bottom:18%;animation-delay:-1.8s}.p3{right:20%;bottom:14%;animation-delay:-1.2s}.p4{right:31%;bottom:20%;animation-delay:-2.4s}.p5{left:50%;bottom:10%;animation-delay:-.8s}
+.controls{z-index:5;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:0}
+button{border:1px solid #8fbd70;background:linear-gradient(#1a2b1c,#09110c);color:#e9ffdb;padding:14px 23px;border-radius:4px;letter-spacing:.16em;font-size:11px;font-weight:800;cursor:pointer;box-shadow:0 0 18px #91ff4b16}
+button:active{transform:scale(.97)}button:hover{background:#243b24}
+.note{z-index:4;margin-top:15px;color:#8fa18a;font-size:10px;letter-spacing:.14em;text-align:center}
+@keyframes pulse{50%{transform:translate(-50%,-50%) scale(1.16);opacity:.65}}
+@keyframes breath{50%{transform:scale(1.05);opacity:.65}}
+@keyframes coreBeat{50%{transform:translateX(-50%) scale(1.22);filter:brightness(1.5)}}
+@keyframes wandIdle{0%,100%{transform:translate(-50%,-50%) rotate(-18deg)}50%{transform:translate(-50%,-52%) rotate(-13deg)}}
+@keyframes castWand{0%{transform:translate(-50%,-50%) rotate(-18deg)}35%{transform:translate(-50%,-58%) rotate(12deg) scale(1.08)}100%{transform:translate(-50%,-50%) rotate(-18deg)}}
+@keyframes arc{0%{transform:translate(-50%,-50%) scale(.35) rotate(0);opacity:0}25%{opacity:1}100%{transform:translate(-50%,-50%) scale(1.6) rotate(100deg);opacity:0}}
+@keyframes crackFlash{0%,100%{opacity:.45}25%{opacity:1;filter:drop-shadow(0 0 20px #baff55)}}
+@keyframes rise{0%{transform:translateY(0) scale(.4);opacity:0}20%{opacity:.9}100%{transform:translateY(-260px) translateX(25px) scale(0);opacity:0}}
+@media(max-width:520px){.scene{height:480px;min-height:420px}.wand-wrap{transform:translate(-50%,-50%) rotate(-18deg) scale(.83)}.title{letter-spacing:.18em}.sub{letter-spacing:.16em}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style></head>
+<body>
+<main class="stage" id="stage">
+  <div class="title">THE WAND OF DEATH</div><div class="sub">ONE CURSED RELIC · ONE FINAL SPELL</div>
+  <div class="scene" aria-label="Animated cursed wand">
+    <div class="eclipse"></div><div class="ground"></div><div class="crack"></div>
+    <span class="particle p1"></span><span class="particle p2"></span><span class="particle p3"></span><span class="particle p4"></span><span class="particle p5"></span>
+    <div class="wand-wrap">
+      <div class="wand"></div><div class="grip"></div><div class="ring"></div>
+      <div class="crown"><svg viewBox="0 0 100 120" aria-hidden="true"><path d="M50 4 L60 24 L83 11 L75 39 L94 52 L72 60 L80 91 L58 76 L50 111 L41 76 L19 91 L27 60 L5 52 L25 39 L17 11 L40 24Z" fill="#283b2a" stroke="#b8d88d" stroke-width="3"/><path d="M50 18L61 42L50 57L39 42Z" fill="#b6ff73" stroke="#e4ffc5" stroke-width="2"/><path d="M50 57L50 104" stroke="#9dbb78" stroke-width="5"/></svg><div class="core"></div></div>
+    </div>
+    <div class="arc a"></div><div class="arc b"></div>
+    <svg class="bolt" viewBox="0 0 150 190" aria-hidden="true"><path d="M79 0L55 49L82 43L39 105L64 97L22 164M104 29L90 65L112 61L82 108"/></svg>
+  </div>
+  <div class="controls"><button id="cast">CAST THE FINAL SPELL</button><button id="sound">SOUND: OFF</button></div>
+  <div class="note" id="status">THE RELIC IS WAITING FOR A SOUL</div>
+</main>
+<script>
+(()=>{const stage=document.getElementById('stage'),cast=document.getElementById('cast'),sound=document.getElementById('sound'),status=document.getElementById('status');let audio=false,ctx=null;
+cast.addEventListener('click',()=>{stage.classList.remove('cast');void stage.offsetWidth;stage.classList.add('cast');status.textContent='THE SPELL HAS BEEN RELEASED';if(audio)play();setTimeout(()=>stage.classList.remove('cast'),1300)});
+sound.addEventListener('click',()=>{audio=!audio;sound.textContent='SOUND: '+(audio?'ON':'OFF');if(audio){play();status.textContent='THE RELIC IS WHISPERING'}else status.textContent='SOUND MUTED'});
+function play(){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();const now=ctx.currentTime;const osc=ctx.createOscillator(),gain=ctx.createGain(),filter=ctx.createBiquadFilter();osc.type='sawtooth';osc.frequency.setValueAtTime(92,now);osc.frequency.exponentialRampToValueAtTime(34,now+.8);filter.type='lowpass';filter.frequency.value=380;gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.16,now+.08);gain.gain.exponentialRampToValueAtTime(.0001,now+1.15);osc.connect(filter);filter.connect(gain);gain.connect(ctx.destination);osc.start(now);osc.stop(now+1.2)}catch(e){status.textContent='AUDIO IS NOT AVAILABLE IN THIS BROWSER'}}
+})();
+</script></body></html>
