@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 11</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 12</title>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js"}}</script>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02070d;color:#edf4f5;font-family:Arial,sans-serif}
 #stage{position:relative;width:100%;height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 54%,#233d4b 0,#101c27 48%,#02070d 100%)}
-#scene{position:absolute;inset:0;width:100%;height:100%;z-index:1;touch-action:pan-y}
+canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;touch-action:pan-y}
 .brand{position:absolute;top:6%;width:100%;text-align:center;z-index:3;letter-spacing:.32em;font-size:10px;color:#d0dcddaa;pointer-events:none}
 .brand b{display:block;margin-top:12px;font-size:clamp(25px,6vw,55px);letter-spacing:.14em;color:#f1f4f2;text-shadow:0 0 28px #d6e4e455}
 .status{position:absolute;bottom:calc(max(28px,env(safe-area-inset-bottom)) + 70px);width:100%;text-align:center;z-index:3;color:#c5d0d0b0;font-size:10px;letter-spacing:.18em;pointer-events:none}
@@ -22,27 +23,27 @@ button.primary{background:#d9e4e2;color:#101619;border-color:#d9e4e2}
 <div class="status" id="status">CALLING THE RAVEN</div>
 <div class="controls"><button class="primary" id="trigger">SUMMON THE OMEN</button><button id="sound">SOUND: OFF</button></div></main>
 <script type="module">
-import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
-import {GLTFLoader} from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from 'three';
+import {createAsset} from 'https://polyfork.dev/cdn/crow-base.mjs';
 (()=>{
 const canvas=document.getElementById('scene'),status=document.getElementById('status'),trigger=document.getElementById('trigger'),sound=document.getElementById('sound'),flash=document.getElementById('flash'),stage=document.getElementById('stage');
-const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;
-const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(34,1,.1,100);camera.position.set(0,1.0,3.7);
-scene.add(new THREE.HemisphereLight(0xb8d9ff,0x080b18,2.1));const key=new THREE.DirectionalLight(0xe4f5ff,3.1);key.position.set(-3,5,5);scene.add(key);const rim=new THREE.PointLight(0x286dff,16,8);rim.position.set(2,1.4,-1.5);scene.add(rim);const violet=new THREE.PointLight(0x9a39ff,9,7);violet.position.set(-2,-.5,1);scene.add(violet);
-let bird=null,leftWing=null,rightWing=null,tail=null,head=null,loaded=false,audioOn=false,audioCtx=null,flightStart=0;
-const loader=new GLTFLoader();loader.load('https://polyfork.dev/cdn/crow-base.glb',g=>{
- bird=g.scene;bird.position.set(0,-.1,0);bird.scale.setScalar(2.15);bird.rotation.y=-.12;
- bird.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;if(o.material){const old=o.material;const m=new THREE.MeshPhysicalMaterial({color:0x172d48,vertexColors:!!old.vertexColors,metalness:.78,roughness:.28,clearcoat:.9,clearcoatRoughness:.22});if(old.map)m.map=old.map;o.material=m;}}});
- scene.add(bird);leftWing=bird.getObjectByName('LeftWing');rightWing=bird.getObjectByName('RightWing');tail=bird.getObjectByName('Tail');head=bird.getObjectByName('Head');
- if(!leftWing||!rightWing){status.textContent='RAVEN LOADED · WING JOINTS NOT FOUND';}else status.textContent='RAVEN READY · WINGS FLAPPING';
- loaded=true;flightStart=performance.now()/1000;
-},undefined,e=>{status.textContent='RAVEN MODEL FAILED TO LOAD';});
+let renderer;
+try{renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});}catch(e){status.textContent='3D GRAPHICS ARE NOT AVAILABLE IN THIS BROWSER';return;}
+renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.35;
+const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(38,1,.1,100);camera.position.set(0,.8,2.15);
+scene.add(new THREE.HemisphereLight(0xc9e5ff,0x080b18,2));const key=new THREE.DirectionalLight(0xe4f5ff,3);key.position.set(-3,5,5);scene.add(key);const rim=new THREE.PointLight(0x286dff,12,8);rim.position.set(2,1.4,-1.5);scene.add(rim);const violet=new THREE.PointLight(0x9a39ff,8,7);violet.position.set(-2,-.5,1);scene.add(violet);
+let bird,leftWing,rightWing,tail,head,loaded=false,audioOn=false,audioCtx=null,flightStart=0;
+try{
+ bird=createAsset();bird.position.set(0,-.05,0);bird.scale.setScalar(2.35);bird.rotation.y=-.16;scene.add(bird);
+ leftWing=bird.getObjectByName('LeftWing');rightWing=bird.getObjectByName('RightWing');tail=bird.getObjectByName('Tail');head=bird.getObjectByName('Head');
+ if(leftWing&&rightWing){loaded=true;status.textContent='RAVEN READY · WINGS BEATING';flightStart=performance.now()/1000;}
+ else status.textContent='RAVEN MODEL LOADED · CHECKING WING RIG';
+}catch(e){status.textContent='RAVEN MODEL FAILED TO INITIALIZE';}
 function resize(){const w=stage.clientWidth,h=stage.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}addEventListener('resize',resize);resize();
 const rain=Array.from({length:100},()=>({x:Math.random(),y:Math.random(),v:.3+Math.random()*.6}));
-function drawStorm(){const w=canvas.clientWidth,h=canvas.clientHeight;const c=renderer.getContext();/* storm particles are rendered as lightweight DOM-free canvas overlay below */}
 const storm=document.createElement('canvas');storm.style.cssText='position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none';stage.insertBefore(storm,canvas);const sx=storm.getContext('2d');
 function stormFrame(){const w=stage.clientWidth,h=stage.clientHeight,d=Math.min(devicePixelRatio||1,2);if(storm.width!==Math.floor(w*d)||storm.height!==Math.floor(h*d)){storm.width=w*d;storm.height=h*d;}sx.setTransform(d,0,0,d,0,0);sx.clearRect(0,0,w,h);sx.strokeStyle='#b8d0dd44';sx.lineWidth=1;for(const r of rain){sx.beginPath();sx.moveTo(r.x*w,r.y*h);sx.lineTo(r.x*w-2,r.y*h+14);sx.stroke();r.y+=r.v*.006;if(r.y>1)r.y=0;}}
-function animate(){requestAnimationFrame(animate);const t=performance.now()/1000;stormFrame();if(bird){const phase=t*7.2;const flap=Math.sin(phase)*.62;if(leftWing)leftWing.rotation.z=flap;if(rightWing)rightWing.rotation.z=-flap;if(tail)tail.rotation.x=Math.sin(phase*.5)*.06;if(head)head.rotation.y=Math.sin(t*1.4)*.08;bird.position.y=-.1+Math.sin(t*2.1)*.035;if(flightStart&&t-flightStart<2.5){const p=Math.min(1,(t-flightStart)/2.5);bird.scale.setScalar(2.15*(.72+.28*p));}}renderer.render(scene,camera);}
+function animate(){requestAnimationFrame(animate);const t=performance.now()/1000;stormFrame();if(bird){const phase=t*8.2;const flap=Math.sin(phase)*.72;if(leftWing)leftWing.rotation.z=flap;if(rightWing)rightWing.rotation.z=-flap;if(tail)tail.rotation.x=Math.sin(phase*.5)*.06;if(head)head.rotation.y=Math.sin(t*1.4)*.08;bird.position.y=-.05+Math.sin(t*2.1)*.025;}renderer.render(scene,camera);}
 animate();
 function burst(){for(let i=0;i<34;i++){const e=document.createElement('i');e.className='feather fly';e.style.left=(innerWidth*.5+(Math.random()-.5)*80)+'px';e.style.top=(innerHeight*.5+(Math.random()-.5)*60)+'px';e.style.setProperty('--dx',((Math.random()-.5)*innerWidth*.9)+'px');e.style.setProperty('--dy',((Math.random()-.5)*innerHeight*.8)+'px');e.style.setProperty('--spin',(Math.random()*800-400)+'deg');stage.appendChild(e);setTimeout(()=>e.remove(),2800);}}
 function rumble(){if(!audioOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(52,t);o.frequency.exponentialRampToValueAtTime(26,t+1.8);f.type='lowpass';f.frequency.value=120;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.1,t+.12);g.gain.exponentialRampToValueAtTime(.0001,t+2);o.connect(f).connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+2.1);}catch(e){}}
