@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 17</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>THE FEATHERED OMEN · Rebuild 19</title>
 <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js"}}</script>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#02070d;color:#edf4f5;font-family:Arial,sans-serif}
@@ -23,23 +23,46 @@ button.primary{background:#d9e4e2;color:#101619;border-color:#d9e4e2}
 <div class="status" id="status">STARTING 3D RAVEN</div>
 <div class="controls"><button class="primary" id="trigger">SUMMON THE OMEN</button><button id="sound">SOUND: OFF</button></div></main>
 <script>
-(()=> {
-  const stage=document.getElementById('stage'), status=document.getElementById('status');
-  const trigger=document.getElementById('trigger'), sound=document.getElementById('sound');
+(()=>{
+  const stage=document.getElementById('stage');
+  const status=document.getElementById('status');
+  const trigger=document.getElementById('trigger');
+  const sound=document.getElementById('sound');
   const flash=document.getElementById('flash');
   let audioOn=false, audioCtx=null;
   function rumble(){
     if(!audioOn)return;
     try{
       audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
-      audioCtx.resume();
+      if(audioCtx.state==='suspended') audioCtx.resume();
       const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();
       o.type='sawtooth';o.frequency.setValueAtTime(52,t);o.frequency.exponentialRampToValueAtTime(26,t+1.8);
       f.type='lowpass';f.frequency.value=120;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.1,t+.12);g.gain.exponentialRampToValueAtTime(.0001,t+2);
       o.connect(f).connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+2.1);
     }catch(e){status.textContent='AUDIO UNAVAILABLE';}
   }
-  </script>
+  function burst(){
+    for(let i=0;i<24;i++){
+      const e=document.createElement('i');e.className='feather fly';
+      e.style.left=(innerWidth*.5+(Math.random()-.5)*90)+'px';
+      e.style.top=(innerHeight*.5+(Math.random()-.5)*70)+'px';
+      e.style.setProperty('--dx',((Math.random()-.5)*innerWidth*.8)+'px');
+      e.style.setProperty('--dy',((Math.random()-.5)*innerHeight*.7)+'px');
+      e.style.setProperty('--spin',(Math.random()*800-400)+'deg');
+      stage.appendChild(e);setTimeout(()=>e.remove(),2800);
+    }
+  }
+  trigger.addEventListener('click',()=>{
+    window.__ravenSummonAt=performance.now()/1000;
+    burst();flash.classList.remove('bolt');void flash.offsetWidth;flash.classList.add('bolt');
+    status.textContent='THE RAVEN DESCENDS';rumble();
+  });
+  sound.addEventListener('click',()=>{
+    audioOn=!audioOn;sound.textContent='SOUND: '+(audioOn?'ON':'OFF');
+    if(audioOn)rumble();
+  });
+})();
+</script>
 <script type="module">
 import * as THREE from 'three';
 import { createAsset } from 'https://polyfork.dev/cdn/crow-base.mjs';
@@ -87,31 +110,4 @@ try {
 } catch(error) {
   status.textContent='3D SETUP ERROR · '+String(error.message||error).slice(0,70);
 }
-function burst(){
-  for(let i=0;i<24;i++){
-    const e=document.createElement('i');e.className='feather fly';
-    e.style.left=(innerWidth*.5+(Math.random()-.5)*90)+'px';
-    e.style.top=(innerHeight*.5+(Math.random()-.5)*70)+'px';
-    e.style.setProperty('--dx',((Math.random()-.5)*innerWidth*.8)+'px');
-    e.style.setProperty('--dy',((Math.random()-.5)*innerHeight*.7)+'px');
-    e.style.setProperty('--spin',(Math.random()*800-400)+'deg');
-    stage.appendChild(e);setTimeout(()=>e.remove(),2800);
-  }
-}
-function rumble(){
-  if(!audioOn)return;
-  try{
-    audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();
-    audioCtx.resume();const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();
-    o.type='sawtooth';o.frequency.setValueAtTime(52,t);o.frequency.exponentialRampToValueAtTime(26,t+1.8);
-    f.type='lowpass';f.frequency.value=120;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.1,t+.12);g.gain.exponentialRampToValueAtTime(.0001,t+2);
-    o.connect(f).connect(g).connect(audioCtx.destination);o.start(t);o.stop(t+2.1);
-  }catch(e){}
-}
-trigger.addEventListener('click',()=>{
-  if(renderer)summonAt=performance.now()/1000;
-  burst();flash.classList.remove('bolt');void flash.offsetWidth;flash.classList.add('bolt');
-  status.textContent='THE RAVEN DESCENDS';rumble();
-});
-sound.addEventListener('click',()=>{audioOn=!audioOn;sound.textContent='SOUND: '+(audioOn?'ON':'OFF');if(audioOn)rumble();});
 </script></body></html>
