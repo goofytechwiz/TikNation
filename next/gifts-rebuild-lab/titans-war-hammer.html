@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Titan's War Hammer — TikNation Next Gift Lab</title>
+<style>
+:root{color-scheme:dark;--ice:#7bdcff;--gold:#e4b66a}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050a12;color:#eaf6ff;font-family:Inter,system-ui,Arial,sans-serif}
+body{display:grid;place-items:center;padding:18px;background:radial-gradient(ellipse at 50% 35%,#142b42 0,#081321 43%,#03070d 100%)}
+main{width:min(100%,850px);text-align:center}.eyebrow{font-size:11px;letter-spacing:.3em;color:#8caec7;text-transform:uppercase}
+h1{font-size:clamp(25px,5vw,44px);letter-spacing:.09em;margin:10px 0 5px;text-transform:uppercase;text-shadow:0 0 22px #48bfff55}
+.sub{color:#9cb5c8;font-size:14px;margin:0 0 16px}
+.stage{position:relative;width:100%;aspect-ratio:16/10;min-height:280px;max-height:540px;overflow:hidden;border:1px solid #52728b66;border-radius:18px;background:linear-gradient(#0b1928,#101e2c 65%,#080e16);box-shadow:0 18px 70px #000b,inset 0 0 55px #4da9e51c}
+canvas{width:100%;height:100%;display:block}.vignette{pointer-events:none;position:absolute;inset:0;background:radial-gradient(ellipse,transparent 35%,#02060bb8 100%)}
+.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px 0 10px}
+button{border:1px solid #6c9dbb88;background:linear-gradient(#17334a,#0b1b2a);color:#effaff;padding:12px 20px;border-radius:999px;font-weight:700;letter-spacing:.06em;cursor:pointer}
+button.primary{background:linear-gradient(135deg,#237da5,#15415d);border-color:#83dfff}
+button:active{transform:scale(.97)}.hint{font-size:12px;color:#839daf}.note{margin-top:17px;color:#71899b;font-size:11px;letter-spacing:.08em}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">TikNation Next · Gift Rebuild Lab</div>
+<h1>Titan's War Hammer</h1><p class="sub">An ancient weapon awakens with the force of a storm.</p>
+<section class="stage" aria-label="Animated war hammer gift preview"><canvas id="scene"></canvas><div class="vignette"></div></section>
+<div class="controls"><button class="primary" id="replay">↻ REPLAY IMPACT</button><button id="sound">♫ SOUND: OFF</button></div>
+<div class="hint">Tap replay to summon the hammer. Sound is optional and never starts automatically.</div>
+<div class="note">STANDALONE PREVIEW · NOT YET ADDED TO THE LIVE GIFT CATALOG</div>
+</main>
+<script>
+(()=>{
+const canvas=document.getElementById('scene'),ctx=canvas.getContext('2d');let w=0,h=0,started=performance.now(),soundOn=false,audio=null,particles=[],last=0;
+function resize(){const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);w=r.width;h=r.height;canvas.width=w*d;canvas.height=h*d;ctx.setTransform(d,0,0,d,0,0)}
+new ResizeObserver(resize).observe(canvas);resize();
+function burst(){particles=[];for(let i=0;i<95;i++){const a=Math.random()*Math.PI*2,s=1+Math.random()*7;particles.push({x:w/2+(Math.random()-.5)*45,y:h*.72,vx:Math.cos(a)*s,vy:Math.sin(a)*s-2,life:1,size:1+Math.random()*3})}}
+function playTone(freq,dur,type='sine',vol=.08,slide=0){if(!soundOn)return;try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(35,freq+slide),audio.currentTime+dur);g.gain.setValueAtTime(vol,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+dur);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+dur)}catch(e){}}
+function impact(){started=performance.now();burst();playTone(95,.65,'sawtooth',.15,-48);setTimeout(()=>playTone(48,.8,'triangle',.12,-15),80);setTimeout(()=>playTone(620,.25,'sine',.04,-300),130)}
+function path(points){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath()}
+function draw(t){ctx.clearRect(0,0,w,h);const elapsed=(t-started)/1000,impactAt=1.18,slam=Math.max(0,Math.min(1,(elapsed-impactAt)/.24)),settle=Math.max(0,1-(elapsed-impactAt-.24)/.6);
+const cx=w/2,ground=h*.77;
+let bg=ctx.createRadialGradient(cx,h*.48,5,cx,h*.48,w*.7);bg.addColorStop(0,'#25415a');bg.addColorStop(.55,'#101e2c');bg.addColorStop(1,'#060b12');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+for(let i=0;i<22;i++){let x=(i*97+t*.012)%(w+30)-15,y=(i*53%h);ctx.fillStyle='rgba(125,205,255,'+(.08+.08*Math.sin(t*.001+i))+')';ctx.beginPath();ctx.arc(x,y,1.2,0,7);ctx.fill()}
+ctx.fillStyle='#0b121c';ctx.fillRect(0,ground,w,h-ground);ctx.strokeStyle='#38566d';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,ground);ctx.lineTo(w,ground);ctx.stroke();
+const fall=1-Math.min(1,elapsed/impactAt);const y=ground-65-(fall*fall)*h*.48+slam*7;
+ctx.save();ctx.translate(cx,y);ctx.rotate((1-fall)*-.1+Math.sin(t*.002)*.012*settle);
+// haft
+const haft=ctx.createLinearGradient(-9,0,10,0);haft.addColorStop(0,'#30271f');haft.addColorStop(.45,'#b18a55');haft.addColorStop(1,'#211d1b');ctx.fillStyle=haft;ctx.strokeStyle='#d5b276';ctx.lineWidth=2;ctx.fillRect(-8,-170,16,172);ctx.strokeRect(-8,-170,16,172);
+for(let k=0;k<5;k++){ctx.strokeStyle='#5a4633';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(-9,-155+k*25);ctx.lineTo(9,-148+k*25);ctx.stroke()}
+ctx.fillStyle='#4d5962';ctx.strokeStyle='#c3d2d9';ctx.lineWidth=3;path([[-68,-213],[-54,-254],[-27,-270],[27,-270],[54,-254],[68,-213],[56,-180],[-56,-180]]);ctx.fill();ctx.stroke();
+const metal=ctx.createLinearGradient(-65,-240,65,-190);metal.addColorStop(0,'#283947');metal.addColorStop(.25,'#d6e3e6');metal.addColorStop(.52,'#647c8c');metal.addColorStop(.78,'#1d3445');metal.addColorStop(1,'#a9c0ca');ctx.fillStyle=metal;path([[-62,-230],[-46,-258],[-25,-265],[25,-265],[46,-258],[62,-230],[50,-190],[-50,-190]]);ctx.fill();ctx.strokeStyle='#d7e4e9';ctx.lineWidth=2;ctx.stroke();
+ctx.fillStyle='#142838';ctx.fillRect(-19,-252,38,43);ctx.strokeStyle='#7bdcff';ctx.lineWidth=2;ctx.strokeRect(-19,-252,38,43);
+ctx.shadowColor='#55cfff';ctx.shadowBlur=18;ctx.fillStyle='#9ceaff';ctx.beginPath();ctx.moveTo(0,-247);ctx.lineTo(12,-231);ctx.lineTo(0,-215);ctx.lineTo(-12,-231);ctx.closePath();ctx.fill();ctx.shadowBlur=0;
+for(let s of [-1,1]){ctx.fillStyle='#9aaeb8';ctx.beginPath();ctx.arc(s*51,-226,5,0,7);ctx.fill()}
+ctx.restore();
+// electric arcs
+if(elapsed>impactAt-.15){ctx.save();ctx.globalAlpha=.35+.5*Math.sin(t*.02);ctx.strokeStyle='#6bdcff';ctx.shadowColor='#42bfff';ctx.shadowBlur=18;ctx.lineWidth=2;for(let i=0;i<5;i++){let x=cx+(Math.random()-.5)*130;ctx.beginPath();ctx.moveTo(x,ground-5);for(let j=1;j<5;j++)ctx.lineTo(x+(Math.random()-.5)*30,ground-j*18);ctx.stroke()}ctx.restore()}
+if(elapsed>impactAt){const radius=(elapsed-impactAt)*210;if(radius<170){ctx.strokeStyle='rgba(105,211,255,'+(1-radius/170)+')';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(cx,ground,radius,radius*.18,0,0,Math.PI*2);ctx.stroke()}}
+particles=particles.filter(p=>p.life>0);for(const p of particles){p.x+=p.vx;p.y+=p.vy;p.vy+=.12;p.life-=.012;ctx.fillStyle='rgba(132,220,255,'+p.life+')';ctx.fillRect(p.x,p.y,p.size,p.size)}
+if(elapsed>5.2&&particles.length===0){started=t/1000*1000-4.2*1000}
+requestAnimationFrame(draw)}
+requestAnimationFrame(draw);
+document.getElementById('replay').addEventListener('click',impact);
+document.getElementById('sound').addEventListener('click',()=>{soundOn=!soundOn;document.getElementById('sound').textContent='♫ SOUND: '+(soundOn?'ON':'OFF');if(soundOn){playTone(440,.16,'sine',.07);setTimeout(()=>playTone(660,.22,'sine',.05),110)}});
+impact();
+})();
+</script></body></html>
