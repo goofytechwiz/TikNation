@@ -1,102 +1,53 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#08091c">
-<title>Musical Universe · TikNation</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050816"><title>Musical Universe · TikNation</title>
 <style>
-:root{color-scheme:dark;--cyan:#75f7ff;--pink:#ff72e8;--violet:#a88cff;--gold:#ffe5a0}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050713;color:#f8f5ff;font-family:Inter,system-ui,sans-serif}body{overflow-x:hidden;background:radial-gradient(ellipse at 50% 38%,#211b52 0,#0b1028 48%,#050713 100%)}
-header{height:64px;padding:0 clamp(16px,4vw,44px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff18;position:relative;z-index:5;background:#07091bb8;backdrop-filter:blur(14px)}
-.brand{font-weight:900;letter-spacing:.22em;font-size:12px}.brand span{color:var(--cyan)}.live{font-size:9px;letter-spacing:.2em;color:#9fffe9;border:1px solid #8effdc55;border-radius:99px;padding:8px 11px}
-main{width:min(1100px,96vw);margin:auto;padding:20px 0 30px}.intro{text-align:center;padding:8px 14px 15px}.eyebrow{font-size:9px;letter-spacing:.34em;color:#9af7ff;font-weight:800}.intro h1{font:500 clamp(29px,6vw,54px)/1.02 Georgia,serif;margin:9px 0 7px;text-shadow:0 0 24px #a78bff77}.intro p{margin:0;color:#b8bad6;font-size:12px}
-.stage{height:clamp(360px,57vw,590px);min-height:360px;position:relative;overflow:hidden;border:1px solid #9c8cff55;border-radius:18px;background:radial-gradient(ellipse at 50% 35%,#283a8c 0,#111641 38%,#070b1b 77%);box-shadow:0 0 60px #715eff26,inset 0 0 60px #65efff13;isolation:isolate}
-#show{position:absolute;inset:0;width:100%;height:100%;z-index:1}
-.stage:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,#06081a15 0%,transparent 58%,#050713a8 100%),repeating-linear-gradient(0deg,transparent 0 3px,#b7ffff0b 4px 5px)}
-.hud{position:absolute;z-index:3;top:14px;left:15px;right:15px;display:flex;justify-content:space-between;font-size:8px;letter-spacing:.2em;color:#d9e7ff;text-shadow:0 1px 8px #000}
-.caption{position:absolute;z-index:3;bottom:17px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.28em;color:#bdfcff;text-shadow:0 0 15px #6ff}
-.controls{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:16px 10px 0}
-button{border:1px solid #a9a1ff66;border-radius:99px;padding:13px 19px;background:#151a3b;color:#f6f3ff;font-weight:850;font-size:9px;letter-spacing:.16em;cursor:pointer;min-height:44px}
-button.primary{background:linear-gradient(110deg,#65eaff,#a78bff 55%,#ff80dc);border:0;color:#090c20;box-shadow:0 0 24px #8c7bff55}
-button:focus-visible{outline:3px solid white;outline-offset:3px}button:active{transform:scale(.97)}
-.status{text-align:center;min-height:20px;margin:11px;color:#b7c7ec;font-size:9px;letter-spacing:.16em}
-.note{text-align:center;color:#7781a9;font-size:9px;line-height:1.6;padding:0 18px}
-@media(max-width:560px){header{height:56px}.stage{height:72vh;min-height:390px;max-height:560px;border-radius:12px}.intro p{max-width:310px;margin:auto}.controls{gap:7px}button{padding:12px 14px;font-size:8px}}
-@media(prefers-reduced-motion:reduce){.stage:before{background:linear-gradient(180deg,#06081a15,transparent 60%,#050713a8)}}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#050816;color:#f6f4ff;font-family:Inter,system-ui,sans-serif}body{background:radial-gradient(ellipse at 50% 25%,#20265c,#070a1b 65%,#03040b)}header{height:58px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #9cefff30;background:#07091bd9;letter-spacing:.2em;font-size:11px;font-weight:900}header b{color:#7cfaff}.live{color:#9fffe9;border:1px solid #8effdc55;border-radius:99px;padding:8px 11px;font-size:9px}main{width:min(1100px,96vw);margin:auto;padding:18px 0 28px}.intro{text-align:center;padding:4px 10px 15px}.eyebrow{font-size:9px;letter-spacing:.34em;color:#9af7ff;font-weight:800}.intro h1{font:500 clamp(30px,6vw,54px)/1.04 Georgia,serif;margin:8px 0;text-shadow:0 0 24px #a78bff77}.intro p{margin:0;color:#b8bad6;font-size:12px}.stage{height:clamp(390px,58vw,620px);position:relative;overflow:hidden;border:1px solid #9c8cff66;border-radius:17px;background:radial-gradient(ellipse at 50% 40%,#202d68,#080d23 72%);box-shadow:0 0 60px #715eff26,inset 0 0 60px #65efff13}#scene{width:100%;height:100%;display:block}.hud{position:absolute;z-index:2;top:14px;left:15px;right:15px;display:flex;justify-content:space-between;font-size:8px;letter-spacing:.2em;color:#d9e7ff;text-shadow:0 1px 8px #000;pointer-events:none}.caption{position:absolute;bottom:15px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.25em;color:#bdfcff;text-shadow:0 0 15px #6ff;pointer-events:none}.controls{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:15px 8px 0}button{border:1px solid #a9a1ff66;border-radius:99px;padding:13px 18px;background:#151a3b;color:#f6f3ff;font-weight:850;font-size:9px;letter-spacing:.14em;cursor:pointer;min-height:44px}button.primary{background:linear-gradient(110deg,#65eaff,#a78bff 55%,#ff80dc);border:0;color:#090c20;box-shadow:0 0 24px #8c7bff55}button:focus-visible{outline:3px solid white;outline-offset:3px}.status{text-align:center;min-height:20px;margin:11px;color:#b7c7ec;font-size:9px;letter-spacing:.13em}.note{text-align:center;color:#7781a9;font-size:9px;line-height:1.6;padding:0 18px}@media(max-width:560px){.stage{height:68vh;min-height:390px;max-height:580px;border-radius:12px}header{height:54px}button{padding:12px 14px;font-size:8px}}
 </style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 </head>
 <body>
-<header><div class="brand">TIK<span>NATION</span></div><div class="live">● LIVE GIFT PREVIEW</div></header>
-<main>
-<section class="intro"><div class="eyebrow">THE NEXT GENERATION OF LIVE GIFTS</div><h1>Musical Universe</h1><p>A cosmic stadium performance, generated live in motion. No background picture.</p></section>
-<section class="stage" aria-label="Animated holographic concert stage">
-<canvas id="show"></canvas>
-<div class="hud"><span>TN · 001</span><span id="beat">COSMIC FREQUENCY</span></div>
-<div class="caption" id="caption">THE UNIVERSE IS YOUR STAGE</div>
-</section>
-<div class="controls"><button class="primary" id="play">▶ START THE SHOW</button><button id="sound">♫ SOUND OFF</button><button id="replay">↻ REPLAY</button></div>
-<div class="status" id="status" aria-live="polite">READY · PRESS START WHEN YOU'RE READY</div>
-<p class="note">Original canvas animation with procedural hologram performers, orbiting worlds, lasers, particles and fireworks. Sound is optional and starts only when enabled.</p>
-</main>
-<script>
+<header><div>TIK<b>NATION</b></div><div class="live">● LIVE GIFT PREVIEW</div></header>
+<main><section class="intro"><div class="eyebrow">A REAL-TIME 3D HOLOGRAPHIC PERFORMANCE</div><h1>Musical Universe</h1><p>Real rigged 3D dancer · animated choreography · projection-mapped light</p></section>
+<section class="stage" aria-label="Interactive three-dimensional holographic concert"><canvas id="scene"></canvas><div class="hud"><span>TN · MUSICAL UNIVERSE</span><span id="phase">3D STAGE INITIALIZING</span></div><div class="caption" id="caption">A NEW WORLD IS COMING ALIVE</div></section>
+<div class="controls"><button class="primary" id="play">▶ START THE SHOW</button><button id="sound">♫ SOUND OFF</button><button id="replay">↻ REPLAY</button></div><div class="status" id="status" aria-live="polite">LOADING THE 3D PERFORMER…</div><p class="note">This preview uses a rigged, animated 3D character—not a background image. Sound is optional. Allow a moment for the performer model to load.</p></main>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {clone} from 'three/addons/utils/SkeletonUtils.js';
 (()=>{
-const canvas=document.getElementById('show'),ctx=canvas.getContext('2d'),$=id=>document.getElementById(id);
-let W=0,H=0,D=1,raf=0,start=0,running=false,soundOn=false,audio=null,beatTimer=0,particles=[],fireworks=[],stars=[];
-const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-function resize(){const r=canvas.getBoundingClientRect();D=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=Math.round(W*D);canvas.height=Math.round(H*D);ctx.setTransform(D,0,0,D,0,0);stars=Array.from({length:100},()=>({x:Math.random()*W,y:Math.random()*H*.75,r:Math.random()*1.5+.3,p:Math.random()*6.28}));}
-new ResizeObserver(resize).observe(canvas);resize();
-const rnd=(a,b)=>a+Math.random()*(b-a);
-function glow(color,blur){ctx.shadowColor=color;ctx.shadowBlur=blur}
-function line(x1,y1,x2,y2,color,width=1){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()}
-function burst(x,y,t){const hue=[185,270,315,45][Math.floor(Math.random()*4)];for(let i=0;i<52;i++){const a=i*Math.PI*2/52+Math.random()*.08,v=rnd(35,130);fireworks.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1,hue,size:rnd(1,2.8)})}}
-function drawWorld(t){const x=W*.5,y=H*.29,r=Math.min(W*.235,H*.28);
-const g=ctx.createRadialGradient(x-r*.3,y-r*.35,r*.08,x,y,r*1.2);g.addColorStop(0,'#d5faff');g.addColorStop(.17,'#56d9ff');g.addColorStop(.48,'#5c54e9');g.addColorStop(.8,'#171a62');g.addColorStop(1,'#090d28');
-ctx.save();glow('#72eaff',26);ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.restore();
-ctx.save();ctx.beginPath();ctx.arc(x,y,r*.985,0,Math.PI*2);ctx.clip();
-for(let i=0;i<9;i++){const yy=y-r+i*rnd(.12,.24);ctx.fillStyle=i%2?'#8df8e522':'#ff9eea22';ctx.beginPath();ctx.ellipse(x+Math.sin(t*.0003+i)*r*.28,yy,r*rnd(.3,.7),r*.035,Math.sin(i)*.35,0,Math.PI*2);ctx.fill()}
-ctx.restore();
-ctx.save();ctx.translate(x,y);ctx.rotate(t*.00012);ctx.setLineDash([5,9]);ctx.strokeStyle='#9af7ff99';ctx.lineWidth=1.2;ctx.beginPath();ctx.ellipse(0,0,r*1.22,r*.32,-.17,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.restore();
-ctx.save();ctx.translate(x,y);ctx.rotate(-t*.00016);ctx.strokeStyle='#ff9bf2aa';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,0,r*1.34,r*.43,.28,Math.PI,Math.PI*2);ctx.stroke();ctx.restore();
-}
-function drawFigure(x,base,scale,t,kind){const sway=Math.sin(t*.003+kind*2)*.10,step=Math.sin(t*.005+kind)*.23,head=12*scale,torso=47*scale;
-ctx.save();ctx.translate(x,base);ctx.scale(scale,scale);ctx.translate(0,0);
-const cyan=kind===1?'#ff8df0':'#7cfaff';ctx.globalCompositeOperation='lighter';
-glow(cyan,20);ctx.strokeStyle=cyan;ctx.fillStyle='#9dfbff18';ctx.lineWidth=2.2;
-const headY=-torso-head-13;
-ctx.beginPath();ctx.ellipse(0,headY,head*.78,head,0,0,Math.PI*2);ctx.fill();ctx.stroke();
-ctx.beginPath();ctx.moveTo(-13,-torso-8);ctx.quadraticCurveTo(0,-torso-19,13,-torso-8);ctx.lineTo(19,-torso+23);ctx.lineTo(12,-torso+34);ctx.lineTo(10,-8);ctx.lineTo(-10,-8);ctx.lineTo(-12,-torso+34);ctx.lineTo(-19,-torso+23);ctx.closePath();ctx.fill();ctx.stroke();
-const shoulder=-torso+0,armSwing=Math.sin(t*.004+kind)*12;
-line(-15,shoulder,-28+armSwing*.4,shoulder+27,cyan,6);line(-28+armSwing*.4,shoulder+27,-35+armSwing,shoulder+49,cyan,4);
-line(15,shoulder,28-armSwing*.4,shoulder+25,cyan,6);line(28-armSwing*.4,shoulder+25,36-armSwing,shoulder+47,cyan,4);
-const hip=-8;line(-7,hip,-13+step*13,25,cyan,7);line(-13+step*13,25,-17+step*24,54,cyan,5);
-line(7,hip,13-step*13,25,cyan,7);line(13-step*13,25,17-step*24,54,cyan,5);
-ctx.fillStyle='#ffffffaa';ctx.beginPath();ctx.ellipse(0,-torso+8,4,12,0,0,Math.PI*2);ctx.fill();
-for(let yy=-torso+15;yy<0;yy+=7)line(-9,yy,9,yy,'#d7ffff35',.8);
-ctx.restore();
-}
-function drawStage(t){const horizon=H*.79;
-const floor=ctx.createLinearGradient(0,horizon,0,H);floor.addColorStop(0,'#17275a');floor.addColorStop(.5,'#0b1230');floor.addColorStop(1,'#050713');ctx.fillStyle=floor;ctx.fillRect(0,horizon,W,H-horizon);
-ctx.save();ctx.globalAlpha=.75;for(let i=-9;i<=9;i++){line(W/2+i*5,horizon,W/2+i*W*.075,H,'#70f4ff35',1)}for(let j=1;j<8;j++){const yy=horizon+(H-horizon)*Math.pow(j/8,1.7);line(0,yy,W,yy,'#8c8dff2c',1)}ctx.restore();
-for(let i=0;i<6;i++){const x=W*(i+.5)/6+Math.sin(t*.001+i)*16;const beam=ctx.createLinearGradient(x,0,x+(i%2?80:-80),horizon);beam.addColorStop(0,i%2?'#ff77e955':'#65efff66');beam.addColorStop(1,'#65efff00');ctx.fillStyle=beam;ctx.beginPath();ctx.moveTo(x-3,0);ctx.lineTo(x+3,0);ctx.lineTo(x+(i%2?90:-90),horizon);ctx.lineTo(x+(i%2?45:-45),horizon);ctx.closePath();ctx.fill()}
-ctx.save();glow('#72efff',18);ctx.strokeStyle='#91faffaa';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(W/2,horizon,W*.37,20,0,0,Math.PI*2);ctx.stroke();ctx.restore();
-}
-function drawCrowd(t){for(let i=0;i<Math.floor(W/7);i++){const x=i*7+3,y=H*.94+Math.sin(i*1.7+t*.004)*2,r=2.3+(i%4)*.45;ctx.fillStyle=i%3?'#090d20':'#171b3d';ctx.beginPath();ctx.arc(x,y-r*2,r,Math.PI,0);ctx.lineTo(x+r*1.8,H);ctx.lineTo(x-r*1.8,H);ctx.fill();if(i%11===0){ctx.strokeStyle='#a9faffaa';line(x,y-r*3,x+Math.sin(t*.005+i)*4,y-r*7,'#a9faffaa',2)}}}
-function render(t){ctx.clearRect(0,0,W,H);const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#070a21');bg.addColorStop(.6,'#161a48');bg.addColorStop(1,'#080b1a');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-for(const s of stars){ctx.globalAlpha=.35+.65*(.5+.5*Math.sin(t*.002+s.p));ctx.fillStyle='#e6faff';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
-drawWorld(t);drawStage(t);
-const base=H*.80;const unit=Math.min(W/420,1.25);
-drawFigure(W*.5,base,unit*1.45,t,0);drawFigure(W*.27,base+2,unit*.92,t,1);drawFigure(W*.73,base+2,unit*.92,t,2);
-if(running&&Math.random()<.045&&!reduced)burst(rnd(W*.12,W*.88),rnd(H*.08,H*.36),t);
-for(let i=fireworks.length-1;i>=0;i--){const p=fireworks[i];p.x+=p.vx/60;p.y+=p.vy/60;p.vy+=.48;p.life-=.014;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle='hsl('+p.hue+' 100% 75%)';glow('hsl('+p.hue+' 100% 65%)',9);ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();if(p.life<=0)fireworks.splice(i,1)}ctx.globalAlpha=1;ctx.shadowBlur=0;
-drawCrowd(t);
-if(running){const elapsed=(t-start)/1000;$('beat').textContent=elapsed<3?'PORTAL IGNITION':elapsed<8?'HOLOGRAMS ON STAGE':elapsed<16?'COSMIC PERFORMANCE':'UNIVERSE FINALE';$('caption').textContent=elapsed<3?'THE UNIVERSE IS WAKING':elapsed<8?'LIGHT. SOUND. INFINITE POSSIBILITY.':elapsed<16?'YOUR WORLD. YOUR STAGE.':'THE SHOW IS YOURS';if(elapsed>22){running=false;$('status').textContent='SHOW COMPLETE · REPLAY WHENEVER YOU LIKE';}}
-raf=requestAnimationFrame(render)}
-function startShow(){running=true;start=performance.now();fireworks=[];$('status').textContent='SHOW RUNNING · COSMIC PERFORMANCE IN MOTION';if(soundOn)startAudio();if(!raf)raf=requestAnimationFrame(render);else burst(W/2,H*.25,performance.now())}
-function startAudio(){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const now=audio.currentTime;const master=audio.createGain();master.gain.setValueAtTime(.0001,now);master.gain.exponentialRampToValueAtTime(.12,now+.8);master.connect(audio.destination);[110,164.81,220,261.63].forEach((f,i)=>{const o=audio.createOscillator(),g=audio.createGain();o.type=i===0?'sine':'triangle';o.frequency.value=f;g.gain.value=i===0?.24:.07;o.connect(g);g.connect(master);o.start();});if(beatTimer)clearInterval(beatTimer);let n=0;beatTimer=setInterval(()=>{if(!running||!soundOn){clearInterval(beatTimer);return}const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=[55,82,110,73][n++%4];g.gain.setValueAtTime(.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.18,audio.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+.3);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+.32)},480)}catch(e){$('status').textContent='SOUND IS NOT AVAILABLE IN THIS BROWSER · VISUAL SHOW STILL WORKS'}}
-$('play').addEventListener('click',startShow);$('replay').addEventListener('click',startShow);
-$('sound').addEventListener('click',()=>{soundOn=!soundOn;$('sound').textContent=soundOn?'♫ SOUND ON':'♫ SOUND OFF';if(soundOn&&running)startAudio();else if(audio){audio.suspend();if(beatTimer)clearInterval(beatTimer)}});
-if(!reduced){raf=requestAnimationFrame(render)}else{render(0);cancelAnimationFrame(raf);raf=0}
+const canvas=document.querySelector('#scene'),status=document.querySelector('#status'),phase=document.querySelector('#phase'),caption=document.querySelector('#caption');
+const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x070b20,.035);
+const camera=new THREE.PerspectiveCamera(38,1,.1,100);camera.position.set(0,3.3,13.8);camera.lookAt(0,2.1,0);
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;
+scene.add(new THREE.HemisphereLight(0x9bdfff,0x15102e,2.2));
+const key=new THREE.SpotLight(0x7cfaff,95,30,Math.PI/4,.6,1.2);key.position.set(-5,10,7);key.target.position.set(0,2,0);scene.add(key,key.target);
+const pink=new THREE.SpotLight(0xff54dd,70,25,Math.PI/5,.7,1);pink.position.set(5,8,-2);pink.target.position.set(0,2,0);scene.add(pink,pink.target);
+const back=new THREE.PointLight(0x535cff,45,18);back.position.set(0,5,-5);scene.add(back);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(80,80),new THREE.MeshStandardMaterial({color:0x080e29,metalness:.65,roughness:.32}));floor.rotation.x=-Math.PI/2;floor.position.y=0;scene.add(floor);
+const grid=new THREE.GridHelper(38,48,0x5cecff,0x283b7a);grid.position.y=.012;grid.material.transparent=true;grid.material.opacity=.24;scene.add(grid);
+const platform=new THREE.Mesh(new THREE.CylinderGeometry(3.6,4,.22,96),new THREE.MeshStandardMaterial({color:0x101b45,metalness:.8,roughness:.22,emissive:0x102b67,emissiveIntensity:.6}));platform.position.y=.12;scene.add(platform);
+const ringMat=new THREE.MeshBasicMaterial({color:0x75f7ff,transparent:true,opacity:.8});
+const rings=[];for(let i=0;i<3;i++){const ring=new THREE.Mesh(new THREE.TorusGeometry(3.2+i*.42,.018,8,120),ringMat.clone());ring.rotation.x=Math.PI/2;ring.position.y=.25+i*.07;scene.add(ring);rings.push(ring)}
+const planet=new THREE.Mesh(new THREE.SphereGeometry(1.15,48,32),new THREE.MeshStandardMaterial({color:0x243f9b,emissive:0x162b88,emissiveIntensity:1.3,metalness:.4,roughness:.25}));planet.position.set(0,7,-5);scene.add(planet);
+const halo=new THREE.Mesh(new THREE.TorusGeometry(1.55,.035,10,100),new THREE.MeshBasicMaterial({color:0xff8be9}));halo.position.copy(planet.position);halo.rotation.x=1.1;scene.add(halo);
+const beams=[];for(let i=0;i<8;i++){const beam=new THREE.Mesh(new THREE.CylinderGeometry(.02,.42,11,12,1,true),new THREE.MeshBasicMaterial({color:i%2?0xff6be8:0x67f6ff,transparent:true,opacity:.075,side:THREE.DoubleSide,depthWrite:false}));beam.position.set(Math.cos(i*Math.PI/4)*5,5,Math.sin(i*Math.PI/4)*3-1);beam.rotation.z=(Math.random()-.5)*.5;scene.add(beam);beams.push(beam)}
+const stars=new THREE.Group();for(let i=0;i<500;i++){const s=new THREE.Mesh(new THREE.SphereGeometry(Math.random()*.018+.006,5,5),new THREE.MeshBasicMaterial({color:i%4?0xa4eaff:0xffa9f0}));s.position.set((Math.random()-.5)*35,Math.random()*17-1,-Math.random()*22);stars.add(s)}scene.add(stars);
+let mixers=[],performers=[],loaded=false,running=false,soundOn=false,audioCtx=null,started=0,raf=0;
+const loader=new GLTFLoader();
+const modelURL='https://files.innerscene.com/library/easy-step-touch-dancing-3d-person-animated-89ef76d5/5906a26b20ae46a8a23c/dance-easy-step-touch.glb';
+function hologramMaterials(root){root.traverse(o=>{if(!o.isMesh)return;o.castShadow=true;o.receiveShadow=true;const old=o.material;const mats=(Array.isArray(old)?old:[old]).map(m=>{const n=m.clone();n.color.set(0x72f5ff);n.emissive=new THREE.Color(0x087b9b);n.emissiveIntensity=1.5;n.metalness=.55;n.roughness=.24;n.transparent=true;n.opacity=.88;n.side=THREE.DoubleSide;return n});o.material=Array.isArray(old)?mats:mats[0]})}
+function addPerformer(gltf,x,scale,yaw){const model=clone(gltf.scene);model.scale.setScalar(scale);model.position.set(x,0,0);model.rotation.y=yaw;hologramMaterials(model);scene.add(model);const mixer=new THREE.AnimationMixer(model);if(gltf.animations?.length){const action=mixer.clipAction(gltf.animations[0]);action.setLoop(THREE.LoopRepeat);action.play()}mixers.push(mixer);performers.push(model)}
+loader.load(modelURL,gltf=>{try{addPerformer(gltf,0,2.05,0);addPerformer(gltf,-3.15,1.48,.22);addPerformer(gltf,3.15,1.48,-.22);loaded=true;status.textContent='3D PERFORMERS READY · PRESS START';phase.textContent='HOLOGRAMS STANDING BY';caption.textContent='THREE-DIMENSIONAL PERFORMANCE READY';}catch(e){status.textContent='THE 3D MODEL COULD NOT BE PREPARED. RELOAD TO TRY AGAIN.';console.error(e)}},xhr=>{if(xhr.total)status.textContent='LOADING 3D MODEL · '+Math.round(xhr.loaded/xhr.total*100)+'%';},err=>{status.textContent='3D MODEL COULD NOT LOAD · CHECK CONNECTION AND RELOAD';phase.textContent='MODEL CONNECTION FAILED';console.error('3D model load failed',err)});
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.position.z=w<560?16.5:13.8;camera.updateProjectionMatrix()}new ResizeObserver(resize).observe(canvas);resize();
+function startAudio(){try{audioCtx=audioCtx||new AudioContext();audioCtx.resume();const master=audioCtx.createGain();master.gain.value=.10;master.connect(audioCtx.destination);[110,164.81,220,261.63].forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=i?'triangle':'sine';o.frequency.value=f;g.gain.value=i?.045:.12;o.connect(g);g.connect(master);o.start()});let n=0;const pulse=()=>{if(!running||!soundOn)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=[55,82,110,73][n++%4];g.gain.setValueAtTime(.0001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.18,audioCtx.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+.28);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.3);setTimeout(pulse,480)};pulse()}catch(e){status.textContent='SOUND UNAVAILABLE · VISUAL SHOW STILL WORKS'}}
+function startShow(){if(!loaded){status.textContent='PLEASE WAIT · THE 3D PERFORMER IS STILL LOADING';return}running=true;started=performance.now();phase.textContent='COSMIC PERFORMANCE';caption.textContent='YOUR WORLD. YOUR STAGE.';status.textContent='SHOW RUNNING · LIVE 3D CHOREOGRAPHY';if(soundOn)startAudio()}
+document.querySelector('#play').addEventListener('click',startShow);document.querySelector('#replay').addEventListener('click',startShow);
+document.querySelector('#sound').addEventListener('click',()=>{soundOn=!soundOn;document.querySelector('#sound').textContent=soundOn?'♫ SOUND ON':'♫ SOUND OFF';if(soundOn&&running)startAudio();if(!soundOn&&audioCtx)audioCtx.suspend()});
+function animate(now){raf=requestAnimationFrame(animate);const t=now*.001;mixers.forEach(m=>m.update(Math.min(.05,clock.getDelta())));rings.forEach((r,i)=>{r.rotation.z=t*(i%2?-.22:.18);r.material.opacity=.5+.35*Math.sin(t*2+i)});planet.rotation.y=t*.12;halo.rotation.z=t*.16;beams.forEach((b,i)=>{b.rotation.z=Math.sin(t*.5+i)*.12;b.material.opacity=.045+.045*(.5+.5*Math.sin(t*2+i))});stars.rotation.y=t*.006;performers.forEach((p,i)=>{p.position.y=Math.sin(t*2+i)*.035;p.rotation.y=(i-1)*.2+Math.sin(t*.6+i)*.07});if(running){const elapsed=(now-started)/1000;if(elapsed<3){phase.textContent='PORTAL IGNITION';caption.textContent='THE UNIVERSE IS WAKING'}else if(elapsed<9){phase.textContent='LIVE HOLOGRAPHIC SHOW';caption.textContent='LIGHT · MOVEMENT · INFINITE POSSIBILITY'}else if(elapsed<18){phase.textContent='COSMIC PERFORMANCE';caption.textContent='FEEL THE MUSIC. SEE THE IMPOSSIBLE.'}else if(elapsed<23){phase.textContent='UNIVERSE FINALE';caption.textContent='TIKNATION · YOUR VOICE. YOUR WORLD.'}else{running=false;phase.textContent='SHOW COMPLETE';status.textContent='SHOW COMPLETE · REPLAY WHENEVER YOU LIKE'}}renderer.render(scene,camera)}
+const clock=new THREE.Clock();raf=requestAnimationFrame(animate);
 })();
 </script>
 </body></html>
