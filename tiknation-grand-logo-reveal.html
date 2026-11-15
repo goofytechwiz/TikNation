@@ -28,7 +28,7 @@
 <div class="tagline">YOUR VOICE. YOUR WORLD.</div><div class="sub">FIND YOUR PEOPLE · MAKE SOME NOISE · BE YOU</div>
 <div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
 <section class="player" aria-label="TikNation anthem"><div class="player-label">THE OFFICIAL TIKNATION ANTHEM</div>
-<a class="anthem-link" href="https://suno.com/song/4979cc63-ea50-4272-918d-60f3095daab1?sh=mstFLdE7THkpBCOT" target="_blank" rel="noopener"><span class="play-icon">▶</span> PLAY THE TIKNATION ANTHEM <span aria-hidden="true">✦</span></a>
+<audio id="anthem" controls preload="metadata" playsinline style="display:block;width:100%;height:48px"><source src="TikNation%20%E2%80%93%20Your%20Voice,%20Your%20World%20-%20usesuno.com.mp3" type="audio/mpeg">Your browser does not support audio playback.</audio>
 </section>
 <div class="controls"><button class="primary" id="launch">✦ LAUNCH THE LOGO REVEAL</button><button id="reset">↻ RESET VISUALS</button></div>
 <p class="note">The anthem opens in Suno. Start the music there, return here, and tap Launch for the colorful logo reveal, glowing beams, orbiting energy and particle effects.</p>
@@ -38,7 +38,7 @@
 function resize(){dpr=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);particles=Array.from({length:Math.min(220,Math.floor(w*h/4500))},()=>({x:Math.random()*w,y:Math.random()*h,v:.25+Math.random()*1.4,r:.7+Math.random()*2.2,hue:Math.random()*360,phase:Math.random()*6.28}))}
 function draw(){ctx.clearRect(0,0,w,h);for(const p of particles){p.y-=p.v*(show.classList.contains('started')?2.5:1);p.x+=Math.sin(p.phase+=.012)*.28;if(p.y<-8){p.y=h+8;p.x=Math.random()*w}ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='hsla('+p.hue+',100%,76%,.68)';ctx.shadowBlur=show.classList.contains('started')?20:8;ctx.shadowColor='hsl('+p.hue+',100%,65%)';ctx.fill()}ctx.shadowBlur=0;requestAnimationFrame(draw)}
 resize();addEventListener('resize',resize);draw();
-document.getElementById('launch').addEventListener('click',()=>{show.classList.remove('started');void show.offsetWidth;show.classList.add('started');document.getElementById('launch').textContent='✦ REPLAY THE REVEAL'});
+document.getElementById('launch').addEventListener('click',()=>{show.classList.remove('started');void show.offsetWidth;show.classList.add('started');document.getElementById('launch').textContent='✦ REPLAY THE REVEAL';const audio=document.getElementById('anthem');audio.play().catch(()=>{document.getElementById('anthem').focus();});});
 document.getElementById('reset').addEventListener('click',()=>{show.classList.remove('started');document.getElementById('launch').textContent='✦ LAUNCH THE LOGO REVEAL'});
 })();
 </script></body></html>
