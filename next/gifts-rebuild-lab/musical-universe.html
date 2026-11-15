@@ -64,22 +64,70 @@ function hologramMaterials(root){root.traverse(o=>{if(!o.isMesh)return;o.castSha
 function addPerformer(gltf,x,scale,yaw){const model=clone(gltf.scene);model.scale.setScalar(scale);model.position.set(x,0,0);model.rotation.y=yaw;hologramMaterials(model);scene.add(model);const mixer=new THREE.AnimationMixer(model);if(gltf.animations?.length){const action=mixer.clipAction(gltf.animations[0]);action.setLoop(THREE.LoopRepeat);action.play()}mixers.push(mixer);performers.push(model)}
 loader.load(modelURL,gltf=>{try{addPerformer(gltf,0,2.05,0);addPerformer(gltf,-3.15,1.48,.22);addPerformer(gltf,3.15,1.48,-.22);loaded=true;status.textContent='3D PERFORMERS READY · PRESS START';phase.textContent='HOLOGRAMS STANDING BY';caption.textContent='THREE-DIMENSIONAL PERFORMANCE READY';}catch(e){status.textContent='THE 3D MODEL COULD NOT BE PREPARED. RELOAD TO TRY AGAIN.';console.error(e)}},xhr=>{if(xhr.total)status.textContent='LOADING 3D MODEL · '+Math.round(xhr.loaded/xhr.total*100)+'%';},err=>{status.textContent='3D MODEL COULD NOT LOAD · CHECK CONNECTION AND RELOAD';phase.textContent='MODEL CONNECTION FAILED';console.error('3D model load failed',err)});
 function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.position.z=w<560?16.5:13.8;camera.updateProjectionMatrix()}new ResizeObserver(resize).observe(canvas);resize();
-let audioMaster=null,droneNodes=[],noiseBuffer=null;
-function ensureAudio(){if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)();audioMaster=audioCtx.createGain();audioMaster.gain.value=.7;audioMaster.connect(audioCtx.destination);noiseBuffer=audioCtx.createBuffer(1,audioCtx.sampleRate*1,audioCtx.sampleRate);const data=noiseBuffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;}if(audioCtx.state==='suspended')audioCtx.resume();if(!droneNodes.length){[55,110,164.81,220].forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain(),filter=audioCtx.createBiquadFilter();o.type=i===0?'sine':'triangle';o.frequency.value=f;filter.type='lowpass';filter.frequency.value=650;g.gain.value=[.12,.035,.022,.018][i];o.connect(filter);filter.connect(g);g.connect(audioMaster);o.start();droneNodes.push(o)})}}
-function sfx(kind){if(!soundOn)return;try{ensureAudio();const t=audioCtx.currentTime;
-const tone=(freq,endFreq,duration,vol,type='sine',delay=0)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,t+delay);if(endFreq)o.frequency.exponentialRampToValueAtTime(Math.max(1,endFreq),t+delay+duration);g.gain.setValueAtTime(.0001,t+delay);g.gain.exponentialRampToValueAtTime(vol,t+delay+.025);g.gain.exponentialRampToValueAtTime(.0001,t+delay+duration);o.connect(g);g.connect(audioMaster);o.start(t+delay);o.stop(t+delay+duration+.04)};
-if(kind==='portal'){tone(95,520,1.25,.22,'sawtooth');tone(440,880,.8,.1,'sine',.18);tone(660,1320,1,.075,'sine',.35)}
-if(kind==='portal'){tone(72,520,1.1,.22,'sawtooth');tone(392,784,.9,.09,'sine',.12);tone(587.33,1174.66,.85,.07,'sine',.28)}
-if(kind==='sparkle'){[880,1174.66,1567.98,2093].forEach((f,i)=>tone(f,f*1.4,.65,.075,'sine',i*.09))}
-if(kind==='impact'){tone(78,35,.55,.34,'sine');tone(160,48,.38,.16,'triangle',.015)}
-if(kind==='zap'){tone(880,110,.22,.18,'sawtooth');tone(420,65,.35,.12,'square',.04)}
-if(kind==='finale'){[261.63,329.63,392,523.25,659.25].forEach((f,i)=>tone(f,f*1.5,1.4,.09,'sine',i*.12));tone(65,32,1.1,.25,'sine')}
-if(kind==='whoosh'){const src=audioCtx.createBufferSource(),filter=audioCtx.createBiquadFilter(),g=audioCtx.createGain();src.buffer=noiseBuffer;filter.type='lowpass';filter.frequency.setValueAtTime(180,t);filter.frequency.exponentialRampToValueAtTime(5000,t+.7);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.17,t+.12);g.gain.exponentialRampToValueAtTime(.0001,t+.85);src.connect(filter);filter.connect(g);g.connect(audioMaster);src.start(t);src.stop(t+.9)}
-}catch(e){console.warn('Sound effect unavailable',e)}}
-function startAudio(){ensureAudio();sfx('portal')}
-function startShow(){if(!loaded){status.textContent='PLEASE WAIT · THE 3D PERFORMER IS STILL LOADING';return}running=true;started=performance.now();lastCue=-1;magicBurst();summonLightning();phase.textContent='COSMIC PERFORMANCE';caption.textContent='YOUR WORLD. YOUR STAGE.';status.textContent='SHOW RUNNING · MAGIC, LIGHT & SOUND';if(soundOn)startAudio()}
+let audioMaster=null,noiseBuffer=null,scoreStarted=false,reverb=null;
+function ensureAudio(){
+ if(!audioCtx){
+  audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  const comp=audioCtx.createDynamicsCompressor();comp.threshold.value=-20;comp.knee.value=18;comp.ratio.value=3.5;comp.attack.value=.012;comp.release.value=.28;
+  audioMaster=audioCtx.createGain();audioMaster.gain.value=.82;audioMaster.connect(comp);comp.connect(audioCtx.destination);
+  const length=audioCtx.sampleRate*2,ir=audioCtx.createBuffer(2,length,audioCtx.sampleRate);
+  for(let c=0;c<2;c++){const d=ir.getChannelData(c);for(let i=0;i<length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/length,2.8)}
+  reverb=audioCtx.createConvolver();reverb.buffer=ir;const wet=audioCtx.createGain();wet.gain.value=.23;reverb.connect(wet);wet.connect(comp);audioMaster.connect(reverb);
+  noiseBuffer=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate);const nd=noiseBuffer.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=Math.random()*2-1;
+ }
+ if(audioCtx.state==="suspended")audioCtx.resume();
+}
+function voice(freq,when,dur,vol,wave="sawtooth",detune=0,cutoff=2200){
+ const o=audioCtx.createOscillator(),f=audioCtx.createBiquadFilter(),g=audioCtx.createGain();
+ o.type=wave;o.frequency.setValueAtTime(freq,when);o.detune.value=detune;f.type="lowpass";f.frequency.setValueAtTime(cutoff,when);f.frequency.exponentialRampToValueAtTime(Math.max(180,cutoff*.58),when+dur);
+ g.gain.setValueAtTime(.0001,when);g.gain.linearRampToValueAtTime(vol,when+Math.min(.32,dur*.25));g.gain.setValueAtTime(vol,when+dur*.72);g.gain.exponentialRampToValueAtTime(.0001,when+dur);
+ o.connect(f);f.connect(g);g.connect(audioMaster);o.start(when);o.stop(when+dur+.04);
+}
+function padChord(notes,when,dur,level){
+ notes.forEach((n,i)=>{voice(n,when,dur,level,"sawtooth",-7,1250);voice(n*2,when,dur,level*.23,"triangle",6,2600);if(i===0)voice(n*.5,when,dur,level*.6,"sine",0,420)});
+}
+function drum(when,power=1){
+ const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type="sine";o.frequency.setValueAtTime(105,when);o.frequency.exponentialRampToValueAtTime(38,when+.42);g.gain.setValueAtTime(.0001,when);g.gain.exponentialRampToValueAtTime(.42*power,when+.018);g.gain.exponentialRampToValueAtTime(.0001,when+.55);o.connect(g);g.connect(audioMaster);o.start(when);o.stop(when+.58);
+}
+function cymbal(when,level=.12,duration=1.4){
+ const src=audioCtx.createBufferSource(),f=audioCtx.createBiquadFilter(),g=audioCtx.createGain();src.buffer=noiseBuffer;f.type="highpass";f.frequency.value=4800;g.gain.setValueAtTime(.0001,when);g.gain.linearRampToValueAtTime(level,when+.08);g.gain.exponentialRampToValueAtTime(.0001,when+duration);src.connect(f);f.connect(g);g.connect(audioMaster);src.start(when);src.stop(when+duration+.02);
+}
+function sweep(when,dur=1.3,level=.15){
+ const src=audioCtx.createBufferSource(),f=audioCtx.createBiquadFilter(),g=audioCtx.createGain();src.buffer=noiseBuffer;f.type="bandpass";f.Q.value=.55;f.frequency.setValueAtTime(180,when);f.frequency.exponentialRampToValueAtTime(6500,when+dur);g.gain.setValueAtTime(.0001,when);g.gain.linearRampToValueAtTime(level,when+dur*.72);g.gain.exponentialRampToValueAtTime(.0001,when+dur);src.connect(f);f.connect(g);g.connect(audioMaster);src.start(when);src.stop(when+dur+.03);
+}
+function playCinematicScore(){
+ if(scoreStarted)return;scoreStarted=true;const t=audioCtx.currentTime+.12;
+ // Original 24-second orchestral-electronic concert cue: evolving strings, choir-like pads, bass, percussion and a rising finale.
+ const chords=[[146.83,174.61,220,293.66],[116.54,146.83,174.61,233.08],[87.31,110,130.81,174.61],[130.81,164.81,196,261.63]];
+ const bars=10,bar=2.35;
+ for(let k=0;k<bars;k++){
+  const at=t+k*bar,level=k<2?.035:k<6?.055:.07;padChord(chords[k%4],at,bar*1.16,level);
+  voice([73.42,58.27,43.65,65.41][k%4],at,bar*1.05,.095,"sine",0,260);
+  // Sweeping high string line and delicate bell-like orchestral accents
+  const melody=[[587.33,659.25,783.99,880],[523.25,587.33,698.46,783.99],[440,523.25,587.33,698.46],[523.25,659.25,783.99,1046.5]][k%4];
+  melody.forEach((n,j)=>{const when=at+j*bar/4;voice(n,when,bar*.34,.027,"triangle",0,4200);voice(n*2,when+.025,bar*.23,.009,"sine",0,6200)});
+  if(k>=1){drum(at+.02,k>=6?1.25:.82);drum(at+bar*.5,k>=6?.9:.58)}
+  if(k===0||k===3||k===6||k===9)cymbal(at,.075,k===9?2.2:1.2);
+  if(k===2||k===5||k===8)sweep(at+.15,1.25,.09);
+ }
+ const finale=t+bars*bar-.2;
+ [523.25,659.25,783.99,1046.5,1318.51].forEach((n,i)=>{voice(n,finale+i*.045,2.5,.055,"sine",0,5000);voice(n/2,finale+i*.045,2.8,.045,"sawtooth",i%2?5:-5,1800)});
+ drum(finale,.0+1.45);cymbal(finale,.22,3.2);sweep(finale,.95,.18);
+}
+function sfx(kind){
+ if(!soundOn)return;try{ensureAudio();const t=audioCtx.currentTime+.015;
+ if(kind==="portal"){sweep(t,1.8,.2);cymbal(t+.45,.12,1.7);[293.66,440,587.33,880].forEach((n,i)=>voice(n,t+.22+i*.13,1.5,.045,"sine",0,5000));}
+ if(kind==="sparkle"){[783.99,987.77,1174.66,1567.98].forEach((n,i)=>voice(n,t+i*.12,1.25,.045,"sine",0,6500));cymbal(t,.06,1.3);}
+ if(kind==="impact"){drum(t,1.25);sweep(t,.72,.13);}
+ if(kind==="zap"){sweep(t,.42,.1);voice(110,t,.45,.055,"sawtooth",0,900);}
+ if(kind==="finale"){cymbal(t,.2,2.7);drum(t,1.4);[392,493.88,587.33,783.99].forEach((n,i)=>voice(n,t+i*.08,2.3,.06,"sine",0,5200));}
+ if(kind==="whoosh")sweep(t,.95,.15);
+ }catch(e){console.warn("Cinematic audio unavailable",e)}
+}
+function startAudio(){ensureAudio();playCinematicScore();sfx("portal")}
+function startShow(){if(!loaded){status.textContent='PLEASE WAIT · THE 3D PERFORMER IS STILL LOADING';return}running=true;started=performance.now();lastCue=-1;magicBurst();summonLightning();phase.textContent='COSMIC PERFORMANCE';caption.textContent='YOUR WORLD. YOUR STAGE.';status.textContent='SHOW RUNNING · MAGIC, LIGHT & SOUND';if(soundOn){scoreStarted=false;startAudio()}}
 document.querySelector('#play').addEventListener('click',startShow);document.querySelector('#replay').addEventListener('click',startShow);
-document.querySelector('#sound').addEventListener('click',()=>{soundOn=!soundOn;document.querySelector('#sound').textContent=soundOn?'♫ SOUND ON':'♫ SOUND OFF';if(soundOn&&running)ensureAudio();if(!soundOn&&audioCtx)audioCtx.suspend()});
+document.querySelector('#sound').addEventListener('click',()=>{soundOn=!soundOn;document.querySelector('#sound').textContent=soundOn?'♫ SOUND ON':'♫ SOUND OFF';if(soundOn&&running){scoreStarted=false;startAudio()}if(!soundOn&&audioCtx)audioCtx.suspend()});
 function animate(now){raf=requestAnimationFrame(animate);const t=now*.001;const dt=Math.min(.05,clock.getDelta());mixers.forEach(m=>m.update(dt));rings.forEach((r,i)=>{r.rotation.z=t*(i%2?-.22:.18);r.material.opacity=.5+.35*Math.sin(t*2+i)});magicRings.forEach((r,i)=>{r.rotation.z=t*(i%2?-.34:.24);r.scale.setScalar(1+.035*Math.sin(t*2.2+i))});sigil.rotation.z=-t*.24;portalUniforms.uTime.value=t;magicCoreLight.intensity=running?18+10*(.5+.5*Math.sin(t*5)):7+3*(.5+.5*Math.sin(t*2));const mp=moteGeo.attributes.position.array;for(let i=0;i<moteCount;i++){const q=moteData[i];q.a+=q.speed*.003;mp[i*3]=Math.cos(q.a)*q.rad+Math.sin(t+q.phase)*.18;mp[i*3+1]=q.y+Math.sin(t*1.4+q.phase)*.28;mp[i*3+2]=Math.sin(q.a)*q.rad-1}moteGeo.attributes.position.needsUpdate=true;for(let i=shockwaves.length-1;i>=0;i--){const q=shockwaves[i];q.age+=.035;q.mesh.scale.setScalar(1+q.age*8);q.mesh.material.opacity=Math.max(0,1-q.age);if(q.age>=1){scene.remove(q.mesh);q.mesh.geometry.dispose();q.mesh.material.dispose();shockwaves.splice(i,1)}}for(let i=lightning.length-1;i>=0;i--){const q=lightning[i];q.life-=.07;q.line.material.opacity=Math.max(0,q.life)*.9;if(q.life<=0){scene.remove(q.line);q.line.geometry.dispose();q.line.material.dispose();lightning.splice(i,1)}}planet.rotation.y=t*.12;halo.rotation.z=t*.16;beams.forEach((b,i)=>{b.rotation.z=Math.sin(t*.5+i)*.12;b.material.opacity=.045+.045*(.5+.5*Math.sin(t*2+i))});stars.rotation.y=t*.006;performers.forEach((p,i)=>{p.position.y=Math.sin(t*2+i)*.035;p.rotation.y=(i-1)*.2+Math.sin(t*.6+i)*.07});if(running){const elapsed=(now-started)/1000;const cue=elapsed<2?0:elapsed<5?1:elapsed<9?2:elapsed<14?3:elapsed<19?4:5;if(cue!==lastCue){lastCue=cue;if(cue===0){magicBurst();summonLightning();sfx('portal');sfx('whoosh')}if(cue===1){summonLightning();sfx('sparkle')}if(cue===2){magicBurst();summonLightning();sfx('impact')}if(cue===3){summonLightning();sfx('zap')}if(cue===4){magicBurst();sfx('whoosh')}if(cue===5){magicBurst();summonLightning();sfx('finale')}}if(elapsed<3){phase.textContent='PORTAL IGNITION';caption.textContent='THE UNIVERSE IS WAKING'}else if(elapsed<9){phase.textContent='LIVE HOLOGRAPHIC SHOW';caption.textContent='LIGHT · MOVEMENT · INFINITE POSSIBILITY'}else if(elapsed<18){phase.textContent='COSMIC PERFORMANCE';caption.textContent='FEEL THE MUSIC. SEE THE IMPOSSIBLE.'}else if(elapsed<23){phase.textContent='UNIVERSE FINALE';caption.textContent='TIKNATION · YOUR VOICE. YOUR WORLD.'}else{running=false;phase.textContent='SHOW COMPLETE';status.textContent='SHOW COMPLETE · REPLAY WHENEVER YOU LIKE'}}renderer.render(scene,camera)}
 const clock=new THREE.Clock();raf=requestAnimationFrame(animate);
 })();
