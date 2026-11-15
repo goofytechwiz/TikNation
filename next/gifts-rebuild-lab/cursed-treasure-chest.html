@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Cursed Treasure Chest · TikNation Next Gift Lab</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050908;font-family:Georgia,serif;color:#f5e7c0}
+body{background:radial-gradient(ellipse at 50% 65%,#183027 0,#09130f 38%,#020504 78%)}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hud{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:clamp(14px,3vw,30px)}
+h1{margin:0;text-align:center;font-size:clamp(19px,4vw,34px);letter-spacing:.19em;text-transform:uppercase;color:#f5d88e;text-shadow:0 2px 18px #d18b2c88}
+.sub{margin-top:7px;text-align:center;font:10px/1.4 system-ui,sans-serif;letter-spacing:.32em;color:#9bb7a3}
+.controls{display:flex;gap:10px;pointer-events:auto;flex-wrap:wrap;justify-content:center}
+button{border:1px solid #b99453;background:linear-gradient(#302719dd,#0c110ddd);color:#f8e5b4;border-radius:3px;padding:12px 20px;font:600 11px system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;box-shadow:0 0 20px #d99a2b22}
+button:active{transform:scale(.97)}.hint{font:10px system-ui,sans-serif;color:#9cb0a1;letter-spacing:.14em;text-align:center;margin-top:10px}
+</style></head>
+<body>
+<canvas id="scene" aria-label="An ancient cursed treasure chest slams open, releasing gold and green supernatural energy"></canvas>
+<div class="hud"><div><h1>The Cursed Treasure Chest</h1><div class="sub">AN ANCIENT CURSE HAS BEEN UNSEALED</div></div><div><div class="controls"><button id="replay">Unleash Gift</button><button id="sound">Sound: Off</button></div><div class="hint">TAP UNLEASH GIFT TO REPLAY THE REVEAL</div></div></div>
+<script>
+(()=>{const c=document.getElementById('scene'),x=c.getContext('2d');let w,h,dpr, start=performance.now(),sound=false,audio=null,particles=[],coins=[];
+function resize(){dpr=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;x.setTransform(dpr,0,0,dpr,0,0)}addEventListener('resize',resize);resize();
+const rand=(a,b)=>a+Math.random()*(b-a),clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),ease=t=>1-Math.pow(1-t,3);
+function burst(){particles=[];coins=[];for(let i=0;i<115;i++){let a=rand(-Math.PI,Math.PI),s=rand(1,7);particles.push({x:w/2+rand(-50,50),y:h*.62,vx:Math.cos(a)*s,vy:Math.sin(a)*s-2,life:rand(55,115),max:115,size:rand(2,8),green:Math.random()>.38})}for(let i=0;i<65;i++)coins.push({x:w/2+rand(-30,30),y:h*.61,vx:rand(-8,8),vy:rand(-13,-4),rot:rand(0,6),spin:rand(-.25,.25),life:rand(65,110),r:rand(5,11)})}
+function tone(freq,dur,type='sine',vol=.05,slide=0){if(!sound)return;try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(25,freq+slide),audio.currentTime+dur);g.gain.setValueAtTime(vol,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+dur);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+dur)}catch(e){}}
+function replay(){start=performance.now();burst();tone(58,.5,'sawtooth',.11,-25);setTimeout(()=>tone(180,.28,'triangle',.08,320),550);setTimeout(()=>tone(740,.7,'sine',.06,-520),1150);setTimeout(()=>tone(110,.8,'sawtooth',.05,250),1300)}
+document.getElementById('replay').onclick=replay;document.getElementById('sound').onclick=()=>{sound=!sound;document.getElementById('sound').textContent='Sound: '+(sound?'On':'Off');if(sound){tone(520,.12,'sine',.04);}};
+function poly(points,fill,stroke='#000',lw=2){x.beginPath();points.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.closePath();x.fillStyle=fill;x.fill();if(stroke){x.strokeStyle=stroke;x.lineWidth=lw;x.stroke()}}
+function drawChest(t){let cx=w/2,base=h*.67,scale=Math.min(w/520,h/470,1.12),bw=250*scale,bh=120*scale,open=ease(clamp((t-1.05)/1.0,0,1)),slam=1-Math.exp(-Math.max(0,t)*13)*Math.cos(t*18),shake=t<.5?Math.sin(t*75)*(1-t/.5)*7:0;cx+=shake;
+x.save();x.translate(cx,base);x.scale(scale,scale);
+let glow=x.createRadialGradient(0,-70,5,0,-60,230);glow.addColorStop(0,'#a6ff9b55');glow.addColorStop(.5,'#2cbd7950');glow.addColorStop(1,'#0b1a12aa');x.fillStyle=glow;x.beginPath();x.ellipse(0,-60,230,190,0,0,Math.PI*2);x.fill();
+x.fillStyle='#02040399';x.beginPath();x.ellipse(0,8,190,36,0,0,Math.PI*2);x.fill();
+let lidAngle=-open*1.65;x.save();x.translate(0,-bh*.75);x.rotate(lidAngle);
+let lidGrad=x.createLinearGradient(0,-bh,0,0);lidGrad.addColorStop(0,'#6c4820');lidGrad.addColorStop(.35,'#392717');lidGrad.addColorStop(1,'#17130e');
+poly([[-bw/2,-bh*.65],[-bw/2+28,-bh*1.05],[bw/2-28,-bh*1.05],[bw/2,-bh*.65],[bw/2,bh*.05],[-bw/2,bh*.05]],lidGrad,'#c29a4d',5);
+for(let i=-2;i<=2;i++){x.strokeStyle='#a47b3b';x.lineWidth=3;x.beginPath();x.moveTo(i*43,-bh*1.02);x.lineTo(i*43,-bh*.02);x.stroke()}
+x.restore();
+let wood=x.createLinearGradient(-bw/2,0,bw/2,0);wood.addColorStop(0,'#1b140e');wood.addColorStop(.22,'#70451e');wood.addColorStop(.5,'#392313');wood.addColorStop(.78,'#68401c');wood.addColorStop(1,'#140f0b');
+poly([[-bw/2,-bh*.72],[bw/2,-bh*.72],[bw/2,0],[-bw/2,0]],wood,'#c09345',5);
+for(let j=0;j<5;j++){let yy=-bh*.62+j*bh*.13;x.strokeStyle='#9c7136';x.lineWidth=2;x.beginPath();x.moveTo(-bw*.45,yy);x.quadraticCurveTo(0,yy+rand(-3,3),bw*.45,yy);x.stroke()}
+for(let xx of [-bw*.38,bw*.38]){x.fillStyle='#b8a06b';x.fillRect(xx-7,-bh*.7,14,bh*.68);for(let yy=-bh*.6;yy<0;yy+=13){x.fillStyle='#1b1710';x.beginPath();x.arc(xx,yy,2,0,7);x.fill()}}
+x.fillStyle='#d9b55c';x.fillRect(-bw*.13,-bh*.54,bw*.26,bh*.46);x.fillStyle='#21190d';x.fillRect(-bw*.075,-bh*.49,bw*.15,bh*.34);x.fillStyle='#d5b65e';x.beginPath();x.arc(0,-bh*.32,8,0,7);x.fill();
+if(open>.15){x.globalCompositeOperation='lighter';let beam=x.createRadialGradient(0,-bh*.9,5,0,-bh*.9,175);beam.addColorStop(0,'#c8ff9caa');beam.addColorStop(1,'#53ff8b00');x.fillStyle=beam;x.beginPath();x.ellipse(0,-bh*1.1,175,145,0,0,7);x.fill();x.globalCompositeOperation='source-over';
+for(let i=0;i<12;i++){let xx=Math.sin(t*1.8+i*2.4)*90,yy=-bh*.9-((t*40+i*23)%135);x.fillStyle=i%2?'#f8d87b':'#a8ff9d';x.shadowBlur=18;x.shadowColor=x.fillStyle;x.beginPath();x.arc(xx,yy,rand(2,5),0,7);x.fill()}x.shadowBlur=0}
+x.restore()}
+function frame(now){let t=(now-start)/1000;x.clearRect(0,0,w,h);
+let bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#030807');bg.addColorStop(.65,'#0a1710');bg.addColorStop(1,'#020403');x.fillStyle=bg;x.fillRect(0,0,w,h);
+for(let i=0;i<8;i++){let yy=(now*.018+i*h/8)%(h+100)-50;x.fillStyle='#9affaa08';x.beginPath();x.ellipse(w/2+Math.sin(now*.0004+i)*w*.24,yy,w*.32,35,0,0,7);x.fill()}
+let impact=clamp((t-.12)/.3,0,1);if(t<.7){x.strokeStyle='#a7ff9c';x.globalAlpha=(1-impact)*.35;x.lineWidth=3;x.beginPath();x.ellipse(w/2,h*.68,impact*w*.3,impact*32,0,0,7);x.stroke();x.globalAlpha=1}
+drawChest(t);
+if(t>1.2){for(let p of particles){p.x+=p.vx;p.y+=p.vy;p.vy+=.035;p.life--;x.globalAlpha=clamp(p.life/35,0,1);x.fillStyle=p.green?'#9dff9b':'#f4ca69';x.shadowBlur=16;x.shadowColor=x.fillStyle;x.beginPath();x.arc(p.x,p.y,p.size*(p.life/p.max+.2),0,7);x.fill()}for(let q of coins){q.x+=q.vx;q.y+=q.vy;q.vy+=.24;q.rot+=q.spin;q.life--;x.save();x.translate(q.x,q.y);x.rotate(q.rot);x.globalAlpha=clamp(q.life/25,0,1);x.fillStyle='#f5ca59';x.strokeStyle='#fff0a2';x.lineWidth=2;x.beginPath();x.ellipse(0,0,q.r,Math.max(2,q.r*.32),0,0,7);x.fill();x.stroke();x.restore()}x.globalAlpha=1;x.shadowBlur=0}
+if(t>5.5){x.textAlign='center';x.font='bold '+Math.max(12,Math.min(18,w*.025))+'px Georgia';x.fillStyle='#d6f5bb';x.shadowColor='#66ff8b';x.shadowBlur=18;x.fillText('THE CURSE IS YOURS',w/2,h*.23);x.shadowBlur=0}
+requestAnimationFrame(frame)}requestAnimationFrame(frame);replay();
+})();
+</script></body></html>
