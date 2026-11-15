@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Golden Time Vault — TikNation Next</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:18px;background:radial-gradient(ellipse at 50% 35%,#342713,#100e0b 55%,#050505);color:#fff4d6;font-family:system-ui,Arial,sans-serif}main{width:min(850px,100%);text-align:center}.tag{font-size:11px;letter-spacing:.28em;color:#c9a96b}h1{font-size:clamp(27px,5vw,46px);letter-spacing:.1em;margin:9px 0;text-shadow:0 0 25px #e8ae43}.sub{color:#c7b99b;margin:0 0 17px;font-size:14px}.stage{position:relative;aspect-ratio:16/10;max-height:540px;min-height:270px;border:1px solid #b18a4b88;border-radius:18px;overflow:hidden;box-shadow:0 20px 70px #000;background:#080807}canvas{display:block;width:100%;height:100%}.controls{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:15px 0}button{padding:12px 19px;border-radius:30px;border:1px solid #d8b66b;background:linear-gradient(#49371b,#21190d);color:#fff3d3;font-weight:750;letter-spacing:.06em}button.primary{background:linear-gradient(135deg,#a7792c,#594016)}.hint,.foot{font-size:12px;color:#a99773}.foot{font-size:10px;letter-spacing:.12em;margin-top:16px}
+</style></head><body><main><div class="tag">TIKNATION NEXT · GIFT REBUILD LAB</div><h1>THE GOLDEN TIME VAULT</h1><p class="sub">An ancient vault opens to reveal a fortune lost to time.</p><div class="stage"><canvas id="v"></canvas></div><div class="controls"><button class="primary" id="again">↻ OPEN THE VAULT</button><button id="audio">♫ SOUND: OFF</button></div><div class="hint">Sound is optional. Tap to replay the vault opening.</div><div class="foot">STANDALONE PREVIEW · NOT YET IN THE LIVE GIFT CATALOG</div></main>
+<script>
+(()=>{const c=document.getElementById('v'),x=c.getContext('2d');let W,H,start=performance.now(),coins=[],sound=false,ac;
+function size(){let r=c.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0)}new ResizeObserver(size).observe(c);size();
+function tone(f,d,type='sine',vol=.06){if(!sound)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();let o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(vol,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d)}catch(e){}}
+function replay(){start=performance.now();coins=[];tone(75,.8,'sawtooth',.1);setTimeout(()=>tone(180,.6,'triangle',.07),250);setTimeout(()=>tone(880,.35,'sine',.05),1000)}
+function coin(){return{x:W*.56+(Math.random()-.5)*W*.32,y:H*.59,vx:(Math.random()-.5)*2.7,vy:-2-Math.random()*4,rot:Math.random()*6,spin:(Math.random()-.5)*.2,life:1,r:3+Math.random()*5}}
+function draw(now){let t=(now-start)/1000; x.clearRect(0,0,W,H);
+let bg=x.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#14120d');bg.addColorStop(.65,'#080807');bg.addColorStop(1,'#1a1309');x.fillStyle=bg;x.fillRect(0,0,W,H);
+// chamber glow
+let glow=x.createRadialGradient(W*.55,H*.48,4,W*.55,H*.48,W*.48);glow.addColorStop(0,'rgba(255,190,67,.55)');glow.addColorStop(.45,'rgba(172,105,24,.18)');glow.addColorStop(1,'transparent');x.fillStyle=glow;x.fillRect(0,0,W,H);
+// stone chamber
+x.fillStyle='#211c13';x.fillRect(W*.22,H*.15,W*.58,H*.68);x.strokeStyle='#725a31';x.lineWidth=5;x.strokeRect(W*.22,H*.15,W*.58,H*.68);
+for(let i=0;i<7;i++){x.strokeStyle='#40331f';x.lineWidth=1;x.beginPath();x.moveTo(W*.24+i*W*.09,H*.16);x.lineTo(W*.24+i*W*.09,H*.82);x.stroke()}
+// glowing vault interior
+x.fillStyle='#f5bd4e';x.shadowColor='#ffb82e';x.shadowBlur=35;x.fillRect(W*.43,H*.28,W*.3,H*.45);x.shadowBlur=0;x.fillStyle='#4b2c0d';x.fillRect(W*.46,H*.31,W*.24,H*.39);
+// shelves and treasure stacks
+for(let row=0;row<3;row++)for(let i=0;i<7-row;i++){let xx=W*.48+i*W*.029+(row%2)*5,yy=H*(.64-row*.095);x.fillStyle=['#f4c75e','#c88a25','#ffe18a'][i%3];x.beginPath();x.ellipse(xx,yy,10,4,0,0,Math.PI*2);x.fill();}
+// door frame
+x.fillStyle='#29251d';x.fillRect(W*.13,H*.16,W*.43,H*.65);x.strokeStyle='#9a783d';x.lineWidth=8;x.strokeRect(W*.13,H*.16,W*.43,H*.65);
+let open=Math.max(0,Math.min(1,(t-.7)/1.5));let angle=open*Math.PI*.47;
+x.save();x.translate(W*.34,H*.49);x.rotate(-angle);
+let dw=W*.39,dh=H*.62;x.fillStyle='#6d542b';x.fillRect(-dw/2,-dh/2,dw,dh);let metal=x.createLinearGradient(-dw/2,0,dw/2,0);metal.addColorStop(0,'#302719');metal.addColorStop(.25,'#b38c47');metal.addColorStop(.5,'#584321');metal.addColorStop(.8,'#d0a95a');metal.addColorStop(1,'#302719');x.fillStyle=metal;x.fillRect(-dw/2+7,-dh/2+7,dw-14,dh-14);x.strokeStyle='#e3bd69';x.lineWidth=4;x.strokeRect(-dw/2+12,-dh/2+12,dw-24,dh-24);
+for(let i=0;i<8;i++){let a=i*Math.PI/4;x.fillStyle='#e8c879';x.beginPath();x.arc(Math.cos(a)*dw*.34,Math.sin(a)*dh*.34,5,0,7);x.fill()}
+x.fillStyle='#c7a14d';x.beginPath();x.arc(0,0,Math.min(dw,dh)*.17,0,7);x.fill();x.strokeStyle='#382b17';x.lineWidth=5;x.beginPath();x.arc(0,0,Math.min(dw,dh)*.12,0,7);x.stroke();for(let i=0;i<6;i++){let a=i*Math.PI/3;x.beginPath();x.moveTo(0,0);x.lineTo(Math.cos(a)*dw*.12,Math.sin(a)*dh*.12);x.stroke()}x.restore();
+// coins burst after door opens
+if(t>2.1&&coins.length<110&&Math.random()<.7)coins.push(coin());
+for(let p of coins){p.x+=p.vx;p.y+=p.vy;p.vy+=.075;p.rot+=p.spin;p.life-=.003;x.save();x.translate(p.x,p.y);x.rotate(p.rot);x.fillStyle='#e8b83f';x.strokeStyle='#fff0a0';x.lineWidth=1;x.beginPath();x.ellipse(0,0,p.r,p.r*.65,0,0,7);x.fill();x.stroke();x.restore()}
+coins=coins.filter(p=>p.y<H+20&&p.life>0);
+// dust motes
+for(let i=0;i<30;i++){let px=(i*71+now*.012)%(W),py=(i*43+Math.sin(now*.001+i)*12)%H;x.fillStyle='rgba(255,214,125,.5)';x.fillRect(px,py,2,2)}
+requestAnimationFrame(draw)}requestAnimationFrame(draw);
+document.getElementById('again').onclick=replay;document.getElementById('audio').onclick=()=>{sound=!sound;document.getElementById('audio').textContent='♫ SOUND: '+(sound?'ON':'OFF');if(sound){tone(540,.16);setTimeout(()=>tone(810,.22),130)}};replay();
+})();
+</script></body></html>
