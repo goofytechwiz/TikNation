@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Storm God's Trident — TikNation Gift Preview</title>
+<style>
+:root{color-scheme:dark;--cyan:#7ceaff;--gold:#e9c879}
+*{box-sizing:border-box}
+body{margin:0;background:#030a14;color:#eefaff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100svh;display:grid;place-items:center;padding:16px}
+.shell{width:min(100%,920px);border:1px solid #31516b;border-radius:22px;overflow:hidden;background:linear-gradient(160deg,#0a1b2c,#050b14 65%);box-shadow:0 24px 90px #000b}
+header{padding:18px 20px 12px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.kicker{font-size:11px;letter-spacing:.22em;color:#8bb5c9;font-weight:800}
+h1{font-size:clamp(20px,4vw,30px);margin:4px 0 0;letter-spacing:.04em}
+.tag{font-size:10px;border:1px solid #45657b;color:#a8d8e8;padding:6px 9px;border-radius:99px;white-space:nowrap}
+.stage{position:relative;aspect-ratio:16/9;min-height:250px;background:#061522;overflow:hidden}
+canvas{width:100%;height:100%;display:block}
+.hint{position:absolute;bottom:12px;left:14px;font-size:10px;letter-spacing:.15em;color:#b7d7e2;text-shadow:0 2px 8px #001}
+.controls{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;padding:16px}
+button{border:1px solid #648ca2;border-radius:999px;background:#112c40;color:#f2fcff;font-weight:750;letter-spacing:.04em;padding:12px 20px;cursor:pointer}
+button.primary{background:linear-gradient(120deg,#a77c35,#e8d18c);color:#111b23;border:0}
+button:focus-visible{outline:3px solid #8ceaff;outline-offset:3px}
+.note{text-align:center;color:#8daab8;font-size:11px;padding:0 18px 18px}
+</style>
+</head>
+<body>
+<main class="shell">
+<header><div><div class="kicker">TIKNATION · GIFT REBUILD LAB</div><h1>THE STORM GOD’S TRIDENT</h1></div><div class="tag">STANDALONE PREVIEW</div></header>
+<div class="stage"><canvas id="scene" aria-label="An ancient golden trident summons a towering ocean wave and blue lightning"></canvas><div class="hint">THE SEA ANSWERS THE CALL</div></div>
+<div class="controls"><button class="primary" id="replay">↻ REPLAY GIFT</button><button id="sound" aria-pressed="false">♫ SOUND: OFF</button></div>
+<div class="note">Sound is off until enabled. This is a standalone preview, not yet part of the live gift catalog.</div>
+</main>
+<script>
+(()=>{
+const c=document.getElementById('scene'),ctx=c.getContext('2d'),replay=document.getElementById('replay'),soundBtn=document.getElementById('sound');
+let w=0,h=0,dpr=1,start=performance.now(),sound=false,audio=null,played=false;
+function resize(){const r=c.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);w=r.width;h=r.height;c.width=w*dpr;c.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+addEventListener('resize',resize);resize();
+const rand=(a,b)=>a+Math.random()*(b-a);
+function path(points,color,width=2,glow=0){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.strokeStyle=color;ctx.lineWidth=width;ctx.shadowColor=color;ctx.shadowBlur=glow;ctx.stroke();ctx.shadowBlur=0}
+function bolt(x,y,len,alpha=1){let pts=[{x,y}],yy=y;while(yy<y+len){yy+=rand(13,28);pts.push({x:pts.at(-1).x+rand(-23,23),y:Math.min(yy,y+len)})}ctx.save();ctx.globalAlpha=alpha;path(pts,'#a8f5ff',2.2,18);path(pts,'#fff',.7,7);ctx.restore()}
+function wave(t){const base=h*.78,amp=h*.23;ctx.beginPath();ctx.moveTo(0,h);for(let x=0;x<=w+8;x+=5){let crest=Math.sin(x*.012-t*3)*.055+Math.sin(x*.025+t*2)*.025;let y=base-amp*(.65+crest)+Math.sin(x*.009-t*2.4)*h*.045;ctx.lineTo(x,y)}ctx.lineTo(w,h);ctx.closePath();let g=ctx.createLinearGradient(0,h*.48,0,h);g.addColorStop(0,'#9df5ff');g.addColorStop(.12,'#187f9e');g.addColorStop(.52,'#07506e');g.addColorStop(1,'#031b35');ctx.fillStyle=g;ctx.fill();ctx.strokeStyle='#c8fbff';ctx.lineWidth=2;ctx.stroke()}
+function draw(now){const t=(now-start)/1000,phase=Math.min(1,t/4.6);ctx.clearRect(0,0,w,h);
+let sky=ctx.createLinearGradient(0,0,0,h);sky.addColorStop(0,'#020814');sky.addColorStop(.55,'#10334b');sky.addColorStop(1,'#071b2c');ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
+// distant rain and cloud bands
+for(let i=0;i<7;i++){ctx.fillStyle='rgba(99,166,190,'+(.025+i*.004)+')';ctx.beginPath();ctx.ellipse(w*(.12+i*.14),h*(.15+(i%3)*.09),w*.18,h*.07,0,0,Math.PI*2);ctx.fill()}
+ctx.fillStyle='#d4f7ff';ctx.globalAlpha=.18;ctx.beginPath();ctx.arc(w*.77,h*.19,h*.075,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+if(t>1.3){for(let i=0;i<4;i++)if(Math.random()<.045)bolt(rand(0,w),0,rand(h*.25,h*.7),.35+phase*.6)}
+// ocean horizon
+ctx.fillStyle='#082a40';ctx.fillRect(0,h*.67,w,h*.33);
+wave(t);
+// rising spray around impact
+if(t>1.2){for(let i=0;i<35;i++){let x=w*.5+rand(-w*.32,w*.32),y=h*.69+rand(-h*.18,h*.12);ctx.fillStyle='rgba(190,247,255,'+rand(.1,.5)+')';ctx.beginPath();ctx.arc(x,y,rand(.7,2.3),0,Math.PI*2);ctx.fill()}}
+if(t>1.1){ctx.save();ctx.translate(w*.5,h*.68);ctx.scale(1,Math.min(1,Math.max(.05,(t-1.1)/1.2)));ctx.translate(-w*.5,-h*.68);
+ctx.beginPath();ctx.moveTo(w*.13,h*.79);ctx.bezierCurveTo(w*.22,h*.48,w*.25,h*.35,w*.38,h*.42);ctx.bezierCurveTo(w*.46,h*.13,w*.55,h*.18,w*.62,h*.4);ctx.bezierCurveTo(w*.76,h*.24,w*.83,h*.43,w*.88,h*.78);ctx.closePath();let wg=ctx.createLinearGradient(0,h*.2,0,h*.85);wg.addColorStop(0,'#e5ffff');wg.addColorStop(.14,'#53d4ed');wg.addColorStop(.42,'#087b9d');wg.addColorStop(1,'#032d51');ctx.fillStyle=wg;ctx.shadowColor='#55dff8';ctx.shadowBlur=24;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#c9fbff';ctx.lineWidth=3;ctx.stroke();
+for(let i=0;i<9;i++){let x=w*(.22+i*.07);ctx.beginPath();ctx.moveTo(x,h*.68);ctx.quadraticCurveTo(x+rand(-30,30),h*.36,x+rand(-35,35),h*.29);ctx.strokeStyle='rgba(206,251,255,.6)';ctx.lineWidth=rand(1,3);ctx.stroke()}
+ctx.restore()}
+// trident appears, then slams down
+const drop=Math.min(1,Math.max(0,(t-.15)/1.25)),impact=Math.min(1,Math.max(0,(t-1.15)/.5));
+ctx.save();let tx=w*.5,ty=h*(.12+(.35*(1-drop)));ctx.translate(tx,ty);ctx.rotate(-.08*(1-drop));ctx.scale(Math.min(1,w/620),Math.min(1,w/620));
+ctx.shadowColor='#f5ca69';ctx.shadowBlur=22;
+let gold=ctx.createLinearGradient(-30,0,30,0);gold.addColorStop(0,'#68431b');gold.addColorStop(.3,'#fff0a9');gold.addColorStop(.56,'#c58a36');gold.addColorStop(1,'#fff0bd');
+ctx.strokeStyle=gold;ctx.fillStyle=gold;ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=9;
+ctx.beginPath();ctx.moveTo(0,12);ctx.lineTo(0,190);ctx.stroke();
+ctx.lineWidth=11;ctx.beginPath();ctx.moveTo(0,32);ctx.quadraticCurveTo(-18,18,-20,-22);ctx.quadraticCurveTo(-22,-45,-35,-57);ctx.moveTo(0,32);ctx.lineTo(0,-72);ctx.moveTo(0,32);ctx.quadraticCurveTo(18,18,20,-22);ctx.quadraticCurveTo(22,-45,35,-57);ctx.stroke();
+ctx.beginPath();ctx.moveTo(-29,-58);ctx.lineTo(-35,-76);ctx.lineTo(-21,-67);ctx.moveTo(0,-72);ctx.lineTo(0,-96);ctx.lineTo(8,-77);ctx.moveTo(29,-58);ctx.lineTo(35,-76);ctx.lineTo(21,-67);ctx.stroke();
+ctx.beginPath();ctx.ellipse(0,45,15,9,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.moveTo(-8,185);ctx.lineTo(0,201);ctx.lineTo(8,185);ctx.stroke();ctx.shadowBlur=0;ctx.restore();
+if(t>1.15){ctx.save();ctx.globalAlpha=Math.max(0,1-(t-1.15)/1.3);ctx.strokeStyle='#b9f7ff';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(w*.5,h*.78,(t-1.15)*w*.19,Math.max(2,(t-1.15)*h*.035),0,0,Math.PI*2);ctx.stroke();ctx.restore()}
+if(t>1.35&&t<3.4&&Math.random()<.13)bolt(rand(w*.15,w*.85),0,rand(h*.3,h*.72),.9);
+if(t>4.7){ctx.fillStyle='rgba(210,247,255,.8)';ctx.font='700 '+Math.max(12,w*.025)+'px system-ui';ctx.textAlign='center';ctx.fillText('THE STORM HAS BEEN UNLEASHED',w/2,h*.12)}
+requestAnimationFrame(draw)}
+function playSound(){if(!sound||played)return;played=true;try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const now=audio.currentTime;function tone(freq,dur,type='sine',vol=.05,delay=0){let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,now+delay);o.frequency.exponentialRampToValueAtTime(Math.max(35,freq*.42),now+delay+dur);g.gain.setValueAtTime(.001,now+delay);g.gain.exponentialRampToValueAtTime(vol,now+delay+.04);g.gain.exponentialRampToValueAtTime(.001,now+delay+dur);o.connect(g);g.connect(audio.destination);o.start(now+delay);o.stop(now+delay+dur+.03)}tone(92,1.4,'sawtooth',.11);tone(48,2,'sine',.2,.9);tone(680,.45,'triangle',.035,1.05);tone(130,1.8,'sawtooth',.07,1.2)}catch(e){}}
+function restart(){start=performance.now();played=false;playSound()}
+replay.addEventListener('click',restart);
+soundBtn.addEventListener('click',()=>{sound=!sound;soundBtn.textContent='♫ SOUND: '+(sound?'ON':'OFF');soundBtn.setAttribute('aria-pressed',String(sound));if(sound){played=false;playSound()}});
+requestAnimationFrame(draw);
+})();
+</script>
+</body></html>
