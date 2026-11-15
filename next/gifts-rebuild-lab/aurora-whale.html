@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#031426"><title>Aurora Whale · TikNation Gift</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#031426;color:#effcff;font-family:Inter,system-ui,sans-serif}body{background:radial-gradient(ellipse at 50% 30%,#123b5b,#031426 70%,#010912)}header{height:56px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #79edff35;background:#031321dd;font-size:11px;letter-spacing:.2em;font-weight:900}header b{color:#6ff5ff}.tag{font-size:9px;color:#b9ffef;border:1px solid #8affd866;border-radius:30px;padding:8px 11px}main{width:min(1100px,96vw);margin:auto;padding:17px 0 25px}.intro{text-align:center;padding:3px 10px 14px}.eyebrow{font-size:9px;letter-spacing:.34em;color:#83f5ef;font-weight:800}.intro h1{font:500 clamp(32px,6vw,56px)/1.02 Georgia,serif;margin:8px 0;color:#efffff;text-shadow:0 0 24px #61e9f788}.intro p{font-size:12px;color:#b1d8e6;margin:0}.stage{height:clamp(410px,60vw,630px);position:relative;overflow:hidden;border:1px solid #5dddeb66;border-radius:17px;background:radial-gradient(ellipse at 50% 45%,#12516b,#061d34 68%,#020d1c);box-shadow:0 0 55px #26cfe52a,inset 0 0 55px #42eaff15}canvas{display:block;width:100%;height:100%}.hud{position:absolute;top:14px;left:15px;right:15px;display:flex;justify-content:space-between;font-size:8px;letter-spacing:.18em;color:#d9fbff;text-shadow:0 1px 9px #001;pointer-events:none}.caption{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:9px;letter-spacing:.25em;color:#b9fff5;text-shadow:0 0 16px #58f7ff;pointer-events:none}.controls{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:15px 8px 0}button{min-height:44px;border:1px solid #75e9f566;border-radius:99px;padding:12px 19px;background:#092e45;color:#f2ffff;font-size:9px;letter-spacing:.14em;font-weight:850;cursor:pointer}button.primary{border:0;background:linear-gradient(110deg,#6fffe1,#60dfff 52%,#b9a2ff);color:#05202b;box-shadow:0 0 25px #5ceaff55}.status{text-align:center;min-height:20px;margin:11px;color:#b8dfe9;font-size:9px;letter-spacing:.13em}.note{text-align:center;color:#7396a8;font-size:9px;line-height:1.6;padding:0 16px}@media(max-width:560px){.stage{height:67vh;min-height:410px;max-height:590px;border-radius:12px}header{height:53px}button{padding:12px 14px;font-size:8px}}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script></head>
+<body><header><div>TIK<b>NATION</b></div><div class="tag">✦ LEGENDARY GIFT PREVIEW</div></header>
+<main><section class="intro"><div class="eyebrow">A GIFT FROM THE DEEP COSMOS</div><h1>Aurora Whale</h1><p>A majestic bioluminescent giant swims through a living ocean of stars.</p></section>
+<section class="stage" aria-label="Animated three-dimensional aurora whale gift"><canvas id="world"></canvas><div class="hud"><span>TN · AURORA WHALE</span><span id="phase">THE OCEAN IS DREAMING</span></div><div class="caption" id="caption">A LIGHT IN THE DEEPEST BLUE</div></section>
+<div class="controls"><button class="primary" id="play">✦ SEND THE GIFT</button><button id="sound">♫ SOUND OFF</button><button id="replay">↻ REPLAY</button></div><div class="status" id="status" aria-live="polite">AURORA WHALE IS WAITING</div><p class="note">Standalone 3D gift preview. No coins are charged and no gift is sent. Sound begins only after you turn it on.</p></main>
+<script type="module">
+import * as THREE from "three";
+(()=>{
+const canvas=document.querySelector("#world"),status=document.querySelector("#status"),phase=document.querySelector("#phase"),caption=document.querySelector("#caption");
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x04172a);scene.fog=new THREE.FogExp2(0x06243a,.027);
+const camera=new THREE.PerspectiveCamera(40,1,.1,100);camera.position.set(0,2.2,14);camera.lookAt(0,.4,0);
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.3;
+scene.add(new THREE.HemisphereLight(0x9af7ff,0x07152e,2.2));
+const key=new THREE.DirectionalLight(0x8afcff,2.7);key.position.set(-4,8,7);scene.add(key);
+const rim=new THREE.PointLight(0x48eaff,55,24);rim.position.set(2,2,-4);scene.add(rim);
+const violet=new THREE.PointLight(0xb16dff,35,20);violet.position.set(-6,1,-2);scene.add(violet);
+const gold=new THREE.PointLight(0xffd88a,24,18);gold.position.set(5,-2,3);scene.add(gold);
+// Deep-ocean floor with a subtle reflective grid.
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(80,80),new THREE.MeshStandardMaterial({color:0x06283a,metalness:.48,roughness:.28,emissive:0x03121d,emissiveIntensity:.5}));floor.rotation.x=-Math.PI/2;floor.position.y=-5.2;scene.add(floor);
+const grid=new THREE.GridHelper(48,48,0x2bbdce,0x15516a);grid.position.y=-5.16;grid.material.transparent=true;grid.material.opacity=.16;scene.add(grid);
+// Whale sculpted from a smooth parametric body, not a flat image.
+const whale=new THREE.Group();scene.add(whale);
+const bodyMat=new THREE.MeshPhysicalMaterial({color:0x2c9db5,metalness:.32,roughness:.22,clearcoat:.9,clearcoatRoughness:.15,emissive:0x073e59,emissiveIntensity:.85});
+const bellyMat=new THREE.MeshStandardMaterial({color:0x9be8df,metalness:.12,roughness:.45,emissive:0x145c65,emissiveIntensity:.35});
+const profile=[[-3.15,.06],[-2.7,.22],[-2.05,.48],[-1.2,.72],[-.2,.91],[.8,.96],[1.55,.79],[2.12,.53],[2.48,.08]];
+const verts=[],indices=[],uvs=[],rings=72,segments=48;
+for(let i=0;i<=rings;i++){const x=-3.15+(5.63*i/rings);let k=0;while(k<profile.length-2&&x>profile[k+1][0])k++;const f=Math.max(0,Math.min(1,(x-profile[k][0])/(profile[k+1][0]-profile[k][0])));const radius=THREE.MathUtils.lerp(profile[k][1],profile[k+1][1],f);for(let j=0;j<=segments;j++){const a=j/segments*Math.PI*2;verts.push(x,Math.cos(a)*radius*.83,Math.sin(a)*radius);uvs.push(i/rings,j/segments);if(i<rings&&j<segments){const n=i*(segments+1)+j;indices.push(n,n+segments+1,n+1,n+1,n+segments+1,n+segments+2)}}}
+const geo=new THREE.BufferGeometry();geo.setAttribute("position",new THREE.Float32BufferAttribute(verts,3));geo.setAttribute("uv",new THREE.Float32BufferAttribute(uvs,2));geo.setIndex(indices);geo.computeVertexNormals();
+const body=new THREE.Mesh(geo,bodyMat);body.castShadow=true;body.receiveShadow=true;whale.add(body);
+// Soft pale throat and underside.
+const underside=new THREE.Mesh(new THREE.SphereGeometry(1,40,28),bellyMat);underside.scale.set(1.75,.47,.63);underside.position.set(.38,-.52,0);whale.add(underside);
+// Tail stock and flukes, animated as one articulated assembly.
+const tail=new THREE.Group();tail.position.set(-2.75,0,0);whale.add(tail);
+const stock=new THREE.Mesh(new THREE.CapsuleGeometry(.17,.7,6,12),bodyMat);stock.rotation.z=Math.PI/2;stock.position.x=-.18;tail.add(stock);
+for(let side of [-1,1]){const fluke=new THREE.Mesh(new THREE.SphereGeometry(1,32,20),new THREE.MeshPhysicalMaterial({color:0x36c4d0,metalness:.25,roughness:.25,clearcoat:1,emissive:0x0b5666,emissiveIntensity:.65}));fluke.scale.set(.92,.105,.49);fluke.position.set(-.92,.04,side*.43);fluke.rotation.y=side*.22;fluke.rotation.z=side*.18;tail.add(fluke)}
+// Pectoral fins and dorsal fin.
+const fins=[];
+for(let side of [-1,1]){const fin=new THREE.Mesh(new THREE.SphereGeometry(1,32,20),bodyMat);fin.scale.set(1.22,.12,.36);fin.position.set(-.35,-.47,side*.76);fin.rotation.y=side*.24;fin.rotation.z=side*.22;whale.add(fin);fins.push(fin)}
+const dorsal=new THREE.Mesh(new THREE.ConeGeometry(.26,.64,24),bodyMat);dorsal.position.set(-.65,.77,0);dorsal.rotation.z=-.18;whale.add(dorsal);
+// Eyes and luminous cheek markings.
+for(let side of [-1,1]){const eye=new THREE.Mesh(new THREE.SphereGeometry(.075,18,14),new THREE.MeshBasicMaterial({color:0xeaffff}));eye.position.set(1.83,.22,side*.45);whale.add(eye);const pupil=new THREE.Mesh(new THREE.SphereGeometry(.035,14,12),new THREE.MeshBasicMaterial({color:0x031322}));pupil.position.set(1.87,.22,side*.5);whale.add(pupil);for(let j=0;j<4;j++){const dot=new THREE.Mesh(new THREE.SphereGeometry(.025,8,8),new THREE.MeshBasicMaterial({color:0x8afff1}));dot.position.set(1.18-j*.17,.02-j*.08,side*(.52+j*.015));whale.add(dot)}}
+const glowLine=new THREE.Mesh(new THREE.TorusGeometry(1.18,.018,8,100),new THREE.MeshBasicMaterial({color:0x9bfff2,transparent:true,opacity:.65}));glowLine.position.set(.2,.08,0);glowLine.scale.set(1.55,.72,1);whale.add(glowLine);
+whale.scale.setScalar(1.28);whale.position.set(-.2,.6,0);
+// Flowing aurora ribbons behind the creature.
+const aurora=[];
+for(let i=0;i<7;i++){const points=[];for(let j=0;j<=60;j++){const x=-11+j*.36;const y=2.7+Math.sin(j*.13+i*.8)*1.15+i*.18;const z=-5-i*.22;points.push(new THREE.Vector3(x,y,z))}const curve=new THREE.CatmullRomCurve3(points);const material=new THREE.MeshBasicMaterial({color:[0x42ffd2,0x55dfff,0x9d76ff,0xff8edc,0x8affbc,0x53baff,0xd0a0ff][i],transparent:true,opacity:.26,blending:THREE.AdditiveBlending,depthWrite:false});const ribbon=new THREE.Mesh(new THREE.TubeGeometry(curve,180,.035+i*.006,8,false),material);scene.add(ribbon);aurora.push({ribbon,phase:i*.8})}
+// Light shafts in the water.
+const shafts=[];for(let i=0;i<6;i++){const beam=new THREE.Mesh(new THREE.CylinderGeometry(.04,1.2,12,18,1,true),new THREE.MeshBasicMaterial({color:[0x5eeaff,0x8a74ff,0x64ffd1][i%3],transparent:true,opacity:.055,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));beam.position.set(-7+i*2.7,3,-4);beam.rotation.z=(i-2.5)*-.09;scene.add(beam);shafts.push(beam)}
+// Bioluminescent drifting particles and bubbles.
+const particles=new THREE.Group();scene.add(particles);const bubbles=[];
+for(let i=0;i<170;i++){const r=.018+Math.random()*.055;const bubble=new THREE.Mesh(new THREE.SphereGeometry(r,10,8),new THREE.MeshBasicMaterial({color:i%4?0x8af7ff:0xffb5ed,transparent:true,opacity:.45+Math.random()*.35}));bubble.position.set((Math.random()-.5)*23,-4+Math.random()*12,-7+Math.random()*12);particles.add(bubble);bubbles.push({mesh:bubble,speed:.25+Math.random()*.8,phase:Math.random()*6.28})}
+const sparkleGeo=new THREE.BufferGeometry(),sparklePos=new Float32Array(800*3);for(let i=0;i<800;i++){sparklePos[i*3]=(Math.random()-.5)*26;sparklePos[i*3+1]=(Math.random()-.5)*13;sparklePos[i*3+2]=-9+Math.random()*16}sparkleGeo.setAttribute("position",new THREE.BufferAttribute(sparklePos,3));const sparkles=new THREE.Points(sparkleGeo,new THREE.PointsMaterial({color:0xa6fff8,size:.045,transparent:true,opacity:.8,blending:THREE.AdditiveBlending,depthWrite:false}));scene.add(sparkles);
+// Circular luminous ripples around the whale.
+const ripples=[];for(let i=0;i<5;i++){const ring=new THREE.Mesh(new THREE.TorusGeometry(2.2+i*.55,.018,8,120),new THREE.MeshBasicMaterial({color:i%2?0x70eaff:0x9effdb,transparent:true,opacity:.28,blending:THREE.AdditiveBlending}));ring.position.set(0,-1.8-i*.2,-2.5);ring.rotation.x=Math.PI/2;scene.add(ring);ripples.push(ring)}
+let running=false,started=0,soundOn=false,audio=null,scorePlayed=false;
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.position.z=w<560?16.3:14;camera.updateProjectionMatrix()}new ResizeObserver(resize).observe(canvas);resize();
+function playAudio(){if(!soundOn)return;if(!audio){audio=new (window.AudioContext||window.webkitAudioContext)()}if(audio.state==="suspended")audio.resume();const now=audio.currentTime;const master=audio.createGain();master.gain.value=.24;master.connect(audio.destination);const reverb=audio.createConvolver();const ir=audio.createBuffer(2,audio.sampleRate*2,audio.sampleRate);for(let c=0;c<2;c++){const d=ir.getChannelData(c);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3)}reverb.buffer=ir;const wet=audio.createGain();wet.gain.value=.25;reverb.connect(wet);wet.connect(master);
+const note=(f,delay,duration,vol,wave)=>{const o=audio.createOscillator(),g=audio.createGain(),filter=audio.createBiquadFilter();o.type=wave||"sine";o.frequency.value=f;filter.type="lowpass";filter.frequency.value=2100;g.gain.setValueAtTime(.0001,now+delay);g.gain.linearRampToValueAtTime(vol,now+delay+.22);g.gain.exponentialRampToValueAtTime(.0001,now+delay+duration);o.connect(filter);filter.connect(g);g.connect(master);g.connect(reverb);o.start(now+delay);o.stop(now+delay+duration+.05)};
+[[110,0,.9,.09,"sine"],[164.81,.15,2,.055,"triangle"],[220,.35,2,.045,"sine"],[329.63,.65,1.7,.04,"sine"],[440,1.1,1.5,.035,"sine"],[523.25,2.1,2,.045,"sine"],[659.25,2.45,2,.035,"sine"],[783.99,3.1,2.4,.03,"sine"],[987.77,4.1,2.8,.025,"sine"]].forEach(n=>note(...n));
+}
+function sendGift(){running=true;started=performance.now();scorePlayed=false;phase.textContent="AURORA ARRIVAL";caption.textContent="A LEGEND AWAKENS BENEATH THE STARS";status.textContent="AURORA WHALE IS SWIMMING INTO YOUR WORLD";if(soundOn){playAudio();scorePlayed=true}}
+document.querySelector("#play").addEventListener("click",sendGift);document.querySelector("#replay").addEventListener("click",sendGift);
+document.querySelector("#sound").addEventListener("click",()=>{soundOn=!soundOn;document.querySelector("#sound").textContent=soundOn?"♫ SOUND ON":"♫ SOUND OFF";if(soundOn&&running){playAudio();scorePlayed=true}if(!soundOn&&audio)audio.suspend()});
+const clock=new THREE.Clock();
+function animate(now){requestAnimationFrame(animate);const t=now*.001,dt=Math.min(.05,clock.getDelta());
+whale.position.x=-.5+Math.sin(t*.28)*1.45;whale.position.y=.48+Math.sin(t*1.25)*.23;whale.rotation.y=Math.sin(t*.34)*.13;whale.rotation.z=Math.sin(t*.7)*.025;tail.rotation.y=Math.sin(t*2.4)*.34;tail.rotation.z=Math.sin(t*2.1)*.12;fins.forEach((f,i)=>{f.rotation.z=(i?1:-1)*(.18+Math.sin(t*1.8+i)*.09)});
+aurora.forEach((a,i)=>{a.ribbon.position.y=Math.sin(t*.45+a.phase)*.22;a.ribbon.rotation.z=Math.sin(t*.22+a.phase)*.025});
+shafts.forEach((b,i)=>{b.rotation.z=Math.sin(t*.25+i)*.08;b.material.opacity=.035+.025*(.5+.5*Math.sin(t*.7+i))});
+bubbles.forEach((b,i)=>{b.mesh.position.y+=b.speed*dt;if(b.mesh.position.y>6.5)b.mesh.position.y=-5.5;b.mesh.position.x+=Math.sin(t*.7+b.phase)*.003});
+const p=sparkleGeo.attributes.position.array;for(let i=0;i<800;i++)p[i*3+1]+=.0015*Math.sin(t+i);sparkleGeo.attributes.position.needsUpdate=true;
+ripples.forEach((r,i)=>{r.rotation.z=t*(i%2?.12:-.1);r.material.opacity=.16+.12*(.5+.5*Math.sin(t+i))});
+rim.intensity=45+15*Math.sin(t*1.2);violet.intensity=30+12*Math.sin(t*.8+1);
+if(running){const e=(now-started)/1000;if(e<3){phase.textContent="THE DEEP IS GLOWING";caption.textContent="FOLLOW THE LIGHT"}else if(e<7){phase.textContent="THE AURORA WHALE ARRIVES";caption.textContent="A GENTLE GIANT OF LIGHT"}else if(e<12){phase.textContent="BIOLUMINESCENT MAGIC";caption.textContent="A LITTLE WONDER FOR YOUR WORLD"}else if(e<17){phase.textContent="AURORA FINALE";caption.textContent="TIKNATION · YOUR VOICE. YOUR WORLD."}else{running=false;phase.textContent="GIFT COMPLETE";status.textContent="AURORA WHALE SHOW COMPLETE · REPLAY ANYTIME"}}renderer.render(scene,camera)}
+requestAnimationFrame(animate);
+})();
+</script></body></html>
