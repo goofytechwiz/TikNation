@@ -81,6 +81,42 @@ body.awake .nova-core{animation:novaCore 1.1s ease-out both}
 @keyframes novaRays{0%{transform:scale(.2) rotate(0);opacity:0}18%{opacity:1}100%{transform:scale(1.6) rotate(18deg);opacity:0}}
 @keyframes novaCore{0%{transform:translate(-50%,-50%) scale(.1);opacity:0}18%{transform:translate(-50%,-50%) scale(2.8);opacity:1}100%{transform:translate(-50%,-50%) scale(.01);opacity:0}}
 
+
+/* PRISMATIC RAINBOW BRIDGE + BUTTERFLIES */
+.rainbow-bridge{position:absolute;z-index:4;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;overflow:visible;filter:drop-shadow(0 0 12px #fff) drop-shadow(0 0 24px #56eaff)}
+.rainbow-bridge path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.bridge-deck{stroke:url(#bridgeColors);stroke-width:15;stroke-dasharray:1200;stroke-dashoffset:1200}
+.bridge-glow{stroke:#fff;stroke-width:3;stroke-dasharray:1200;stroke-dashoffset:1200}
+.bridge-rail{stroke:url(#bridgeColors);stroke-width:5;stroke-dasharray:900;stroke-dashoffset:900}
+.bridge-support{stroke:#d9fbff;stroke-width:2;stroke-dasharray:500;stroke-dashoffset:500;opacity:.8}
+body.revealed .rainbow-bridge{opacity:1}
+body.revealed .bridge-deck{animation:bridgeUnfold 2.2s cubic-bezier(.2,.8,.2,1) both}
+body.revealed .bridge-glow{animation:bridgeUnfold 2.2s .12s cubic-bezier(.2,.8,.2,1) both}
+body.revealed .bridge-rail{animation:bridgeUnfold 2s .55s ease-out both}
+body.revealed .bridge-support{animation:bridgeUnfold 1.5s .75s ease-out both}
+.butterfly{position:absolute;z-index:7;width:34px;height:24px;opacity:0;filter:drop-shadow(0 0 8px var(--wing))}
+.butterfly i{position:absolute;left:15px;top:3px;width:4px;height:19px;border-radius:50%;background:#fff;box-shadow:0 0 7px var(--wing)}
+.butterfly:before,.butterfly:after{content:"";position:absolute;top:1px;width:15px;height:19px;background:radial-gradient(ellipse at 65% 35%,#fff,var(--wing) 48%,transparent 78%);border-radius:90% 12% 85% 18%;transform-origin:100% 90%;animation:wingBeat .22s ease-in-out infinite alternate}
+.butterfly:before{left:0;transform:rotate(-24deg)}
+.butterfly:after{right:0;transform:scaleX(-1) rotate(-24deg)}
+.butterfly.b1{--wing:#ff64df;left:50%;top:42%}
+.butterfly.b2{--wing:#63f5ff;left:50%;top:42%}
+.butterfly.b3{--wing:#ffe66b;left:50%;top:42%}
+.butterfly.b4{--wing:#9d82ff;left:50%;top:42%}
+body.revealed .butterfly{opacity:1}
+body.revealed .b1{animation:butterflyFly1 5.8s 0s ease-in-out infinite}
+body.revealed .b2{animation:butterflyFly2 6.4s .35s ease-in-out infinite}
+body.revealed .b3{animation:butterflyFly3 5.5s .7s ease-in-out infinite}
+body.revealed .b4{animation:butterflyFly4 6.1s 1s ease-in-out infinite}
+body.revealed .fall:after{animation:colorWave 1.4s ease-in-out infinite alternate}
+@keyframes bridgeUnfold{to{stroke-dashoffset:0}}
+@keyframes wingBeat{to{transform:rotate(28deg) scaleY(.72)}}
+@keyframes butterflyFly1{0%{transform:translate(0,0) scale(.45)}25%{transform:translate(-29vw,-13vh) scale(.85)}55%{transform:translate(-17vw,18vh) scale(.7)}100%{transform:translate(-42vw,-4vh) scale(.5)}}
+@keyframes butterflyFly2{0%{transform:translate(0,0) scale(.4)}30%{transform:translate(30vw,-17vh) scale(.9)}65%{transform:translate(19vw,13vh) scale(.65)}100%{transform:translate(43vw,-12vh) scale(.5)}}
+@keyframes butterflyFly3{0%{transform:translate(0,0) scale(.35)}35%{transform:translate(-23vw,22vh) scale(.8)}70%{transform:translate(27vw,18vh) scale(.7)}100%{transform:translate(6vw,-28vh) scale(.45)}}
+@keyframes butterflyFly4{0%{transform:translate(0,0) scale(.4)}30%{transform:translate(22vw,-25vh) scale(.85)}65%{transform:translate(-31vw,-12vh) scale(.65)}100%{transform:translate(-5vw,25vh) scale(.45)}}
+@media(prefers-reduced-motion:reduce){body.revealed .butterfly{animation:none!important;opacity:.8}.butterfly:before,.butterfly:after{animation:none}}
+
 </style>
 </head>
 <body>
@@ -90,6 +126,16 @@ body.awake .nova-core{animation:novaCore 1.1s ease-out both}
 <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div><div class="orb o5"></div>
 <div class="lightning" aria-hidden="true"></div>
 <div class="fall left"><canvas></canvas></div><div class="fall right"><canvas></canvas></div>
+
+<svg class="rainbow-bridge" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+ <defs><linearGradient id="bridgeColors" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ff4bce"/><stop offset=".2" stop-color="#ffb84b"/><stop offset=".4" stop-color="#fff36b"/><stop offset=".6" stop-color="#4dffd4"/><stop offset=".8" stop-color="#48cfff"/><stop offset="1" stop-color="#a56bff"/></linearGradient></defs>
+ <path class="bridge-deck" d="M55 890 C190 850 250 760 330 690 C410 620 440 600 500 600 C560 600 590 620 670 690 C750 760 810 850 945 890"/>
+ <path class="bridge-glow" d="M55 880 C190 840 250 750 330 680 C410 610 440 590 500 590 C560 590 590 610 670 680 C750 750 810 840 945 880"/>
+ <path class="bridge-rail" d="M55 840 C190 800 250 710 330 650 C410 585 440 560 500 560 C560 560 590 585 670 650 C750 710 810 800 945 840"/>
+ <path class="bridge-support" d="M180 815 L180 865 M300 700 L300 745 M410 610 L410 655 M590 610 L590 655 M700 700 L700 745 M820 815 L820 865"/>
+</svg>
+<div class="butterfly b1" aria-hidden="true"><i></i></div><div class="butterfly b2" aria-hidden="true"><i></i></div><div class="butterfly b3" aria-hidden="true"><i></i></div><div class="butterfly b4" aria-hidden="true"><i></i></div>
+
 <div class="orbit"></div>
 <div class="gem-wrap"><div class="gem"><div class="gem-face"></div><div class="facet"></div><div class="facet f2"></div><div class="facet f3"></div><div class="facet f4"></div><div class="gem-core"></div></div></div>
 <div class="shard a"></div><div class="shard b"></div><div class="shard c"></div>
@@ -169,7 +215,7 @@ body.awake .nova-core{animation:novaCore 1.1s ease-out both}
   }
   paint();
  }
- btn.addEventListener('click',()=>{document.body.classList.remove('awake');void document.body.offsetWidth;document.body.classList.add('awake');sound();burstEffect();hint.textContent='RAINBOW CASCADE · PRISMATIC LIGHT · COLOR EXPLOSION';sub.textContent='A thousand colors burst into light.';btn.textContent='UNLEASH ANOTHER WAVE';setTimeout(()=>document.body.classList.remove('awake'),3600)});
+ btn.addEventListener('click',()=>{document.body.classList.remove('awake');void document.body.offsetWidth;document.body.classList.add('awake','revealed');sound();burstEffect();hint.textContent='RAINBOW CASCADE · PRISMATIC LIGHT · COLOR EXPLOSION';sub.textContent='A thousand colors burst into light.';btn.textContent='UNLEASH ANOTHER WAVE';setTimeout(()=>document.body.classList.remove('awake'),3600)});
 })();
 </script>
 </body>
