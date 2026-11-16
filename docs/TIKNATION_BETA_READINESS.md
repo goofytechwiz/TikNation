@@ -74,3 +74,9 @@ The original 2026-10-26 birthday launch date has passed. This document tracks cu
 - No new paid service was introduced. Continue on the existing free-service approach where feasible and check current provider quotas before expanding Live or email use.
 
 **Current release gate:** authentication is implemented but not real-account-tested; password recovery is unverified; mobile is source-reviewed but not device-tested; Live is experimental; real-money payouts are unavailable. Do not advertise these as fully ready.
+
+
+### Additional sign-in evidence
+
+- Supabase Auth records at least one historical successful sign-in for each of the 3 existing accounts; the latest was 2026-10-31 02:06:18 UTC. The records do not identify whether those sessions used email or username.
+- The custom login security-events table is currently empty, so there is no method-specific telemetry proving that username and email login have both succeeded in production.
