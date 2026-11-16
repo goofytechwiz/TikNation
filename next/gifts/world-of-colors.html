@@ -173,6 +173,44 @@ function drawCrystal(cx,cy,size,t){
  }
  ctx.globalAlpha=1;ctx.shadowBlur=0;ctx.restore();
 }
+function drawPrismaticEnergy(t){
+ // Bright moving energy arcs orbit the central crystal.
+ const cx=w*.5,cy=h*(h<620?.405:.405),rx=w*.37,ry=h*.245;
+ for(let ring=0;ring<4;ring++){
+  const start=t*(.48+ring*.09)+ring*1.57;
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(start);
+  ctx.beginPath();ctx.ellipse(0,0,rx*(.72+ring*.09),ry*(.72+ring*.09),0,-.55,1.05);
+  ctx.strokeStyle=['rgba(87,247,255,.8)','rgba(255,93,220,.8)','rgba(255,229,112,.75)','rgba(154,132,255,.8)'][ring];
+  ctx.lineWidth=2.2;ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=19;ctx.setLineDash([13,9,3,8]);ctx.lineDashOffset=-t*52;ctx.stroke();ctx.restore();
+ }
+ // Branching prismatic lightning flashes from the prism to its orbit.
+ for(let bolt=0;bolt<3;bolt++){
+  const phase=(t*1.15+bolt*.37)%1;
+  if(phase>.19)continue;
+  const a=t*(.7+bolt*.13)+bolt*2.1, x1=cx+Math.cos(a)*w*.075,y1=cy+Math.sin(a)*h*.075;
+  const x2=cx+Math.cos(a+1.25)*w*.3,y2=cy+Math.sin(a+1.25)*h*.2;
+  ctx.save();ctx.globalAlpha=(1-phase/.19)*.9;ctx.strokeStyle=['#7dfaff','#ff8ce9','#fff29a'][bolt];ctx.lineWidth=2.4;ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=23;
+  ctx.beginPath();ctx.moveTo(x1,y1);
+  for(let seg=1;seg<=8;seg++){const f=seg/8;ctx.lineTo(x1+(x2-x1)*f+Math.sin(seg*13+bolt*8+t*16)*w*.012,y1+(y2-y1)*f+Math.cos(seg*9+bolt*5+t*13)*h*.012)}
+  ctx.stroke();ctx.restore();
+ }
+}
+function drawColorFireworks(t){
+ // Small repeating fireworks bloom high above the rainbow, without covering the scene.
+ for(let burst=0;burst<3;burst++){
+  const cycle=(t+burst*2.7)%8,progress=(cycle-4.5);
+  if(progress<0||progress>1.25)continue;
+  const x=w*(.2+burst*.3)+Math.sin(burst*4)*w*.045,y=h*(.2+(burst%2)*.08);
+  const radius=progress*Math.min(w,h)*.105,fade=1-progress/1.25;
+  for(let ray=0;ray<18;ray++){
+   const a=ray*Math.PI*2/18+burst;
+   const ex=x+Math.cos(a)*radius,ey=y+Math.sin(a)*radius;
+   ctx.save();ctx.globalAlpha=fade*.8;ctx.strokeStyle=['#ff7bdc','#ffe77a','#6ef8ff','#a995ff'][ray%4];ctx.lineWidth=1.7;ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=12;
+   ctx.beginPath();ctx.moveTo(x+Math.cos(a)*radius*.28,y+Math.sin(a)*radius*.28);ctx.lineTo(ex,ey);ctx.stroke();ctx.restore();
+  }
+  ctx.save();ctx.globalAlpha=fade;ctx.fillStyle='#fff';ctx.shadowColor='#fff';ctx.shadowBlur=24;ctx.beginPath();ctx.arc(x,y,2.5+progress*2,0,Math.PI*2);ctx.fill();ctx.restore();
+ }
+}
 function draw(now){
  if(!last)last=now;const dt=Math.min(.04,(now-last)/1000);last=now;elapsed+=dt;const t=elapsed;
  const awake=t<awakeUntil;
@@ -250,6 +288,8 @@ function draw(now){
  }
  // Central prism is deliberately oversized and visually dominant.
  drawCrystal(w*.5,h*(h<620?.39:.405),Math.min(w*.32,h*.255,195),t);
+ // Additional animated prismatic lightning, orbiting energy and fireworks.
+ drawPrismaticEnergy(t);drawColorFireworks(t);
  // Rotating orbiting shards and curved energy trails around the gem.
  for(let i=0;i<7;i++){
   const a=t*(i%2?-.34:.27)+i*Math.PI*2/7;
