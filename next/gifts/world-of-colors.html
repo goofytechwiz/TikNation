@@ -24,10 +24,10 @@ button:active{transform:scale(.97)}
 <body>
 <canvas id="scene" aria-label="Animated rainbow crystal waterfall garden"></canvas>
 <main class="ui">
-<div class="hint" id="hint">A universe of color is awakening</div>
+<div class="hint" id="hint">ENTER THE LIVING WORLD OF COLOR</div>
 <div class="brand">TikNation · Premium Gift</div>
 <div class="title">THE WORLD<br>OF COLORS</div>
-<div class="sub" id="sub">A living crystal of infinite color</div>
+<div class="sub" id="sub">Two cascading falls. One living prism.</div>
 <button id="action" type="button">AWAKEN THE PRISM</button>
 </main>
 <script>
@@ -49,26 +49,48 @@ function path(points,fill,stroke,lineWidth=1){
  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth;ctx.stroke()}
 }
 function drawWaterfall(x,width,t,flip){
- const top=h*.13,bottom=h*.83,phase=flip?2.1:0;
- const grad=ctx.createLinearGradient(x,top,x+width,bottom);
- grad.addColorStop(0,'rgba(77,181,255,.08)');grad.addColorStop(.28,'rgba(116,225,255,.72)');
- grad.addColorStop(.58,'rgba(226,255,255,.82)');grad.addColorStop(1,'rgba(42,151,255,.18)');
- ctx.beginPath();ctx.moveTo(x,top);
- for(let y=top;y<=bottom;y+=12){const f=(y-top)/(bottom-top);ctx.lineTo(x+Math.sin(t*1.8+f*8+phase)*width*.12,y)}
- for(let y=bottom;y>=top;y-=12){const f=(y-top)/(bottom-top);ctx.lineTo(x+width+Math.sin(t*1.6+f*9+phase+1)*width*.1,y)}
- ctx.closePath();ctx.fillStyle=grad;ctx.fill();
- for(let i=0;i<15;i++){
-  const xx=x+width*(i+.5)/15,off=(t*(65+(i%5)*18)+i*39+phase*30)%(bottom-top+45);
-  const yy=top+off;
-  ctx.beginPath();ctx.moveTo(xx,top);ctx.bezierCurveTo(xx+Math.sin(t*2+i)*width*.1,top+bottom*.25,xx+Math.cos(t*2.4+i)*width*.08,yy-30,xx+Math.sin(t*3+i)*width*.06,yy);
-  ctx.strokeStyle=i%4===0?'rgba(255,255,255,.85)':'rgba(190,244,255,.48)';ctx.lineWidth=i%3===0?2.5:1;ctx.stroke();
+ const top=h*.105,bottom=h*.835,phase=flip?2.1:0;
+ // Deep shadow behind the falling water gives the cascade a real drop-off.
+ const shadow=ctx.createLinearGradient(x,top,x+width,bottom);
+ shadow.addColorStop(0,'rgba(2,12,42,.12)');shadow.addColorStop(.5,'rgba(5,20,55,.72)');shadow.addColorStop(1,'rgba(3,15,45,.1)');
+ ctx.fillStyle=shadow;ctx.fillRect(x-8,top,width+16,bottom-top+20);
+ // Several uneven water curtains overlap, rather than one flat strip.
+ for(let layer=0;layer<5;layer++){
+  const lx=x+layer*width*.105, lw=width*(.31+layer*.105), shift=layer*1.7+phase;
+  ctx.beginPath();
+  for(let j=0;j<=28;j++){const f=j/28,y=top+f*(bottom-top),edge=lx+Math.sin(t*1.45+f*9+shift)*width*.045+Math.sin(f*23+shift)*width*.018; if(j===0)ctx.moveTo(edge,y);else ctx.lineTo(edge,y)}
+  for(let j=28;j>=0;j--){const f=j/28,y=top+f*(bottom-top),edge=lx+lw+Math.sin(t*1.25+f*8+shift+1.4)*width*.05+Math.cos(f*19+shift)*width*.016;ctx.lineTo(edge,y)}
+  ctx.closePath();
+  const g=ctx.createLinearGradient(lx,0,lx+lw,0);
+  g.addColorStop(0,'rgba(23,119,210,.12)');g.addColorStop(.2,'rgba(94,205,255,.56)');g.addColorStop(.48,'rgba(235,255,255,.86)');g.addColorStop(.7,'rgba(80,190,255,.62)');g.addColorStop(1,'rgba(24,103,200,.1)');
+  ctx.fillStyle=g;ctx.fill();
  }
- // White turbulence at the foot of the cascade.
- for(let i=0;i<22;i++){
-  const px=x+width*(i+.5)/22+Math.sin(t*2+i)*5,py=bottom+Math.sin(t*4+i*1.7)*7;
-  ctx.beginPath();ctx.ellipse(px,py,2+((i*7)%5),1.5+((i*3)%3),0,0,Math.PI*2);
-  ctx.fillStyle='rgba(240,255,255,.75)';ctx.fill();
+ // Narrow, fast white streams travel down the face at different speeds.
+ for(let i=0;i<42;i++){
+  const base=x+width*(i+.5)/42, speed=54+(i%7)*19;
+  const y=top+((t*speed+i*47+phase*22)%(bottom-top+70));
+  const sway=Math.sin(t*1.9+i*2.1)*width*.025;
+  ctx.beginPath();ctx.moveTo(base+sway,top);
+  ctx.bezierCurveTo(base+sway-width*.035,y*.48,base+sway+width*.025,y-22,base+sway+Math.sin(t*2+i)*width*.018,y);
+  ctx.strokeStyle=i%5===0?'rgba(255,255,255,.95)':'rgba(190,244,255,.55)';
+  ctx.lineWidth=i%6===0?3:1.15;ctx.stroke();
  }
+ // Falling droplets and spray at the plunge pool.
+ for(let i=0;i<34;i++){
+  const px=x+width*(i+.5)/34+Math.sin(t*2.4+i*1.8)*width*.07;
+  const py=bottom+Math.sin(t*3.4+i*2)*10;
+  ctx.beginPath();ctx.ellipse(px,py,2+(i%4),1.5+(i%3),0,0,Math.PI*2);
+  ctx.fillStyle='rgba(239,253,255,.88)';ctx.fill();
+ }
+ const mist=ctx.createRadialGradient(x+width*.5,bottom,2,x+width*.5,bottom,width*.9);
+ mist.addColorStop(0,'rgba(219,250,255,.34)');mist.addColorStop(1,'rgba(115,195,255,0)');
+ ctx.fillStyle=mist;ctx.fillRect(x-width*.45,bottom-38,width*1.9,110);
+ for(let i=0;i<8;i++){
+  const rx=(t*24+i*width*.17)%(width*1.45)-width*.2;
+  const ry=bottom-14-((t*11+i*13)%45);
+  ctx.globalAlpha=.35;ctx.fillStyle='#eaffff';ctx.beginPath();ctx.arc(x+rx,ry,1.2+(i%3),0,Math.PI*2);ctx.fill();
+ }
+ ctx.globalAlpha=1;
 }
 function drawFlower(x,y,size,color,t,delay){
  const pulse=.82+.18*Math.sin(t*1.8+delay);
@@ -125,8 +147,8 @@ function draw(now){
  // Rainbow arch behind the prism
  ctx.save();ctx.lineWidth=Math.max(7,w*.012);const colors=['#ff526e','#ffb94e','#fff16b','#57efaa','#4bdfff','#8771ff','#e46bff'];
  colors.forEach((col,i)=>{ctx.beginPath();ctx.ellipse(w*.5,h*.49,w*(.24+i*.012),h*(.25+i*.012),0,Math.PI*1.08,Math.PI*1.92);ctx.strokeStyle=col;ctx.globalAlpha=.62;ctx.shadowColor=col;ctx.shadowBlur=12;ctx.stroke()});ctx.restore();ctx.globalAlpha=1;ctx.shadowBlur=0;
- const side=Math.max(46,Math.min(w*.105,145));
- drawWaterfall(w*.035,side,t,false);drawWaterfall(w*.93-side,side,t,true);
+ const side=Math.max(70,Math.min(w*.145,190));
+ drawWaterfall(w*.025,Math.max(side,w*.145),t,false);drawWaterfall(w*.83,Math.max(side,w*.145),t,true);
  // Pool and ripples
  const water=ctx.createLinearGradient(0,h*.79,0,h);
  water.addColorStop(0,'rgba(198,250,255,.7)');water.addColorStop(.16,'rgba(45,164,220,.76)');water.addColorStop(1,'rgba(5,20,65,.96)');
@@ -158,7 +180,7 @@ button.addEventListener('click',()=>{
  const now=elapsed;awakeUntil=now+2.6;particles=[];
  const colors=['#fff','#ff62d9','#ffe36a','#5dfff0','#65baff','#b58aff'];
  for(let i=0;i<150;i++){const a=Math.random()*Math.PI*2,s=45+Math.random()*230;particles.push({x:w*.5,y:h*.43,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1.2+Math.random()*1.6,max:2.8,r:1+Math.random()*3,color:colors[i%colors.length]})}
- playSound();hint.textContent='PRISM AWAKENED · COLOR CASCADE';sub.textContent='A thousand colors burst into light';button.textContent='AWAKEN THE PRISM AGAIN';
+ playSound();hint.textContent='PRISM AWAKENED · COLOR CASCADE';sub.textContent='Water, light and color in motion';button.textContent='AWAKEN THE PRISM AGAIN';
 });
 window.addEventListener('resize',resize,{passive:true});
 resize();requestAnimationFrame(draw);
