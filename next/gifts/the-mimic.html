@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TikNation Gift · The Mimic</title>
+<style>
+:root{color-scheme:dark;--ice:#b9f5ff;--red:#ff315b}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#030508;color:#eefcff;font-family:Inter,system-ui,Arial}
+body{background:radial-gradient(ellipse at 50% 38%,#18202a 0,#080b11 43%,#020305 78%)}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 32%,#000b 100%),linear-gradient(0deg,#020305 0%,transparent 28%,transparent 76%,#020305aa)}
+.top{position:absolute;top:max(18px,env(safe-area-inset-top));left:0;right:0;text-align:center;pointer-events:none}
+.kicker{font-size:10px;letter-spacing:.42em;color:#9bb4c5;text-transform:uppercase}
+h1{margin:7px 0 0;font-size:clamp(27px,6vw,48px);letter-spacing:.18em;font-weight:800;text-shadow:0 0 22px #a7efff88}
+.sub{margin-top:7px;font-size:10px;letter-spacing:.22em;color:#8d9ba8}
+.warning{position:absolute;top:24%;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.35em;color:#ff7389;text-shadow:0 0 15px #ff315b;opacity:0;transition:opacity .5s;white-space:nowrap}
+.active .warning{opacity:1;animation:flicker 1.8s infinite}
+.panel{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:11px;padding:0 18px}
+#status{font-size:10px;letter-spacing:.22em;color:#a9c0cc;text-align:center;text-transform:uppercase;min-height:14px}
+button{border:1px solid #a8f3ff99;border-radius:999px;padding:14px 28px;background:linear-gradient(110deg,#0c2835dd,#24111cdd);color:#e9fcff;font-weight:800;letter-spacing:.22em;font-size:11px;box-shadow:0 0 25px #50dfff30,inset 0 0 20px #8cefff12;cursor:pointer}
+button:active{transform:scale(.97)}
+.note{font-size:9px;color:#667681;letter-spacing:.1em;text-align:center}
+@keyframes flicker{0%,18%,22%,60%,64%,100%{opacity:1}20%,62%{opacity:.22}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style></head>
+<body>
+<canvas id="scene"></canvas><div class="vignette"></div>
+<header class="top"><div class="kicker">TikNation · Nightmare Collection</div><h1>THE MIMIC</h1><div class="sub">IT LEARNED YOUR SHAPE</div></header>
+<div class="warning" id="warning">DO NOT TRUST THE REFLECTION</div>
+<div class="panel"><div id="status">A presence waits behind the glass</div><button id="wake">WAKE THE MIMIC</button><div class="note">Sound begins after your tap · Best experienced full screen</div></div>
+<script>
+(()=>{
+const c=document.getElementById('scene'),x=c.getContext('2d'),status=document.getElementById('status'),btn=document.getElementById('wake'),body=document.body;
+let w,h,dpr,t0=performance.now(),awake=false,pulse=0,particles=[],audio=null;
+function resize(){dpr=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;x.setTransform(dpr,0,0,dpr,0,0);particles=Array.from({length:90},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.8,v:.15+Math.random()*.55,a:.15+Math.random()*.55}));}
+addEventListener('resize',resize);resize();
+function glow(color,blur){x.shadowColor=color;x.shadowBlur=blur}
+function draw(t){
+const sec=(t-t0)/1000, cx=w/2,cy=h*.52,scale=Math.min(w/390,h/650),shake=awake?Math.sin(sec*31)*Math.min(4,pulse*1.4):0;
+x.clearRect(0,0,w,h);x.save();x.translate(shake,0);
+let bg=x.createRadialGradient(cx,cy*.75,8,cx,cy,w*.7);bg.addColorStop(0,awake?'#27313a':'#17212b');bg.addColorStop(.55,'#080d13');bg.addColorStop(1,'#020305');x.fillStyle=bg;x.fillRect(0,0,w,h);
+// floating dust
+for(const p of particles){p.y-=p.v*(awake?1.9:1);if(p.y<0)p.y=h;x.globalAlpha=p.a*(.6+.4*Math.sin(sec*2+p.x));x.fillStyle=awake?'#ffb4c1':'#b7eaff';x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()}x.globalAlpha=1;
+// mirror frame
+let mw=Math.min(w*.67,340),mh=Math.min(h*.48,440),mx=cx-mw/2,my=cy-mh/2;
+x.save();glow(awake?'#ff315b':'#8adfff',awake?25:18);x.strokeStyle=awake?'#9b334b':'#66899a';x.lineWidth=5;x.beginPath();x.roundRect(mx,my,mw,mh,Math.min(90,mw*.22));x.stroke();x.restore();
+x.strokeStyle='#d6f6ff55';x.lineWidth=1;x.beginPath();x.roundRect(mx+8,my+8,mw-16,mh-16,Math.min(82,mw*.2));x.stroke();
+// glass
+let glass=x.createLinearGradient(mx,my,mx+mw,my+mh);glass.addColorStop(0,'#102532');glass.addColorStop(.5,awake?'#30111b':'#172b38');glass.addColorStop(1,'#080d16');x.fillStyle=glass;x.beginPath();x.roundRect(mx+10,my+10,mw-20,mh-20,Math.min(78,mw*.18));x.fill();
+// mirror shimmer
+x.save();x.globalAlpha=.17;x.fillStyle='#c4f6ff';x.beginPath();x.moveTo(mx+mw*.18,my+18);x.lineTo(mx+mw*.34,my+18);x.lineTo(mx+mw*.78,my+mh-18);x.lineTo(mx+mw*.65,my+mh-18);x.fill();x.restore();
+// entity silhouette, inside mirror
+let sway=Math.sin(sec*1.4)*3, rise=awake?Math.min(1,pulse/90):.12, ey=my+mh*.22-(rise*12);
+x.save();x.translate(cx,0);x.translate(sway,0);
+let headW=mw*.19,headH=mh*.17;
+glow(awake?'#ff214c':'#9adfff',awake?20:9);
+x.fillStyle='#030407';x.beginPath();x.ellipse(0,ey+headH*.55,headW,headH*.62,0,0,Math.PI*2);x.fill();
+// neck and shoulders
+x.beginPath();x.moveTo(-headW*.48,ey+headH);x.quadraticCurveTo(-headW*.7,ey+headH*1.55,-mw*.34,my+mh*.76);x.quadraticCurveTo(0,my+mh*.63,mw*.34,my+mh*.76);x.quadraticCurveTo(headW*.7,ey+headH*1.55,headW*.48,ey+headH);x.fill();
+// long wrong arms
+x.lineWidth=awake?Math.max(8,scale*12):Math.max(6,scale*9);x.lineCap='round';x.strokeStyle='#030407';x.beginPath();x.moveTo(-mw*.25,my+mh*.55);x.quadraticCurveTo(-mw*.43,my+mh*.72,-mw*.31,my+mh*.94);x.moveTo(mw*.25,my+mh*.55);x.quadraticCurveTo(mw*.46,my+mh*.72,mw*.33,my+mh*.96);x.stroke();
+if(awake){x.lineWidth=2;x.strokeStyle='#68202f';for(let i=0;i<4;i++){let yy=my+mh*(.77+i*.035);x.beginPath();x.moveTo(-mw*.34,yy);x.quadraticCurveTo(0,yy+8,mw*.34,yy);x.stroke()}}
+x.restore();
+// face details
+let eyeY=ey+headH*.53, eyeGap=headW*.52;
+x.save();glow(awake?'#ff123d':'#a9edff',awake?22:10);x.fillStyle=awake?'#ff183f':'#b9efff';
+for(let s of [-1,1]){x.beginPath();x.ellipse(s*eyeGap,eyeY,awake?headW*.16:headW*.11,awake?headH*.07:headH*.045,0,0,Math.PI*2);x.fill()}
+if(awake){x.strokeStyle='#ff315b';x.lineWidth=3;x.beginPath();x.moveTo(-headW*.23,ey+headH*.85);x.quadraticCurveTo(0,ey+headH*1.3,headW*.23,ey+headH*.85);x.stroke()}
+x.restore();
+// mirror cracks when awake
+if(awake){x.save();x.strokeStyle='#ff718777';x.lineWidth=1.5;for(let i=0;i<7;i++){let a=i*.89+sec*.12,px=cx+Math.cos(a)*mw*.31,py=my+mh*.44+Math.sin(a)*mh*.39;x.beginPath();x.moveTo(px,py);for(let j=1;j<5;j++){let q=j/4;x.lineTo(px+Math.cos(a+Math.sin(j*5)*.25)*q*35,py+Math.sin(a+Math.cos(j*4)*.25)*q*42)}x.stroke()}x.restore()}
+// pulsing floor haze
+let haze=x.createRadialGradient(cx,my+mh*.95,2,cx,my+mh*.95,mw*.7);haze.addColorStop(0,awake?'#b0183a44':'#6dcce522');haze.addColorStop(1,'transparent');x.fillStyle=haze;x.fillRect(mx-50,my+mh*.65,mw+100,mh*.5);
+x.restore();requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+btn.addEventListener('click',()=>{
+if(awake){pulse=0;awake=false;body.classList.remove('active');btn.textContent='WAKE THE MIMIC';status.textContent='The reflection has gone still';return}
+awake=true;pulse=0;body.classList.add('active');btn.textContent='SEAL THE MIRROR';status.textContent='It is moving like you… but wrong.';
+try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();audio.resume();let now=audio.currentTime;[48,51,43].forEach((f,i)=>{let o=audio.createOscillator(),g=audio.createGain();o.type='sawtooth';o.frequency.setValueAtTime(f,now);o.frequency.exponentialRampToValueAtTime(f*.55,now+2.8);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.08/(i+1),now+.2);g.gain.exponentialRampToValueAtTime(.0001,now+3);o.connect(g);g.connect(audio.destination);o.start(now);o.stop(now+3.1)});let noise=audio.createBufferSource(),buffer=audio.createBuffer(1,audio.sampleRate*1.5,audio.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.18;noise.buffer=buffer;let filter=audio.createBiquadFilter(),gain=audio.createGain();filter.type='lowpass';filter.frequency.value=380;gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.13,now+.35);gain.gain.exponentialRampToValueAtTime(.0001,now+1.5);noise.connect(filter);filter.connect(gain);gain.connect(audio.destination);noise.start(now);noise.stop(now+1.5)}catch(e){}
+let start=performance.now();function pulseAnim(){pulse=Math.min(100,(performance.now()-start)/10);if(pulse<100)requestAnimationFrame(pulseAnim)}pulseAnim();
+});
+})();
+</script></body></html>
