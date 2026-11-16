@@ -122,6 +122,28 @@ body.revealed .fall:after{animation:colorWave 1.4s ease-in-out infinite alternat
 @keyframes butterflyFly4{0%{transform:translate(0,0) scale(.4)}30%{transform:translate(22vw,-25vh) scale(.85)}65%{transform:translate(-31vw,-12vh) scale(.65)}100%{transform:translate(-5vw,25vh) scale(.45)}}
 @media(prefers-reduced-motion:reduce){body.revealed .butterfly{animation:none!important;opacity:.8}.butterfly:before,.butterfly:after{animation:none}}
 
+
+/* WATERFALL SPRAY, VOLUMETRIC MIST AND POOL RIPPLES */
+.fall{isolation:isolate}
+.mist-bank{position:absolute;z-index:2;left:-45%;right:-45%;bottom:2%;height:31%;pointer-events:none;background:radial-gradient(ellipse at 50% 75%,#eaffff99 0%,#a8efff55 24%,#8edfff22 48%,transparent 73%);filter:blur(9px);opacity:.55;animation:mistDrift 4.8s ease-in-out infinite alternate}
+.mist-bank:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 20% 65%,#fff8 0 3%,transparent 22%),radial-gradient(ellipse at 70% 42%,#d8fbff88 0 5%,transparent 26%),radial-gradient(ellipse at 48% 80%,#fff7 0 4%,transparent 25%);filter:blur(6px);animation:mistPuff 3.6s ease-in-out infinite alternate}
+.spray-rainbow{position:absolute;z-index:3;left:-38%;right:-38%;bottom:9%;height:24%;border-radius:50% 50% 0 0;border-top:4px solid #ff6ee8;border-left:3px solid #ffe36c;border-right:3px solid #63eaff;filter:blur(1.3px) drop-shadow(0 0 8px #fff) drop-shadow(0 0 15px #7ceaff);opacity:.32;transform:scaleY(.68);pointer-events:none}
+.spray-rainbow:after{content:"";position:absolute;inset:8px 9% 0;border-radius:50% 50% 0 0;border-top:3px solid #fff8;border-left:2px solid #a5ffec;border-right:2px solid #c9a1ff;opacity:.8}
+.spray-glints{position:absolute;z-index:4;inset:42% -15% 5%;pointer-events:none;background-image:radial-gradient(2px 3px at 18% 44%,#fff 55%,transparent 75%),radial-gradient(1.5px 2px at 37% 72%,#bafaff 55%,transparent 75%),radial-gradient(2px 2px at 68% 35%,#fff 55%,transparent 75%),radial-gradient(1px 2px at 83% 65%,#e6caff 55%,transparent 75%);background-size:83px 71px;opacity:.5;animation:sprayDrift 5s linear infinite}
+.pool-ripples{position:absolute;z-index:4;left:50%;top:85%;width:min(88vw,850px);height:15vh;transform:translateX(-50%);pointer-events:none;opacity:.65;background:radial-gradient(ellipse at center,#c7faff22 0 20%,transparent 67%);filter:blur(1px)}
+.pool-ripples:before,.pool-ripples:after{content:"";position:absolute;left:50%;top:40%;width:25%;height:35%;border:2px solid #c8faff99;border-radius:50%;transform:translate(-50%,-50%) scale(.5);box-shadow:0 0 12px #63eaff,inset 0 0 8px #fff5;animation:rippleExpand 3s ease-out infinite}
+.pool-ripples:after{animation-delay:1.5s;border-color:#ffddff99}
+body.revealed .mist-bank{opacity:.95;filter:blur(7px) drop-shadow(0 0 12px #baf8ff)}
+body.revealed .spray-rainbow{opacity:.9;animation:sprayRainbowPulse 2.6s ease-in-out infinite alternate}
+body.revealed .spray-glints{opacity:.95}
+body.revealed .pool-ripples{opacity:1}
+@keyframes mistDrift{from{transform:translate3d(-5%,2%,0) scale(.9)}to{transform:translate3d(7%,-7%,0) scale(1.12)}}
+@keyframes mistPuff{from{opacity:.45;transform:translateY(8px)}to{opacity:1;transform:translateY(-12px)}}
+@keyframes sprayDrift{to{background-position:83px 71px;transform:translateY(-8px)}}
+@keyframes sprayRainbowPulse{to{filter:blur(.5px) drop-shadow(0 0 14px #fff) drop-shadow(0 0 24px #ff72e8);transform:scaleY(.82) translateY(-5px)}}
+@keyframes rippleExpand{0%{opacity:0;transform:translate(-50%,-50%) scale(.25)}18%{opacity:.9}100%{opacity:0;transform:translate(-50%,-50%) scale(3.8)}}
+@media(prefers-reduced-motion:reduce){.mist-bank,.spray-glints,.pool-ripples:before,.pool-ripples:after{animation:none!important}.spray-rainbow{animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -130,7 +152,7 @@ body.revealed .fall:after{animation:colorWave 1.4s ease-in-out infinite alternat
 <div class="portal" aria-hidden="true"></div>
 <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div><div class="orb o5"></div>
 <div class="lightning" aria-hidden="true"></div>
-<div class="fall left"><canvas></canvas></div><div class="fall right"><canvas></canvas></div>
+<div class="fall left"><canvas></canvas><div class="mist-bank"></div><div class="spray-rainbow"></div><div class="spray-glints"></div></div><div class="fall right"><canvas></canvas><div class="mist-bank"></div><div class="spray-rainbow"></div><div class="spray-glints"></div></div><div class="pool-ripples" aria-hidden="true"></div>
 
 <svg class="rainbow-bridge" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
  <defs><linearGradient id="bridgeColors" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ff4bce"/><stop offset=".2" stop-color="#ffb84b"/><stop offset=".4" stop-color="#fff36b"/><stop offset=".6" stop-color="#4dffd4"/><stop offset=".8" stop-color="#48cfff"/><stop offset="1" stop-color="#a56bff"/></linearGradient></defs>
