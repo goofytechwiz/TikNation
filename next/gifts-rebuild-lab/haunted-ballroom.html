@@ -1,53 +1,94 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#08070b"><title>The Haunted Ballroom · TikNation</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Haunted Ballroom | TikNation</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#09080d;color:#f2e5d0;font-family:Georgia,serif}body{overflow-x:hidden}
-header{height:54px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ad895455;font:800 10px system-ui;letter-spacing:.18em;color:#d9bd8e}a{color:#ead2aa;text-decoration:none}
-main{width:min(1200px,96%);margin:24px auto 48px}.eyebrow{font:800 10px system-ui;letter-spacing:.28em;color:#d2ae75}.title{font-size:clamp(38px,7vw,72px);font-weight:400;line-height:.94;margin:10px 0 12px}.intro{font:13px/1.65 system-ui;color:#c3b7a7;max-width:780px;margin:0}
-#scene{height:clamp(430px,64vw,690px);min-height:430px;margin:22px 0 14px;position:relative;overflow:hidden;border:1px solid #b18c5b88;background:radial-gradient(ellipse at 50% 34%,#73513a 0,#35252b 48%,#09090f 100%);isolation:isolate;perspective:900px}
-.backwall{position:absolute;inset:7% 5% 25%;background:linear-gradient(90deg,#160f17,#4b302c 12%,#281a20 50%,#4b302c 88%,#160f17);border:12px ridge #92704a;box-shadow:inset 0 0 80px #050409,0 15px 35px #000;z-index:1}
-.panels{position:absolute;inset:4% 2% 0;display:flex;justify-content:space-around;z-index:2;pointer-events:none}.panel{width:10%;height:75%;border:5px double #a88658;background:linear-gradient(90deg,#21151b,#39242a,#21151b);box-shadow:inset 0 0 22px #000,0 0 10px #e0b97822}
-.window{position:absolute;top:11%;height:64%;width:13%;border:9px ridge #b38d59;border-radius:50% 50% 2% 2%/20% 20% 0 0;background:linear-gradient(180deg,#152338,#7588a0 48%,#b4a38c 53%,#1d1a24 100%);box-shadow:inset 0 0 24px #b5d8ff88,0 0 32px #9fc7ff44;z-index:3}
-.window:before{content:"";position:absolute;left:48%;top:0;bottom:0;width:5px;background:#b38d59}.window:after{content:"";position:absolute;left:0;right:0;top:48%;height:5px;background:#b38d59}
-.w1{left:8%}.w2{left:30%}.w3{right:30%}.w4{right:8%}
-.moon{position:absolute;width:32px;height:32px;border-radius:50%;background:#f3e6c3;box-shadow:0 0 28px 10px #c6d9ff88;left:calc(50% - 16px);top:18%}
-.gallery{position:absolute;z-index:5;left:2%;right:2%;top:21%;height:14%;background:linear-gradient(#26171d,#50362b);border-top:7px solid #b38d59;border-bottom:9px solid #a47c4b;box-shadow:0 14px 16px #0009}
-.gallery:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 3.4%,#c4a06a 3.5% 3.8%,transparent 3.9% 4.1%)}
-.pillars{position:absolute;z-index:6;left:4%;right:4%;top:13%;height:66%;display:flex;justify-content:space-between;pointer-events:none}
-.pillar{width:5.5%;height:100%;background:linear-gradient(90deg,#513a2d,#c2a47b 22%,#876747 48%,#d1b78d 68%,#493326);border-left:5px solid #d0b17c;border-right:5px solid #4b3328;box-shadow:0 0 18px #000}
-.pillar:before,.pillar:after{content:"";position:absolute;left:-18%;width:136%;height:5%;background:linear-gradient(#e0c18b,#755333);border:2px solid #4a3023}.pillar:before{top:0}.pillar:after{bottom:0}
-.curtain{position:absolute;z-index:7;top:8%;height:71%;width:8%;background:repeating-linear-gradient(90deg,#260d18 0 12px,#561b2b 13px 23px,#35101e 24px 31px);filter:drop-shadow(5px 8px 8px #000);clip-path:polygon(0 0,100% 0,100% 100%,82% 93%,65% 100%,45% 92%,24% 100%,0 91%)}.c1{left:4%}.c2{left:26%}.c3{right:26%}.c4{right:4%}
-.ceiling{position:absolute;z-index:8;left:0;right:0;top:0;height:13%;background:linear-gradient(#100c14,#4d342a);border-bottom:8px solid #a17b4c;box-shadow:0 10px 20px #000}
-.chandelier{position:absolute;z-index:10;top:2%;left:50%;width:210px;height:170px;transform:translateX(-50%);filter:drop-shadow(0 0 18px #ffd78b88)}
-.chain{position:absolute;left:50%;top:0;width:3px;height:55px;background:#c5a16a}.ring{position:absolute;left:50%;top:48px;transform:translateX(-50%);width:170px;height:48px;border:7px solid #c39b60;border-radius:50%;box-shadow:0 0 12px #ffdc9a}.arm{position:absolute;top:61px;left:50%;width:175px;height:70px;transform:translateX(-50%);border-top:5px solid #d1ad72;border-radius:50%}.bulb{position:absolute;top:94px;width:13px;height:20px;border-radius:50%;background:#fff1bf;box-shadow:0 0 13px 6px #ffce72}.b1{left:18px}.b2{left:55px}.b3{left:96px}.b4{left:134px}
-.floor{position:absolute;z-index:9;left:-10%;right:-10%;bottom:-23%;height:52%;transform:rotateX(58deg);transform-origin:top center;background:repeating-conic-gradient(from 45deg,#9a7148 0 25%,#271c25 0 50%) 50%/105px 105px;box-shadow:inset 0 20px 40px #000}
-.floorglow{position:absolute;z-index:10;left:12%;right:12%;bottom:2%;height:22%;background:radial-gradient(ellipse,#b38a5744,transparent 70%);filter:blur(8px)}
-.ghost{position:absolute;z-index:12;bottom:14%;width:12%;height:39%;border-radius:48% 48% 18% 18%;background:linear-gradient(90deg,#8caec088,#e9ffffe8 48%,#9bbbc8aa);clip-path:polygon(24% 0,76% 0,83% 20%,100% 100%,82% 90%,67% 100%,50% 89%,31% 100%,14% 91%,0 100%,18% 20%);filter:drop-shadow(0 0 18px #c6efff);animation:drift 3.4s ease-in-out infinite alternate}
-.ghost:before{content:"";position:absolute;top:7%;left:28%;width:44%;height:25%;border-radius:50%;background:radial-gradient(ellipse,#f8ffff,#b5d3df 70%,transparent 72%);box-shadow:0 0 18px #e7ffff}
-.ghost:after{content:"";position:absolute;top:16%;left:40%;width:5px;height:5px;border-radius:50%;background:#17242b;box-shadow:13px 0 #17242b}
-.g1{left:37%;animation-delay:-1s}.g2{left:53%;height:35%;background:linear-gradient(90deg,#b3a3c488,#fff0f4e8 48%,#bcaac8aa);animation-delay:-2.2s}
-@keyframes drift{to{transform:translateY(-18px) rotate(2deg)}}
-.dust{position:absolute;inset:0;z-index:13;pointer-events:none;background-image:radial-gradient(#f7dfaa 1px,transparent 2px),radial-gradient(#d4edff 1px,transparent 2px);background-size:113px 137px,181px 163px;background-position:0 0,50px 70px;opacity:.5;animation:dustmove 18s linear infinite}@keyframes dustmove{to{background-position:0 -300px,50px -230px}}
-.caption{position:absolute;z-index:20;left:14px;bottom:12px;font:800 9px system-ui;letter-spacing:.18em;color:#f3dfbd;text-shadow:0 2px 8px #000}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}button{padding:14px 18px;border:1px solid #b99b6b88;background:#211a19;color:#f4e7d0;font:800 10px system-ui;letter-spacing:.12em}button.primary{background:linear-gradient(120deg,#dfc18b,#8b633d);color:#170f0b;border:0}.status,.note{font:11px/1.7 system-ui;color:#c6b48e;margin-top:12px}.note{color:#908779}
-@media(max-width:620px){#scene{height:116vw;min-height:440px}.window{height:55%;width:15%}.w2{left:28%}.w3{right:28%}.gallery{top:24%}.pillars{top:16%}.pillar{width:6%}.chandelier{transform:translateX(-50%) scale(.78);transform-origin:top center}.ghost{bottom:13%;width:17%;height:32%}.g1{left:33%}.g2{left:53%}.floor{height:43%;bottom:-18%}.backwall{inset:8% 3% 23%}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important}}
-</style></head>
-<body><header><b>TIKNATION NEXT · GIFT PREVIEW</b><a href="../gifts/">← GIFT GALLERY</a></header>
-<main><div class="eyebrow">THE GRAND VICTORIAN BALLROOM · AFTER MIDNIGHT</div><h1 class="title">THE HAUNTED BALLROOM</h1><p class="intro">The grand ballroom has been sealed for decades. Moonlight cuts through the arched windows, crystal chandeliers flicker above the parquet floor, and two spectral dancers return for one final waltz.</p>
-<section id="scene" aria-label="Haunted Victorian ballroom scene">
-<div class="backwall"></div><div class="moon"></div><div class="window w1"></div><div class="window w2"></div><div class="window w3"></div><div class="window w4"></div>
-<div class="panels"><i class="panel"></i><i class="panel"></i><i class="panel"></i><i class="panel"></i><i class="panel"></i><i class="panel"></i><i class="panel"></i></div>
-<div class="gallery"></div><div class="pillars"><i class="pillar"></i><i class="pillar"></i><i class="pillar"></i><i class="pillar"></i><i class="pillar"></i></div>
-<div class="curtain c1"></div><div class="curtain c2"></div><div class="curtain c3"></div><div class="curtain c4"></div><div class="ceiling"></div>
-<div class="chandelier"><i class="chain"></i><i class="ring"></i><i class="arm"></i><i class="bulb b1"></i><i class="bulb b2"></i><i class="bulb b3"></i><i class="bulb b4"></i></div>
-<div class="floor"></div><div class="floorglow"></div><div class="ghost g1"></div><div class="ghost g2"></div><div class="dust"></div><div class="caption" id="caption">THE ORCHESTRA WAITING · 12:00 AM</div>
-</section>
-<div class="controls"><button class="primary" id="start">OPEN THE BALLROOM · SOUND ON</button><button id="reset">RESET SCENE</button></div><div class="status" id="status" role="status" aria-live="polite">THE BALLROOM IS WAITING · TAP TO BEGIN</div>
-<p class="note">This is a self-contained animated scene—no external 3D library, network import, or WebGL required. Sound begins only after you tap, because mobile browsers block autoplay. This is a preview; gift sending and wallet charging are not connected.</p></main>
+html,body{margin:0;padding:0;background:#17111b;color:#fff1d8;font-family:Georgia,serif}
+header{padding:16px 18px;background:#100c13;border-bottom:2px solid #b48b55;font: bold 12px Arial,sans-serif;letter-spacing:2px}
+header a{color:#f5d8a5;float:right}
+main{max-width:1100px;margin:20px auto;padding:0 12px}
+h1{font-size:clamp(34px,7vw,64px);font-weight:normal;margin:8px 0;color:#f7e5c5}
+p{font:14px/1.5 Arial,sans-serif;color:#d8c8b4}
+.scene{display:block;width:100%;height:auto;min-height:300px;background:#211727;border:2px solid #b48b55}
+.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:14px 0}
+button{background:#c6a16c;color:#170f0b;border:0;padding:14px 18px;font-weight:bold;letter-spacing:1px}
+#status{font:12px Arial,sans-serif;color:#f3d9a7}
+</style>
+</head>
+<body>
+<header>TIKNATION NEXT · GIFT PREVIEW <a href="../gifts/">GIFT GALLERY ↗</a></header>
+<main>
+<div style="font:bold 11px Arial,sans-serif;letter-spacing:4px;color:#d9b77e">AFTER MIDNIGHT · THE GRAND VICTORIAN BALLROOM</div>
+<h1>THE HAUNTED BALLROOM</h1>
+<p>Moonlight pours through towering stained-glass windows. Crystal chandeliers illuminate the grand floor as two ghostly dancers return for their final waltz.</p>
+<svg class="scene" viewBox="0 0 1000 620" role="img" aria-label="Illustrated Victorian ballroom with chandeliers, arched moonlit windows, marble pillars and two ghost dancers" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="wall" x2="0" y2="1"><stop stop-color="#74503b"/><stop offset=".45" stop-color="#38232c"/><stop offset="1" stop-color="#160f1b"/></linearGradient>
+<linearGradient id="glass" x2="0" y2="1"><stop stop-color="#1c3451"/><stop offset=".55" stop-color="#9db4c5"/><stop offset="1" stop-color="#30253b"/></linearGradient>
+<linearGradient id="gold"><stop stop-color="#65472d"/><stop offset=".25" stop-color="#f0d29b"/><stop offset=".55" stop-color="#987044"/><stop offset=".8" stop-color="#e6c58c"/><stop offset="1" stop-color="#4a3023"/></linearGradient>
+<linearGradient id="ghost"><stop stop-color="#83b6cf" stop-opacity=".45"/><stop offset=".48" stop-color="#f0ffff" stop-opacity=".96"/><stop offset="1" stop-color="#8eb4c9" stop-opacity=".5"/></linearGradient>
+<radialGradient id="glow"><stop stop-color="#ffe8ad" stop-opacity=".75"/><stop offset="1" stop-color="#ffe8ad" stop-opacity="0"/></radialGradient>
+<pattern id="tiles" width="100" height="100" patternUnits="userSpaceOnUse"><rect width="100" height="100" fill="#32232c"/><path d="M0 0H100V100H0Z" fill="none" stroke="#c39b64" stroke-width="3"/><path d="M0 0L100 100M100 0L0 100" stroke="#87613e" stroke-width="2"/></pattern>
+<filter id="soft"><feGaussianBlur stdDeviation="12"/></filter>
+</defs>
+<rect width="1000" height="620" fill="#100d18"/>
+<rect x="35" y="50" width="930" height="430" fill="url(#wall)" stroke="url(#gold)" stroke-width="14"/>
+<!-- high ceiling and cornices -->
+<path d="M20 85H980M20 110H980M20 455H980" stroke="url(#gold)" stroke-width="10" fill="none"/>
+<path d="M30 40Q500 -30 970 40" stroke="#d0aa70" stroke-width="12" fill="none"/>
+<!-- tall arched windows -->
+<g stroke="url(#gold)" stroke-width="12">
+<path d="M95 380V180Q95 85 185 85Q275 85 275 180V380Z" fill="url(#glass)"/>
+<path d="M365 380V180Q365 85 455 85Q545 85 545 180V380Z" fill="url(#glass)"/>
+<path d="M635 380V180Q635 85 725 85Q815 85 815 180V380Z" fill="url(#glass)"/>
+</g>
+<g stroke="#d3b27b" stroke-width="7"><path d="M185 90V380M95 250H275M455 90V380M365 250H545M725 90V380M635 250H815"/></g>
+<circle cx="185" cy="165" r="34" fill="#f8e9c8" opacity=".9"/><circle cx="455" cy="165" r="34" fill="#f8e9c8" opacity=".9"/><circle cx="725" cy="165" r="34" fill="#f8e9c8" opacity=".9"/>
+<!-- balcony -->
+<rect x="55" y="260" width="890" height="25" fill="#241820" stroke="url(#gold)" stroke-width="8"/>
+<path d="M65 285V330M95 285V330M125 285V330M155 285V330M185 285V330M215 285V330M245 285V330M275 285V330M305 285V330M335 285V330M365 285V330M395 285V330M425 285V330M455 285V330M485 285V330M515 285V330M545 285V330M575 285V330M605 285V330M635 285V330M665 285V330M695 285V330M725 285V330M755 285V330M785 285V330M815 285V330M845 285V330M875 285V330M905 285V330M935 285V330" stroke="#c29a61" stroke-width="5"/>
+<rect x="50" y="330" width="900" height="12" fill="url(#gold)"/>
+<!-- pillars -->
+<g fill="url(#gold)" stroke="#3b2926" stroke-width="3">
+<rect x="55" y="115" width="48" height="340"/><rect x="45" y="110" width="68" height="18"/><rect x="45" y="445" width="68" height="20"/>
+<rect x="897" y="115" width="48" height="340"/><rect x="887" y="110" width="68" height="18"/><rect x="887" y="445" width="68" height="20"/>
+<rect x="315" y="120" width="28" height="325"/><rect x="305" y="115" width="48" height="16"/>
+<rect x="657" y="120" width="28" height="325"/><rect x="647" y="115" width="48" height="16"/>
+</g>
+<!-- chandelier -->
+<ellipse cx="500" cy="175" rx="200" ry="145" fill="url(#glow)" filter="url(#soft)"/>
+<path d="M500 0V80" stroke="#d7b578" stroke-width="8"/>
+<ellipse cx="500" cy="105" rx="120" ry="32" fill="none" stroke="url(#gold)" stroke-width="12"/>
+<path d="M380 105Q330 160 365 205M420 115Q400 175 420 220M580 115Q600 175 580 220M620 105Q670 160 635 205" fill="none" stroke="#d7b578" stroke-width="9"/>
+<ellipse cx="500" cy="220" rx="145" ry="38" fill="none" stroke="url(#gold)" stroke-width="12"/>
+<g fill="#fff1bb" stroke="#d2a969" stroke-width="5"><circle cx="365" cy="205" r="14"/><circle cx="420" cy="220" r="14"/><circle cx="500" cy="240" r="14"/><circle cx="580" cy="220" r="14"/><circle cx="635" cy="205" r="14"/></g>
+<!-- velvet curtains -->
+<path d="M50 80Q120 120 110 420L50 455Z M280 80Q230 130 250 420L300 455Z M700 80Q750 130 730 420L680 455Z M950 80Q880 120 890 420L950 455Z" fill="#571d31" stroke="#b48b55" stroke-width="6"/>
+<!-- floor -->
+<path d="M0 470H1000V620H0Z" fill="url(#tiles)" stroke="#c29a61" stroke-width="8"/>
+<ellipse cx="500" cy="525" rx="370" ry="85" fill="url(#glow)" opacity=".4"/>
+<!-- dancing ghosts -->
+<g>
+<path d="M410 365Q380 395 388 440L355 520Q405 505 425 530Q450 500 470 530L455 440Q470 395 440 365Z" fill="url(#ghost)" stroke="#c9efff" stroke-width="3"/>
+<ellipse cx="425" cy="350" rx="35" ry="42" fill="url(#ghost)"/>
+<path d="M400 380Q365 360 350 400M450 380Q480 350 495 380" fill="none" stroke="#dffaff" stroke-width="17" stroke-linecap="round"/>
+<circle cx="413" cy="350" r="4" fill="#20303d"/><circle cx="437" cy="350" r="4" fill="#20303d"/>
+</g>
+<g>
+<path d="M540 380Q515 405 520 445L490 520Q535 505 555 530Q580 505 605 520L580 440Q595 405 570 380Z" fill="url(#ghost)" stroke="#f0e2ff" stroke-width="3"/>
+<ellipse cx="555" cy="365" rx="34" ry="42" fill="url(#ghost)"/>
+<path d="M530 390Q500 370 485 400M580 390Q610 370 625 400" fill="none" stroke="#f4edff" stroke-width="17" stroke-linecap="round"/>
+<circle cx="543" cy="365" r="4" fill="#26303b"/><circle cx="567" cy="365" r="4" fill="#26303b"/>
+</g>
+<g fill="#ffe6ae" opacity=".85"><circle cx="150" cy="480" r="4"/><circle cx="240" cy="530" r="3"/><circle cx="760" cy="490" r="4"/><circle cx="830" cy="550" r="3"/><circle cx="700" cy="430" r="3"/><circle cx="300" cy="430" r="3"/></g>
+<text x="500" y="595" text-anchor="middle" fill="#f6dfb5" font-family="Arial" font-size="14" letter-spacing="5">THE MIDNIGHT WALTZ</text>
+</svg>
+<div class="controls"><button id="sound">PLAY THE MIDNIGHT WALTZ</button><span id="status">THE ORCHESTRA IS WAITING</span></div>
+<p>Sound starts only after you tap. This preview does not send gifts or charge coins.</p>
+</main>
 <script>
-(()=>{let ctx=null,loop=null,step=0,playing=false;const status=document.getElementById('status'),caption=document.getElementById('caption'),start=document.getElementById('start');function note(freq,at,dur,vol,wave){if(!ctx)return;const o=ctx.createOscillator(),g=ctx.createGain();o.type=wave||'sine';o.frequency.setValueAtTime(freq,at);g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(vol,at+.07);g.gain.exponentialRampToValueAtTime(.0001,at+dur);o.connect(g);g.connect(ctx.destination);o.start(at);o.stop(at+dur+.03)}function waltz(){if(!playing||!ctx)return;const now=ctx.currentTime,melody=[392,440,523.25,493.88,440,392,349.23,392,440,523.25,587.33,523.25];note(melody[step%melody.length],now,.58,.035,'triangle');note(melody[step%melody.length]/2,now,.72,.018,'sine');if(step%3===0)note(130.81,now,.8,.026,'sine');if(step%4===2)note(783.99,now+.12,.38,.012,'sine');step++;loop=setTimeout(waltz,620)}start.addEventListener('click',async()=>{try{if(!ctx)ctx=new(window.AudioContext||window.webkitAudioContext)();await ctx.resume();playing=true;clearTimeout(loop);waltz();note(82.4,ctx.currentTime,1.7,.025,'sawtooth');caption.textContent='THE GHOSTS RETURN · THE MIDNIGHT WALTZ';status.textContent='THE CHANDELIERS GLOW · THE SPECTRAL WALTZ HAS BEGUN';start.textContent='WALTZ PLAYING · SOUND ON'}catch(e){status.textContent='SOUND IS UNAVAILABLE · THE BALLROOM ANIMATION CONTINUES'}});document.getElementById('reset').addEventListener('click',()=>{playing=false;clearTimeout(loop);if(ctx){ctx.close().catch(()=>{});ctx=null}step=0;caption.textContent='THE ORCHESTRA WAITING · 12:00 AM';status.textContent='SCENE RESET · TAP OPEN THE BALLROOM TO BEGIN';start.textContent='OPEN THE BALLROOM · SOUND ON'})})();
-</script></body></html>
+document.getElementById('sound').addEventListener('click',function(){try{const C=window.AudioContext||window.webkitAudioContext;const c=new C();const notes=[392,440,523,494,440,392,349,392];let t=c.currentTime;notes.forEach((n,i)=>{const o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.value=n;g.gain.setValueAtTime(.0001,t+i*.48);g.gain.exponentialRampToValueAtTime(.045,t+i*.48+.04);g.gain.exponentialRampToValueAtTime(.0001,t+i*.48+.4);o.connect(g);g.connect(c.destination);o.start(t+i*.48);o.stop(t+i*.48+.42)});document.getElementById('status').textContent='THE MIDNIGHT WALTZ IS PLAYING'}catch(e){document.getElementById('status').textContent='AUDIO IS NOT AVAILABLE IN THIS BROWSER'}});
+</script>
+</body></html>
