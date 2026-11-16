@@ -49,21 +49,38 @@ function meteor(p){
 }
 function impactScene(t){
  const age=(t-impactAt)/1000,cx=w*.5,sea=h*.665;
- // blast flash fading rapidly
- const flash=Math.exp(-age*2.7);if(flash>.01){const f=ctx.createRadialGradient(cx,sea,0,cx,sea,w*.7);f.addColorStop(0,'rgba(255,244,206,'+(.85*flash)+')');f.addColorStop(.25,'rgba(255,155,79,'+(.28*flash)+')');f.addColorStop(1,'rgba(255,125,50,0)');ctx.fillStyle=f;ctx.fillRect(0,0,w,h)}
- // tall central water column and outward curling crown
- const grow=clamp(age/.7,0,1),fall=clamp((age-2.8)/3,0,1),height=h*.39*grow*(1-.45*fall);
+ const grow=clamp(age/.55,0,1),decay=clamp((age-3.4)/3.8,0,1);
+ // A brief, hot impact flash reflected across the sea.
+ const flash=Math.exp(-age*3.1);
+ if(flash>.008){const f=ctx.createRadialGradient(cx,sea,0,cx,sea,w*.55);f.addColorStop(0,'rgba(255,248,225,'+(.9*flash)+')');f.addColorStop(.16,'rgba(255,190,125,'+(.48*flash)+')');f.addColorStop(.55,'rgba(255,119,65,'+(.10*flash)+')');f.addColorStop(1,'rgba(255,100,40,0)');ctx.fillStyle=f;ctx.fillRect(0,0,w,h)}
+ const plumeH=h*.43*grow*(1-.52*decay);
+ // Deep, translucent water mass: several offset lobes create an irregular rising column.
  ctx.save();ctx.translate(cx,sea);
- const plume=ctx.createLinearGradient(-w*.13,0,w*.13,-height);plume.addColorStop(0,'rgba(36,102,133,.08)');plume.addColorStop(.35,'rgba(134,206,226,.9)');plume.addColorStop(.52,'rgba(235,249,250,.96)');plume.addColorStop(.72,'rgba(72,147,177,.8)');plume.addColorStop(1,'rgba(22,65,91,.04)');
- ctx.fillStyle=plume;ctx.beginPath();ctx.moveTo(-5,0);ctx.bezierCurveTo(-w*.10,-height*.22,-w*.055,-height*.68,-w*.025,-height);ctx.bezierCurveTo(-w*.015,-height*.74,w*.02,-height*.65,w*.025,-height*.94);ctx.bezierCurveTo(w*.04,-height*.65,w*.11,-height*.25,6,0);ctx.closePath();ctx.fill();
- // outer curling splash arms
- ctx.strokeStyle='rgba(211,241,247,.88)';ctx.lineWidth=Math.max(2,w*.006);ctx.shadowColor='#9ce8ff';ctx.shadowBlur=14;ctx.beginPath();ctx.moveTo(-3,-height*.18);ctx.bezierCurveTo(-w*.10,-height*.42,-w*.23,-height*.16,-w*.34,-height*.10);ctx.stroke();ctx.beginPath();ctx.moveTo(3,-height*.18);ctx.bezierCurveTo(w*.10,-height*.42,w*.23,-height*.16,w*.34,-height*.10);ctx.stroke();ctx.shadowBlur=0;
+ const body=ctx.createLinearGradient(-w*.18,0,w*.18,-plumeH);
+ body.addColorStop(0,'rgba(8,42,62,.18)');body.addColorStop(.22,'rgba(38,105,132,.82)');body.addColorStop(.43,'rgba(177,224,234,.95)');body.addColorStop(.58,'rgba(63,139,164,.9)');body.addColorStop(.82,'rgba(18,75,102,.75)');body.addColorStop(1,'rgba(11,46,69,0)');
+ ctx.fillStyle=body;ctx.beginPath();ctx.moveTo(-w*.13,0);
+ ctx.bezierCurveTo(-w*.19,-plumeH*.16,-w*.085,-plumeH*.34,-w*.055,-plumeH*.62);
+ ctx.bezierCurveTo(-w*.045,-plumeH*.82,-w*.018,-plumeH*.76,-w*.008,-plumeH);
+ ctx.bezierCurveTo(w*.012,-plumeH*.79,w*.028,-plumeH*.89,w*.045,-plumeH*.68);
+ ctx.bezierCurveTo(w*.07,-plumeH*.38,w*.17,-plumeH*.2,w*.13,0);ctx.closePath();ctx.fill();
+ // White aerated foam tracing the turbulent edges of the water column.
+ ctx.lineCap='round';ctx.lineJoin='round';
+ for(let i=0;i<9;i++){const side=i%2?1:-1,offset=(i/9)*plumeH*.7;
+  ctx.beginPath();ctx.moveTo(side*w*.015,-offset);
+  ctx.bezierCurveTo(side*w*.045,-offset-plumeH*.12,side*w*.10,-offset-plumeH*.03,side*w*(.12+i*.012),-offset-plumeH*.15);
+  ctx.strokeStyle='rgba(222,247,250,'+(.30+(i%3)*.12)+')';ctx.lineWidth=1.2+(i%3)*.7;ctx.shadowColor='#c8f4ff';ctx.shadowBlur=8;ctx.stroke();
+ }
+ ctx.shadowBlur=0;
+ // Crown jets flare out from the base, curling under their own weight.
+ for(let side of [-1,1]){ctx.beginPath();ctx.moveTo(side*w*.018,-plumeH*.12);ctx.bezierCurveTo(side*w*.10,-plumeH*.32,side*w*.22,-plumeH*.19,side*w*.34,-plumeH*.075);ctx.bezierCurveTo(side*w*.25,-plumeH*.12,side*w*.19,-plumeH*.02,side*w*.12,plumeH*.005);ctx.strokeStyle='rgba(193,235,243,.82)';ctx.lineWidth=Math.max(2,w*.004);ctx.stroke()}
  ctx.restore();
- // expanding concentric surface shockwaves
- for(let i=0;i<4;i++){const r=(age*170+i*58)%Math.max(w*.75,200);ctx.beginPath();ctx.ellipse(cx,sea+4,r,r*.11,0,0,Math.PI*2);ctx.strokeStyle='rgba(157,225,244,'+Math.max(0,.45-(age*.11+i*.08))+')';ctx.lineWidth=2;ctx.stroke()}
- // water spray and incandescent fragments
- if(age<4.5&&Math.random()<.9)burst(cx,sea-height*.55,3,Math.max(12,w*.08),rand(1.2,4),rand(35,95),['#e8fbff','#8bd8ed','#ffdb9a','#ff9148'],.11);
- if(age>5){state.textContent='THE AFTERGLOW';status.textContent='IMPACT SEQUENCE COMPLETE'}
+ // Fine droplets peel away from the crown and fall back under gravity.
+ if(age<5.8&&Math.random()<.95){for(let i=0;i<5;i++){const side=Math.random()<.5?-1:1;addParticle(cx+rand(-w*.16,w*.16),sea-plumeH*rand(.22,.92),side*rand(.2,2.2),rand(-3.8,-.7),rand(35,100),'#d8f5fb',rand(.7,2.4),.095)}}
+ // Expanding low surface rings, distorted by the rough water.
+ for(let i=0;i<5;i++){const r=age*155+i*43;ctx.beginPath();ctx.ellipse(cx,sea+5,r,r*.095,0,0,Math.PI*2);ctx.strokeStyle='rgba(176,231,243,'+Math.max(0,.42-age*.075-i*.055)+')';ctx.lineWidth=1.2;ctx.stroke()}
+ // Broad foam and spray at the waterline.
+ const foam=ctx.createRadialGradient(cx,sea,3,cx,sea,w*.38);foam.addColorStop(0,'rgba(220,247,250,.62)');foam.addColorStop(.25,'rgba(132,204,220,.26)');foam.addColorStop(1,'rgba(90,170,195,0)');ctx.fillStyle=foam;ctx.fillRect(cx-w*.4,sea-18,w*.8,65);
+ if(age>6){state.textContent='THE AFTERGLOW';status.textContent='IMPACT SEQUENCE COMPLETE'}
 }
 function render(t){
  ctx.clearRect(0,0,w,h);const horizon=backdrop(t);ocean(t,horizon);
