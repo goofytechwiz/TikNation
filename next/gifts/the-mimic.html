@@ -49,17 +49,36 @@ x.strokeStyle='#d6f6ff55';x.lineWidth=1;x.beginPath();x.roundRect(mx+8,my+8,mw-1
 let glass=x.createLinearGradient(mx,my,mx+mw,my+mh);glass.addColorStop(0,'#102532');glass.addColorStop(.5,awake?'#30111b':'#172b38');glass.addColorStop(1,'#080d16');x.fillStyle=glass;x.beginPath();x.roundRect(mx+10,my+10,mw-20,mh-20,Math.min(78,mw*.18));x.fill();
 // mirror shimmer
 x.save();x.globalAlpha=.17;x.fillStyle='#c4f6ff';x.beginPath();x.moveTo(mx+mw*.18,my+18);x.lineTo(mx+mw*.34,my+18);x.lineTo(mx+mw*.78,my+mh-18);x.lineTo(mx+mw*.65,my+mh-18);x.fill();x.restore();
-// entity silhouette, inside mirror
-let sway=Math.sin(sec*1.4)*3, rise=awake?Math.min(1,pulse/90):.12, ey=my+mh*.22-(rise*12);
-x.save();x.translate(cx,0);x.translate(sway,0);
-let headW=mw*.19,headH=mh*.17;
-glow(awake?'#ff214c':'#9adfff',awake?20:9);
-x.fillStyle='#030407';x.beginPath();x.ellipse(0,ey+headH*.55,headW,headH*.62,0,0,Math.PI*2);x.fill();
-// neck and shoulders
-x.beginPath();x.moveTo(-headW*.48,ey+headH);x.quadraticCurveTo(-headW*.7,ey+headH*1.55,-mw*.34,my+mh*.76);x.quadraticCurveTo(0,my+mh*.63,mw*.34,my+mh*.76);x.quadraticCurveTo(headW*.7,ey+headH*1.55,headW*.48,ey+headH);x.fill();
-// long wrong arms
-x.lineWidth=awake?Math.max(8,scale*12):Math.max(6,scale*9);x.lineCap='round';x.strokeStyle='#030407';x.beginPath();x.moveTo(-mw*.25,my+mh*.55);x.quadraticCurveTo(-mw*.43,my+mh*.72,-mw*.31,my+mh*.94);x.moveTo(mw*.25,my+mh*.55);x.quadraticCurveTo(mw*.46,my+mh*.72,mw*.33,my+mh*.96);x.stroke();
-if(awake){x.lineWidth=2;x.strokeStyle='#68202f';for(let i=0;i<4;i++){let yy=my+mh*(.77+i*.035);x.beginPath();x.moveTo(-mw*.34,yy);x.quadraticCurveTo(0,yy+8,mw*.34,yy);x.stroke()}}
+// The Mimic: layered, bone-pale form pressing through the glass
+let sway=Math.sin(sec*1.15)*2.5, rise=awake?Math.min(1,pulse/90):.08;
+let ey=my+mh*.18-rise*mh*.025, headW=mw*.205, headH=mh*.19;
+x.save();x.translate(cx+sway,0);
+// shoulders and elongated torso, shaded in several layers
+let torso=x.createLinearGradient(-mw*.34,0,mw*.34,0);
+torso.addColorStop(0,'#17191d');torso.addColorStop(.25,awake?'#77747a':'#252b31');torso.addColorStop(.55,'#34343a');torso.addColorStop(1,'#080a0e');
+x.fillStyle=torso;glow(awake?'#b51e3d':'#8adfff',awake?17:6);
+x.beginPath();x.moveTo(-headW*.48,ey+headH*.78);x.quadraticCurveTo(-mw*.23,ey+headH*1.2,-mw*.37,my+mh*.86);x.quadraticCurveTo(-mw*.18,my+mh*.68,0,my+mh*.73);x.quadraticCurveTo(mw*.18,my+mh*.68,mw*.37,my+mh*.86);x.quadraticCurveTo(mw*.23,ey+headH*1.2,headW*.48,ey+headH*.78);x.closePath();x.fill();
+// neck
+x.fillStyle='#55535a';x.beginPath();x.moveTo(-headW*.35,ey+headH*.65);x.lineTo(-headW*.27,ey+headH*1.25);x.lineTo(headW*.28,ey+headH*1.25);x.lineTo(headW*.35,ey+headH*.65);x.fill();
+// long arms reaching toward the viewer
+for(let side of [-1,1]){
+ x.save();x.lineCap='round';x.lineJoin='round';
+ let arm=x.createLinearGradient(side*mw*.2,my+mh*.5,side*mw*.36,my+mh*.96);
+ arm.addColorStop(0,'#29282d');arm.addColorStop(.48,awake?'#858087':'#343a42');arm.addColorStop(1,'#0b0c10');
+ x.strokeStyle=arm;x.lineWidth=Math.max(10,scale*17);x.beginPath();x.moveTo(side*mw*.23,my+mh*.58);x.quadraticCurveTo(side*mw*.42,my+mh*.68,side*mw*.34,my+mh*.91);x.stroke();
+ // individual long fingers
+ x.strokeStyle='#5c5960';x.lineWidth=Math.max(2,scale*3);
+ for(let k=-1;k<=2;k++){let fx=side*mw*(.34+k*.018);x.beginPath();x.moveTo(fx,my+mh*.89);x.quadraticCurveTo(fx+side*k*3,my+mh*.94,fx+side*(k*.012+.018),my+mh*.975);x.stroke()}
+ x.restore();
+}
+// head: pale oval with hollow shadowed cheeks
+let face=x.createRadialGradient(-headW*.22,ey+headH*.25,2,0,ey+headH*.5,headW*1.25);
+face.addColorStop(0,awake?'#b9b2b2':'#626c76');face.addColorStop(.58,awake?'#777078':'#303944');face.addColorStop(1,'#080a0e');
+x.fillStyle=face;x.beginPath();x.ellipse(0,ey+headH*.53,headW*.72,headH*.68,0,0,Math.PI*2);x.fill();
+// tangled hair curtain and strands
+x.fillStyle='#08090d';x.beginPath();x.moveTo(-headW*.72,ey+headH*.34);x.quadraticCurveTo(-headW*.9,ey-headH*.15,0,ey-headH*.12);x.quadraticCurveTo(headW*.85,ey-headH*.1,headW*.72,ey+headH*.36);x.quadraticCurveTo(headW*.62,ey+headH*1.25,headW*.48,ey+headH*1.42);x.lineTo(headW*.35,ey+headH*.75);x.lineTo(-headW*.42,ey+headH*1.25);x.closePath();x.fill();
+x.strokeStyle='#38343b';x.lineWidth=1.4;
+for(let k=0;k<15;k++){let sx=-headW*.62+k*headW*.088;x.beginPath();x.moveTo(sx,ey+headH*.02);x.bezierCurveTo(sx-headW*.16,ey+headH*.48,sx+headW*.12,ey+headH*.85,sx+Math.sin(k)*headW*.16,ey+headH*1.42);x.stroke()}
 x.restore();
 // face details
 let eyeY=ey+headH*.53, eyeGap=headW*.52;
