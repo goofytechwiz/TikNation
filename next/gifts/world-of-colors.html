@@ -48,11 +48,28 @@ body.awake .gem-wrap{filter:drop-shadow(0 0 30px #fff) drop-shadow(0 0 65px #ff4
 @keyframes drift{to{transform:translateY(80px)}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes rainbowPulse{50%{opacity:.58}}@keyframes orbit{to{transform:translate(-50%,-50%) rotateX(68deg) rotate(360deg)}}@keyframes float{50%{transform:translate(-50%,-53%) scale(1.04)}}@keyframes gemTurn{0%,100%{transform:rotateY(-9deg) rotateX(5deg)}50%{transform:rotateY(9deg) rotateX(-5deg)}}@keyframes hue{to{filter:hue-rotate(360deg) saturate(1.8)}}@keyframes facetFlow{to{background-position:100% 100%}}@keyframes glint{0%{background-position:-130% 0}100%{background-position:130% 0}}@keyframes shard{to{transform:rotateY(360deg) rotateX(360deg)}}@keyframes laser{0%,100%{opacity:0}12%,48%{opacity:.95}75%{opacity:.2}}@keyframes flash{0%{opacity:.9}100%{opacity:0}}@keyframes titleGlow{to{background-position:250% center}}
 @media(max-width:520px){.fall.left{left:-2%}.fall.right{right:-2%}.fall{width:clamp(60px,16vw,105px)}.gem-wrap{width:58vw;height:70vw;top:41%}.orbit{width:91vw}.rainbow{top:15%;width:115vw;height:78vw}.ui{padding-bottom:max(27px,env(safe-area-inset-bottom))}}
 @media(prefers-reduced-motion:reduce){.stars,.aurora,.rainbow,.orbit,.gem-wrap,.gem,.shard,.title{animation-duration:18s!important;animation-iteration-count:1!important}}
+
+/* DIMENSION PORTAL + COLOR WAVES */
+.portal{position:absolute;z-index:2;left:50%;top:36%;width:min(68vw,520px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(ellipse at center,rgba(13,8,43,.96) 0 39%,rgba(29,14,76,.72) 47%,transparent 68%);box-shadow:0 0 25px #58eaff,0 0 65px #b43cff,0 0 125px #ff42c8;animation:portalPulse 3.5s ease-in-out infinite}
+.portal:before{content:"";position:absolute;inset:0;border-radius:50%;padding:9px;background:conic-gradient(#fff,#ff43d5,#ffdc4c,#4affd7,#43bfff,#a04cff,#fff);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;filter:drop-shadow(0 0 18px #8cfaff);animation:portalSpin 9s linear infinite}
+.portal:after{content:"";position:absolute;inset:13%;border-radius:50%;border:2px solid #d6faffaa;box-shadow:inset 0 0 38px #7b4dff,0 0 34px #ff65dd;animation:portalInner 2.8s ease-in-out infinite alternate}
+.orb{position:absolute;z-index:6;width:clamp(13px,2.2vw,25px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff 0 10%,var(--orb) 35%,transparent 72%);box-shadow:0 0 18px 6px var(--orb),0 0 38px var(--orb);animation:orbFloat 5s ease-in-out infinite}
+.orb.o1{--orb:#ff4bd8;left:17%;top:37%}.orb.o2{--orb:#49f5ff;right:16%;top:29%;animation-delay:-1.3s}.orb.o3{--orb:#ffe45c;left:25%;bottom:28%;animation-delay:-2.4s}.orb.o4{--orb:#8c65ff;right:23%;bottom:25%;animation-delay:-3.2s}.orb.o5{--orb:#56ffb8;left:50%;top:16%;animation-delay:-.8s}
+.fall:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 0%,#ff48d522 28%,#4af5ff55 54%,#ffe45c33 78%,transparent);mix-blend-mode:screen;animation:colorWave 3.2s ease-in-out infinite alternate}
+.lightning{position:absolute;z-index:4;inset:0;pointer-events:none;opacity:0;background:linear-gradient(112deg,transparent 0 42%,#fff 42.2%,#b7faff 42.5%,transparent 43%),linear-gradient(68deg,transparent 0 61%,#fff 61.2%,#ffb7f2 61.5%,transparent 62%);filter:drop-shadow(0 0 12px #fff) drop-shadow(0 0 28px #58eaff);mix-blend-mode:screen}
+body.awake .portal{filter:brightness(1.5);box-shadow:0 0 45px #fff,0 0 95px #58eaff,0 0 160px #ff42c8}
+body.awake .lightning{animation:prismLightning 1.6s steps(1,end) 2}
+@keyframes portalSpin{to{transform:rotate(360deg)}}@keyframes portalPulse{50%{opacity:.72;filter:brightness(1.35)}}@keyframes portalInner{to{transform:scale(.88);opacity:.45}}@keyframes orbFloat{50%{transform:translate3d(12px,-24px,0) scale(1.35)}}@keyframes colorWave{to{transform:translateY(28px);filter:hue-rotate(95deg);opacity:.9}}@keyframes prismLightning{0%,100%{opacity:0}8%,12%,43%,47%{opacity:1}10%,45%{opacity:.15}}
+@media(max-width:520px){.portal{top:36%;width:78vw}}
+
 </style>
 </head>
 <body>
 <div id="sky"><div class="stars"></div><div class="aurora"></div></div>
 <div class="rainbow" aria-hidden="true"></div>
+<div class="portal" aria-hidden="true"></div>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div><div class="orb o5"></div>
+<div class="lightning" aria-hidden="true"></div>
 <div class="fall left"><canvas></canvas></div><div class="fall right"><canvas></canvas></div>
 <div class="orbit"></div>
 <div class="gem-wrap"><div class="gem"><div class="gem-face"></div><div class="facet"></div><div class="facet f2"></div><div class="facet f3"></div><div class="facet f4"></div><div class="gem-core"></div></div></div>
