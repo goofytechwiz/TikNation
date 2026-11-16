@@ -39,8 +39,8 @@ void main(){
  // broad moving spotlights crossing behind the crystal
  for(int i=0;i<4;i++){float fi=float(i);float a=t*.38+fi*1.5708;float axis=uv.x*cos(a)+uv.y*sin(a);float cone=exp(-pow(axis*5.0,2.))*exp(-abs(uv.x*sin(a)-uv.y*cos(a))*2.2);col+=(.5+.5*cos(vec3(0.,2.1,4.2)+fi*1.4))*cone*.045;}
  // ray-marched faceted 3D gemstone
- vec3 ro=vec3(0.,0.,5.15),rd=normalize(vec3(uv,-1.72));float d=0.;float hit=0.;vec3 pos=ro;
- for(int i=0;i<76;i++){pos=ro+rd*d;float h=mapScene(pos);if(h<.0015){hit=1.;break;}d+=h*.78;if(d>7.)break;}
+ vec3 ro=vec3(0.,0.,7.1),rd=normalize(vec3(uv,-1.72));float d=0.;float hit=0.;vec3 pos=ro;
+ for(int i=0;i<76;i++){pos=ro+rd*d;float h=mapScene(pos);if(h<.0015){hit=1.;break;}d+=h*.78;if(d>10.)break;}
  if(hit>.5){
    vec3 n=normalAt(pos);vec3 light1=normalize(vec3(-.7,.9,1.));vec3 light2=normalize(vec3(.8,-.35,.65));
    float diff=max(dot(n,light1),0.)*.85+max(dot(n,light2),0.)*.42;
