@@ -63,6 +63,24 @@ body.awake .lightning{animation:prismLightning 1.6s steps(1,end) 2}
 @media(max-width:520px){.portal{top:36%;width:78vw}}
 
 
+
+/* HIGH-VISIBILITY SUPERNOVA FINALE */
+.supernova-screen{position:fixed;z-index:8;inset:0;pointer-events:none;opacity:0;overflow:hidden;background:radial-gradient(circle at 50% 43%,#fff 0%,#fff9 2%,#ffdbfbcc 5%,#a94bff99 15%,#23dcff55 31%,transparent 62%);mix-blend-mode:screen}
+.supernova-screen:before{content:"";position:absolute;left:50%;top:43%;width:12vmax;height:12vmax;border:12px solid #fff;border-radius:50%;transform:translate(-50%,-50%) scale(.05);box-shadow:0 0 25px #fff,0 0 65px #ff43d8,0 0 110px #44eaff,inset 0 0 40px #fff}
+.supernova-screen:after{content:"";position:absolute;inset:-30%;background:repeating-conic-gradient(from 0deg at 50% 43%,transparent 0deg 7deg,#fff9 7.3deg 7.8deg,#ff4bd855 8deg 8.5deg,transparent 9deg 15deg);mask-image:radial-gradient(ellipse at center,transparent 0 5%,#000 15% 70%,transparent 86%);transform:scale(.25);}
+.nova-core{position:absolute;left:50%;top:43%;width:18px;height:18px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 20px 15px #fff,0 0 70px 42px #ff55dc,0 0 130px 75px #55eaff,0 0 190px 110px #9d4dff}
+.nova-ring{position:absolute;left:50%;top:43%;width:10vmax;height:10vmax;border:7px solid #fff;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 25px #fff,0 0 55px #ff4bd8,0 0 90px #54eaff}
+.nova-rays{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 43%,transparent 0 10%,#fff5 10.5%,transparent 11% 20%,#ff56dc44 20.5%,transparent 21% 34%,#54eaff33 34.5%,transparent 35%)}
+body.awake .supernova-screen{animation:novaScreen 2.9s cubic-bezier(.12,.72,.16,1) both}
+body.awake .supernova-screen:before{animation:novaRing 2.6s cubic-bezier(.08,.72,.15,1) both}
+body.awake .supernova-screen:after{animation:novaRays 2.8s ease-out both}
+body.awake .nova-ring{animation:novaRing 2.4s cubic-bezier(.08,.72,.15,1) .12s both}
+body.awake .nova-core{animation:novaCore 1.1s ease-out both}
+@keyframes novaScreen{0%{opacity:0}10%{opacity:1}35%{opacity:.92}100%{opacity:0}}
+@keyframes novaRing{0%{transform:translate(-50%,-50%) scale(.05);opacity:1}75%{opacity:.9}100%{transform:translate(-50%,-50%) scale(13);opacity:0}}
+@keyframes novaRays{0%{transform:scale(.2) rotate(0);opacity:0}18%{opacity:1}100%{transform:scale(1.6) rotate(18deg);opacity:0}}
+@keyframes novaCore{0%{transform:translate(-50%,-50%) scale(.1);opacity:0}18%{transform:translate(-50%,-50%) scale(2.8);opacity:1}100%{transform:translate(-50%,-50%) scale(.01);opacity:0}}
+
 </style>
 </head>
 <body>
@@ -76,6 +94,7 @@ body.awake .lightning{animation:prismLightning 1.6s steps(1,end) 2}
 <div class="gem-wrap"><div class="gem"><div class="gem-face"></div><div class="facet"></div><div class="facet f2"></div><div class="facet f3"></div><div class="facet f4"></div><div class="gem-core"></div></div></div>
 <div class="shard a"></div><div class="shard b"></div><div class="shard c"></div>
 <canvas id="burst"></canvas><div class="laser"></div><div class="flash"></div>
+<div class="supernova-screen" aria-hidden="true"><div class="nova-core"></div><div class="nova-ring"></div><div class="nova-rays"></div></div>
 <div class="hint" id="hint">A universe of color is awakening</div>
 <main class="ui"><div class="brand">TikNation · Premium Gift</div><div class="title">THE WORLD<br>OF COLORS</div><div class="sub" id="sub">A living crystal of infinite color</div><button class="action" id="action">AWAKEN THE PRISM</button></main>
 <script>
