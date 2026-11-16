@@ -199,3 +199,9 @@ The original 2026-10-26 birthday launch date has passed. Use this document as a 
 - No paid service was added during this recheck. Continue using the current GitHub Pages/Supabase setup where possible and review existing LiveKit/Resend quotas before wider release.
 
 **Final status:** email and username sign-in are both implemented in source and the deployed pre-auth function, but neither is marked tested or launch-ready until the same real account passes both paths. Password recovery is implemented but unverified. Mobile behavior is statically responsive but not device-tested. Live remains experimental/unverified, and real-money payouts remain unavailable.
+
+
+### Additional production sign-in telemetry
+
+- Supabase Auth reports that all 3 existing accounts have a non-null last_sign_in_at; the latest recorded sign-in was 2026-10-31 02:06:18 UTC. This confirms historical successful Auth sessions, but Auth metadata does not reveal whether each session used email or username.
+- The TikNation security-events table currently contains zero login-event rows, so there is no method-specific application telemetry to distinguish successful email logins from successful username logins. This is another reason not to claim that both methods have passed a controlled test.
