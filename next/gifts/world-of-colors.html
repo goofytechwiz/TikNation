@@ -73,6 +73,23 @@ body:before{content:"";position:absolute;z-index:1;inset:0;pointer-events:none;b
 @keyframes skySweep{to{transform:translateX(8%) rotate(4deg)}}
 @keyframes moteDrift{to{transform:translateY(-35px)}}
 
+
+/* Real-water waterfall pass: translucent falling sheets, broken rivulets, spray and foam. */
+.waterfall{top:9%;bottom:8%;width:clamp(68px,14vw,164px);opacity:1;overflow:visible;filter:drop-shadow(0 0 9px #83edff88) drop-shadow(0 0 22px #4acbff66)}
+.waterfall:before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg,transparent 0%,#a7faff18 8%,#d9ffff88 17%,#69eaff55 27%,#f5ffffbb 36%,#68dfff66 48%,#eaffff99 61%,#62d9ff55 73%,#e9ffff77 86%,transparent 100%);filter:blur(5px);opacity:.9;animation:waterCurtain 2.7s ease-in-out infinite alternate}
+.waterfall:after{content:"";position:absolute;z-index:2;left:-28%;right:-28%;bottom:2%;height:26%;background:radial-gradient(ellipse at 50% 65%,#fff 0%,#e9ffffdd 7%,#8ceaff99 19%,#65dfff55 36%,transparent 72%);filter:blur(6px);animation:waterFoam .72s ease-in-out infinite alternate}
+.stream{z-index:1;top:-12%;height:118%;width:100%;opacity:.88;filter:blur(1.2px);background:linear-gradient(90deg,transparent 0%,#c9fbff44 7%,#fff 13%,#74eaff99 18%,#eaffffcc 23%,#49cfff77 29%,#dfffff 35%,#8aeaff88 42%,#fff 49%,#56cfff88 56%,#eaffffcc 63%,#73dcff77 71%,#fff 78%,#7aeaff99 85%,#dfffff 92%,transparent 100%);background-size:100% 200%;animation:waterRun 1.15s linear infinite;mask-image:linear-gradient(180deg,transparent,#000 4%,#000 95%,transparent)}
+.stream:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 3px,#fff 4px 5px,transparent 6px 11px,#72eaff99 12px 13px,transparent 14px 21px);opacity:.65;filter:blur(.6px);animation:rivulets .48s linear infinite}
+.stream.s2{left:8%;width:36%;opacity:.72;filter:blur(.5px);background:linear-gradient(90deg,transparent,#fff 18%,#a3f5ff 34%,#fff 52%,#55dfff 70%,transparent);background-size:100% 160%;animation-duration:.82s}
+.stream.s3{right:5%;width:29%;opacity:.65;filter:blur(2px);background:linear-gradient(90deg,transparent,#75dfff,#fff 32%,#b5faff 55%,#fff 73%,transparent);background-size:100% 180%;animation-duration:1.42s}
+.spray{z-index:3;bottom:-2%;left:-35%;width:170%;height:31%;background:radial-gradient(ellipse at 50% 50%,#fff 0%,#eaffffdd 4%,#b1f5ff99 12%,#70dfff44 30%,transparent 68%);filter:blur(5px);animation:waterFoam .55s ease-in-out infinite alternate}
+.waterfall .stream:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 22px,#fff9 23px 25px,transparent 26px 47px);opacity:.42;animation:waterRun .65s linear infinite}
+@keyframes waterRun{to{background-position:0 200%}}
+@keyframes rivulets{to{transform:translateY(9px)}}
+@keyframes waterCurtain{to{opacity:.65;transform:scaleX(1.04)}}
+@keyframes waterFoam{to{transform:scale(1.16) translateY(-3px);opacity:.65}}
+@media(max-width:520px){.waterfall.left{left:-3%}.waterfall.right{right:-3%}.waterfall{width:clamp(62px,16vw,105px)}}
+
 </style></head>
 <body><div id="sky"><div class="stars"></div><div class="aurora"></div></div>
 <div class="waterfall left"><i class="stream"></i><i class="stream s2"></i><i class="stream s3"></i><i class="spray"></i></div><div class="waterfall right"><i class="stream"></i><i class="stream s2"></i><i class="stream s3"></i><i class="spray"></i></div>
