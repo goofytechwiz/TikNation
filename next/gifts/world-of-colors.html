@@ -3,298 +3,95 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#08051c">
-<title>TikNation · The World of Colors</title>
+<meta name="theme-color" content="#070b22">
+<title>TikNation · World of Colors</title>
 <style>
+:root{color-scheme:dark}
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden}
-body{background:#08051c;color:#fff;font-family:Arial,Helvetica,sans-serif}
-#scene{position:fixed;inset:0;width:100%;height:100%;display:block}
-.ui{position:fixed;z-index:2;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center;padding:20px 16px max(26px,env(safe-area-inset-bottom));pointer-events:none}
-.hint{position:absolute;top:max(20px,env(safe-area-inset-top));left:12px;right:12px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#e5dcff;text-shadow:0 0 12px #a66bff}
-.brand{font-size:9px;letter-spacing:.4em;color:#e8dfff;margin-bottom:10px}
-.title{font-size:clamp(30px,7vw,58px);font-weight:900;line-height:.95;letter-spacing:.08em;color:#fff;text-shadow:0 0 14px #c58bff,0 0 32px #6a9dff}
-.sub{font-size:9px;letter-spacing:.17em;text-transform:uppercase;color:#e8e1ff;margin-top:10px}
-button{pointer-events:auto;margin-top:18px;border:1px solid #fff9;border-radius:99px;padding:15px 25px;background:linear-gradient(110deg,#833dff,#10bddd,#dc45cb);color:white;font-weight:900;font-size:10px;letter-spacing:.14em;box-shadow:0 0 25px #9d69ff99;cursor:pointer}
-button:active{transform:scale(.97)}
-@media(max-height:620px){.ui{padding-bottom:12px}.title{font-size:clamp(25px,6vw,42px)}button{margin-top:10px;padding:12px 20px}}
-@media(prefers-reduced-motion:reduce){button{transition:none}}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#070b22}
+body{font-family:Arial,Helvetica,sans-serif;color:#fff}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+.vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 48%,transparent 34%,#03061555 100%),linear-gradient(0deg,#05091ddd 0%,transparent 38%,#05091d33 100%)}
+.hud{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:max(22px,env(safe-area-inset-top)) 18px max(24px,env(safe-area-inset-bottom));text-align:center;pointer-events:none}
+.kicker{font-size:9px;letter-spacing:.42em;color:#d9faff;text-shadow:0 0 15px #55dfff;margin-top:4px}
+h1{font-size:clamp(29px,7vw,58px);line-height:.94;letter-spacing:.1em;margin:9px 0 0;font-weight:900;text-shadow:0 0 12px #fff,0 0 32px #a36cff,0 0 60px #27dfff}
+.subtitle{font-size:9px;letter-spacing:.22em;color:#e4e9ff;margin-top:10px}
+.bottom{display:flex;flex-direction:column;align-items:center;gap:12px}
+button{pointer-events:auto;border:1px solid #d9faffaa;border-radius:99px;padding:14px 25px;background:linear-gradient(105deg,#7b42ffdd,#08b9d5dd,#e94fb5dd);color:white;font-size:10px;font-weight:900;letter-spacing:.16em;box-shadow:0 0 24px #63dfff66,inset 0 0 14px #ffffff22;backdrop-filter:blur(8px)}
+.note{font-size:8px;letter-spacing:.15em;color:#d9e8ffbb;text-transform:uppercase}
+@media(max-height:600px){.hud{padding-top:12px;padding-bottom:12px}h1{font-size:clamp(23px,5vw,38px)}.subtitle{margin-top:5px}button{padding:10px 20px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<canvas id="scene" aria-label="Animated rainbow crystal waterfall garden"></canvas>
-<main class="ui">
-<div class="hint" id="hint">ENTER THE LIVING WORLD OF COLOR</div>
-<div class="brand">TikNation · Premium Gift</div>
-<div class="title">THE WORLD<br>OF COLORS</div>
-<div class="sub" id="sub">Two cascading falls. One living prism.</div>
-<button id="action" type="button">AWAKEN THE PRISM</button>
-</main>
+<canvas id="world" aria-label="A luminous rainbow waterfall valley with a giant crystal"></canvas>
+<div class="vignette"></div>
+<div class="hud">
+ <div><div class="kicker">TIKNATION PRESENTS</div><h1>WORLD OF COLORS</h1><div class="subtitle">ENTER THE PRISMATIC REALM</div></div>
+ <div class="bottom"><button id="awaken">AWAKEN THE COLORS</button><div class="note" id="status">A living world of light · sound begins on tap</div></div>
+</div>
 <script>
 (()=>{
-'use strict';
-const canvas=document.getElementById('scene'),ctx=canvas.getContext('2d',{alpha:false});
-const button=document.getElementById('action'),hint=document.getElementById('hint'),sub=document.getElementById('sub');
-let w=0,h=0,dpr=1,last=0,elapsed=0,awakeUntil=0,particles=[],audio=null;
-const stars=Array.from({length:90},()=>({x:Math.random(),y:Math.random()*.75,r:.4+Math.random()*1.4,p:Math.random()*6.28}));
-function resize(){
- const b=canvas.getBoundingClientRect();w=Math.max(1,b.width);h=Math.max(1,b.height);
- dpr=Math.min(window.devicePixelRatio||1,1.35);
- canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
- ctx.setTransform(dpr,0,0,dpr,0,0);
+const canvas=document.getElementById('world'),ctx=canvas.getContext('2d',{alpha:false});
+const button=document.getElementById('awaken'),status=document.getElementById('status');
+let W=0,H=0,D=1,t=0,last=0,burst=0,particles=[],audio;
+const colors=['#ff4b8b','#ff9b45','#ffe66b','#65f5c4','#55c9ff','#9a7bff','#ed7bff'];
+function resize(){D=Math.min(devicePixelRatio||1,1.8);W=innerWidth;H=innerHeight;canvas.width=Math.round(W*D);canvas.height=Math.round(H*D);ctx.setTransform(D,0,0,D,0,0)}
+function path(points){ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);ctx.closePath()}
+function glow(x,y,r,color,a=1){ctx.save();ctx.globalAlpha=a;ctx.shadowBlur=r;ctx.shadowColor=color;ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,Math.max(1,r*.12),0,Math.PI*2);ctx.fill();ctx.restore()}
+function background(){
+ let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#080d2b');g.addColorStop(.48,'#20245c');g.addColorStop(1,'#081b35');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+ const aur=ctx.createRadialGradient(W*.52,H*.35,4,W*.52,H*.35,Math.max(W,H)*.75);aur.addColorStop(0,'#8c4eff44');aur.addColorStop(.4,'#26c9e522');aur.addColorStop(1,'transparent');ctx.fillStyle=aur;ctx.fillRect(0,0,W,H);
+ for(let i=0;i<95;i++){let x=(i*7919%997)/997*W,y=(i*3571%991)/991*H*.66;ctx.globalAlpha=.25+.45*(.5+.5*Math.sin(t*1.5+i));ctx.fillStyle='#dffaff';ctx.fillRect(x,y,1.2,1.2)}ctx.globalAlpha=1;
 }
-function path(points,fill,stroke,lineWidth=1){
- ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));
- if(fill){ctx.closePath();ctx.fillStyle=fill;ctx.fill()}
- if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lineWidth;ctx.stroke()}
+function mountains(){
+ path([[0,H*.56],[W*.1,H*.34],[W*.2,H*.48],[W*.34,H*.29],[W*.48,H*.5],[W*.63,H*.31],[W*.78,H*.49],[W*.9,H*.33],[W,H*.52],[W,H*.76],[0,H*.76]]);let g=ctx.createLinearGradient(0,H*.3,0,H*.75);g.addColorStop(0,'#27376d');g.addColorStop(1,'#101c40');ctx.fillStyle=g;ctx.fill();
+ path([[0,H*.61],[W*.15,H*.45],[W*.3,H*.57],[W*.48,H*.4],[W*.67,H*.59],[W*.83,H*.43],[W,H*.6],[W,H*.8],[0,H*.8]]);ctx.fillStyle='#17294d';ctx.fill();
 }
-function drawWaterfall(x,width,t,flip){
- const top=h*.105,bottom=h*.835,phase=flip?2.1:0;
- // Deep shadow behind the falling water gives the cascade a real drop-off.
- const shadow=ctx.createLinearGradient(x,top,x+width,bottom);
- shadow.addColorStop(0,'rgba(2,12,42,.12)');shadow.addColorStop(.5,'rgba(5,20,55,.72)');shadow.addColorStop(1,'rgba(3,15,45,.1)');
- ctx.fillStyle=shadow;ctx.fillRect(x-8,top,width+16,bottom-top+20);
- // Several uneven water curtains overlap, rather than one flat strip.
- for(let layer=0;layer<5;layer++){
-  const lx=x+layer*width*.105, lw=width*(.31+layer*.105), shift=layer*1.7+phase;
-  ctx.beginPath();
-  for(let j=0;j<=28;j++){const f=j/28,y=top+f*(bottom-top),edge=lx+Math.sin(t*1.45+f*9+shift)*width*.045+Math.sin(f*23+shift)*width*.018; if(j===0)ctx.moveTo(edge,y);else ctx.lineTo(edge,y)}
-  for(let j=28;j>=0;j--){const f=j/28,y=top+f*(bottom-top),edge=lx+lw+Math.sin(t*1.25+f*8+shift+1.4)*width*.05+Math.cos(f*19+shift)*width*.016;ctx.lineTo(edge,y)}
-  ctx.closePath();
-  const g=ctx.createLinearGradient(lx,0,lx+lw,0);
-  g.addColorStop(0,'rgba(23,119,210,.12)');g.addColorStop(.2,'rgba(94,205,255,.56)');g.addColorStop(.48,'rgba(235,255,255,.86)');g.addColorStop(.7,'rgba(80,190,255,.62)');g.addColorStop(1,'rgba(24,103,200,.1)');
-  ctx.fillStyle=g;ctx.fill();
- }
- // Narrow, fast white streams travel down the face at different speeds.
- for(let i=0;i<42;i++){
-  const base=x+width*(i+.5)/42, speed=54+(i%7)*19;
-  const y=top+((t*speed+i*47+phase*22)%(bottom-top+70));
-  const sway=Math.sin(t*1.9+i*2.1)*width*.025;
-  ctx.beginPath();ctx.moveTo(base+sway,top);
-  ctx.bezierCurveTo(base+sway-width*.035,y*.48,base+sway+width*.025,y-22,base+sway+Math.sin(t*2+i)*width*.018,y);
-  ctx.strokeStyle=i%5===0?'rgba(255,255,255,.95)':'rgba(190,244,255,.55)';
-  ctx.lineWidth=i%6===0?3:1.15;ctx.stroke();
- }
- // Falling droplets and spray at the plunge pool.
- for(let i=0;i<34;i++){
-  const px=x+width*(i+.5)/34+Math.sin(t*2.4+i*1.8)*width*.07;
-  const py=bottom+Math.sin(t*3.4+i*2)*10;
-  ctx.beginPath();ctx.ellipse(px,py,2+(i%4),1.5+(i%3),0,0,Math.PI*2);
-  ctx.fillStyle='rgba(239,253,255,.88)';ctx.fill();
- }
- const mist=ctx.createRadialGradient(x+width*.5,bottom,2,x+width*.5,bottom,width*.9);
- mist.addColorStop(0,'rgba(219,250,255,.34)');mist.addColorStop(1,'rgba(115,195,255,0)');
- ctx.fillStyle=mist;ctx.fillRect(x-width*.45,bottom-38,width*1.9,110);
- for(let i=0;i<8;i++){
-  const rx=(t*24+i*width*.17)%(width*1.45)-width*.2;
-  const ry=bottom-14-((t*11+i*13)%45);
-  ctx.globalAlpha=.35;ctx.fillStyle='#eaffff';ctx.beginPath();ctx.arc(x+rx,ry,1.2+(i%3),0,Math.PI*2);ctx.fill();
- }
- ctx.globalAlpha=1;
+function rainbow(){
+ const cx=W*.5,cy=H*.61,rx=Math.min(W*.36,H*.39),ry=Math.min(H*.37,W*.34);
+ ctx.save();ctx.lineCap='round';
+ for(let i=0;i<7;i++){ctx.beginPath();ctx.ellipse(cx,cy,rx-i*5,ry-i*5,0,Math.PI,Math.PI*2);ctx.strokeStyle=colors[i];ctx.lineWidth=Math.max(5,Math.min(10,W*.012));ctx.shadowBlur=22;ctx.shadowColor=colors[i];ctx.globalAlpha=.75;ctx.stroke()}
+ ctx.globalAlpha=1;ctx.beginPath();ctx.ellipse(cx,cy,rx-39,ry-39,0,Math.PI,Math.PI*2);ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.shadowBlur=20;ctx.shadowColor='#fff';ctx.stroke();ctx.restore();
+ for(let i=0;i<24;i++){let a=Math.PI+(i/24)*Math.PI, x=cx+Math.cos(a)*rx,y=cy+Math.sin(a)*ry;glow(x,y,14,colors[i%7],.65)}
 }
-function drawFlower(x,y,size,color,t,delay){
- const pulse=.82+.18*Math.sin(t*1.8+delay);
- ctx.save();ctx.translate(x,y);ctx.scale(pulse,pulse);
- // stem and two leaves
- ctx.strokeStyle='#70e8c2';ctx.lineWidth=Math.max(2,size*.055);ctx.beginPath();ctx.moveTo(0,size*.15);ctx.quadraticCurveTo(-size*.1,size*.65,0,size*1.5);ctx.stroke();
- ctx.fillStyle='#48dba8';
- ctx.beginPath();ctx.ellipse(-size*.19,size*.85,size*.2,size*.08,-.5,0,Math.PI*2);ctx.fill();
- ctx.beginPath();ctx.ellipse(size*.17,size*1.12,size*.2,size*.08,.5,0,Math.PI*2);ctx.fill();
- for(let i=0;i<6;i++){
-  ctx.save();ctx.rotate(i*Math.PI/3);
-  const pg=ctx.createRadialGradient(0,-size*.08,1,0,-size*.2,size*.38);
-  pg.addColorStop(0,'#fff');pg.addColorStop(.35,color);pg.addColorStop(1,'rgba(100,80,255,.2)');
-  ctx.fillStyle=pg;ctx.shadowColor=color;ctx.shadowBlur=12;
-  ctx.beginPath();ctx.ellipse(0,-size*.2,size*.13,size*.31,0,0,Math.PI*2);ctx.fill();ctx.restore();
- }
- ctx.shadowColor=color;ctx.shadowBlur=16;ctx.fillStyle='#fff5b5';ctx.beginPath();ctx.arc(0,0,size*.11,0,Math.PI*2);ctx.fill();
- // Rising pollen motes
- for(let i=0;i<4;i++){
-  const rise=(t*19+i*23+delay*11)%58;
-  ctx.globalAlpha=1-rise/65;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(Math.sin(t*2+i*4)*size*.35, -rise-size*.1,1.2,0,Math.PI*2);ctx.fill();
- }
+function waterfall(x,top,width,bottom){
+ ctx.save();let grad=ctx.createLinearGradient(x,top,x+width,top);grad.addColorStop(0,'#43cfff22');grad.addColorStop(.25,'#a4f8ffcc');grad.addColorStop(.52,'#4abdebaa');grad.addColorStop(.8,'#d8ffffbb');grad.addColorStop(1,'#37aeea22');
+ ctx.beginPath();ctx.moveTo(x,top);ctx.bezierCurveTo(x-8,top+H*.13,x+width*.12,bottom-H*.12,x+width*.08,bottom);ctx.quadraticCurveTo(x+width*.52,bottom+8,x+width*.94,bottom);ctx.bezierCurveTo(x+width*.8,bottom-H*.2,x+width+10,top+H*.12,x+width,top);ctx.closePath();ctx.fillStyle=grad;ctx.shadowBlur=20;ctx.shadowColor='#55dfff';ctx.fill();
+ for(let i=0;i<17;i++){let xx=x+width*(i/17),off=(t*90+i*37)%(H*.5);ctx.strokeStyle=i%3?'#d9ffff88':'#ffffffcc';ctx.lineWidth=i%4===0?2:1;ctx.beginPath();ctx.moveTo(xx,top+off*.12);ctx.bezierCurveTo(xx-5,top+off*.5,xx+5,top+off*.8,xx+Math.sin(t*2+i)*4,Math.min(bottom,top+off+24));ctx.stroke()}
+ for(let i=0;i<18;i++){let px=x+Math.sin(i*8+t*1.5)*width*.48+width*.5,py=top+(i*47+t*95)%(bottom-top);ctx.fillStyle='#eaffffbb';ctx.fillRect(px,py,1.5,4+Math.sin(i+t)*3)}
  ctx.restore();
 }
-function drawCrystal(cx,cy,size,t){
- ctx.save();ctx.translate(cx,cy);
- const breathe=1+.025*Math.sin(t*1.35);
- ctx.scale(breathe,breathe);
- // Broad aura and a slow rotating halo make the prism feel suspended in the scene.
- const aura=ctx.createRadialGradient(0,0,size*.08,0,0,size*1.85);
- aura.addColorStop(0,'rgba(255,255,255,.34)');
- aura.addColorStop(.22,'rgba(105,238,255,.2)');
- aura.addColorStop(.5,'rgba(183,87,255,.12)');
- aura.addColorStop(1,'rgba(95,60,255,0)');
- ctx.fillStyle=aura;ctx.beginPath();ctx.arc(0,0,size*1.85,0,Math.PI*2);ctx.fill();
- for(let ring=0;ring<2;ring++){
-  ctx.save();ctx.rotate(t*(ring?-.22:.16)+ring*Math.PI/3);
-  ctx.beginPath();ctx.ellipse(0,0,size*(1.22+ring*.16),size*(.25+ring*.04),-.22,0,Math.PI*2);
-  ctx.strokeStyle=ring?'rgba(255,115,235,.48)':'rgba(111,244,255,.55)';
-  ctx.lineWidth=1.6;ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=13;ctx.stroke();ctx.restore();
- }
- // Tall cut gemstone silhouette: crown, girdle and pointed pavilion.
- const top=[0,-size*1.22], shoulders=[[-size*.55,-size*.78],[size*.55,-size*.78]];
- const girdle=[[-size*.76,-size*.18],[size*.76,-size*.18]];
- const lower=[[-size*.56,size*.58],[size*.56,size*.58]],tip=[0,size*1.2];
- const outline=[top,shoulders[1],girdle[1],lower[1],tip,lower[0],girdle[0],shoulders[0]];
- const glass=ctx.createLinearGradient(-size,-size,size,size);
- glass.addColorStop(0,'#fff4ff');glass.addColorStop(.16,'#ff67dc');glass.addColorStop(.34,'#ffe68b');
- glass.addColorStop(.52,'#66fff0');glass.addColorStop(.72,'#58aaff');glass.addColorStop(.9,'#a16aff');glass.addColorStop(1,'#f5c5ff');
- path(outline,glass,'rgba(255,255,255,.96)',2.4);
- // Individual polished facets with contrasting colors and sharp specular edges.
- const facets=[
-  [[0,-size*1.22],[-size*.55,-size*.78],[0,-size*.18]],
-  [[0,-size*1.22],[size*.55,-size*.78],[0,-size*.18]],
-  [[-size*.55,-size*.78],[-size*.76,-size*.18],[0,-size*.18]],
-  [[size*.55,-size*.78],[size*.76,-size*.18],[0,-size*.18]],
-  [[-size*.76,-size*.18],[0,-size*.18],[-size*.56,size*.58]],
-  [[size*.76,-size*.18],[0,-size*.18],[size*.56,size*.58]],
-  [[0,-size*.18],[-size*.56,size*.58],[0,size*1.2]],
-  [[0,-size*.18],[size*.56,size*.58],[0,size*1.2]]
- ];
- const facetColors=['rgba(255,255,255,.52)','rgba(255,110,226,.48)','rgba(255,224,118,.42)','rgba(65,255,224,.48)','rgba(66,155,255,.5)','rgba(180,105,255,.5)','rgba(255,255,255,.34)','rgba(105,255,244,.36)'];
- facets.forEach((p,i)=>path(p,facetColors[i],'rgba(255,255,255,.5)',1));
- // Bright central light core, with a moving glint across the upper facets.
- const core=ctx.createRadialGradient(-size*.12,-size*.12,1,0,size*.05,size*.58);
- core.addColorStop(0,'rgba(255,255,255,.95)');core.addColorStop(.18,'rgba(207,255,255,.72)');
- core.addColorStop(.48,'rgba(255,112,229,.3)');core.addColorStop(1,'rgba(100,115,255,0)');
- ctx.fillStyle=core;ctx.beginPath();ctx.ellipse(0,size*.02,size*.38,size*.56,0,0,Math.PI*2);ctx.fill();
- const glintX=-size*.24+Math.sin(t*.8)*size*.45;
- ctx.save();ctx.beginPath();ctx.moveTo(-size*.48,-size*.7);ctx.lineTo(size*.34,-size*.7);ctx.lineTo(-size*.05,size*.48);ctx.closePath();ctx.clip();
- const glint=ctx.createLinearGradient(glintX-size*.12,-size,glintX+size*.12,size*.5);
- glint.addColorStop(0,'rgba(255,255,255,0)');glint.addColorStop(.48,'rgba(255,255,255,.78)');glint.addColorStop(1,'rgba(255,255,255,0)');
- ctx.fillStyle=glint;ctx.fillRect(-size,-size,size*2,size*2);ctx.restore();
- // Tiny star glints on the cut edges.
- for(let i=0;i<4;i++){
-  const ang=t*.7+i*Math.PI/2,x=Math.cos(ang)*size*.88,y=Math.sin(ang)*size*.74;
-  ctx.globalAlpha=.55+.4*Math.sin(t*3+i);
-  ctx.fillStyle='#fff';ctx.shadowColor='#8ffaff';ctx.shadowBlur=16;
-  ctx.beginPath();ctx.arc(x,y,1.5+(i%2),0,Math.PI*2);ctx.fill();
- }
- ctx.globalAlpha=1;ctx.shadowBlur=0;ctx.restore();
+function crystal(){
+ const cx=W*.5,base=H*.77,scale=Math.min(W*.18,H*.235,150),top=base-scale*2.05;
+ ctx.save();ctx.translate(cx,top);
+ let aura=ctx.createRadialGradient(0,scale,3,0,scale,scale*1.8);aura.addColorStop(0,'#fff9');aura.addColorStop(.25,'#77eaff55');aura.addColorStop(1,'transparent');ctx.fillStyle=aura;ctx.fillRect(-scale*2,-scale*.3,scale*4,scale*3);
+ // Tall faceted gemstone silhouette
+ path([[0,0],[scale*.62,scale*.48],[scale*.5,scale*1.58],[0,scale*2.05],[-scale*.5,scale*1.58],[-scale*.62,scale*.48]]);let body=ctx.createLinearGradient(-scale,0,scale,scale*1.8);body.addColorStop(0,'#e8ffff');body.addColorStop(.18,'#56dfff');body.addColorStop(.42,'#8d63ff');body.addColorStop(.68,'#ff70db');body.addColorStop(1,'#35f1d2');ctx.fillStyle=body;ctx.shadowBlur=35;ctx.shadowColor='#83eaff';ctx.fill();
+ path([[0,0],[0,scale*2.05],[-scale*.5,scale*1.58],[-scale*.62,scale*.48]]);ctx.fillStyle='#d9ffff66';ctx.fill();
+ path([[0,0],[scale*.62,scale*.48],[scale*.5,scale*1.58],[0,scale*2.05]]);ctx.fillStyle='#fff8';ctx.globalAlpha=.42;ctx.fill();ctx.globalAlpha=1;
+ path([[0,0],[scale*.62,scale*.48],[0,scale*.72],[-scale*.62,scale*.48]]);ctx.fillStyle='#ffffffaa';ctx.fill();
+ path([[0,scale*.72],[scale*.5,scale*1.58],[0,scale*2.05]]);ctx.fillStyle='#43bfff99';ctx.fill();
+ path([[0,scale*.72],[-scale*.5,scale*1.58],[0,scale*2.05]]);ctx.fillStyle='#e65cff88';ctx.fill();
+ ctx.strokeStyle='#f2ffff';ctx.lineWidth=1.5;ctx.shadowBlur=16;ctx.stroke();
+ let shine=(t*scale*.8)%(scale*1.8)-scale*.5;ctx.save();ctx.beginPath();ctx.moveTo(-scale*.65,scale*.2);ctx.lineTo(scale*.65,scale*.2);ctx.lineTo(scale*.52,scale*1.6);ctx.lineTo(-scale*.52,scale*1.6);ctx.clip();let sg=ctx.createLinearGradient(shine,0,shine+scale*.25,scale*1.8);sg.addColorStop(0,'transparent');sg.addColorStop(.5,'#fff9');sg.addColorStop(1,'transparent');ctx.fillStyle=sg;ctx.fillRect(-scale,0,scale*2,scale*2);ctx.restore();
+ ctx.restore();
+ // floating orbiting crystal shards
+ for(let i=0;i<6;i++){let a=t*.45+i*Math.PI/3,rr=scale*(1.05+.12*Math.sin(t+i)),x=cx+Math.cos(a)*rr,y=top+scale*.95+Math.sin(a)*scale*.7;ctx.save();ctx.translate(x,y);ctx.rotate(a+t*.4);path([[0,-9],[6,0],[0,11],[-6,0]]);ctx.fillStyle=colors[i];ctx.shadowBlur=18;ctx.shadowColor=colors[i];ctx.fill();ctx.restore()}
 }
-function draw(now){
- if(!last)last=now;const dt=Math.min(.04,(now-last)/1000);last=now;elapsed+=dt;const t=elapsed;
- const awake=t<awakeUntil;
- // Deep twilight sky with a luminous horizon behind the falls.
- const bg=ctx.createLinearGradient(0,0,0,h);
- bg.addColorStop(0,'#07051c');bg.addColorStop(.42,'#171044');bg.addColorStop(.76,'#15366b');bg.addColorStop(1,'#04172f');
- ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
- const glow=ctx.createRadialGradient(w*.5,h*.42,0,w*.5,h*.42,w*.7);
- glow.addColorStop(0,'rgba(119,76,255,.34)');glow.addColorStop(.45,'rgba(37,170,255,.13)');glow.addColorStop(1,'rgba(8,12,44,0)');
- ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
- // Distant mountain silhouettes give the world depth and a real horizon.
- path([[0,h*.61],[w*.12,h*.43],[w*.23,h*.57],[w*.36,h*.39],[w*.49,h*.57],[w*.65,h*.4],[w*.78,h*.55],[w*.9,h*.42],[w,h*.58],[w,h*.82],[0,h*.82]],'rgba(14,22,70,.72)');
- path([[0,h*.68],[w*.16,h*.53],[w*.28,h*.67],[w*.43,h*.5],[w*.58,h*.66],[w*.76,h*.51],[w*.9,h*.65],[w,h*.55],[w,h*.84],[0,h*.84]],'rgba(20,40,91,.62)');
- stars.forEach(s=>{ctx.globalAlpha=.3+.65*(.5+.5*Math.sin(t*1.7+s.p));ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x*w,s.y*h,s.r,0,Math.PI*2);ctx.fill()});ctx.globalAlpha=1;
- // Flowing aurora curtains.
- for(let i=0;i<5;i++){
-  ctx.beginPath();ctx.moveTo(0,h*(.16+i*.075));
-  ctx.bezierCurveTo(w*.27,h*(.02+Math.sin(t*.3+i)*.12),w*.7,h*(.31+Math.cos(t*.35+i)*.1),w,h*(.12+i*.085));
-  ctx.strokeStyle=['rgba(50,240,255,.12)','rgba(225,70,255,.11)','rgba(92,255,190,.1)','rgba(255,178,85,.07)','rgba(103,135,255,.1)'][i];
-  ctx.lineWidth=34;ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=24;ctx.stroke();
- }
- ctx.shadowBlur=0;
- // Huge rainbow gateway with a bright inner edge and moving color sparks.
- const rainbow=['#ff3d72','#ff9b36','#fff16a','#4df39b','#37e9ff','#687cff','#e05bff'];
- ctx.save();
- const halo=ctx.createRadialGradient(w*.5,h*.45,8,w*.5,h*.45,w*.53);
- halo.addColorStop(0,'rgba(255,255,255,.09)');halo.addColorStop(.55,'rgba(120,87,255,.18)');halo.addColorStop(1,'rgba(20,15,70,0)');
- ctx.fillStyle=halo;ctx.fillRect(0,h*.08,w,h*.72);
- rainbow.forEach((c,i)=>{
-  const rx=w*(.285+i*.017),ry=h*(.27+i*.014);
-  ctx.beginPath();ctx.ellipse(w*.5,h*.47,rx,ry,0,Math.PI*1.07,Math.PI*1.93);
-  ctx.strokeStyle=c;ctx.globalAlpha=.88;ctx.lineWidth=Math.max(6,w*.012);
-  ctx.shadowColor=c;ctx.shadowBlur=23;ctx.stroke();
-  ctx.beginPath();ctx.ellipse(w*.5,h*.47,rx,ry,0,Math.PI*1.07,Math.PI*1.93);
-  ctx.strokeStyle='rgba(255,255,255,.48)';ctx.globalAlpha=.62;ctx.lineWidth=1.5;ctx.shadowBlur=7;ctx.stroke();
- });
- for(let i=0;i<35;i++){
-  const band=i%7,angle=Math.PI*1.07+((t*.18+i*.19)%(Math.PI*.86));
-  const rx=w*(.285+band*.017),ry=h*(.27+band*.014);
-  const px=w*.5+Math.cos(angle)*rx,py=h*.47+Math.sin(angle)*ry;
-  ctx.globalAlpha=.4+.55*(.5+.5*Math.sin(t*4+i));
-  ctx.fillStyle=rainbow[band];ctx.shadowColor=rainbow[band];ctx.shadowBlur=17;
-  ctx.beginPath();ctx.arc(px,py,1.5+(i%4)*.65,0,Math.PI*2);ctx.fill();
- }
- ctx.restore();ctx.globalAlpha=1;ctx.shadowBlur=0;
- // Two broad, layered waterfalls and their illuminated mist.
- const fallW=Math.max(78,Math.min(w*.17,210));
- drawWaterfall(w*.008,fallW,t,false);drawWaterfall(w*.822,fallW,t,true);
- // Pool with a bright reflection directly beneath the prism.
- const water=ctx.createLinearGradient(0,h*.77,0,h);
- water.addColorStop(0,'rgba(213,255,255,.88)');water.addColorStop(.12,'rgba(71,204,244,.83)');
- water.addColorStop(.48,'rgba(24,105,184,.88)');water.addColorStop(1,'rgba(3,17,56,.98)');
- ctx.fillStyle=water;ctx.beginPath();ctx.ellipse(w*.5,h*.95,w*.76,h*.17,0,0,Math.PI*2);ctx.fill();
- const reflection=ctx.createLinearGradient(0,h*.78,0,h*.97);
- reflection.addColorStop(0,'rgba(255,255,255,.55)');reflection.addColorStop(1,'rgba(255,255,255,0)');
- ctx.fillStyle=reflection;ctx.beginPath();ctx.ellipse(w*.5,h*.86,w*.24,h*.095,0,0,Math.PI*2);ctx.fill();
- for(let i=0;i<18;i++){
-  const rx=(.055+i*.044)*w,ry=2.5+i*.65,shift=Math.sin(t*1.5+i)*5;
-  ctx.beginPath();ctx.ellipse(w*.5+shift,h*.88+shift*.12,rx,ry,0,0,Math.PI*2);
-  ctx.strokeStyle='rgba(219,252,255,'+(.48-i*.018)+')';ctx.lineWidth=1.3;ctx.stroke();
- }
- // Crystal flowers and glowing mineral clusters along both banks.
- drawFlower(w*.105,h*.765,Math.min(39,w*.075),'#ff6cdb',t,1);
- drawFlower(w*.22,h*.825,Math.min(29,w*.052),'#5cf4ff',t,3);
- drawFlower(w*.78,h*.82,Math.min(30,w*.054),'#ffe778',t,2);
- drawFlower(w*.9,h*.765,Math.min(40,w*.075),'#b69aff',t,4);
- for(let i=0;i<12;i++){
-  const side=i<6?1:-1,n=i%6,x=side===1?w*(.03+n*.055):w*(.97-n*.055);
-  const y=h*(.81+(n%3)*.035),sz=7+(n%3)*4;
-  ctx.save();ctx.translate(x,y);ctx.rotate(Math.sin(t*.7+i)*.16);
-  ctx.fillStyle=['#4ff5ff','#ff74db','#ffe77a','#9e8bff'][i%4];ctx.globalAlpha=.75;
-  ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=15;
-  path([[0,-sz*1.8],[sz*.55,-sz*.35],[sz*.32,sz],[0,sz*1.35],[-sz*.42,sz*.15]],ctx.fillStyle,'rgba(255,255,255,.7)',1);
-  ctx.restore();
- }
- // Central prism is deliberately oversized and visually dominant.
- drawCrystal(w*.5,h*(h<620?.39:.405),Math.min(w*.32,h*.255,195),t);
- // Rotating orbiting shards and curved energy trails around the gem.
- for(let i=0;i<7;i++){
-  const a=t*(i%2?-.34:.27)+i*Math.PI*2/7;
-  const rx=w*.29,ry=h*.19,x=w*.5+Math.cos(a)*rx,y=h*.405+Math.sin(a)*ry;
-  ctx.save();ctx.translate(x,y);ctx.rotate(a+t*.5);
-  const c=rainbow[i];ctx.fillStyle=c;ctx.shadowColor=c;ctx.shadowBlur=20;
-  path([[0,-11],[7,-2],[4,10],[-4,8],[-7,-2]],c,'rgba(255,255,255,.8)',1);
-  ctx.restore();
- }
- for(let i=0;i<3;i++){
-  const a=t*.34+i*2.094;
-  ctx.beginPath();ctx.ellipse(w*.5,h*.405,w*(.22+i*.055),h*(.12+i*.025),a*.12,0,Math.PI*2);
-  ctx.strokeStyle=['rgba(255,111,221,.3)','rgba(91,245,255,.34)','rgba(255,231,116,.28)'][i];
-  ctx.lineWidth=1.4;ctx.setLineDash([5,11]);ctx.lineDashOffset=-t*16;ctx.stroke();ctx.setLineDash([]);
- }
- // Floating light motes fill the space between the rainbow and water.
- for(let i=0;i<48;i++){
-  const x=(i*73.7+t*(8+(i%4)*3))%(w+20)-10;
-  const y=h*(.18+((i*37)%58)/100)+Math.sin(t*1.3+i)*9;
-  ctx.globalAlpha=.25+.55*(.5+.5*Math.sin(t*2+i));
-  ctx.fillStyle=rainbow[i%7];ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=10;
-  ctx.beginPath();ctx.arc(x,y,1+(i%3)*.65,0,Math.PI*2);ctx.fill();
- }
- ctx.globalAlpha=1;ctx.shadowBlur=0;
- // Awakening burst.
- particles=particles.filter(p=>p.life>0);
- particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=18*dt;p.life-=dt;ctx.globalAlpha=Math.max(0,p.life/p.max);ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=12;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()});
- ctx.globalAlpha=1;ctx.shadowBlur=0;
- if(awake){const k=1-(awakeUntil-t)/2.6;ctx.strokeStyle='rgba(255,255,255,'+Math.max(0,1-k)+')';ctx.lineWidth=5;ctx.beginPath();ctx.arc(w*.5,h*.405,k*Math.max(w,h)*.72,0,Math.PI*2);ctx.stroke()}
- requestAnimationFrame(draw);
+function pool(){
+ const y=H*.79;let g=ctx.createLinearGradient(0,y,0,H);g.addColorStop(0,'#1acbe766');g.addColorStop(.25,'#123f7899');g.addColorStop(1,'#07152f');ctx.fillStyle=g;ctx.fillRect(0,y,W,H-y);
+ for(let i=0;i<18;i++){let yy=y+12+i*8,ww=(i*31%Math.max(80,W*.5));ctx.globalAlpha=.08+.12*Math.sin(t*2+i);ctx.strokeStyle=colors[i%7];ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(W*.5,yy,ww*(.5+.5*Math.sin(t+i)),3+i%4,0,0,Math.PI*2);ctx.stroke()}ctx.globalAlpha=1;
 }
-function playSound(){
- const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
- try{audio=audio||new AC();audio.resume();const notes=[261.6,329.6,392,523.25,659.25,783.99,1046.5];
- notes.forEach((f,i)=>{const osc=audio.createOscillator(),gain=audio.createGain(),at=audio.currentTime+i*.12;osc.type='sine';osc.frequency.setValueAtTime(f,at);gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.035,at+.04);gain.gain.exponentialRampToValueAtTime(.0001,at+1.25);osc.connect(gain);gain.connect(audio.destination);osc.start(at);osc.stop(at+1.3)});
- }catch(e){/* Sound is optional; visuals continue. */}
+function motes(dt){
+ if(Math.random()<.32){particles.push({x:Math.random()*W,y:H*(.36+Math.random()*.58),vx:(Math.random()-.5)*12,vy:-12-Math.random()*26,life:2+Math.random()*2,r:1+Math.random()*2,c:colors[Math.floor(Math.random()*7)]})}
+ if(burst>0&&Math.random()<.8){let a=Math.random()*Math.PI*2,s=25+Math.random()*120;particles.push({x:W*.5,y:H*.55,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1+Math.random(),r:1+Math.random()*3,c:colors[Math.floor(Math.random()*7)]})}
+ particles=particles.filter(p=>p.life>0);for(let p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;p.vy-=2*dt;ctx.globalAlpha=Math.max(0,Math.min(1,p.life));glow(p.x,p.y,p.r*9,p.c,.8)}ctx.globalAlpha=1;
 }
-button.addEventListener('click',()=>{
- const now=elapsed;awakeUntil=now+2.6;particles=[];
- const colors=['#fff','#ff62d9','#ffe36a','#5dfff0','#65baff','#b58aff'];
- for(let i=0;i<150;i++){const a=Math.random()*Math.PI*2,s=45+Math.random()*230;particles.push({x:w*.5,y:h*.43,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1.2+Math.random()*1.6,max:2.8,r:1+Math.random()*3,color:colors[i%colors.length]})}
- playSound();hint.textContent='PRISM AWAKENED · COLOR CASCADE';sub.textContent='Water, light and color in motion';button.textContent='AWAKEN THE PRISM AGAIN';
-});
-window.addEventListener('resize',resize,{passive:true});
-resize();requestAnimationFrame(draw);
+function draw(ts){let dt=Math.min(.04,(ts-last)/1000||.016);last=ts;t+=dt;if(burst>0)burst-=dt;background();mountains();rainbow();waterfall(W*.13,H*.49,W*.17,H*.84);waterfall(W*.70,H*.47,W*.17,H*.84);pool();crystal();motes(dt);requestAnimationFrame(draw)}
+function sound(){try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();let now=audio.currentTime;[261.6,329.6,392,523.3,659.3].forEach((f,i)=>{let o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,now+i*.11);g.gain.exponentialRampToValueAtTime(.055,now+i*.11+.04);g.gain.exponentialRampToValueAtTime(.0001,now+i*.11+1.4);o.connect(g);g.connect(audio.destination);o.start(now+i*.11);o.stop(now+i*.11+1.45)})}catch(e){}}
+button.addEventListener('click',()=>{burst=2.4;for(let i=0;i<100;i++){let a=Math.random()*Math.PI*2,s=40+Math.random()*180;particles.push({x:W*.5,y:H*.56,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1+Math.random()*1.7,r:1+Math.random()*3,c:colors[i%7]})}sound();button.textContent='AWAKEN THE COLORS AGAIN';status.textContent='THE PRISM IS ALIVE · COLOR CASCADE RELEASED'});
+addEventListener('resize',resize,{passive:true});resize();requestAnimationFrame(draw);
 })();
 </script>
 </body>
