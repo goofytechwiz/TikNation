@@ -108,7 +108,54 @@ body.phoenix-flight .portal{filter:brightness(1.8);box-shadow:0 0 55px #fff,0 0 
   resize();requestAnimationFrame(draw);if('ResizeObserver'in window)new ResizeObserver(resize).observe(host);else window.addEventListener('resize',resize);
  });
  const btn=document.getElementById('action'),hint=document.getElementById('hint'),sub=document.getElementById('sub'),burst=document.getElementById('burst'),bctx=burst.getContext('2d'),phoenix=document.getElementById('phoenix'),pctx=phoenix.getContext('2d');
- function phoenixFlight(){const dpr=Math.min(devicePixelRatio||1,1.5),w=innerWidth,h=innerHeight;phoenix.width=w*dpr;phoenix.height=h*dpr;pctx.setTransform(dpr,0,0,dpr,0,0);const start=performance.now(),duration=5200;function draw(now){const elapsed=now-start,progress=Math.min(1,elapsed/duration),x=w*(.08+progress*.84),y=h*(.34-Math.sin(progress*Math.PI)*.2),scale=Math.min(1.15,Math.max(.55,w/430)),flap=Math.sin(elapsed*.018)*.48;pctx.clearRect(0,0,w,h);pctx.save();pctx.translate(x,y);pctx.scale(scale,scale);pctx.rotate(-.08+Math.sin(elapsed*.003)*.08);pctx.shadowBlur=28;pctx.shadowColor='#ff8be9';const colors=['#ff4fd8','#ffb43d','#fff36a','#54ffc9','#46cfff','#a66aff'];for(let i=0;i<6;i++){pctx.strokeStyle=colors[i];pctx.lineWidth=5-i*.35;pctx.beginPath();pctx.moveTo(-28,13);pctx.quadraticCurveTo(-95-i*5,40+i*9,-150-i*12,25+i*17+Math.sin(elapsed*.01+i)*8);pctx.stroke()}pctx.fillStyle='#fff';pctx.beginPath();pctx.ellipse(0,0,34,17,-.1,0,Math.PI*2);pctx.fill();pctx.fillStyle='#ffb33e';pctx.beginPath();pctx.moveTo(23,-5);pctx.lineTo(52,-13);pctx.lineTo(34,3);pctx.closePath();pctx.fill();pctx.fillStyle='#fff';pctx.beginPath();pctx.arc(21,-17,13,0,Math.PI*2);pctx.fill();pctx.fillStyle='#ffe15c';pctx.beginPath();pctx.moveTo(17,-28);pctx.lineTo(11,-44);pctx.lineTo(26,-30);pctx.fill();pctx.fillStyle='#17102d';pctx.beginPath();pctx.arc(25,-19,2.5,0,Math.PI*2);pctx.fill();for(let side of [-1,1]){pctx.save();pctx.scale(1,side);pctx.rotate(-flap);const wing=pctx.createLinearGradient(0,-8,0,-125);wing.addColorStop(0,'#fff');wing.addColorStop(.25,'#ff65d7');wing.addColorStop(.55,'#ffe75a');wing.addColorStop(.78,'#56f5e9');wing.addColorStop(1,'#8861ff');pctx.fillStyle=wing;pctx.shadowBlur=25;pctx.beginPath();pctx.moveTo(-8,-4);pctx.bezierCurveTo(-28,-42,-45,-95,-8,-132);pctx.bezierCurveTo(0,-95,35,-73,18,-18);pctx.closePath();pctx.fill();for(let k=0;k<5;k++){pctx.strokeStyle=colors[k];pctx.lineWidth=3;pctx.beginPath();pctx.moveTo(0,-12);pctx.quadraticCurveTo(-20-k*3,-60-k*8,-8+k*5,-118+k*8);pctx.stroke()}pctx.restore()}pctx.restore();if(progress<1)requestAnimationFrame(draw);else{pctx.clearRect(0,0,w,h);document.body.classList.remove('phoenix-flight')}}requestAnimationFrame(draw)}
+ function phoenixFlight(){
+  const dpr=Math.min(devicePixelRatio||1,1.5),w=innerWidth,h=innerHeight;
+  phoenix.width=w*dpr;phoenix.height=h*dpr;phoenix.style.width=w+'px';phoenix.style.height=h+'px';pctx.setTransform(dpr,0,0,dpr,0,0);
+  const start=performance.now(),duration=5900;
+  const featherColors=['#fff7d2','#ffe45c','#ff9b38','#ff4d9f','#b34dff','#46dfff','#62ffd0'];
+  function feather(ctx,x,y,tx,ty,width,color){
+    ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x-width, y+(ty-y)*.42, tx,ty);ctx.quadraticCurveTo(x+width*.65,y+(ty-y)*.62,x,y);ctx.closePath();ctx.fillStyle=color;ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.78)';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x-2,(y+ty)/2,tx,ty);ctx.stroke();
+  }
+  function draw(now){
+    const elapsed=now-start,progress=Math.min(1,elapsed/duration),x=w*(.08+progress*.84),y=h*(.34-Math.sin(progress*Math.PI)*.2),scale=Math.min(1.12,Math.max(.62,w/390)),flap=Math.sin(elapsed*.012)*.55;
+    pctx.clearRect(0,0,w,h);pctx.save();pctx.translate(x,y);pctx.scale(scale,scale);pctx.rotate(-.04+Math.sin(elapsed*.002)*.045);
+    // Fiery rainbow tail streaming behind the bird
+    for(let i=0;i<7;i++){pctx.strokeStyle=featherColors[i];pctx.lineWidth=5-i*.35;pctx.globalAlpha=.82;pctx.shadowBlur=18;pctx.shadowColor=featherColors[i];pctx.beginPath();pctx.moveTo(-27,8+i*1.5);pctx.bezierCurveTo(-75,18+i*10,-115,4+i*13,-174,Math.sin(elapsed*.006+i)*13+i*5);pctx.stroke()}
+    pctx.globalAlpha=1;
+    // Wings: layered long individual feathers, hinged at shoulders
+    for(const side of [-1,1]){
+      pctx.save();pctx.translate(-5,-5);pctx.scale(1,side);pctx.rotate(-flap);
+      pctx.shadowBlur=24;pctx.shadowColor='#ff7be8';
+      // broad upper wing silhouette
+      const wingGrad=pctx.createLinearGradient(0,-8,-5,-158);wingGrad.addColorStop(0,'#fff5d4');wingGrad.addColorStop(.22,'#ffb33f');wingGrad.addColorStop(.43,'#ff4e9e');wingGrad.addColorStop(.65,'#9d59ff');wingGrad.addColorStop(.82,'#36dfff');wingGrad.addColorStop(1,'#65ffd0');
+      pctx.beginPath();pctx.moveTo(-5,-8);pctx.bezierCurveTo(-40,-48,-73,-105,-22,-164);pctx.bezierCurveTo(-9,-124,30,-91,22,-47);pctx.bezierCurveTo(24,-23,12,-10,-5,-8);pctx.closePath();pctx.fillStyle=wingGrad;pctx.fill();
+      // distinct long flight feathers fan outward
+      for(let i=0;i<8;i++){const sx=-8-i*2,sy=-18-i*5,tx=-37-i*8,ty=-115-i*5;feather(pctx,sx,sy,tx,ty,10,featherColors[i%featherColors.length])}
+      // inner cover feathers
+      for(let i=0;i<5;i++){feather(pctx,-3+i*5,-15-i*3,-19+i*10,-75-i*7,8,featherColors[(i+2)%featherColors.length])}
+      pctx.restore();
+    }
+    // Body, chest and curved neck
+    pctx.shadowBlur=25;pctx.shadowColor='#fff0a0';
+    const bodyGrad=pctx.createLinearGradient(-30,-18,38,18);bodyGrad.addColorStop(0,'#ff5cae');bodyGrad.addColorStop(.35,'#ffe66b');bodyGrad.addColorStop(.65,'#fff');bodyGrad.addColorStop(1,'#58eaff');
+    pctx.fillStyle=bodyGrad;pctx.beginPath();pctx.ellipse(-1,9,43,17,-.08,0,Math.PI*2);pctx.fill();
+    pctx.beginPath();pctx.moveTo(13,7);pctx.bezierCurveTo(23,-12,17,-34,33,-42);pctx.quadraticCurveTo(49,-48,50,-30);pctx.lineTo(38,-9);pctx.quadraticCurveTo(32,5,27,15);pctx.fillStyle='#ffe9a0';pctx.fill();
+    // Head, hooked beak, eye and crown crest
+    pctx.fillStyle='#fff4cf';pctx.beginPath();pctx.ellipse(42,-40,17,13,-.22,0,Math.PI*2);pctx.fill();
+    pctx.fillStyle='#ff8b35';pctx.beginPath();pctx.moveTo(54,-43);pctx.quadraticCurveTo(73,-43,68,-31);pctx.quadraticCurveTo(61,-34,53,-34);pctx.closePath();pctx.fill();
+    pctx.fillStyle='#21123c';pctx.beginPath();pctx.arc(47,-43,2.7,0,Math.PI*2);pctx.fill();
+    for(let i=0;i<4;i++){pctx.strokeStyle=featherColors[i+1];pctx.lineWidth=5;pctx.lineCap='round';pctx.beginPath();pctx.moveTo(36+i*4,-49);pctx.quadraticCurveTo(25+i*7,-67-i*4,18+i*9,-76-i*3);pctx.stroke()}
+    // Legs and talons
+    pctx.strokeStyle='#ffc45a';pctx.lineWidth=4;pctx.beginPath();pctx.moveTo(-7,20);pctx.lineTo(-10,34);pctx.lineTo(-19,38);pctx.moveTo(12,20);pctx.lineTo(10,34);pctx.lineTo(2,38);pctx.stroke();
+    pctx.lineWidth=2.5;pctx.beginPath();pctx.moveTo(-19,38);pctx.lineTo(-24,34);pctx.moveTo(-19,38);pctx.lineTo(-17,32);pctx.moveTo(2,38);pctx.lineTo(-3,34);pctx.stroke();
+    // Flame sparks along the flight path
+    for(let i=0;i<18;i++){const q=(elapsed*.11+i*19)%180;pctx.globalAlpha=Math.max(0,1-q/180);pctx.fillStyle=featherColors[i%featherColors.length];pctx.beginPath();pctx.arc(-35-q,Math.sin(elapsed*.01+i)*17+(i%5)*7,1.5+(i%3),0,Math.PI*2);pctx.fill()}
+    pctx.globalAlpha=1;pctx.restore();
+    if(progress<1)requestAnimationFrame(draw);else{pctx.clearRect(0,0,w,h);document.body.classList.remove('phoenix-flight')}
+  }
+  requestAnimationFrame(draw);
+}
  let audio=null;
  function sound(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=audio||new AC();audio.resume();const notes=[261.6,329.6,392,523.25,659.25,783.99,1046.5,1318.5];notes.forEach((f,i)=>{const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime+i*.13;o.type=i%2?'triangle':'sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.045,t+.04);g.gain.exponentialRampToValueAtTime(.0001,t+1.7);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+1.75)});const bass=audio.createOscillator(),gain=audio.createGain();bass.type='sine';bass.frequency.value=48;gain.gain.setValueAtTime(.0001,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.18,audio.currentTime+.08);gain.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+2);bass.connect(gain);gain.connect(audio.destination);bass.start();bass.stop(audio.currentTime+2.1)}
  function burstEffect(){const dpr=Math.min(devicePixelRatio||1,1.5),w=innerWidth,h=innerHeight;burst.width=w*dpr;burst.height=h*dpr;burst.style.width=w+'px';burst.style.height=h+'px';bctx.setTransform(dpr,0,0,dpr,0,0);const palette=['#fff','#ff4fd8','#ffdb55','#65ffe1','#54caff','#a56bff'];const bits=Array.from({length:230},()=>{const a=Math.random()*Math.PI*2,s=2+Math.random()*8;return{x:w/2,y:h*.42,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:65+Math.random()*35,r:1+Math.random()*3.5,color:palette[Math.floor(Math.random()*palette.length)]}});let frame=0;function paint(){bctx.clearRect(0,0,w,h);bits.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vx*=.985;p.vy=p.vy*.985+.035;p.life--;bctx.globalAlpha=Math.max(0,p.life/90);bctx.fillStyle=p.color;bctx.shadowBlur=12;bctx.shadowColor=p.color;bctx.beginPath();bctx.arc(p.x,p.y,p.r,0,Math.PI*2);bctx.fill()});bctx.globalAlpha=1;bctx.shadowBlur=0;if(++frame<100)requestAnimationFrame(paint);else bctx.clearRect(0,0,w,h)}paint()}
