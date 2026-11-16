@@ -111,51 +111,78 @@ body.phoenix-flight .portal{filter:brightness(1.8);box-shadow:0 0 55px #fff,0 0 
  function phoenixFlight(){
   const dpr=Math.min(devicePixelRatio||1,1.5),w=innerWidth,h=innerHeight;
   phoenix.width=w*dpr;phoenix.height=h*dpr;phoenix.style.width=w+'px';phoenix.style.height=h+'px';pctx.setTransform(dpr,0,0,dpr,0,0);
-  const start=performance.now(),duration=5900;
-  const featherColors=['#fff7d2','#ffe45c','#ff9b38','#ff4d9f','#b34dff','#46dfff','#62ffd0'];
-  function feather(ctx,x,y,tx,ty,width,color){
-    ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x-width, y+(ty-y)*.42, tx,ty);ctx.quadraticCurveTo(x+width*.65,y+(ty-y)*.62,x,y);ctx.closePath();ctx.fillStyle=color;ctx.fill();
-    ctx.strokeStyle='rgba(255,255,255,.78)';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x,y);ctx.quadraticCurveTo(x-2,(y+ty)/2,tx,ty);ctx.stroke();
+  const start=performance.now(),duration=6500;
+  const palette=['#fff5c8','#ffe27a','#ffad45','#ff654e','#ef4b9a','#a96bff','#54dfff'];
+  function plume(ctx,ax,ay,bx,by,width,color,shine=true){
+   const dx=bx-ax,dy=by-ay,len=Math.hypot(dx,dy),nx=-dy/len,ny=dx/len;
+   ctx.beginPath();ctx.moveTo(ax,ay);
+   ctx.quadraticCurveTo(ax+dx*.28+nx*width,ay+dy*.28+ny*width,bx,by);
+   ctx.quadraticCurveTo(ax+dx*.65-nx*width*.5,ay+dy*.65-ny*width*.5,ax,ay);
+   ctx.closePath();ctx.fillStyle=color;ctx.fill();
+   if(shine){ctx.strokeStyle='rgba(255,255,255,.65)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(ax,ay);ctx.quadraticCurveTo(ax+dx*.5+nx*width*.12,ay+dy*.5+ny*width*.12,bx,by);ctx.stroke()}
   }
   function draw(now){
-    const elapsed=now-start,progress=Math.min(1,elapsed/duration),x=w*(.08+progress*.84),y=h*(.34-Math.sin(progress*Math.PI)*.2),scale=Math.min(1.12,Math.max(.62,w/390)),flap=Math.sin(elapsed*.012)*.55;
-    pctx.clearRect(0,0,w,h);pctx.save();pctx.translate(x,y);pctx.scale(scale,scale);pctx.rotate(-.04+Math.sin(elapsed*.002)*.045);
-    // Fiery rainbow tail streaming behind the bird
-    for(let i=0;i<7;i++){pctx.strokeStyle=featherColors[i];pctx.lineWidth=5-i*.35;pctx.globalAlpha=.82;pctx.shadowBlur=18;pctx.shadowColor=featherColors[i];pctx.beginPath();pctx.moveTo(-27,8+i*1.5);pctx.bezierCurveTo(-75,18+i*10,-115,4+i*13,-174,Math.sin(elapsed*.006+i)*13+i*5);pctx.stroke()}
-    pctx.globalAlpha=1;
-    // Wings: layered long individual feathers, hinged at shoulders
-    for(const side of [-1,1]){
-      pctx.save();pctx.translate(-5,-5);pctx.scale(1,side);pctx.rotate(-flap);
-      pctx.shadowBlur=24;pctx.shadowColor='#ff7be8';
-      // broad upper wing silhouette
-      const wingGrad=pctx.createLinearGradient(0,-8,-5,-158);wingGrad.addColorStop(0,'#fff5d4');wingGrad.addColorStop(.22,'#ffb33f');wingGrad.addColorStop(.43,'#ff4e9e');wingGrad.addColorStop(.65,'#9d59ff');wingGrad.addColorStop(.82,'#36dfff');wingGrad.addColorStop(1,'#65ffd0');
-      pctx.beginPath();pctx.moveTo(-5,-8);pctx.bezierCurveTo(-40,-48,-73,-105,-22,-164);pctx.bezierCurveTo(-9,-124,30,-91,22,-47);pctx.bezierCurveTo(24,-23,12,-10,-5,-8);pctx.closePath();pctx.fillStyle=wingGrad;pctx.fill();
-      // distinct long flight feathers fan outward
-      for(let i=0;i<8;i++){const sx=-8-i*2,sy=-18-i*5,tx=-37-i*8,ty=-115-i*5;feather(pctx,sx,sy,tx,ty,10,featherColors[i%featherColors.length])}
-      // inner cover feathers
-      for(let i=0;i<5;i++){feather(pctx,-3+i*5,-15-i*3,-19+i*10,-75-i*7,8,featherColors[(i+2)%featherColors.length])}
-      pctx.restore();
+   const elapsed=now-start,p=Math.min(1,elapsed/duration),x=w*(.08+p*.84),y=h*(.36-Math.sin(p*Math.PI)*.19),scale=Math.min(1.25,Math.max(.72,w/430)),wing=Math.sin(elapsed*.008)*.42;
+   pctx.clearRect(0,0,w,h);pctx.save();pctx.translate(x,y);pctx.scale(scale,scale);
+   // Long, individually separated tail streamers, trailing behind the body.
+   for(let i=0;i<9;i++){
+    const c=palette[i%palette.length],offset=(i-4)*5;
+    pctx.save();pctx.shadowColor=c;pctx.shadowBlur=13;pctx.strokeStyle=c;pctx.lineWidth=5.5-i*.28;pctx.lineCap='round';
+    pctx.beginPath();pctx.moveTo(-34,12+offset*.18);pctx.bezierCurveTo(-82,offset-5,-126,offset+Math.sin(elapsed*.003+i)*18,-206,offset*1.9+Math.sin(elapsed*.004+i)*17);pctx.stroke();pctx.restore();
+   }
+   // Far wing, layered flight feathers and covert rows.
+   function wingShape(side,far){
+    pctx.save();pctx.translate(-9,-7);pctx.scale(1,side);pctx.rotate(-wing+(far?-.12:0));
+    const grad=pctx.createLinearGradient(0,0,-25,-190);grad.addColorStop(0,far?'#d85a74':'#fff0bb');grad.addColorStop(.25,'#ffb34d');grad.addColorStop(.48,'#fa6859');grad.addColorStop(.68,'#c34caa');grad.addColorStop(.84,'#6a7de4');grad.addColorStop(1,'#54dfff');
+    pctx.shadowColor=far?'#ff744e':'#ffb94d';pctx.shadowBlur=far?14:23;
+    pctx.beginPath();pctx.moveTo(0,0);pctx.bezierCurveTo(-42,-42,-93,-104,-47,-191);pctx.bezierCurveTo(-8,-160,35,-112,33,-67);pctx.bezierCurveTo(36,-29,20,-8,0,0);pctx.closePath();pctx.fillStyle=grad;pctx.fill();
+    // Long primary feathers fan from the wrist toward the wingtip.
+    for(let i=0;i<11;i++){
+     const a=i/10,ax=-8-a*28,ay=-18-a*24,bx=-45-a*6,by=-116-a*8;
+     plume(pctx,ax,ay,bx,by,7.5,far?palette[(i+2)%7]:palette[(i+1)%7],!far);
     }
-    // Body, chest and curved neck
-    pctx.shadowBlur=25;pctx.shadowColor='#fff0a0';
-    const bodyGrad=pctx.createLinearGradient(-30,-18,38,18);bodyGrad.addColorStop(0,'#ff5cae');bodyGrad.addColorStop(.35,'#ffe66b');bodyGrad.addColorStop(.65,'#fff');bodyGrad.addColorStop(1,'#58eaff');
-    pctx.fillStyle=bodyGrad;pctx.beginPath();pctx.ellipse(-1,9,43,17,-.08,0,Math.PI*2);pctx.fill();
-    pctx.beginPath();pctx.moveTo(13,7);pctx.bezierCurveTo(23,-12,17,-34,33,-42);pctx.quadraticCurveTo(49,-48,50,-30);pctx.lineTo(38,-9);pctx.quadraticCurveTo(32,5,27,15);pctx.fillStyle='#ffe9a0';pctx.fill();
-    // Head, hooked beak, eye and crown crest
-    pctx.fillStyle='#fff4cf';pctx.beginPath();pctx.ellipse(42,-40,17,13,-.22,0,Math.PI*2);pctx.fill();
-    pctx.fillStyle='#ff8b35';pctx.beginPath();pctx.moveTo(54,-43);pctx.quadraticCurveTo(73,-43,68,-31);pctx.quadraticCurveTo(61,-34,53,-34);pctx.closePath();pctx.fill();
-    pctx.fillStyle='#21123c';pctx.beginPath();pctx.arc(47,-43,2.7,0,Math.PI*2);pctx.fill();
-    for(let i=0;i<4;i++){pctx.strokeStyle=featherColors[i+1];pctx.lineWidth=5;pctx.lineCap='round';pctx.beginPath();pctx.moveTo(36+i*4,-49);pctx.quadraticCurveTo(25+i*7,-67-i*4,18+i*9,-76-i*3);pctx.stroke()}
-    // Legs and talons
-    pctx.strokeStyle='#ffc45a';pctx.lineWidth=4;pctx.beginPath();pctx.moveTo(-7,20);pctx.lineTo(-10,34);pctx.lineTo(-19,38);pctx.moveTo(12,20);pctx.lineTo(10,34);pctx.lineTo(2,38);pctx.stroke();
-    pctx.lineWidth=2.5;pctx.beginPath();pctx.moveTo(-19,38);pctx.lineTo(-24,34);pctx.moveTo(-19,38);pctx.lineTo(-17,32);pctx.moveTo(2,38);pctx.lineTo(-3,34);pctx.stroke();
-    // Flame sparks along the flight path
-    for(let i=0;i<18;i++){const q=(elapsed*.11+i*19)%180;pctx.globalAlpha=Math.max(0,1-q/180);pctx.fillStyle=featherColors[i%featherColors.length];pctx.beginPath();pctx.arc(-35-q,Math.sin(elapsed*.01+i)*17+(i%5)*7,1.5+(i%3),0,Math.PI*2);pctx.fill()}
-    pctx.globalAlpha=1;pctx.restore();
-    if(progress<1)requestAnimationFrame(draw);else{pctx.clearRect(0,0,w,h);document.body.classList.remove('phoenix-flight')}
+    // Secondary feathers overlap like real flight plumage.
+    for(let row=0;row<3;row++)for(let i=0;i<8;i++){
+     const ax=-4-i*3+row*5,ay=-17-i*5-row*12,bx=-26-i*4+row*7,by=-65-i*5-row*13;
+     plume(pctx,ax,ay,bx,by,5.5,row===0?'#fff0c4':palette[(i+row+2)%7],!far);
+    }
+    // Warm feather shafts and subtle edge highlights.
+    pctx.shadowBlur=0;pctx.strokeStyle='rgba(255,255,230,.55)';pctx.lineWidth=1;
+    for(let i=0;i<7;i++){pctx.beginPath();pctx.moveTo(-5-i*3,-15-i*4);pctx.quadraticCurveTo(-20-i*3,-55-i*5,-40-i*2,-105-i*5);pctx.stroke()}
+    pctx.restore();
+   }
+   wingShape(-1,true);wingShape(1,true);
+   // Torso: tapered, muscular bird body with a luminous breast and back.
+   const torso=pctx.createLinearGradient(-35,-12,43,24);torso.addColorStop(0,'#8f315e');torso.addColorStop(.25,'#f15b46');torso.addColorStop(.53,'#ffd16b');torso.addColorStop(.75,'#fff3c8');torso.addColorStop(1,'#e45c72');
+   pctx.shadowColor='#ffb44e';pctx.shadowBlur=24;pctx.fillStyle=torso;
+   pctx.beginPath();pctx.moveTo(-42,3);pctx.bezierCurveTo(-28,-21,10,-25,39,-7);pctx.quadraticCurveTo(52,8,25,24);pctx.quadraticCurveTo(-12,33,-42,3);pctx.fill();
+   // Breast feather scales, individually layered down the chest.
+   for(let row=0;row<4;row++)for(let i=0;i<5;i++){
+    const xx=-8+i*8-row*2,yy=-7+row*7;
+    plume(pctx,xx,yy,xx+5,yy+12,3.2,['#fff1bf','#ffcf72','#ff9b59','#f36b63'][row],false);
+   }
+   // Neck rises in a graceful S curve; the head is distinctly eagle-like.
+   pctx.shadowBlur=18;pctx.shadowColor='#ffb44e';
+   const neck=pctx.createLinearGradient(16,-5,54,-66);neck.addColorStop(0,'#e95d54');neck.addColorStop(.45,'#ffd36d');neck.addColorStop(1,'#fff4d2');
+   pctx.beginPath();pctx.moveTo(16,-8);pctx.bezierCurveTo(30,-25,22,-53,43,-65);pctx.quadraticCurveTo(57,-72,64,-56);pctx.quadraticCurveTo(51,-46,48,-31);pctx.quadraticCurveTo(39,-9,34,4);pctx.closePath();pctx.fillStyle=neck;pctx.fill();
+   // Crown, eye ridge, hooked beak and nostril.
+   pctx.fillStyle='#fff0c2';pctx.beginPath();pctx.ellipse(55,-64,19,13,-.18,0,Math.PI*2);pctx.fill();
+   pctx.fillStyle='#e85b38';pctx.beginPath();pctx.moveTo(68,-66);pctx.quadraticCurveTo(91,-66,84,-51);pctx.quadraticCurveTo(79,-45,73,-51);pctx.quadraticCurveTo(77,-58,68,-58);pctx.closePath();pctx.fill();
+   pctx.fillStyle='#2b1830';pctx.beginPath();pctx.ellipse(59,-68,2.7,3.1,0,0,Math.PI*2);pctx.fill();
+   pctx.fillStyle='#fff';pctx.beginPath();pctx.arc(60,-69,1,0,Math.PI*2);pctx.fill();
+   for(let i=0;i<5;i++){pctx.save();pctx.strokeStyle=palette[i+1];pctx.lineWidth=5-i*.4;pctx.lineCap='round';pctx.beginPath();pctx.moveTo(48+i*4,-73);pctx.quadraticCurveTo(39+i*7,-91-i*3,31+i*8,-103-i*4);pctx.stroke();pctx.restore()}
+   // Layered golden legs and curled talons.
+   pctx.strokeStyle='#d87939';pctx.lineWidth=4;pctx.lineCap='round';
+   for(let i=0;i<2;i++){const xx=-13+i*23;pctx.beginPath();pctx.moveTo(xx,21);pctx.lineTo(xx-2,37);pctx.stroke();pctx.lineWidth=2.5;pctx.beginPath();pctx.moveTo(xx-2,37);pctx.lineTo(xx-10,42);pctx.moveTo(xx-2,37);pctx.lineTo(xx+4,43);pctx.moveTo(xx-2,37);pctx.lineTo(xx-1,45);pctx.stroke();pctx.lineWidth=4}
+   // Near wing is drawn last to give the body convincing depth.
+   wingShape(1,false);
+   // Heat shimmer and sparks trail from the tail, not around a flat outline.
+   for(let i=0;i<38;i++){const q=(elapsed*.14+i*13)%220;pctx.globalAlpha=Math.max(0,1-q/220);pctx.fillStyle=palette[i%7];pctx.shadowBlur=10;pctx.shadowColor=palette[i%7];pctx.beginPath();pctx.arc(-42-q,Math.sin(elapsed*.006+i)*12+(i%7)*5,1+(i%3)*.7,0,Math.PI*2);pctx.fill()}
+   pctx.globalAlpha=1;pctx.restore();
+   if(p<1)requestAnimationFrame(draw);else{pctx.clearRect(0,0,w,h);document.body.classList.remove('phoenix-flight')}
   }
   requestAnimationFrame(draw);
-}
+ }
  let audio=null;
  function sound(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;audio=audio||new AC();audio.resume();const notes=[261.6,329.6,392,523.25,659.25,783.99,1046.5,1318.5];notes.forEach((f,i)=>{const o=audio.createOscillator(),g=audio.createGain(),t=audio.currentTime+i*.13;o.type=i%2?'triangle':'sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.045,t+.04);g.gain.exponentialRampToValueAtTime(.0001,t+1.7);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+1.75)});const bass=audio.createOscillator(),gain=audio.createGain();bass.type='sine';bass.frequency.value=48;gain.gain.setValueAtTime(.0001,audio.currentTime);gain.gain.exponentialRampToValueAtTime(.18,audio.currentTime+.08);gain.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+2);bass.connect(gain);gain.connect(audio.destination);bass.start();bass.stop(audio.currentTime+2.1)}
  function burstEffect(){const dpr=Math.min(devicePixelRatio||1,1.5),w=innerWidth,h=innerHeight;burst.width=w*dpr;burst.height=h*dpr;burst.style.width=w+'px';burst.style.height=h+'px';bctx.setTransform(dpr,0,0,dpr,0,0);const palette=['#fff','#ff4fd8','#ffdb55','#65ffe1','#54caff','#a56bff'];const bits=Array.from({length:230},()=>{const a=Math.random()*Math.PI*2,s=2+Math.random()*8;return{x:w/2,y:h*.42,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:65+Math.random()*35,r:1+Math.random()*3.5,color:palette[Math.floor(Math.random()*palette.length)]}});let frame=0;function paint(){bctx.clearRect(0,0,w,h);bits.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vx*=.985;p.vy=p.vy*.985+.035;p.life--;bctx.globalAlpha=Math.max(0,p.life/90);bctx.fillStyle=p.color;bctx.shadowBlur=12;bctx.shadowColor=p.color;bctx.beginPath();bctx.arc(p.x,p.y,p.r,0,Math.PI*2);bctx.fill()});bctx.globalAlpha=1;bctx.shadowBlur=0;if(++frame<100)requestAnimationFrame(paint);else bctx.clearRect(0,0,w,h)}paint()}
