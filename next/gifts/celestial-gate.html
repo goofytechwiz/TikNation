@@ -27,6 +27,48 @@ for(let j=0;j<5;j++){ctx.beginPath();ctx.ellipse(cx,cy,rx*(1.08+j*.025),ry*(1.08
 const rays=ctx.createRadialGradient(cx,cy,ry*.2,cx,cy,ry*1.9);rays.addColorStop(0,'#9eeaff25');rays.addColorStop(1,'transparent');ctx.fillStyle=rays;ctx.fillRect(0,0,W,H);
 if(burst>0){burst=Math.max(0,burst-.018);ctx.globalAlpha=burst;ctx.fillStyle='#e8faff';ctx.fillRect(0,0,W,H);ctx.globalAlpha=1;for(let i=0;i<70;i++){const a=i*6.283/70+t*2,rr=(1-burst)*Math.max(W,H)*.65;ctx.fillStyle=i%2?'#a8efff':'#ffe6b2';ctx.globalAlpha=burst;ctx.beginPath();ctx.arc(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr,2.4,0,6.283);ctx.fill()}ctx.globalAlpha=1}
 requestAnimationFrame(draw)}draw();
-document.getElementById('awaken').onclick=()=>{burst=1;};
-document.getElementById('sound').onclick=()=>{const b=document.getElementById('sound');if(!audio){audio=new(window.AudioContext||window.webkitAudioContext)();[55,82.4,110,164.8].forEach((f,i)=>{const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=f;g.gain.value=.025/(i+1);o.connect(g).connect(audio.destination);o.start();osc.push(o)});b.textContent='♫ SOUND: ON'}else{osc.forEach(o=>o.stop());osc=[];audio.close();audio=null;b.textContent='♫ SOUND: OFF'}};
+
+// Cinematic sound engine: low metal resonance, rising charge, portal rush and sub impact.
+const soundButton=document.getElementById('sound');
+let soundEnabled=false,master=null,ambienceNodes=[],reverb=null;
+function makeNoise(seconds){const n=audio.createBuffer(1,Math.ceil(audio.sampleRate*seconds),audio.sampleRate),d=n.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(.7+.3*Math.random());return n}
+function setupAudio(){
+ if(audio)return;
+ audio=new(window.AudioContext||window.webkitAudioContext)();
+ master=audio.createGain();master.gain.value=.72;
+ const comp=audio.createDynamicsCompressor();comp.threshold.value=-20;comp.knee.value=18;comp.ratio.value=5;comp.attack.value=.008;comp.release.value=.55;
+ reverb=audio.createConvolver();const length=audio.sampleRate*3.2,imp=audio.createBuffer(2,length,audio.sampleRate);
+ for(let c=0;c<2;c++){const d=imp.getChannelData(c);for(let i=0;i<length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/length,2.8)}
+ reverb.buffer=imp;
+ const wet=audio.createGain();wet.gain.value=.42;
+ master.connect(comp);comp.connect(audio.destination);master.connect(reverb);reverb.connect(wet);wet.connect(comp);
+}
+function startAmbience(){
+ if(!audio||ambienceNodes.length)return;
+ [38,57.2,76].forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain(),filter=audio.createBiquadFilter();o.type=i===0?'sine':'triangle';o.frequency.value=hz;o.detune.value=i===2?7:-4;filter.type='lowpass';filter.frequency.value=115;g.gain.value=[.105,.035,.018][i];o.connect(filter).connect(g).connect(master);o.start();ambienceNodes.push(o)});
+ const n=audio.createBufferSource(),lp=audio.createBiquadFilter(),ng=audio.createGain();n.buffer=makeNoise(3);n.loop=true;lp.type='lowpass';lp.frequency.value=95;ng.gain.value=.025;n.connect(lp).connect(ng).connect(master);n.start();ambienceNodes.push(n);
+}
+function stopAmbience(){ambienceNodes.forEach(n=>{try{n.stop()}catch(e){}});ambienceNodes=[]}
+function noiseSweep(when,duration,low,high,volume){
+ const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),gain=audio.createGain();src.buffer=makeNoise(duration+.15);filter.type='lowpass';filter.frequency.setValueAtTime(low,when);filter.frequency.exponentialRampToValueAtTime(high,when+duration);gain.gain.setValueAtTime(.0001,when);gain.gain.exponentialRampToValueAtTime(volume,when+.12);gain.gain.exponentialRampToValueAtTime(.0001,when+duration);src.connect(filter).connect(gain).connect(master);src.start(when);src.stop(when+duration+.02);
+}
+function playGateSound(){
+ if(!soundEnabled||!audio)return;
+ const now=audio.currentTime;
+ // Ancient mechanism: a heavy, gritty metallic groan.
+ const metal=audio.createOscillator(),metalGain=audio.createGain(),metalFilter=audio.createBiquadFilter();
+ metal.type='sawtooth';metal.frequency.setValueAtTime(48,now);metal.frequency.exponentialRampToValueAtTime(29,now+1.8);
+ metalFilter.type='lowpass';metalFilter.frequency.value=180;metalGain.gain.setValueAtTime(.0001,now);metalGain.gain.exponentialRampToValueAtTime(.19,now+.16);metalGain.gain.exponentialRampToValueAtTime(.0001,now+2.1);
+ metal.connect(metalFilter).connect(metalGain).connect(master);metal.start(now);metal.stop(now+2.2);
+ noiseSweep(now+.15,2.7,110,1250,.12);
+ // Rising harmonic energy charge.
+ [110,164.81,220,329.63].forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain(),filter=audio.createBiquadFilter();o.type='sine';o.frequency.setValueAtTime(hz*.55,now+.2);o.frequency.exponentialRampToValueAtTime(hz*2.8,now+2.55);filter.type='lowpass';filter.frequency.value=1800;g.gain.setValueAtTime(.0001,now+.2);g.gain.linearRampToValueAtTime(.035/(i+1),now+1.7);g.gain.exponentialRampToValueAtTime(.0001,now+3.4);o.connect(filter).connect(g).connect(master);o.start(now+.2);o.stop(now+3.5)});
+ // Portal opening rush and deep cinematic impact.
+ noiseSweep(now+2.15,2.3,1800,120,.22);
+ const sub=audio.createOscillator(),sg=audio.createGain();sub.type='sine';sub.frequency.setValueAtTime(72,now+2.45);sub.frequency.exponentialRampToValueAtTime(31,now+3.7);sg.gain.setValueAtTime(.0001,now+2.4);sg.gain.exponentialRampToValueAtTime(.72,now+2.52);sg.gain.exponentialRampToValueAtTime(.0001,now+4.4);sub.connect(sg).connect(master);sub.start(now+2.4);sub.stop(now+4.5);
+ noiseSweep(now+2.42,.8,900,55,.3);
+}
+soundButton.onclick=async()=>{soundEnabled=!soundEnabled;if(soundEnabled){setupAudio();await audio.resume();startAmbience();soundButton.textContent='♫ SOUND: ON'}else{stopAmbience();soundButton.textContent='♫ SOUND: OFF'}};
+document.getElementById('awaken').onclick=async()=>{burst=1;if(soundEnabled){setupAudio();await audio.resume();playGateSound()}};
+
 })();</script></body></html>
