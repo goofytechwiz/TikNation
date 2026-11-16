@@ -177,6 +177,30 @@ body.revealed .pool-ripples{opacity:1}
 @media(max-width:520px){.water-basin{width:145vw;height:25vh;bottom:-5vh}.impact-splash{bottom:9vh;width:25vw;height:12vh}}
 @media(prefers-reduced-motion:reduce){.water-basin:before,.water-basin:after,.impact-splash,.impact-splash:before,.impact-splash:after{animation:none!important}}
 
+
+/* ENCHANTED CRYSTAL GARDEN */
+.crystal-garden{position:absolute;z-index:5;inset:0;overflow:hidden;pointer-events:none}
+.crystal-flower{position:absolute;bottom:9vh;width:clamp(54px,9vw,108px);height:clamp(115px,22vh,205px);transform-origin:bottom center;animation:gardenSway 5s ease-in-out infinite}
+.crystal-flower.f1{left:4%;--petal:#ff70e9;--glow:#ff42dc;animation-delay:-1s}
+.crystal-flower.f2{left:20%;height:clamp(85px,16vh,155px);--petal:#63f4ff;--glow:#37dfff;animation-delay:-3s}
+.crystal-flower.f3{right:20%;height:clamp(90px,17vh,165px);--petal:#ffe77b;--glow:#ffc94a;animation-delay:-2s}
+.crystal-flower.f4{right:4%;--petal:#b69aff;--glow:#9564ff;animation-delay:-4s}
+.crystal-flower.f5{left:43%;height:clamp(68px,13vh,125px);--petal:#7dffc9;--glow:#43ffc2;animation-delay:-2.5s;opacity:.9}
+.flower-stem{position:absolute;left:50%;bottom:0;width:5px;height:64%;border-radius:8px;background:linear-gradient(90deg,#174f55,#8affd5 48%,#236b70);box-shadow:0 0 10px var(--glow);transform:translateX(-50%)}
+.flower-stem:before,.flower-stem:after{content:"";position:absolute;width:27px;height:13px;top:42%;background:linear-gradient(135deg,#baffdc,#28b88f);border-radius:100% 0 100% 0;box-shadow:0 0 9px #5dffcb88}
+.flower-stem:before{right:1px;transform:rotate(-28deg)}
+.flower-stem:after{left:1px;top:62%;transform:scaleX(-1) rotate(-28deg)}
+.flower-bloom{position:absolute;left:50%;top:7%;width:62px;height:62px;transform:translateX(-50%);filter:drop-shadow(0 0 9px var(--glow));animation:flowerOpen 4.8s ease-in-out infinite}
+.flower-petal{position:absolute;left:50%;bottom:50%;width:21px;height:34px;margin-left:-10.5px;border-radius:75% 75% 35% 35%;transform-origin:50% 100%;transform:rotate(calc(var(--i)*60deg)) translateY(-7px) scale(.72);background:linear-gradient(155deg,#fff,var(--petal) 38%,color-mix(in srgb,var(--petal),#29105b 35%));border:1px solid #ffffffa8;box-shadow:inset 0 0 8px #fff9,0 0 8px var(--glow);animation:petalOpen 4.8s ease-in-out infinite}
+.flower-core{position:absolute;left:50%;top:50%;width:15px;height:15px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#fff5a8 38%,var(--glow) 72%);box-shadow:0 0 12px #fff,0 0 25px var(--glow)}
+.flower-pollen{position:absolute;left:50%;top:22%;width:4px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 8px 2px var(--glow),18px -12px 2px #fff,-17px -7px 2px #fff,12px 18px 2px #fff,-13px 19px 2px #fff;animation:pollenRise 3.2s ease-in-out infinite}
+@keyframes gardenSway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+@keyframes flowerOpen{0%,100%{transform:translateX(-50%) scale(.78)}50%{transform:translateX(-50%) scale(1.12)}}
+@keyframes petalOpen{0%,100%{transform:rotate(calc(var(--i)*60deg)) translateY(-4px) scale(.58)}50%{transform:rotate(calc(var(--i)*60deg)) translateY(-12px) scale(1)}}
+@keyframes pollenRise{0%{opacity:0;transform:translate(-50%,10px) scale(.4)}35%{opacity:1}100%{opacity:0;transform:translate(-50%,-48px) scale(1.4)}}
+@media(max-width:520px){.crystal-flower{bottom:10vh}.crystal-flower.f2,.crystal-flower.f3{display:none}.crystal-flower.f5{left:43%}.flower-bloom{transform:translateX(-50%) scale(.78)}}
+@media(prefers-reduced-motion:reduce){.crystal-flower,.flower-bloom,.flower-petal,.flower-pollen{animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -187,6 +211,7 @@ body.revealed .pool-ripples{opacity:1}
 <div class="lightning" aria-hidden="true"></div>
 <div class="fall left"><canvas></canvas><div class="mist-bank"></div><div class="spray-rainbow"></div><div class="spray-glints"></div></div><div class="fall right"><canvas></canvas><div class="mist-bank"></div><div class="spray-rainbow"></div><div class="spray-glints"></div></div><div class="pool-ripples" aria-hidden="true"></div>
 <div class="waterfall-mist" aria-hidden="true"></div><div class="waterfall-rainbow" aria-hidden="true"></div><div class="waterfall-sparkles" aria-hidden="true"></div>
+<div class="crystal-garden" aria-hidden="true"><div class="crystal-flower f1"><div class="flower-stem"></div><div class="flower-bloom"><i class="flower-petal" style="--i:0"></i><i class="flower-petal" style="--i:1"></i><i class="flower-petal" style="--i:2"></i><i class="flower-petal" style="--i:3"></i><i class="flower-petal" style="--i:4"></i><i class="flower-petal" style="--i:5"></i><i class="flower-core"></i><i class="flower-pollen"></i></div></div><div class="crystal-flower f2"><div class="flower-stem"></div><div class="flower-bloom"><i class="flower-petal" style="--i:0"></i><i class="flower-petal" style="--i:1"></i><i class="flower-petal" style="--i:2"></i><i class="flower-petal" style="--i:3"></i><i class="flower-petal" style="--i:4"></i><i class="flower-petal" style="--i:5"></i><i class="flower-core"></i><i class="flower-pollen"></i></div></div><div class="crystal-flower f3"><div class="flower-stem"></div><div class="flower-bloom"><i class="flower-petal" style="--i:0"></i><i class="flower-petal" style="--i:1"></i><i class="flower-petal" style="--i:2"></i><i class="flower-petal" style="--i:3"></i><i class="flower-petal" style="--i:4"></i><i class="flower-petal" style="--i:5"></i><i class="flower-core"></i><i class="flower-pollen"></i></div></div><div class="crystal-flower f4"><div class="flower-stem"></div><div class="flower-bloom"><i class="flower-petal" style="--i:0"></i><i class="flower-petal" style="--i:1"></i><i class="flower-petal" style="--i:2"></i><i class="flower-petal" style="--i:3"></i><i class="flower-petal" style="--i:4"></i><i class="flower-petal" style="--i:5"></i><i class="flower-core"></i><i class="flower-pollen"></i></div></div><div class="crystal-flower f5"><div class="flower-stem"></div><div class="flower-bloom"><i class="flower-petal" style="--i:0"></i><i class="flower-petal" style="--i:1"></i><i class="flower-petal" style="--i:2"></i><i class="flower-petal" style="--i:3"></i><i class="flower-petal" style="--i:4"></i><i class="flower-petal" style="--i:5"></i><i class="flower-core"></i><i class="flower-pollen"></i></div></div></div>
 <div class="water-basin" aria-hidden="true"></div><div class="impact-splash left" aria-hidden="true"></div><div class="impact-splash right" aria-hidden="true"></div>
 
 <svg class="rainbow-bridge" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
