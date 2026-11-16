@@ -3,69 +3,62 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050611">
+<meta name="theme-color" content="#05030b">
 <title>TikNation Gift · The Celestial Forge</title>
 <style>
-:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#03040b;font-family:Arial,sans-serif}body{touch-action:manipulation}.stage{position:relative;width:100%;height:100%;height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 48%,#252047 0,#0b0d20 38%,#03040b 78%)}canvas{display:block;width:100%;height:100%}.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.25) 72%,rgba(0,0,0,.8) 120%)}.top{position:absolute;top:max(18px,env(safe-area-inset-top));left:0;right:0;text-align:center;pointer-events:none;text-shadow:0 2px 18px #000}.brand{font-size:10px;letter-spacing:.42em;color:#b7c9ff;opacity:.8}.name{margin-top:7px;font-size:clamp(20px,4vw,34px);font-weight:800;letter-spacing:.17em;color:#fff1d0}.name span{color:#ffbd65}.sound{position:absolute;bottom:max(20px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);border:1px solid #ffc97888;border-radius:30px;background:#111321cc;color:#ffe2b0;padding:11px 19px;font-size:10px;letter-spacing:.18em;backdrop-filter:blur(12px)}.sound:active{transform:translateX(-50%) scale(.97)}.hint{position:absolute;bottom:max(70px,calc(env(safe-area-inset-bottom) + 55px));left:0;right:0;text-align:center;color:#c9c6dc88;font-size:9px;letter-spacing:.22em;pointer-events:none}.flash{position:absolute;inset:0;background:#fff5d8;opacity:0;pointer-events:none}.sound[hidden]{display:none}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#03030a;color:#fff;font-family:Arial,sans-serif}body{touch-action:manipulation}.stage{position:relative;width:100%;height:100%;height:100svh;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,#302044 0,#101326 43%,#03030a 85%)}canvas{display:block;width:100%;height:100%}.head{position:absolute;top:max(18px,env(safe-area-inset-top));left:0;right:0;text-align:center;pointer-events:none;text-shadow:0 2px 20px #000}.eyebrow{font-size:9px;letter-spacing:.5em;color:#b7caff}.title{font-size:clamp(22px,5vw,38px);font-weight:900;letter-spacing:.16em;margin-top:8px;color:#fff0d4}.title em{font-style:normal;color:#ffc16b}.sub{font-size:9px;letter-spacing:.26em;color:#c6c1dc;margin-top:9px}.sound{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);border:1px solid #ffc16b99;border-radius:28px;padding:13px 21px;background:#100f20dd;color:#ffe2ad;font-size:10px;letter-spacing:.2em;backdrop-filter:blur(12px)}.sound:active{transform:translateX(-50%) scale(.96)}.foot{position:absolute;bottom:max(78px,calc(env(safe-area-inset-bottom) + 68px));left:0;right:0;text-align:center;font-size:9px;letter-spacing:.23em;color:#c8c4dc99;pointer-events:none}.flash{position:absolute;inset:0;background:#fff4d8;opacity:0;pointer-events:none}
 </style>
 </head>
 <body>
-<div class="stage"><canvas id="scene"></canvas><div class="vignette"></div><div class="top"><div class="brand">TIKNATION · LEGENDARY GIFT</div><div class="name">THE <span>CELESTIAL</span> FORGE</div></div><div class="hint">A NEW STAR IS BEING BORN</div><button class="sound" id="sound">ENABLE SOUND</button><div class="flash" id="flash"></div></div>
+<div class="stage"><canvas id="c"></canvas><div class="head"><div class="eyebrow">TIKNATION · LEGENDARY GIFT</div><div class="title">THE <em>CELESTIAL</em> FORGE</div><div class="sub">FORGING A STAR FROM THE HEART OF THE VOID</div></div><div class="foot">THE CORE IS CHARGING</div><button class="sound" id="sound">ACTIVATE SOUND</button><div class="flash" id="flash"></div></div>
 <script>
 (()=>{
-const c=document.getElementById('scene'),ctx=c.getContext('2d'),soundBtn=document.getElementById('sound'),flash=document.getElementById('flash');
-let w=0,h=0,dpr=1,t0=performance.now(),soundOn=false,audio=null,lastBoom=-10;
-const rand=(a,b)=>a+Math.random()*(b-a);
-let stars=[],dust=[],sparks=[];
-function resize(){dpr=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=Math.round(w*dpr);c.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);stars=Array.from({length:Math.floor(w*h/6500)},()=>({x:Math.random()*w,y:Math.random()*h,r:rand(.3,1.5),p:rand(0,6.28)}));dust=Array.from({length:150},()=>({a:rand(0,6.28),r:rand(100,Math.min(w,h)*.65),s:rand(.2,1.1),p:rand(0,6.28)}))}
+const canvas=document.getElementById('c'),g=canvas.getContext('2d'),btn=document.getElementById('sound'),foot=document.querySelector('.foot'),flash=document.getElementById('flash');
+let W=0,H=0,D=1,start=performance.now(),audio=null,on=false,cycle=0,particles=[],stars=[];
+const rnd=(a,b)=>a+Math.random()*(b-a),TAU=Math.PI*2;
+function resize(){D=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=W*D;canvas.height=H*D;g.setTransform(D,0,0,D,0,0);stars=Array.from({length:Math.max(90,Math.floor(W*H/3600))},()=>({x:Math.random()*W,y:Math.random()*H,r:rnd(.3,1.5),p:rnd(0,TAU)}))}
 addEventListener('resize',resize);resize();
-function glow(x,y,r,color,alpha=1){let g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,color);g.addColorStop(1,'transparent');ctx.globalAlpha=alpha;ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2);ctx.globalAlpha=1}
-function ellipseRing(cx,cy,rx,ry,rot,color,width,alpha,phase){ctx.save();ctx.translate(cx,cy);ctx.rotate(rot);ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.globalAlpha=alpha;ctx.shadowBlur=18;ctx.shadowColor=color;ctx.stroke();ctx.shadowBlur=0;for(let i=0;i<3;i++){let a=phase+i*2.094;let x=Math.cos(a)*rx,y=Math.sin(a)*ry;glow(x,y,13,color,.65);ctx.beginPath();ctx.arc(x,y,3+i*.6,0,Math.PI*2);ctx.fillStyle='#fff1c6';ctx.fill()}ctx.restore();ctx.globalAlpha=1}
-function pathGlow(points,color,width,blur){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';ctx.shadowBlur=blur;ctx.shadowColor=color;ctx.stroke();ctx.shadowBlur=0}
-function drawForge(cx,cy,R,time){
- // giant dark orbital armature and industrial supports
- ctx.save();ctx.translate(cx,cy);
- for(let i=0;i<8;i++){let a=i*Math.PI/4+time*.035;let x=Math.cos(a),y=Math.sin(a);ctx.save();ctx.rotate(a);let grad=ctx.createLinearGradient(0,-R*.08,0,R*.08);grad.addColorStop(0,'#222b47');grad.addColorStop(.45,'#9b8b7b');grad.addColorStop(.6,'#31354c');grad.addColorStop(1,'#090d1c');ctx.fillStyle=grad;ctx.shadowBlur=20;ctx.shadowColor='#e98d43';ctx.fillRect(-R*.045,-R*.78,R*.09,R*1.56);ctx.shadowBlur=0;ctx.strokeStyle='#ffbd70';ctx.globalAlpha=.35;ctx.lineWidth=2;ctx.strokeRect(-R*.045,-R*.78,R*.09,R*1.56);ctx.restore()}
- for(let i=0;i<3;i++){let a=time*(i%2?-.13:.1)+i*2.1;ctx.save();ctx.rotate(a);ctx.strokeStyle=['#c28d5c','#6d8aa8','#d6a56c'][i];ctx.lineWidth=R*(.035-i*.005);ctx.globalAlpha=.65;ctx.beginPath();ctx.arc(0,0,R*(.78-i*.12),-.7,2.45);ctx.stroke();ctx.strokeStyle='#fff0c2';ctx.lineWidth=1;ctx.globalAlpha=.4;ctx.beginPath();ctx.arc(0,0,R*(.78-i*.12),2.6,5.5);ctx.stroke();ctx.restore()}
- // outer machine nodes
- for(let i=0;i<24;i++){let a=i*Math.PI/12+time*.08;let rr=R*.94;let x=Math.cos(a)*rr,y=Math.sin(a)*rr;ctx.fillStyle=i%3?'#5d718b':'#f6b66b';ctx.beginPath();ctx.arc(x,y,R*.014,0,Math.PI*2);ctx.fill();glow(x,y,R*.045,i%3?'#6f9dff':'#ff9b43',.38)}
- ctx.restore();
+function glow(x,y,r,col,a=1){const q=g.createRadialGradient(x,y,0,x,y,r);q.addColorStop(0,col);q.addColorStop(1,'transparent');g.globalAlpha=a;g.fillStyle=q;g.fillRect(x-r,y-r,2*r,2*r);g.globalAlpha=1}
+function line(x1,y1,x2,y2,col,lw=2,blur=10,a=1){g.save();g.globalAlpha=a;g.strokeStyle=col;g.lineWidth=lw;g.lineCap='round';g.shadowColor=col;g.shadowBlur=blur;g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.stroke();g.restore()}
+function ring(x,y,rx,ry,rot,col,lw,a,phase=0){g.save();g.translate(x,y);g.rotate(rot);g.globalAlpha=a;g.strokeStyle=col;g.lineWidth=lw;g.shadowColor=col;g.shadowBlur=18;g.beginPath();g.ellipse(0,0,rx,ry,0,0,TAU);g.stroke();g.shadowBlur=0;for(let k=0;k<36;k++){let ang=k*TAU/36;let r=rx,yy=ry;let major=k%3===0;g.strokeStyle=major?'#ffe1a4':col;g.lineWidth=major?3:1;g.beginPath();g.moveTo(Math.cos(ang)*r,Math.sin(ang)*yy);g.lineTo(Math.cos(ang)*(r-(major?13:5)),Math.sin(ang)*(yy-(major?9:4)));g.stroke()}for(let k=0;k<4;k++){let a=phase+k*Math.PI/2,px=Math.cos(a)*rx,py=Math.sin(a)*ry;glow(px,py,17,col,.7);g.fillStyle='#fff0c4';g.beginPath();g.arc(px,py,4,0,TAU);g.fill()}g.restore();g.globalAlpha=1}
+function gear(x,y,r,teeth,rot,col){g.save();g.translate(x,y);g.rotate(rot);g.strokeStyle=col;g.lineWidth=Math.max(3,r*.09);g.shadowColor=col;g.shadowBlur=13;g.beginPath();for(let i=0;i<teeth*4;i++){let a=i*TAU/(teeth*4),rr=r*(i%4<2?1:.84);let px=Math.cos(a)*rr,py=Math.sin(a)*rr;i?g.lineTo(px,py):g.moveTo(px,py)}g.closePath();g.stroke();g.shadowBlur=0;g.lineWidth=2;g.beginPath();g.arc(0,0,r*.53,0,TAU);g.stroke();g.beginPath();g.arc(0,0,r*.18,0,TAU);g.stroke();for(let i=0;i<8;i++){let a=i*TAU/8;line(Math.cos(a)*r*.2,Math.sin(a)*r*.2,Math.cos(a)*r*.5,Math.sin(a)*r*.5,col,3,4)}g.restore()}
+function machine(x,y,R,t){g.save();g.translate(x,y);
+ // heavy outer cradle: broad curved rails, support struts and rivets
+ for(let i=0;i<4;i++){let a=t*(i%2?-.09:.09)+i*Math.PI/2;g.save();g.rotate(a);g.strokeStyle=i%2?'#7e9ac7':'#d19a60';g.lineWidth=R*.075;g.shadowColor='#ff9c4b';g.shadowBlur=13;g.beginPath();g.arc(0,0,R*(1.23+i*.105),-.92, .92);g.stroke();g.shadowBlur=0;g.strokeStyle='#f7d5a0';g.globalAlpha=.4;g.lineWidth=2;g.beginPath();g.arc(0,0,R*(1.23+i*.105),-.92,.92);g.stroke();g.restore()}
+ for(let i=0;i<8;i++){let a=i*TAU/8+t*.035,xx=Math.cos(a),yy=Math.sin(a);g.save();g.rotate(a);let grad=g.createLinearGradient(-R*.07,0,R*.07,0);grad.addColorStop(0,'#10182d');grad.addColorStop(.35,'#a9a6a5');grad.addColorStop(.55,'#313b55');grad.addColorStop(1,'#080b17');g.fillStyle=grad;g.fillRect(-R*.055,-R*1.05,R*.11,R*2.1);g.strokeStyle='#ffd18a';g.globalAlpha=.5;g.lineWidth=1.5;g.strokeRect(-R*.055,-R*1.05,R*.11,R*2.1);g.restore();glow(x+xx*R*1.1,y+yy*R*1.1,12,'#ffb35e',.45)}
+ g.restore();
+ // exposed side gears
+ gear(x-R*1.02,y+R*.48,R*.22,12,t*.42,'#9eb8d9');gear(x+R*1.02,y-R*.45,R*.18,10,-t*.5,'#e4a96c');
+ ring(x,y,R*1.05,R*.72,-.35,'#ffbd70',R*.035,.82,t*.7);
+ ring(x,y,R*.91,R*.61,.47,'#8ab5ff',R*.022,.8,-t*.9);
+ ring(x,y,R*.76,R*.5,t*.2,'#d8b1ff',R*.018,.7,t*1.2);
 }
-function drawCore(cx,cy,R,time,charge){
- const pulse=1+Math.sin(time*2.4)*.025;let r=R*.43*pulse;
- glow(cx,cy,r*2.8,'#ff6c25',.35+charge*.2);glow(cx,cy,r*1.8,'#ffb53d',.55);glow(cx,cy,r*1.2,'#fff0a4',.55);
- let g=ctx.createRadialGradient(cx-r*.2,cy-r*.25,r*.04,cx,cy,r);g.addColorStop(0,'#fffde0');g.addColorStop(.18,'#fff0a0');g.addColorStop(.42,'#ffc14e');g.addColorStop(.7,'#f16b27');g.addColorStop(1,'#6e1b2d');ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
- // turbulent solar surface
- ctx.save();ctx.beginPath();ctx.arc(cx,cy,r*.98,0,Math.PI*2);ctx.clip();
- for(let i=0;i<34;i++){let a=i*2.399+time*.22,rr=r*randDummy(i);let x=cx+Math.cos(a+Math.sin(time+i)*.1)*rr,y=cy+Math.sin(a)*rr;ctx.beginPath();ctx.ellipse(x,y,r*.12,r*.035,a,0,Math.PI*2);ctx.fillStyle=i%2?'#fff0a0':'#ff8b36';ctx.globalAlpha=.18+charge*.25;ctx.fill()}ctx.globalAlpha=1;ctx.restore();
- // corona flares
- for(let i=0;i<13;i++){let a=i*Math.PI*2/13+time*.17;let len=r*(.18+.12*Math.sin(time*2+i));let x=cx+Math.cos(a)*r*.9,y=cy+Math.sin(a)*r*.9;pathGlow([[x,y],[cx+Math.cos(a)* (r+len),cy+Math.sin(a)*(r+len)]],i%2?'#ffd47a':'#fff1c1',2,12)}
+function core(x,y,R,t,charge){let r=R*.38*(1+.025*Math.sin(t*2.5));glow(x,y,r*3.4,'#e85b27',.45);glow(x,y,r*2,'#ff9c39',.8);glow(x,y,r*1.25,'#fff0a0',.9);
+let q=g.createRadialGradient(x-r*.28,y-r*.3,2,x,y,r);q.addColorStop(0,'#fffef0');q.addColorStop(.23,'#ffe9a0');q.addColorStop(.52,'#ffb13f');q.addColorStop(.82,'#e64e29');q.addColorStop(1,'#601b40');g.fillStyle=q;g.beginPath();g.arc(x,y,r,0,TAU);g.fill();
+g.save();g.beginPath();g.arc(x,y,r*.98,0,TAU);g.clip();for(let i=0;i<55;i++){let a=i*2.399+t*.12,rr=r*(.15+.78*((Math.sin(i*72.13)*.5)+.5));let px=x+Math.cos(a)*rr,py=y+Math.sin(a)*rr;g.fillStyle=i%2?'#fff0ae':'#ff7433';g.globalAlpha=.2+charge*.35;g.beginPath();g.ellipse(px,py,r*.12,r*.035,a,0,TAU);g.fill()}g.restore();g.globalAlpha=1;
+for(let i=0;i<12;i++){let a=i*TAU/12+t*.12,len=r*(.25+.15*Math.sin(t*2+i));line(x+Math.cos(a)*r*.86,y+Math.sin(a)*r*.86,x+Math.cos(a)*(r+len),y+Math.sin(a)*(r+len),'#ffe6a4',2,16,.85)}
 }
-function randDummy(i){return .18+((Math.sin(i*91.7)*.5+.5)*.7)}
-function render(now){let time=(now-t0)/1000,cycle=time%18,charge=Math.min(1,Math.max(0,(cycle-4)/6)),burst=Math.max(0,1-Math.abs(cycle-12)/1.5);ctx.clearRect(0,0,w,h);
- let cx=w*.5,cy=h*.51,R=Math.min(w*.29,h*.31,210);R=Math.max(85,R);
- let bg=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(w,h)*.75);bg.addColorStop(0,'#252039');bg.addColorStop(.45,'#101426');bg.addColorStop(1,'#03040b');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
- stars.forEach(s=>{ctx.globalAlpha=.25+.55*(.5+.5*Math.sin(time*1.4+s.p));ctx.fillStyle='#d8e4ff';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill()});ctx.globalAlpha=1;
- // cosmic dust spirals
- dust.forEach(p=>{let a=p.a+time*p.s*.12;let rr=p.r+Math.sin(time+p.p)*9;let x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr*.62;ctx.fillStyle='#b7caff';ctx.globalAlpha=.15+.22*Math.sin(time+p.p)**2;ctx.beginPath();ctx.arc(x,y,1,0,Math.PI*2);ctx.fill()});ctx.globalAlpha=1;
- // energy streams feed the core
- for(let i=0;i<6;i++){let a=i*Math.PI/3+time*.19;let pts=[];for(let j=0;j<48;j++){let q=j/47,rr=R*(2.8-q*2.05),ang=a+q*2.5+time*.16;pts.push([cx+Math.cos(ang)*rr,cy+Math.sin(ang)*rr*.7])}pathGlow(pts,i%2?'#5b9bff':'#ff9c48',2.5,16);let q=(time*.18+i/6)%1,rr=R*(2.8-q*2.05),ang=a+q*2.5+time*.16;glow(cx+Math.cos(ang)*rr,cy+Math.sin(ang)*rr*.7,10,'#fff0b2',.8)}
- drawForge(cx,cy,R,time);
- ellipseRing(cx,cy,R*1.25,R*.62,-.32,'#8ca9e8',2,.48,time*.8);
- ellipseRing(cx,cy,R*1.12,R*.54,.48,'#ffb66c',3,.58,-time*.65);
- drawCore(cx,cy,R,time,charge);
- // sparks and fragments
- if(Math.random()<.7){let a=rand(0,6.28),rr=R*rand(.48,1.25);sparks.push({x:cx+Math.cos(a)*rr,y:cy+Math.sin(a)*rr,vx:Math.cos(a)*rand(1,4),vy:Math.sin(a)*rand(1,4),life:rand(20,55)})}
- sparks=sparks.filter(p=>p.life-->0);sparks.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.015;ctx.globalAlpha=Math.min(1,p.life/20);ctx.fillStyle='#ffd18a';ctx.fillRect(p.x,p.y,2,2)});ctx.globalAlpha=1;
- // star ignition and expanding shockwave
- if(burst>0){let br=R*(.5+(1-burst)*4.8);ctx.beginPath();ctx.arc(cx,cy,br,0,Math.PI*2);ctx.strokeStyle='#fff0c2';ctx.lineWidth=5*burst;ctx.globalAlpha=burst*.8;ctx.shadowBlur=35;ctx.shadowColor='#ffb34c';ctx.stroke();ctx.shadowBlur=0;ctx.globalAlpha=1;glow(cx,cy,R*3*burst,'#ffb84d',burst*.45);if(burst>.92&&time-lastBoom>3){lastBoom=time}}
- // star points flare after ignition
- if(cycle>11.8&&cycle<15.8){let k=Math.max(0,1-Math.abs(cycle-13.2)/2.6);for(let i=0;i<12;i++){let a=i*Math.PI/6+time*.02,len=R*(1.5+Math.sin(time*3+i)*.2)*k;pathGlow([[cx-Math.cos(a)*len,cy-Math.sin(a)*len],[cx+Math.cos(a)*len,cy+Math.sin(a)*len]],'#ffe5a0',1.5,16)}}
- requestAnimationFrame(render)}
-requestAnimationFrame(render);
-function tone(freq,dur,type='sine',gain=.04,delay=0){if(!audio)return;let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime+delay);g.gain.setValueAtTime(.0001,audio.currentTime+delay);g.gain.exponentialRampToValueAtTime(gain,audio.currentTime+delay+.04);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+delay+dur);o.connect(g);g.connect(audio.destination);o.start(audio.currentTime+delay);o.stop(audio.currentTime+delay+dur+.05)}
-function ambience(){if(!audio||!soundOn)return;tone(55,2.8,'sawtooth',.012);tone(110,2.2,'sine',.018,.1);tone(220,1.8,'triangle',.009,.2);setTimeout(ambience,2400)}
-soundBtn.addEventListener('click',()=>{if(!audio){audio=new(window.AudioContext||window.webkitAudioContext)()}audio.resume();soundOn=!soundOn;soundBtn.textContent=soundOn?'SOUND ON · TAP TO MUTE':'ENABLE SOUND';if(soundOn){ambience();tone(392,.7,'sine',.05);tone(587,.9,'sine',.035,.18);tone(784,1.1,'triangle',.025,.38)}else{audio.suspend()}});
+function frame(now){let t=(now-start)/1000,phase=t%20,charge=Math.max(0,Math.min(1,(phase-3)/7)),burst=Math.max(0,1-Math.abs(phase-12)/1.65);cycle=phase;g.clearRect(0,0,W,H);
+let x=W*.5,y=H*.51,R=Math.min(W*.31,H*.32,225);R=Math.max(95,R);
+let bg=g.createRadialGradient(x,y,0,x,y,Math.max(W,H)*.72);bg.addColorStop(0,'#382440');bg.addColorStop(.42,'#15172d');bg.addColorStop(1,'#03030a');g.fillStyle=bg;g.fillRect(0,0,W,H);
+stars.forEach(s=>{g.globalAlpha=.2+.65*(.5+.5*Math.sin(t*1.4+s.p));g.fillStyle='#dce6ff';g.beginPath();g.arc(s.x,s.y,s.r,0,TAU);g.fill()});g.globalAlpha=1;
+for(let i=0;i<3;i++){let yy=H*(.28+i*.22);glow(x,yy,W*.48,'#47316c',.07)}
+// six distinct plasma conduits spiral inward from the edges
+for(let i=0;i<6;i++){let a=i*TAU/6-t*.13,pts=[];for(let j=0;j<=45;j++){let u=j/45,rr=R*(3.15-u*2.15),ang=a+u*2.4+t*.12;pts.push([x+Math.cos(ang)*rr,y+Math.sin(ang)*rr*.72])}for(let j=1;j<pts.length;j++)line(...pts[j-1],...pts[j],i%2?'#67a8ff':'#ff9a48',3,14,.7);let u=(t*.2+i/6)%1,rr=R*(3.15-u*2.15),ang=a+u*2.4+t*.12;glow(x+Math.cos(ang)*rr,y+Math.sin(ang)*rr*.72,17,'#fff0bd',.9)}
+machine(x,y,R,t);core(x,y,R,t,charge);
+// orbital debris and sparks
+if(Math.random()<.9){let a=rnd(0,TAU),rr=R*rnd(.5,1.55);particles.push({x:x+Math.cos(a)*rr,y:y+Math.sin(a)*rr,vx:Math.cos(a)*rnd(1,3),vy:Math.sin(a)*rnd(1,3),life:rnd(24,52)})}
+particles=particles.filter(p=>p.life>0);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life--;g.globalAlpha=Math.min(1,p.life/15);g.fillStyle='#ffd99a';g.fillRect(p.x,p.y,2.5,2.5)});g.globalAlpha=1;
+// timed star birth, expanding shock rings and white-hot flare
+if(burst>0){let rr=R*(.55+(1-burst)*5.5);g.beginPath();g.arc(x,y,rr,0,TAU);g.strokeStyle='#fff0c4';g.lineWidth=7*burst;g.shadowColor='#ffb04b';g.shadowBlur=35;g.globalAlpha=burst*.9;g.stroke();g.shadowBlur=0;g.globalAlpha=1;glow(x,y,R*3.5*burst,'#ffb34d',burst*.55);if(burst>.9)flash.style.opacity=String(burst*.22)}
+else flash.style.opacity='0';
+if(phase>11.7&&phase<16){let k=Math.max(0,1-Math.abs(phase-13.4)/2.6);for(let i=0;i<16;i++){let a=i*TAU/16+t*.025,len=R*2.3*k;line(x-Math.cos(a)*len,y-Math.sin(a)*len,x+Math.cos(a)*len,y+Math.sin(a)*len,'#ffe9b0',2,22,k)}}
+foot.textContent=phase<4?'THE FORGE IS AWAKENING':phase<10?'STELLAR ENERGY · 68% CHARGED':phase<14?'STAR IGNITION':'A NEW SUN HAS BEEN BORN';
+requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+function beep(freq,dur,type,gain,delay=0){if(!audio)return;let o=audio.createOscillator(),a=audio.createGain(),now=audio.currentTime+delay;o.type=type;o.frequency.setValueAtTime(freq,now);a.gain.setValueAtTime(.0001,now);a.gain.exponentialRampToValueAtTime(gain,now+.08);a.gain.exponentialRampToValueAtTime(.0001,now+dur);o.connect(a);a.connect(audio.destination);o.start(now);o.stop(now+dur+.03)}
+function ambience(){if(!on||!audio)return;beep(48,2.8,'sawtooth',.018);beep(96,2.4,'sine',.025,.1);beep(192,2,'triangle',.012,.2);setTimeout(ambience,2600)}
+btn.addEventListener('click',()=>{if(!audio)audio=new(window.AudioContext||window.webkitAudioContext)();audio.resume();on=!on;if(on){btn.textContent='SOUND ON · TAP TO MUTE';ambience();beep(392,.8,'sine',.05);beep(587,1,'sine',.04,.2);beep(784,1.2,'triangle',.03,.4)}else{btn.textContent='ACTIVATE SOUND';audio.suspend()}});
 })();
 </script>
 </body>
