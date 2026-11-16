@@ -116,22 +116,62 @@ function drawFlower(x,y,size,color,t,delay){
  ctx.restore();
 }
 function drawCrystal(cx,cy,size,t){
- ctx.save();ctx.translate(cx,cy);ctx.rotate(Math.sin(t*.55)*.035);
- const pts=[[0,-size],[size*.67,-size*.48],[size*.58,size*.55],[0,size],[-size*.58,size*.55],[-size*.67,-size*.48]];
- const glow=ctx.createRadialGradient(0,0,2,0,0,size*1.2);
- glow.addColorStop(0,'rgba(255,255,255,.42)');glow.addColorStop(.45,'rgba(89,224,255,.16)');glow.addColorStop(1,'rgba(170,65,255,0)');
- ctx.fillStyle=glow;ctx.beginPath();ctx.arc(0,0,size*1.2,0,Math.PI*2);ctx.fill();
- const g=ctx.createLinearGradient(-size,-size,size,size);
- g.addColorStop(0,'#ff58d9');g.addColorStop(.24,'#ffd96b');g.addColorStop(.48,'#56ffe0');g.addColorStop(.72,'#48aaff');g.addColorStop(1,'#a45cff');
- path(pts,g,'rgba(255,255,255,.9)',2);
- path([[0,-size],[0,size],[-size*.67,-size*.48]],'rgba(255,255,255,.22)');
- path([[0,-size],[size*.67,-size*.48],[0,size]],'rgba(255,255,255,.14)');
- path([[-size*.67,-size*.48],[0,0],[-size*.58,size*.55]],'rgba(255,85,220,.22)');
- path([[size*.67,-size*.48],[0,0],[size*.58,size*.55]],'rgba(80,240,255,.3)');
- const core=ctx.createRadialGradient(0,0,1,0,0,size*.42);
- core.addColorStop(0,'#fff');core.addColorStop(.22,'#baffff');core.addColorStop(.58,'#ff80ed');core.addColorStop(1,'rgba(145,76,255,0)');
- ctx.fillStyle=core;ctx.beginPath();ctx.arc(0,0,size*.42,0,Math.PI*2);ctx.fill();
- ctx.restore();
+ ctx.save();ctx.translate(cx,cy);
+ const breathe=1+.025*Math.sin(t*1.35);
+ ctx.scale(breathe,breathe);
+ // Broad aura and a slow rotating halo make the prism feel suspended in the scene.
+ const aura=ctx.createRadialGradient(0,0,size*.08,0,0,size*1.85);
+ aura.addColorStop(0,'rgba(255,255,255,.34)');
+ aura.addColorStop(.22,'rgba(105,238,255,.2)');
+ aura.addColorStop(.5,'rgba(183,87,255,.12)');
+ aura.addColorStop(1,'rgba(95,60,255,0)');
+ ctx.fillStyle=aura;ctx.beginPath();ctx.arc(0,0,size*1.85,0,Math.PI*2);ctx.fill();
+ for(let ring=0;ring<2;ring++){
+  ctx.save();ctx.rotate(t*(ring?-.22:.16)+ring*Math.PI/3);
+  ctx.beginPath();ctx.ellipse(0,0,size*(1.22+ring*.16),size*(.25+ring*.04),-.22,0,Math.PI*2);
+  ctx.strokeStyle=ring?'rgba(255,115,235,.48)':'rgba(111,244,255,.55)';
+  ctx.lineWidth=1.6;ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=13;ctx.stroke();ctx.restore();
+ }
+ // Tall cut gemstone silhouette: crown, girdle and pointed pavilion.
+ const top=[0,-size*1.22], shoulders=[[-size*.55,-size*.78],[size*.55,-size*.78]];
+ const girdle=[[-size*.76,-size*.18],[size*.76,-size*.18]];
+ const lower=[[-size*.56,size*.58],[size*.56,size*.58]],tip=[0,size*1.2];
+ const outline=[top,shoulders[1],girdle[1],lower[1],tip,lower[0],girdle[0],shoulders[0]];
+ const glass=ctx.createLinearGradient(-size,-size,size,size);
+ glass.addColorStop(0,'#fff4ff');glass.addColorStop(.16,'#ff67dc');glass.addColorStop(.34,'#ffe68b');
+ glass.addColorStop(.52,'#66fff0');glass.addColorStop(.72,'#58aaff');glass.addColorStop(.9,'#a16aff');glass.addColorStop(1,'#f5c5ff');
+ path(outline,glass,'rgba(255,255,255,.96)',2.4);
+ // Individual polished facets with contrasting colors and sharp specular edges.
+ const facets=[
+  [[0,-size*1.22],[-size*.55,-size*.78],[0,-size*.18]],
+  [[0,-size*1.22],[size*.55,-size*.78],[0,-size*.18]],
+  [[-size*.55,-size*.78],[-size*.76,-size*.18],[0,-size*.18]],
+  [[size*.55,-size*.78],[size*.76,-size*.18],[0,-size*.18]],
+  [[-size*.76,-size*.18],[0,-size*.18],[-size*.56,size*.58]],
+  [[size*.76,-size*.18],[0,-size*.18],[size*.56,size*.58]],
+  [[0,-size*.18],[-size*.56,size*.58],[0,size*1.2]],
+  [[0,-size*.18],[size*.56,size*.58],[0,size*1.2]]
+ ];
+ const facetColors=['rgba(255,255,255,.52)','rgba(255,110,226,.48)','rgba(255,224,118,.42)','rgba(65,255,224,.48)','rgba(66,155,255,.5)','rgba(180,105,255,.5)','rgba(255,255,255,.34)','rgba(105,255,244,.36)'];
+ facets.forEach((p,i)=>path(p,facetColors[i],'rgba(255,255,255,.5)',1));
+ // Bright central light core, with a moving glint across the upper facets.
+ const core=ctx.createRadialGradient(-size*.12,-size*.12,1,0,size*.05,size*.58);
+ core.addColorStop(0,'rgba(255,255,255,.95)');core.addColorStop(.18,'rgba(207,255,255,.72)');
+ core.addColorStop(.48,'rgba(255,112,229,.3)');core.addColorStop(1,'rgba(100,115,255,0)');
+ ctx.fillStyle=core;ctx.beginPath();ctx.ellipse(0,size*.02,size*.38,size*.56,0,0,Math.PI*2);ctx.fill();
+ const glintX=-size*.24+Math.sin(t*.8)*size*.45;
+ ctx.save();ctx.beginPath();ctx.moveTo(-size*.48,-size*.7);ctx.lineTo(size*.34,-size*.7);ctx.lineTo(-size*.05,size*.48);ctx.closePath();ctx.clip();
+ const glint=ctx.createLinearGradient(glintX-size*.12,-size,glintX+size*.12,size*.5);
+ glint.addColorStop(0,'rgba(255,255,255,0)');glint.addColorStop(.48,'rgba(255,255,255,.78)');glint.addColorStop(1,'rgba(255,255,255,0)');
+ ctx.fillStyle=glint;ctx.fillRect(-size,-size,size*2,size*2);ctx.restore();
+ // Tiny star glints on the cut edges.
+ for(let i=0;i<4;i++){
+  const ang=t*.7+i*Math.PI/2,x=Math.cos(ang)*size*.88,y=Math.sin(ang)*size*.74;
+  ctx.globalAlpha=.55+.4*Math.sin(t*3+i);
+  ctx.fillStyle='#fff';ctx.shadowColor='#8ffaff';ctx.shadowBlur=16;
+  ctx.beginPath();ctx.arc(x,y,1.5+(i%2),0,Math.PI*2);ctx.fill();
+ }
+ ctx.globalAlpha=1;ctx.shadowBlur=0;ctx.restore();
 }
 function draw(now){
  if(!last)last=now;const dt=Math.min(.04,(now-last)/1000);last=now;elapsed+=dt;const t=elapsed;
