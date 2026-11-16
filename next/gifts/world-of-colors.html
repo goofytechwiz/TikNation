@@ -60,6 +60,14 @@ void main(){
  vec3 ribbonColor=.5+.5*cos(vec3(0.,2.1,4.2)+ang*2.8+t*.8);col+=ribbonColor*ribbon*.24;
  // sparkling drifting particles, concentrated around the prism
  vec2 particleCell=floor((uv+vec2(t*.012,-t*.018))*vec2(78.,118.));float particle=step(.986,hash(particleCell));float twinkle=.4+.6*sin(t*4.0+hash(particleCell+7.)*6.28);col+=particle*twinkle*vec3(.7,.85,1.)*exp(-rad*.8)*.8;
+ // Twin waterfalls of liquid spectral light cascading around the crystal.
+ float flow=0.;
+ vec3 flowColor=vec3(0.);
+ for(int i=0;i<7;i++){float fi=float(i);float side=mod(fi,2.)<1.?-1.:1.;float lane=floor(fi*.5);float x0=side*(.66+lane*.105);float sway=sin(uv.y*8.0-t*1.7+fi*1.8)*.035+sin(uv.y*17.0+t+fi)*.012;float strand=exp(-abs(uv.x-x0-sway)*105.);float falling=.55+.45*sin(uv.y*34.0-t*5.0+fi*2.);float visible=smoothstep(.76,.35,abs(uv.y+.02));flow+=strand*falling*visible;flowColor+=(.5+.5*cos(vec3(0.,2.1,4.2)+fi*.72+t*.45))*strand*falling*visible;}
+ col+=flowColor*.12;
+ // bright droplets and spray where the color falls
+ float spray=step(.992,hash(floor((uv+vec2(0.,t*.08))*vec2(110.,95.))))*smoothstep(-.25,-.02,uv.y);
+ col+=spray*vec3(.7,.85,1.)*.75;
  // activation shockwave and refraction flare
  float age=u_active;float wave=exp(-abs(rad-(.12+max(age,0.)*.42))*34.)*step(.01,age);
  float wave2=exp(-abs(rad-(.08+max(age-.32,0.)*.58))*55.)*step(.32,age);
@@ -75,6 +83,11 @@ void main(){
  col+=(.5+.5*cos(vec3(0.,2.1,4.2)+ang*3.))*spokes*finale*.9;
  col+=vec3(1.,.78,1.)*burst*finale*.85;
  col+=(.5+.5*cos(vec3(0.,2.,4.)+t))*corona*finale*.65;
+ // Laser finale: sharp prismatic beams shoot outward from the center.
+ float laserAge=smoothstep(2.0,2.45,age)*(1.0-smoothstep(4.1,4.8,age));
+ float laser=0.;
+ for(int i=0;i<12;i++){float fi=float(i);float a=fi*PI/6.0+t*.11;float line=abs(uv.x*cos(a)+uv.y*sin(a));float along=uv.x*sin(a)-uv.y*cos(a);laser+=exp(-line*240.)*smoothstep(-.08,.04,along)*smoothstep(1.15,.25,abs(along));}
+ col+=(.5+.5*cos(vec3(0.,2.1,4.2)+ang*2.5))*laser*laserAge*.32;
  col=col/(1.+col*.32);col=pow(max(col,0.),vec3(.88));gl_FragColor=vec4(col,1.);
 }`;
 function shader(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(s));return null}return s}
@@ -92,8 +105,12 @@ function note(freq,delay,dur,vol,wave){let o=audio.createOscillator(),g=audio.cr
  // Rising magical sweep, airy whoosh, and sparkling high-frequency accents.
  let sweep=audio.createOscillator(),sg=audio.createGain(),sf=audio.createBiquadFilter();sweep.type='sawtooth';sweep.frequency.setValueAtTime(90,t+.05);sweep.frequency.exponentialRampToValueAtTime(980,t+1.35);sf.type='lowpass';sf.frequency.setValueAtTime(180,t+.05);sf.frequency.exponentialRampToValueAtTime(6200,t+1.45);sg.gain.setValueAtTime(.0001,t+.05);sg.gain.exponentialRampToValueAtTime(.055,t+.48);sg.gain.exponentialRampToValueAtTime(.0001,t+1.75);sweep.connect(sf);sf.connect(sg);sg.connect(master);sweep.start(t+.05);sweep.stop(t+1.8);
  let whoosh=audio.createBufferSource(),wb=audio.createBuffer(1,audio.sampleRate*2,audio.sampleRate),wd=wb.getChannelData(0);for(let i=0;i<wd.length;i++)wd[i]=(Math.random()*2-1)*Math.pow(Math.sin(Math.PI*i/wd.length),1.8);whoosh.buffer=wb;let wf=audio.createBiquadFilter(),wg=audio.createGain();wf.type='bandpass';wf.frequency.setValueAtTime(420,t+.25);wf.frequency.exponentialRampToValueAtTime(5200,t+1.55);wf.Q.value=.65;wg.gain.setValueAtTime(.0001,t+.25);wg.gain.exponentialRampToValueAtTime(.12,t+.82);wg.gain.exponentialRampToValueAtTime(.0001,t+2.1);whoosh.connect(wf);wf.connect(wg);wg.connect(master);whoosh.start(t+.25);
- [2200,2637,3136,3520,4186].forEach((f,i)=>note(f,2.35+i*.09,1.1,.014,'sine'));
+ [2200,2637,3136,3520,4186,4699,5274].forEach((f,i)=>note(f,2.35+i*.08,1.25,.016,'sine'));
+ // Finale: deep cinematic boom, sparkling glass cascade, and a descending shimmer.
+ note(46,2.48,1.65,.24,'sine');note(92,2.52,1.15,.12,'triangle');
+ [1568,1318.5,1046.5,880,659.25,523.25].forEach((f,i)=>note(f,2.65+i*.12,1.55,.025,'triangle'));
+ let boom=audio.createBufferSource(),bb=audio.createBuffer(1,audio.sampleRate*1.8,audio.sampleRate),bd=bb.getChannelData(0);for(let i=0;i<bd.length;i++)bd[i]=(Math.random()*2-1)*Math.pow(1-i/bd.length,3);boom.buffer=bb;let bf=audio.createBiquadFilter(),bg=audio.createGain();bf.type='lowpass';bf.frequency.setValueAtTime(150,t+2.45);bf.frequency.exponentialRampToValueAtTime(950,t+2.9);bg.gain.setValueAtTime(.0001,t+2.45);bg.gain.exponentialRampToValueAtTime(.22,t+2.58);bg.gain.exponentialRampToValueAtTime(.0001,t+4.05);boom.connect(bf);bf.connect(bg);bg.connect(master);boom.start(t+2.45);
 let src=audio.createBufferSource(),buf=audio.createBuffer(1,audio.sampleRate*1.5,audio.sampleRate),data=buf.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/data.length,2);src.buffer=buf;let filter=audio.createBiquadFilter(),gain=audio.createGain();filter.type='lowpass';filter.frequency.setValueAtTime(300,t+.7);filter.frequency.exponentialRampToValueAtTime(7500,t+1.5);gain.gain.setValueAtTime(.0001,t+.7);gain.gain.exponentialRampToValueAtTime(.2,t+1.12);gain.gain.exponentialRampToValueAtTime(.0001,t+2.15);src.connect(filter);filter.connect(gain);gain.connect(master);src.start(t+.7)}
-button.addEventListener('click',()=>{let now=performance.now();if(!activated){activated=true;began=now;sound();button.textContent='UNLEASH ANOTHER WAVE';hint.textContent='Four orbiting shards · spectral ribbons · supernova finale';sub.textContent='Every color. Every direction. Infinite wonder.'}else{began=now;if(audio&&audio.state==='running'){let t=audio.currentTime,o=audio.createOscillator(),g=audio.createGain();o.type='sawtooth';o.frequency.setValueAtTime(95,t);o.frequency.exponentialRampToValueAtTime(880,t+.7);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.09,t+.08);g.gain.exponentialRampToValueAtTime(.0001,t+1);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+1.05);[523.25,659.25,783.99,1046.5,1318.5].forEach((f,i)=>{let b=audio.createOscillator(),v=audio.createGain();b.type='triangle';b.frequency.value=f;v.gain.setValueAtTime(.0001,t+.08+i*.07);v.gain.exponentialRampToValueAtTime(.035,t+.15+i*.07);v.gain.exponentialRampToValueAtTime(.0001,t+1.35+i*.07);b.connect(v);v.connect(audio.destination);b.start(t+.08+i*.07);b.stop(t+1.4+i*.07)})}}});
+button.addEventListener('click',()=>{let now=performance.now();if(!activated){activated=true;began=now;sound();button.textContent='UNLEASH ANOTHER WAVE';hint.textContent='Liquid rainbow falls · laser finale · prismatic supernova';sub.textContent='Every color. Every direction. Infinite wonder.'}else{began=now;if(audio&&audio.state==='running'){let t=audio.currentTime,o=audio.createOscillator(),g=audio.createGain();o.type='sawtooth';o.frequency.setValueAtTime(95,t);o.frequency.exponentialRampToValueAtTime(880,t+.7);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.09,t+.08);g.gain.exponentialRampToValueAtTime(.0001,t+1);o.connect(g);g.connect(audio.destination);o.start(t);o.stop(t+1.05);[523.25,659.25,783.99,1046.5,1318.5].forEach((f,i)=>{let b=audio.createOscillator(),v=audio.createGain();b.type='triangle';b.frequency.value=f;v.gain.setValueAtTime(.0001,t+.08+i*.07);v.gain.exponentialRampToValueAtTime(.035,t+.15+i*.07);v.gain.exponentialRampToValueAtTime(.0001,t+1.35+i*.07);b.connect(v);v.connect(audio.destination);b.start(t+.08+i*.07);b.stop(t+1.4+i*.07)})}}});
 })();
 </script></body></html>
