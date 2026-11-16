@@ -176,61 +176,109 @@ function drawCrystal(cx,cy,size,t){
 function draw(now){
  if(!last)last=now;const dt=Math.min(.04,(now-last)/1000);last=now;elapsed+=dt;const t=elapsed;
  const awake=t<awakeUntil;
- const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#09051f');bg.addColorStop(.52,'#21104b');bg.addColorStop(1,'#071b3c');
+ // Deep twilight sky with a luminous horizon behind the falls.
+ const bg=ctx.createLinearGradient(0,0,0,h);
+ bg.addColorStop(0,'#07051c');bg.addColorStop(.42,'#171044');bg.addColorStop(.76,'#15366b');bg.addColorStop(1,'#04172f');
  ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
- const sky=ctx.createRadialGradient(w*.5,h*.35,0,w*.5,h*.35,w*.65);
- sky.addColorStop(0,'rgba(110,60,190,.36)');sky.addColorStop(1,'rgba(15,10,50,0)');
- ctx.fillStyle=sky;ctx.fillRect(0,0,w,h);
- stars.forEach(s=>{ctx.globalAlpha=.35+.55*(.5+.5*Math.sin(t*1.7+s.p));ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x*w,s.y*h,s.r,0,Math.PI*2);ctx.fill()});ctx.globalAlpha=1;
- // Soft aurora bands
- for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(0,h*(.2+i*.09));ctx.bezierCurveTo(w*.28,h*(.02+Math.sin(t*.3+i)*.09),w*.68,h*(.34+Math.cos(t*.4+i)*.08),w,h*(.12+i*.1));ctx.strokeStyle=['rgba(50,240,255,.11)','rgba(225,70,255,.1)','rgba(92,255,190,.08)'][i];ctx.lineWidth=30;ctx.stroke()}
- // Expanded rainbow portal: luminous layered bands, color haze and traveling glints.
+ const glow=ctx.createRadialGradient(w*.5,h*.42,0,w*.5,h*.42,w*.7);
+ glow.addColorStop(0,'rgba(119,76,255,.34)');glow.addColorStop(.45,'rgba(37,170,255,.13)');glow.addColorStop(1,'rgba(8,12,44,0)');
+ ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
+ // Distant mountain silhouettes give the world depth and a real horizon.
+ path([[0,h*.61],[w*.12,h*.43],[w*.23,h*.57],[w*.36,h*.39],[w*.49,h*.57],[w*.65,h*.4],[w*.78,h*.55],[w*.9,h*.42],[w,h*.58],[w,h*.82],[0,h*.82]],'rgba(14,22,70,.72)');
+ path([[0,h*.68],[w*.16,h*.53],[w*.28,h*.67],[w*.43,h*.5],[w*.58,h*.66],[w*.76,h*.51],[w*.9,h*.65],[w,h*.55],[w,h*.84],[0,h*.84]],'rgba(20,40,91,.62)');
+ stars.forEach(s=>{ctx.globalAlpha=.3+.65*(.5+.5*Math.sin(t*1.7+s.p));ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x*w,s.y*h,s.r,0,Math.PI*2);ctx.fill()});ctx.globalAlpha=1;
+ // Flowing aurora curtains.
+ for(let i=0;i<5;i++){
+  ctx.beginPath();ctx.moveTo(0,h*(.16+i*.075));
+  ctx.bezierCurveTo(w*.27,h*(.02+Math.sin(t*.3+i)*.12),w*.7,h*(.31+Math.cos(t*.35+i)*.1),w,h*(.12+i*.085));
+  ctx.strokeStyle=['rgba(50,240,255,.12)','rgba(225,70,255,.11)','rgba(92,255,190,.1)','rgba(255,178,85,.07)','rgba(103,135,255,.1)'][i];
+  ctx.lineWidth=34;ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=24;ctx.stroke();
+ }
+ ctx.shadowBlur=0;
+ // Huge rainbow gateway with a bright inner edge and moving color sparks.
+ const rainbow=['#ff3d72','#ff9b36','#fff16a','#4df39b','#37e9ff','#687cff','#e05bff'];
  ctx.save();
- const rainbowGlow=ctx.createRadialGradient(w*.5,h*.48,8,w*.5,h*.48,w*.43);
- rainbowGlow.addColorStop(0,'rgba(255,255,255,.06)');
- rainbowGlow.addColorStop(.55,'rgba(111,88,255,.13)');
- rainbowGlow.addColorStop(1,'rgba(40,20,100,0)');
- ctx.fillStyle=rainbowGlow;ctx.fillRect(w*.04,h*.12,w*.92,h*.72);
- const colors=['#ff426e','#ff9d39','#fff16b','#55f59c','#39eaff','#657bff','#d65bff'];
- colors.forEach((col,i)=>{
-  const rx=w*(.235+i*.018),ry=h*(.235+i*.018);
-  ctx.beginPath();ctx.ellipse(w*.5,h*.49,rx,ry,0,Math.PI*1.075,Math.PI*1.925);
-  ctx.strokeStyle=col;ctx.globalAlpha=.78;ctx.lineWidth=Math.max(5,w*.009);
-  ctx.shadowColor=col;ctx.shadowBlur=18;ctx.stroke();
-  ctx.beginPath();ctx.ellipse(w*.5,h*.49,rx,ry,0,Math.PI*1.075,Math.PI*1.925);
-  ctx.strokeStyle='rgba(255,255,255,.32)';ctx.globalAlpha=.55;ctx.lineWidth=1.2;ctx.shadowBlur=5;ctx.stroke();
+ const halo=ctx.createRadialGradient(w*.5,h*.45,8,w*.5,h*.45,w*.53);
+ halo.addColorStop(0,'rgba(255,255,255,.09)');halo.addColorStop(.55,'rgba(120,87,255,.18)');halo.addColorStop(1,'rgba(20,15,70,0)');
+ ctx.fillStyle=halo;ctx.fillRect(0,h*.08,w,h*.72);
+ rainbow.forEach((c,i)=>{
+  const rx=w*(.285+i*.017),ry=h*(.27+i*.014);
+  ctx.beginPath();ctx.ellipse(w*.5,h*.47,rx,ry,0,Math.PI*1.07,Math.PI*1.93);
+  ctx.strokeStyle=c;ctx.globalAlpha=.88;ctx.lineWidth=Math.max(6,w*.012);
+  ctx.shadowColor=c;ctx.shadowBlur=23;ctx.stroke();
+  ctx.beginPath();ctx.ellipse(w*.5,h*.47,rx,ry,0,Math.PI*1.07,Math.PI*1.93);
+  ctx.strokeStyle='rgba(255,255,255,.48)';ctx.globalAlpha=.62;ctx.lineWidth=1.5;ctx.shadowBlur=7;ctx.stroke();
  });
- // Animated points of light race along the rainbow like flowing color.
- for(let i=0;i<21;i++){
-  const band=i%7, lap=Math.PI*1.075+((t*.22+i*.31)%(Math.PI*.85));
-  const rx=w*(.235+band*.018),ry=h*(.235+band*.018);
-  const px=w*.5+Math.cos(lap)*rx,py=h*.49+Math.sin(lap)*ry;
-  ctx.globalAlpha=.45+.5*(.5+.5*Math.sin(t*4+i));
-  ctx.fillStyle=colors[band];ctx.shadowColor=colors[band];ctx.shadowBlur=14;
-  ctx.beginPath();ctx.arc(px,py,1.7+(i%3)*.7,0,Math.PI*2);ctx.fill();
+ for(let i=0;i<35;i++){
+  const band=i%7,angle=Math.PI*1.07+((t*.18+i*.19)%(Math.PI*.86));
+  const rx=w*(.285+band*.017),ry=h*(.27+band*.014);
+  const px=w*.5+Math.cos(angle)*rx,py=h*.47+Math.sin(angle)*ry;
+  ctx.globalAlpha=.4+.55*(.5+.5*Math.sin(t*4+i));
+  ctx.fillStyle=rainbow[band];ctx.shadowColor=rainbow[band];ctx.shadowBlur=17;
+  ctx.beginPath();ctx.arc(px,py,1.5+(i%4)*.65,0,Math.PI*2);ctx.fill();
  }
  ctx.restore();ctx.globalAlpha=1;ctx.shadowBlur=0;
- const side=Math.max(70,Math.min(w*.145,190));
- drawWaterfall(w*.025,Math.max(side,w*.145),t,false);drawWaterfall(w*.83,Math.max(side,w*.145),t,true);
- // Pool and ripples
- const water=ctx.createLinearGradient(0,h*.79,0,h);
- water.addColorStop(0,'rgba(198,250,255,.7)');water.addColorStop(.16,'rgba(45,164,220,.76)');water.addColorStop(1,'rgba(5,20,65,.96)');
- ctx.fillStyle=water;ctx.beginPath();ctx.ellipse(w*.5,h*.94,w*.67,h*.14,0,0,Math.PI*2);ctx.fill();
- for(let i=0;i<10;i++){const rx=(.12+i*.065)*w,ry=4+i*1.8;ctx.beginPath();ctx.ellipse(w*.5,h*.88,rx,ry,0,0,Math.PI*2);ctx.strokeStyle='rgba(208,252,255,'+(.35-i*.025)+')';ctx.lineWidth=1.4;ctx.stroke()}
- // Crystal garden along the banks
- drawFlower(w*.13,h*.77,Math.min(35,w*.055),'#ff6cdb',t,1);
- drawFlower(w*.24,h*.82,Math.min(25,w*.04),'#5cf4ff',t,3);
- drawFlower(w*.78,h*.81,Math.min(26,w*.042),'#ffe778',t,2);
- drawFlower(w*.88,h*.76,Math.min(36,w*.055),'#b69aff',t,4);
- // Main crystal remains clear of the bottom UI.
- drawCrystal(w*.5,h*(h<620?.385:.425),Math.min(w*.22,h*.245,165),t);
- // Floating small crystals
- for(let i=0;i<4;i++){const a=t*.35+i*Math.PI/2,x=w*.5+Math.cos(a)*w*.27,y=h*.43+Math.sin(a*1.4)*h*.16;ctx.save();ctx.translate(x,y);ctx.rotate(t+i);ctx.fillStyle=['#ff79df','#6ffaff','#ffe77b','#a78aff'][i];ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=15;ctx.beginPath();ctx.moveTo(0,-8);ctx.lineTo(7,0);ctx.lineTo(0,10);ctx.lineTo(-6,0);ctx.closePath();ctx.fill();ctx.restore()}
- // Awakening particles
+ // Two broad, layered waterfalls and their illuminated mist.
+ const fallW=Math.max(78,Math.min(w*.17,210));
+ drawWaterfall(w*.008,fallW,t,false);drawWaterfall(w*.822,fallW,t,true);
+ // Pool with a bright reflection directly beneath the prism.
+ const water=ctx.createLinearGradient(0,h*.77,0,h);
+ water.addColorStop(0,'rgba(213,255,255,.88)');water.addColorStop(.12,'rgba(71,204,244,.83)');
+ water.addColorStop(.48,'rgba(24,105,184,.88)');water.addColorStop(1,'rgba(3,17,56,.98)');
+ ctx.fillStyle=water;ctx.beginPath();ctx.ellipse(w*.5,h*.95,w*.76,h*.17,0,0,Math.PI*2);ctx.fill();
+ const reflection=ctx.createLinearGradient(0,h*.78,0,h*.97);
+ reflection.addColorStop(0,'rgba(255,255,255,.55)');reflection.addColorStop(1,'rgba(255,255,255,0)');
+ ctx.fillStyle=reflection;ctx.beginPath();ctx.ellipse(w*.5,h*.86,w*.24,h*.095,0,0,Math.PI*2);ctx.fill();
+ for(let i=0;i<18;i++){
+  const rx=(.055+i*.044)*w,ry=2.5+i*.65,shift=Math.sin(t*1.5+i)*5;
+  ctx.beginPath();ctx.ellipse(w*.5+shift,h*.88+shift*.12,rx,ry,0,0,Math.PI*2);
+  ctx.strokeStyle='rgba(219,252,255,'+(.48-i*.018)+')';ctx.lineWidth=1.3;ctx.stroke();
+ }
+ // Crystal flowers and glowing mineral clusters along both banks.
+ drawFlower(w*.105,h*.765,Math.min(39,w*.075),'#ff6cdb',t,1);
+ drawFlower(w*.22,h*.825,Math.min(29,w*.052),'#5cf4ff',t,3);
+ drawFlower(w*.78,h*.82,Math.min(30,w*.054),'#ffe778',t,2);
+ drawFlower(w*.9,h*.765,Math.min(40,w*.075),'#b69aff',t,4);
+ for(let i=0;i<12;i++){
+  const side=i<6?1:-1,n=i%6,x=side===1?w*(.03+n*.055):w*(.97-n*.055);
+  const y=h*(.81+(n%3)*.035),sz=7+(n%3)*4;
+  ctx.save();ctx.translate(x,y);ctx.rotate(Math.sin(t*.7+i)*.16);
+  ctx.fillStyle=['#4ff5ff','#ff74db','#ffe77a','#9e8bff'][i%4];ctx.globalAlpha=.75;
+  ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=15;
+  path([[0,-sz*1.8],[sz*.55,-sz*.35],[sz*.32,sz],[0,sz*1.35],[-sz*.42,sz*.15]],ctx.fillStyle,'rgba(255,255,255,.7)',1);
+  ctx.restore();
+ }
+ // Central prism is deliberately oversized and visually dominant.
+ drawCrystal(w*.5,h*(h<620?.39:.405),Math.min(w*.32,h*.255,195),t);
+ // Rotating orbiting shards and curved energy trails around the gem.
+ for(let i=0;i<7;i++){
+  const a=t*(i%2?-.34:.27)+i*Math.PI*2/7;
+  const rx=w*.29,ry=h*.19,x=w*.5+Math.cos(a)*rx,y=h*.405+Math.sin(a)*ry;
+  ctx.save();ctx.translate(x,y);ctx.rotate(a+t*.5);
+  const c=rainbow[i];ctx.fillStyle=c;ctx.shadowColor=c;ctx.shadowBlur=20;
+  path([[0,-11],[7,-2],[4,10],[-4,8],[-7,-2]],c,'rgba(255,255,255,.8)',1);
+  ctx.restore();
+ }
+ for(let i=0;i<3;i++){
+  const a=t*.34+i*2.094;
+  ctx.beginPath();ctx.ellipse(w*.5,h*.405,w*(.22+i*.055),h*(.12+i*.025),a*.12,0,Math.PI*2);
+  ctx.strokeStyle=['rgba(255,111,221,.3)','rgba(91,245,255,.34)','rgba(255,231,116,.28)'][i];
+  ctx.lineWidth=1.4;ctx.setLineDash([5,11]);ctx.lineDashOffset=-t*16;ctx.stroke();ctx.setLineDash([]);
+ }
+ // Floating light motes fill the space between the rainbow and water.
+ for(let i=0;i<48;i++){
+  const x=(i*73.7+t*(8+(i%4)*3))%(w+20)-10;
+  const y=h*(.18+((i*37)%58)/100)+Math.sin(t*1.3+i)*9;
+  ctx.globalAlpha=.25+.55*(.5+.5*Math.sin(t*2+i));
+  ctx.fillStyle=rainbow[i%7];ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=10;
+  ctx.beginPath();ctx.arc(x,y,1+(i%3)*.65,0,Math.PI*2);ctx.fill();
+ }
+ ctx.globalAlpha=1;ctx.shadowBlur=0;
+ // Awakening burst.
  particles=particles.filter(p=>p.life>0);
  particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=18*dt;p.life-=dt;ctx.globalAlpha=Math.max(0,p.life/p.max);ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=12;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()});
  ctx.globalAlpha=1;ctx.shadowBlur=0;
- if(awake){const k=1-(awakeUntil-t)/2.6;ctx.strokeStyle='rgba(255,255,255,'+Math.max(0,1-k)+')';ctx.lineWidth=5;ctx.beginPath();ctx.arc(w*.5,h*.43,k*Math.max(w,h)*.7,0,Math.PI*2);ctx.stroke()}
+ if(awake){const k=1-(awakeUntil-t)/2.6;ctx.strokeStyle='rgba(255,255,255,'+Math.max(0,1-k)+')';ctx.lineWidth=5;ctx.beginPath();ctx.arc(w*.5,h*.405,k*Math.max(w,h)*.72,0,Math.PI*2);ctx.stroke()}
  requestAnimationFrame(draw);
 }
 function playSound(){
