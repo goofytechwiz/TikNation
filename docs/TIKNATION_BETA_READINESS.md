@@ -1,6 +1,6 @@
 # TikNation Beta Readiness
 
-Last reviewed: 2026-11-09
+Last reviewed: 2026-11-16
 
 ## Current entry point and account access
 
@@ -55,3 +55,22 @@ Last reviewed: 2026-11-09
 - Continue using free services where possible. Do not add paid hosting, SMS, payment, or streaming services without an explicit decision and cost review.
 
 The original 2026-10-26 birthday launch date has passed. This document tracks current beta readiness and does not imply that the original launch occurred.
+
+
+## 2026-11-16 recheck
+
+- The new home account link now says **Sign in / Join** and still routes to the existing legacy auth page. No auth implementation was replaced.
+- Production read-only checks found 3 Auth users and 3 matching profile rows, with no missing profiles, blank usernames, duplicate case-insensitive usernames, or deactivated profiles.
+- The database's lower(username) unique index is present. The login rate-limit RPC is service-role-only and uses SECURITY DEFINER with an empty search path.
+- Both email and username login are implemented through the deployed username-login endpoint, but no real-account login test was performed. Keep both methods **unverified** until the same account succeeds with each.
+- All 7 inline scripts in legacy.html passed static syntax parsing. All 3 live.html inline scripts passed module-aware syntax parsing. This does not replace browser tests.
+- Password reset is wired through Supabase Auth, but email delivery, redirect allowlisting, reset-link handoff, and password update have not been exercised.
+- Mobile styles and autocomplete are present; Android Chrome and iOS Safari still require physical-device testing. The sign-in field uses an email-mode keyboard for both email and username; check underscore entry on mobile.
+- The deployed username-login function is ACTIVE version 9 and account-recovery is ACTIVE version 10. Their deployed source differs from the newer GitHub copies in Supabase key-environment fallbacks. Do not redeploy until secret configuration is confirmed and a rollback/regression plan exists.
+- Live backend is ACTIVE version 23 and includes LiveKit server/client code, but no end-to-end broadcast was verified. Production has 55 ended session rows and zero active sessions at this check. The new LIVE Worlds page is a visual preview, not a connected broadcast.
+- Gifts remain TEST currency with cash_value 0. The wallet and PayPal/Cash App/Venmo choices are prototypes only. No real-money payout integration exists.
+- Creator/viewer safeguards visible in source include age gates, optional follower-only chat without restricting public viewing, moderation, and reporting. Test them with real accounts before wider beta. Final purchase prices, creator split, fees, refunds, chargebacks, withdrawal rules, and appeals remain unfinished.
+- Security advisors still report leaked-password protection disabled and 16 RLS-enabled/no-policy tables. Performance advisors also report 14 unindexed foreign keys, 29 RLS init-plan warnings, 26 unused indexes, 3 multiple permissive policy warnings, and 1 duplicate index. Review individually; do not add broad policies.
+- No new paid service was introduced. Continue on the existing free-service approach where feasible and check current provider quotas before expanding Live or email use.
+
+**Current release gate:** authentication is implemented but not real-account-tested; password recovery is unverified; mobile is source-reviewed but not device-tested; Live is experimental; real-money payouts are unavailable. Do not advertise these as fully ready.
