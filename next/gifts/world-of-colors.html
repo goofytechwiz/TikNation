@@ -211,6 +211,47 @@ function drawColorFireworks(t){
   ctx.save();ctx.globalAlpha=fade;ctx.fillStyle='#fff';ctx.shadowColor='#fff';ctx.shadowBlur=24;ctx.beginPath();ctx.arc(x,y,2.5+progress*2,0,Math.PI*2);ctx.fill();ctx.restore();
  }
 }
+function drawMeteorShower(t){
+ // A few bright colored comets cross the distant sky at staggered intervals.
+ for(let i=0;i<4;i++){
+  const cycle=(t+i*2.15)%13;
+  if(cycle>1.25)continue;
+  const p=cycle/1.25,x=w*(.08+i*.22)+p*w*.22,y=h*(.12+(i%2)*.11)+p*h*.13;
+  ctx.save();ctx.globalAlpha=Math.sin(Math.PI*p)*.9;
+  const tail=ctx.createLinearGradient(x-w*.12,y-h*.07,x,y);
+  tail.addColorStop(0,'rgba(255,255,255,0)');tail.addColorStop(1,['#74faff','#ff83e5','#ffe985','#a99aff'][i]);
+  ctx.strokeStyle=tail;ctx.lineWidth=3;ctx.shadowColor=tail;ctx.shadowBlur=17;
+  ctx.beginPath();ctx.moveTo(x-w*.12,y-h*.07);ctx.lineTo(x,y);ctx.stroke();
+  ctx.fillStyle='#fff';ctx.shadowBlur=22;ctx.beginPath();ctx.arc(x,y,2.5,0,Math.PI*2);ctx.fill();ctx.restore();
+ }
+}
+function drawPrismWaves(t){
+ // Expanding rainbow ripples travel across the foreground pool.
+ const colors=['#ff6bcf','#ffd96c','#69f6d5','#65caff','#a88aff'];
+ for(let i=0;i<5;i++){
+  const phase=(t*.34+i*.2)%1,rx=w*(.08+phase*.42),ry=5+phase*15;
+  ctx.save();ctx.globalAlpha=(1-phase)*.48;ctx.strokeStyle=colors[i];ctx.lineWidth=2.2-phase;
+  ctx.shadowColor=colors[i];ctx.shadowBlur=15;
+  ctx.beginPath();ctx.ellipse(w*.5,h*.91,rx,ry,0,0,Math.PI*2);ctx.stroke();ctx.restore();
+ }
+ // Moving glints skate along the reflected light on the water.
+ for(let i=0;i<24;i++){
+  const x=(i*47+t*(24+i%5*8))%(w+20)-10,y=h*(.84+(i%7)*.022)+Math.sin(t*2+i)*3;
+  ctx.save();ctx.globalAlpha=.25+.55*(.5+.5*Math.sin(t*3+i));ctx.strokeStyle=['#fff','#71f5ff','#ff8de7','#ffe98b'][i%4];
+  ctx.lineWidth=1.5;ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=12;
+  ctx.beginPath();ctx.moveTo(x-4,y);ctx.lineTo(x+4,y);ctx.stroke();ctx.restore();
+ }
+}
+function drawPrismRibbons(t){
+ // Translucent ribbons spiral around the central gem like flowing colored silk.
+ const cx=w*.5,cy=h*.405;
+ for(let i=0;i<3;i++){
+  ctx.save();ctx.translate(cx,cy);ctx.rotate(t*(i%2?-.24:.2)+i*2.1);
+  ctx.beginPath();ctx.ellipse(0,0,w*(.17+i*.035),h*(.095+i*.018),0,.2,Math.PI*1.58);
+  ctx.strokeStyle=['rgba(255,103,220,.62)','rgba(95,245,255,.62)','rgba(255,229,119,.58)'][i];
+  ctx.lineWidth=3;ctx.shadowColor=ctx.strokeStyle;ctx.shadowBlur=20;ctx.stroke();ctx.restore();
+ }
+}
 function draw(now){
  if(!last)last=now;const dt=Math.min(.04,(now-last)/1000);last=now;elapsed+=dt;const t=elapsed;
  const awake=t<awakeUntil;
@@ -290,6 +331,7 @@ function draw(now){
  drawCrystal(w*.5,h*(h<620?.39:.405),Math.min(w*.32,h*.255,195),t);
  // Additional animated prismatic lightning, orbiting energy and fireworks.
  drawPrismaticEnergy(t);drawColorFireworks(t);
+ drawMeteorShower(t);drawPrismWaves(t);drawPrismRibbons(t);
  // Rotating orbiting shards and curved energy trails around the gem.
  for(let i=0;i<7;i++){
   const a=t*(i%2?-.34:.27)+i*Math.PI*2/7;
