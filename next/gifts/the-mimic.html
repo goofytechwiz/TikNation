@@ -1,103 +1,46 @@
 <!doctype html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>TikNation Gift · The Mimic</title>
+<meta name="theme-color" content="#08060a"><title>TikNation Gift · The Mimic</title>
 <style>
-:root{color-scheme:dark;--ice:#b9f5ff;--red:#ff315b}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#030508;color:#eefcff;font-family:Inter,system-ui,Arial}
-body{background:radial-gradient(ellipse at 50% 38%,#18202a 0,#080b11 43%,#020305 78%)}
-#scene{position:absolute;inset:0;width:100%;height:100%;display:block}
-.vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 32%,#000b 100%),linear-gradient(0deg,#020305 0%,transparent 28%,transparent 76%,#020305aa)}
-.top{position:absolute;top:max(18px,env(safe-area-inset-top));left:0;right:0;text-align:center;pointer-events:none}
-.kicker{font-size:10px;letter-spacing:.42em;color:#9bb4c5;text-transform:uppercase}
-h1{margin:7px 0 0;font-size:clamp(27px,6vw,48px);letter-spacing:.18em;font-weight:800;text-shadow:0 0 22px #a7efff88}
-.sub{margin-top:7px;font-size:10px;letter-spacing:.22em;color:#8d9ba8}
-.warning{position:absolute;top:24%;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.35em;color:#ff7389;text-shadow:0 0 15px #ff315b;opacity:0;transition:opacity .5s;white-space:nowrap}
-.active .warning{opacity:1;animation:flicker 1.8s infinite}
-.panel{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:11px;padding:0 18px}
-#status{font-size:10px;letter-spacing:.22em;color:#a9c0cc;text-align:center;text-transform:uppercase;min-height:14px}
-button{border:1px solid #a8f3ff99;border-radius:999px;padding:14px 28px;background:linear-gradient(110deg,#0c2835dd,#24111cdd);color:#e9fcff;font-weight:800;letter-spacing:.22em;font-size:11px;box-shadow:0 0 25px #50dfff30,inset 0 0 20px #8cefff12;cursor:pointer}
-button:active{transform:scale(.97)}
-.note{font-size:9px;color:#667681;letter-spacing:.1em;text-align:center}
-@keyframes flicker{0%,18%,22%,60%,64%,100%{opacity:1}20%,62%{opacity:.22}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050408;color:#fff;font-family:Inter,system-ui,Arial}
+.stage{position:fixed;inset:0;overflow:hidden;background:#08060a}
+.art{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;object-position:center 47%;filter:brightness(.76) saturate(.88);transform:scale(1.04);transition:filter 1.4s,transform 7s cubic-bezier(.2,.7,.2,1)}
+.stage.awake .art{filter:brightness(1.04) saturate(1.25) contrast(1.08);transform:scale(1.15) translateY(1.5%)}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,#05040ac9 0%,transparent 23%,transparent 62%,#050308d9 100%),radial-gradient(ellipse at center,transparent 35%,#000b 100%);pointer-events:none}
+.fog{position:absolute;left:-20%;right:-20%;bottom:-5%;height:32%;opacity:.48;filter:blur(20px);background:radial-gradient(ellipse at 20% 70%,#a7d9ef70,transparent 42%),radial-gradient(ellipse at 75% 55%,#a9d8ec55,transparent 45%);animation:fog 9s ease-in-out infinite alternate;pointer-events:none}
+.cracks{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .6s;pointer-events:none;mix-blend-mode:screen}
+.awake .cracks{opacity:.95}
+.cracks path{fill:none;stroke:#d7f4ff;stroke-width:1.25;stroke-linecap:round;stroke-dasharray:500;stroke-dashoffset:500;filter:drop-shadow(0 0 5px #9feaff);animation:fracture 1.2s ease-out forwards}
+.flash{position:absolute;inset:0;background:#d7f7ff;opacity:0;pointer-events:none}.awake .flash{animation:flash .55s ease-out}
+.top{position:absolute;top:max(18px,env(safe-area-inset-top));left:0;right:0;text-align:center;text-shadow:0 2px 18px #000}
+.kicker{font-size:10px;letter-spacing:.42em;color:#c4d4dc;text-transform:uppercase}
+h1{margin:7px 0 0;font-size:clamp(28px,7vw,52px);letter-spacing:.2em;font-weight:850}
+.sub{margin-top:6px;font-size:10px;letter-spacing:.3em;color:#e3b8c1}
+.warning{position:absolute;top:25%;left:50%;transform:translateX(-50%);font-size:clamp(9px,2.2vw,12px);letter-spacing:.32em;color:#ff9aaa;white-space:nowrap;text-shadow:0 0 16px #ff174e;opacity:0;transition:opacity .6s}.awake .warning{opacity:1}
+.panel{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:12px;padding:0 18px}
+#status{font-size:10px;letter-spacing:.2em;color:#d7dfe5;text-align:center;text-transform:uppercase;text-shadow:0 1px 8px #000;min-height:14px}
+button{border:1px solid #ffb6c5aa;border-radius:999px;padding:15px 30px;background:linear-gradient(110deg,#170e17ed,#42101fed);color:#fff;font-weight:850;letter-spacing:.22em;font-size:11px;box-shadow:0 0 32px #ff315b55,inset 0 0 20px #ff9aaa16;cursor:pointer;backdrop-filter:blur(10px)}
+button:active{transform:scale(.97)}.note{font-size:9px;color:#b7b0b9;letter-spacing:.1em;text-align:center;text-shadow:0 1px 6px #000}
+@keyframes fog{from{transform:translateX(-5%) scale(1)}to{transform:translateX(7%) scale(1.18)}}
+@keyframes fracture{to{stroke-dashoffset:0}}@keyframes flash{0%{opacity:.48}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style></head>
-<body>
-<canvas id="scene"></canvas><div class="vignette"></div>
+<body><main class="stage" id="stage">
+<img class="art" src="assets/the-mimic.jpg" alt="A terrifying pale apparition crawling out of a shattered gothic mirror">
+<div class="shade"></div><div class="fog"></div><div class="flash"></div>
+<svg class="cracks" viewBox="0 0 1000 1600" preserveAspectRatio="none" aria-hidden="true">
+<path d="M505 790 L560 710 L535 650 L600 570 L575 490 L645 420 M560 710 L630 735 L690 680 L760 690 M535 650 L465 600 L420 520 L360 500 M600 570 L670 520 L710 440 L790 390 M505 790 L450 860 L390 900 L350 1000 M560 710 L610 820 L690 870 L730 970 M420 520 L390 440 L330 400"/>
+<path d="M505 790 L480 700 L430 650 L440 560 M600 570 L550 500 L530 420 L555 350 M610 820 L580 900 L600 1000 L560 1080 M450 860 L400 820 L330 830 L280 780"/>
+</svg>
 <header class="top"><div class="kicker">TikNation · Nightmare Collection</div><h1>THE MIMIC</h1><div class="sub">IT LEARNED YOUR SHAPE</div></header>
-<div class="warning" id="warning">DO NOT TRUST THE REFLECTION</div>
-<div class="panel"><div id="status">A presence waits behind the glass</div><button id="wake">WAKE THE MIMIC</button><div class="note">Sound begins after your tap · Best experienced full screen</div></div>
+<div class="warning">DO NOT TRUST THE REFLECTION</div>
+<div class="panel"><div id="status">A presence waits behind the glass</div><button id="wake">WAKE THE MIMIC</button><div class="note">Sound starts after your tap · Headphones recommended</div></div>
+</main>
 <script>
-(()=>{
-const c=document.getElementById('scene'),x=c.getContext('2d'),status=document.getElementById('status'),btn=document.getElementById('wake'),body=document.body;
-let w,h,dpr,t0=performance.now(),awake=false,pulse=0,particles=[],audio=null;
-function resize(){dpr=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;x.setTransform(dpr,0,0,dpr,0,0);particles=Array.from({length:90},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.8,v:.15+Math.random()*.55,a:.15+Math.random()*.55}));}
-addEventListener('resize',resize);resize();
-function glow(color,blur){x.shadowColor=color;x.shadowBlur=blur}
-function draw(t){
-const sec=(t-t0)/1000, cx=w/2,cy=h*.52,scale=Math.min(w/390,h/650),shake=awake?Math.sin(sec*31)*Math.min(4,pulse*1.4):0;
-x.clearRect(0,0,w,h);x.save();x.translate(shake,0);
-let bg=x.createRadialGradient(cx,cy*.75,8,cx,cy,w*.7);bg.addColorStop(0,awake?'#27313a':'#17212b');bg.addColorStop(.55,'#080d13');bg.addColorStop(1,'#020305');x.fillStyle=bg;x.fillRect(0,0,w,h);
-// floating dust
-for(const p of particles){p.y-=p.v*(awake?1.9:1);if(p.y<0)p.y=h;x.globalAlpha=p.a*(.6+.4*Math.sin(sec*2+p.x));x.fillStyle=awake?'#ffb4c1':'#b7eaff';x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()}x.globalAlpha=1;
-// mirror frame
-let mw=Math.min(w*.67,340),mh=Math.min(h*.48,440),mx=cx-mw/2,my=cy-mh/2;
-x.save();glow(awake?'#ff315b':'#8adfff',awake?25:18);x.strokeStyle=awake?'#9b334b':'#66899a';x.lineWidth=5;x.beginPath();x.roundRect(mx,my,mw,mh,Math.min(90,mw*.22));x.stroke();x.restore();
-x.strokeStyle='#d6f6ff55';x.lineWidth=1;x.beginPath();x.roundRect(mx+8,my+8,mw-16,mh-16,Math.min(82,mw*.2));x.stroke();
-// glass
-let glass=x.createLinearGradient(mx,my,mx+mw,my+mh);glass.addColorStop(0,'#102532');glass.addColorStop(.5,awake?'#30111b':'#172b38');glass.addColorStop(1,'#080d16');x.fillStyle=glass;x.beginPath();x.roundRect(mx+10,my+10,mw-20,mh-20,Math.min(78,mw*.18));x.fill();
-// mirror shimmer
-x.save();x.globalAlpha=.17;x.fillStyle='#c4f6ff';x.beginPath();x.moveTo(mx+mw*.18,my+18);x.lineTo(mx+mw*.34,my+18);x.lineTo(mx+mw*.78,my+mh-18);x.lineTo(mx+mw*.65,my+mh-18);x.fill();x.restore();
-// The Mimic: layered, bone-pale form pressing through the glass
-let sway=Math.sin(sec*1.15)*2.5, rise=awake?Math.min(1,pulse/90):.08;
-let ey=my+mh*.18-rise*mh*.025, headW=mw*.205, headH=mh*.19;
-x.save();x.translate(cx+sway,0);
-// shoulders and elongated torso, shaded in several layers
-let torso=x.createLinearGradient(-mw*.34,0,mw*.34,0);
-torso.addColorStop(0,'#17191d');torso.addColorStop(.25,awake?'#77747a':'#252b31');torso.addColorStop(.55,'#34343a');torso.addColorStop(1,'#080a0e');
-x.fillStyle=torso;glow(awake?'#b51e3d':'#8adfff',awake?17:6);
-x.beginPath();x.moveTo(-headW*.48,ey+headH*.78);x.quadraticCurveTo(-mw*.23,ey+headH*1.2,-mw*.37,my+mh*.86);x.quadraticCurveTo(-mw*.18,my+mh*.68,0,my+mh*.73);x.quadraticCurveTo(mw*.18,my+mh*.68,mw*.37,my+mh*.86);x.quadraticCurveTo(mw*.23,ey+headH*1.2,headW*.48,ey+headH*.78);x.closePath();x.fill();
-// neck
-x.fillStyle='#55535a';x.beginPath();x.moveTo(-headW*.35,ey+headH*.65);x.lineTo(-headW*.27,ey+headH*1.25);x.lineTo(headW*.28,ey+headH*1.25);x.lineTo(headW*.35,ey+headH*.65);x.fill();
-// long arms reaching toward the viewer
-for(let side of [-1,1]){
- x.save();x.lineCap='round';x.lineJoin='round';
- let arm=x.createLinearGradient(side*mw*.2,my+mh*.5,side*mw*.36,my+mh*.96);
- arm.addColorStop(0,'#29282d');arm.addColorStop(.48,awake?'#858087':'#343a42');arm.addColorStop(1,'#0b0c10');
- x.strokeStyle=arm;x.lineWidth=Math.max(10,scale*17);x.beginPath();x.moveTo(side*mw*.23,my+mh*.58);x.quadraticCurveTo(side*mw*.42,my+mh*.68,side*mw*.34,my+mh*.91);x.stroke();
- // individual long fingers
- x.strokeStyle='#5c5960';x.lineWidth=Math.max(2,scale*3);
- for(let k=-1;k<=2;k++){let fx=side*mw*(.34+k*.018);x.beginPath();x.moveTo(fx,my+mh*.89);x.quadraticCurveTo(fx+side*k*3,my+mh*.94,fx+side*(k*.012+.018),my+mh*.975);x.stroke()}
- x.restore();
-}
-// head: pale oval with hollow shadowed cheeks
-let face=x.createRadialGradient(-headW*.22,ey+headH*.25,2,0,ey+headH*.5,headW*1.25);
-face.addColorStop(0,awake?'#b9b2b2':'#626c76');face.addColorStop(.58,awake?'#777078':'#303944');face.addColorStop(1,'#080a0e');
-x.fillStyle=face;x.beginPath();x.ellipse(0,ey+headH*.53,headW*.72,headH*.68,0,0,Math.PI*2);x.fill();
-// tangled hair curtain and strands
-x.fillStyle='#08090d';x.beginPath();x.moveTo(-headW*.72,ey+headH*.34);x.quadraticCurveTo(-headW*.9,ey-headH*.15,0,ey-headH*.12);x.quadraticCurveTo(headW*.85,ey-headH*.1,headW*.72,ey+headH*.36);x.quadraticCurveTo(headW*.62,ey+headH*1.25,headW*.48,ey+headH*1.42);x.lineTo(headW*.35,ey+headH*.75);x.lineTo(-headW*.42,ey+headH*1.25);x.closePath();x.fill();
-x.strokeStyle='#38343b';x.lineWidth=1.4;
-for(let k=0;k<15;k++){let sx=-headW*.62+k*headW*.088;x.beginPath();x.moveTo(sx,ey+headH*.02);x.bezierCurveTo(sx-headW*.16,ey+headH*.48,sx+headW*.12,ey+headH*.85,sx+Math.sin(k)*headW*.16,ey+headH*1.42);x.stroke()}
-x.restore();
-// face details
-let eyeY=ey+headH*.53, eyeGap=headW*.52;
-x.save();glow(awake?'#ff123d':'#a9edff',awake?22:10);x.fillStyle=awake?'#ff183f':'#b9efff';
-for(let s of [-1,1]){x.beginPath();x.ellipse(s*eyeGap,eyeY,awake?headW*.16:headW*.11,awake?headH*.07:headH*.045,0,0,Math.PI*2);x.fill()}
-if(awake){x.strokeStyle='#ff315b';x.lineWidth=3;x.beginPath();x.moveTo(-headW*.23,ey+headH*.85);x.quadraticCurveTo(0,ey+headH*1.3,headW*.23,ey+headH*.85);x.stroke()}
-x.restore();
-// mirror cracks when awake
-if(awake){x.save();x.strokeStyle='#ff718777';x.lineWidth=1.5;for(let i=0;i<7;i++){let a=i*.89+sec*.12,px=cx+Math.cos(a)*mw*.31,py=my+mh*.44+Math.sin(a)*mh*.39;x.beginPath();x.moveTo(px,py);for(let j=1;j<5;j++){let q=j/4;x.lineTo(px+Math.cos(a+Math.sin(j*5)*.25)*q*35,py+Math.sin(a+Math.cos(j*4)*.25)*q*42)}x.stroke()}x.restore()}
-// pulsing floor haze
-let haze=x.createRadialGradient(cx,my+mh*.95,2,cx,my+mh*.95,mw*.7);haze.addColorStop(0,awake?'#b0183a44':'#6dcce522');haze.addColorStop(1,'transparent');x.fillStyle=haze;x.fillRect(mx-50,my+mh*.65,mw+100,mh*.5);
-x.restore();requestAnimationFrame(draw);
-}
-requestAnimationFrame(draw);
-btn.addEventListener('click',()=>{
-if(awake){pulse=0;awake=false;body.classList.remove('active');btn.textContent='WAKE THE MIMIC';status.textContent='The reflection has gone still';return}
-awake=true;pulse=0;body.classList.add('active');btn.textContent='SEAL THE MIRROR';status.textContent='It is moving like you… but wrong.';
-try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();audio.resume();let now=audio.currentTime;[48,51,43].forEach((f,i)=>{let o=audio.createOscillator(),g=audio.createGain();o.type='sawtooth';o.frequency.setValueAtTime(f,now);o.frequency.exponentialRampToValueAtTime(f*.55,now+2.8);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.08/(i+1),now+.2);g.gain.exponentialRampToValueAtTime(.0001,now+3);o.connect(g);g.connect(audio.destination);o.start(now);o.stop(now+3.1)});let noise=audio.createBufferSource(),buffer=audio.createBuffer(1,audio.sampleRate*1.5,audio.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.18;noise.buffer=buffer;let filter=audio.createBiquadFilter(),gain=audio.createGain();filter.type='lowpass';filter.frequency.value=380;gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.13,now+.35);gain.gain.exponentialRampToValueAtTime(.0001,now+1.5);noise.connect(filter);filter.connect(gain);gain.connect(audio.destination);noise.start(now);noise.stop(now+1.5)}catch(e){}
-let start=performance.now();function pulseAnim(){pulse=Math.min(100,(performance.now()-start)/10);if(pulse<100)requestAnimationFrame(pulseAnim)}pulseAnim();
-});
+(()=>{const stage=document.getElementById('stage'),btn=document.getElementById('wake'),status=document.getElementById('status');let awake=false,ctx=null;
+function sound(){try{ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();ctx.resume();const now=ctx.currentTime;[43,48,52].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain(),filter=ctx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(f,now);o.frequency.exponentialRampToValueAtTime(f*.72,now+3.4);filter.type='lowpass';filter.frequency.value=220+i*75;g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.055/(i+1),now+.35);g.gain.exponentialRampToValueAtTime(.0001,now+3.5);o.connect(filter);filter.connect(g);g.connect(ctx.destination);o.start(now);o.stop(now+3.6)});
+const n=ctx.createBufferSource(),b=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*.22;n.buffer=b;const f=ctx.createBiquadFilter(),g=ctx.createGain();f.type='lowpass';f.frequency.value=430;g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.12,now+.2);g.gain.exponentialRampToValueAtTime(.0001,now+2);n.connect(f);f.connect(g);g.connect(ctx.destination);n.start(now);n.stop(now+2)}catch(e){}}
+btn.addEventListener('click',()=>{awake=!awake;stage.classList.toggle('awake',awake);btn.textContent=awake?'SEAL THE MIRROR':'WAKE THE MIMIC';status.textContent=awake?'It is reaching through the glass…':'The reflection has gone still';if(awake)sound();else if(ctx){try{ctx.suspend()}catch(e){}}});
 })();
 </script></body></html>
