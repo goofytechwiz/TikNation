@@ -1,6 +1,6 @@
 # TikNation Authentication and Launch Verification
 
-Checked: 2026-11-09  
+Checked: 2026-11-16  
 Repository: `goofytechwiz/TikNation`  
 Production project: `mekzfezaefcimxncklfj`  
 Scope: current GitHub source, deployed Supabase Edge Function source/metadata, read-only production SQL checks, and launch-plan review. No account passwords, reset links, auth tokens, or secret values were accessed.
@@ -9,7 +9,7 @@ Scope: current GitHub source, deployed Supabase Edge Function source/metadata, r
 
 **Email and username sign-in are both implemented in the existing account experience, but neither has been tested end-to-end with a real user account in this review. Do not mark username login launch-ready yet.**
 
-The current public entry point redirects from `index.html` to `next/`. The new `next/` experience is a preview and does not contain Supabase Auth sign-in/signup code. The existing authentication UI is still in `legacy.html`. To keep that working account path discoverable without rewriting it, the new home page now includes a **Sign in or Create Account** link to `../legacy.html`. The GitHub change is saved; public Pages deployment still needs a browser check.
+The current public entry point redirects from `index.html` to `next/`. The new `next/` experience is a preview and does not contain Supabase Auth sign-in/signup code. The existing authentication UI is still in `legacy.html`. To keep that working account path discoverable without rewriting it, the new home page now includes a **Sign in / Join** link to `../legacy.html`. The GitHub change is saved; public Pages deployment still needs a browser check.
 
 ## 1. Current account creation and sign-in
 
@@ -155,3 +155,47 @@ Before real-money gifts or withdrawals are enabled, publish and enforce:
 - Continue using the current free GitHub Pages/Supabase setup where possible; do not add paid services for this review.
 
 The original 2026-10-26 birthday launch date has passed. Use this document as a current beta-readiness checklist, not as evidence that the original birthday launch occurred or that all features are complete.
+
+
+## 2026-11-16 recheck
+
+### Current authentication path
+
+- The root index.html still redirects to /next/. The new home page's account link now reads **Sign in / Join** and points to ../legacy.html. This is a navigation-only change; the existing authentication code was not replaced.
+- The sign-in input in legacy.html is labelled **Email or username**. The browser calls tiknation-username-login with the identifier and password for either kind of identifier.
+- The deployed function classifies an identifier containing @ as email; otherwise it validates a 3–24 character username, performs a case-insensitive exact lookup in profiles, resolves the Auth email by user ID, and calls Supabase signInWithPassword. Unknown usernames and wrong passwords receive the same generic error.
+- Rate-limit thresholds in the deployed login function are 25 attempts per identifier/30 minutes, 8 per identifier-plus-network/15 minutes, and 60 per network/15 minutes. Identifier and network keys are SHA-256 hashed for rate limiting and security-event records.
+- The deployed function is ACTIVE, version 9, with verify_jwt=false for this pre-authentication endpoint. Its handler validates credentials itself and applies rate limits. The rate-limit RPC exists in public, is SECURITY DEFINER with an empty search path, and is executable by service_role but not by anon or authenticated.
+
+### Fresh production database checks
+
+- auth.users: 3 accounts; public.profiles: 3 rows; all 3 account IDs match a profile; all 3 have username metadata; no account is missing a profile.
+- There are zero blank usernames, zero case-insensitive duplicate groups, and zero deactivated profiles at the time of this check.
+- The case-insensitive unique index remains present: profiles_username_lower_unique on lower(username) for non-null usernames.
+- A read-only exact case-insensitive lookup check resolved every existing username to exactly one profile. None of the three current usernames contains an underscore or period, so those character cases were checked in source, not exercised against real account data.
+- profiles RLS permits public reads of active profiles, inserts only where the authenticated user ID equals the profile ID, and updates only the user's own row. The login Edge Function uses the service role for its lookup.
+- The profile row is created by the browser's ensureProfile flow after an authenticated session; there is no auth.users trigger that creates the public profile. Current production profile coverage is complete, but signup/profile creation still needs an end-to-end test.
+
+### Password recovery and mobile checks
+
+- Password reset is implemented separately from username reminder: the page calls Supabase resetPasswordForEmail with the legacy page as the redirect, handles PASSWORD_RECOVERY, updates the password with updateUser, then signs out and returns to sign-in.
+- Username reminder uses the separate deployed tiknation-account-recovery function (ACTIVE, version 10); it is not the password-reset endpoint.
+- Static syntax check: all 7 inline JavaScript blocks in legacy.html parsed successfully. All 3 inline scripts in live.html parsed successfully when its module's top-level await was checked in an async-module wrapper. This is syntax validation, not browser execution.
+- Mobile source includes a viewport declaration, responsive breakpoints, a modal sized to the available width, and username/current-password/new-password autocomplete hints. The identifier input uses inputmode=email; verify the mobile keyboard still makes underscore entry comfortable for usernames.
+- **Still not tested:** a real account's email login, username login, password-reset email delivery, reset-link allowlisting and handoff, password update, wrong-password/unknown-username response, rate-limit behavior, Android Chrome, and iOS Safari. No user password, reset link, auth token, or mailbox was accessed. GitHub Pages could not be independently opened by the browser check, so the latest deployment is also unverified.
+
+### Deployment drift and signup edge case
+
+- The GitHub copies of tiknation-username-login and tiknation-account-recovery include newer Supabase publishable/secret-key environment-variable fallbacks that are absent from the currently deployed versions. The deployed versions still use the legacy SUPABASE_ANON_KEY and SUPABASE_SERVICE_ROLE_KEY variables. No secret values were read and no Edge Function was redeployed; keep the active functions intact until their environment configuration is confirmed and a rollback/regression test is planned.
+- The signup availability query runs under the public profile-read policy, which hides deactivated profiles, while the unique index continues reserving their usernames. There are currently zero deactivated profiles, so this does not affect the checked accounts. Before deactivation/re-registration becomes common, add a server-side username-availability check so signup does not miss a reserved username and then fail at profile insertion.
+
+### Live, gifts, fairness, and launch status
+
+- tiknation-live is ACTIVE, version 23, with JWT verification enabled. Its source uses the LiveKit server SDK and requires LIVEKIT_URL, LIVEKIT_API_KEY, and LIVEKIT_API_SECRET. The live.html client dynamically loads livekit-client@2, requests local camera/microphone tracks, and contains start/join/end, guest, chat, moderation, and report flows.
+- Production currently has 55 live_sessions rows, all with status ended; there are no active sessions at the time of the query. This does not prove that media was successfully published or viewed. The new next/live-worlds page is explicitly a local visual preview, not a broadcast or connected chat. No two-device end-to-end broadcast/reconnect test has passed in this review.
+- tiknation-gifts is ACTIVE, version 33. Its balance endpoint returns currency TEST and cash value 0. The Creator Wallet is a prototype; PayPal, Cash App, Venmo, bank transfer, and debit card are proposed display choices only. No payout-specific Edge Function/provider connection was found in the active function list. **Real-money creator earnings and withdrawals are not available.**
+- Fairness safeguards visible in source include age assurance (13+ for Live use and 16+ to start a broadcast), optional follower-only chat while public viewing remains open, creator chat moderation, and report flows. These controls still need real-account and two-device tests. Viewer purchase pricing, creator/platform split, fees, refunds, chargebacks, withdrawal minimums, processing times, and appeals must be published before real-money gifts are enabled.
+- Current security advisors still report leaked-password protection disabled and 16 RLS-enabled tables without policies. Review those tables individually; do not add broad policies to server-only tables. Performance advisors report 14 unindexed foreign keys, 29 RLS init-plan warnings, 26 unused indexes, 3 multiple-permissive-policy warnings, and 1 duplicate-index warning.
+- No paid service was added during this recheck. Continue using the current GitHub Pages/Supabase setup where possible and review existing LiveKit/Resend quotas before wider release.
+
+**Final status:** email and username sign-in are both implemented in source and the deployed pre-auth function, but neither is marked tested or launch-ready until the same real account passes both paths. Password recovery is implemented but unverified. Mobile behavior is statically responsive but not device-tested. Live remains experimental/unverified, and real-money payouts remain unavailable.
