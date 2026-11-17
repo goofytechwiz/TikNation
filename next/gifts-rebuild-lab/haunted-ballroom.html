@@ -53,6 +53,44 @@ button{border:1px solid #d8b77c;background:#c5a06a;color:#170f0d;padding:13px 17
 #status{align-self:center;font:11px Arial;color:#f2d9aa;letter-spacing:1px}
 @media(max-width:540px){.dancer{transform:scale(.78);transform-origin:50% 90%;bottom:12%}.dancer.left{left:calc(50% - 132px)}.dancer.right{left:calc(50% + 2px)}.chandelier{transform:translateX(-50%) scale(.75);transform-origin:top center}.arch{border-width:6px}.stage{height:470px}}
 @media(prefers-reduced-motion:reduce){.dust{animation:none}}
+
+/* Reference-inspired Victorian mansion ballroom rebuild */
+.stage{height:clamp(470px,76vw,700px);background:linear-gradient(180deg,#5b4037 0%,#382821 40%,#171316 73%,#100d12 100%);border:4px solid #6d5038;box-shadow:inset 0 0 100px #09070a,0 0 45px #b98d5633}
+.ceiling{height:15%;background:repeating-linear-gradient(90deg,#39251f 0 5px,#694b39 6px 11px,#35231f 12px 55px);border-bottom:12px solid #211714}
+.ceiling:after{content:"";position:absolute;inset:12px 4%;border:7px double #9b7754;background:repeating-linear-gradient(90deg,transparent 0 18%,#a7835b22 18.5% 19%,transparent 19.5% 36%)}
+.arch,.chandelier,.spotlight,.pillar{display:none}
+.stage:before{content:"";position:absolute;inset:14% 0 30%;z-index:0;background:repeating-linear-gradient(90deg,#211715 0 3%,#76553d 3.2% 3.7%,#35231d 4% 9%,#9a7250 9.2% 9.6%,#2b1d19 10% 15%),linear-gradient(#4c3429,#241a19);box-shadow:inset 0 0 70px #080607}
+.stage:after{content:"";position:absolute;z-index:1;left:0;right:0;top:15%;height:29%;border-top:12px ridge #9b7957;border-bottom:14px ridge #6d4d35;background:repeating-linear-gradient(90deg,transparent 0 7%,#b28d6333 7.2% 7.6%,transparent 8% 14%),linear-gradient(#51382d,#291c19);box-shadow:0 12px 24px #080607}
+.balcony{top:37%;height:9%;z-index:4;border-top:10px solid #8c6949;border-bottom:12px solid #503728;background:repeating-linear-gradient(90deg,transparent 0 5%,#b18b5f 5.3% 5.9%,transparent 6.2% 10%);filter:drop-shadow(0 7px 8px #090607)}
+.curtain{top:12%;height:50%;width:12%;z-index:5;background:repeating-linear-gradient(90deg,#32151c 0 9px,#642c35 10px 17px,#3b1922 18px 26px);clip-path:polygon(0 0,100% 0,86% 100%,54% 91%,0 100%)}
+.c1{left:0}.c2{right:0}
+.floor{height:43%;bottom:-2%;z-index:2;transform:none;background:repeating-linear-gradient(0deg,transparent 0 47px,#211715 48px 51px),repeating-linear-gradient(90deg,#4b3027 0 47px,#211715 48px 51px);border-top:10px ridge #76543a;box-shadow:inset 0 30px 50px #100b0d}
+.floor:after{content:"";position:absolute;inset:8px 8%;border:5px double #9b7750;background:radial-gradient(ellipse at 50% 0%,#c7a16b22,transparent 65%)}
+.wallpanel{z-index:3;top:20%;height:18%;width:13%;background:linear-gradient(135deg,#4e3429,#211815);border:12px ridge #78563b;box-shadow:inset 0 0 0 5px #241916,inset 0 0 0 8px #a47c5055}
+.wp1{left:14%}.wp2{left:31%}.wp3{right:31%}.wp4{right:14%}
+.sconce{top:26%;z-index:5;background:#765333}
+.table{z-index:5;bottom:35%;width:85px;height:44px;transform:scale(.8)}
+.table:after{height:34px;top:29px}
+.tableleft{left:4%}.tableright{right:4%}
+.ghost{position:absolute;z-index:8;bottom:16%;width:150px;height:290px;transform-origin:50% 90%;filter:drop-shadow(0 0 18px #b8f6ef77);opacity:.88}
+.ghost .veil-head{position:absolute;top:0;left:51px;width:48px;height:60px;border-radius:48% 48% 42% 42%;background:radial-gradient(ellipse at 40% 25%,#f4ffff 0,#c8e7e6 43%,#7da9a6aa 100%);box-shadow:0 0 25px #d9ffff99}
+.ghost .veil-head:after{content:"";position:absolute;left:10px;top:34px;width:5px;height:8px;border-radius:50%;background:#243137;box-shadow:20px 0 #243137}
+.ghost .veil-body{position:absolute;top:52px;left:40px;width:70px;height:120px;background:linear-gradient(90deg,#6eaaa788,#edffffdd 42%,#74b4b0aa);clip-path:polygon(25% 0,75% 0,100% 100%,0 100%);border-radius:40% 40% 10% 10%}
+.ghost .veil-skirt{position:absolute;top:137px;left:0;width:150px;height:145px;clip-path:polygon(39% 0,61% 0,100% 100%,0 100%);background:repeating-linear-gradient(90deg,#7cbab4aa 0 8px,#efffffcc 9px 17px,#8ac9c0aa 18px 25px);filter:drop-shadow(0 0 12px #cafff5)}
+.ghost .veil-skirt:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 10%,#fff 48%,transparent 65%);opacity:.25;animation:veilflow 3.4s ease-in-out infinite}
+.ghost .veil-arm{position:absolute;top:78px;left:90px;width:75px;height:13px;border-radius:20px;background:linear-gradient(#efffff,#7ebbb6);transform-origin:8px 50%;transform:rotate(-30deg)}
+.ghost.g1{left:calc(50% - 180px);animation:driftone 7s ease-in-out infinite}
+.ghost.g2{left:calc(50% - 65px);bottom:19%;transform:scale(.86);animation:drifttwo 8s ease-in-out infinite}
+.ghost.g3{left:calc(50% + 100px);bottom:15%;transform:scale(1.04);animation:driftthree 7.5s ease-in-out infinite}
+.ghost.g3 .veil-head,.ghost.g3 .veil-body{filter:hue-rotate(25deg)}
+@keyframes driftone{0%,100%{transform:translate(0,0) rotate(-5deg)}50%{transform:translate(26px,-12px) rotate(5deg)}}
+@keyframes drifttwo{0%,100%{transform:scale(.86) translate(0,0)}50%{transform:scale(.86) translate(-18px,-17px)}}
+@keyframes driftthree{0%,100%{transform:scale(1.04) translate(0,0) rotate(5deg)}50%{transform:scale(1.04) translate(-24px,-10px) rotate(-5deg)}}
+@keyframes veilflow{0%,100%{transform:translateX(-8px);opacity:.16}50%{transform:translateX(9px);opacity:.55}}
+.paused .ghost{animation-play-state:paused!important}.paused .veil-skirt:after{animation-play-state:paused!important}
+.dust{z-index:10;opacity:.45}
+@media(max-width:540px){.ghost{transform:scale(.72);transform-origin:50% 90%}.ghost.g1{left:calc(50% - 140px)}.ghost.g2{left:calc(50% - 58px);transform:scale(.64)}.ghost.g3{left:calc(50% + 48px);transform:scale(.72)}}
+@media(prefers-reduced-motion:reduce){.ghost,.veil-skirt:after{animation:none!important}}
 </style>
 </head>
 <body>
@@ -60,19 +98,20 @@ button{border:1px solid #d8b77c;background:#c5a06a;color:#170f0d;padding:13px 17
 <main>
 <div class="kicker">AFTER MIDNIGHT · THE GRAND VICTORIAN BALLROOM</div>
 <h1>THE HAUNTED BALLROOM</h1>
-<p>When the clock strikes twelve, the ballroom awakens. Two spectral dancers circle one another beneath the chandeliers in a ghostly midnight waltz.</p>
-<section class="stage" id="stage" aria-label="Animated ballroom with two dancing ghosts">
+<p>When the clock strikes twelve, the ballroom awakens. Three translucent Victorian spirits drift through an abandoned mansion ballroom, surrounded by antique furnishings and dark carved wood.</p>
+<section class="stage" id="stage" aria-label="Victorian mansion ballroom with three drifting ghostly figures">
 <div class="ceiling"></div><div class="arch a1"><div class="moon"></div></div><div class="arch a2"></div><div class="arch a3"></div>
 <div class="balcony"></div><div class="wallpanel wp1"></div><div class="wallpanel wp2"></div><div class="wallpanel wp3"></div><div class="wallpanel wp4"></div><div class="sconce sc1"><i></i></div><div class="sconce sc2"><i></i></div><div class="sconce sc3"><i></i></div><div class="sconce sc4"><i></i></div><div class="pillar p1"></div><div class="pillar p2"></div><div class="pillar p3"></div><div class="pillar p4"></div>
 <div class="curtain c1"></div><div class="curtain c2"></div>
 <div class="chandelier"><div class="chain"></div><div class="ring"></div><i class="lamp l1"></i><i class="lamp l2"></i><i class="lamp l3"></i><i class="lamp l4"></i><i class="lamp l5"></i></div>
 <div class="spotlight"></div><div class="floor"></div><div class="table tableleft"><i></i><b></b></div><div class="table tableright"><i></i><b></b></div>
-<div class="dancer left"><div class="head"></div><div class="torso"></div><div class="skirt"></div><div class="arm one"></div><div class="arm two"></div></div>
-<div class="dancer right"><div class="head"></div><div class="torso"></div><div class="skirt"></div><div class="arm one"></div><div class="arm two"></div></div>
+<div class="ghost g1"><div class="veil-head"></div><div class="veil-body"></div><div class="veil-skirt"></div><div class="veil-arm"></div></div>
+<div class="ghost g2"><div class="veil-head"></div><div class="veil-body"></div><div class="veil-skirt"></div><div class="veil-arm"></div></div>
+<div class="ghost g3"><div class="veil-head"></div><div class="veil-body"></div><div class="veil-skirt"></div><div class="veil-arm"></div></div>
 <div class="dust"></div>
 </section>
 <div class="controls"><button id="pause">PAUSE DANCERS</button><button id="sound">PLAY THE MIDNIGHT WALTZ</button><span id="status">THE GHOSTS ARE DANCING</span></div>
-<p>The dancers move automatically. Tap play for the music; your browser requires a tap before sound can begin. Preview only — no gifts are sent and no coins are charged.</p>
+<p>The spirits drift slowly through the ballroom. Tap play for the music; your browser requires a tap before sound can begin. Preview only — no gifts are sent and no coins are charged.</p>
 </main>
 <script>
 const stage=document.getElementById('stage'),pause=document.getElementById('pause'),status=document.getElementById('status');
