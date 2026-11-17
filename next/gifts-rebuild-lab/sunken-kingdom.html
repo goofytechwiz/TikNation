@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#03151e">
+<title>The Sunken Kingdom · TikNation</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#020b12;color:#effcff;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+body{background:radial-gradient(ellipse at 50% 0%,#123e4b 0,#071d29 48%,#020910 100%)}
+header{height:58px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #8deaff25;background:#03121bd9;letter-spacing:.18em;font-size:10px;font-weight:900;color:#bdeef4}
+header b{color:#70f0ed}a{color:#a9eaf2;text-decoration:none}
+main{width:min(1100px,94%);margin:24px auto 50px}
+.intro{text-align:center;margin:0 auto 18px}.eyebrow{font-size:10px;letter-spacing:.28em;color:#70d9df;font-weight:900}.intro h1{font-family:Georgia,serif;font-size:clamp(32px,6vw,58px);font-weight:500;letter-spacing:.02em;margin:8px 0;color:#f0e8c9;text-shadow:0 3px 22px #6ce9df55}.intro p{margin:0;color:#b2cbd0;font-size:14px}
+.frame{position:relative;overflow:hidden;border:1px solid #9cebf044;border-radius:18px;background:#031722;box-shadow:0 22px 80px #000a,0 0 45px #1ab9c31c;aspect-ratio:16/9;min-height:260px}
+canvas{display:block;width:100%;height:100%;position:absolute;inset:0}
+.frame:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#06172222 0%,transparent 42%,#020b1255 100%)}
+.phase{position:absolute;z-index:2;left:16px;top:14px;padding:7px 10px;border:1px solid #b4f8ef40;border-radius:99px;background:#03151dbb;color:#bdf6ec;font-size:9px;letter-spacing:.18em;font-weight:900}
+.caption{position:absolute;z-index:2;left:15px;right:15px;bottom:15px;text-align:center;color:#f3edda;font:clamp(16px,3vw,27px) Georgia,serif;text-shadow:0 2px 12px #000;pointer-events:none}
+.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px 0}
+button{border:1px solid #79e4e477;background:linear-gradient(180deg,#124554,#092633);color:#e8ffff;border-radius:999px;padding:12px 19px;font-weight:850;letter-spacing:.06em;cursor:pointer;min-height:44px}
+button.primary{background:linear-gradient(120deg,#1a777d,#225c72);border-color:#a5fff0}
+button:active{transform:scale(.98)}button:focus-visible{outline:3px solid #e7d59a;outline-offset:3px}
+.note{text-align:center;color:#8daeb7;font-size:11px;line-height:1.6;margin:10px auto 0;max-width:720px}
+@media(max-width:600px){main{width:95%;margin-top:18px}.frame{aspect-ratio:4/5;min-height:380px}.caption{bottom:12px}.intro p{font-size:12px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><span>TIKNATION LIVE · GIFT PREVIEW</span><a href="../gifts/">GIFT GALLERY ↗</a></header>
+<main>
+<section class="intro"><div class="eyebrow">AN ANCIENT WORLD AWAKENS</div><h1>The Sunken Kingdom</h1><p>Somewhere beneath the waves, a kingdom is waiting to be found.</p></section>
+<div class="frame" id="frame"><canvas id="ocean" aria-label="Animated underwater palace, opening gates and a giant whale"></canvas><div class="phase" id="phase">THE DEEP · 00:00</div><div class="caption" id="caption">A LIGHT STIRS BELOW</div></div>
+<div class="controls"><button class="primary" id="awaken">✦ AWAKEN THE KINGDOM</button><button id="sound">♫ SOUND: OFF</button><button id="replay">↻ REPLAY</button></div>
+<p class="note" id="status" aria-live="polite">Preview experience only · Sound begins only when you turn it on. No coins are charged and this does not send a live gift.</p>
+</main>
+<script>
+(()=>{
+const canvas=document.getElementById('ocean'),ctx=canvas.getContext('2d',{alpha:false}),phase=document.getElementById('phase'),caption=document.getElementById('caption'),soundBtn=document.getElementById('sound'),status=document.getElementById('status');
+let w=0,h=0,dpr=1,start=performance.now(),running=true,soundOn=false,audio=null,raf=0;
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const particles=Array.from({length:150},()=>({x:Math.random(),y:Math.random(),r:.5+Math.random()*2.1,s:.12+Math.random()*.48,a:.15+Math.random()*.55}));
+const fish=Array.from({length:24},(_,i)=>({x:Math.random(),y:.25+Math.random()*.6,s:12+Math.random()*18,v:.012+Math.random()*.025,dir:i%2?1:-1}));
+function resize(){const r=canvas.getBoundingClientRect();w=Math.max(1,r.width);h=Math.max(1,r.height);dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}
+new ResizeObserver(resize).observe(canvas);resize();
+function path(points,fill,stroke,line=1){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=line;ctx.stroke()}}
+function ellipse(x,y,rx,ry,fill,stroke){ctx.beginPath();ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.stroke()}}
+function palace(t,open){
+const cx=w*.5,base=h*.79,scale=Math.min(w/900,h/520),pw=w*.64,ph=h*.53,left=cx-pw/2,top=base-ph;
+const gold='#b99a5e',stone='#526b70',dark='#132f38';
+ctx.save();ctx.shadowColor='#5fffe2';ctx.shadowBlur=25;ctx.fillStyle='#8debd0';ctx.globalAlpha=.14;ctx.fillRect(left,top,pw,ph);ctx.restore();
+path([[left-25,base],[left+8,top+20],[left+pw-8,top+20],[left+pw+25,base]],'#173b45','#86b5a0',2);
+ctx.fillStyle='#24434a';ctx.fillRect(left+12,top+ph*.24,pw-24,ph*.76);
+for(let i=0;i<7;i++){const x=left+28+i*(pw-56)/6;ctx.fillStyle='#617a78';ctx.fillRect(x-8,top+ph*.24,16,ph*.76);ctx.fillStyle='#a58b5b';ctx.fillRect(x-12,top+ph*.24-7,24,8);ctx.fillRect(x-12,base-7,24,8)}
+for(let i=0;i<5;i++){const x=left+pw*(.13+i*.185),y=top+ph*.24,ww=pw*.105,hh=ph*.43;ctx.fillStyle='#061d28';ctx.fillRect(x-ww/2,y,ww,hh);ctx.beginPath();ctx.arc(x,y,ww/2,Math.PI,0);ctx.fill();ctx.fillStyle='#b5e9d3';ctx.globalAlpha=.55;ctx.fillRect(x-ww*.32,y+hh*.15,ww*.64,hh*.7);ctx.globalAlpha=1;ctx.strokeStyle=gold;ctx.lineWidth=3;ctx.strokeRect(x-ww/2,y,ww,hh)}
+// crown and central arch
+path([[cx-pw*.23,top+ph*.25],[cx-pw*.19,top+ph*.02],[cx,top-ph*.12],[cx+pw*.19,top+ph*.02],[cx+pw*.23,top+ph*.25]],'#365b5d',gold,3);
+ctx.beginPath();ctx.arc(cx,base-ph*.23,pw*.105,Math.PI,0);ctx.lineTo(cx+pw*.105,base);ctx.lineTo(cx-pw*.105,base);ctx.closePath();ctx.fillStyle='#061a26';ctx.fill();ctx.strokeStyle='#d1b477';ctx.lineWidth=4;ctx.stroke();
+for(let i=0;i<5;i++){const yy=base-ph*.18+i*ph*.045;ctx.strokeStyle='#b89c69';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx-pw*.09,yy);ctx.lineTo(cx+pw*.09,yy);ctx.stroke()}
+// twin gate leaves slide open
+const gw=pw*.19,gh=ph*.43,gy=base-gh*.9,slide=open*gw*.83;
+for(const side of [-1,1]){const gx=cx+side*(gw/2-slide);ctx.fillStyle='#4b493a';ctx.fillRect(gx-gw/2,gy,gw,gh);ctx.strokeStyle='#d0b477';ctx.lineWidth=4;ctx.strokeRect(gx-gw/2,gy,gw,gh);for(let k=1;k<4;k++){ctx.beginPath();ctx.moveTo(gx-gw/2+k*gw/4,gy+4);ctx.lineTo(gx-gw/2+k*gw/4,gy+gh-4);ctx.stroke()}ctx.fillStyle='#9ef7db';ctx.globalAlpha=.18+open*.5;ctx.fillRect(gx-gw/2+4,gy+4,gw-8,gh-8);ctx.globalAlpha=1}
+ctx.fillStyle='#c6a967';ctx.fillRect(left-35,base,pw+70,12);ctx.fillRect(left-55,base+13,pw+110,10);
+for(let i=0;i<11;i++){const x=left-65+i*(pw+130)/10;ellipse(x,base+30,8,3,'#8bded0')}
+}
+function whale(t,progress){
+const x=w*(.84-progress*.65),y=h*(.35+Math.sin(t*.55)*.045),s=Math.min(w,h)*.001;
+ctx.save();ctx.translate(x,y);ctx.scale(s*1.55,s*1.55);ctx.globalAlpha=Math.min(1,progress*3+.1);
+const body=ctx.createLinearGradient(-140,-50,100,55);body.addColorStop(0,'#071b2b');body.addColorStop(.45,'#183c4a');body.addColorStop(1,'#071723');
+ctx.fillStyle=body;ctx.beginPath();ctx.moveTo(-150,0);ctx.bezierCurveTo(-120,-58,-20,-72,72,-34);ctx.bezierCurveTo(115,-19,138,-2,154,0);ctx.bezierCurveTo(112,35,25,55,-55,38);ctx.bezierCurveTo(-120,30,-147,16,-150,0);ctx.fill();
+ctx.fillStyle='#0a2532';ctx.beginPath();ctx.moveTo(145,0);ctx.quadraticCurveTo(178,-50,198,-46);ctx.quadraticCurveTo(187,-10,164,0);ctx.quadraticCurveTo(188,15,198,48);ctx.quadraticCurveTo(166,45,145,0);ctx.fill();
+ctx.fillStyle='#102d3a';ctx.beginPath();ctx.moveTo(-15,18);ctx.quadraticCurveTo(12,70,72,84);ctx.quadraticCurveTo(50,42,35,17);ctx.fill();
+ctx.strokeStyle='#7ab6b5';ctx.globalAlpha=.38;ctx.lineWidth=2;for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(-38+i*12,-25);ctx.quadraticCurveTo(-24+i*12,0,-34+i*12,24);ctx.stroke()}
+ctx.globalAlpha=.9;ellipse(105,-8,3,3,'#c5e9ce');ctx.restore();
+}
+function draw(t){
+const time=(t-start)/1000,cycle=running?time:0,open=Math.max(0,Math.min(1,(cycle-5)/5)),glow=Math.max(0,Math.min(1,(cycle-4)/7));
+const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#0c4354');bg.addColorStop(.45,'#082c3d');bg.addColorStop(1,'#020d1a');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+// overhead sun shafts
+for(let i=0;i<9;i++){const x=w*(.08+i*.105),sw=w*.018;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x+sw,h*.76);ctx.lineTo(x+sw*2.4,h*.76);ctx.lineTo(x+sw*.5,0);ctx.closePath();ctx.fillStyle='#9af5e8';ctx.globalAlpha=.035+Math.sin(cycle*.4+i)*.012;ctx.fill();}ctx.globalAlpha=1;
+// distant ruins
+for(let i=0;i<8;i++){const x=w*i/7;ctx.fillStyle='#0a2934';ctx.fillRect(x,h*.57,18,h*.25);ctx.beginPath();ctx.arc(x+9,h*.57,9,Math.PI,0);ctx.fill()}
+palace(cycle,open);
+// gate interior light
+const light=ctx.createRadialGradient(w*.5,h*.64,2,w*.5,h*.64,h*.42);light.addColorStop(0,'#d2fff0');light.addColorStop(.18,'#55e8d0');light.addColorStop(1,'#39d5d000');ctx.globalAlpha=glow*.7;ctx.fillStyle=light;ctx.fillRect(w*.2,h*.35,w*.6,h*.6);ctx.globalAlpha=1;
+whale(cycle,Math.max(0,Math.min(1,(cycle-2)/8)));
+fish.forEach(f=>{const x=((f.x+cycle*f.v*f.dir)%1+1)%1*w,y=f.y*h+Math.sin(cycle+f.x*8)*7;ctx.fillStyle='#a8e8db';ctx.globalAlpha=.38;ctx.beginPath();ctx.ellipse(x,y,f.s*.55,f.s*.2,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.moveTo(x-f.dir*f.s*.45,y);ctx.lineTo(x-f.dir*f.s*.9,y-f.s*.25);ctx.lineTo(x-f.dir*f.s*.9,y+f.s*.25);ctx.fill()});ctx.globalAlpha=1;
+// bubbles and drifting plankton
+particles.forEach((p,i)=>{p.y-=p.s*.00045*(reduced?0.25:1);if(p.y<-.02){p.y=1.02;p.x=Math.random()}const x=p.x*w+Math.sin(cycle*.35+i)*5,y=p.y*h;ctx.beginPath();ctx.arc(x,y,p.r,0,Math.PI*2);ctx.fillStyle=i%4===0?'#d9d2a1':'#a4f9ed';ctx.globalAlpha=p.a;ctx.fill();if(i%7===0){ctx.strokeStyle='#c9fff5';ctx.lineWidth=.7;ctx.stroke()}});ctx.globalAlpha=1;
+// foreground seabed and waving kelp
+ctx.fillStyle='#071b24';ctx.beginPath();ctx.moveTo(0,h*.87);ctx.quadraticCurveTo(w*.5,h*.78,w,h*.87);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
+for(let i=0;i<18;i++){const x=w*i/17,base=h*(.92+(i%3)*.018);ctx.strokeStyle=i%2?'#28675c':'#36756a';ctx.lineWidth=3+(i%3);ctx.beginPath();ctx.moveTo(x,base);ctx.quadraticCurveTo(x+Math.sin(cycle*.7+i)*22,base-35,x+Math.sin(cycle*.7+i+1)*15,base-70-(i%4)*12);ctx.stroke()}
+const elapsed=Math.floor(cycle);phase.textContent=elapsed<5?'THE DEEP · '+String(elapsed).padStart(2,'0')+':00':elapsed<11?'THE GATES ARE MOVING':'THE KINGDOM AWAKENS';
+caption.textContent=elapsed<5?'A LIGHT STIRS BELOW':elapsed<11?'THE ANCIENT GATES OPEN':'WELCOME TO THE SUNKEN KINGDOM';
+raf=requestAnimationFrame(draw);
+}
+function replay(){start=performance.now();running=true;if(!raf)raf=requestAnimationFrame(draw);status.textContent='The kingdom is stirring beneath the waves.'}
+function startSound(){
+const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent='Sound is not supported in this browser.';return}
+if(!audio){audio=new AC();const master=audio.createGain();master.gain.value=.18;master.connect(audio.destination);const filter=audio.createBiquadFilter();filter.type='lowpass';filter.frequency.value=420;filter.connect(master);
+[55,82.4,110].forEach((hz,i)=>{const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=hz;o.detune.value=i*3;g.gain.value=.16/(i+1);o.connect(g);g.connect(filter);o.start()});
+const lfo=audio.createOscillator(),lg=audio.createGain();lfo.frequency.value=.12;lg.gain.value=85;lfo.connect(lg);lg.connect(filter.frequency);lfo.start();
+const buffer=audio.createBuffer(1,audio.sampleRate*2,audio.sampleRate),data=buffer.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.22;const noise=audio.createBufferSource();noise.buffer=buffer;noise.loop=true;const ng=audio.createGain();ng.gain.value=.11;const nf=audio.createBiquadFilter();nf.type='lowpass';nf.frequency.value=230;noise.connect(nf);nf.connect(ng);ng.connect(master);noise.start();audio.master=master}
+audio.resume();audio.master.gain.setTargetAtTime(.18,audio.currentTime,.4);soundOn=true;soundBtn.textContent='♫ SOUND: ON';status.textContent='Underwater ambient tones and a deep ocean swell are playing.'}
+function stopSound(){if(audio){audio.master.gain.setTargetAtTime(0,audio.currentTime,.2)}soundOn=false;soundBtn.textContent='♫ SOUND: OFF'}
+document.getElementById('awaken').addEventListener('click',()=>{replay();if(soundOn&&audio)audio.master.gain.setTargetAtTime(.2,audio.currentTime,.5)});
+document.getElementById('replay').addEventListener('click',replay);
+soundBtn.addEventListener('click',()=>soundOn?stopSound():startSound());
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&audio)audio.suspend();else if(!document.hidden&&soundOn&&audio)audio.resume()});
+raf=requestAnimationFrame(draw);
+})();
+</script>
+</body></html>
