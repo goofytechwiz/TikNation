@@ -9,15 +9,15 @@
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:#060908;color:#f1f0e8;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
 header{height:58px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff18;color:#b5c0b2;font-size:10px;font-weight:800;letter-spacing:.18em}a{color:#d8e5cf;text-decoration:none}
 main{width:min(94%,900px);margin:30px auto 54px}.eyebrow{font-size:10px;letter-spacing:.25em;color:#a6ba9a;font-weight:800}.title{font:500 clamp(40px,8vw,68px)/.98 Georgia,serif;letter-spacing:-.04em;margin:12px 0}.copy{max-width:680px;color:#b4beb2;font-size:14px;line-height:1.7}
-.scene{height:clamp(390px,64vw,560px);min-height:390px;position:relative;overflow:hidden;margin:24px 0 16px;border:1px solid #81947c55;border-radius:20px;background:linear-gradient(#101b20 0%,#18231e 47%,#10150f 100%);isolation:isolate;box-shadow:0 28px 75px #0009}
+.scene{height:clamp(390px,64vw,560px);min-height:390px;position:relative;overflow:hidden;margin:24px 0 16px;border:1px solid #81947c55;border-radius:20px;background:radial-gradient(ellipse at 50% 34%,#39443b 0%,#202c27 24%,#111a17 58%,#080d0b 100%);isolation:isolate;box-shadow:0 28px 75px #0009}
 .moon{position:absolute;width:100px;height:100px;top:9%;left:calc(50% - 50px);border-radius:50%;background:radial-gradient(circle at 38% 35%,#f0f2d8,#b9c9ad 55%,#7b8d7d);box-shadow:0 0 35px #dce8c477,0 0 100px #dce8c433;opacity:.85}
 .fog{position:absolute;inset:auto -20% 12%;height:36%;background:radial-gradient(ellipse,#9caa9b35,transparent 65%);filter:blur(18px);animation:fog 12s ease-in-out infinite alternate}
 .fog.two{bottom:27%;opacity:.55;animation-delay:-6s}
-.forest{position:absolute;inset:0;opacity:.7;background:linear-gradient(90deg,transparent 0 5%,#08100d 5% 8%,transparent 8% 15%,#09100d 15% 18%,transparent 18% 83%,#09100d 83% 86%,transparent 86% 92%,#08100d 92% 96%,transparent 96%);clip-path:polygon(0 0,100% 0,100% 78%,0 78%)}
-.ground{position:absolute;left:-10%;right:-10%;bottom:-9%;height:34%;background:radial-gradient(ellipse at 50% 0%,#344331,#111a12 65%);border-radius:50% 50% 0 0}
-.tree{position:absolute;width:min(70%,470px);height:93%;left:50%;bottom:3%;transform:translateX(-50%);filter:drop-shadow(0 18px 22px #000b)}
+.forest{position:absolute;inset:0;opacity:.94;background:linear-gradient(90deg,#060b09 0 4%,transparent 4% 8%,#0b120f 8% 11%,transparent 11% 17%,#0a110e 17% 20%,transparent 20% 78%,#0a110e 78% 81%,transparent 81% 88%,#0b120f 88% 92%,transparent 92% 96%,#060b09 96%);clip-path:polygon(0 0,100% 0,100% 83%,0 83%)}.forest:before,.forest:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(88deg,transparent 0 10%,#050a08 10.3% 11%,transparent 11.5% 18%);opacity:.7;filter:blur(2px)}.forest:after{background:linear-gradient(180deg,#050907 0%,transparent 46%,#070c09 100%);opacity:.8}
+.ground{position:absolute;left:-10%;right:-10%;bottom:-9%;height:39%;background:radial-gradient(ellipse at 50% 0%,#46513a 0%,#202b1e 26%,#101810 66%,#070b08 100%);border-radius:50% 50% 0 0}.ground:before{content:"";position:absolute;inset:10% 0 0;background:repeating-radial-gradient(ellipse at 50% 20%,transparent 0 13px,#05090655 14px 17px,transparent 18px 29px);opacity:.45}
+.tree{position:absolute;width:min(76%,520px);height:97%;left:50%;bottom:1%;transform:translateX(-50%);filter:drop-shadow(0 18px 22px #000b)}
 .tree svg{width:100%;height:100%;overflow:visible}
-.trunk{fill:url(#bark);stroke:#090e0b;stroke-width:7;stroke-linejoin:round}
+.trunk{fill:url(#bark);stroke:#090e0b;stroke-width:7;stroke-linejoin:round;filter:url(#roughBark)}
 .barkline{fill:none;stroke:#7d7859;stroke-width:3;opacity:.3;stroke-linecap:round}
 .root{transform-origin:50% 90%;animation:rootWake 2.8s ease-in-out both}
 .branch{transform-origin:50% 80%;animation:branchWake 3.2s ease-in-out both}
@@ -54,11 +54,12 @@ main{width:min(94%,900px);margin:30px auto 54px}.eyebrow{font-size:10px;letter-s
 <p class="copy">Deep in a moonlit forest, an ancient tree has been sleeping for centuries. The earth begins to move. Its roots wrench free, its branches twist, and two burning eyes open inside the hollow trunk.</p>
 <section class="scene" id="scene" aria-label="Animated ancient hollow tree in a moonlit forest">
 <div class="moon"></div><div class="forest"></div><div class="ground"></div>
-<div class="fog"></div><div class="fog two"></div>
+<div class="fog"></div><div class="fog two"></div><div class="fog" style="bottom:4%;opacity:.32;animation-delay:-3s"></div>
 <div class="tree">
 <svg viewBox="0 0 460 540" role="img" aria-label="A massive twisted hollow tree with glowing eyes">
 <defs>
-<linearGradient id="bark" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#655b40"/><stop offset=".28" stop-color="#292b20"/><stop offset=".62" stop-color="#48432f"/><stop offset="1" stop-color="#121912"/></linearGradient>
+<linearGradient id="bark" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#847454"/><stop offset=".16" stop-color="#3e3d2d"/><stop offset=".34" stop-color="#1c241c"/><stop offset=".53" stop-color="#61573c"/><stop offset=".72" stop-color="#292d21"/><stop offset="1" stop-color="#0b120d"/></linearGradient>
+<filter id="roughBark" x="-20%" y="-10%" width="140%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035 .22" numOctaves="3" seed="17" result="grain"/><feColorMatrix in="grain" type="saturate" values="0" result="mono"/><feComponentTransfer in="mono" result="contrast"><feFuncA type="table" tableValues="0 .52"/></feComponentTransfer><feBlend in="SourceGraphic" in2="contrast" mode="soft-light"/></filter>
 <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>
 <g class="branch">
@@ -69,14 +70,14 @@ main{width:min(94%,900px);margin:30px auto 54px}.eyebrow{font-size:10px;letter-s
 <path class="crack" d="M195 284 Q211 267 226 279 Q244 265 265 284 L260 316 Q239 304 226 319 Q207 306 190 320Z"/>
 <ellipse class="eye" cx="207" cy="296" rx="11" ry="5"/><ellipse class="eye" cx="249" cy="296" rx="11" ry="5"/>
 <ellipse class="eyeCore" cx="207" cy="296" rx="3" ry="3"/><ellipse class="eyeCore" cx="249" cy="296" rx="3" ry="3"/>
-<path class="barkline" d="M150 205 Q178 247 162 291 M300 204 Q274 247 291 289 M174 390 Q202 417 193 451 M277 382 Q253 416 270 455 M115 190 Q145 198 160 221 M310 240 Q342 223 370 235"/>
+<path class="barkline" d="M150 205 Q178 247 162 291 M300 204 Q274 247 291 289 M174 390 Q202 417 193 451 M277 382 Q253 416 270 455 M115 190 Q145 198 160 221 M310 240 Q342 223 370 235 M194 75 Q211 128 198 177 M248 94 Q231 143 249 184 M80 473 Q127 449 163 471 M316 474 Q353 452 395 472 M177 334 Q194 349 202 371 M267 335 Q251 355 248 376"/><path d="M205 30 Q214 88 202 132 M290 75 Q266 119 275 160 M118 122 Q143 157 167 169 M345 155 Q310 174 299 203" fill="none" stroke="#b2a17a" stroke-width="5" opacity=".12" stroke-linecap="round"/>
 </svg>
 </div>
 <div class="scene-message" id="sceneMessage">THE FOREST IS LISTENING</div>
 </section>
 <div class="controls"><button class="primary" id="play" type="button">✦ AWAKEN THE HOLLOW TREE</button><button id="stop" type="button">STOP SOUND</button></div>
 <div class="status" id="status" role="status" aria-live="polite">READY · TAP TO BEGIN THE EXPERIENCE</div>
-<p class="fine">TIKNATION NEXT · ISOLATED PREVIEW. Sound begins only after a tap. This preview does not send a gift, spend coins, or connect to the live wallet. Animation is an original layered illustration, not live-action footage.</p>
+<p class="fine">TIKNATION NEXT · ISOLATED PREVIEW. Sound begins only after a tap. This preview does not send a gift, spend coins, or connect to the live wallet. The rebuild adds layered forest depth, rough bark texture, heavier ground fog, and a stronger root movement; it is still a procedural illustration, not photoreal live-action footage.</p>
 </main>
 <script>
 const scene=document.getElementById("scene"),status=document.getElementById("status"),message=document.getElementById("sceneMessage");let ctx=null,nodes=[],timers=[];
