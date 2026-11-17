@@ -18,7 +18,7 @@ p{font:14px/1.5 Arial,sans-serif;color:#d8c8b4}
 @keyframes waltz-right{0%,100%{transform:translate(0,0) rotate(5deg)}25%{transform:translate(-15px,-10px) rotate(-9deg)}50%{transform:translate(-28px,0) rotate(-3deg)}75%{transform:translate(-12px,-12px) rotate(10deg)}}
 #dust circle{animation:dust-drift 4s ease-in-out infinite alternate}
 @keyframes dust-drift{from{transform:translateY(8px);opacity:.25}to{transform:translateY(-22px);opacity:.95}}
-@media(prefers-reduced-motion:reduce){.dancer-one,.dancer-two,#dust circle{animation:none}}
+
 .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:14px 0}
 button{background:#c6a16c;color:#170f0b;border:0;padding:14px 18px;font-weight:bold;letter-spacing:1px}
 #status{font:12px Arial,sans-serif;color:#f3d9a7}
@@ -78,12 +78,14 @@ button{background:#c6a16c;color:#170f0b;border:0;padding:14px 18px;font-weight:b
 <ellipse cx="500" cy="525" rx="370" ry="85" fill="url(#glow)" opacity=".4"/>
 <!-- dancing ghosts -->
 <g class="dancer-one">
+<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 0; 28 -18; 45 0; 20 -14; 0 0" dur="2.4s" repeatCount="indefinite"/>
 <path d="M410 365Q380 395 388 440L355 520Q405 505 425 530Q450 500 470 530L455 440Q470 395 440 365Z" fill="url(#ghost)" stroke="#c9efff" stroke-width="3"/>
 <ellipse cx="425" cy="350" rx="35" ry="42" fill="url(#ghost)"/>
 <path d="M400 380Q365 360 350 400M450 380Q480 350 495 380" fill="none" stroke="#dffaff" stroke-width="17" stroke-linecap="round"/>
 <circle cx="413" cy="350" r="4" fill="#20303d"/><circle cx="437" cy="350" r="4" fill="#20303d"/>
 </g>
 <g class="dancer-two">
+<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 0; -28 -14; -45 0; -20 -18; 0 0" dur="2.4s" repeatCount="indefinite"/>
 <path d="M540 380Q515 405 520 445L490 520Q535 505 555 530Q580 505 605 520L580 440Q595 405 570 380Z" fill="url(#ghost)" stroke="#f0e2ff" stroke-width="3"/>
 <ellipse cx="555" cy="365" rx="34" ry="42" fill="url(#ghost)"/>
 <path d="M530 390Q500 370 485 400M580 390Q610 370 625 400" fill="none" stroke="#f4edff" stroke-width="17" stroke-linecap="round"/>
