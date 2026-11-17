@@ -2,102 +2,81 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#100d18">
 <title>The Haunted Ballroom | TikNation</title>
 <style>
-html,body{margin:0;padding:0;background:#17111b;color:#fff1d8;font-family:Georgia,serif}
-header{padding:16px 18px;background:#100c13;border-bottom:2px solid #b48b55;font: bold 12px Arial,sans-serif;letter-spacing:2px}
-header a{color:#f5d8a5;float:right}
-main{max-width:1100px;margin:20px auto;padding:0 12px}
-h1{font-size:clamp(34px,7vw,64px);font-weight:normal;margin:8px 0;color:#f7e5c5}
-p{font:14px/1.5 Arial,sans-serif;color:#d8c8b4}
-.scene{display:block;width:100%;height:auto;min-height:300px;background:#211727;border:2px solid #b48b55}
-.dancer-one{transform-box:fill-box;transform-origin:50% 82%;animation:waltz-left 2.4s ease-in-out infinite}
-.dancer-two{transform-box:fill-box;transform-origin:50% 82%;animation:waltz-right 2.4s ease-in-out infinite}
-@keyframes waltz-left{0%,100%{transform:translate(0,0) rotate(-5deg)}25%{transform:translate(15px,-13px) rotate(9deg)}50%{transform:translate(28px,0) rotate(3deg)}75%{transform:translate(12px,-9px) rotate(-10deg)}}
-@keyframes waltz-right{0%,100%{transform:translate(0,0) rotate(5deg)}25%{transform:translate(-15px,-10px) rotate(-9deg)}50%{transform:translate(-28px,0) rotate(-3deg)}75%{transform:translate(-12px,-12px) rotate(10deg)}}
-#dust circle{animation:dust-drift 4s ease-in-out infinite alternate}
-@keyframes dust-drift{from{transform:translateY(8px);opacity:.25}to{transform:translateY(-22px);opacity:.95}}
-
-.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:14px 0}
-button{background:#c6a16c;color:#170f0b;border:0;padding:14px 18px;font-weight:bold;letter-spacing:1px}
-#status{font:12px Arial,sans-serif;color:#f3d9a7}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#100d18;color:#f8e9d0;font-family:Georgia,serif}
+header{padding:15px 18px;background:#09070d;border-bottom:1px solid #a98759;font:700 11px Arial;letter-spacing:2px;display:flex;justify-content:space-between;gap:12px}
+a{color:#f1d39e}main{max-width:1120px;margin:0 auto;padding:22px 14px 40px}
+.kicker{font:700 10px Arial;letter-spacing:4px;color:#d7b77f}h1{font-size:clamp(34px,7vw,62px);font-weight:400;margin:8px 0 4px}p{font:14px/1.55 Arial,sans-serif;color:#d8cbbd}
+.stage{height:clamp(390px,64vw,620px);min-height:390px;position:relative;overflow:hidden;border:2px solid #b48b55;background:linear-gradient(#211827 0%,#48303a 48%,#17101b 100%);isolation:isolate;box-shadow:0 0 45px #b98d5633}
+.ceiling{position:absolute;inset:0 0 auto;height:16%;background:linear-gradient(#130e19,#3b2930);border-bottom:9px double #c19a61}
+.arch{position:absolute;top:13%;height:57%;width:19%;border:10px ridge #b58c55;border-radius:48% 48% 0 0;background:linear-gradient(90deg,#15253b,#a2b3bd 50%,#1a2940);box-shadow:0 0 45px #b6d7ed55,inset 0 0 35px #c8e6fa66}
+.arch:before,.arch:after{content:"";position:absolute;background:#c5a16b}.arch:before{width:6px;height:100%;left:50%}.arch:after{height:6px;width:100%;top:54%}
+.a1{left:5%}.a2{left:40.5%}.a3{right:5%}
+.moon{position:absolute;width:48px;height:48px;border-radius:50%;background:#fff2d2;top:22%;left:calc(50% - 24px);box-shadow:0 0 35px 15px #f4dfb455}
+.pillar{position:absolute;top:13%;height:65%;width:5%;background:linear-gradient(90deg,#513d35,#e0c69a 40%,#75563b 75%,#d5b77f);border:3px solid #5a4031;z-index:2}
+.p1{left:1%}.p2{left:34%}.p3{right:34%}.p4{right:1%}
+.balcony{position:absolute;top:38%;left:0;width:100%;height:8%;border-top:8px solid #b58b55;border-bottom:5px solid #b58b55;background:repeating-linear-gradient(90deg,transparent 0 25px,#b58b55 26px 30px,transparent 31px 42px);z-index:3}
+.curtain{position:absolute;top:10%;height:61%;width:8%;background:linear-gradient(90deg,#250e20,#76263e 55%,#2b1024);z-index:4;clip-path:polygon(0 0,100% 0,82% 100%,45% 88%,0 100%)}
+.c1{left:0}.c2{right:0;transform:scaleX(-1)}
+.chandelier{position:absolute;z-index:5;top:3%;left:50%;width:220px;height:130px;transform:translateX(-50%)}
+.chain{position:absolute;left:50%;top:0;height:35px;border-left:4px solid #d2ae70}
+.ring{position:absolute;left:50%;top:32px;transform:translateX(-50%);width:190px;height:64px;border:8px solid #c59b60;border-radius:50%;box-shadow:0 0 25px #ffe2a666}
+.lamp{position:absolute;top:79px;width:17px;height:24px;border-radius:50% 50% 35% 35%;background:#fff0bd;box-shadow:0 0 22px 10px #ffe3a655}
+.l1{left:18px}.l2{left:66px}.l3{left:102px}.l4{right:66px}.l5{right:18px}
+.floor{position:absolute;bottom:0;left:-10%;width:120%;height:34%;z-index:1;background:repeating-conic-gradient(from 45deg at 50% 0%,#4a3540 0 25%,#b28b60 0 26%,#342430 0 50%) 0 0/100px 80px;transform:perspective(230px) rotateX(17deg);border-top:8px solid #bd965e}
+.spotlight{position:absolute;bottom:12%;left:25%;width:50%;height:48%;background:radial-gradient(ellipse,#f4dfb544,transparent 68%);z-index:2}
+.dancer{position:absolute;z-index:7;bottom:14%;width:145px;height:290px;filter:drop-shadow(0 0 22px #a9e9ff99);transform-origin:50% 90%;will-change:transform}
+.dancer.left{left:calc(50% - 170px);animation:lead 2.7s ease-in-out infinite}
+.dancer.right{left:calc(50% + 25px);animation:follow 2.7s ease-in-out infinite}
+.head{position:absolute;top:0;left:48px;width:54px;height:64px;border-radius:48% 48% 44% 44%;background:radial-gradient(circle at 40% 25%,#fff 0,#d9f8ff 32%,#81b9d2 100%);box-shadow:0 0 18px #d9f8ff88}
+.head:after{content:"";position:absolute;left:14px;top:27px;width:5px;height:7px;border-radius:50%;background:#253647;box-shadow:22px 0 #253647}
+.torso{position:absolute;top:58px;left:51px;width:48px;height:105px;border-radius:45% 45% 25% 25%;background:linear-gradient(90deg,#6e9db4aa,#f4ffff 45%,#83b4c9bb)}
+.skirt{position:absolute;top:130px;left:3px;width:140px;height:135px;clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);background:linear-gradient(90deg,#6f9db7aa,#e9ffff 48%,#80abc5cc);border-bottom:3px solid #eaffff}
+.arm{position:absolute;top:74px;width:92px;height:17px;border-radius:20px;background:linear-gradient(#f5ffff,#8abbd0);transform-origin:12px 50%}
+.arm.one{left:72px;transform:rotate(-34deg);animation:armlead 2.7s ease-in-out infinite}
+.arm.two{left:-20px;transform:rotate(25deg);animation:armfollow 2.7s ease-in-out infinite}
+.dancer.right .skirt{background:linear-gradient(90deg,#9b8ac4bb,#fff4ff 48%,#9b8ac4cc)}
+.dancer.right .torso{background:linear-gradient(90deg,#9583b9aa,#fff8ff 45%,#aa98cabb)}
+.dancer.right .head{background:radial-gradient(circle at 40% 25%,#fff 0,#f2e9ff 32%,#aa96cb 100%)}
+@keyframes lead{0%,100%{transform:translate(0,0) rotate(-13deg)}25%{transform:translate(55px,-30px) rotate(17deg)}50%{transform:translate(95px,0) rotate(8deg)}75%{transform:translate(42px,-20px) rotate(-18deg)}}
+@keyframes follow{0%,100%{transform:translate(0,0) rotate(13deg)}25%{transform:translate(-55px,-22px) rotate(-17deg)}50%{transform:translate(-95px,0) rotate(-8deg)}75%{transform:translate(-42px,-28px) rotate(18deg)}}
+@keyframes armlead{0%,100%{transform:rotate(-34deg)}50%{transform:rotate(-75deg)}}
+@keyframes armfollow{0%,100%{transform:rotate(25deg)}50%{transform:rotate(65deg)}}
+.paused .dancer,.paused .arm{animation-play-state:paused!important}
+.dust{position:absolute;inset:0;z-index:8;pointer-events:none;background-image:radial-gradient(#ffe8b9 1.5px,transparent 2px),radial-gradient(#d9f4ff 1px,transparent 2px);background-size:113px 127px,173px 151px;background-position:0 0,60px 40px;animation:sparkle 5s linear infinite}
+@keyframes sparkle{from{transform:translateY(12px)}to{transform:translateY(-35px)}}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+button{border:1px solid #d8b77c;background:#c5a06a;color:#170f0d;padding:13px 17px;font-weight:700;letter-spacing:1px;cursor:pointer}
+#status{align-self:center;font:11px Arial;color:#f2d9aa;letter-spacing:1px}
+@media(max-width:540px){.dancer{transform:scale(.78);transform-origin:50% 90%;bottom:12%}.dancer.left{left:calc(50% - 132px)}.dancer.right{left:calc(50% + 2px)}.chandelier{transform:translateX(-50%) scale(.75);transform-origin:top center}.arch{border-width:6px}.stage{height:470px}}
+@media(prefers-reduced-motion:reduce){.dust{animation:none}}
 </style>
 </head>
 <body>
-<header>TIKNATION NEXT · GIFT PREVIEW <a href="../gifts/">GIFT GALLERY ↗</a></header>
+<header><span>TIKNATION NEXT · GIFT PREVIEW</span><a href="../gifts/">GIFT GALLERY ↗</a></header>
 <main>
-<div style="font:bold 11px Arial,sans-serif;letter-spacing:4px;color:#d9b77e">AFTER MIDNIGHT · THE GRAND VICTORIAN BALLROOM</div>
+<div class="kicker">AFTER MIDNIGHT · THE GRAND VICTORIAN BALLROOM</div>
 <h1>THE HAUNTED BALLROOM</h1>
-<p>Moonlight pours through towering stained-glass windows. Crystal chandeliers illuminate the grand floor as two ghostly dancers return for their final waltz.</p>
-<svg class="scene" viewBox="0 0 1000 620" role="img" aria-label="Illustrated Victorian ballroom with chandeliers, arched moonlit windows, marble pillars and two ghost dancers" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<linearGradient id="wall" x2="0" y2="1"><stop stop-color="#74503b"/><stop offset=".45" stop-color="#38232c"/><stop offset="1" stop-color="#160f1b"/></linearGradient>
-<linearGradient id="glass" x2="0" y2="1"><stop stop-color="#1c3451"/><stop offset=".55" stop-color="#9db4c5"/><stop offset="1" stop-color="#30253b"/></linearGradient>
-<linearGradient id="gold"><stop stop-color="#65472d"/><stop offset=".25" stop-color="#f0d29b"/><stop offset=".55" stop-color="#987044"/><stop offset=".8" stop-color="#e6c58c"/><stop offset="1" stop-color="#4a3023"/></linearGradient>
-<linearGradient id="ghost"><stop stop-color="#83b6cf" stop-opacity=".45"/><stop offset=".48" stop-color="#f0ffff" stop-opacity=".96"/><stop offset="1" stop-color="#8eb4c9" stop-opacity=".5"/></linearGradient>
-<radialGradient id="glow"><stop stop-color="#ffe8ad" stop-opacity=".75"/><stop offset="1" stop-color="#ffe8ad" stop-opacity="0"/></radialGradient>
-<pattern id="tiles" width="100" height="100" patternUnits="userSpaceOnUse"><rect width="100" height="100" fill="#32232c"/><path d="M0 0H100V100H0Z" fill="none" stroke="#c39b64" stroke-width="3"/><path d="M0 0L100 100M100 0L0 100" stroke="#87613e" stroke-width="2"/></pattern>
-<filter id="soft"><feGaussianBlur stdDeviation="12"/></filter>
-</defs>
-<rect width="1000" height="620" fill="#100d18"/>
-<rect x="35" y="50" width="930" height="430" fill="url(#wall)" stroke="url(#gold)" stroke-width="14"/>
-<!-- high ceiling and cornices -->
-<path d="M20 85H980M20 110H980M20 455H980" stroke="url(#gold)" stroke-width="10" fill="none"/>
-<path d="M30 40Q500 -30 970 40" stroke="#d0aa70" stroke-width="12" fill="none"/>
-<!-- tall arched windows -->
-<g stroke="url(#gold)" stroke-width="12">
-<path d="M95 380V180Q95 85 185 85Q275 85 275 180V380Z" fill="url(#glass)"/>
-<path d="M365 380V180Q365 85 455 85Q545 85 545 180V380Z" fill="url(#glass)"/>
-<path d="M635 380V180Q635 85 725 85Q815 85 815 180V380Z" fill="url(#glass)"/>
-</g>
-<g stroke="#d3b27b" stroke-width="7"><path d="M185 90V380M95 250H275M455 90V380M365 250H545M725 90V380M635 250H815"/></g>
-<circle cx="185" cy="165" r="34" fill="#f8e9c8" opacity=".9"/><circle cx="455" cy="165" r="34" fill="#f8e9c8" opacity=".9"/><circle cx="725" cy="165" r="34" fill="#f8e9c8" opacity=".9"/>
-<!-- balcony -->
-<rect x="55" y="260" width="890" height="25" fill="#241820" stroke="url(#gold)" stroke-width="8"/>
-<path d="M65 285V330M95 285V330M125 285V330M155 285V330M185 285V330M215 285V330M245 285V330M275 285V330M305 285V330M335 285V330M365 285V330M395 285V330M425 285V330M455 285V330M485 285V330M515 285V330M545 285V330M575 285V330M605 285V330M635 285V330M665 285V330M695 285V330M725 285V330M755 285V330M785 285V330M815 285V330M845 285V330M875 285V330M905 285V330M935 285V330" stroke="#c29a61" stroke-width="5"/>
-<rect x="50" y="330" width="900" height="12" fill="url(#gold)"/>
-<!-- pillars -->
-<g fill="url(#gold)" stroke="#3b2926" stroke-width="3">
-<rect x="55" y="115" width="48" height="340"/><rect x="45" y="110" width="68" height="18"/><rect x="45" y="445" width="68" height="20"/>
-<rect x="897" y="115" width="48" height="340"/><rect x="887" y="110" width="68" height="18"/><rect x="887" y="445" width="68" height="20"/>
-<rect x="315" y="120" width="28" height="325"/><rect x="305" y="115" width="48" height="16"/>
-<rect x="657" y="120" width="28" height="325"/><rect x="647" y="115" width="48" height="16"/>
-</g>
-<!-- chandelier -->
-<ellipse cx="500" cy="175" rx="200" ry="145" fill="url(#glow)" filter="url(#soft)"/>
-<path d="M500 0V80" stroke="#d7b578" stroke-width="8"/>
-<ellipse cx="500" cy="105" rx="120" ry="32" fill="none" stroke="url(#gold)" stroke-width="12"/>
-<path d="M380 105Q330 160 365 205M420 115Q400 175 420 220M580 115Q600 175 580 220M620 105Q670 160 635 205" fill="none" stroke="#d7b578" stroke-width="9"/>
-<ellipse cx="500" cy="220" rx="145" ry="38" fill="none" stroke="url(#gold)" stroke-width="12"/>
-<g fill="#fff1bb" stroke="#d2a969" stroke-width="5"><circle cx="365" cy="205" r="14"/><circle cx="420" cy="220" r="14"/><circle cx="500" cy="240" r="14"/><circle cx="580" cy="220" r="14"/><circle cx="635" cy="205" r="14"/></g>
-<!-- velvet curtains -->
-<path d="M50 80Q120 120 110 420L50 455Z M280 80Q230 130 250 420L300 455Z M700 80Q750 130 730 420L680 455Z M950 80Q880 120 890 420L950 455Z" fill="#571d31" stroke="#b48b55" stroke-width="6"/>
-<!-- floor -->
-<path d="M0 470H1000V620H0Z" fill="url(#tiles)" stroke="#c29a61" stroke-width="8"/>
-<ellipse cx="500" cy="525" rx="370" ry="85" fill="url(#glow)" opacity=".4"/>
-<!-- dancing ghosts -->
-<g class="dancer-one">
-<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 0; 28 -18; 45 0; 20 -14; 0 0" dur="2.4s" repeatCount="indefinite"/>
-<path d="M410 365Q380 395 388 440L355 520Q405 505 425 530Q450 500 470 530L455 440Q470 395 440 365Z" fill="url(#ghost)" stroke="#c9efff" stroke-width="3"/>
-<ellipse cx="425" cy="350" rx="35" ry="42" fill="url(#ghost)"/>
-<path d="M400 380Q365 360 350 400M450 380Q480 350 495 380" fill="none" stroke="#dffaff" stroke-width="17" stroke-linecap="round"/>
-<circle cx="413" cy="350" r="4" fill="#20303d"/><circle cx="437" cy="350" r="4" fill="#20303d"/>
-</g>
-<g class="dancer-two">
-<animateTransform attributeName="transform" attributeType="XML" type="translate" values="0 0; -28 -14; -45 0; -20 -18; 0 0" dur="2.4s" repeatCount="indefinite"/>
-<path d="M540 380Q515 405 520 445L490 520Q535 505 555 530Q580 505 605 520L580 440Q595 405 570 380Z" fill="url(#ghost)" stroke="#f0e2ff" stroke-width="3"/>
-<ellipse cx="555" cy="365" rx="34" ry="42" fill="url(#ghost)"/>
-<path d="M530 390Q500 370 485 400M580 390Q610 370 625 400" fill="none" stroke="#f4edff" stroke-width="17" stroke-linecap="round"/>
-<circle cx="543" cy="365" r="4" fill="#26303b"/><circle cx="567" cy="365" r="4" fill="#26303b"/>
-</g>
-<g id="dust" fill="#ffe6ae" opacity=".85"><circle cx="150" cy="480" r="4"/><circle cx="240" cy="530" r="3"/><circle cx="760" cy="490" r="4"/><circle cx="830" cy="550" r="3"/><circle cx="700" cy="430" r="3"/><circle cx="300" cy="430" r="3"/></g>
-<text x="500" y="595" text-anchor="middle" fill="#f6dfb5" font-family="Arial" font-size="14" letter-spacing="5">THE MIDNIGHT WALTZ</text>
-</svg>
-<div class="controls"><button id="sound">PLAY THE MIDNIGHT WALTZ</button><span id="status">THE ORCHESTRA IS WAITING</span></div>
-<p>Sound starts only after you tap. This preview does not send gifts or charge coins.</p>
+<p>When the clock strikes twelve, the ballroom awakens. Two spectral dancers circle one another beneath the chandeliers in a ghostly midnight waltz.</p>
+<section class="stage" id="stage" aria-label="Animated ballroom with two dancing ghosts">
+<div class="ceiling"></div><div class="arch a1"><div class="moon"></div></div><div class="arch a2"></div><div class="arch a3"></div>
+<div class="balcony"></div><div class="pillar p1"></div><div class="pillar p2"></div><div class="pillar p3"></div><div class="pillar p4"></div>
+<div class="curtain c1"></div><div class="curtain c2"></div>
+<div class="chandelier"><div class="chain"></div><div class="ring"></div><i class="lamp l1"></i><i class="lamp l2"></i><i class="lamp l3"></i><i class="lamp l4"></i><i class="lamp l5"></i></div>
+<div class="spotlight"></div><div class="floor"></div>
+<div class="dancer left"><div class="head"></div><div class="torso"></div><div class="skirt"></div><div class="arm one"></div><div class="arm two"></div></div>
+<div class="dancer right"><div class="head"></div><div class="torso"></div><div class="skirt"></div><div class="arm one"></div><div class="arm two"></div></div>
+<div class="dust"></div>
+</section>
+<div class="controls"><button id="pause">PAUSE DANCERS</button><button id="sound">PLAY THE MIDNIGHT WALTZ</button><span id="status">THE GHOSTS ARE DANCING</span></div>
+<p>The dancers move automatically. Tap play for the music; your browser requires a tap before sound can begin. Preview only — no gifts are sent and no coins are charged.</p>
 </main>
 <script>
-document.getElementById('sound').addEventListener('click',function(){try{const C=window.AudioContext||window.webkitAudioContext;const c=new C();const notes=[392,440,523,494,440,392,349,392];let t=c.currentTime;notes.forEach((n,i)=>{const o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.value=n;g.gain.setValueAtTime(.0001,t+i*.48);g.gain.exponentialRampToValueAtTime(.045,t+i*.48+.04);g.gain.exponentialRampToValueAtTime(.0001,t+i*.48+.4);o.connect(g);g.connect(c.destination);o.start(t+i*.48);o.stop(t+i*.48+.42)});document.getElementById('status').textContent='THE MIDNIGHT WALTZ IS PLAYING'}catch(e){document.getElementById('status').textContent='AUDIO IS NOT AVAILABLE IN THIS BROWSER'}});
+const stage=document.getElementById('stage'),pause=document.getElementById('pause'),status=document.getElementById('status');
+pause.addEventListener('click',()=>{const stopped=stage.classList.toggle('paused');pause.textContent=stopped?'RESUME DANCERS':'PAUSE DANCERS';status.textContent=stopped?'THE BALLROOM IS STILL':'THE GHOSTS ARE DANCING'});
+document.getElementById('sound').addEventListener('click',()=>{try{const AC=window.AudioContext||window.webkitAudioContext,ctx=new AC();const melody=[392,494,587,523,494,440,392,330,349,440,523,494];let t=ctx.currentTime;melody.forEach((hz,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=hz;g.gain.setValueAtTime(.0001,t+i*.42);g.gain.exponentialRampToValueAtTime(.055,t+i*.42+.05);g.gain.exponentialRampToValueAtTime(.0001,t+i*.42+.38);o.connect(g);g.connect(ctx.destination);o.start(t+i*.42);o.stop(t+i*.42+.4)});status.textContent='THE MIDNIGHT WALTZ IS PLAYING'}catch(e){status.textContent='AUDIO IS NOT AVAILABLE HERE'}});
 </script>
 </body></html>
