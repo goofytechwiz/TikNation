@@ -65,6 +65,22 @@ h1 span{color:#ff6664}.intro{max-width:650px;color:var(--muted);font-size:13px;l
 .debris{position:absolute;left:50%;bottom:58px;width:7px;height:7px;background:linear-gradient(135deg,#ffcf8a,#b72b25);clip-path:polygon(50% 0,100% 35%,70% 100%,0 75%);opacity:0;z-index:2}
 .arena.playing .debris{animation:debrisFly 1s 1.24s ease-out forwards}
 @keyframes debrisFly{0%{opacity:1;transform:translate(-50%,0) rotate(0) scale(1)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(250deg) scale(.2)}}
+.smoke-cloud{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;opacity:0}
+.smoke-puff{position:absolute;left:50%;top:69%;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#d9b7a45c,#6d3c3d30 48%,transparent 72%);filter:blur(9px);transform:translate(-50%,-50%) scale(.3)}
+.arena.playing .smoke-cloud{opacity:1}
+.arena.playing .smoke-puff{animation:smokeBloom 1.65s 1.25s ease-out both}
+.smoke-puff:nth-child(2n){animation-delay:1.34s!important}
+.smoke-puff:nth-child(3n){animation-delay:1.42s!important}
+.smoke-puff:nth-child(1){--sx:-155px;--sy:-42px}.smoke-puff:nth-child(2){--sx:140px;--sy:-55px}.smoke-puff:nth-child(3){--sx:-95px;--sy:-105px}.smoke-puff:nth-child(4){--sx:92px;--sy:-115px}.smoke-puff:nth-child(5){--sx:0px;--sy:-145px}.smoke-puff:nth-child(6){--sx:175px;--sy:-15px}.smoke-puff:nth-child(7){--sx:-175px;--sy:-15px}.smoke-puff:nth-child(8){--sx:35px;--sy:-75px}
+@keyframes smokeBloom{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}30%{opacity:.9}100%{opacity:0;transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) scale(2.5)}}
+.arena.legendary{box-shadow:0 0 0 2px #ffb45c88,0 0 100px #ff392b88,inset 0 0 90px #ffb14b30}
+.arena.legendary .flash{background:#ffb45c55;animation:flash .8s 1.2s ease-out both}
+.arena.legendary .stamp{border-color:#ffc16d;box-shadow:inset 0 2px 2px #fff2c477,0 0 55px #ffb45c,0 0 130px #ff3d34}
+.arena.legendary .stamp-word{color:#ffe1a2;text-shadow:0 0 22px #ff9a39,0 3px 0 #5b1710}
+.arena.legendary .energy-ring{border-color:#ffd28a}
+.arena.legendary .energy-ring.second{border-color:#fff0c2}
+.arena.legendary .shock{border-color:#ffd28a}
+.arena.legendary.playing{animation:arenaShake .65s 1.2s ease-out 3}
 .controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
 button{min-height:48px;padding:0 20px;border-radius:99px;border:1px solid #ff777655;background:#241014;color:#fff0ed;font-size:10px;font-weight:900;letter-spacing:.12em;cursor:pointer}
 button.primary{border:0;background:linear-gradient(105deg,#ff6a4e,#ff344c);color:#180608;box-shadow:0 8px 28px #ff313744}
@@ -83,16 +99,16 @@ button:focus-visible{outline:2px solid #fff;outline-offset:3px}
 <p class="intro">No hand. No monster. Just a massive iron verdict stamp that drops out of the darkness and slams the stage with a brutal red shockwave. A loud, unapologetic way to deliver the final word.</p>
 <section class="arena" id="arena" aria-label="Animated iron verdict stamp gift preview">
 <div class="haze"></div><div class="embers"><i class="ember"></i><i class="ember"></i><i class="ember"></i><i class="ember"></i><i class="ember"></i><i class="ember"></i></div>
-<div class="scene"><div class="floor"></div><div class="stamp-wrap"><div class="handle"></div><div class="stamp"><span class="stamp-word">FUCK YOU</span></div></div><div class="shock"></div><div class="energy-ring"></div><div class="energy-ring second"></div><i class="arc a"></i><i class="arc b"></i><i class="arc c"></i><div class="sparks" id="sparks"></div><i class="debris" style="--dx:-135px;--dy:-92px"></i><i class="debris" style="--dx:118px;--dy:-105px;animation-delay:1.3s"></i><i class="debris" style="--dx:-75px;--dy:-142px;animation-delay:1.36s"></i><i class="debris" style="--dx:88px;--dy:-160px;animation-delay:1.4s"></i><div class="crack left"></div><div class="crack right"></div></div><div class="flash"></div>
+<div class="scene"><div class="floor"></div><div class="stamp-wrap"><div class="handle"></div><div class="stamp"><span class="stamp-word">FUCK YOU</span></div></div><div class="shock"></div><div class="energy-ring"></div><div class="energy-ring second"></div><i class="arc a"></i><i class="arc b"></i><i class="arc c"></i><div class="sparks" id="sparks"></div><div class="smoke-cloud"><i class="smoke-puff"></i><i class="smoke-puff"></i><i class="smoke-puff"></i><i class="smoke-puff"></i><i class="smoke-puff"></i><i class="smoke-puff"></i><i class="smoke-puff"></i><i class="smoke-puff"></i></div><i class="debris" style="--dx:-135px;--dy:-92px"></i><i class="debris" style="--dx:118px;--dy:-105px;animation-delay:1.3s"></i><i class="debris" style="--dx:-75px;--dy:-142px;animation-delay:1.36s"></i><i class="debris" style="--dx:88px;--dy:-160px;animation-delay:1.4s"></i><div class="crack left"></div><div class="crack right"></div></div><div class="flash"></div>
 </section>
-<div class="controls"><button class="primary" id="play" type="button">✦ DROP THE VERDICT</button><button id="stop" type="button">STOP SOUND</button></div>
+<div class="controls"><button class="primary" id="play" type="button">✦ DROP THE VERDICT</button><button id="combo" type="button">✦ LEGENDARY COMBO ×3</button><button id="stop" type="button">STOP EFFECT</button></div>
 <div class="status" id="status" role="status" aria-live="polite">READY · TAP TO TRIGGER THE EFFECT</div>
 <p class="note">TikNation preview only. No coins are charged and no gift is sent. Sound starts after your tap. This is a new visual direction, separate from the rejected hand and statue concepts.</p>
 </main>
 <script>
-let ctx=null,nodes=[],runTimer=null;
+let ctx=null,nodes=[],runTimer=null,comboTimers=[];
 const arena=document.getElementById("arena"),status=document.getElementById("status");
-function stopSound(){clearTimeout(runTimer);nodes.forEach(n=>{try{n.stop?.()}catch(e){}try{n.disconnect?.()}catch(e){}});nodes=[];if(ctx&&ctx.state!=="closed"){ctx.close().catch(()=>{});}ctx=null;}
+function stopSound(){clearTimeout(runTimer);comboTimers.forEach(clearTimeout);comboTimers=[];nodes.forEach(n=>{try{n.stop?.()}catch(e){}try{n.disconnect?.()}catch(e){}});nodes=[];if(ctx&&ctx.state!=="closed"){ctx.close().catch(()=>{});}ctx=null;}
 async function impactSound(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){status.textContent="VISUAL EFFECT PLAYING · AUDIO NOT AVAILABLE";return}ctx=new AC();await ctx.resume();const t=ctx.currentTime;
 const osc=ctx.createOscillator(),gain=ctx.createGain(),filter=ctx.createBiquadFilter();osc.type="sine";osc.frequency.setValueAtTime(118,t);osc.frequency.exponentialRampToValueAtTime(34,t+.62);gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(.8,t+.025);gain.gain.exponentialRampToValueAtTime(.0001,t+1.05);filter.type="lowpass";filter.frequency.value=180;osc.connect(filter);filter.connect(gain);gain.connect(ctx.destination);osc.start(t);osc.stop(t+1.1);nodes.push(osc);
 const len=Math.floor(ctx.sampleRate*.8),buf=ctx.createBuffer(1,len,ctx.sampleRate),data=buf.getChannelData(0);for(let i=0;i<len;i++)data[i]=(Math.random()*2-1)*(1-i/len);
@@ -100,7 +116,9 @@ const noise=ctx.createBufferSource(),nf=ctx.createBiquadFilter(),ng=ctx.createGa
 const clang=ctx.createOscillator(),cg=ctx.createGain();clang.type="triangle";clang.frequency.setValueAtTime(740,t+.035);clang.frequency.exponentialRampToValueAtTime(210,t+.48);cg.gain.setValueAtTime(.0001,t);cg.gain.linearRampToValueAtTime(.16,t+.04);cg.gain.exponentialRampToValueAtTime(.0001,t+.62);clang.connect(cg);cg.connect(ctx.destination);clang.start(t);clang.stop(t+.65);nodes.push(clang);
 status.textContent="IRON IMPACT · SUB-BASS HIT · METAL CLANG PLAYING";}
 function makeSparks(){const layer=document.getElementById("sparks");layer.innerHTML="";for(let i=0;i<34;i++){const p=document.createElement("i");p.className="spark";const a=(Math.PI*2*i/34)+(Math.random()-.5)*.22;const d=65+Math.random()*175;p.style.setProperty("--dx",`${Math.cos(a)*d}px`);p.style.setProperty("--dy",`${Math.sin(a)*d-35}px`);p.style.setProperty("--delay",`${1.24+Math.random()*.13}s`);p.style.setProperty("--duration",`${650+Math.random()*500}ms`);layer.appendChild(p)}}
-document.getElementById("play").addEventListener("click",async()=>{stopSound();arena.classList.remove("playing");makeSparks();void arena.offsetWidth;arena.classList.add("playing");status.textContent="VERDICT INCOMING…";try{await impactSound()}catch(e){status.textContent="VISUAL EFFECT PLAYING · AUDIO COULD NOT START"}runTimer=setTimeout(()=>{arena.classList.remove("playing");if(ctx)stopSound();status.textContent="VERDICT DELIVERED · TAP TO REPLAY"},3600)});
-document.getElementById("stop").addEventListener("click",()=>{stopSound();arena.classList.remove("playing");status.textContent="PREVIEW STOPPED"});
+async function fireHit(legendary=false){arena.classList.remove("playing","legendary");makeSparks();void arena.offsetWidth;arena.classList.add("playing");if(legendary)arena.classList.add("legendary");try{await impactSound()}catch(e){status.textContent="VISUAL EFFECT PLAYING · AUDIO COULD NOT START"}}
+document.getElementById("play").addEventListener("click",async()=>{stopSound();status.textContent="VERDICT INCOMING…";await fireHit(false);runTimer=setTimeout(()=>{arena.classList.remove("playing","legendary");if(ctx)stopSound();status.textContent="VERDICT DELIVERED · TAP TO REPLAY"},3600)});
+document.getElementById("combo").addEventListener("click",()=>{stopSound();status.textContent="LEGENDARY COMBO · THREE IMPACTS INCOMING";[0,1050,2100].forEach((delay,i)=>comboTimers.push(setTimeout(()=>{if(i===2)status.textContent="FINAL VERDICT · LEGENDARY FINISHER";fireHit(i===2)},delay)));runTimer=setTimeout(()=>{arena.classList.remove("playing","legendary");if(ctx)stopSound();status.textContent="LEGENDARY COMBO COMPLETE · TAP TO REPLAY"},5600)});
+document.getElementById("stop").addEventListener("click",()=>{stopSound();arena.classList.remove("playing","legendary");status.textContent="PREVIEW STOPPED"});
 </script>
 </body></html>
