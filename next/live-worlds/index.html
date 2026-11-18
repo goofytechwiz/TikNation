@@ -1204,6 +1204,15 @@ boot();
     if(typeof window.__tikNationSendLiveGift==="function" && document.getElementById("liveGiftFeed")?.dataset.liveSessionActive==="true"){
       window.__tikNationSendLiveGift(code,choice);return;
     }
+    if(code==="founder_rise"){
+      if(typeof window.showFounderRiseGiftVideo==="function"){
+        window.showFounderRiseGiftVideo({id:"preview-"+Date.now(),gift_code:code,sender_name:"Creator preview"});
+        say("Founder video preview started · Free, no coins spent.");
+      }else{
+        say("Founder video player did not load. Please refresh LIVE.");
+      }
+      return;
+    }
     if(!window.TikNationGiftEngine){say("Gift animation engine did not load.");return;}
     window.TikNationGiftEngine.show(gift,{meta:"FREE LOCAL PREVIEW · NO COINS SPENT",duration:4300});
     if(typeof window.__tikNationPlayGiftSound==="function")window.__tikNationPlayGiftSound({gift_code:code},gift);
