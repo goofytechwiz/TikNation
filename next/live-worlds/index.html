@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="../../icons/tiknation.svg">
 <title>TikNation Live</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../gift-engine.js?v=cinematic-effects-v4"></script>
+<script src="../../gift-engine.js?v=cinematic-effects-v5"></script>
 <script src="../../gifts.js?v=next-catalog-v3"></script>
 <style>
 :root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
@@ -696,6 +696,20 @@ function playLiveGiftSound(event, gift) {
       oscillator.connect(gain); gain.connect(ctx.destination);
       oscillator.start(at); oscillator.stop(at + duration + 0.02);
     };
+    if (code === "living_tombstones" || gift.style === "livingtombstones") {
+      // Cemetery soundscape: cold wind, rattling stone, earth burst and a rising undead groan.
+      playNoiseSweep(now, 7.2, 0.20, 240, 95);
+      playNoiseSweep(now + 1.45, 1.25, 0.22, 780, 115);
+      playNoiseSweep(now + 2.15, 0.9, 0.13, 1250, 420);
+      [0.65, 1.55, 2.05, 3.2, 4.65].forEach((delay,index) => {
+        softTone(now + delay, [68,54,42,76,49][index], [1.0,0.8,1.1,0.7,1.25][index], [0.22,0.24,0.30,0.17,0.25][index], "sawtooth");
+      });
+      [2.35, 2.62, 2.9].forEach((delay,index) => {
+        softTone(now + delay, [155,112,82][index], 0.34, [0.12,0.10,0.08][index], "triangle");
+      });
+      playNoiseSweep(now + 3.0, 2.7, 0.16, 360, 72);
+      return;
+    }
     if (gift.style === "ghostship" || code === "storm_of_the_world") {
       // Ghost Ship: rigging wind, timber groans, bell and cannon reports.
       playNoiseSweep(now, 6.0, 0.24, 320, 180);
