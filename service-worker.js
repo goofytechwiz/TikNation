@@ -1,9 +1,8 @@
-const CACHE_NAME = "tiknation-shell-v59-meteor-strike-v1";
+const CACHE_NAME = "tiknation-shell-v60-new-home-force-refresh";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./next/",
-  "./legacy.html",
   "./manifest.json",
   "./icons/tiknation.svg"
 ];
@@ -31,6 +30,14 @@ self.addEventListener("fetch", function (event) {
   if (request.method !== "GET") return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+
+  // Always send the app's root entry to the new TikNation experience.
+  const rootPath = new URL("./", self.location.href).pathname;
+  if (request.mode === "navigate" &&
+      (url.pathname === rootPath || url.pathname === rootPath + "index.html")) {
+    event.respondWith(Response.redirect(new URL("./next/", self.location.href).href, 302));
+    return;
+  }
 
   if (request.mode === "navigate") {
     event.respondWith(
