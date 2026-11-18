@@ -1360,7 +1360,7 @@ function renderCelestialWishGift(gift,opts,overlay){
  "@media(prefers-reduced-motion:reduce){#tiknation-gift-engine[data-style=celestial_wish] *{animation-duration:.01ms!important;animation-iteration-count:1!important}}",
  "@media(max-width:600px){#tiknation-gift-engine[data-style=celestial_wish] .cw-title{bottom:6%;letter-spacing:.08em}}"
  ].join("");
- overlay.className="";overlay.style.cssText="position:absolute;inset:0;width:100%;height:100%;z-index:2147483647;overflow:hidden;pointer-events:none";
+ overlay.className="";overlay.style.cssText="position:fixed;inset:0;width:100%;height:100%;z-index:2147483647;overflow:hidden;pointer-events:none";
  const world=document.createElement("div");world.className="cw-world";
  const aura=document.createElement("div");aura.className="cw-aura";world.appendChild(aura);
  const portal=document.createElement("div");portal.className="cw-portal";world.appendChild(portal);
