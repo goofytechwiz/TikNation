@@ -6,12 +6,11 @@
 <meta name="theme-color" content="#080817">
 <title>TikNation · The Gift Gallery</title>
 <style>
-:root{color-scheme:dark;--bg:#070711;--panel:#141426;--line:#34314f;--text:#f8f7ff;--muted:#b0aec8;--cyan:#75eaff;--violet:#b49aff}
+:root{color-scheme:dark;--bg:#070711;--line:#34314f;--text:#f8f7ff;--muted:#b0aec8;--cyan:#75eaff;--violet:#b49aff}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(ellipse at 50% -10%,#302052 0,transparent 48%),radial-gradient(ellipse at 100% 45%,#102b42 0,transparent 38%),var(--bg)}
-header,main,footer{width:min(100% - 36px,1000px);margin:auto}header{padding:54px 0 26px}.eyebrow{color:var(--cyan);font-size:.72rem;font-weight:850;letter-spacing:.22em}.title{font-size:clamp(2.5rem,8vw,5.5rem);line-height:.94;letter-spacing:-.06em;margin:14px 0}.title span{color:var(--violet)}.intro{max-width:680px;color:var(--muted);font-size:1.02rem}
-main{padding:14px 0 64px}.status{border:1px solid #51436f;background:#17152a;border-radius:14px;padding:13px 16px;color:#ddd8f5;margin:10px 0 25px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px}
-.gift{position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:360px;padding:26px;border:1px solid #62518c;border-radius:24px;color:inherit;text-decoration:none;background:radial-gradient(ellipse at 50% 0%,#47336e 0,transparent 55%),linear-gradient(150deg,#1a1930,#0d1020);box-shadow:0 22px 70px #0007;transition:transform .2s,border-color .2s}
-.gift:hover,.gift:focus-visible{transform:translateY(-4px);border-color:var(--cyan);outline:none}.crown{font-size:3.5rem;filter:drop-shadow(0 0 22px #b49aff99);margin-bottom:22px}.tag{font-size:.7rem;letter-spacing:.16em;color:var(--cyan);font-weight:850}.gift h2{font-size:1.8rem;line-height:1.05;margin:10px 0}.gift p{color:var(--muted);margin:0 0 20px}.meta{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 22px}.meta span{border:1px solid #51476e;background:#111326;border-radius:999px;padding:6px 10px;font-size:.78rem;color:#ddd7f7}.open{margin-top:auto;color:var(--cyan);font-weight:850;font-size:.84rem;letter-spacing:.06em}
+header,main,footer{width:min(100% - 36px,1000px);margin:auto}header{padding:48px 0 24px}.eyebrow{color:var(--cyan);font-size:.72rem;font-weight:850;letter-spacing:.22em}.title{font-size:clamp(2.5rem,8vw,5.5rem);line-height:.94;letter-spacing:-.06em;margin:14px 0}.title span{color:var(--violet)}.intro{max-width:680px;color:var(--muted);font-size:1.02rem}
+main{padding:12px 0 64px}.status{border:1px solid #51436f;background:#17152a;border-radius:14px;padding:13px 16px;color:#ddd8f5;margin:10px 0 25px}.section-title{margin:30px 0 12px;font-size:1rem;letter-spacing:.12em;color:#d9d2f4;text-transform:uppercase}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,285px),1fr));gap:16px}
+.gift{display:flex;flex-direction:column;min-height:260px;padding:22px;border:1px solid #3d385b;border-radius:20px;color:inherit;text-decoration:none;background:linear-gradient(150deg,#19182e,#0d1020);transition:transform .2s,border-color .2s}.gift.featured{border-color:#7660a8;background:radial-gradient(ellipse at 50% 0%,#47336e 0,transparent 60%),linear-gradient(150deg,#1a1930,#0d1020);min-height:290px}.gift:hover,.gift:focus-visible{transform:translateY(-3px);border-color:var(--cyan);outline:none}.crown{font-size:2.7rem;filter:drop-shadow(0 0 16px #b49aff55);margin-bottom:14px}.tag{font-size:.68rem;letter-spacing:.15em;color:var(--cyan);font-weight:850}.gift h2{font-size:1.3rem;line-height:1.12;margin:9px 0}.gift p{color:var(--muted);margin:0 0 18px;font-size:.9rem}.open{margin-top:auto;color:var(--cyan);font-weight:850;font-size:.8rem;letter-spacing:.05em}
 footer{padding:0 0 36px;color:#85829e;font-size:.8rem}
 @media(prefers-reduced-motion:reduce){.gift{transition:none}.gift:hover{transform:none}}
 </style>
@@ -20,18 +19,120 @@ footer{padding:0 0 36px;color:#85829e;font-size:.8rem}
 <header>
 <div class="eyebrow">TIKNATION · LIVE EXPERIENCES</div>
 <h1 class="title">THE GIFT <span>GALLERY</span></h1>
-<p class="intro">A focused collection of cinematic gifts built for creators and their communities. New experiences will appear here only when they are ready for TikNation.</p>
+<p class="intro">The newer gift work is back in one place. Open a preview to explore its individual experience. Gifts marked LIVE are the only ones currently wired into the sending catalog.</p>
 </header>
 <main>
-<div class="status"><strong>NEW COLLECTION.</strong> The old prototype catalog has been retired from TikNation Next. This is the first featured experience; more gifts will be added after they are approved and tested.</div>
-<section class="grid" aria-label="Current TikNation gifts">
-<a class="gift" href="../gifts-rebuild-lab/the-founder-rise-of-the-empire.html">
+<div class="status"><strong>COLLECTION RESTORED.</strong> Preview designs are visible again, but they are not presented as sendable gifts until their LIVE animations, sound, and delivery are verified. Rejected or deleted concepts are not included.</div>
+<h2 class="section-title">Available in LIVE</h2>
+<section class="grid" aria-label="Live gifts">
+<a class="gift featured" href="../gifts-rebuild-lab/the-founder-rise-of-the-empire.html">
 <div class="crown" aria-hidden="true">👑</div>
 <div class="tag">MYTHIC · 250 TEST COINS</div>
 <h2>The Founder — Rise of the Empire</h2>
-<p>A cinematic founder reveal, crowned by two panther guardians and a powerful empire-awakening moment.</p>
-<div class="meta"><span>Founder spotlight</span><span>Video experience</span><span>Featured gift</span></div>
+<p>Mythic founder reveal with two panther guardians and an empire-awakening finale.</p>
 <span class="open">OPEN GIFT EXPERIENCE →</span>
+</a>
+</section>
+<h2 class="section-title">New gift previews</h2>
+<section class="grid" aria-label="New gift previews">
+
+<a class="gift " href="world-of-colors.html">
+<div class="crown" aria-hidden="true">🌈</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>World of Colors</h2>
+<p>A prismatic world of crystal light, waterfalls, and rainbow energy.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/index.html">
+<div class="crown" aria-hidden="true">🪦</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>Night of the Living Tombstones</h2>
+<p>A moonlit graveyard experience with atmospheric supernatural effects.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/abandoned-operating-room.html">
+<div class="crown" aria-hidden="true">🏥</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>Abandoned Operating Room</h2>
+<p>An eerie abandoned medical-room scene built as a cinematic gift preview.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/cursed-carnival.html">
+<div class="crown" aria-hidden="true">🎪</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>Cursed Carnival</h2>
+<p>A sinister carnival atmosphere with a dark midway mood.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/haunted-hearse.html">
+<div class="crown" aria-hidden="true">🚘</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>The Haunted Hearse</h2>
+<p>A haunted hearse-themed spectacle emerging from the darkness.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/musical-universe.html">
+<div class="crown" aria-hidden="true">🎼</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>Musical Universe</h2>
+<p>A music-led cosmic experience filled with celestial energy.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/phantom-shipwreck.html">
+<div class="crown" aria-hidden="true">🚢</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>The Phantom Shipwreck</h2>
+<p>A ghostly shipwreck scene set in a storm-dark ocean.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/reapers-arrival.html">
+<div class="crown" aria-hidden="true">💀</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>The Reaper's Arrival</h2>
+<p>A cinematic supernatural entrance with a grim, shadowy presence.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/royal-flush.html">
+<div class="crown" aria-hidden="true">♠️</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>The Royal Flush</h2>
+<p>A dramatic royal card spectacle with a golden, high-stakes atmosphere.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/sakura-spirit.html">
+<div class="crown" aria-hidden="true">🌸</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>Sakura Spirit</h2>
+<p>A spirit-tree experience surrounded by blossoms and flowing petals.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/six-seven.html">
+<div class="crown" aria-hidden="true">🎲</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>Six Seven</h2>
+<p>A playful number-themed gift experiment.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/the-elevator-to-nowhere.html">
+<div class="crown" aria-hidden="true">🛗</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>The Elevator to Nowhere</h2>
+<p>A mysterious elevator journey into an unsettling unknown.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/void-rift.html">
+<div class="crown" aria-hidden="true">🌀</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>Void Rift</h2>
+<p>A dimensional rupture opening into a dark, energy-filled void.</p>
+<span class="open">OPEN PREVIEW →</span>
+</a>
+<a class="gift " href="../gifts-rebuild-lab/witching-hour.html">
+<div class="crown" aria-hidden="true">🌙</div>
+<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
+<h2>The Witching Hour</h2>
+<p>A midnight supernatural scene with an eerie spellbound atmosphere.</p>
+<span class="open">OPEN PREVIEW →</span>
 </a>
 </section>
 </main>
