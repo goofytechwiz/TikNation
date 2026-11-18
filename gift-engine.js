@@ -1299,68 +1299,51 @@ function renderReaperArrivalGift(gift,opts,overlay){
 
 
 function renderElDiabloGift(gift,opts,overlay){
- const css=document.createElement("style");
- css.textContent=`
- @keyframes edPortal{0%,100%{transform:scale(.98);opacity:.78}50%{transform:scale(1.035);opacity:1}}
- @keyframes edRise{0%{opacity:0;transform:translateY(34vh) scale(.82)}70%{opacity:1;transform:translateY(-1vh) scale(1.015)}100%{opacity:1;transform:none}}
- @keyframes edWings{0%,100%{transform:scaleY(.97) rotate(-1deg)}50%{transform:scaleY(1.035) rotate(1deg)}}
- @keyframes edFire{0%,100%{transform:scaleY(.86);opacity:.68}50%{transform:scaleY(1.14);opacity:1}}
- @keyframes edEmber{0%{opacity:0;transform:translate(0,10vh) scale(.3)}12%{opacity:.95}100%{opacity:0;transform:translate(var(--drift),-105vh) scale(.05)}}
- @keyframes edSmoke{0%{opacity:0;transform:translateY(7vh) scale(.75)}25%{opacity:.28}100%{opacity:0;transform:translate(var(--smoke-x),-48vh) scale(1.8)}}
- @keyframes edTitle{from{opacity:0;letter-spacing:.42em}to{opacity:1;letter-spacing:.2em}}
- #tiknation-gift-engine.el-diablo{position:fixed!important;inset:0!important;z-index:2147483647!important;display:grid!important;place-items:center!important;overflow:hidden!important;pointer-events:none!important;background:radial-gradient(ellipse at 50% 66%,#743016 0%,#291016 34%,#0a080e 72%,#010105 100%)!important;isolation:isolate}
- #tiknation-gift-engine.el-diablo:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#08070d88 0%,transparent 48%,#080307 100%),radial-gradient(ellipse at 50% 72%,#ff6b1b42,transparent 48%);z-index:0}
- #tiknation-gift-engine.el-diablo .ed-portal{position:absolute;z-index:1;width:min(65vw,600px);height:min(86vh,740px);border:clamp(5px,1vw,12px) solid #7f3928;border-radius:48% 52% 44% 56%;box-shadow:0 0 15px #ffb16b66,0 0 52px #d4471b99,inset 0 0 48px #fa542a99;background:radial-gradient(ellipse at 50% 58%,#020106 43%,#14070b 57%,#a93b1c55 67%,transparent 75%);animation:edPortal 3.2s ease-in-out infinite}
- #tiknation-gift-engine.el-diablo .ed-figure{position:relative;z-index:3;width:min(100vw,1020px);height:min(84vh,790px);overflow:visible;animation:edRise 1.8s cubic-bezier(.2,.8,.25,1) both;filter:drop-shadow(0 16px 28px #000) drop-shadow(0 0 20px #e65a2870)}
- #tiknation-gift-engine.el-diablo .ed-wings{transform-box:fill-box;transform-origin:50% 76%;animation:edWings 3.8s ease-in-out infinite}
- #tiknation-gift-engine.el-diablo .ed-flames{transform-box:fill-box;transform-origin:50% 100%;animation:edFire 1.15s ease-in-out infinite}
- #tiknation-gift-engine.el-diablo .ed-ember{position:absolute;z-index:4;bottom:-3%;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle,#fff5c9 0,#ff9a43 42%,#9c2915 100%);box-shadow:0 0 8px 2px #ff762a;animation:edEmber var(--d) linear var(--delay) infinite}
- #tiknation-gift-engine.el-diablo .ed-smoke{position:absolute;z-index:2;left:var(--x);bottom:-8%;width:var(--w);height:var(--h);border-radius:50%;background:radial-gradient(ellipse,#8c7b7a30 0%,#302a3540 42%,transparent 72%);filter:blur(18px);animation:edSmoke var(--d) ease-out var(--delay) infinite}
- #tiknation-gift-engine.el-diablo .ed-title{position:absolute;z-index:6;bottom:5%;left:0;right:0;text-align:center;color:#f2d4b6;font:900 clamp(24px,5.8vw,52px)/1 Georgia,serif;text-shadow:0 2px 4px #000,0 0 22px #ff6b24;animation:edTitle 1.25s 1s both}
- #tiknation-gift-engine.el-diablo .ed-title small{display:block;margin-top:10px;color:#d89b78;font:700 clamp(9px,1.8vw,12px)/1.4 system-ui;letter-spacing:.28em}
- @media(prefers-reduced-motion:reduce){#tiknation-gift-engine.el-diablo *{animation:none!important}}
- `;
- document.head.appendChild(css);overlay.className="el-diablo";
- const world=document.createElement("div");world.className="ed-world";
- world.innerHTML='<div class="ed-portal"></div>'+
- '<svg class="ed-figure" viewBox="0 0 1000 820" role="img" aria-label="A towering horned demon with leathery wings emerges from a firelit abyss">'+
- '<defs>'+
- '<linearGradient id="edFlesh" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a66b55"/><stop offset=".22" stop-color="#65372f"/><stop offset=".58" stop-color="#291b22"/><stop offset="1" stop-color="#09080e"/></linearGradient>'+
- '<linearGradient id="edFleshLight" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#20141a"/><stop offset=".48" stop-color="#8a4a38"/><stop offset=".7" stop-color="#3a2027"/><stop offset="1" stop-color="#100d15"/></linearGradient>'+
- '<linearGradient id="edMembrane" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#63312e"/><stop offset=".42" stop-color="#29171f"/><stop offset="1" stop-color="#09080e"/></linearGradient>'+
- '<linearGradient id="edHorn" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e4d5bb"/><stop offset=".35" stop-color="#8d7a69"/><stop offset="1" stop-color="#2a2024"/></linearGradient>'+
- '<radialGradient id="edEye"><stop stop-color="#fff7c4"/><stop offset=".24" stop-color="#ffc45a"/><stop offset=".6" stop-color="#e34b1c"/><stop offset="1" stop-color="#4b100c"/></radialGradient>'+
- '<radialGradient id="edHeat"><stop stop-color="#ffb34f" stop-opacity=".8"/><stop offset="1" stop-color="#f24a18" stop-opacity="0"/></radialGradient>'+
- '<filter id="edTexture"><feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="3" seed="8" result="noise"/><feColorMatrix in="noise" type="saturate" values="0" result="mono"/><feComponentTransfer><feFuncA type="table" tableValues="0 .22"/></feComponentTransfer><feBlend in="SourceGraphic" mode="soft-light"/></filter>'+
- '<filter id="edGlow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
- '</defs>'+
- '<ellipse cx="500" cy="704" rx="320" ry="82" fill="url(#edHeat)" opacity=".75"/>'+
- '<g class="ed-wings" filter="url(#edTexture)" stroke="#9b6651" stroke-width="5" stroke-linejoin="round">'+
- '<path d="M455 300C355 180 210 93 82 135C148 176 150 219 54 265C157 244 205 292 229 370C280 320 350 340 422 416Z" fill="url(#edMembrane)"/>'+
- '<path d="M545 300C645 180 790 93 918 135C852 176 850 219 946 265C843 244 795 292 771 370C720 320 650 340 578 416Z" fill="url(#edMembrane)"/>'+
- '<g fill="none" stroke="#b17a60" stroke-width="9" opacity=".8"><path d="M488 344Q325 194 102 153M473 365Q300 268 82 265M452 391Q315 322 229 370M512 344Q675 194 898 153M527 365Q700 268 918 265M548 391Q685 322 771 370"/></g>'+
- '<path d="M455 300Q345 210 229 370M545 300Q655 210 771 370" fill="none" stroke="#170e16" stroke-width="17"/>'+
- '</g>'+
- '<g filter="url(#edTexture)">'+
- '<path d="M413 244C365 192 350 124 376 50C427 92 453 144 455 211Q486 137 554 64C570 143 545 207 520 250" fill="url(#edHorn)" stroke="#24191e" stroke-width="12"/>'+
- '<path d="M390 226Q374 136 390 84M530 226Q557 140 550 99" fill="none" stroke="#e5d6c0" stroke-width="4" opacity=".42"/>'+
- '<path d="M390 262Q500 190 610 262L640 390Q632 486 500 536Q368 486 360 390Z" fill="url(#edFlesh)" stroke="#27161d" stroke-width="13"/>'+
- '<path d="M390 270Q420 220 500 232Q580 220 610 270L585 315Q500 286 415 315Z" fill="#1a1018"/>'+
- '<path d="M386 323Q430 285 476 321L453 358Q414 351 386 323ZM614 323Q570 285 524 321L547 358Q586 351 614 323Z" fill="#160d13"/>'+
- '<path d="M406 326Q436 310 459 333L433 345Z M594 326Q564 310 541 333L567 345Z" fill="url(#edEye)" filter="url(#edGlow)"/>'+
- '<path d="M500 344L472 414L500 428L528 414Z" fill="#170e14"/><path d="M500 354L491 400" stroke="#a96b52" stroke-width="5" opacity=".5"/>'+
- '<path d="M421 442Q500 478 579 442Q561 512 500 519Q439 512 421 442Z" fill="#08070c" stroke="#8b5142" stroke-width="8"/>'+
- '<path d="M434 447L446 480L462 454L478 489L494 458L510 489L527 454L544 480L566 447" fill="#ded0b8" stroke="#514047" stroke-width="3"/>'+
- '<path d="M372 500Q500 466 628 500L706 790H294Z" fill="url(#edFleshLight)" stroke="#21151c" stroke-width="14"/>'+
- '<path d="M390 530Q350 620 322 750M610 530Q650 620 678 750" fill="none" stroke="#9a5d49" stroke-width="17" opacity=".45"/>'+
- '<path d="M382 548Q310 590 262 720M618 548Q690 590 738 720" fill="none" stroke="#21131b" stroke-width="48" stroke-linecap="round"/>'+
- '<path d="M382 548Q310 590 262 720M618 548Q690 590 738 720" fill="none" stroke="#8a4a3b" stroke-width="9" stroke-linecap="round" opacity=".55"/>'+
- '<path d="M430 528L452 620L500 647L548 620L570 528" fill="none" stroke="#120d14" stroke-width="10"/>'+
- '</g>'+
- '<g class="ed-flames" opacity=".92"><path d="M105 780Q65 665 150 575Q135 688 235 704Q210 600 300 520Q286 664 390 708Q366 586 470 492Q460 660 535 706Q545 585 660 535Q620 676 770 710Q744 610 865 575Q810 710 900 780Z" fill="#a52e17" opacity=".52"/><path d="M165 790Q150 690 220 625Q200 716 292 744Q275 650 355 575Q338 710 430 746Q420 642 500 558Q500 710 565 746Q580 650 660 600Q625 716 720 750Q710 680 805 630Q760 730 835 790Z" fill="#f17b2e" opacity=".55"/></g>'+
- '</svg><div class="ed-title">EL DIABLO<small>THE GATES OF HELL HAVE OPENED</small></div>';
- for(let i=0;i<42;i++){const ember=document.createElement("i");ember.className="ed-ember";ember.style.setProperty("--x",(Math.random()*100)+"%");ember.style.setProperty("--s",(1.5+Math.random()*4)+"px");ember.style.setProperty("--d",(4+Math.random()*5)+"s");ember.style.setProperty("--delay",(-Math.random()*8)+"s");ember.style.setProperty("--drift",(Math.random()*150-75)+"px");world.appendChild(ember);}
- for(let i=0;i<10;i++){const smoke=document.createElement("i");smoke.className="ed-smoke";smoke.style.setProperty("--x",(Math.random()*100)+"%");smoke.style.setProperty("--w",(90+Math.random()*190)+"px");smoke.style.setProperty("--h",(110+Math.random()*170)+"px");smoke.style.setProperty("--d",(6+Math.random()*5)+"s");smoke.style.setProperty("--delay",(-Math.random()*9)+"s");smoke.style.setProperty("--smoke-x",(Math.random()*100-50)+"px");world.appendChild(smoke);}
+ const styleId="tiknation-el-diablo-cathedral-v2";
+ let style=document.getElementById(styleId);
+ if(!style){style=document.createElement("style");style.id=styleId;document.head.appendChild(style);}
+ style.textContent=[
+ '@keyframes dv2Arrival{0%{opacity:0;transform:translate(-50%,18vh) scale(.78)}65%{opacity:1;transform:translate(-50%,-1vh) scale(1.025)}100%{opacity:1;transform:translate(-50%,0) scale(1)}}',
+ '@keyframes dv2Wings{0%,100%{transform:scaleY(.91) rotate(-1.5deg)}50%{transform:scaleY(1.07) rotate(1.2deg)}}',
+ '@keyframes dv2Pulse{0%,100%{filter:brightness(.78)}50%{filter:brightness(1.2)}}',
+ '@keyframes dv2Fire{0%,100%{opacity:.55;transform:scaleY(.85)}50%{opacity:1;transform:scaleY(1.18)}}',
+ '@keyframes dv2Ash{0%{opacity:0;transform:translate(0,12vh) scale(.3)}15%{opacity:.9}100%{opacity:0;transform:translate(var(--drift),-105vh) scale(.05)}}',
+ '@keyframes dv2Smoke{0%{opacity:0;transform:translate(0,8vh) scale(.6)}35%{opacity:.25}100%{opacity:0;transform:translate(var(--sx),-52vh) scale(2)}}',
+ '@keyframes dv2Title{from{opacity:0;transform:translateY(18px);letter-spacing:.5em}to{opacity:1;transform:none;letter-spacing:.24em}}',
+ '#tiknation-gift-engine.el-diablo{position:fixed!important;inset:0!important;z-index:2147483647!important;display:block!important;overflow:hidden!important;padding:0!important;pointer-events:none!important;background:#08060b!important;isolation:isolate}',
+ '#tiknation-gift-engine.el-diablo .dv2-world{position:absolute;inset:0;overflow:hidden;background:linear-gradient(180deg,#090912 0%,#17101a 44%,#160b0b 73%,#050407 100%)}',
+ '#tiknation-gift-engine.el-diablo .dv2-world:before{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;background:radial-gradient(ellipse at 50% 65%,#ff4a1644,transparent 40%),linear-gradient(180deg,#05040a55,transparent 38%,#020205bb)}',
+ '#tiknation-gift-engine.el-diablo .dv2-sky{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 53%,#b73c1c55,transparent 36%),radial-gradient(ellipse at 20% 30%,#4b273555,transparent 35%),radial-gradient(ellipse at 82% 25%,#47202f55,transparent 32%)}',
+ '#tiknation-gift-engine.el-diablo .dv2-gate{position:absolute;z-index:1;left:50%;top:3%;width:min(100vw,820px);height:84%;transform:translateX(-50%);animation:dv2Pulse 4.2s ease-in-out infinite;filter:drop-shadow(0 0 30px #e94b1d55)}',
+ '#tiknation-gift-engine.el-diablo .dv2-entity{position:absolute;z-index:3;left:50%;top:9%;width:min(112vw,1000px);height:77%;transform:translateX(-50%);overflow:visible;animation:dv2Arrival 2s cubic-bezier(.16,.75,.22,1) both;filter:drop-shadow(0 22px 30px #000) drop-shadow(0 0 20px #f14a1c66)}',
+ '#tiknation-gift-engine.el-diablo .dv2-wings{transform-box:fill-box;transform-origin:50% 76%;animation:dv2Wings 4s ease-in-out infinite}',
+ '#tiknation-gift-engine.el-diablo .dv2-fire{position:absolute;z-index:2;left:-10%;right:-10%;bottom:-5%;height:31%;background:radial-gradient(ellipse at 50% 100%,#ffb23d99 0,#e7471680 24%,#9a211b44 48%,transparent 73%);filter:blur(12px);animation:dv2Fire 1.25s ease-in-out infinite}',
+ '#tiknation-gift-engine.el-diablo .dv2-river{position:absolute;z-index:2;left:50%;bottom:0;width:78%;height:20%;transform:translateX(-50%);background:linear-gradient(180deg,transparent,#ff641b55 32%,#ffb34c 54%,#7c180e 76%,transparent);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);filter:blur(7px);animation:dv2Fire 1.4s ease-in-out infinite}',
+ '#tiknation-gift-engine.el-diablo .dv2-ash{position:absolute;z-index:6;left:var(--x);bottom:-4%;width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle,#fff2c2 0,#ff8a32 45%,#9c2113 100%);box-shadow:0 0 9px 3px #ff6424;animation:dv2Ash var(--d) linear var(--delay) infinite}',
+ '#tiknation-gift-engine.el-diablo .dv2-smoke{position:absolute;z-index:2;left:var(--x);bottom:-9%;width:var(--w);height:var(--h);border-radius:50%;background:radial-gradient(ellipse,#8e858b35,#342d3745 42%,transparent 72%);filter:blur(22px);animation:dv2Smoke var(--d) ease-out var(--delay) infinite}',
+ '#tiknation-gift-engine.el-diablo .dv2-title{position:absolute;z-index:8;left:4%;right:4%;bottom:6%;text-align:center;color:#f6ddc4;font:900 clamp(26px,7vw,58px)/1 Georgia,serif;text-shadow:0 3px 10px #000,0 0 24px #f15a25;animation:dv2Title 1.2s 1.3s both}',
+ '#tiknation-gift-engine.el-diablo .dv2-title small{display:block;margin-top:9px;color:#e5a17b;font:700 clamp(9px,2vw,13px)/1.4 system-ui;letter-spacing:.3em}',
+ '@media(prefers-reduced-motion:reduce){#tiknation-gift-engine.el-diablo *{animation:none!important}}'
+ ].join("\\n");
+ overlay.className="el-diablo";
+ const world=document.createElement("div");world.className="dv2-world";
+ world.innerHTML='<div class="dv2-sky"></div>'+
+ '<svg class="dv2-gate" viewBox="0 0 900 1000" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'+
+ '<defs><linearGradient id="dvStone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#76605a"/><stop offset=".22" stop-color="#33272e"/><stop offset=".65" stop-color="#17131c"/><stop offset="1" stop-color="#08070c"/></linearGradient><linearGradient id="dvHot" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffbd62"/><stop offset=".35" stop-color="#e64c1b"/><stop offset="1" stop-color="#421016"/></linearGradient><filter id="dvBlur"><feGaussianBlur stdDeviation="13"/></filter></defs>'+
+ '<path d="M95 950V380Q95 90 450 35Q805 90 805 380V950H690V390Q690 190 450 145Q210 190 210 390V950Z" fill="url(#dvStone)" stroke="#a17b68" stroke-width="13"/>'+
+ '<path d="M145 950V390Q145 150 450 90Q755 150 755 390V950" fill="none" stroke="#17121a" stroke-width="30"/>'+
+ '<path d="M238 950V405Q238 230 450 180Q662 230 662 405V950Z" fill="#050308" stroke="#8e4a35" stroke-width="10"/>'+
+ '<path d="M265 950V414Q265 260 450 215Q635 260 635 414V950Z" fill="#10080c"/>'+
+ '<path d="M295 950L450 250L605 950" fill="none" stroke="#e14b1b" stroke-width="8" opacity=".48" filter="url(#dvBlur)"/>'+
+ '<g fill="#211923" stroke="#9c7564" stroke-width="9"><path d="M60 950V550L25 505L60 455L95 505V950Z"/><path d="M840 950V550L875 505L840 455L805 505V950Z"/><path d="M80 350L145 285L210 350L145 415Z"/><path d="M690 350L755 285L820 350L755 415Z"/></g>'+
+ '<g fill="#ff6a27" opacity=".7"><path d="M105 920L145 830L182 920Z"/><path d="M718 920L755 830L792 920Z"/></g><path d="M450 260V870" stroke="url(#dvHot)" stroke-width="5" opacity=".6"/></svg>'+
+ '<svg class="dv2-entity" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A colossal horned shadow creature spreads its wings above a burning infernal gate">'+
+ '<defs><linearGradient id="dvSkin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#65433e"/><stop offset=".35" stop-color="#2b1b23"/><stop offset=".7" stop-color="#100d16"/><stop offset="1" stop-color="#050409"/></linearGradient><linearGradient id="dvWing" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#553039"/><stop offset=".5" stop-color="#1d131d"/><stop offset="1" stop-color="#07060c"/></linearGradient><linearGradient id="dvBone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d7c1a4"/><stop offset=".5" stop-color="#756252"/><stop offset="1" stop-color="#211820"/></linearGradient><radialGradient id="dvEyes"><stop stop-color="#fff5b6"/><stop offset=".2" stop-color="#ffb23e"/><stop offset=".65" stop-color="#e43b17"/><stop offset="1" stop-color="#4c0c10"/></radialGradient><filter id="dvGrain"><feTurbulence type="fractalNoise" baseFrequency=".62" numOctaves="2" seed="17" result="n"/><feColorMatrix in="n" type="saturate" values="0" result="g"/><feComponentTransfer><feFuncA type="table" tableValues="0 .18"/></feComponentTransfer><feBlend in="SourceGraphic" mode="soft-light"/></filter></defs>'+
+ '<g class="dv2-wings" filter="url(#dvGrain)" stroke="#8d6255" stroke-width="6" stroke-linejoin="round"><path d="M465 395Q310 130 70 115Q145 205 75 310Q180 270 245 445Q295 340 455 520Z" fill="url(#dvWing)"/><path d="M535 395Q690 130 930 115Q855 205 925 310Q820 270 755 445Q705 340 545 520Z" fill="url(#dvWing)"/><g fill="none" stroke="#9a6b5c" stroke-width="11" opacity=".68"><path d="M500 485Q290 185 95 135M485 500Q270 285 78 310M470 520Q330 365 245 445M500 485Q710 185 905 135M515 500Q730 285 922 310M530 520Q670 365 755 445"/></g><g fill="none" stroke="#120d15" stroke-width="22"><path d="M460 400L245 445M540 400L755 445"/></g></g>'+
+ '<g filter="url(#dvGrain)"><path d="M430 315Q340 205 370 85Q445 155 470 285Q505 155 625 65Q625 205 555 320" fill="url(#dvBone)" stroke="#0c0910" stroke-width="17"/><path d="M402 286Q390 178 410 135M570 282Q605 170 600 126" fill="none" stroke="#ead6ba" stroke-width="7" opacity=".38"/><path d="M390 350Q500 275 610 350L650 520Q630 635 500 675Q370 635 350 520Z" fill="url(#dvSkin)" stroke="#0a0810" stroke-width="18"/><path d="M375 412Q430 365 478 415L450 455Q407 452 375 412ZM625 412Q570 365 522 415L550 455Q593 452 625 412Z" fill="#09070d"/><path d="M394 420Q433 397 460 425L432 440Z M606 420Q567 397 540 425L568 440Z" fill="url(#dvEyes)"/><path d="M500 433L470 525L500 548L530 525Z" fill="#08060c"/><path d="M416 558Q500 600 584 558Q565 638 500 646Q435 638 416 558Z" fill="#050409" stroke="#7e493e" stroke-width="9"/><path d="M428 562L444 606L461 574L480 616L500 577L520 616L539 574L556 606L572 562" fill="#d9c8ae" stroke="#51404a" stroke-width="4"/><path d="M390 650Q500 620 610 650L710 1000H290Z" fill="url(#dvSkin)" stroke="#09070d" stroke-width="18"/><path d="M410 680L455 795L500 825L545 795L590 680" fill="none" stroke="#08060d" stroke-width="20"/><path d="M390 680Q300 740 250 915M610 680Q700 740 750 915" fill="none" stroke="#1a1019" stroke-width="65" stroke-linecap="round"/><path d="M390 680Q300 740 250 915M610 680Q700 740 750 915" fill="none" stroke="#795044" stroke-width="12" opacity=".45" stroke-linecap="round"/></g><path d="M315 900Q260 945 215 1000M685 900Q740 945 785 1000" stroke="#171019" stroke-width="38" stroke-linecap="round"/></svg>'+
+ '<div class="dv2-fire"></div><div class="dv2-river"></div><div class="dv2-title">EL DIABLO<small>THE INFERNAL GATE · HAS OPENED</small></div>';
+ for(let i=0;i<56;i++){const p=document.createElement("i");p.className="dv2-ash";p.style.setProperty("--x",Math.random()*100+"%");p.style.setProperty("--s",1.5+Math.random()*4+"px");p.style.setProperty("--d",3.5+Math.random()*5+"s");p.style.setProperty("--delay",-Math.random()*8+"s");p.style.setProperty("--drift",Math.random()*180-90+"px");world.appendChild(p);}
+ for(let i=0;i<12;i++){const p=document.createElement("i");p.className="dv2-smoke";p.style.setProperty("--x",Math.random()*100+"%");p.style.setProperty("--w",100+Math.random()*220+"px");p.style.setProperty("--h",130+Math.random()*210+"px");p.style.setProperty("--d",6+Math.random()*5+"s");p.style.setProperty("--delay",-Math.random()*9+"s");p.style.setProperty("--sx",Math.random()*120-60+"px");world.appendChild(p);}
  overlay.appendChild(world);document.body.appendChild(overlay);
  if(typeof opts.onSound==="function"){try{opts.onSound()}catch(error){console.warn("El Diablo sound callback failed:",error);}}
  const duration=Math.max(10000,Number(opts.duration)||12000);
