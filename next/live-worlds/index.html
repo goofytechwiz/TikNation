@@ -578,7 +578,9 @@ let LIVE_GIFT_CATALOG = Object.fromEntries(
     name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound, style: gift.style, message: gift.message
   }])
 );
-const LIVE_GIFT_PREVIEW_CATALOG = {};
+const LIVE_GIFT_PREVIEW_CATALOG = {
+  infinite_spark:{name:"The Infinite Spark",emoji:"✦",category:"Mythic",cost:0,style:"infinite_spark",sound:"infinite_spark",previewOnly:true,message:"One spark · infinite possibilities"}
+};
 window.TIKNATION_GIFT_PREVIEW_CATALOG = LIVE_GIFT_PREVIEW_CATALOG;
 function syncLiveGiftCatalog() {
   // Only Founder Rise is approved for paid sending. The remaining gallery gifts are local previews.
@@ -712,6 +714,17 @@ function playLiveGiftSound(event, gift) {
       oscillator.connect(gain); gain.connect(ctx.destination);
       oscillator.start(at); oscillator.stop(at + duration + 0.02);
     };
+    if (code === "infinite_spark" || gift.style === "infinite_spark") {
+      // Original synthesized celestial chime; no external audio or paid asset.
+      const notes = [523.25,659.25,783.99,1046.5,1318.51,1567.98];
+      notes.forEach((hz,index) => {
+        const at = now + index * 0.23;
+        softTone(at,hz,1.65,0.105,"sine");
+        softTone(at,hz*2,0.92,0.026,"triangle");
+      });
+      [0,0.72,1.44].forEach((offset,index) => softTone(now+offset,notes[index+2],2.1,0.045,"triangle"));
+      return;
+    }
     if (code === "living_tombstones" || gift.style === "livingtombstones") {
       // Cinematic cemetery cue: soft wind, stone scrape, earth impact and layered rising groan.
       const lowNoise = (at, duration, volume, cutoff, q=0.45) => {
