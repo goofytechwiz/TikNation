@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="../../icons/tiknation.svg">
 <title>TikNation Live</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../gift-engine.js?v=gift-layer-v3"></script>
+<script src="../../gift-engine.js?v=gift-stage-v4"></script>
 <script src="../../gifts.js?v=el-diablo-live-v3"></script>
 <style>
 :root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
@@ -818,10 +818,14 @@ function playLiveGiftSound(event, gift) {
 window.__tikNationPlayGiftSound=playLiveGiftSound;
 function getLiveGiftStage(){
   const creator=$("creatorVideo"),viewer=$("viewerVideo");
-  if(isHost)return creator||viewer||null;
-  if(activeSession)return viewer||creator||null;
-  return creator||viewer||null;
+  const preferred=isHost?[creator,viewer]:activeSession?[viewer,creator]:[creator,viewer];
+  return preferred.find(node=>{
+    if(!node||!node.isConnected||node.classList.contains("hide"))return false;
+    const style=window.getComputedStyle(node),rect=node.getBoundingClientRect();
+    return style.display!=="none"&&style.visibility!=="hidden"&&rect.width>0&&rect.height>0;
+  })||null;
 }
+window.TikNationGetGiftStage=getLiveGiftStage;
 function showLiveGiftCelebration(event) {
   const gift = LIVE_GIFT_CATALOG[event?.gift_code];
   if (!gift) return;
