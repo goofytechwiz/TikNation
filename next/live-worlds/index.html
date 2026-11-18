@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="../../icons/tiknation.svg">
 <title>TikNation Live</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../gift-engine.js?v=cinematic-effects-v5"></script>
+<script src="../../gift-engine.js?v=el-diablo-v1"></script>
 <script src="../../gifts.js?v=next-catalog-v3"></script>
 <style>
 :root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
@@ -561,7 +561,7 @@ let LIVE_GIFT_CATALOG = Object.fromEntries(
     name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound, style: gift.style, message: gift.message
   }])
 );
-const LIVE_GIFT_PREVIEW_CATALOG = {};
+const LIVE_GIFT_PREVIEW_CATALOG = {el_diablo:{name:"El Diablo",emoji:"😈",category:"Mythic Preview",cost:0,style:"el_diablo",sound:"el_diablo",previewOnly:true}};
 function syncLiveGiftCatalog() {
   // Only Founder Rise is approved for paid sending. The remaining gallery gifts are local previews.
   const source = window.TIKNATION_GIFT_CATALOG;
@@ -883,7 +883,7 @@ function renderLiveGiftEvent(event) {
     }catch(error){console.warn("Cinematic gift renderer unavailable; using fallback.",error);}
     if(!rendered)showLiveGiftCelebration(event);
     try{
-      if((gift.style==="meteor"||gift.style==="infernal_castle")&&typeof playTikNationGiftSound==="function")playTikNationGiftSound(gift);
+      if((gift.style==="meteor"||gift.style==="infernal_castle"||gift.style==="el_diablo")&&typeof playTikNationGiftSound==="function")playTikNationGiftSound(gift);
       else playLiveGiftSound(event,gift);
     }catch(error){console.warn("Gift sound unavailable.",error);}
   }
