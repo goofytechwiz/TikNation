@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="../../icons/tiknation.svg">
 <title>TikNation Live</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../gift-engine.js?v=infinite-spark-v1"></script>
+<script src="../../gift-engine.js?v=infinite-spark-v2"></script>
 <script src="../../gifts.js?v=el-diablo-live-v3"></script>
 <style>
 :root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
@@ -1285,7 +1285,7 @@ boot();
   root.addEventListener("click",function(event){
     const choice=event.target.closest("[data-gift-code]");if(!choice)return;
     const code=choice.dataset.giftCode;const gift={...(window.TIKNATION_GIFT_CATALOG||{}),...(window.TIKNATION_GIFT_PREVIEW_CATALOG||{})}[code];if(!gift)return;
-    if(gift.previewOnly){if(!window.TikNationGiftEngine){say("Gift animation engine did not load.");return;}window.TikNationGiftEngine.show(gift,{meta:"FREE LOCAL PREVIEW · NO COINS SPENT",duration:12000});if(typeof window.__tikNationPlayGiftSound==="function")window.__tikNationPlayGiftSound({gift_code:code},gift);say("El Diablo preview started · Free, no coins spent.");return;}
+    if(gift.previewOnly){if(!window.TikNationGiftEngine){say("Gift animation engine did not load.");return;}window.TikNationGiftEngine.show(gift,{meta:"FREE LOCAL PREVIEW · NO COINS SPENT",duration:12000});if(typeof window.__tikNationPlayGiftSound==="function")window.__tikNationPlayGiftSound({gift_code:code},gift);say(gift.name+" preview started · Free, no coins spent.");return;}
     if(typeof window.__tikNationSendLiveGift==="function" && document.getElementById("liveGiftFeed")?.dataset.liveSessionActive==="true"){
       window.__tikNationSendLiveGift(code,choice);return;
     }
