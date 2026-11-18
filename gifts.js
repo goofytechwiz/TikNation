@@ -57,15 +57,6 @@ async function playTikNationGiftSound(gift) {
     const now = context.currentTime;
 
 
-    if (gift.style === "el_diablo") {
-      // Free procedural sound design: fire rush, layered sub-bass impact, and a descending demonic growl.
-      const length=Math.floor(context.sampleRate*7.8),buffer=context.createBuffer(1,length,context.sampleRate),data=buffer.getChannelData(0);
-      for(let i=0;i<length;i++){const t=i/context.sampleRate;data[i]=(Math.random()*2-1)*Math.min(1,t/.8)*Math.max(0,1-t/7.8);}
-      const fire=context.createBufferSource(),fireFilter=context.createBiquadFilter(),fireGain=context.createGain();fire.buffer=buffer;fireFilter.type="lowpass";fireFilter.frequency.setValueAtTime(280,now);fireFilter.frequency.exponentialRampToValueAtTime(1500,now+1.5);fireFilter.frequency.exponentialRampToValueAtTime(220,now+6.8);fireGain.gain.setValueAtTime(.0001,now);fireGain.gain.linearRampToValueAtTime(.16,now+.9);fireGain.gain.exponentialRampToValueAtTime(.0001,now+7.5);fire.connect(fireFilter);fireFilter.connect(fireGain);fireGain.connect(context.destination);fire.start(now);fire.stop(now+7.6);
-      const roar=context.createOscillator(),roarFilter=context.createBiquadFilter(),roarGain=context.createGain();roar.type="sawtooth";roar.frequency.setValueAtTime(92,now+1.3);roar.frequency.exponentialRampToValueAtTime(27,now+5.7);roarFilter.type="lowpass";roarFilter.frequency.setValueAtTime(260,now+1.3);roarFilter.frequency.exponentialRampToValueAtTime(75,now+5.8);roarGain.gain.setValueAtTime(.0001,now+1.3);roarGain.gain.linearRampToValueAtTime(.13,now+2.1);roarGain.gain.exponentialRampToValueAtTime(.0001,now+6);roar.connect(roarFilter);roarFilter.connect(roarGain);roarGain.connect(context.destination);roar.start(now+1.3);roar.stop(now+6.1);
-      [2.25,5.15].forEach((delay,index)=>{const boom=context.createOscillator(),filter=context.createBiquadFilter(),gain=context.createGain();boom.type="triangle";boom.frequency.setValueAtTime(index?58:72,now+delay);boom.frequency.exponentialRampToValueAtTime(22,now+delay+1.1);filter.type="lowpass";filter.frequency.value=135;gain.gain.setValueAtTime(.0001,now+delay);gain.gain.linearRampToValueAtTime(.18,now+delay+.035);gain.gain.exponentialRampToValueAtTime(.0001,now+delay+1.25);boom.connect(filter);filter.connect(gain);gain.connect(context.destination);boom.start(now+delay);boom.stop(now+delay+1.3);});
-      return;
-    }
     if (gift.style === "reaper") {
       const length=Math.floor(context.sampleRate*5.8),buffer=context.createBuffer(1,length,context.sampleRate),data=buffer.getChannelData(0);
       for(let i=0;i<length;i++){const t=i/context.sampleRate;data[i]=(Math.random()*2-1)*Math.pow(1-t/5.8,1.8);}
