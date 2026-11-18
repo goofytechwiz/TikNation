@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="../../icons/tiknation.svg">
 <title>TikNation Live</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../gift-engine.js?v=gift-stage-v5"></script>
+<script src="../../gift-engine.js?v=celestial-wish-v1"></script>
 <script src="../../gifts.js?v=el-diablo-live-v3"></script>
 <style>
 :root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
@@ -580,7 +580,8 @@ let LIVE_GIFT_CATALOG = Object.fromEntries(
   }])
 );
 const LIVE_GIFT_PREVIEW_CATALOG = {
-  infinite_spark:{name:"The Infinite Spark",emoji:"✦",category:"Mythic",cost:0,style:"infinite_spark",sound:"infinite_spark",previewOnly:true,message:"One spark · infinite possibilities"}
+  infinite_spark:{name:"The Infinite Spark",emoji:"✦",category:"Mythic",cost:0,style:"infinite_spark",sound:"infinite_spark",previewOnly:true,message:"One spark · infinite possibilities"},
+  celestial_wish:{name:"The Celestial Wish",emoji:"✧",category:"Mythic",cost:0,style:"celestial_wish",sound:"celestial_wish",previewOnly:true,message:"Make a wish · let the magic begin"}
 };
 window.TIKNATION_GIFT_PREVIEW_CATALOG = LIVE_GIFT_PREVIEW_CATALOG;
 function syncLiveGiftCatalog() {
@@ -715,6 +716,17 @@ function playLiveGiftSound(event, gift) {
       oscillator.connect(gain); gain.connect(ctx.destination);
       oscillator.start(at); oscillator.stop(at + duration + 0.02);
     };
+    if (code === "celestial_wish" || gift.style === "celestial_wish") {
+      // Original layered wishing chime, synthesized locally with Web Audio.
+      const notes = [392,523.25,659.25,783.99,1046.5,1318.51];
+      notes.forEach((hz,index) => {
+        const at = now + index * 0.34;
+        softTone(at,hz,2.1,0.075,"sine");
+        softTone(at,hz*2,1.25,0.018,"triangle");
+      });
+      [0.55,1.45,2.35].forEach((offset,index) => softTone(now+offset,[783.99,1046.5,1567.98][index],2.6,0.035,"sine"));
+      return;
+    }
     if (code === "infinite_spark" || gift.style === "infinite_spark") {
       // Original synthesized celestial chime; no external audio or paid asset.
       const notes = [523.25,659.25,783.99,1046.5,1318.51,1567.98];
