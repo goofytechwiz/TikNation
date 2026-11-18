@@ -561,7 +561,7 @@ let LIVE_GIFT_CATALOG = Object.fromEntries(
     name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound, style: gift.style, message: gift.message
   }])
 );
-const LIVE_GIFT_PREVIEW_CATALOG = {el_diablo:{name:"El Diablo",emoji:"😈",category:"Mythic",cost:0,style:"el_diablo",sound:"el_diablo",previewOnly:true}};
+const LIVE_GIFT_PREVIEW_CATALOG = {};
 window.TIKNATION_GIFT_PREVIEW_CATALOG = LIVE_GIFT_PREVIEW_CATALOG;
 function syncLiveGiftCatalog() {
   // Only Founder Rise is approved for paid sending. The remaining gallery gifts are local previews.
@@ -884,7 +884,7 @@ function renderLiveGiftEvent(event) {
     }catch(error){console.warn("Cinematic gift renderer unavailable; using fallback.",error);}
     if(!rendered)showLiveGiftCelebration(event);
     try{
-      if((gift.style==="meteor"||gift.style==="infernal_castle"||gift.style==="el_diablo")&&typeof playTikNationGiftSound==="function")playTikNationGiftSound(gift);
+      if((gift.style==="meteor"||gift.style==="infernal_castle")&&typeof playTikNationGiftSound==="function")playTikNationGiftSound(gift);
       else playLiveGiftSound(event,gift);
     }catch(error){console.warn("Gift sound unavailable.",error);}
   }
@@ -1151,7 +1151,7 @@ $("liveLikeBtn")?.addEventListener("click",()=>{
 });
 // Gift-panel toggling is handled by the independent classic script below.
 window.__tikNationSendLiveGift=(code,button)=>sendLiveGift(code,button);
-window.__tikNationPlayGiftSound=(event,gift)=>{if(gift?.style==="el_diablo"&&typeof playTikNationGiftSound==="function")playTikNationGiftSound(gift);};
+window.__tikNationPlayGiftSound=()=>{};
 $("liveChatJumpBtn")?.addEventListener("click",()=>{
   $("chatPanel")?.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
   $("chatInput")?.focus({preventScroll:true});liveActionFeedback("Live chat is ready below.");
