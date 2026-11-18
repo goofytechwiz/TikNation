@@ -561,15 +561,30 @@ let LIVE_GIFT_CATALOG = Object.fromEntries(
     name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound, style: gift.style, message: gift.message
   }])
 );
+const LIVE_GIFT_PREVIEW_CATALOG = {
+  world_of_colors:{name:"World of Colors",emoji:"🌈",category:"Visual Effects",style:"world_of_colors",previewOnly:true},
+  living_tombstones:{name:"Night of the Living Tombstones",emoji:"🪦",category:"Mythic",style:"living_tombstones",previewOnly:true},
+  abandoned_operating_room:{name:"Abandoned Operating Room",emoji:"🏥",category:"Special Effects",style:"abandoned_operating_room",previewOnly:true},
+  cursed_carnival:{name:"Cursed Carnival",emoji:"🎪",category:"Magical",style:"cursed_carnival",previewOnly:true},
+  haunted_hearse:{name:"The Haunted Hearse",emoji:"🚘",category:"Legendary",style:"haunted_hearse",previewOnly:true},
+  musical_universe:{name:"Musical Universe",emoji:"🎼",category:"Musical",style:"musical_universe",previewOnly:true},
+  phantom_shipwreck:{name:"The Phantom Shipwreck",emoji:"🚢",category:"Legendary",style:"phantom_shipwreck",previewOnly:true},
+  reapers_arrival:{name:"The Reaper's Arrival",emoji:"💀",category:"Mythic",style:"reapers_arrival",previewOnly:true},
+  royal_flush:{name:"The Royal Flush",emoji:"♠️",category:"Surprises",style:"royal_flush",previewOnly:true},
+  sakura_spirit:{name:"Sakura Spirit",emoji:"🌸",category:"Magical",style:"sakura_spirit",previewOnly:true},
+  six_seven:{name:"Six Seven",emoji:"🎲",category:"Surprises",style:"six_seven",previewOnly:true},
+  elevator_to_nowhere:{name:"The Elevator to Nowhere",emoji:"🛗",category:"Special Effects",style:"elevator_to_nowhere",previewOnly:true},
+  void_rift:{name:"Void Rift",emoji:"🌀",category:"Visual Effects",style:"void_rift",previewOnly:true},
+  witching_hour:{name:"The Witching Hour",emoji:"🌙",category:"Magical",style:"witching_hour",previewOnly:true}
+};
 function syncLiveGiftCatalog() {
-  // The meteor gift was retired. Do not repopulate it from a fallback catalog.
+  // Only Founder Rise is approved for paid sending. The remaining gallery gifts are local previews.
   const source = window.TIKNATION_GIFT_CATALOG;
   const catalog = source && typeof source === "object" ? source : {};
-  LIVE_GIFT_CATALOG = Object.fromEntries(
-    Object.entries(catalog).map(([code, gift]) => [code, {
-      name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound, style: gift.style, message: gift.message
-    }])
-  );
+  const sendable = Object.fromEntries(Object.entries(catalog).map(([code,gift])=>[code,{
+    name:gift.name,emoji:gift.emoji,category:gift.category,cost:gift.cost,sound:gift.sound,style:gift.style,message:gift.message,previewOnly:false
+  }]));
+  LIVE_GIFT_CATALOG = {...sendable,...LIVE_GIFT_PREVIEW_CATALOG};
   return Object.keys(LIVE_GIFT_CATALOG).length > 0;
 }
 
@@ -626,8 +641,8 @@ function renderLiveGiftCatalog() {
     : signInRequired
       ? '<p class="small">Sign in to send gifts. You can still watch gift celebrations without an account.</p>'
       : "";
-  root.innerHTML=intro+groups.map(category=>'<div class="live-gift-category"><h4>'+category+' Gifts</h4><div class="live-gift-grid">'+Object.entries(LIVE_GIFT_CATALOG).filter(([,gift])=>gift.category===category).map(([code,gift])=>'<button type="button" class="live-gift-choice"'+(signInRequired?" disabled":"")+' data-gift-code="'+code+'"><span class="live-gift-emoji">'+gift.emoji+'</span><span class="live-gift-name">'+gift.name+'</span><span class="live-gift-cost">'+(previewMode?"✨ FREE PREVIEW":signInRequired?"SIGN IN TO SEND":"🪙 "+gift.cost+" test coins")+'</span></button>').join("")+'</div></div>').join("");
-  root.querySelectorAll("[data-gift-code]").forEach(button=>button.addEventListener("click",(event)=>{event.stopPropagation();const code=button.dataset.giftCode;if(isFreeCreatorGiftPreview()){unlockLiveGiftAudio();const preview={id:"preview-"+Date.now(),gift_code:code,sender_name:"Creator preview"};renderLiveGiftEvent(preview);setLiveGiftStatus("✨ "+LIVE_GIFT_CATALOG[code].name+" preview · Free, no coins spent.","success");}else void sendLiveGift(code,button);}));
+  root.innerHTML=intro+groups.map(category=>'<div class="live-gift-category"><h4>'+category+' Gifts</h4><div class="live-gift-grid">'+Object.entries(LIVE_GIFT_CATALOG).filter(([,gift])=>gift.category===category).map(([code,gift])=>'<button type="button" class="live-gift-choice"'+(signInRequired&&!gift.previewOnly?" disabled":"")+' data-gift-code="'+code+'"><span class="live-gift-emoji">'+gift.emoji+'</span><span class="live-gift-name">'+gift.name+'</span><span class="live-gift-cost">'+(gift.previewOnly?"👁 PREVIEW ONLY":previewMode?"✨ FREE PREVIEW":signInRequired?"SIGN IN TO SEND":"🪙 "+gift.cost+" test coins")+'</span></button>').join("")+'</div></div>').join("");
+  root.querySelectorAll("[data-gift-code]").forEach(button=>button.addEventListener("click",(event)=>{event.stopPropagation();const code=button.dataset.giftCode;const gift=LIVE_GIFT_CATALOG[code];if(!gift)return;if(gift.previewOnly){unlockLiveGiftAudio();renderLiveGiftEvent({id:"preview-"+Date.now(),gift_code:code,sender_name:"Preview"});setLiveGiftStatus("👁 "+gift.name+" is preview-only · No coins spent and no viewers notified.","success");return;}if(isFreeCreatorGiftPreview()){unlockLiveGiftAudio();const preview={id:"preview-"+Date.now(),gift_code:code,sender_name:"Creator preview"};renderLiveGiftEvent(preview);setLiveGiftStatus("✨ "+gift.name+" preview · Free, no coins spent.","success");}else void sendLiveGift(code,button);}));
 }
 async function refreshLiveGiftBalance() {
   const node=$("liveGiftBalance");if(!node)return;
@@ -866,7 +881,7 @@ function stopLiveGiftPolling() {
 }
 async function sendLiveGift(giftCode,button) {
   if(!user){setLiveGiftStatus("Sign in to send gifts. You can still watch celebrations.", "error");return;}
-  if(liveGiftRequestBusy||!activeSession)return;const gift=LIVE_GIFT_CATALOG[giftCode];if(!gift)return;
+  if(liveGiftRequestBusy||!activeSession)return;const gift=LIVE_GIFT_CATALOG[giftCode];if(!gift)return;if(gift.previewOnly){setLiveGiftStatus(gift.name+" is preview-only. No coins were charged.","error");return;}
   // Fail closed: verify the signed-in account does not own this session before any paid-gift request.
   // This protects creators even if the page's local host flag is stale.
   if(isHost)return;
