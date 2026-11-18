@@ -563,18 +563,18 @@ let LIVE_GIFT_CATALOG = Object.fromEntries(
 );
 const LIVE_GIFT_PREVIEW_CATALOG = {
   world_of_colors:{name:"World of Colors",emoji:"🌈",category:"Visual Effects",style:"world_of_colors",previewOnly:true},
-  living_tombstones:{name:"Night of the Living Tombstones",emoji:"🪦",category:"Mythic",style:"living_tombstones",previewOnly:true},
+  living_tombstones:{name:"Night of the Living Tombstones",emoji:"🪦",category:"Mythic",style:"livingtombstones",previewOnly:true},
   abandoned_operating_room:{name:"Abandoned Operating Room",emoji:"🏥",category:"Special Effects",style:"abandoned_operating_room",previewOnly:true},
-  cursed_carnival:{name:"Cursed Carnival",emoji:"🎪",category:"Magical",style:"cursed_carnival",previewOnly:true},
-  haunted_hearse:{name:"The Haunted Hearse",emoji:"🚘",category:"Legendary",style:"haunted_hearse",previewOnly:true},
-  musical_universe:{name:"Musical Universe",emoji:"🎼",category:"Musical",style:"musical_universe",previewOnly:true},
-  phantom_shipwreck:{name:"The Phantom Shipwreck",emoji:"🚢",category:"Legendary",style:"phantom_shipwreck",previewOnly:true},
-  reapers_arrival:{name:"The Reaper's Arrival",emoji:"💀",category:"Mythic",style:"reapers_arrival",previewOnly:true},
+  cursed_carnival:{name:"Cursed Carnival",emoji:"🎪",category:"Magical",style:"carnevil",previewOnly:true},
+  haunted_hearse:{name:"The Haunted Hearse",emoji:"🚘",category:"Legendary",style:"hauntedhearse",previewOnly:true},
+  musical_universe:{name:"Musical Universe",emoji:"🎼",category:"Musical",style:"grand",previewOnly:true},
+  phantom_shipwreck:{name:"The Phantom Shipwreck",emoji:"🚢",category:"Legendary",style:"ghostship",previewOnly:true},
+  reapers_arrival:{name:"The Reaper's Arrival",emoji:"💀",category:"Mythic",style:"reaper",previewOnly:true},
   royal_flush:{name:"The Royal Flush",emoji:"♠️",category:"Surprises",style:"royal_flush",previewOnly:true},
   sakura_spirit:{name:"Sakura Spirit",emoji:"🌸",category:"Magical",style:"sakura_spirit",previewOnly:true},
   six_seven:{name:"Six Seven",emoji:"🎲",category:"Surprises",style:"six_seven",previewOnly:true},
   elevator_to_nowhere:{name:"The Elevator to Nowhere",emoji:"🛗",category:"Special Effects",style:"elevator_to_nowhere",previewOnly:true},
-  void_rift:{name:"Void Rift",emoji:"🌀",category:"Visual Effects",style:"void_rift",previewOnly:true},
+  void_rift:{name:"Void Rift",emoji:"🌀",category:"Visual Effects",style:"voidrift",previewOnly:true},
   witching_hour:{name:"The Witching Hour",emoji:"🌙",category:"Magical",style:"witching_hour",previewOnly:true}
 };
 function syncLiveGiftCatalog() {
@@ -851,15 +851,18 @@ function renderLiveGiftEvent(event) {
       if(window.TikNationGiftEngine?.show){
         rendered=Boolean(window.TikNationGiftEngine.show(gift,{
           meta:(event.sender_name||"A TIKNATION MEMBER")+" · LIVE GIFT",
-          duration:["meteor","infernal_castle","fingerdeath","ghostship"].includes(gift.style)?10000:6800
+          duration:["meteor","infernal_castle","fingerdeath","ghostship","livingtombstones","hauntedhearse","reaper","voidrift","carnevil"].includes(gift.style)?10000:6800,
+          onSound:()=>playLiveGiftSound(event,gift)
         }));
       }
     }catch(error){console.warn("Cinematic gift renderer unavailable; using fallback.",error);}
     if(!rendered)showLiveGiftCelebration(event);
-    try{
-      if((gift.style==="meteor"||gift.style==="infernal_castle")&&typeof playTikNationGiftSound==="function")playTikNationGiftSound(gift);
-      else playLiveGiftSound(event,gift);
-    }catch(error){console.warn("Gift sound unavailable.",error);}
+    if(!rendered){
+      try{
+        if((gift.style==="meteor"||gift.style==="infernal_castle")&&typeof playTikNationGiftSound==="function")playTikNationGiftSound(gift);
+        else playLiveGiftSound(event,gift);
+      }catch(error){console.warn("Gift sound unavailable.",error);}
+    }
   }
   const feed=$("liveGiftFeed");if(!feed)return;
   const empty=feed.querySelector(".small");if(empty)feed.innerHTML="";
