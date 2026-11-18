@@ -1,141 +1,39 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#080817">
-<title>TikNation · The Gift Gallery</title>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090719"><title>TikNation · Gift Galaxy</title>
 <style>
-:root{color-scheme:dark;--bg:#070711;--line:#34314f;--text:#f8f7ff;--muted:#b0aec8;--cyan:#75eaff;--violet:#b49aff}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(ellipse at 50% -10%,#302052 0,transparent 48%),radial-gradient(ellipse at 100% 45%,#102b42 0,transparent 38%),var(--bg)}
-header,main,footer{width:min(100% - 36px,1000px);margin:auto}header{padding:48px 0 24px}.eyebrow{color:var(--cyan);font-size:.72rem;font-weight:850;letter-spacing:.22em}.title{font-size:clamp(2.5rem,8vw,5.5rem);line-height:.94;letter-spacing:-.06em;margin:14px 0}.title span{color:var(--violet)}.intro{max-width:680px;color:var(--muted);font-size:1.02rem}
-main{padding:12px 0 64px}.status{border:1px solid #51436f;background:#17152a;border-radius:14px;padding:13px 16px;color:#ddd8f5;margin:10px 0 25px}.section-title{margin:30px 0 12px;font-size:1rem;letter-spacing:.12em;color:#d9d2f4;text-transform:uppercase}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,285px),1fr));gap:16px}
-.gift{display:flex;flex-direction:column;min-height:260px;padding:22px;border:1px solid #3d385b;border-radius:20px;color:inherit;text-decoration:none;background:linear-gradient(150deg,#19182e,#0d1020);transition:transform .2s,border-color .2s}.gift.featured{border-color:#7660a8;background:radial-gradient(ellipse at 50% 0%,#47336e 0,transparent 60%),linear-gradient(150deg,#1a1930,#0d1020);min-height:290px}.gift:hover,.gift:focus-visible{transform:translateY(-3px);border-color:var(--cyan);outline:none}.crown{font-size:2.7rem;filter:drop-shadow(0 0 16px #b49aff55);margin-bottom:14px}.tag{font-size:.68rem;letter-spacing:.15em;color:var(--cyan);font-weight:850}.gift h2{font-size:1.3rem;line-height:1.12;margin:9px 0}.gift p{color:var(--muted);margin:0 0 18px;font-size:.9rem}.open{margin-top:auto;color:var(--cyan);font-weight:850;font-size:.8rem;letter-spacing:.05em}
-footer{padding:0 0 36px;color:#85829e;font-size:.8rem}
-@media(prefers-reduced-motion:reduce){.gift{transition:none}.gift:hover{transform:none}}
-</style>
-</head>
-<body>
-<header>
-<div class="eyebrow">TIKNATION · LIVE EXPERIENCES</div>
-<h1 class="title">THE GIFT <span>GALLERY</span></h1>
-<p class="intro">The newer gift work is back in one place. Open a preview to explore its individual experience. Gifts marked LIVE are the only ones currently wired into the sending catalog.</p>
-</header>
+:root{color-scheme:dark;--cyan:#75f7ef;--violet:#b49aff;--pink:#ff8bd9;--gold:#ffe7a0;--ink:#faf8ff;--muted:#c0bbd8}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);font:15px/1.55 Inter,system-ui,sans-serif;background:radial-gradient(ellipse at 15% 0,#38205f 0,transparent 40%),radial-gradient(ellipse at 90% 28%,#12445a 0,transparent 38%),#090719;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:-40%;z-index:-1;pointer-events:none;background:conic-gradient(from 0deg,transparent,#8b69ff22,transparent,#ff76cf1c,transparent,#75f7ef22,transparent);filter:blur(40px);animation:turn 35s linear infinite}@keyframes turn{to{transform:rotate(360deg)}}
+header,main,footer{width:min(100% - 30px,980px);margin:auto}header{padding:26px 0 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:13px;font-weight:950;letter-spacing:.22em}.brand b{color:var(--cyan)}a{color:inherit;text-decoration:none}.back{border:1px solid #ffffff30;border-radius:99px;padding:9px 13px;font-size:10px;font-weight:850;letter-spacing:.1em;background:#ffffff0c}
+.hero{position:relative;overflow:hidden;text-align:center;padding:35px 20px 32px;border:1px solid #ffffff25;border-radius:30px;background:linear-gradient(145deg,#24164bbd,#101b38b8,#35164088);box-shadow:0 25px 80px #0007}.hero:before{content:"";position:absolute;inset:-70%;background:conic-gradient(from 10deg,transparent 0 35%,#72f7ed18 42%,transparent 50%,#ff85d91c 65%,transparent 75%);animation:turn 24s linear infinite}.hero>*{position:relative}.eyebrow{font-size:9px;letter-spacing:.27em;font-weight:900;color:var(--cyan)}h1{font-size:clamp(39px,8vw,70px);line-height:.98;letter-spacing:-.06em;margin:12px 0}h1 span{background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink),var(--gold));background-clip:text;color:transparent}.hero p{max-width:590px;margin:0 auto;color:#d0cbe4;font-size:13px}
+main{padding-bottom:105px}.notice{margin:18px 0;padding:13px 15px;border:1px solid #ffffff22;border-radius:15px;background:#ffffff0b;color:#dcd6f2;font-size:12px}.notice strong{color:var(--gold)}.section{margin:27px 0 13px;font-size:11px;letter-spacing:.2em;color:#d9d0ff;font-weight:950}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{position:relative;overflow:hidden;min-height:250px;padding:19px;border:1px solid #ffffff26;border-radius:22px;background:linear-gradient(150deg,#ffffff15,#ffffff05);box-shadow:inset 0 1px #ffffff15;display:flex;flex-direction:column;transition:transform .2s,border-color .2s}.card:before{content:"";position:absolute;width:180px;height:180px;right:-75px;top:-80px;border-radius:50%;background:var(--glow);filter:blur(42px);opacity:.45}.card:hover{transform:translateY(-4px);border-color:var(--glow)}.symbol{position:relative;font-size:40px;line-height:1.2;filter:drop-shadow(0 0 14px var(--glow))}.tag{position:relative;margin-top:12px;font-size:9px;letter-spacing:.16em;font-weight:950;color:var(--cyan)}h2{position:relative;margin:7px 0;font-size:18px;line-height:1.18}.card p{position:relative;color:var(--muted);font-size:11px;line-height:1.55;margin:0 0 16px}.card button,.card .open{position:relative;margin-top:auto;display:inline-flex;justify-content:center;align-items:center;min-height:40px;padding:10px 13px;border:1px solid #ffffff38;border-radius:99px;background:#ffffff0d;color:#fff;font-size:10px;font-weight:900;letter-spacing:.08em;cursor:pointer}.card .live{background:linear-gradient(95deg,var(--cyan),var(--violet));color:#120f2c;border:0}.card button:focus-visible,.back:focus-visible{outline:2px solid white;outline-offset:3px}
+.preview{position:fixed;inset:0;z-index:1000;display:none;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 48%,#30206feF,#080719 78%);isolation:isolate}.preview.open{display:grid}.preview:before,.preview:after{content:"";position:absolute;width:min(75vw,520px);aspect-ratio:1;border:2px solid #9e8cffaa;border-radius:50%;box-shadow:0 0 35px #a58aff88,inset 0 0 35px #69efff66;animation:portal 5s linear infinite}.preview:after{width:min(58vw,390px);border-color:#75f7efaa;animation-direction:reverse;animation-duration:3.6s}.preview[data-kind=spark]{background:radial-gradient(ellipse at center,#16405b,#080719 76%)}.preview[data-kind=spark]:before{border-color:#75f7ef;box-shadow:0 0 55px #75f7ef}.preview[data-kind=spark]:after{border-color:#ff8bd9;box-shadow:0 0 45px #ff8bd9}
+@keyframes portal{to{transform:rotate(360deg) scale(1.05)}}.preview-copy{position:relative;z-index:3;width:min(86vw,520px);text-align:center;padding:25px}.preview-icon{font-size:clamp(75px,20vw,145px);line-height:1.2;filter:drop-shadow(0 0 25px #b49aff);animation:float 2.4s ease-in-out infinite alternate}.preview[data-kind=spark] .preview-icon{filter:drop-shadow(0 0 28px #75f7ef)}@keyframes float{to{transform:translateY(-18px) scale(1.06)}}.preview h2{font-size:clamp(22px,5vw,38px);letter-spacing:.08em;text-shadow:0 0 22px #b49aff;margin:14px 0}.preview p{color:#ddd8f1;font-size:13px}.preview-close{position:absolute;z-index:5;top:max(18px,env(safe-area-inset-top));right:18px;border:1px solid #ffffff55;border-radius:99px;background:#ffffff18;color:#fff;padding:11px 15px;font-weight:900}.particle{position:absolute;z-index:2;left:var(--x);top:var(--y);width:var(--s);height:var(--s);border-radius:50%;background:var(--c);box-shadow:0 0 12px 3px var(--c);animation:burst var(--t) ease-out infinite;opacity:0}@keyframes burst{0%{opacity:0;transform:translate(0,0) scale(.2)}12%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}}
+footer{text-align:center;color:#918aa9;font-size:10px;letter-spacing:.1em;padding:0 0 30px}
+nav{position:fixed;z-index:20;bottom:0;left:0;right:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#090719df;border-top:1px solid #ffffff20;backdrop-filter:blur(20px);display:flex;justify-content:center;gap:clamp(16px,6vw,55px)}nav a{display:grid;justify-items:center;gap:3px;font-size:9px;color:#c4bfd9;font-weight:850}nav b{font-size:18px}nav a.active{color:var(--cyan)}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card{min-height:235px;padding:15px}.hero{padding:28px 16px}.symbol{font-size:34px}}
+@media(max-width:390px){.grid{grid-template-columns:1fr}.card{min-height:205px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
+</style></head><body>
+<header><a class="brand" href="../"><b>✦</b> TIKNATION</a><a class="back" href="../">← HOME</a></header>
 <main>
-<div class="status"><strong>COLLECTION RESTORED.</strong> Preview designs are visible again, but they are not presented as sendable gifts until their LIVE animations, sound, and delivery are verified. Rejected or deleted concepts are not included.</div>
-<h2 class="section-title">Available in LIVE</h2>
-<section class="grid" aria-label="Live gifts">
-<a class="gift featured" href="../gifts-rebuild-lab/the-founder-rise-of-the-empire.html">
-<div class="crown" aria-hidden="true">👑</div>
-<div class="tag">MYTHIC · 250 TEST COINS</div>
-<h2>The Founder — Rise of the Empire</h2>
-<p>Mythic founder reveal with two panther guardians and an empire-awakening finale.</p>
-<span class="open">OPEN GIFT EXPERIENCE →</span>
-</a>
+<section class="hero"><div class="eyebrow">✧ THE GIFT GALAXY ✧</div><h1>Make a moment<br><span>magical.</span></h1><p>Every gift should feel like a little world opening over the LIVE stage. Explore the collection and preview the magic without leaving the page.</p></section>
+<div class="notice"><strong>THE NEW COLLECTION.</strong> The Founder remains the only gift marked LIVE. New effects are previews only until animation, sound, and delivery are verified. Preview effects stay on this screen—no scrolling to find them.</div>
+<div class="section">✦ THE FOUNDERS COLLECTION</div>
+<section class="grid">
+<article class="card" style="--glow:#ffcf70"><div class="symbol">♛</div><div class="tag">MYTHIC · LIVE GIFT</div><h2>The Founder — Rise of the Empire</h2><p>The signature Founder spectacle remains part of TikNation's story.</p><a class="open live" href="../gifts-rebuild-lab/the-founder-rise-of-the-empire.html">OPEN FOUNDER EXPERIENCE ↗</a></article>
 </section>
-<h2 class="section-title">New gift previews</h2>
-<section class="grid" aria-label="New gift previews">
-
-<a class="gift " href="world-of-colors.html">
-<div class="crown" aria-hidden="true">🌈</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>World of Colors</h2>
-<p>A prismatic world of crystal light, waterfalls, and rainbow energy.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/index.html">
-<div class="crown" aria-hidden="true">🪦</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>Night of the Living Tombstones</h2>
-<p>A moonlit graveyard experience with atmospheric supernatural effects.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/abandoned-operating-room.html">
-<div class="crown" aria-hidden="true">🏥</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>Abandoned Operating Room</h2>
-<p>An eerie abandoned medical-room scene built as a cinematic gift preview.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/cursed-carnival.html">
-<div class="crown" aria-hidden="true">🎪</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>Cursed Carnival</h2>
-<p>A sinister carnival atmosphere with a dark midway mood.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/haunted-hearse.html">
-<div class="crown" aria-hidden="true">🚘</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>The Haunted Hearse</h2>
-<p>A haunted hearse-themed spectacle emerging from the darkness.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/musical-universe.html">
-<div class="crown" aria-hidden="true">🎼</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>Musical Universe</h2>
-<p>A music-led cosmic experience filled with celestial energy.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/phantom-shipwreck.html">
-<div class="crown" aria-hidden="true">🚢</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>The Phantom Shipwreck</h2>
-<p>A ghostly shipwreck scene set in a storm-dark ocean.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/reapers-arrival.html">
-<div class="crown" aria-hidden="true">💀</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>The Reaper's Arrival</h2>
-<p>A cinematic supernatural entrance with a grim, shadowy presence.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/royal-flush.html">
-<div class="crown" aria-hidden="true">♠️</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>The Royal Flush</h2>
-<p>A dramatic royal card spectacle with a golden, high-stakes atmosphere.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/sakura-spirit.html">
-<div class="crown" aria-hidden="true">🌸</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>Sakura Spirit</h2>
-<p>A spirit-tree experience surrounded by blossoms and flowing petals.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/six-seven.html">
-<div class="crown" aria-hidden="true">🎲</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>Six Seven</h2>
-<p>A playful number-themed gift experiment.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/the-elevator-to-nowhere.html">
-<div class="crown" aria-hidden="true">🛗</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>The Elevator to Nowhere</h2>
-<p>A mysterious elevator journey into an unsettling unknown.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/void-rift.html">
-<div class="crown" aria-hidden="true">🌀</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>Void Rift</h2>
-<p>A dimensional rupture opening into a dark, energy-filled void.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
-<a class="gift " href="../gifts-rebuild-lab/witching-hour.html">
-<div class="crown" aria-hidden="true">🌙</div>
-<div class="tag">GIFT PREVIEW · NOT YET LIVE</div>
-<h2>The Witching Hour</h2>
-<p>A midnight supernatural scene with an eerie spellbound atmosphere.</p>
-<span class="open">OPEN PREVIEW →</span>
-</a>
+<div class="section">✧ NEW MAGIC · PREVIEW LAB</div>
+<section class="grid">
+<article class="card" style="--glow:#c4a2ff"><div class="symbol">✧</div><div class="tag">PREVIEW ONLY · NOT SENDABLE</div><h2>The Celestial Wish</h2><p>A star opens into a radiant portal, crystal light blooms, and a shower of stardust fills the stage.</p><button type="button" data-preview="wish">PREVIEW THE MAGIC ↗</button></article>
+<article class="card" style="--glow:#72f7ef"><div class="symbol">✦</div><div class="tag">PREVIEW ONLY · NOT SENDABLE</div><h2>The Infinite Spark</h2><p>A tiny spark awakens into a swirling universe of luminous rings, color, and cosmic light.</p><button type="button" data-preview="spark">PREVIEW THE MAGIC ↗</button></article>
 </section>
-</main>
-<footer>TikNation · Your voice. Your world.</footer>
-</body>
-</html>
+</main><footer>TIKNATION · YOUR VOICE. YOUR WORLD.</footer>
+<nav><a href="../"><b>✦</b>HOME</a><a href="../live-worlds/"><b>◉</b>LIVE</a><a class="active" href="./"><b>✧</b>GIFTS</a><a href="../create/"><b>✺</b>CREATE</a><a href="../profile/"><b>☼</b>PROFILE</a></nav>
+<div class="preview" id="preview" role="dialog" aria-modal="true" aria-labelledby="previewTitle" data-kind="wish"><button class="preview-close" id="closePreview" type="button">CLOSE ✕</button><div class="preview-copy"><div class="preview-icon" id="previewIcon">✧</div><h2 id="previewTitle">THE CELESTIAL WISH</h2><p id="previewText">A little light can open an infinite sky.</p></div></div>
+<script>
+(()=>{const layer=document.getElementById('preview'),icon=document.getElementById('previewIcon'),title=document.getElementById('previewTitle'),copy=document.getElementById('previewText');let particles=[];function clear(){particles.forEach(p=>p.remove());particles=[]}function burst(){clear();const colors=layer.dataset.kind==='spark'?['#75f7ef','#b49aff','#ff8bd9','#ffffff']:['#d7c3ff','#ffffff','#75f7ef','#ffb9e9'];for(let i=0;i<56;i++){const p=document.createElement('i');p.className='particle';p.style.setProperty('--x',(10+Math.random()*80)+'%');p.style.setProperty('--y',(18+Math.random()*64)+'%');p.style.setProperty('--s',(2+Math.random()*5)+'px');p.style.setProperty('--c',colors[i%colors.length]);p.style.setProperty('--dx',((Math.random()-.5)*85)+'vw');p.style.setProperty('--dy',((Math.random()-.5)*85)+'vh');p.style.setProperty('--t',(1.5+Math.random()*2.3)+'s');p.style.animationDelay=(-Math.random()*3)+'s';layer.appendChild(p);particles.push(p)}}function open(kind){layer.dataset.kind=kind;if(kind==='spark'){icon.textContent='✦';title.textContent='THE INFINITE SPARK';copy.textContent='One spark. Infinite possibilities.'}else{icon.textContent='✧';title.textContent='THE CELESTIAL WISH';copy.textContent='A little light can open an infinite sky.'}layer.classList.add('open');document.body.style.overflow='hidden';burst()}function close(){layer.classList.remove('open');document.body.style.overflow='';clear()}document.querySelectorAll('[data-preview]').forEach(b=>b.addEventListener('click',()=>open(b.dataset.preview)));document.getElementById('closePreview').addEventListener('click',close);layer.addEventListener('click',e=>{if(e.target===layer)close()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&layer.classList.contains('open'))close()})})();
+</script></body></html>
