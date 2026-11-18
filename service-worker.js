@@ -1,4 +1,4 @@
-const CACHE_NAME = "tiknation-shell-v63-live-gift-previews";
+const CACHE_NAME = "tiknation-shell-v64-cinematic-gift-effects";
 const APP_SHELL = [
   "./",
   "./index.html",
