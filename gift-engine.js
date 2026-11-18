@@ -1301,47 +1301,72 @@ function renderReaperArrivalGift(gift,opts,overlay){
 function renderElDiabloGift(gift,opts,overlay){
  const css=document.createElement("style");
  css.textContent=`
- @keyframes edPortal{0%,100%{transform:scale(.96);filter:brightness(.85)}50%{transform:scale(1.05);filter:brightness(1.35)}}
- @keyframes edRise{0%{opacity:0;transform:translateY(38vh) scale(.68)}65%{opacity:1;transform:translateY(-2vh) scale(1.04)}100%{opacity:1;transform:translateY(0) scale(1)}}
- @keyframes edWings{0%,100%{transform:scaleY(.92) rotate(-2deg)}50%{transform:scaleY(1.06) rotate(2deg)}}
- @keyframes edFlame{0%,100%{transform:scaleY(.82);opacity:.72}50%{transform:scaleY(1.18);opacity:1}}
- @keyframes edEmber{0%{opacity:0;transform:translateY(8vh) scale(.3)}15%{opacity:1}100%{opacity:0;transform:translate(var(--drift),-100vh) scale(0)}}
- @keyframes edTitle{from{opacity:0;letter-spacing:.5em}to{opacity:1;letter-spacing:.18em}}
- #tiknation-gift-engine.el-diablo{position:fixed!important;inset:0!important;z-index:2147483647!important;display:grid!important;place-items:center!important;overflow:hidden!important;pointer-events:none!important;background:radial-gradient(ellipse at 50% 58%,#8c260d 0%,#3b0b12 34%,#100611 68%,#020207 100%)!important}
- #tiknation-gift-engine.el-diablo:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 9%,#ff6b1b0a 10%,transparent 11% 19%);animation:edFlame 2.2s ease-in-out infinite}
- #tiknation-gift-engine.el-diablo .ed-portal{position:absolute;width:min(78vw,660px);height:min(88vh,760px);border:clamp(8px,1.7vw,17px) solid #ff6a20;border-radius:50%;box-shadow:0 0 22px #ff9a37,0 0 75px #ff3b13, inset 0 0 55px #ff4b16;background:radial-gradient(ellipse,#08030b 48%,#9b240e66 62%,transparent 72%);animation:edPortal 2.2s ease-in-out infinite}
- #tiknation-gift-engine.el-diablo .ed-figure{position:relative;z-index:2;width:min(96vw,900px);height:min(77vh,690px);animation:edRise 1.35s cubic-bezier(.2,.8,.25,1) both;filter:drop-shadow(0 12px 34px #ff3b18aa)}
- #tiknation-gift-engine.el-diablo .ed-wings{transform-box:fill-box;transform-origin:50% 72%;animation:edWings 2.4s ease-in-out infinite}
- #tiknation-gift-engine.el-diablo .ed-fire{transform-box:fill-box;transform-origin:50% 100%;animation:edFlame .7s ease-in-out infinite}
- #tiknation-gift-engine.el-diablo .ed-ember{position:absolute;z-index:3;bottom:-5%;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;background:#ffd18a;box-shadow:0 0 12px 3px #ff5a16;animation:edEmber var(--d) linear var(--delay) infinite}
- #tiknation-gift-engine.el-diablo .ed-title{position:absolute;z-index:5;bottom:6%;left:0;right:0;text-align:center;color:#ffe4c2;font:900 clamp(25px,6vw,56px)/1 Georgia,serif;text-shadow:0 0 12px #ff6b24,0 4px 18px #000;animation:edTitle 1.2s .8s both}
- #tiknation-gift-engine.el-diablo .ed-title small{display:block;margin-top:12px;color:#ffb27c;font:800 clamp(9px,2vw,13px)/1.4 system-ui;letter-spacing:.3em}
+ @keyframes edPortal{0%,100%{transform:scale(.98);opacity:.78}50%{transform:scale(1.035);opacity:1}}
+ @keyframes edRise{0%{opacity:0;transform:translateY(34vh) scale(.82)}70%{opacity:1;transform:translateY(-1vh) scale(1.015)}100%{opacity:1;transform:none}}
+ @keyframes edWings{0%,100%{transform:scaleY(.97) rotate(-1deg)}50%{transform:scaleY(1.035) rotate(1deg)}}
+ @keyframes edFire{0%,100%{transform:scaleY(.86);opacity:.68}50%{transform:scaleY(1.14);opacity:1}}
+ @keyframes edEmber{0%{opacity:0;transform:translate(0,10vh) scale(.3)}12%{opacity:.95}100%{opacity:0;transform:translate(var(--drift),-105vh) scale(.05)}}
+ @keyframes edSmoke{0%{opacity:0;transform:translateY(7vh) scale(.75)}25%{opacity:.28}100%{opacity:0;transform:translate(var(--smoke-x),-48vh) scale(1.8)}}
+ @keyframes edTitle{from{opacity:0;letter-spacing:.42em}to{opacity:1;letter-spacing:.2em}}
+ #tiknation-gift-engine.el-diablo{position:fixed!important;inset:0!important;z-index:2147483647!important;display:grid!important;place-items:center!important;overflow:hidden!important;pointer-events:none!important;background:radial-gradient(ellipse at 50% 66%,#743016 0%,#291016 34%,#0a080e 72%,#010105 100%)!important;isolation:isolate}
+ #tiknation-gift-engine.el-diablo:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#08070d88 0%,transparent 48%,#080307 100%),radial-gradient(ellipse at 50% 72%,#ff6b1b42,transparent 48%);z-index:0}
+ #tiknation-gift-engine.el-diablo .ed-portal{position:absolute;z-index:1;width:min(65vw,600px);height:min(86vh,740px);border:clamp(5px,1vw,12px) solid #7f3928;border-radius:48% 52% 44% 56%;box-shadow:0 0 15px #ffb16b66,0 0 52px #d4471b99,inset 0 0 48px #fa542a99;background:radial-gradient(ellipse at 50% 58%,#020106 43%,#14070b 57%,#a93b1c55 67%,transparent 75%);animation:edPortal 3.2s ease-in-out infinite}
+ #tiknation-gift-engine.el-diablo .ed-figure{position:relative;z-index:3;width:min(100vw,1020px);height:min(84vh,790px);overflow:visible;animation:edRise 1.8s cubic-bezier(.2,.8,.25,1) both;filter:drop-shadow(0 16px 28px #000) drop-shadow(0 0 20px #e65a2870)}
+ #tiknation-gift-engine.el-diablo .ed-wings{transform-box:fill-box;transform-origin:50% 76%;animation:edWings 3.8s ease-in-out infinite}
+ #tiknation-gift-engine.el-diablo .ed-flames{transform-box:fill-box;transform-origin:50% 100%;animation:edFire 1.15s ease-in-out infinite}
+ #tiknation-gift-engine.el-diablo .ed-ember{position:absolute;z-index:4;bottom:-3%;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle,#fff5c9 0,#ff9a43 42%,#9c2915 100%);box-shadow:0 0 8px 2px #ff762a;animation:edEmber var(--d) linear var(--delay) infinite}
+ #tiknation-gift-engine.el-diablo .ed-smoke{position:absolute;z-index:2;left:var(--x);bottom:-8%;width:var(--w);height:var(--h);border-radius:50%;background:radial-gradient(ellipse,#8c7b7a30 0%,#302a3540 42%,transparent 72%);filter:blur(18px);animation:edSmoke var(--d) ease-out var(--delay) infinite}
+ #tiknation-gift-engine.el-diablo .ed-title{position:absolute;z-index:6;bottom:5%;left:0;right:0;text-align:center;color:#f2d4b6;font:900 clamp(24px,5.8vw,52px)/1 Georgia,serif;text-shadow:0 2px 4px #000,0 0 22px #ff6b24;animation:edTitle 1.25s 1s both}
+ #tiknation-gift-engine.el-diablo .ed-title small{display:block;margin-top:10px;color:#d89b78;font:700 clamp(9px,1.8vw,12px)/1.4 system-ui;letter-spacing:.28em}
  @media(prefers-reduced-motion:reduce){#tiknation-gift-engine.el-diablo *{animation:none!important}}
  `;
  document.head.appendChild(css);overlay.className="el-diablo";
  const world=document.createElement("div");world.className="ed-world";
  world.innerHTML='<div class="ed-portal"></div>'+
- '<svg class="ed-figure" viewBox="0 0 900 700" role="img" aria-label="A horned demon rises from a blazing infernal portal">'+
- '<defs><linearGradient id="edSkin" x2="0" y2="1"><stop stop-color="#b84b2b"/><stop offset=".48" stop-color="#4b1720"/><stop offset="1" stop-color="#120912"/></linearGradient><linearGradient id="edWing" x2="0" y2="1"><stop stop-color="#6c1d24"/><stop offset="1" stop-color="#100711"/></linearGradient><radialGradient id="edEye"><stop stop-color="#fff4a0"/><stop offset=".35" stop-color="#ffb32e"/><stop offset="1" stop-color="#ff3b0b"/></radialGradient><linearGradient id="edFire" x2="0" y2="1"><stop stop-color="#fff1a0"/><stop offset=".3" stop-color="#ff9b24"/><stop offset="1" stop-color="#a7190d" stop-opacity="0"/></linearGradient></defs>'+
- '<g class="ed-fire" opacity=".9"><path d="M150 650Q90 520 180 430Q160 540 260 570Q220 450 330 365Q300 520 400 570Q370 440 470 330Q455 510 560 570Q540 455 670 390Q625 545 760 650Z" fill="url(#edFire)"/></g>'+
- '<g class="ed-wings" fill="url(#edWing)" stroke="#b64b35" stroke-width="7" stroke-linejoin="round"><path d="M430 260Q315 95 100 110Q175 165 75 215Q190 195 245 300Q300 260 370 355Z"/><path d="M470 260Q585 95 800 110Q725 165 825 215Q710 195 655 300Q600 260 530 355Z"/><path d="M365 300Q270 220 215 180M345 328Q245 290 160 265M535 300Q630 220 685 180M555 328Q655 290 740 265" fill="none"/></g>'+
- '<path d="M390 195Q350 125 370 45Q420 90 430 155Q470 90 530 45Q545 135 510 195" fill="#e6d5b8" stroke="#4a1a1d" stroke-width="13"/>'+
- '<path d="M355 245Q450 165 545 245L570 375Q555 465 450 505Q345 465 330 375Z" fill="url(#edSkin)" stroke="#e16a3d" stroke-width="8"/>'+
- '<path d="M370 280L430 305L410 335L365 320Z M530 280L470 305L490 335L535 320Z" fill="#19060b"/>'+
- '<path d="M389 305L425 317L408 329Z M511 305L475 317L492 329Z" fill="url(#edEye)"/>'+
- '<path d="M450 326L430 380L450 392L470 380Z" fill="#1b080d"/><path d="M395 412Q450 450 505 412Q480 480 450 480Q420 480 395 412Z" fill="#10050a" stroke="#e16a3d" stroke-width="5"/>'+
- '<path d="M410 420L420 450L432 425L445 455L458 425L475 450L490 420" fill="#f5d9bb"/>'+
- '<path d="M365 485Q450 450 535 485L610 650H290Z" fill="url(#edSkin)" stroke="#7e3028" stroke-width="9"/>'+
- '<path d="M370 520L300 575L260 650M530 520L600 575L640 650" fill="none" stroke="#762b28" stroke-width="30" stroke-linecap="round"/>'+
+ '<svg class="ed-figure" viewBox="0 0 1000 820" role="img" aria-label="A towering horned demon with leathery wings emerges from a firelit abyss">'+
+ '<defs>'+
+ '<linearGradient id="edFlesh" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a66b55"/><stop offset=".22" stop-color="#65372f"/><stop offset=".58" stop-color="#291b22"/><stop offset="1" stop-color="#09080e"/></linearGradient>'+
+ '<linearGradient id="edFleshLight" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#20141a"/><stop offset=".48" stop-color="#8a4a38"/><stop offset=".7" stop-color="#3a2027"/><stop offset="1" stop-color="#100d15"/></linearGradient>'+
+ '<linearGradient id="edMembrane" x1="0" y1="0" x2=".3" y2="1"><stop stop-color="#63312e"/><stop offset=".42" stop-color="#29171f"/><stop offset="1" stop-color="#09080e"/></linearGradient>'+
+ '<linearGradient id="edHorn" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e4d5bb"/><stop offset=".35" stop-color="#8d7a69"/><stop offset="1" stop-color="#2a2024"/></linearGradient>'+
+ '<radialGradient id="edEye"><stop stop-color="#fff7c4"/><stop offset=".24" stop-color="#ffc45a"/><stop offset=".6" stop-color="#e34b1c"/><stop offset="1" stop-color="#4b100c"/></radialGradient>'+
+ '<radialGradient id="edHeat"><stop stop-color="#ffb34f" stop-opacity=".8"/><stop offset="1" stop-color="#f24a18" stop-opacity="0"/></radialGradient>'+
+ '<filter id="edTexture"><feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="3" seed="8" result="noise"/><feColorMatrix in="noise" type="saturate" values="0" result="mono"/><feComponentTransfer><feFuncA type="table" tableValues="0 .22"/></feComponentTransfer><feBlend in="SourceGraphic" mode="soft-light"/></filter>'+
+ '<filter id="edGlow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'+
+ '</defs>'+
+ '<ellipse cx="500" cy="704" rx="320" ry="82" fill="url(#edHeat)" opacity=".75"/>'+
+ '<g class="ed-wings" filter="url(#edTexture)" stroke="#9b6651" stroke-width="5" stroke-linejoin="round">'+
+ '<path d="M455 300C355 180 210 93 82 135C148 176 150 219 54 265C157 244 205 292 229 370C280 320 350 340 422 416Z" fill="url(#edMembrane)"/>'+
+ '<path d="M545 300C645 180 790 93 918 135C852 176 850 219 946 265C843 244 795 292 771 370C720 320 650 340 578 416Z" fill="url(#edMembrane)"/>'+
+ '<g fill="none" stroke="#b17a60" stroke-width="9" opacity=".8"><path d="M488 344Q325 194 102 153M473 365Q300 268 82 265M452 391Q315 322 229 370M512 344Q675 194 898 153M527 365Q700 268 918 265M548 391Q685 322 771 370"/></g>'+
+ '<path d="M455 300Q345 210 229 370M545 300Q655 210 771 370" fill="none" stroke="#170e16" stroke-width="17"/>'+
+ '</g>'+
+ '<g filter="url(#edTexture)">'+
+ '<path d="M413 244C365 192 350 124 376 50C427 92 453 144 455 211Q486 137 554 64C570 143 545 207 520 250" fill="url(#edHorn)" stroke="#24191e" stroke-width="12"/>'+
+ '<path d="M390 226Q374 136 390 84M530 226Q557 140 550 99" fill="none" stroke="#e5d6c0" stroke-width="4" opacity=".42"/>'+
+ '<path d="M390 262Q500 190 610 262L640 390Q632 486 500 536Q368 486 360 390Z" fill="url(#edFlesh)" stroke="#27161d" stroke-width="13"/>'+
+ '<path d="M390 270Q420 220 500 232Q580 220 610 270L585 315Q500 286 415 315Z" fill="#1a1018"/>'+
+ '<path d="M386 323Q430 285 476 321L453 358Q414 351 386 323ZM614 323Q570 285 524 321L547 358Q586 351 614 323Z" fill="#160d13"/>'+
+ '<path d="M406 326Q436 310 459 333L433 345Z M594 326Q564 310 541 333L567 345Z" fill="url(#edEye)" filter="url(#edGlow)"/>'+
+ '<path d="M500 344L472 414L500 428L528 414Z" fill="#170e14"/><path d="M500 354L491 400" stroke="#a96b52" stroke-width="5" opacity=".5"/>'+
+ '<path d="M421 442Q500 478 579 442Q561 512 500 519Q439 512 421 442Z" fill="#08070c" stroke="#8b5142" stroke-width="8"/>'+
+ '<path d="M434 447L446 480L462 454L478 489L494 458L510 489L527 454L544 480L566 447" fill="#ded0b8" stroke="#514047" stroke-width="3"/>'+
+ '<path d="M372 500Q500 466 628 500L706 790H294Z" fill="url(#edFleshLight)" stroke="#21151c" stroke-width="14"/>'+
+ '<path d="M390 530Q350 620 322 750M610 530Q650 620 678 750" fill="none" stroke="#9a5d49" stroke-width="17" opacity=".45"/>'+
+ '<path d="M382 548Q310 590 262 720M618 548Q690 590 738 720" fill="none" stroke="#21131b" stroke-width="48" stroke-linecap="round"/>'+
+ '<path d="M382 548Q310 590 262 720M618 548Q690 590 738 720" fill="none" stroke="#8a4a3b" stroke-width="9" stroke-linecap="round" opacity=".55"/>'+
+ '<path d="M430 528L452 620L500 647L548 620L570 528" fill="none" stroke="#120d14" stroke-width="10"/>'+
+ '</g>'+
+ '<g class="ed-flames" opacity=".92"><path d="M105 780Q65 665 150 575Q135 688 235 704Q210 600 300 520Q286 664 390 708Q366 586 470 492Q460 660 535 706Q545 585 660 535Q620 676 770 710Q744 610 865 575Q810 710 900 780Z" fill="#a52e17" opacity=".52"/><path d="M165 790Q150 690 220 625Q200 716 292 744Q275 650 355 575Q338 710 430 746Q420 642 500 558Q500 710 565 746Q580 650 660 600Q625 716 720 750Q710 680 805 630Q760 730 835 790Z" fill="#f17b2e" opacity=".55"/></g>'+
  '</svg><div class="ed-title">EL DIABLO<small>THE GATES OF HELL HAVE OPENED</small></div>';
- for(let i=0;i<34;i++){const ember=document.createElement("i");ember.className="ed-ember";ember.style.setProperty("--x",(Math.random()*100)+"%");ember.style.setProperty("--s",(2+Math.random()*5)+"px");ember.style.setProperty("--d",(3+Math.random()*4)+"s");ember.style.setProperty("--delay",(-Math.random()*6)+"s");ember.style.setProperty("--drift",(Math.random()*120-60)+"px");world.appendChild(ember);}
+ for(let i=0;i<42;i++){const ember=document.createElement("i");ember.className="ed-ember";ember.style.setProperty("--x",(Math.random()*100)+"%");ember.style.setProperty("--s",(1.5+Math.random()*4)+"px");ember.style.setProperty("--d",(4+Math.random()*5)+"s");ember.style.setProperty("--delay",(-Math.random()*8)+"s");ember.style.setProperty("--drift",(Math.random()*150-75)+"px");world.appendChild(ember);}
+ for(let i=0;i<10;i++){const smoke=document.createElement("i");smoke.className="ed-smoke";smoke.style.setProperty("--x",(Math.random()*100)+"%");smoke.style.setProperty("--w",(90+Math.random()*190)+"px");smoke.style.setProperty("--h",(110+Math.random()*170)+"px");smoke.style.setProperty("--d",(6+Math.random()*5)+"s");smoke.style.setProperty("--delay",(-Math.random()*9)+"s");smoke.style.setProperty("--smoke-x",(Math.random()*100-50)+"px");world.appendChild(smoke);}
  overlay.appendChild(world);document.body.appendChild(overlay);
  if(typeof opts.onSound==="function"){try{opts.onSound()}catch(error){console.warn("El Diablo sound callback failed:",error);}}
  const duration=Math.max(10000,Number(opts.duration)||12000);
  setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .8s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),820)}},duration);
  return overlay;
 }
-
 function renderGift(gift,opts){if(!gift||!document.body)return null;opts=opts||{};install();const old=document.getElementById("tiknation-gift-engine");if(old)old.remove();const overlay=document.createElement("div");overlay.id="tiknation-gift-engine";overlay.dataset.style=String(gift.style||"spark").replace(/[^a-z0-9_-]/gi,"");overlay.setAttribute("role","status");overlay.setAttribute("aria-live","polite");if(gift.style==="el_diablo")return renderElDiabloGift(gift,opts,overlay);if(gift.style==="reaper")return renderReaperArrivalGift(gift,opts,overlay);if(gift.style==="eclipse_leviathan"){return renderEclipseLeviathanGift(gift,opts,overlay);}if(gift.style==="infinity_guardian"){return renderInfinityGuardianGift(gift,opts,overlay);}if(gift.style==="ghostship"){return renderGhostShipGift(gift,opts,overlay);}if(gift.style==="phoenix"){return renderPhoenixGift(gift,opts,overlay);}if(gift.style==="infernal_castle"){return renderInfernalCastleGift(gift,opts,overlay);}if(gift.style==="fingerdeath"){return renderCinematicGift(gift,opts,overlay);}if(gift.style==="spark"){return renderMagicSparkGift(gift,opts);}if(gift.style==="notes"){return renderMusicSheetGift(gift,opts);}if(gift.style==="grand"){return renderSymphonyGift(gift,opts);}if(gift.style==="raccoon"){return renderDiscoRaccoonGift(gift,opts);}if(gift.style==="storm")return renderStormWorld(gift,opts,overlay);if(gift.style==="voidrift")return renderVoidRiftGift(gift,opts,overlay);if(gift.style==="livingtombstones")return renderLivingTombstonesGift(gift,opts,overlay);if(gift.style==="hauntedmansion")return renderHauntedMansionGift(gift,opts,overlay);if(gift.style==="hauntedhearse")return renderHauntedHearseGift(gift,opts,overlay);if(gift.style==="carnevil")return renderCarnevilGift(gift,opts,overlay);if(false&&(gift.style==="notes"||gift.style==="grand")){const world=document.createElement("div");world.className="music-stage";const hero=document.createElement("div");hero.className="music-hero";hero.textContent=gift.emoji||(gift.style==="grand"?"🎻":"🎵");const symbols=gift.style==="grand"?["🎼","🎻","🎺","🎶","♫","♪"]:["♪","♫","♬","🎶","♫","♪"];symbols.forEach((symbol,i)=>{const note=document.createElement("span");note.className="music-note";note.textContent=symbol;note.style.setProperty("--sx",(i%2?72:12)+"%");note.style.setProperty("--sy",(18+(i%3)*22)+"%");note.style.setProperty("--dx",(i%2?-1:1)*(90+i*24)+"px");note.style.setProperty("--dur",(3.2+(i%3)*.45)+"s");note.style.setProperty("--delay",(i*.24)+"s");note.style.setProperty("--note-color",i%2?"#ffe6a6":"#ffc8ee");world.appendChild(note);});const title=document.createElement("div");title.className="music-title";title.textContent=gift.name||"MUSIC IN MOTION";const sub=document.createElement("small");sub.textContent=gift.style==="grand"?"THE GRAND PERFORMANCE":"LET THE MUSIC PLAY";title.appendChild(sub);world.append(hero,title);overlay.appendChild(world);document.body.appendChild(overlay);if(typeof opts.onSound==="function"){try{opts.onSound()}catch(_){}}const musicDuration=Math.max(4800,Number(opts.duration)||6500);setTimeout(()=>{if(overlay.isConnected){overlay.style.transition="opacity .5s ease";overlay.style.opacity="0";setTimeout(()=>overlay.remove(),520)}},musicDuration);return overlay;}
 
 /* Cinematic object renderer: custom shaded vector artwork replaces emoji-only gift posters. */
