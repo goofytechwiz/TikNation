@@ -561,9 +561,7 @@ let LIVE_GIFT_CATALOG = Object.fromEntries(
     name: gift.name, emoji: gift.emoji, category: gift.category, cost: gift.cost, sound: gift.sound, style: gift.style, message: gift.message
   }])
 );
-const LIVE_GIFT_PREVIEW_CATALOG = {
-  living_tombstones:{name:"Night of the Living Tombstones",emoji:"🪦",category:"Mythic",style:"livingtombstones",previewOnly:true}
-};
+const LIVE_GIFT_PREVIEW_CATALOG = {};
 function syncLiveGiftCatalog() {
   // Only Founder Rise is approved for paid sending. The remaining gallery gifts are local previews.
   const source = window.TIKNATION_GIFT_CATALOG;
