@@ -42,7 +42,8 @@ const TIKNATION_GIFT_CATALOG = {
   toxic_cloud:{name:"Toxic Cloud",emoji:"☣️",category:"Special Effects",cost:49,style:"toxiccloud",sound:"toxiccloud"},
   bone_breaker:{name:"Bone Breaker",emoji:"🦴",category:"Special Effects",cost:49,style:"hammer",sound:"impact"},
   asshole_of_death:{name:"Asshole of Death",emoji:"🌀",category:"Surprises",cost:199,style:"deathass",sound:"stinkdeath"},
-  changing_face:{name:"Changing Face",emoji:"🎭",category:"Visual Effects",cost:25,style:"voidrift",sound:"mystery"}
+  changing_face:{name:"Changing Face",emoji:"🎭",category:"Visual Effects",cost:25,style:"voidrift",sound:"mystery"},
+  founder_rise:{name:"The Founder — Rise of the Empire",emoji:"👑",category:"Mythic",cost:250,style:"founder_rise",sound:"founder_rise"}
 };
 window.TIKNATION_GIFT_CATALOG = TIKNATION_GIFT_CATALOG;
 
