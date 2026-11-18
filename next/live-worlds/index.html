@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="../../icons/tiknation.svg">
 <title>TikNation Live</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../../gift-engine.js?v=gift-stage-v4"></script>
+<script src="../../gift-engine.js?v=gift-stage-v5"></script>
 <script src="../../gifts.js?v=el-diablo-live-v3"></script>
 <style>
 :root{color-scheme:dark;--bg:#05050b;--panel:#10101d;--line:#29243d;--purple:#8d63ff;--cyan:#00c8ff;--muted:#a9a6bd;--red:#ff5277}
@@ -35,6 +35,7 @@
 @keyframes giftSparkFly{0%{opacity:0;transform:translate(0,0) scale(.3)}12%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(0)}
 }
 /* Adaptive gift stage: keep celebrations inside the actual video, regardless of layout. */
+.live-gift-stage-layer{position:absolute;inset:0;z-index:30;overflow:hidden;pointer-events:none;isolation:isolate}
 .video{position:relative;isolation:isolate;overflow:hidden}
 #viewerVideo,#creatorVideo{--gift-safe-x:50%;--gift-safe-y:46%}
 .video video{z-index:0!important}#tiknation-gift-engine,.live-gift-celebration,#founderRiseGiftOverlay{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;max-width:100%!important;max-height:100%!important;overflow:hidden!important;z-index:8!important;box-sizing:border-box!important;pointer-events:none!important}
@@ -819,11 +820,22 @@ window.__tikNationPlayGiftSound=playLiveGiftSound;
 function getLiveGiftStage(){
   const creator=$("creatorVideo"),viewer=$("viewerVideo");
   const preferred=isHost?[creator,viewer]:activeSession?[viewer,creator]:[creator,viewer];
-  return preferred.find(node=>{
+  const videoStage=preferred.find(node=>{
     if(!node||!node.isConnected||node.classList.contains("hide"))return false;
     const style=window.getComputedStyle(node),rect=node.getBoundingClientRect();
     return style.display!=="none"&&style.visibility!=="hidden"&&rect.width>0&&rect.height>0;
-  })||null;
+  });
+  if(!videoStage)return null;
+  // Keep every gift in one dedicated layer above the video, chat, and guest PiP.
+  // This avoids depending on each renderer's own z-index or positioning rules.
+  let layer=Array.from(videoStage.children).find(node=>node.classList.contains("live-gift-stage-layer"));
+  if(!layer){
+    layer=document.createElement("div");
+    layer.className="live-gift-stage-layer";
+    layer.setAttribute("aria-live","polite");
+    videoStage.appendChild(layer);
+  }
+  return layer;
 }
 window.TikNationGetGiftStage=getLiveGiftStage;
 function showLiveGiftCelebration(event) {
