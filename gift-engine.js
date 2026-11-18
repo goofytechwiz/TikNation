@@ -687,7 +687,7 @@ function renderLivingTombstonesGift(gift,opts,overlay){
  function grave(st,t){
   const ww=st.shape===0?43:st.shape===1?38:st.shape===2?35:st.shape===3?46:40;
   const hh=st.shape===0?91:st.shape===1?105:st.shape===2?78:st.shape===3?88:96;
-  const rock=Math.sin(t*2.7+st.phase)*(.105+(st.s*.025));
+  const tremor=t>1.35&&t<5.4?Math.max(0,1-Math.abs(t-3.35)/2.05):0;const rock=Math.sin(t*2.7+st.phase)*(.105+(st.s*.025)+tremor*.19);
   ctx.save();
   // The pivot is fixed at the foot of the stone: rotation only, never screen-space travel.
   ctx.translate(st.x,st.baseY);ctx.rotate(rock);ctx.scale(st.s,st.s);
@@ -728,8 +728,8 @@ function renderLivingTombstonesGift(gift,opts,overlay){
   tree(w*.08,h*.78,Math.max(.55,w/1000));tree(w*.92,h*.77,Math.max(.6,w/950));
   const ground=ctx.createLinearGradient(0,h*.55,0,h);ground.addColorStop(0,"#172019");ground.addColorStop(.22,"#0c130f");ground.addColorStop(1,"#050907");ctx.fillStyle=ground;ctx.beginPath();ctx.moveTo(0,h*.65);ctx.quadraticCurveTo(w*.5,h*.54,w,h*.66);ctx.lineTo(w,h);ctx.lineTo(0,h);ctx.fill();
   // A disturbed mound of fresh earth trembles beneath the central grave.
-  const shake=t>1.4&&t<5.2?Math.sin(t*31)*Math.max(0,1-(t-1.4)/3.8)*13:0;ctx.save();ctx.translate(shake,0);ctx.fillStyle="rgba(2,5,3,.72)";ctx.beginPath();ctx.ellipse(w*.5,h*.835,w*.14,h*.038,0,0,Math.PI*2);ctx.fill();ctx.fillStyle="rgba(65,68,49,.82)";ctx.beginPath();ctx.ellipse(w*.5,h*.823,w*.115,h*.031,0,Math.PI,Math.PI*2);ctx.fill();ctx.restore();
-  if(t>1.4&&t<5.2){for(let k=0;k<42;k++){const p=(t*2.8+k*.173)%1,x=w*.5+Math.sin(k*12.7)*w*.075+p*Math.sin(k*4)*12,y=h*.82-p*(28+(k%5)*9);ctx.fillStyle="rgba(91,82,58,"+(1-p)*.72+")";ctx.beginPath();ctx.arc(x,y,1+(k%3),0,Math.PI*2);ctx.fill();}}
+  const shake=t>1.4&&t<5.2?Math.sin(t*31)*Math.max(0,1-(t-1.4)/3.8)*25:0;ctx.save();ctx.translate(shake,0);ctx.fillStyle="rgba(2,5,3,.72)";ctx.beginPath();ctx.ellipse(w*.5,h*.835,w*.14,h*.038,0,0,Math.PI*2);ctx.fill();ctx.fillStyle="rgba(65,68,49,.82)";ctx.beginPath();ctx.ellipse(w*.5,h*.823,w*.115,h*.031,0,Math.PI,Math.PI*2);ctx.fill();ctx.restore();
+  if(t>1.55&&t<3.85){const pulse=(t-1.55)/2.3;ctx.save();ctx.strokeStyle="rgba(190,218,164,"+(1-pulse)*.72+")";ctx.lineWidth=5*(1-pulse)+1;ctx.shadowColor="#c8e9a3";ctx.shadowBlur=22;ctx.beginPath();ctx.ellipse(w*.5,h*.835,w*(.035+pulse*.19),h*(.012+pulse*.055),0,0,Math.PI*2);ctx.stroke();ctx.restore();}if(t>3.35&&t<3.62){ctx.fillStyle="rgba(220,235,215,"+(.13*Math.sin((t-3.35)/.27*Math.PI))+")";ctx.fillRect(0,0,w,h);}if(t>1.4&&t<5.2){for(let k=0;k<62;k++){const p=(t*2.8+k*.173)%1,x=w*.5+Math.sin(k*12.7)*w*.075+p*Math.sin(k*4)*12,y=h*.82-p*(28+(k%5)*9);ctx.fillStyle="rgba(91,82,58,"+(1-p)*.72+")";ctx.beginPath();ctx.arc(x,y,1+(k%3),0,Math.PI*2);ctx.fill();}}
   // The dead rise from the central grave after the earth begins to tremble.
   if(t>2.0&&t<7.2){
    const rise=Math.max(0,Math.min(1,(t-2.0)/2.5)),bob=Math.sin(t*5.4)*2.4;
