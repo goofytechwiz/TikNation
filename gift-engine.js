@@ -730,6 +730,23 @@ function renderLivingTombstonesGift(gift,opts,overlay){
   // A disturbed mound of fresh earth trembles beneath the central grave.
   const shake=t>1.4&&t<5.2?Math.sin(t*31)*Math.max(0,1-(t-1.4)/3.8)*13:0;ctx.save();ctx.translate(shake,0);ctx.fillStyle="rgba(2,5,3,.72)";ctx.beginPath();ctx.ellipse(w*.5,h*.835,w*.14,h*.038,0,0,Math.PI*2);ctx.fill();ctx.fillStyle="rgba(65,68,49,.82)";ctx.beginPath();ctx.ellipse(w*.5,h*.823,w*.115,h*.031,0,Math.PI,Math.PI*2);ctx.fill();ctx.restore();
   if(t>1.4&&t<5.2){for(let k=0;k<42;k++){const p=(t*2.8+k*.173)%1,x=w*.5+Math.sin(k*12.7)*w*.075+p*Math.sin(k*4)*12,y=h*.82-p*(28+(k%5)*9);ctx.fillStyle="rgba(91,82,58,"+(1-p)*.72+")";ctx.beginPath();ctx.arc(x,y,1+(k%3),0,Math.PI*2);ctx.fill();}}
+  // The dead rise from the central grave after the earth begins to tremble.
+  if(t>2.0&&t<7.2){
+   const rise=Math.max(0,Math.min(1,(t-2.0)/2.5)),bob=Math.sin(t*5.4)*2.4;
+   const unit=Math.max(.62,Math.min(1.22,h/760)),cy=h*.825-rise*h*.355+bob;
+   ctx.save();ctx.translate(w*.5,cy);ctx.scale(unit,unit);
+   ctx.shadowColor="rgba(0,0,0,.85)";ctx.shadowBlur=24;
+   const coat=ctx.createLinearGradient(-48,0,48,0);coat.addColorStop(0,"#101914");coat.addColorStop(.48,"#354039");coat.addColorStop(1,"#0a100d");
+   ctx.fillStyle=coat;ctx.beginPath();ctx.moveTo(-8,-83);ctx.quadraticCurveTo(-33,-91,-51,-65);ctx.lineTo(-66,-5);ctx.lineTo(-48,7);ctx.lineTo(-35,-34);ctx.lineTo(-30,42);ctx.lineTo(30,42);ctx.lineTo(35,-34);ctx.lineTo(49,8);ctx.lineTo(66,-5);ctx.lineTo(51,-65);ctx.quadraticCurveTo(30,-91,8,-83);ctx.closePath();ctx.fill();
+   ctx.strokeStyle="#657264";ctx.lineCap="round";ctx.lineJoin="round";ctx.lineWidth=13;ctx.beginPath();ctx.moveTo(-45,-66);ctx.quadraticCurveTo(-77,-105,-88,-139);ctx.lineTo(-103,-157);ctx.moveTo(45,-66);ctx.quadraticCurveTo(77,-105,88,-139);ctx.lineTo(103,-157);ctx.stroke();
+   ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-103,-157);ctx.lineTo(-119,-170);ctx.moveTo(-103,-157);ctx.lineTo(-106,-178);ctx.moveTo(-103,-157);ctx.lineTo(-91,-177);ctx.moveTo(103,-157);ctx.lineTo(119,-170);ctx.moveTo(103,-157);ctx.lineTo(106,-178);ctx.moveTo(103,-157);ctx.lineTo(91,-177);ctx.stroke();
+   const skin=ctx.createLinearGradient(-24,-145,22,-91);skin.addColorStop(0,"#a1a68c");skin.addColorStop(.55,"#626f5e");skin.addColorStop(1,"#29372e");
+   ctx.fillStyle=skin;ctx.beginPath();ctx.ellipse(0,-119,25,34,-.08,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle="#101713";ctx.beginPath();ctx.ellipse(-10,-123,6,9,0,0,Math.PI*2);ctx.ellipse(10,-123,6,9,0,0,Math.PI*2);ctx.fill();
+   ctx.fillStyle="rgba(196,205,157,.9)";ctx.shadowColor="#b5d08b";ctx.shadowBlur=10;ctx.beginPath();ctx.arc(-10,-123,2.3,0,Math.PI*2);ctx.arc(10,-123,2.3,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+   ctx.fillStyle="#111713";ctx.beginPath();ctx.moveTo(-11,-97);ctx.quadraticCurveTo(0,-88,12,-98);ctx.lineTo(9,-88);ctx.lineTo(-8,-87);ctx.closePath();ctx.fill();
+   ctx.restore();
+  }
   // Uneven cemetery earth, scattered stones and sparse wet grass
   for(let i=0;i<150;i++){const x=(i*83.17%w),y=h*(.66+(i*37.13%33)/100);ctx.fillStyle=i%3?"rgba(92,108,85,.13)":"rgba(2,5,3,.3)";ctx.beginPath();ctx.ellipse(x,y,1+(i%4),.6+(i%3)*.5,(i%7)*.2,0,Math.PI*2);ctx.fill();}
   for(let i=0;i<72;i++){const x=(i*47.73%w),y=h*(.67+(i*19.31%31)/100),len=4+(i%7)*1.6;ctx.strokeStyle=i%2?"rgba(92,117,82,.35)":"rgba(137,145,107,.22)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+(i%2?2:-2),y-len);ctx.stroke();}
