@@ -873,7 +873,23 @@ function getLiveGiftStage(){
     const style=window.getComputedStyle(node),rect=node.getBoundingClientRect();
     return style.display!=="none"&&style.visibility!=="hidden"&&rect.width>0&&rect.height>0;
   });
-  if(!videoStage)return null;
+  if(!videoStage){
+    // Offline creator previews have no visible video element yet. Give them a
+    // viewport-sized stage so the animation is visible without scrolling.
+    if(activeSession)return null;
+    let preview=document.getElementById("liveGiftPreviewStage");
+    if(!preview){
+      preview=document.createElement("div");
+      preview.id="liveGiftPreviewStage";
+      preview.setAttribute("aria-live","polite");
+      Object.assign(preview.style,{
+        position:"fixed",inset:"0",width:"100vw",height:"100vh",
+        zIndex:"2147483646",overflow:"hidden",pointerEvents:"none",isolation:"isolate"
+      });
+      document.body.appendChild(preview);
+    }
+    return preview;
+  }
   // Keep every gift in one dedicated layer above the video, chat, and guest PiP.
   // This avoids depending on each renderer's own z-index or positioning rules.
   let layer=Array.from(videoStage.children).find(node=>node.classList.contains("live-gift-stage-layer"));
