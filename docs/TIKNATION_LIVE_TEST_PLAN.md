@@ -25,6 +25,9 @@ This checklist tracks the main-branch Live page and production backend. The migr
 - [x] Approve the existing TikNationStudio account for the first creator test.
 - [ ] Complete runtime checks, moderator metadata setup, credential verification, and remaining release blockers before inviting beta creators or publishing the Live UI.
 
+- [ ] Send the Founder — Rise of the Empire LIVE gift from a viewer account; verify the 10-second MP4 automatically appears for the host and every connected viewer, the sender is charged 250 test coins once, and the event is not replayed after reconnect.
+- [ ] Verify Android autoplay behavior: the clip should start muted if audible autoplay is blocked, and the Enable Sound control should unmute it after a user tap.
+
 ## Database and authorization tests
 
 - [ ] Migration runs on a disposable/staging Supabase project and can be safely re-run where intended.
