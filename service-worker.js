@@ -1,4 +1,4 @@
-const CACHE_NAME = "tiknation-shell-v65-force-gift-engine-refresh";
+const CACHE_NAME = "tiknation-shell-v66-gift-engine-scope-fix";
 const APP_SHELL = [
   "./",
   "./index.html",
