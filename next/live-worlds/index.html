@@ -767,6 +767,8 @@ function showLiveGiftCelebration(event) {
   window.setTimeout(() => overlay.remove(), 4200);
 }
 function showFounderRiseGiftVideo(event) {
+  // Founder Rise is a video gift: clear any generic emoji/star celebration so it cannot cover the film.
+  document.querySelectorAll(".live-gift-celebration, .live-gift-celebration-card").forEach(node=>node.remove());
   document.getElementById("founderRiseGiftOverlay")?.remove();
   const overlay=document.createElement("div");
   overlay.id="founderRiseGiftOverlay";
@@ -805,7 +807,7 @@ function showFounderRiseGiftVideo(event) {
   const close=()=>{if(closed)return;closed=true;window.clearTimeout(fallbackTimer);overlay.remove();};
   const fallbackTimer=window.setTimeout(close,18000);
   video.addEventListener("ended",close,{once:true});
-  video.addEventListener("error",()=>{close();showLiveGiftCelebration(event);},{once:true});
+  video.addEventListener("error",()=>{detail.textContent="The Founder video could not load. Please close this message and try the gift again.";video.style.display="none";play.hidden=false;},{once:true});
   sound.addEventListener("click",async()=>{video.muted=false;try{await video.play();sound.hidden=true;}catch{video.muted=true;detail.textContent="Tap PLAY FOUNDER VIDEO to start the cinematic with sound.";}});
   play.addEventListener("click",async()=>{video.muted=false;try{await video.play();play.hidden=true;sound.hidden=true;}catch{detail.textContent="Your browser could not start the video. Please try again.";}});
   skip.addEventListener("click",close);
