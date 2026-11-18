@@ -188,7 +188,7 @@ css += String.raw`
 @keyframes c5-breath{from{opacity:.65;transform:scaleX(.72)}to{opacity:1;transform:scaleX(1.18)}}
 `;
 
-function install(){if(document.getElementById("tiknation-gift-engine-style"))return;const s=document.createElement("style");s.id="tiknation-gift-engine-style";s.textContent=css+${JSON.stringify(ecss)};document.head.appendChild(s)}
+function install(){if(document.getElementById("tiknation-gift-engine-style"))return;const s=document.createElement("style");s.id="tiknation-gift-engine-style";s.textContent=css+"\n#tiknation-gift-engine.tiknation-video-gift-overlay{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;max-width:100%!important;max-height:100%!important;overflow:hidden!important;z-index:5!important;padding:clamp(6px,2%,18px)!important;box-sizing:border-box!important}\n#tiknation-gift-engine.tiknation-video-gift-overlay .stage{width:min(94%,780px)!important;min-height:0!important;max-height:88%!important}\n#tiknation-gift-engine.tiknation-video-gift-overlay .gift-world{max-width:100%;max-height:100%}\n";document.head.appendChild(s)}
 
 
 function renderMusicSheetGift(gift,opts){
