@@ -101,6 +101,32 @@ body:after{opacity:.95;background:radial-gradient(ellipse at 20% 15%,#5c40ff33,t
 @media(max-width:800px){.home-hero{min-height:490px;padding:26px 24px 70px}.portal-art{width:290px;right:-70px;top:42%;opacity:.8}.home-hero-copy{max-width:100%;z-index:3}.home-greeting{font-size:clamp(45px,11.5vw,62px)}.home-hero p{max-width:300px}.home-quick{grid-template-columns:1fr}.quick-card{min-height:84px}.hero-bottom-label{z-index:3}.spotlight-card{min-height:160px}}
 @media(max-width:430px){.portal-art{width:255px;right:-76px;top:46%;opacity:.68}.home-hero{min-height:470px}.home-hero-copy{max-width:92%}.home-hero .actions{gap:8px}.home-hero .action{padding:12px 14px;font-size:13px}}
 @media(prefers-reduced-motion:reduce){.portal-art *{animation:none!important}}
+
+/* HERO MESSAGE READABILITY FIX */
+.home-hero{position:relative}
+.home-hero-copy{position:relative;z-index:6!important;max-width:min(66%,700px)!important;padding:22px 24px 24px 0;border-radius:20px;text-shadow:0 2px 18px #05040fcc}
+.home-greeting{position:relative;z-index:2;color:#fff!important;background:none!important;-webkit-text-fill-color:#fff!important;text-shadow:0 3px 24px #05040f,0 0 32px #72f5ed44}
+.home-greeting span{color:#9dfaf3!important;-webkit-text-fill-color:#9dfaf3!important;text-shadow:0 2px 22px #05040f,0 0 24px #a58aff99}
+.home-hero-copy .eyebrow,.home-hero-copy p,.home-hero-copy .actions{position:relative;z-index:2}
+.home-hero-copy p{color:#fff!important;text-shadow:0 2px 12px #05040f}
+.portal-art{z-index:1;opacity:.58}
+@media(max-width:800px){
+ .home-hero{min-height:530px!important;padding:25px 20px 76px!important}
+ .home-hero-copy{max-width:100%!important;width:100%;padding:12px 10px 20px 0;background:linear-gradient(90deg,#080716ef 0%,#080716c9 68%,#08071622 100%);border-radius:16px}
+ .home-greeting{font-size:clamp(42px,10.5vw,58px)!important;line-height:1.02}
+ .home-hero-copy p{max-width:290px!important;font-size:15px!important}
+ .portal-art{width:245px!important;right:-94px!important;top:68%!important;opacity:.25!important}
+ .hero-orbit{opacity:.28}
+ .home-hero .actions{position:relative;z-index:7;flex-wrap:wrap}
+ .home-hero .action{min-height:44px}
+}
+@media(max-width:430px){
+ .home-hero{min-height:510px!important}
+ .home-hero-copy{max-width:100%!important}
+ .home-greeting{font-size:43px!important}
+ .portal-art{width:215px!important;right:-95px!important;top:70%!important;opacity:.2!important}
+ .hero-bottom-label{font-size:8px;z-index:7}
+}
 </style>
 </head>
 <body><div class="shell">
