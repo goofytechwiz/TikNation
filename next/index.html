@@ -127,6 +127,22 @@ body:after{opacity:.95;background:radial-gradient(ellipse at 20% 15%,#5c40ff33,t
  .portal-art{width:215px!important;right:-95px!important;top:70%!important;opacity:.2!important}
  .hero-bottom-label{font-size:8px;z-index:7}
 }
+
+/* INTERACTIVE COSMIC FX — responsive, lightweight, and reduced-motion aware */
+:root{--fx-cyan:#72f5ed;--fx-purple:#a58aff;--fx-pink:#ff76c8;--fx-gold:#ffd98c}
+.tile,.quick-card,.spotlight-card,.giftTile,.creatorTile{position:relative;isolation:isolate}
+.tile:before,.quick-card:after,.spotlight-card:before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;background:linear-gradient(120deg,#72f5ed18,transparent 35%,#ff76c818 70%,#a58aff20);z-index:-1}
+.tile:hover:before,.quick-card:hover:after,.spotlight-card:hover:before{opacity:1}
+.tile,.quick-card,.spotlight-card{box-shadow:0 8px 30px #0002;transition:transform .22s ease,border-color .25s ease,box-shadow .25s ease}
+.tile:hover,.quick-card:hover,.spotlight-card:hover{border-color:#72f5ed55;box-shadow:0 14px 38px #0004,0 0 24px #a58aff12}
+.action:active,.primary:active,.navbtn:active,.mobilebar button:active{filter:brightness(1.25);transform:scale(.96)}
+.navbtn.active,.mobilebar button.active{position:relative}.navbtn.active:after{content:"";position:absolute;inset:4px;border-radius:inherit;pointer-events:none;box-shadow:0 0 18px #72f5ed18}
+.portal-core{animation:corePulse 3s ease-in-out infinite;filter:drop-shadow(0 0 15px #72f5ed66)}
+@keyframes corePulse{0%,100%{filter:drop-shadow(0 0 10px #72f5ed55);transform:scale(1)}50%{filter:drop-shadow(0 0 24px #ff76c888);transform:scale(1.06)}}
+.tn-fx-layer{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}.tn-spark{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--spark-color,#72f5ed);box-shadow:0 0 9px 3px var(--spark-color,#72f5ed),0 0 20px var(--spark-color,#72f5ed);animation:tnSpark .78s cubic-bezier(.15,.7,.3,1) forwards}.tn-spark:after{content:"";position:absolute;inset:-3px;border:1px solid currentColor;border-radius:50%;opacity:.65}
+@keyframes tnSpark{0%{opacity:0;transform:translate(0,0) scale(.25)}15%{opacity:1}100%{opacity:0;transform:translate(var(--spark-x),var(--spark-y)) scale(0)}}
+.tn-ripple{position:absolute;border-radius:50%;border:1px solid #72f5edaa;box-shadow:0 0 22px #72f5ed33;transform:translate(-50%,-50%) scale(.2);animation:tnRipple .7s ease-out forwards}@keyframes tnRipple{to{opacity:0;transform:translate(-50%,-50%) scale(1.8)}}
+@media(prefers-reduced-motion:reduce){.portal-core,.tn-spark,.tn-ripple{animation:none!important}.tn-spark,.tn-ripple{display:none!important}.tile,.quick-card,.spotlight-card{transition:none!important}}
 </style>
 </head>
 <body><div class="shell">
@@ -160,4 +176,7 @@ function selectGift(btn,name){document.querySelectorAll('.giftTile').forEach(x=>
 const post=document.getElementById('postText');post.addEventListener('input',()=>document.getElementById('charCount').textContent=post.value.length+' / 500');
 function publishPost(){const value=post.value.trim();if(!value){toast('Write something before sharing.');return}const card=document.createElement('article');card.className='tile feed-card';const h=document.createElement('h3');h.textContent='Your new post';const p=document.createElement('p');p.style.whiteSpace='pre-wrap';p.style.marginTop='8px';p.textContent=value;card.append(h,p);document.getElementById('posts').prepend(card);post.value='';document.getElementById('charCount').textContent='0 / 500';toast('Your post has been added to this preview.')}
 const initial=location.hash.slice(1);if(initial&&document.getElementById('view-'+initial))navigate(initial);
+
+/* Lightweight tap/click celebration effects */
+(()=>{if(document.querySelector('.tn-fx-layer'))return;const layer=document.createElement('div');layer.className='tn-fx-layer';layer.setAttribute('aria-hidden','true');document.body.append(layer);if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;document.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;const target=e.target.closest('button,.tile,.spotlight-card,.quick-card');if(!target)return;const x=e.clientX,y=e.clientY;const ring=document.createElement('i');ring.className='tn-ripple';ring.style.left=x+'px';ring.style.top=y+'px';ring.style.width='42px';ring.style.height='42px';layer.append(ring);setTimeout(()=>ring.remove(),750);const colors=['#72f5ed','#a58aff','#ff76c8','#ffd98c'];for(let i=0;i<9;i++){const p=document.createElement('i');p.className='tn-spark';p.style.left=x+'px';p.style.top=y+'px';p.style.setProperty('--spark-color',colors[(Math.random()*colors.length)|0]);const a=Math.PI*2*i/9+(Math.random()-.5)*.5;const d=22+Math.random()*42;p.style.setProperty('--spark-x',Math.cos(a)*d+'px');p.style.setProperty('--spark-y',Math.sin(a)*d+'px');layer.append(p);setTimeout(()=>p.remove(),850)}},{passive:true})})();
 </script></body></html>
