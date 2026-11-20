@@ -36,6 +36,52 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
 .home-footer-note{box-shadow:0 0 36px #72f5ed08}
 .toast{border:1px solid #a58aff44;box-shadow:0 10px 40px #0008,0 0 25px #a58aff22}
 @media(prefers-reduced-motion:reduce){body:after,.brandmark,.brandmark:after,.home-hero .hero-orbit,.action:after{animation:none!important;transition:none!important}.tile:hover,.quick-card:hover,.spotlight-card:hover{transform:none}}
+
+/* COSMIC HOME EXPERIENCE — high-visibility visual upgrade */
+body{background:#05040f}
+body:before{opacity:.32;background-size:34px 34px,34px 34px;background-image:radial-gradient(#c9c5ff8c 1px,transparent 1px),radial-gradient(#72f5ed66 1px,transparent 1px);background-position:0 0,17px 17px;animation:starDrift 38s linear infinite}
+@keyframes starDrift{to{background-position:0 680px,17px 697px}}
+body:after{opacity:.95;background:radial-gradient(ellipse at 20% 15%,#5c40ff33,transparent 28%),radial-gradient(ellipse at 82% 38%,#ff45bd24,transparent 30%),radial-gradient(ellipse at 50% 90%,#00f0e521,transparent 25%);animation:cosmicBreath 9s ease-in-out infinite alternate}
+@keyframes cosmicBreath{from{opacity:.65;transform:scale(.98)}to{opacity:1;transform:scale(1.04)}}
+.home-hero{min-height:500px;border-radius:32px;border-color:#8d82ff55;background:radial-gradient(ellipse at 76% 48%,#572fcf66 0,transparent 42%),radial-gradient(ellipse at 86% 10%,#ff53c333,transparent 32%),radial-gradient(ellipse at 65% 100%,#11d7d355,transparent 36%),linear-gradient(135deg,#090819 0%,#171137 45%,#091f32 100%);box-shadow:0 24px 90px #4c2bc833,inset 0 0 80px #8e6cff18}
+.home-hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 20%,#ffffff08 48%,transparent 68%);transform:translateX(-100%);animation:heroSweep 9s ease-in-out infinite}
+@keyframes heroSweep{0%,60%,100%{transform:translateX(-100%)}80%{transform:translateX(100%)}}
+.hero-orbit{right:2%;top:3%;width:min(48vw,480px);height:min(48vw,480px);border:1px solid #a18aff55;box-shadow:0 0 45px #8c5cff20,inset 0 0 45px #72f5ed0b}
+.orbit-b{width:min(36vw,350px);height:min(36vw,350px);right:8%;top:12%;border-color:#72f5ed55}
+.hero-spark{right:10%;top:20%;font-size:clamp(120px,25vw,290px);color:#e4d7ff28;text-shadow:0 0 30px #b28aff55,0 0 100px #72f5ed44;animation:cosmicFloat 6s ease-in-out infinite}
+@keyframes cosmicFloat{0%,100%{transform:translateY(0) rotate(0) scale(1)}50%{transform:translateY(-18px) rotate(8deg) scale(1.06)}}
+.home-hero-copy{max-width:680px}
+.home-hero .eyebrow{display:inline-flex;align-items:center;gap:9px;border:1px solid #72f5ed55;background:#72f5ed0d;border-radius:999px;padding:9px 14px;box-shadow:0 0 22px #72f5ed12}
+.home-greeting{font-size:clamp(48px,8vw,88px);background:linear-gradient(100deg,#fff 0%,#72f5ed 32%,#c7a9ff 65%,#ff8bd5 100%);background-size:200% auto;animation:titleFlow 7s linear infinite;text-shadow:0 0 40px #a58aff22}
+@keyframes titleFlow{to{background-position:200% center}}
+.home-hero p{font-size:clamp(16px,2vw,19px);color:#e0dbf5}
+.home-hero .action{border-radius:14px;padding:14px 20px}
+.home-hero .primary{box-shadow:0 0 28px #72f5ed33,0 8px 28px #a58aff35}
+.hero-bottom-label{padding:8px 12px;border:1px solid #ffffff17;border-radius:999px;background:#05040f55;backdrop-filter:blur(10px)}
+.home-quick{gap:14px}
+.quick-card{position:relative;overflow:hidden;border-color:#8c83ff33;background:linear-gradient(135deg,#17132cdd,#0b1828dd);box-shadow:0 10px 35px #0002}
+.quick-card:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,#72f5ed12,transparent 45%,#ff76c812);opacity:0;transition:opacity .25s}
+.quick-card:hover:before{opacity:1}
+.quick-icon{width:48px;height:48px;border:1px solid #72f5ed44;background:radial-gradient(circle,#72f5ed20,transparent 75%);box-shadow:0 0 24px #72f5ed18;font-size:26px}
+.home-section .section-head h2{font-size:clamp(23px,3vw,30px);letter-spacing:-.03em}
+.interest-row button{background:linear-gradient(135deg,#17132d,#10222d);border-color:#ffffff20;padding:11px 16px}
+.spotlight-card{background:linear-gradient(135deg,#17132ddd,#0a1828dd);border-color:#a58aff30;box-shadow:0 12px 38px #0002}
+.spotlight-art{position:relative;background:radial-gradient(circle at 50% 45%,#72f5ed66,transparent 30%),linear-gradient(135deg,#17123c,#12434b);font-size:60px}
+.spotlight-two .spotlight-art{background:radial-gradient(circle at 50% 45%,#ff76c866,transparent 30%),linear-gradient(135deg,#421b49,#1b2349)}
+.spotlight-content{padding:20px}
+.spotlight-link{padding:7px 0}
+.home-footer-note{border-color:#72f5ed30;background:linear-gradient(110deg,#0b2530,#191333,#2a1230);box-shadow:0 0 35px #72f5ed0a}
+.creatorTile{position:relative;overflow:hidden;background:linear-gradient(145deg,#18142f,#0c1927);border-color:#a58aff25}
+.creatorTile .art{height:135px;position:relative;background:radial-gradient(circle at 50% 40%,#72f5ed55,transparent 45%),linear-gradient(135deg,#27205a,#123a45)}
+.creatorTile .art.pink{background:radial-gradient(circle at 50% 40%,#ff76c855,transparent 45%),linear-gradient(135deg,#502249,#202044)}
+.creatorTile .art.gold{background:radial-gradient(circle at 50% 40%,#ffd98c55,transparent 45%),linear-gradient(135deg,#4d3b2a,#292046)}
+.creatorTile .action{border-radius:12px;background:#ffffff08}
+.top{background:#070615d9;border-bottom-color:#8c83ff20}
+.brandmark{box-shadow:0 0 28px #72f5ed44,0 0 60px #a58aff22}
+.mobilebar{background:#080616eF;border-top-color:#8c83ff33}
+.mobilebar button.active{filter:drop-shadow(0 0 8px #72f5ed66)}
+@media(max-width:800px){.home-hero{min-height:440px}.hero-orbit{width:300px;height:300px;right:-80px;top:30px}.orbit-b{width:220px;height:220px;right:-35px;top:70px}.hero-spark{right:0;top:24%;font-size:150px}.home-hero-copy{max-width:100%}.home-greeting{font-size:clamp(48px,12vw,68px)}.home-hero p{max-width:330px}.hero-bottom-label{font-size:9px}.home-quick .quick-card{box-shadow:0 8px 25px #0003}}
+@media(prefers-reduced-motion:reduce){body:before,body:after,.home-hero:after,.hero-spark,.home-greeting{animation:none!important}}
 </style>
 </head>
 <body><div class="shell">
@@ -44,7 +90,7 @@ button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
 <button class="navbtn active" data-view="home" onclick="navigate('home')"><b>⌂</b> Home</button><button class="navbtn" data-view="discover" onclick="navigate('discover')"><b>⌕</b> Discover</button><button class="navbtn" data-view="live" onclick="navigate('live')"><b>◉</b> Live Worlds</button><button class="navbtn" data-view="create" onclick="navigate('create')"><b>✧</b> Creation Portal</button><button class="navbtn" data-view="gifts" onclick="navigate('gifts')"><b>♢</b> Gifts</button><button class="navbtn" data-view="community" onclick="navigate('community')"><b>◎</b> Community</button><button class="navbtn" data-view="profile" onclick="navigate('profile')"><b>◌</b> Profile</button><div class="side-note">✨ <b style="color:white">A universe of creators.</b><br><br>Watch first. Follow if you want. Your next idea starts here.</div></aside>
 <main class="main">
 <section class="view active" id="view-home">
-<div class="home-hero"><div class="hero-orbit orbit-a"></div><div class="hero-orbit orbit-b"></div><div class="hero-spark">✦</div><div class="home-hero-copy"><div class="eyebrow">✦ WELCOME TO YOUR UNIVERSE</div><div class="home-greeting">A world of<br><span>possibilities.</span></div><p>Discover something amazing. Find your people. Create what comes next.</p><div class="actions"><button class="action primary" onclick="navigate('discover')">Explore your world&nbsp; ↗</button><button class="action" onclick="navigate('create')">＋ Create something</button></div></div><div class="hero-bottom-label">TIKNATION <span>·</span> YOUR VOICE. YOUR WORLD.</div></div>
+<div class="home-hero"><div class="hero-orbit orbit-a"></div><div class="hero-orbit orbit-b"></div><div class="hero-spark">✦</div><div class="cosmic-ring ring-three"></div><div class="hero-energy energy-one"></div><div class="hero-energy energy-two"></div><div class="home-hero-copy"><div class="eyebrow">✦ WELCOME TO YOUR UNIVERSE</div><div class="home-greeting">A world of<br><span>possibilities.</span></div><p>Discover something amazing. Find your people. Create what comes next.</p><div class="actions"><button class="action primary" onclick="navigate('discover')">Explore your world&nbsp; ↗</button><button class="action" onclick="navigate('create')">＋ Create something</button></div></div><div class="hero-bottom-label">TIKNATION <span>·</span> YOUR VOICE. YOUR WORLD.</div></div>
 <div class="home-quick"><button class="quick-card quick-live" onclick="navigate('live')"><span class="quick-icon">◉</span><span><b>Live Worlds</b><small>Step into the moment</small></span><span class="quick-arrow">↗</span></button><button class="quick-card quick-create" onclick="navigate('create')"><span class="quick-icon">✧</span><span><b>Creation Portal</b><small>Bring an idea to life</small></span><span class="quick-arrow">↗</span></button><button class="quick-card quick-discover" onclick="navigate('discover')"><span class="quick-icon">⌕</span><span><b>Discover</b><small>Meet your next favorite</small></span><span class="quick-arrow">↗</span></button></div>
 <div class="home-section"><div class="section-head"><div><div class="eyebrow">MADE FOR YOU</div><h2>Explore your interests</h2></div><button class="text-button" onclick="navigate('discover')">See all ↗</button></div><div class="interest-row"><button onclick="navigate('discover')">🎨 Art & Design</button><button onclick="navigate('discover')">🎮 Gaming</button><button onclick="navigate('discover')">🎵 Music</button><button onclick="navigate('discover')">🚀 Technology</button><button onclick="navigate('discover')">✨ Creators</button></div></div>
 <div class="home-section"><div class="section-head"><div><div class="eyebrow">COMMUNITY SPOTLIGHT</div><h2>Ideas in motion</h2></div><button class="text-button" onclick="navigate('discover')">Discover more ↗</button></div><div class="spotlight-grid"><article class="spotlight-card spotlight-one" onclick="navigate('discover')"><div class="spotlight-art">🌌</div><div class="spotlight-content"><span class="tag">IMAGINATION</span><h3>Beyond the ordinary</h3><p>Explore creations that make you see the world differently.</p><span class="spotlight-link">Explore creators&nbsp; ↗</span></div></article><article class="spotlight-card spotlight-two" onclick="navigate('create')"><div class="spotlight-art">💡</div><div class="spotlight-content"><span class="tag">YOUR NEXT IDEA</span><h3>Make it real</h3><p>Every great thing starts with a spark. What's yours?</p><span class="spotlight-link">Start creating&nbsp; ↗</span></div></article></div></div>
