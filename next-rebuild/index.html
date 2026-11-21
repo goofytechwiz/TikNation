@@ -107,6 +107,7 @@ function toast(t){const el=document.getElementById('toast');el.textContent=t;el.
 function closeModal(){document.getElementById('modal').classList.remove('open')}
 renderSpotlight();renderFeed();renderCreators();
 </script>
+<script>
 /* ✨ Small, accessible particle bursts and pointer-reactive atmosphere */
 (function(){
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -122,4 +123,5 @@ renderSpotlight();renderFeed();renderCreators();
  document.addEventListener('pointerdown',e=>{if(e.target.closest('button,a,.tile,.creator')){burst(e.clientX,e.clientY,18);start();const ripple=document.createElement('i');ripple.className='magic-ripple';ripple.style.left=e.clientX+'px';ripple.style.top=e.clientY+'px';document.body.appendChild(ripple);setTimeout(()=>ripple.remove(),750)}},{passive:true});
  const oldPublish=window.publishDemo;window.publishDemo=function(){oldPublish();const portal=document.querySelector('.portal');if(portal){portal.classList.remove('portal-reveal');void portal.offsetWidth;portal.classList.add('portal-reveal')}burst(innerWidth*.5,innerHeight*.35,38);start()};
 })();
+</script>
 </body></html>
